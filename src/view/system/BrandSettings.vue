@@ -1,0 +1,192 @@
+<template>
+  <div style="background-color: #fff; padding: 16px 20px;">
+    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - 100 + 'px'}">
+      <el-form label-position="right" label-width="160px" style="width: 700px;" :model="ruleForm" :rules="rules"
+               ref="ruleForm">
+        <el-form-item label="品牌名配置:" prop="brand_name">
+          <el-input v-model="ruleForm.brand_name" placeholder="请输入15位以内的字符" :max="8"></el-input>
+        </el-form-item>
+        <el-form-item label="上传品牌icon:" prop="brand_icon">
+          <my-upload-img ref="upload" v-model="ruleForm.brand_icon" module="brand_icon" @change="changeBrandIcon"
+                         :limit="1"></my-upload-img>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="resetForm('ruleForm')">取 消</el-button>
+          <el-button type="primary" @click="submit('ruleForm')">确 定</el-button>
+        </el-form-item>
+      </el-form>
+      <el-form label-position="right" label-width="160px" style="width: 700px;" :model="ruleFormQR" :rules="rules"
+               ref="ruleFormQR">
+        <el-form-item label="投诉电话:" prop="complaint_hotline">
+          <el-input v-model="ruleFormQR.complaint_hotline" type="tel" :maxlength="11" placeholder="请输入11位手机号"></el-input>
+        </el-form-item>
+        <el-form-item label="上传客服微信二维码:" prop="qr_code">
+          <my-upload-img ref="upload2" v-model="ruleFormQR.qr_code" @change="changeBrandQr" module="qr_code"
+                         :limit="1"></my-upload-img>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="resetForm('ruleFormQR')">取 消</el-button>
+          <el-button type="primary" @click="submit('ruleFormQR')">确 定</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
+</template>
+<script>
+  import {mapGetters, mapActions} from "vuex";
+  import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from "element-ui";
+  import {Config} from '@/util';
+  import {Base} from '@/service';
+  import {UploadImg} from '@/common';
+
+  export default {
+    name: "BrandSettings",
+    components: {
+      'el-form': Form,
+      'el-form-item': FormItem,
+      'el-button': Button,
+      'el-input': Input,
+      'el-upload': Upload,
+      'my-upload-img': UploadImg,
+    },
+    computed: mapGetters({
+      brand: 'brand',
+      brandService: 'brandService',
+      windowHeight: 'windowHeight'
+    }),
+    data() {
+      let validImages = function (rules, value, callback) {
+        if (value.length && value.length > 0) {
+          callback();
+        } else {
+          callback(new Error('请上传图片'));
+        }
+      };
+      let validQrImages = function (rules, value, callback) {
+        if (value.length && value.length > 0) {
+          callback();
+        } else {
+          callback(new Error('请上传图片'));
+        }
+      };
+      let validName = function (rules, value, callback) {
+        if (value.length && value.length <= 8) {
+          callback();
+        } else if (value.length && value.length > 8) {
+          callback(new Error('品牌名称不能大于8个字'));
+        } else {
+          callback(new Error('品牌名不能为空'));
+        }
+      }
+      return {
+        ruleForm: {
+          brand_name: '',
+          brand_icon: [],
+        },
+        ruleFormQR: {
+          complaint_hotline: '',
+          qr_code: []
+        },
+        rules: {
+          brand_name: [
+            // {validator: validName, trigger: 'blur'},
+            {required: true, message: '品牌名不能为空', trigger: 'change'},
+            { max: 15, message: '品牌名不能超过15个字符', trigger: 'blur' },
+          ],
+          brand_icon: [
+            {validator: validImages, trigger: 'change'},
+            {required: true, message: '请上传图片', trigger: 'change'}
+          ],
+          complaint_hotline: [
+            {required: true, message: '投诉电话不能为空'},
+            {pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/, message: '手机号码格式不正确', trigger: 'change'}
+          ],
+          qr_code: [
+            {validator: validQrImages, trigger: 'change'},
+            {required: true, message: '请上传图片', trigger: 'change'}
+          ],
+        },
+      }
+    },
+    watch: {
+      brand: {
+        deep: true,
+        handler: function (c, b) {
+          let a = c || b;
+          this.ruleForm = JSON.parse(JSON.stringify(a));
+          this.ruleForm.brand_icon = this.ruleForm.brand_icon.split();
+        }
+      },
+      brandService: {
+        deep: true,
+        handler: function (c, b) {
+          let a = c || b;
+          this.ruleFormQR = JSON.parse(JSON.stringify(a));
+          this.ruleFormQR.qr_code = this.ruleFormQR.qr_code.split();
+        }
+      },
+    },
+    created: function () {
+      documentTitle("设置 - 品牌信息配置");
+      this.systemBrand({data: 'get'});
+      this.systemBrandService({data: 'get'});
+    },
+    methods: {
+      ...mapActions(['systemBrand', 'systemBrandService', 'getBrand']),
+      changeBrandIcon() {
+        this.$refs['ruleForm'].validateField('brand_icon');
+      },
+      changeBrandQr() {
+        this.$refs['ruleFormQR'].validateField('qr_code');
+      },
+      submit(formName) {
+        let self = this;
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if (formName == 'ruleForm') {
+              let data = JSON.parse(JSON.stringify(self.ruleForm));
+              data.brand_icon = data.brand_icon.join()
+              this.systemBrand({
+                data: data, callback: (res) => {
+                  self.systemBrand({data: 'get'});
+                  self.getBrand();
+                }
+              });
+            } else {
+              let data = JSON.parse(JSON.stringify(self.ruleFormQR));
+              data.qr_code = data.qr_code.join()
+              this.systemBrandService({
+                data: data, callback: (res) => {
+                  self.systemBrandService({data: 'get'});
+                }
+              });
+            }
+          } else {
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        if (formName == 'ruleForm') {
+          this.systemBrand({data: 'get'});
+        } else {
+          this.systemBrandService({data: 'get'});
+        }
+      },
+
+    }
+  }
+</script>
+<style scoped>
+  .el-form {
+    padding: 10px 40px;
+  }
+
+  .footer {
+    padding: 0 40px;
+  }
+
+  .el-input {
+    width: 50%;
+  }
+</style>

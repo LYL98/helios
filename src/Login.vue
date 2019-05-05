@@ -1,0 +1,173 @@
+<template>
+  <div class="login-body b-b-b">
+    <div class="login-div">
+      <div class="login-logo">
+        <img :src="tencentPath+ brand.brand_icon" alt=""/>
+        <span style="margin-left:10px">{{ brand.brand_name}}运营中心</span>
+      </div>
+      <div class="login-form">
+        <el-form label-position="right" :model="loginData" :rules="rules" ref="ruleForm">
+          <el-form-item label="" prop="login_name">
+            <el-input placeholder="请输入用户名" v-model="loginData.login_name">
+              <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="" prop="password">
+            <el-input placeholder="请输入密码" v-model="loginData.password" type="password">
+              <i slot="prefix" class="el-input__icon el-icon-edit"></i>
+            </el-input>
+          </el-form-item>
+        </el-form>
+        <el-button type="primary" size="large" @click.native="submitLogin" class="btn-submit" :loading="loading.isShow">登录</el-button>
+      </div>
+    </div>
+    <div class="foot-div"></div>
+  </div>
+
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+import { Form, FormItem, Button, Input, Checkbox } from 'element-ui';
+import { Method, Config } from '@/util';
+import md5 from 'md5';
+
+export default {
+  name: 'login',
+  components: {
+    'el-form': Form,
+    'el-form-item': FormItem,
+    'el-button': Button,
+    'el-input': Input,
+    'el-checkbox': Checkbox
+  },
+  computed: mapGetters({
+    loading: 'loading',
+  }),
+  created() {
+    documentTitle('登录');
+    let loc = localStorage.getItem('globalBrand')
+    this.brand =  loc ? JSON.parse(loc) : {};
+  },
+  data(){
+    let isPad = false; //判断是否安卓
+    let ua = navigator.userAgent;
+    if(ua.indexOf('Android') > 0 || ua.indexOf('iPad') > 0){
+      isPad = true;
+    }
+
+    return{
+      brand: {},
+      tencentPath: Config.tencentPath,
+      isPad: isPad,
+      loginData: {
+        login_name: '',
+        password: '',
+      },
+      rules: {
+        login_name: [
+          { required: true, message: '用户名不能为空', trigger: 'change' }
+        ],
+        password: [
+          { required: true, message: '密码不能为空', trigger: 'change' }
+        ]
+      }
+    }
+  },
+  methods: {
+    //提交登录
+    submitLogin() {
+      let that = this;
+      that.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          let { loginData, isPad } = that;
+          let isSuccess = false, si = null;
+          that.loginSubmit({
+            data: {
+              login_name: loginData.login_name,
+              password: md5(loginData.password)
+            },
+            callback: (data) => {
+              Method.setLocalStorage('appleLoginInfo', data);
+              that.$router.replace({ name: "Home" });
+              isSuccess = true;
+            }
+          });
+          if(isPad){
+            clearInterval(si);
+            si = setInterval(()=>{
+              if(isSuccess){
+                Method.openFullScreen(); //如果为pad，打开全屏
+                clearInterval(si);
+              }
+            }, 500);
+          }
+        }
+      });
+      
+    },
+    ...mapActions(['loginSubmit'])
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" scoped>
+  .login-body{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('./assets/img/login_bg.jpg');
+  }
+  .login-div {
+    position: absolute;
+    width: 450px;
+    height: 300px;
+    background: #fff;
+    top: 50%;
+    left: 50%;
+    margin: -180px 0 0 -225px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  }
+  .login-logo {
+    height: 110px;
+    margin-left: 50px;
+    overflow: hidden;
+  }
+  .login-logo > img{
+    height: 68px;
+    float: left;
+    margin: 25px 0 0 0;
+  }
+  .login-logo > span{
+    float: left;
+    font-size: 24px;
+    margin-top: 46px;
+    color: #32958b;
+    font-weight:bold;
+  }
+  .login-form {
+    margin: 0 50px;
+  }
+  .auto-login{
+    margin-top: 10px;
+  }
+  .btn-submit {
+    float: right;
+    width: 120px;
+  }
+  .foot-div{
+    position: absolute;
+    bottom: 0px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    width: 100%;
+    color: #666;
+    font-size: 12px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  }
+  
+</style>

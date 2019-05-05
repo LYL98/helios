@@ -1,0 +1,106 @@
+<template>
+  <div class="query">
+    <el-row>
+      <el-col :xl="8" :lg="10" :span="10">
+        <my-query-item label="搜索">
+          <div style="display: flex">
+            <el-input
+              size="small"
+              placeholder="请输入团员姓名"
+              class="query-item-input"
+              clearable
+              @clear="changeQuery"
+              v-model="editQuery.condition"
+              @keyup.enter.native="changeQuery"
+            />
+            <el-button size="small" type="primary" style="margin-left: 4px" @click="changeQuery" icon="el-icon-search"></el-button>
+            <el-button size="small" type="primary" class="query-item-reset" plain @click="resetQuery">重置</el-button>
+          </div>
+        </my-query-item>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+  import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
+  import { mapGetters } from 'vuex';
+  import { QueryItem, CollapseQuery, SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
+  import { DataHandle } from '@/util';
+  import { queryMixin } from '@/mixins';
+
+  export default {
+    name: "QueryGroupBuyMemberStatistics",
+    components: {
+      'el-date-picker': DatePicker,
+      'el-row': Row,
+      'el-col': Col,
+      'el-input': Input,
+      'el-button': Button,
+      'my-select-buyer': SelectBuyer,
+      'my-select-display-class': SelectDisplayClass,
+      'my-search-item': SearchItem,
+      'my-query-item': QueryItem,
+      'my-collapse-query': CollapseQuery
+    },
+    mixins: [queryMixin],
+    created() {
+      let { province } = this;
+      if(province.code){
+        this.editQuery.province_code = province.code;
+      }
+      this.changeQuery();
+    },
+    data() {
+      return {
+        backupSort: '',
+      }
+    },
+    props: {
+      // 查询对象
+      query: {type: Object, required: true},
+      reset: {type: Function, required: true}
+    },
+    model: {
+      prop: 'query',
+      event: 'change'
+    },
+    computed: {
+      editQuery: {
+        get() {
+          this.backupSort = this.$props.query.sort;
+          return this.$props.query;
+        },
+        set(v) {
+          this.$emit('change', v);
+        }
+      },
+      ...mapGetters({province: 'globalProvince'})
+    },
+    methods: {
+      changeQuery() {
+        //触发change事件
+        this.editQuery = Object.assign({}, this.editQuery);
+      },
+      changeDate() {
+        this.editQuery.groupbuy_date = this.selectDate;
+        this.changeQuery();
+      },
+      resetQuery() {
+        //触发change事件
+        this.editQuery = {
+          page: 1,
+          page_size: 20,
+          province_code: this.province.code,
+          sort: this.backupSort,
+          condition: ''
+        };
+        this.$props.reset();
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

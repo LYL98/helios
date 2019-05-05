@@ -1,0 +1,16 @@
+export { default as TableMarketingCoupon } from './TableMarketingCoupon';
+export { default as TableMarketingCouponLog } from './TableMarketingCouponLog';
+export { default as TableMarketingCouponStatistic } from './TableMarketingCouponStatistic';
+export { default as TableMarketingScopePromotion } from './TableMarketingScopePromotion';
+export { default as TablePurchaseSupplier } from './TablePurchaseSupplier';
+export { default as TablePurchaseItem } from './TablePurchaseItem';
+export { default as TablePurchaseWarehouse } from './TablePurchaseWarehouse';
+export { default as TablePurchaseFinance } from './TablePurchaseFinance';
+export { default as TableFinanceBalance } from './TableFinanceBalance';
+export { default as TableFinanceBalanceApproveLog } from './TableFinanceBalanceApproveLog';
+export { default as TableFinanceBalanceLog } from './TableFinanceBalanceLog';
+export { default as TableFinanceBalanceMerchantLog } from './TableFinanceBalanceMerchantLog';
+export { default as TableFinanceApprove } from './TableFinanceApprove';
+export { default as TableGroupBuy } from './TableGroupBuy';
+export { default as TableGroupBuyDetail } from './TableGroupBuyDetail';
+export { default as TableGroupBuyMerchantDetail } from './TableGroupBuyMerchantDetail';

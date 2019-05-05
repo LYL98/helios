@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name=description content="">
+  <meta name=author content="">
+  <meta name=keywords content="">
+
+  <!--浏览器不缓存-->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
+
+  <meta name=viewport content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1">
+  <style type="text/css">
+    #root_bg {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      z-index: -99;
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background-position: center 0.88rem;
+    }
+  </style>
+  <script>
+    //修改title
+    window.documentTitle = function (str) {
+      document.title = str;
+    }
+  </script>
+</head>
+<body>
+<div id="root_bg"></div>
+<div id="app">
+  <div style="font-size: 16px;text-align:center;color:#999;margin-top:200px;">努力加载中...</div>
+</div>
+</body>
+
+<!--Sentry-->
+<!--<script src="https://cdn.jsdelivr.net/vue/2.0.0-rc/vue.min.js"></script>-->
+<!--<script src="https://cdn.ravenjs.com/3.26.2/vue/raven.min.js" crossorigin="anonymous"></script>-->
+<script>
+  // 服务器地址
+  /*var url = window.location.origin;
+  var isDev = url.indexOf('appledev.pgyscm.com') >= 0;//是否是测试环境
+  let isLocalhost = url.indexOf('localhost') >= 0 || url.indexOf('192.168') >= 0 || url.indexOf('127.0') >= 0 || url.indexOf('172.') >= 0; //是否是本地环境
+  if (isDev) {
+    var url = 'https://1dac6c138c26459aa200f3e35c59e215@mtrack.pgyscm.com/4';
+    Raven.config(url).install();
+  } else if (!isLocalhost && !isDev) {
+    var url = 'https://3dbbb30944264bd482a2481c9334eabd@mtrack.pgyscm.com/5';
+    Raven.config(url).install();
+  }*/
+</script>
+</html>
