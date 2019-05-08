@@ -8,17 +8,17 @@
       <div class="login-form">
         <el-form label-position="right" :model="loginData" :rules="rules" ref="ruleForm">
           <el-form-item label="" prop="login_name">
-            <el-input placeholder="请输入用户名" v-model="loginData.login_name">
+            <el-input placeholder="请输入用户名" v-model="loginData.login_name" id="txt-login-name" @keyup.enter.native="submitLogin">
               <i slot="prefix" class="el-input__icon el-icon-mobile-phone"></i>
             </el-input>
           </el-form-item>
           <el-form-item label="" prop="password">
-            <el-input placeholder="请输入密码" v-model="loginData.password" type="password">
+            <el-input placeholder="请输入密码" v-model="loginData.password" id="txt-password" type="password" @keyup.enter.native="submitLogin">
               <i slot="prefix" class="el-input__icon el-icon-edit"></i>
             </el-input>
           </el-form-item>
         </el-form>
-        <el-button type="primary" size="large" @click.native="submitLogin" class="btn-submit" :loading="loading.isShow">登录</el-button>
+        <el-button type="primary" size="large" @click.native="submitLogin" id="btn-submit" class="btn-submit" :loading="loading.isShow">登录</el-button>
       </div>
     </div>
     <div class="foot-div"></div>
@@ -78,10 +78,14 @@ export default {
     //提交登录
     submitLogin() {
       let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
+      that.$refs['ruleForm'].validate((valid, vs) => {
         if (valid) {
           let { loginData, isPad } = that;
           let isSuccess = false, si = null;
+          //防止错误时回车穿透
+          let dom = document.getElementById('btn-submit');
+          dom.focus();
+          
           that.loginSubmit({
             data: {
               login_name: loginData.login_name,
@@ -101,6 +105,12 @@ export default {
                 clearInterval(si);
               }
             }, 500);
+          }
+        }else{
+          if(vs.login_name){
+            document.getElementById('txt-login-name').focus();
+          }else if(vs.password){
+            document.getElementById('txt-password').focus();
           }
         }
       });

@@ -89,7 +89,7 @@
         </el-table-column>
         <el-table-column label="金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
-            {{ scope.row.amount_real > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_real) }}
+            {{ scope.row.amount_real > 0 ? '￥' : '' }}{{ scope.row.amount_real }}
           </template>
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="count_real" />
