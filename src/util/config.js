@@ -108,6 +108,7 @@ const Config = (() => {
       groupHeadStoreBindDetail: apiM + '/gb_activity/store/bind/detail', // 门店绑定的情况查询
       groupHeadAdd: apiM + '/gb_activity/header/add', // 新增团长
       groupHeadFreeze: apiM + '/gb_activity/header/freeze', // 冻结 解冻团长
+      groupStoreFreeze: apiM + '/gb_activity/store/freeze', // 团购门店 冻结/解冻
 
       // 团员
       groupMemberQuery: apiM + '/gb_activity/gb_member/query', // 团员列表

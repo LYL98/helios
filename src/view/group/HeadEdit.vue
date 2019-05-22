@@ -1,95 +1,77 @@
 <template>
-  <el-form
-    :model="editItem"
-    style="width: 580px;"
-    label-position="right"
-    label-width="120px"
-    ref="ruleForm"
-  >
-    <el-form-item
-      label="请选择门店"
-      prop="store_id"
-      :rules="[{ required: true, message: '请选择门店', trigger: 'change' }]"
-    >
-      <el-select
-        style="width: 100%"
-        clearable
-        v-model="editItem.store_id"
-        @change="handleStoreChange"
-        filterable
-        remote
-        :remote-method="queryChangeAsync"
-        no-match-text="没有找到符合搜索条件的门店"
-        no-data-text="没有找到符合搜索条件的门店"
-      >
-        <i style="margin-left: 5px;" slot="prefix" class="el-icon-search"></i>
-        <el-option
-          v-for="item in storeList"
-          :key="item.id"
-          :value="item.id"
-          :label="item.value"
-          :disabled="item.disabled"
-        ></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="门店名称">
-      <el-input :value="detail.title" disabled></el-input>
-    </el-form-item>
-    <el-form-item label="联系方式">
-      <el-input :value="detail.phone" disabled></el-input>
-    </el-form-item>
-    <el-form-item label="收货地址">
-      <el-input :value="detail.address" disabled></el-input>
-    </el-form-item>
-    <el-form-item
-      label="请选择团长"
-      v-if="detail.id"
-      prop="member_ids"
-      :rules="[{ type: 'array', required: true,  message: '请选择团长', trigger: 'change' }]"
-    >
-      <el-row v-for="(item, index) in selectMembers" :key="index" style="margin-bottom: 10px;">
-        <el-col :span="11">
-          <el-select style="width: 100%" :value="selectMembers[index].id" @change="(id)=>changeMember(id, index)">
+  <el-dialog title="新增团购门店" :visible.sync="isShow" width="680px" append-to-body :close-on-click-modal="false">
+      <el-form :model="editItem" v-if="isShow" style="width: 580px;" label-position="right" label-width="120px" ref="ruleForm">
+        <el-form-item label="请选择门店" prop="store_id" :rules="[{ required: true, message: '请选择门店', trigger: 'change' }]">
+          <el-select
+            style="width: 100%"
+            clearable
+            v-model="editItem.store_id"
+            @change="handleStoreChange"
+            filterable
+            remote
+            :remote-method="queryChangeAsync"
+            no-match-text="没有找到符合搜索条件的门店"
+            no-data-text="没有找到符合搜索条件的门店"
+          >
+            <i style="margin-left: 5px;" slot="prefix" class="el-icon-search"></i>
             <el-option
-              v-for="(m, i) in detail.members"
-              :key="m.id + '_' + i + '_' + index"
-              :value="m.id"
-              :label="m.realname_temp"
-              :disabled="m.is_header || m.is_freeze || m.is_freeze_header || m.is_select"
+              v-for="item in storeList"
+              :key="item.id"
+              :value="item.id"
+              :label="item.value"
+              :disabled="item.disabled"
             ></el-option>
           </el-select>
-        </el-col>
-        <el-col :span="1">&nbsp;</el-col>
-        <el-col :span="10">
-          <el-input :value="item.phone" disabled placeholder="登录手机"></el-input>
-        </el-col>
-        <el-col :span="2" class="t-r"><a v-if="index > 0" href="javascript:void(0);" @click="deleteMember(index)">删除</a></el-col>
-      </el-row>
-      <div class="rule-plus" @click="addMember" v-if="isShowAddMember()">
-        <i class="el-icon-circle-plus icon-button" style="margin-left: -5px;"></i>
-        <span>继续增加团长</span>
-      </div>
-    </el-form-item>
-    <el-form-item style="text-align: right;">
-      <el-button plain @click="handleClose">取消</el-button>
-      <el-button type="primary" :loading="loading" @click.prevent="handleSubmit">确认</el-button>
-    </el-form-item>
-  </el-form>
+        </el-form-item>
+        <el-form-item label="门店名称">
+          <el-input :value="detail.title" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="联系方式">
+          <el-input :value="detail.phone" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="收货地址">
+          <el-input :value="detail.address" disabled></el-input>
+        </el-form-item>
+        <el-form-item
+          label="请选择团长"
+          v-if="detail.id"
+          prop="member_ids"
+          :rules="[{ type: 'array', required: true,  message: '请选择团长', trigger: 'change' }]"
+        >
+          <el-row v-for="(item, index) in selectMembers" :key="index" style="margin-bottom: 10px;">
+            <el-col :span="11">
+              <el-select style="width: 100%" :value="selectMembers[index].id" @change="(id)=>changeMember(id, index)">
+                <el-option
+                  v-for="(m, i) in detail.members"
+                  :key="m.id + '_' + i + '_' + index"
+                  :value="m.id"
+                  :label="m.realname_temp"
+                  :disabled="m.is_header || m.is_freeze || m.is_freeze_header || m.is_select"
+                ></el-option>
+              </el-select>
+            </el-col>
+            <el-col :span="1">&nbsp;</el-col>
+            <el-col :span="10">
+              <el-input :value="item.phone" disabled placeholder="登录手机"></el-input>
+            </el-col>
+            <el-col :span="2" class="t-r"><a v-if="index > 0" href="javascript:void(0);" @click="deleteMember(index)">删除</a></el-col>
+          </el-row>
+          <div class="rule-plus" @click="addMember" v-if="isShowAddMember()">
+            <i class="el-icon-circle-plus icon-button" style="margin-left: -5px;"></i>
+            <span>继续增加团长</span>
+          </div>
+        </el-form-item>
+        <el-form-item style="text-align: right;">
+          <el-button plain @click="handleClose">取消</el-button>
+          <el-button type="primary" :loading="loading" @click.prevent="handleSubmit">确认</el-button>
+        </el-form-item>
+      </el-form>
+  </el-dialog>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import {
-  Form,
-  FormItem,
-  Row,
-  Col,
-  Button,
-  Input,
-  Autocomplete,
-  Select,
-  Option
-} from "element-ui";
+import { Form, FormItem, Row, Col, Button, Input, Autocomplete, Select, Option, Dialog } from "element-ui";
 import { Base, Group } from "@/service";
 
 export default {
@@ -103,11 +85,11 @@ export default {
     "el-input": Input,
     "el-autocomplete": Autocomplete,
     "el-select": Select,
-    "el-option": Option
+    "el-option": Option,
+    'el-dialog': Dialog
   },
   props: {
-    close: { type: Function, require: true },
-    refreshList: { type: Function, require: true }
+    getPageComponents: { type: Function, require: true }, //获取页面组件
   },
   computed: {
     ...mapGetters({
@@ -116,6 +98,7 @@ export default {
   },
   data() {
     return {
+      isShow: false,
       storeList: [],
       detail: {
         id: "",
@@ -138,6 +121,19 @@ export default {
   },
   created() {},
   methods: {
+    //显示新增及修改
+    showAddEdit(data){
+      if(data){
+        this.$data.dataItem = [data];
+      }else{
+        this.$data.dataItem = {};
+        this.$data.isShow = true;
+      }
+    },
+    //关闭
+    handleClose(){
+      this.$data.isShow = false;
+    },
     //用户状态
     setMembersStatus(detail){
       let mIds = [];
@@ -227,13 +223,13 @@ export default {
           // 去除已冻结 或 已绑定的门店
           if(item.is_freeze) {
             item.title = item.title + "(已冻结)";
-          }else if (!item.can_add_header) {
+          }else if (item.gb_included) {
             item.title = item.title + "(已绑定)";
           }
           return {
             id: item.id,
             value: item.title,
-            disabled: !item.can_add_header || item.is_freeze
+            disabled: item.gb_included || item.is_freeze
           };
         });
         this.$data.storeList = rd;

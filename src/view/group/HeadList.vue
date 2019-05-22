@@ -16,7 +16,7 @@
           </my-query-item>
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="团长状态">
+          <my-query-item label="问题状态">
             <my-button-group
               :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
               v-model="query.is_freeze_header"
@@ -32,7 +32,7 @@
                 class="query-item-input"
                 clearable
                 v-model="query.condition"
-                placeholder="门店、团长名称"
+                placeholder="门店名称"
                 @keyup.enter.native="changeQuery"
                 @clear="changeQuery"
                 ref="condition"
@@ -47,13 +47,7 @@
     </div>
 
     <div class="operate" v-if="auth.isAdmin || auth.GroupHeadAdd">
-      <el-button
-        size="mini"
-        type="primary"
-        @click="handleAddItem"
-      >
-        新增
-      </el-button>
+      <el-button size="mini" type="primary" @click="handleAddItem">新增</el-button>
     </div>
 
     <div @mousemove="handleTableMouseMove">
@@ -75,24 +69,17 @@
           label="序号"
           :index="indexMethod"
         />
-        <el-table-column label="团长名称" prop="realname" min-width="100">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.realname }}
-            </div>
-          </template>
-        </el-table-column>
         <el-table-column label="门店名称" min-width="100">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
-              {{ scope.row.store && scope.row.store.title }}
+              <a class="title" href="javascript:void(0);" @click="handleShowItemDetail(scope.row)">{{ scope.row.title }}</a>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="门店地址" prop="store_address" min-width="120">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
-              {{ scope.row.store && scope.row.store.address }}
+              {{ scope.row.address }}
             </div>
           </template>
         </el-table-column>
@@ -110,20 +97,6 @@
             </div>
           </template>
         </el-table-column>
-        <!--<el-table-column label="售出件数" prop="sale_num" min-width="80">-->
-          <!--<template slot-scope="scope">-->
-            <!--<div :class="isEllipsis(scope.row)">-->
-              <!--{{ scope.row.sale_num || '-' }}-->
-            <!--</div>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-        <!--<el-table-column label="参团人次" prop="person_time" min-width="80">-->
-          <!--<template slot-scope="scope">-->
-            <!--<div :class="isEllipsis(scope.row)">-->
-              <!--{{ scope.row.person_time || '-' }}-->
-            <!--</div>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
         <el-table-column label="状态" prop="is_freeze_header" min-width="80">
           <template slot-scope="scope">
             <el-tag disable-transitions size="small" :type="scope.row.is_freeze_header ? 'regular' : 'info'" style="width: 66px; text-align: center;"
@@ -137,14 +110,9 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '冻结',
-                  isDisplay: (auth.isAdmin || auth.GroupHeadFreeze) && !scope.row.is_freeze_header,
-                  command: () => freezeItem(scope.row.id)
-                },
-                {
-                  title: '解冻',
-                  isDisplay: (auth.isAdmin || auth.GroupHeadUnFreeze) && scope.row.is_freeze_header,
-                  command: () => unFreezeItem(scope.row.id)
+                  title: scope.row.is_freeze_header ? '解冻' : '冻结',
+                  isDisplay: (auth.isAdmin || auth.GroupStoreFreeze),
+                  command: () => groupStoreFreeze(scope.row, scope.$index)
                 }
               ]"
             />
@@ -184,7 +152,7 @@
   import { mapGetters } from 'vuex';
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate } from '@/common';
-  import { Constant } from '@/util';
+  import { Constant, Request, Config } from '@/util';
   import { Group } from "@/service";
   import { tableMixin } from '@/mixins';
 
@@ -206,7 +174,8 @@
     },
     mixins: [tableMixin],
     props: {
-      itemAdd: { type: Function, require: true }
+      itemAdd: { type: Function, require: true }, //新增
+      getPageComponents: { type: Function, require: true }, //获取页面组件
     },
     computed: {
       ...mapGetters({
@@ -261,7 +230,7 @@
       async headQuery() {
         let res = await Group.headQuery(this.$data.query);
         if (res.code === 0) {
-          console.log("当前行", this.$data.currentRow[this.$data.rowIdentifier]);
+          //console.log("当前行", this.$data.currentRow[this.$data.rowIdentifier]);
           this.$data.listItem = Object.assign(this.$data.listItem, {
             num: res.data.num,
             items: res.data.items
@@ -275,51 +244,65 @@
         return (this.query.page - 1) * this.query.page_size + index + 1;
       },
 
-      freezeItem(id) {
-        MessageBox.confirm('确认冻结该团长?', '提示', {
+      //冻结解冻门店
+      async groupStoreFreeze(data, index){
+        let str = data.is_freeze_header ? '解冻' : '冻结';
+        MessageBox.confirm(`确认${str}该门店?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Group.headFreeze({header_id: id});
-          if (res.code === 0) {
-            this.headQuery();
-            this.$store.dispatch('message', {title: '提示', message: '冻结成功', type: 'success'});
-          } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          let res = await Request.requestPost(Config.api.groupStoreFreeze, {
+            store_id: data.id,
+            is_freeze_header: !data.is_freeze_header
+          });
+          if(res.code === 0){
+            this.$store.dispatch('message', {
+              title: '提示',
+              message: `已${str}`,
+              type: 'success'
+            });
+            //更新页面数据
+            this.$data.listItem.items[index].is_freeze_header = !data.is_freeze_header;
+          }else{
+            this.$store.dispatch('message', {
+              title: '提示',
+              message: res.message,
+              type: 'error'
+            });
           }
         }).catch(() => {
           // console.log('取消');
         });
-
       },
 
-      async unFreezeItem(id) {
-        MessageBox.confirm('确认解冻该团长?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          let res = await Group.headUnFreeze({header_id: id});
-          if (res.code === 0) {
-            this.headQuery();
-            this.$store.dispatch('message', {title: '提示', message: '解冻成功', type: 'success'});
-          } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
-          }
-        }).catch(() => {
-          // console.log('取消');
-        });
-
-      },
-
+      //新增
       handleAddItem() {
-        this.$props.itemAdd();
+        let com = this.$props.getPageComponents('HeadEdit');
+        if(com){
+          com.showAddEdit();
+        }
       },
+
+      //显示详情
+      handleShowItemDetail(data){
+        let com = this.$props.getPageComponents('HeadDetail');
+        if(com){
+          com.showDetail(data);
+        }
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
+  .title {
+    color: inherit;
+    padding: 5px 10px 5px 0;
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover {
+      font-weight: 600;
+    }
+  }
 </style>

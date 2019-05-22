@@ -12,6 +12,10 @@ export default {
     data = {...data, is_freeze_header: false }
     return Request.requestPost(Config.api.groupHeadFreeze, data)
   },
+  //门店冻结解冻
+  storeFreeze(data){
+    return Request.requestPost(Config.api.groupStoreFreeze, data);
+  },
   headStoreDetail(data) {
     return Request.requestGet(Config.api.groupHeadStoreBindDetail, data)
   },

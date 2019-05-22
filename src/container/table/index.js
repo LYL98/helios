@@ -14,3 +14,5 @@ export { default as TableFinanceApprove } from './TableFinanceApprove';
 export { default as TableGroupBuy } from './TableGroupBuy';
 export { default as TableGroupBuyDetail } from './TableGroupBuyDetail';
 export { default as TableGroupBuyMerchantDetail } from './TableGroupBuyMerchantDetail';
+export { default as TableGroupHeadDetail } from './TableGroupHeadDetail';
+export { default as TableGroupHeadDetailList } from './TableGroupHeadDetailList';
