@@ -1,6 +1,6 @@
 <template>
   <div>
-    <head-list :getPageComponents="getPageComponents" :item-add="handleItemAdd" ref="HeadList"></head-list>
+    <head-list :getPageComponents="getPageComponents" ref="HeadList"></head-list>
     <!--详情-->
     <head-detail :getPageComponents="getPageComponents" ref="HeadDetail"></head-detail>
     <!--新增-->
@@ -18,17 +18,10 @@
     components: {
       'head-list': HeadList,
       'head-edit': HeadEdit,
-      'head-detail': HeadDetail,
-      'el-dialog': Dialog
+      'head-detail': HeadDetail
     },
     data() {
       return {
-        componentName: 'Head',
-        dialog: {
-          isShowItemAdd: false,
-          isShowItemDetail: false,
-          itemDetailData: {}
-        }
       }
     },
     created() {
@@ -50,14 +43,6 @@
         }
         fun(this.$refs);
         return com;
-      },
-      //显示、隐藏新增
-      handleItemAdd() {
-        this.$data.dialog.isShowItemAdd = !this.isShowItemAdd;
-      },
-      //新增后更新
-      handleRefreshList() {
-        this.$refs['HeadList'] && this.$refs['HeadList'].headQuery();
       },
     }
   }

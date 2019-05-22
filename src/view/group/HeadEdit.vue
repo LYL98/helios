@@ -1,7 +1,7 @@
 <template>
-  <el-dialog title="新增团购门店" :visible.sync="isShow" width="680px" append-to-body :close-on-click-modal="false">
+  <el-dialog :title="showType === 'add' ? '新增团购门店' : '新增团长'" :visible.sync="isShow" width="680px" append-to-body :close-on-click-modal="false">
       <el-form :model="editItem" v-if="isShow" style="width: 580px;" label-position="right" label-width="120px" ref="ruleForm">
-        <el-form-item label="请选择门店" prop="store_id" :rules="[{ required: true, message: '请选择门店', trigger: 'change' }]">
+        <el-form-item v-if="showType === 'add'" label="请选择门店" prop="store_id" :rules="[{ required: true, message: '请选择门店', trigger: 'change' }]">
           <el-select
             style="width: 100%"
             clearable
@@ -98,14 +98,10 @@ export default {
   },
   data() {
     return {
+      showType: 'add',
       isShow: false,
       storeList: [],
       detail: {
-        id: "",
-        linkman: "",
-        phone: "",
-        title: "",
-        address: "",
         members: []
       },
       selectMembers: [{
@@ -113,7 +109,7 @@ export default {
         phone: ''
       }],
       editItem: {
-        store_id: "",
+        store_id: '',
         member_ids: []
       },
       loading: false
@@ -121,14 +117,21 @@ export default {
   },
   created() {},
   methods: {
+    //初始化数据
+    initData(){
+      Object.assign(this.$data, this.$options.data());
+    },
     //显示新增及修改
     showAddEdit(data){
+      this.initData();
       if(data){
-        this.$data.dataItem = [data];
-      }else{
-        this.$data.dataItem = {};
+        let rd = this.setMembersStatus(data);
+        this.$data.detail = rd;
+        this.$data.editItem.store_id = data.id;
+        this.$data.showType = 'edit';
         this.$data.isShow = true;
       }
+      this.$data.isShow = true;
     },
     //关闭
     handleClose(){
@@ -276,11 +279,23 @@ export default {
             this.$data.loading = false;
             this.$store.dispatch("message", {
               title: "提示",
-              message: "新增团长成功",
+              message: "团长新增成功",
               type: "success"
             });
-            this.$props.refreshList();
-            this.$props.close();
+            if(this.showType === 'add'){
+              //新增
+              let com = this.getPageComponents('HeadList');
+              if(com){
+                com.changeQuery(); //重新获取列表数据
+              }
+            }else{
+              //修改
+              let com = this.getPageComponents('HeadDetail');
+              if(com){
+                com.groupHeadStoreBindDetail(); //重新获取详情
+              }
+            }
+            this.handleClose(); //关闭
           } else {
             this.$data.loading = false;
             this.$store.dispatch("message", {
@@ -292,10 +307,6 @@ export default {
         }
       });
     },
-    //取消提交数据
-    handleClose() {
-      this.$props.close();
-    }
   }
 };
 </script>

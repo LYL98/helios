@@ -4,10 +4,10 @@
     <div class="title">
       <div class="left">团长管理</div>
       <div class="right">
-        <el-button>新增团长</el-button>
+        <el-button size="mini" type="primary" @click.native="handleAddItem">新增团长</el-button>
       </div>
     </div>
-    <table-group-head-detail-list :getPageComponents="getPageComponents" :dataItem="groupDetail.members" v-if="isShow" ref="TableGroupHeadDetailList" />
+    <table-group-head-detail-list :getPageComponents="getPageComponents" :dataItem="groupDetail.members2" v-if="isShow" ref="TableGroupHeadDetailList" />
   </el-dialog>
 </template>
 
@@ -40,7 +40,8 @@ export default {
       isShow: false,
       dataItem: [],
       groupDetail: {
-        members: []
+        members: [],
+        members2: []
       }
     };
   },
@@ -62,7 +63,7 @@ export default {
         let ms = rd.members.filter(item => item.store_id === dataItem[0].id);
         this.$data.groupDetail = {
           ...rd,
-          members: ms
+          members2: ms
         };
         this.$data.isShow = true;
       }else{
@@ -74,7 +75,14 @@ export default {
       }
       this.$store.dispatch('loading', {isShow: false});
     },
-  }
+    //新增
+    handleAddItem() {
+      let com = this.$props.getPageComponents('HeadEdit');
+      if(com){
+        com.showAddEdit(this.groupDetail);
+      }
+    },
+  },
 };
 </script>
 
