@@ -152,7 +152,7 @@
   import { mapGetters } from 'vuex';
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate } from '@/common';
-  import { Constant, Request, Config } from '@/util';
+  import { Constant, Http, Config } from '@/util';
   import { Group } from "@/service";
   import { tableMixin } from '@/mixins';
 
@@ -252,7 +252,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Request.requestPost(Config.api.groupStoreFreeze, {
+          let res = await Http.post(Config.api.groupStoreFreeze, {
             store_id: data.id,
             is_freeze_header: !data.is_freeze_header
           });

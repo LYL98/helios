@@ -54,6 +54,11 @@
                 title: '重置密码',
                 isDisplay: auth.isAdmin || auth.MerchantMemberUpdatePassword,
                 command: () => showPassword(scope.row)
+              },
+              {
+                title: '解除微信绑定',
+                isDisplay: (auth.isAdmin || auth.MerchantMemberUnBindWechat) && scope.row.wechat_openid,
+                command: () => memberUnBindWechat(scope.row)
               }
             ]"
             />
@@ -86,7 +91,7 @@
   import {mapGetters} from 'vuex';
   import {Table, TableColumn, Tag, Form, FormItem, Message, MessageBox, Button, Dialog, Input, Pagination} from "element-ui";
   import {TableOperate} from '@/common';
-  import {Config, Constant, DataHandle, Method} from '@/util';
+  import {Config, Constant, DataHandle, Method, Http} from '@/util';
   import {Merchant} from '@/service';
   import md5 from 'md5';
   import MemberAddEdit from './MemberAddEdit';
@@ -170,6 +175,34 @@
           Message.warning(res.message);
         }
       },
+      //解除微信绑定
+      memberUnBindWechat(data){
+        MessageBox.confirm('确认解除微信绑定?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          let res = await Http.post(Config.api.memberUnBindWechat, {
+            id: data.id
+          });
+          if(res.code === 0){
+            this.$store.dispatch('message', {
+              title: '提示',
+              message: '已解除绑定',
+              type: 'success'
+            });
+            this.memberList(); //重新取数据
+          }else{
+            this.$store.dispatch('message', {
+              title: '提示',
+              message: res.message,
+              type: 'error'
+            });
+          }
+        }).catch(() => {
+          // console.log('取消');
+        });
+      },
       //确认冻结
       affirmMemberFreeze(data) {
 
@@ -178,8 +211,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let that = this;
-          that.memberFreeze(data);
+          this.memberFreeze(data);
         }).catch(() => {
           // console.log('取消');
         });
@@ -187,12 +219,11 @@
       },
       //冻结
       async memberFreeze(data) {
-        let that = this;
         let res = await Merchant.memberFreeze({
           id: data.id
         });
         if (res.code === 0) {
-          that.memberList();
+          this.memberList();
           Message.success('用户已被冻结！');
         } else {
           Message.warning(res.message);
@@ -276,7 +307,6 @@
         window.scrollTo(0, 0);
         this.$data.query.page = page;
         this.memberList();
-
       },
     }
   };

@@ -40,7 +40,7 @@
   import { mapGetters, mapActions } from 'vuex';
   import { Table, TableColumn, MessageBox, Tag } from 'element-ui';
   import { TableOperate } from '@/common';
-  import { Config, Request } from '@/util';
+  import { Config, Http } from '@/util';
   import { tableMixin } from '@/mixins';
 
   export default {
@@ -75,7 +75,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Request.requestPost(Config.api.groupHeadFreeze, {
+          let res = await Http.post(Config.api.groupHeadFreeze, {
             header_id: data.id,
             is_freeze_header: !data.is_freeze_header
           });

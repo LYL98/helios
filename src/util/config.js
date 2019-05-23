@@ -238,6 +238,7 @@ const Config = (() => {
       memberPasswordReset: apiM + '/member/password_reset', //重置密码
       memberFreeze: apiM + '/member/freeze', //冻结用户账号
       memberUnFreeze: apiM + '/member/unfreeze', //解冻用户账号
+      memberUnBindWechat: apiM + '/member/unbind_wechat', //解除微信绑定
 
       // 采购管理
       purchaseSupplierQuery: apiM + '/supplier/query', // 供应商查询

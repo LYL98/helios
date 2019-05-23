@@ -33,7 +33,7 @@ function logout() {
  * @param data
  * @returns {Promise.<Response>}
  */
-function requestGet(api, data) {
+function get(api, data) {
     let url = api + '?time=' + new Date().getTime();
 
     for (let item in data) {
@@ -62,7 +62,7 @@ function requestGet(api, data) {
  * @param data
  * @returns {Promise.<Response>}
  */
-function requestPost(api, data) {
+function post(api, data) {
     let url = api + '?time=' + new Date().getTime();
 
     beforesendHandling(url, data);//处理发送前事件
@@ -95,7 +95,7 @@ function requestPost(api, data) {
  * @param data
  * @returns {Promise.<Response>}
  */
-function requestPut(api, data) {
+function put(api, data) {
     beforesendHandling(api, data);//处理发送前事件
     return new Promise((resolve, reject) => {
         var xhr = new XMLHttpRequest();
@@ -125,7 +125,7 @@ function requestPut(api, data) {
  * @param data
  * @returns {Promise.<Response>}
  */
-function requestGetUrlData(api, data) {
+function getUrlData(api, data) {
     let url = api;
 
     for (let item in data) {
@@ -152,4 +152,4 @@ function requestGetUrlData(api, data) {
 
 }
 
-export default { requestGet, requestPost, requestPut, requestGetUrlData };
+export default { get, post, put, getUrlData };

@@ -16,7 +16,7 @@ import { mapGetters } from "vuex";
 import { Dialog, Button} from "element-ui";
 import { Base, Group } from "@/service";
 import { TableGroupHeadDetail, TableGroupHeadDetailList } from '@/container';
-import { Request, Config } from '@/util';
+import { Http, Config } from '@/util';
 
 export default {
   name: "HeadDetail",
@@ -55,7 +55,7 @@ export default {
     async groupHeadStoreBindDetail() {
       let { dataItem } = this;
       this.$store.dispatch('loading', {isShow: true, isWhole: true});
-      let res = await Request.requestGet(Config.api.groupHeadStoreBindDetail, {
+      let res = await Http.get(Config.api.groupHeadStoreBindDetail, {
         store_id: dataItem[0].id
       });
       if(res.code === 0){

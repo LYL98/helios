@@ -54,7 +54,7 @@
   import { mapGetters, mapActions } from 'vuex';
   import { Table, TableColumn, MessageBox, Tag } from 'element-ui';
   import { TableOperate } from '@/common';
-  import { Config, DataHandle, Request } from '@/util';
+  import { Config, DataHandle, Http } from '@/util';
   import { tableMixin } from '@/mixins';
 
   export default {
@@ -88,7 +88,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Request.requestPost(Config.api.groupStoreFreeze, {
+          let res = await Http.post(Config.api.groupStoreFreeze, {
             store_id: data.id,
             is_freeze_header: !data.is_freeze_header
           });
