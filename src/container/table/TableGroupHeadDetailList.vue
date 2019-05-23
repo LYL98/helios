@@ -88,7 +88,7 @@
             //更新父组件页面数据
             let com = this.$props.getPageComponents('HeadDetail');
             if(com && com.groupDetail && com.groupDetail.members && com.groupDetail.members.length > index){
-              com.$data.groupDetail.members[index].is_freeze_header = !data.is_freeze_header;
+              com.$data.groupDetail.members2[index].is_freeze_header = !data.is_freeze_header;
             }
           }else{
             this.$store.dispatch('message', {
