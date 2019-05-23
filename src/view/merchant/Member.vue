@@ -57,7 +57,7 @@
               },
               {
                 title: '解除微信绑定',
-                isDisplay: (auth.isAdmin || auth.MerchantMemberUnBindWechat) && scope.row.wechat_openid,
+                isDisplay: (auth.isAdmin || auth.MerchantMemberUnBindWechat) && scope.row.weapp_openid,
                 command: () => memberUnBindWechat(scope.row)
               }
             ]"
