@@ -12,17 +12,24 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="联系方式" prop="phone" min-width="100">
+      <el-table-column label="联系方式" prop="phone" min-width="80">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
             {{ scope.row.phone }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="所在仓" prop="city_title" min-width="100">
+      <el-table-column label="所在仓" prop="city_title" min-width="80">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
             {{ scope.row.city_title }}
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" prop="created" min-width="100">
+        <template slot-scope="scope">
+          <div :class="isEllipsis(scope.row)">
+            {{ scope.row.created }}
           </div>
         </template>
       </el-table-column>
@@ -32,7 +39,7 @@
           >{{ scope.row.is_freeze_header ? '已冻结' : '未冻结' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="60">
         <template slot-scope="scope">
           <my-table-operate
             @command-click="handleCommandClick(scope.row)"

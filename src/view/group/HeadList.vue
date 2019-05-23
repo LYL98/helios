@@ -16,7 +16,7 @@
           </my-query-item>
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="问题状态">
+          <my-query-item label="门店状态">
             <my-button-group
               :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
               v-model="query.is_freeze_header"
