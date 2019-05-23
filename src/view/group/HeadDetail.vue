@@ -4,7 +4,7 @@
     <div class="title">
       <div class="left">团长管理</div>
       <div class="right">
-        <el-button size="mini" type="primary" @click.native="handleAddItem">新增团长</el-button>
+        <el-button size="mini" type="primary" @click.native="handleAddItem" v-if="auth.isAdmin || auth.GroupHeadAdd">新增团长</el-button>
       </div>
     </div>
     <table-group-head-detail-list :getPageComponents="getPageComponents" :dataItem="groupDetail.members2" v-if="isShow" ref="TableGroupHeadDetailList" />
@@ -31,6 +31,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      auth: 'globalAuth',
       province: "globalProvince"
     })
   },

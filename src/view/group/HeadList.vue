@@ -46,7 +46,7 @@
       </el-row>
     </div>
 
-    <div class="operate" v-if="auth.isAdmin || auth.GroupHeadAdd">
+    <div class="operate" v-if="auth.isAdmin || auth.GroupStoreAdd">
       <el-button size="mini" type="primary" @click="handleAddItem">新增</el-button>
     </div>
 
@@ -196,7 +196,7 @@
     },
     created() {
       this.initQuery();
-      if (this.auth.isAdmin || this.auth.GroupHeadAdd) {
+      if (this.auth.isAdmin || this.auth.GroupStoreAdd) {
         this.$data.offsetHeight = this.$data.offsetHeight + Constant.OFFSET_OPERATE;
       }
     },

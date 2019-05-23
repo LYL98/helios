@@ -26,7 +26,7 @@
             :list="[
               {
                 title: scope.row.is_freeze_header ? '解冻' : '冻结',
-                isDisplay: (auth.isAdmin || auth.GroupStoreFreeze),
+                isDisplay: (auth.isAdmin || auth.GroupHeadFreeze),
                 command: () => groupHeadFreeze(scope.row, scope.$index)
               }
             ]"
