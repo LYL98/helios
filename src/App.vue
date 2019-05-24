@@ -98,7 +98,7 @@
                 <el-menu-item index="GroupBuyQuery" :route="{name: 'GroupBuyQuery'}"
                               v-if="auth.isAdmin || auth.GroupBuyQuery"><span>商品列表</span></el-menu-item>
                 <el-menu-item index="GroupHeadQuery" :route="{name: 'GroupHeadQuery'}"
-                              v-if="auth.isAdmin || auth.GroupHeadQuery"><span>团长列表</span></el-menu-item>
+                              v-if="auth.isAdmin || auth.GroupHeadQuery"><span>团购门店</span></el-menu-item>
                 <el-menu-item index="GroupMemberQuery" :route="{name: 'GroupMemberQuery'}"
                               v-if="auth.isAdmin || auth.GroupMemberQuery"><span>团员列表</span></el-menu-item>
                 <el-menu-item index="GroupOrderQuery" :route="{name: 'GroupOrderQuery'}"

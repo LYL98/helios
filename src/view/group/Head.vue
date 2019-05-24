@@ -1,18 +1,10 @@
 <template>
   <div>
-    <head-list
-      :item-add="handleItemAdd"
-      ref="headList"
-    ></head-list>
-    <el-dialog
-      title="新增团长"
-      :visible.sync="dialog.isShowItemAdd"
-      width="680px"
-      append-to-body
-      :close-on-click-modal="false"
-    >
-      <head-edit v-if="dialog.isShowItemAdd" :close="handleClose" :refreshList="handleRefreshList"></head-edit>
-    </el-dialog>
+    <head-list :getPageComponents="getPageComponents" ref="HeadList"></head-list>
+    <!--详情-->
+    <head-detail :getPageComponents="getPageComponents" ref="HeadDetail"></head-detail>
+    <!--新增-->
+    <head-edit :getPageComponents="getPageComponents" ref="HeadEdit"></head-edit>
   </div>
 </template>
 
@@ -20,32 +12,37 @@
   import { Dialog } from 'element-ui';
   import HeadList from './HeadList';
   import HeadEdit from './HeadEdit';
+  import HeadDetail from './HeadDetail';
   export default {
     name: "Head",
     components: {
       'head-list': HeadList,
       'head-edit': HeadEdit,
-      'el-dialog': Dialog
+      'head-detail': HeadDetail
     },
     data() {
       return {
-        dialog: {
-          isShowItemAdd: false
-        }
       }
     },
     created() {
       documentTitle('团购 - 团长列表');
     },
     methods: {
-      handleItemAdd() {
-        this.$data.dialog.isShowItemAdd = true;
-      },
-      handleClose() {
-        this.$data.dialog.isShowItemAdd = false;
-      },
-      handleRefreshList() {
-        this.$refs['headList'] && this.$refs['headList'].headQuery();
+      //获取当前页面的组件
+      getPageComponents(name){
+        let com = null;
+        const fun = (refs)=>{
+          for(let item in refs){
+            if(item === name){
+              com = refs[name];
+            }
+            if(refs[item] && refs[item].$refs){
+              fun(refs[item].$refs);
+            }
+          }
+        }
+        fun(this.$refs);
+        return com;
       },
     }
   }

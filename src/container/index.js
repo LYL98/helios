@@ -59,7 +59,9 @@ export {
   TableFinanceApprove,
   TableGroupBuy,
   TableGroupBuyDetail,
-  TableGroupBuyMerchantDetail
+  TableGroupBuyMerchantDetail,
+  TableGroupHeadDetail,
+  TableGroupHeadDetailList
 } from './table';
 
 // 表单

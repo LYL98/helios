@@ -1,30 +1,30 @@
-import { Config, Request } from '@/util';
+import { Config, Http } from '@/util';
 
 export default {
   balanceQuery(data) {
-    return Request.requestGet(Config.api.financeBalanceQuery, data);
+    return Http.get(Config.api.financeBalanceQuery, data);
   },
   balanceEdit(data) {
-    return Request.requestPost(Config.api.financeBalanceEdit, data);
+    return Http.post(Config.api.financeBalanceEdit, data);
   },
   balanceLogQuery(data) {
-    return Request.requestGet(Config.api.financeBalanceLogQuery, data);
+    return Http.get(Config.api.financeBalanceLogQuery, data);
   },
   balanceExport(data) {
-    return Request.requestGet(Config.api.financeBalanceExport, data);
+    return Http.get(Config.api.financeBalanceExport, data);
   },
   balanceMerchantLogExport(data) {
-    return Request.requestGet(Config.api.financeBalanceMerchantLogExport, data);
+    return Http.get(Config.api.financeBalanceMerchantLogExport, data);
   },
 
   approveQuery(data) {
-    return Request.requestGet(Config.api.financeApproveQuery, data);
+    return Http.get(Config.api.financeApproveQuery, data);
   },
   approveEdit(data) {
-    return Request.requestPost(Config.api.financeApproveEdit, data);
+    return Http.post(Config.api.financeApproveEdit, data);
   },
   approveDetail(data) {
-    return Request.requestGet(Config.api.financeApproveDetail, data);
+    return Http.get(Config.api.financeApproveDetail, data);
   },
 
 }

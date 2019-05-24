@@ -38,7 +38,7 @@
               <div>{{scope.row.item_code}} / {{scope.row.item_title}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="规格" width="200">
+          <el-table-column label="商品参数" width="200">
             <template slot-scope="scope">
               <ul class="item-attrs">
                 <li v-for="(item, index) in scope.row.item_attrs" :key="index">
