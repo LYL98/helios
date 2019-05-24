@@ -42,13 +42,13 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="order_num"
+          prop="activity_num"
           label="参团次数"
           sortable="custom"
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.order_num) }}</span>
+            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.activity_num) }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -60,6 +60,18 @@
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               <span>{{formatValue(scope.row.sale_num)}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="order_num"
+          label="订单数量"
+          sortable="custom"
+          align="left"
+          min-width="80">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              <span>{{formatValue(scope.row.order_num)}}</span>
             </div>
           </template>
         </el-table-column>
@@ -112,7 +124,7 @@ export default {
       maxLabelWidth: 160,
       offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
       /*condition: 微信昵称或收货人姓名
-        sort: 排序字段指定 参团次数(order_num)/购买件数(sale_num)/消费金额(pay_amount)
+        sort: 排序字段指定 参团次数(activity_num)/购买件数(sale_num)/消费金额(pay_amount)
         page:
         page_size:*/
       query: {
@@ -218,6 +230,15 @@ export default {
 
     onSort({ column, prop, order }) {
       switch (prop) {
+        case 'activity_num':
+          if (order === 'ascending') {
+            this.query.sort = 'activity_num'
+          } else if (order === 'descending') {
+            this.query.sort = '-activity_num'
+          } else {
+            this.query.sort = ''
+          }
+          break;
         case 'order_num':
           if (order === 'ascending') {
             this.query.sort = 'order_num'

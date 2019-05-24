@@ -124,8 +124,6 @@
         resetBeginDate: '',
         resetEndDate: '',
         backupSort: '',
-        // resetGroupStatus: this.$props.groupStatus,
-        // isGroup: this.$props.groupStatus,
         fixDateOptions: Constant.FIX_DATE_RANGE,
       }
     },
@@ -137,8 +135,7 @@
     props: {
       // 查询对象
       query: {type: Object, required: true},
-      reset: {type: Function, required: true},
-      groupStatus: {type: Number, required: true}
+      reset: {type: Function, required: true}
     },
     model: {
       prop: 'query',
@@ -189,9 +186,6 @@
       changeQuery() {
         //触发change事件
         this.editQuery = Object.assign({}, this.editQuery);
-      },
-      changeGroupStatus() {
-        this.$emit('changeGroupStatus', this.isGroup)
       },
       resetQuery() {
         //重置日期

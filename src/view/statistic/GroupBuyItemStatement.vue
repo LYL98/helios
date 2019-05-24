@@ -63,6 +63,18 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="order_num"
+          label="订单数量"
+          sortable="custom"
+          align="left"
+          min-width="80">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              <span>{{formatValue(scope.row.order_num)}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="pay_amount"
           label="下单金额"
           sortable="custom"
@@ -231,6 +243,15 @@ page_size:*/
 
     onSort({ column, prop, order }) {
       switch (prop) {
+        case 'order_num':
+          if (order === 'ascending') {
+            this.query.sort = 'order_num'
+          } else if (order === 'descending') {
+            this.query.sort = '-order_num'
+          } else {
+            this.query.sort = ''
+          }
+          break;
         case 'member_num':
           if (order === 'ascending') {
             this.query.sort = 'member_num'

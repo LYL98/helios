@@ -1122,6 +1122,14 @@
     color: #ff5252;
   }
 
+  .color-red {
+    color: #ff3724;
+  }
+
+  .color-green {
+    color: #00d600;
+  }
+
   //共用右边选择菜单
   .right-select-item-body {
     position: fixed;

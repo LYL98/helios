@@ -100,7 +100,7 @@
           label="序号"
           :index="indexMethod"
         />
-        <!-- 县域、金额、订单量、件数、占比、操作 -->
+        <!-- 县域、订单金额、订单量、件数、占比、操作 -->
         <el-table-column label="编号/商品" prop="store_title">
           <template slot-scope="scope">
             <span :class="isEllipsis(scope.row)">{{scope.row.item_code + '/' + scope.row.item_title}}</span>
@@ -111,14 +111,41 @@
             <span :class="isEllipsis(scope.row)">{{scope.row.count_real}}件</span>
           </template>
         </el-table-column>
-        <el-table-column
+        <!--<el-table-column
           prop="amount_real"
-          label="金额"
+          label="订单金额"
           align="left"
           sortable="custom"
           min-width="180">
           <template slot-scope="scope">
             <span :class="isEllipsis(scope.row)">&yen;{{scope.row.amount_real}}</span>
+          </template>
+        </el-table-column>-->
+        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
+          <template slot-scope="scope">
+            {{ scope.row.item_total_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.item_total_price) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="运费金额" sortable="custom" prop="amount_delivery">
+          <template slot-scope="scope">
+            {{ scope.row.amount_delivery > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_delivery) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
+          <template slot-scope="scope">
+            {{ scope.row.bonus_promotion > 0 ? '￥' : '' }}{{ returnPrice(scope.row.bonus_promotion) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="称重金额" sortable="custom" prop="check_chg">
+          <template slot-scope="scope">
+            <span v-if="scope.row.check_chg === 0">0</span>
+            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
+            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="订单实付金额" sortable="custom" prop="amount_pay">
+          <template slot-scope="scope">
+            {{ scope.row.amount_pay > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_pay) }}
           </template>
         </el-table-column>
       </el-table>
@@ -305,6 +332,42 @@
       },
       onSort({ column, prop, order }) {
         switch (prop) {
+          case 'item_total_price':
+            if (order === 'ascending') {
+              this.query.sort = 'item_total_price'
+            } else if (order === 'descending') {
+              this.query.sort = '-item_total_price'
+            } else {
+              this.query.sort = ''
+            }
+            break;
+          case 'amount_delivery':
+            if (order === 'ascending') {
+              this.query.sort = 'amount_delivery'
+            } else if (order === 'descending') {
+              this.query.sort = '-amount_delivery'
+            } else {
+              this.query.sort = ''
+            }
+            break;
+          case 'bonus_promotion':
+            if (order === 'ascending') {
+              this.query.sort = 'bonus_promotion'
+            } else if (order === 'descending') {
+              this.query.sort = '-bonus_promotion'
+            } else {
+              this.query.sort = ''
+            }
+            break;
+          case 'check_chg':
+            if (order === 'ascending') {
+              this.query.sort = 'check_chg'
+            } else if (order === 'descending') {
+              this.query.sort = '-check_chg'
+            } else {
+              this.query.sort = ''
+            }
+            break;
           case 'count_real':
             if (order === 'ascending') {
               this.query.sort = 'count_real'
