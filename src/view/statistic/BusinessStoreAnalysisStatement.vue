@@ -43,6 +43,11 @@
             <span :class="isEllipsis(scope.row)">{{ formatRate(scope.row.repeat_rate) }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="aftersale_rate" label="退赔率" min-width="100" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ formatRate(scope.row.aftersale_rate) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="cust_price" label="客单价" min-width="100" align="left" sortable="custom">
           <template slot-scope="scope">
             <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.cust_price) }}</span>
@@ -230,6 +235,15 @@ export default {
             this.query.sort = 'repeat_rate'
           } else if (order === 'descending') {
             this.query.sort = '-repeat_rate'
+          } else {
+            this.query.sort = ''
+          }
+          break;
+        case 'aftersale_rate':
+          if (order === 'ascending') {
+            this.query.sort = 'aftersale_rate'
+          } else if (order === 'descending') {
+            this.query.sort = '-aftersale_rate'
           } else {
             this.query.sort = ''
           }

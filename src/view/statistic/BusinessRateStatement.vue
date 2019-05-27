@@ -62,6 +62,16 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="aftersale_rate"
+          label="退赔率"
+          align="left"
+          sortable="custom"
+          min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{formatRate(scope.row.aftersale_rate)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
             prop="cust_price"
             label="平均客单价"
             align="left"
@@ -96,6 +106,15 @@
           min-width="100">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">{{formatValue(scope.row.store_num_ord)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="new_store_num"
+          label="新增门店数"
+          align="left"
+          min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{formatValue(scope.row.new_store_num)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -262,6 +281,15 @@ export default {
             this.query.sort = 'convert_rate'
           } else if (order === 'descending') {
             this.query.sort = '-convert_rate'
+          } else {
+            this.query.sort = ''
+          }
+          break;
+        case 'aftersale_rate':
+          if (order === 'ascending') {
+            this.query.sort = 'aftersale_rate'
+          } else if (order === 'descending') {
+            this.query.sort = '-aftersale_rate'
           } else {
             this.query.sort = ''
           }

@@ -152,7 +152,7 @@
         dataItem: [],
         selectArea: 'zone',
         selectItemName: '',
-        zoomRate: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        zoomRate: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         lineColors: [
           '#E3D557',   //1
           '#8BC867',   //2
@@ -174,6 +174,7 @@
         - check_chg: 称重金额
         - amount_pay: 订单实付金额
          order_num: 订单数量
+         price_per_order: 客单价
          store_num: 下单门店数
          total_delivery_item_price: 发货金额
          * */
@@ -184,6 +185,7 @@
           '称重金额',
           '订单实付金额',
           '发货金额',
+          '客单价',
           '下单门店数',
           '订单数量',
           '下单件数',
@@ -410,30 +412,30 @@
             {
               name:'下单门店数',
               type:'line',
-              itemStyle: {normal: {color: lineColors[6], lineStyle: {color: lineColors[6]}}},
-              smooth: true,
-              data: this.lineData(6, xDates)
-            },
-            {
-              name:'订单数量',
-              type:'line',
               itemStyle: {normal: {color: lineColors[7], lineStyle: {color: lineColors[7]}}},
               smooth: true,
               data: this.lineData(7, xDates)
             },
             {
-              name:'下单件数',
+              name:'订单数量',
               type:'line',
               itemStyle: {normal: {color: lineColors[8], lineStyle: {color: lineColors[8]}}},
               smooth: true,
               data: this.lineData(8, xDates)
             },
             {
-              name:'下单商品数',
+              name:'下单件数',
               type:'line',
               itemStyle: {normal: {color: lineColors[9], lineStyle: {color: lineColors[9]}}},
               smooth: true,
               data: this.lineData(9, xDates)
+            },
+            {
+              name:'下单商品数',
+              type:'line',
+              itemStyle: {normal: {color: lineColors[10], lineStyle: {color: lineColors[10]}}},
+              smooth: true,
+              data: this.lineData(10, xDates)
             }
           ]
         };
@@ -455,7 +457,6 @@
           let priceMaxValues = Array();
           let type1MaxValues = Array();
           let type2MaxValues = Array();
-          let type3MaxValues = Array();
           for (let i = 0; i < dataItem.length; i++) {
             let item = dataItem[i];
             let length = item.cells.length;
@@ -472,13 +473,13 @@
                 //价格
                 priceMaxValues.push(maxCellValue);
                 break;
-              case 6:
-              case 9:
+              case 7:
+              case 10:
                 type1MaxValues.push(maxCellValue);
                 break;
               case 2:
-              case 7:
               case 8:
+              case 9:
                 type2MaxValues.push(maxCellValue);
                 break;
               default:
@@ -492,16 +493,16 @@
           //销售量放大比例
           if (priceMaxValue !== 0 && priceMaxValue / type1MaxValue > zoomThreshold) {
             let zoom = parseInt(priceMaxValue / type1MaxValue - 1);
-            zoomRate[6] = zoom;
-            zoomRate[9] = zoom;
+            zoomRate[7] = zoom;
+            zoomRate[10] = zoom;
           }
 
           //采购价、销售价、优惠价放大比例
           if (priceMaxValue !== 0 && priceMaxValue / type2MaxValue > zoomThreshold) {
             let zoom = parseInt(priceMaxValue / type2MaxValue - 1);
             zoomRate[2] = zoom;
-            zoomRate[7] = zoom;
             zoomRate[8] = zoom;
+            zoomRate[9] = zoom;
           }
         }
       },
@@ -521,14 +522,16 @@
             return zoomRate[4];
           case '发货金额':
             return zoomRate[5];
-          case '下单门店数':
+          case '客单价':
             return zoomRate[6];
-          case '订单数量':
+          case '下单门店数':
             return zoomRate[7];
-          case '下单件数':  //下单件数
+          case '订单数量':
             return zoomRate[8];
-          case '下单商品数':  //下单商品数
+          case '下单件数':  //下单件数
             return zoomRate[9];
+          case '下单商品数':  //下单商品数
+            return zoomRate[10];
         }
       },
       /**
@@ -578,11 +581,12 @@
           case 3:
           case 4:
           case 5:
-            return DataHandle.returnPrice(value);
           case 6:
+            return DataHandle.returnPrice(value);
           case 7:
           case 8:
           case 9:
+          case 10:
             return value;
           default:
             return 0;
@@ -597,11 +601,12 @@
           case 3:
           case 4:
           case 5:
-            return this.returnPrice(value);
           case 6:
+            return this.returnPrice(value);
           case 7:
           case 8:
           case 9:
+          case 10:
             return this.formatValue(value);
           default:
             return 0;
@@ -631,15 +636,18 @@
             result = that.returnPrice(cellItem.total_delivery_item_price);
             break;
           case 6:
-            result = that.formatValue(cellItem.store_num);
+            result = that.returnPrice(cellItem.price_per_order);
             break;
           case 7:
-            result = that.formatValue(cellItem.order_num);
+            result = that.formatValue(cellItem.store_num);
             break;
           case 8:
-            result = that.formatValue(cellItem.item_num);
+            result = that.formatValue(cellItem.order_num);
             break;
           case 9:
+            result = that.formatValue(cellItem.item_num);
+            break;
+          case 10:
             result = that.formatValue(cellItem.item_cat_num);
             break;
           default:
