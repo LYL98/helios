@@ -11,13 +11,19 @@
         </el-tag>
       </div>
       <div class="process-result">
+        <li style="margin-bottom: 20px;">
+            <span class="item">商户等级：{{ detail.merchant_grade_code }}</span>
+            <span class="item">过去7天退赔率：{{detail.aftersale_rate === null ? '-' : detail.aftersale_rate / 10}}%</span>
+            <span class="item">该商品（同发货日期）所有客户提报次数：{{detail.merchant_as_same_item}} 次</span>
+        </li>
         <h6 class="title">处理结果</h6>
         <ul v-if="detail.status === 'close'">
           <li>
-            <span>处理类型：{{ afterSaleOptType[detail.opt_type] }}</span>
-            <span v-if="detail.amount_refund" style="margin-left: 210px;">
+            <span class="item">处理类型：{{ afterSaleOptType[detail.opt_type] }}</span>
+            <span class="item" v-if="detail.amount_refund">
               退款金额：<span style="color: #ff3724;">&yen;{{ returnPrice(detail.amount_refund) }}</span>
             </span>
+            <span class="item">处理件数：{{ detail.num }} 件</span>
           </li>
           <li>处理描述：<span style="word-break: break-word;">{{ detail.opt_detail || '无' }}</span></li>
         </ul>
@@ -361,6 +367,10 @@ export default {
     border-bottom: 1px solid #f3f4f6;
     li, p {
       line-height: 2;
+      >.item{
+        display: inline-block;
+        width: 360px;
+      }
     }
   }
 
