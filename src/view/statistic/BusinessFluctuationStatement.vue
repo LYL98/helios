@@ -246,8 +246,20 @@ export default {
           case 'merchant':
             result = cellItem.store_num_ord || cellItem.store_num_ord === 0 ? cellItem.store_num_ord : '-';
             break;
-          case 'amount':
-            result = cellItem.amount_item_sum || cellItem.amount_item_sum === 0 ? '¥' + that.returnPrice(cellItem.amount_item_sum) : '-';
+          case 'item_total_price':
+            result = cellItem.item_total_price || cellItem.item_total_price === 0 ? '¥' + that.returnPrice(cellItem.item_total_price) : '-';
+            break;
+          case 'amount_delivery':
+            result = cellItem.amount_delivery || cellItem.amount_delivery === 0 ? '¥' + that.returnPrice(cellItem.amount_delivery) : '-';
+            break;
+          case 'bonus_promotion':
+            result = cellItem.bonus_promotion || cellItem.bonus_promotion === 0 ? '¥' + that.returnPrice(cellItem.bonus_promotion) : '-';
+            break;
+          case 'check_chg':
+            result = cellItem.check_chg || cellItem.check_chg === 0 ? '¥' + that.returnPrice(cellItem.check_chg) : '-';
+            break;
+          case 'amount_pay':
+            result = cellItem.amount_pay || cellItem.amount_pay === 0 ? '¥' + that.returnPrice(cellItem.amount_pay) : '-';
             break;
           case 'customer':
             result = cellItem.cust_price || cellItem.cust_price === 0 ? '¥' + that.returnPrice(cellItem.cust_price) : '-';
@@ -270,8 +282,20 @@ export default {
             case 'merchant':
               result = cellItem.store_num_ord ? cellItem.store_num_ord : 0;
               break;
-            case 'amount':
-              result = cellItem.amount_item_sum ? cellItem.amount_item_sum : 0;
+            case 'item_total_price':
+              result = cellItem.item_total_price ? cellItem.item_total_price : 0;
+              break;
+            case 'amount_delivery':
+              result = cellItem.amount_delivery ? cellItem.amount_delivery : 0;
+              break;
+            case 'bonus_promotion':
+              result = cellItem.bonus_promotion ? cellItem.bonus_promotion : 0;
+              break;
+            case 'check_chg':
+              result = cellItem.check_chg ? cellItem.check_chg : 0;
+              break;
+            case 'amount_pay':
+              result = cellItem.amount_pay ? cellItem.amount_pay : 0;
               break;
             case 'customer':
               result = cellItem.cust_price ? cellItem.cust_price : 0;
@@ -285,7 +309,11 @@ export default {
       switch (selectType) {
         case 'merchant':
           return sum || sum === 0 ? DataHandle.formatCount(sum) : '-';
-        case 'amount':
+        case 'item_total_price':
+        case 'amount_delivery':
+        case 'bonus_promotion':
+        case 'check_chg':
+        case 'amount_pay':
         case 'customer':
           return sum || sum === 0 ? '¥' + that.returnPrice(sum) : '-';
         default:
