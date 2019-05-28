@@ -152,7 +152,7 @@
         dataItem: [],
         selectArea: 'zone',
         selectItemName: '',
-        zoomRate: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        zoomRate: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         lineColors: [
           '#E3D557',   //1
           '#8BC867',   //2
@@ -164,6 +164,7 @@
           '#FA3B3B',   //8
           '#4E71F5',   //9
           '#40DFF2',   //10
+          '#3F0404',   //11
         ],
         /**
          * item_cat_num: 下单商品数
@@ -808,5 +809,4 @@
 </script>
 
 <style scoped>
-
 </style>

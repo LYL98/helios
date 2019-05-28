@@ -83,7 +83,8 @@ export default {
         isNeedRefund: false,
         opt_detail: '',
         opt_type: '',
-        refund: 0
+        refund: 0,
+        num: 0
       },
       rules: {
         opt_type: [
@@ -163,7 +164,8 @@ export default {
               aftersale_id: detail.id,
               opt_detail: editData.opt_detail,
               opt_type: editData.opt_type,
-              refund: that.handlePrice(editData.refund)
+              refund: that.handlePrice(editData.refund),
+              num: editData.num,
             },
             callback(){
               that.cancel();
