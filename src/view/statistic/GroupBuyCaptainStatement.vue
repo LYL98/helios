@@ -24,15 +24,6 @@
         @sort-change="onSort"
         style="width: 100%; margin-top: 20px">
         <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod"/>
-
-        <el-table-column
-          :min-width="maxLabelWidth < 120 ? 120 : maxLabelWidth"
-          prop="realname"
-          label="团长名称">
-          <template slot-scope="scope">
-            <span id="titleScope" :class="isEllipsis(scope.row)">{{ formatValue(scope.row.realname) }}</span>
-          </template>
-        </el-table-column>
         <el-table-column
           prop="store_title"
           label="门店名称"

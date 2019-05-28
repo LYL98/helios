@@ -39,7 +39,7 @@
               <div style="display: flex">
                 <el-input
                   size="small"
-                  placeholder="请输入团长名称或门店名称"
+                  placeholder="请输入门店名称"
                   class="query-item-input"
                   clearable
                   @clear="changeQuery"
