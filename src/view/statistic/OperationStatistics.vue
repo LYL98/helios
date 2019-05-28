@@ -38,10 +38,10 @@
               <span>优惠金额: {{zoomRate[2]}}倍</span><br/>
               <span>订单实付金额: {{zoomRate[4]}}倍</span><br/>
               <span>发货金额: {{zoomRate[5]}}倍</span><br/>
-              <span>下单门店数: {{zoomRate[6]}}倍</span><br/>
-              <span>订单数量: {{zoomRate[7]}}倍</span><br/>
-              <span>下单件数: {{zoomRate[8]}}倍</span><br/>
-              <span>下单商品数: {{zoomRate[9]}}倍</span><br/>
+              <span>下单门店数: {{zoomRate[7]}}倍</span><br/>
+              <span>订单数量: {{zoomRate[8]}}倍</span><br/>
+              <span>下单件数: {{zoomRate[9]}}倍</span><br/>
+              <span>下单商品数: {{zoomRate[10]}}倍</span><br/>
             </div>
           </div>
         </div>
