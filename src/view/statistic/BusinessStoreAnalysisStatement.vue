@@ -28,9 +28,29 @@
             <span>{{ formatValue(scope.row.store_title) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="amount_item_sum" label="总金额" min-width="120" align="left" sortable="custom">
+        <el-table-column prop="item_total_price" label="订单商品金额" min-width="140" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.amount_item_sum) }}</span>
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.item_total_price) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="amount_delivery" label="运费金额" min-width="120" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.amount_delivery) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="bonus_promotion" label="优惠金额" min-width="120" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.bonus_promotion) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="check_chg" label="称重金额" min-width="120" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.check_chg) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="amount_pay" label="订单实付金额" min-width="140" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.amount_pay) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="buy_days" label="购买天数" min-width="130" align="left" sortable="custom">
@@ -58,7 +78,7 @@
             <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.lost_days) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="下单金额" align="left">
+        <el-table-column label="订单商品金额" align="left">
           <el-table-column
             min-width="100"
             align="left"
@@ -212,11 +232,47 @@ export default {
     },
     onSort({ column, prop, order }) {
       switch (prop) {
-        case 'amount_item_sum':
+        case 'item_total_price':
           if (order === 'ascending') {
-            this.query.sort = 'amount_item_sum'
+            this.query.sort = 'item_total_price'
           } else if (order === 'descending') {
-            this.query.sort = '-amount_item_sum'
+            this.query.sort = '-item_total_price'
+          } else {
+            this.query.sort = ''
+          }
+          break;
+        case 'amount_delivery':
+          if (order === 'ascending') {
+            this.query.sort = 'amount_delivery'
+          } else if (order === 'descending') {
+            this.query.sort = '-amount_delivery'
+          } else {
+            this.query.sort = ''
+          }
+          break;
+        case 'bonus_promotion':
+          if (order === 'ascending') {
+            this.query.sort = 'bonus_promotion'
+          } else if (order === 'descending') {
+            this.query.sort = '-bonus_promotion'
+          } else {
+            this.query.sort = ''
+          }
+          break;
+        case 'check_chg':
+          if (order === 'ascending') {
+            this.query.sort = 'check_chg'
+          } else if (order === 'descending') {
+            this.query.sort = '-check_chg'
+          } else {
+            this.query.sort = ''
+          }
+          break;
+        case 'amount_pay':
+          if (order === 'ascending') {
+            this.query.sort = 'amount_pay'
+          } else if (order === 'descending') {
+            this.query.sort = '-amount_pay'
           } else {
             this.query.sort = ''
           }

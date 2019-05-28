@@ -127,12 +127,48 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="amount_item_sum"
-          label="订单总额"
+          prop="item_total_price"
+          label="订单商品金额"
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_item_sum)}}</div>
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.item_total_price)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="amount_delivery"
+          label="运费金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_delivery)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="bonus_promotion"
+          label="优惠金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.bonus_promotion)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="check_chg"
+          label="称重金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.check_chg)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="amount_pay"
+          label="订单实付金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_pay)}}</div>
           </template>
         </el-table-column>
         <el-table-column

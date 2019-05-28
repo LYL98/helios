@@ -112,8 +112,16 @@ export default {
       switch (detail.selectType) {
         case 'merchant':
           return '下单门店数';
-        case 'amount':
-          return '下单金额';
+        case 'item_total_price':
+          return '订单商品金额';
+        case 'amount_delivery':
+          return '运费金额';
+        case 'bonus_promotion':
+          return '优惠金额';
+        case 'check_chg':
+          return '称重金额';
+        case 'amount_pay':
+          return '订单实付金额';
         case 'customer':
           return '客单价';
         default:
