@@ -229,6 +229,6 @@
 更新注意事项：
 修改sys_permission表
   修改ID: 
-  新增ID: 
+  新增ID: 375
   删除ID：
 ```

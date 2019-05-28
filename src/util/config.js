@@ -88,6 +88,7 @@ const Config = (() => {
       itemCouponAutoDis: apiM + '/coupon/auto/dis', // 自动发放优惠券状态切换
       itemCouponDistributeLog: apiM + '/coupon/distribute/log/query', // 优惠券发放记录
       itemCouponDistributeStatistic: apiM + '/coupon/distribute/merchants/query', // 优惠券发放记录
+      itemCouponList: apiM + '/coupon/distribute/log/export', //优惠券导出
 
       // 团购商品
       groupBuyQuery: apiM + '/gb_activity/query',  //团购列表
