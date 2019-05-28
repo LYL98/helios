@@ -59,6 +59,9 @@
             prop="city_title">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
+              <el-tooltip class="item" effect="dark" content="优惠金额：优惠券和优惠活动的合计" placement="right" v-if="scope.row.name === '优惠金额'">
+                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column
@@ -89,7 +92,7 @@
 </template>
 
 <script>
-  import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
+  import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message, Tooltip } from 'element-ui';
   import { mapGetters, mapActions } from 'vuex';
   import { Statistic } from '@/service';
   import { DataHandle, Constant } from '@/util';
@@ -121,7 +124,8 @@
       'el-option': Option,
       'el-input': Input,
       'my-search-item': SearchItem,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'el-tooltip': Tooltip,
     },
     created() {
       documentTitle("统计 - 运营统计");
@@ -679,15 +683,18 @@
             result = cellItem.total_delivery_item_price;
             break;
           case 6:
-            result = cellItem.store_num;
+            result = cellItem.price_per_order;
             break;
           case 7:
-            result = cellItem.order_num;
+            result = cellItem.store_num;
             break;
           case 8:
-            result = cellItem.item_num;
+            result = cellItem.order_num;
             break;
           case 9:
+            result = cellItem.item_num;
+            break;
+          case 10:
             result = cellItem.item_cat_num;
             break;
           default:
