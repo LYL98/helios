@@ -36,7 +36,7 @@
             <div style="margin-top: 10px;">
               <span>订单商品金额: {{zoomRate[0]}}倍</span><br/>
               <span>优惠金额: {{zoomRate[2]}}倍</span><br/>
-              <span>订单实付金额: {{zoomRate[4]}}倍</span><br/>
+              <span>订单应付金额: {{zoomRate[4]}}倍</span><br/>
               <span>发货金额: {{zoomRate[5]}}倍</span><br/>
               <span>下单门店数: {{zoomRate[7]}}倍</span><br/>
               <span>订单数量: {{zoomRate[8]}}倍</span><br/>
@@ -177,7 +177,7 @@
         - amount_delivery: 运费金额
         - bonus_promotion: 优惠金额
         - check_chg: 称重金额
-        - amount_pay: 订单实付金额
+        - real_price: 订单应付金额
          order_num: 订单数量
          price_per_order: 客单价
          store_num: 下单门店数
@@ -188,7 +188,7 @@
           '运费金额',
           '优惠金额',
           '称重金额',
-          '订单实付金额',
+          '订单应付金额',
           '发货金额',
           '客单价',
           '下单门店数',
@@ -242,7 +242,15 @@
 
       //返回价格
       returnPrice(price){
-        return price || price === 0 ? '¥' + DataHandle.returnPrice(price) : '-';
+        if(price || price === 0){
+          if(price < 0){
+            return '-¥' + DataHandle.returnPrice(Math.abs(price));
+          }else{
+            return '¥' + DataHandle.returnPrice(price);
+          }
+        }else{
+          return '-';
+        }
       },
       formatValue(value) {
         return value || value === 0 ? Math.round(value) : '-'
@@ -360,9 +368,9 @@
           legend: {
             data: indexNames,
             selected: {
-              '订单商品金额': false,
+              '订单商品金额': true,
               '优惠金额': false,
-              '订单实付金额': true,
+              '订单应付金额': false,
               '发货金额': false,
               '下单门店数': true,
               '订单数量': false,
@@ -401,7 +409,7 @@
               data: this.lineData(2, xDates)
             },
             {
-              name:'订单实付金额',
+              name:'订单应付金额',
               type:'line',
               itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
               smooth: true,
@@ -523,7 +531,7 @@
             return zoomRate[2];
           case '称重金额':
             return zoomRate[3];
-          case '订单实付金额':
+          case '订单应付金额':
             return zoomRate[4];
           case '发货金额':
             return zoomRate[5];
@@ -635,7 +643,7 @@
             result = that.returnPrice(cellItem.check_chg);
             break;
           case 4:
-            result = that.returnPrice(cellItem.amount_pay);
+            result = that.returnPrice(cellItem.real_price);
             break;
           case 5:
             result = that.returnPrice(cellItem.total_delivery_item_price);
@@ -677,7 +685,7 @@
             result = cellItem.check_chg;
             break;
           case 4:
-            result = cellItem.amount_pay;
+            result = cellItem.real_price;
             break;
           case 5:
             result = cellItem.total_delivery_item_price;

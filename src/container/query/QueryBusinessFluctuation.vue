@@ -10,7 +10,7 @@
             <el-option label="运费金额" value="amount_delivery"></el-option>
             <el-option label="优惠金额" value="bonus_promotion"></el-option>
             <el-option label="称重金额" value="check_chg"></el-option>
-            <el-option label="订单实付金额" value="amount_pay"></el-option>
+            <el-option label="订单应付金额" value="real_price"></el-option>
             <el-option label="客单价" value="customer"></el-option>
           </el-select>
         </my-query-item>

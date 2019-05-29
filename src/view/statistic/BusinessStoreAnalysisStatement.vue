@@ -48,9 +48,9 @@
             <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.check_chg) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="amount_pay" label="订单实付金额" min-width="140" align="left" sortable="custom">
+        <el-table-column prop="real_price" label="订单应付金额" min-width="140" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.amount_pay) }}</span>
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.real_price) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="buy_days" label="购买天数" min-width="130" align="left" sortable="custom">
@@ -268,11 +268,11 @@ export default {
             this.query.sort = ''
           }
           break;
-        case 'amount_pay':
+        case 'real_price':
           if (order === 'ascending') {
-            this.query.sort = 'amount_pay'
+            this.query.sort = 'real_price'
           } else if (order === 'descending') {
-            this.query.sort = '-amount_pay'
+            this.query.sort = '-real_price'
           } else {
             this.query.sort = ''
           }

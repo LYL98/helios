@@ -11,9 +11,9 @@
         </el-tag>
       </div>
       <div class="process-result">
-        <li style="margin-bottom: 20px;">
-            <span class="item">商户等级：{{ detail.merchant_grade_code }}</span>
-            <span class="item">过去7天退赔率：{{detail.aftersale_rate === null ? '-' : detail.aftersale_rate / 10}}%</span>
+        <li class="process-title">
+            <span class="item">商户等级：{{ detail.merchant_grade_code || '无' }}</span>
+            <span class="item">过去7天退赔率：{{detail.aftersale_rate === null ? '-' : (detail.aftersale_rate / 10) + '%'}}</span>
             <span class="item">该商品（同发货日期）所有客户提报次数：{{detail.merchant_as_same_item}} 次</span>
         </li>
         <h6 class="title">处理结果</h6>
@@ -348,8 +348,7 @@ export default {
     }
   }
   .after-title{
-    padding: 0 10px 10px;
-    border-bottom: 1px solid #f3f4f6;
+    padding: 0 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -365,6 +364,11 @@ export default {
   .process-result {
     padding: 10px 0 10px 10px;
     border-bottom: 1px solid #f3f4f6;
+    >.process-title{
+      border-bottom: 1px solid #f3f4f6;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
     li, p {
       line-height: 2;
       >.item{

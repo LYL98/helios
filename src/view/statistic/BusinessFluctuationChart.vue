@@ -120,8 +120,8 @@ export default {
           return '优惠金额';
         case 'check_chg':
           return '称重金额';
-        case 'amount_pay':
-          return '订单实付金额';
+        case 'real_price':
+          return '订单应付金额';
         case 'customer':
           return '客单价';
         default:

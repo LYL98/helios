@@ -4,7 +4,7 @@
       <el-tab-pane v-if="auth.isAdmin || auth.GroupBuyItemStatement" label="商品统计" name="first" lazy>
         <my-group-buy-item-statement ref="myGroupBuyItemStatement"></my-group-buy-item-statement>
       </el-tab-pane>
-      <el-tab-pane v-if="auth.isAdmin || auth.GroupBuyCaptainStatement" label="团长统计" name="second" lazy>
+      <el-tab-pane v-if="auth.isAdmin || auth.GroupBuyCaptainStatement" label="团购门店统计" name="second" lazy>
         <my-group-buy-captain-statement ref="myGroupBuyCaptainStatement"></my-group-buy-captain-statement>
       </el-tab-pane>
       <el-tab-pane v-if="auth.isAdmin || auth.GroupBuyMemberStatement" label="团员统计" name="third" lazy>

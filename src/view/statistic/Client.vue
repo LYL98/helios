@@ -21,18 +21,14 @@
 
     <div :style="'height:' + (windowHeight - offsetHeight) + 'px; overflow-y: auto;'">
       <!-- 图表 -->
-      <!--<div style="margin-bottom: 20px; background-color: #FFF; text-align: center; padding: 20px">-->
-        <!--<ul style="display: flex; justify-content: center; height: 20px; align-items: center; font-size: 16px;">-->
-          <!--<li>总销售额: <span>{{ returnPrice(total) }}</span> 元</li>-->
-          <!--<li style="margin-left: 20px;">总订单量: <span>{{ totalOrder }}</span> 单</li>-->
-          <!--<li style="margin-left: 20px;">总件数: <span>{{ totalPiece }}</span> 件</li>-->
-        <!--</ul>-->
-        <!--<div :style="{height: '420px', width: '100%'}" ref="myEchart"/>-->
-      <!--</div>-->
       <div class="echart-container">
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
-          <li>总销售额: <span>{{ returnPrice(total) }}</span> 元</li>
+          <li>总订单商品金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
+          <li>总运费金额: <span>{{ returnPrice(totalAmountDelivery) }}</span> 元</li>
+          <li>总优惠金额: <span>{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
+          <li>总称重金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
+          <li>总订单应付金额: <span>{{ returnPrice(totalItemAmountPay) }}</span> 元</li>
           <li>总订单量: <span>{{ totalOrder }}</span> 单</li>
           <li>总件数: <span>{{ totalPiece }}</span> 件</li>
         </ul>
@@ -56,7 +52,7 @@
             label="序号"
             :index="indexMethod"
           />
-          <el-table-column label="片区" prop="zone_title">
+          <el-table-column label="片区" prop="zone_title" min-width="120">
             <template slot-scope="scope">
               <a href="javascript:void(0)"
                 class="title"
@@ -72,38 +68,38 @@
               <!--{{ scope.row.zone_title || '其它' }}-->
             </template>
           </el-table-column>
-          <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
+          <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price" min-width="130">
             <template slot-scope="scope">
               {{ scope.row.item_total_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.item_total_price) }}
             </template>
           </el-table-column>
-          <el-table-column label="运费金额" sortable="custom" prop="amount_delivery">
+          <el-table-column label="运费金额" sortable="custom" prop="amount_delivery" min-width="100">
             <template slot-scope="scope">
               {{ scope.row.amount_delivery > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_delivery) }}
             </template>
           </el-table-column>
-          <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
+          <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion" min-width="100">
             <template slot-scope="scope">
               {{ scope.row.bonus_promotion > 0 ? '￥' : '' }}{{ returnPrice(scope.row.bonus_promotion) }}
             </template>
           </el-table-column>
-          <el-table-column label="称重金额" sortable="custom" prop="check_chg">
+          <el-table-column label="称重金额" sortable="custom" prop="check_chg" min-width="100">
             <template slot-scope="scope">
               <span v-if="scope.row.check_chg === 0">0</span>
               <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
               <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="订单实付金额" sortable="custom" prop="amount_pay">
+          <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="130">
             <template slot-scope="scope">
-              {{ scope.row.amount_pay > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_pay) }}
+              {{ scope.row.real_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.real_price) }}
             </template>
           </el-table-column>
-          <el-table-column label="订单量" sortable="custom" prop="order_count" />
-          <el-table-column label="件数" sortable="custom" prop="piece_num"></el-table-column>
+          <el-table-column label="订单量" sortable="custom" prop="order_count"  min-width="100"/>
+          <el-table-column label="件数" sortable="custom" prop="piece_num" min-width="100"></el-table-column>
           <el-table-column label="占比" prop="percent">
             <template slot-scope="scope">
-              {{returnPercentage(scope.row.amount_item, total)}}%
+              {{returnPercentage(scope.row.item_total_price, totalItemTotalPrice)}}%
             </template>
           </el-table-column>
           <el-table-column label="操作" width="100">
@@ -162,7 +158,11 @@
         areaType: 'zone',
         listItem: [],
         orderClassSumData2: [],
-        total: 0,
+        totalItemTotalPrice: 0,
+        totalAmountDelivery: 0,
+        totalBonusPromotion: 0,
+        totalCheckChg: 0,
+        totalItemAmountPay: 0,
         totalOrder: 0,
         totalPiece: 0,
         currentRow: {},
@@ -247,7 +247,7 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-amount_item',
+          sort: '-item_total_price',
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -305,11 +305,11 @@
               this.query.sort = ''
             }
             break;
-          case 'amount_pay':
+          case 'real_price':
             if (order === 'ascending') {
-              this.query.sort = 'amount_pay'
+              this.query.sort = 'real_price'
             } else if (order === 'descending') {
-              this.query.sort = '-amount_pay'
+              this.query.sort = '-real_price'
             } else {
               this.query.sort = ''
             }
@@ -360,42 +360,44 @@
         let { areaType } = that;
         let orderClassSumData = that.$data.listItem;
 
-          let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {}, total = 0, totalOrder = 0, totalPiece = 0;
-        for (let i = 0; i < orderClassSumData.length; i++) {
-          //总数据
-          total += orderClassSumData[i].amount_item;
-        }
+        let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {},
+        totalItemTotalPrice = 0, totalAmountDelivery = 0, totalBonusPromotion = 0, totalCheckChg = 0, totalItemAmountPay = 0, totalOrder = 0, totalPiece = 0;
+
         for(let i = 0; i < orderClassSumData.length; i++){
+          //总数据
+          totalItemTotalPrice += orderClassSumData[i].item_total_price;
+          totalAmountDelivery += orderClassSumData[i].amount_delivery;
+          totalBonusPromotion += orderClassSumData[i].bonus_promotion;
+          totalCheckChg += orderClassSumData[i].check_chg;
+          totalItemAmountPay += orderClassSumData[i].real_price;
+
           //饼图数据
-          let percent = orderClassSumData[i].amount_item/total;
+          let percent = orderClassSumData[i].item_total_price / totalItemTotalPrice;
           if(percent > 0.05 && (areaType === 'zone' ? orderClassSumData[i].zone_title : orderClassSumData[i].city_title) !== '其它'){
             data.push({
-              value: that.returnPrice(orderClassSumData[i].amount_item),
+              value: that.returnPrice(orderClassSumData[i].item_total_price),
               name: (areaType === 'zone' ? orderClassSumData[i].zone_title : orderClassSumData[i].city_title),
               code: (areaType === 'zone' ? orderClassSumData[i].zone_code : orderClassSumData[i].city_code)
             });
           }else{
-            dataTemp.value += orderClassSumData[i].amount_item;
+            dataTemp.value += orderClassSumData[i].item_total_price;
           }
-
-          //列表数据
-          // if((areaType === 'zone' ? orderClassSumData[i].zone_title : orderClassSumData[i].city_title) !== '其它'){
-          //   data2.push(orderClassSumData[i]);
-          // }else{
-          //   dataTemp2 = orderClassSumData[i];
-          // }
-
 
           totalOrder += orderClassSumData[i].order_count;
           totalPiece += orderClassSumData[i].piece_num;
         }
+
         if(dataTemp.value) {
           data.push({
             value: that.returnPrice(dataTemp.value),
             name: dataTemp.name
           });
         }
-        that.$data.total = total;
+        that.$data.totalItemTotalPrice = totalItemTotalPrice;
+        that.$data.totalAmountDelivery = totalAmountDelivery;
+        that.$data.totalBonusPromotion = totalBonusPromotion;
+        that.$data.totalCheckChg = totalCheckChg;
+        that.$data.totalItemAmountPay = totalItemAmountPay;
         that.$data.totalOrder = totalOrder;
         that.$data.totalPiece = totalPiece;
 

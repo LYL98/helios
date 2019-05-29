@@ -82,7 +82,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
+        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price" min-width="120">
           <template slot-scope="scope">
             {{ scope.row.item_total_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.item_total_price) }}
           </template>
@@ -104,9 +104,9 @@
             <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="订单实付金额" sortable="custom" prop="amount_pay">
+        <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="120">
           <template slot-scope="scope">
-            {{ scope.row.amount_pay > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_pay) }}
+            {{ scope.row.real_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.real_price) }}
           </template>
         </el-table-column>
         <el-table-column label="订单量" sortable="custom" prop="order_count">
@@ -114,7 +114,7 @@
         <el-table-column label="件数" sortable="custom" prop="piece_num"/>
         <el-table-column label="占比" prop="percent">
           <template slot-scope="scope">
-            {{returnPercentage(scope.row.amount_item, total)}}%
+            {{returnPercentage(scope.row.item_total_price, total)}}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
@@ -349,7 +349,7 @@
         if(res.code === 0){
           this.total = 0
           res.data.map(item => {
-            this.total += item.amount_item
+            this.total += item.item_total_price
           })
           that.$data.listItem = res.data;
           typeof callback === 'function' && callback();

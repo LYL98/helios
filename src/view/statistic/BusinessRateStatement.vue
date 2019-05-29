@@ -163,12 +163,12 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="amount_pay"
-          label="订单实付金额"
+          prop="real_price"
+          label="订单应付金额"
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_pay)}}</div>
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.real_price)}}</div>
           </template>
         </el-table-column>
         <el-table-column

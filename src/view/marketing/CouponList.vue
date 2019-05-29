@@ -8,15 +8,6 @@
     </query-marketing-coupon>
     <div class="operate" v-if="auth.isAdmin || auth.MarketingCouponListExport || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
       <el-button
-        v-if="auth.isAdmin || auth.MarketingCouponListExport"
-        type="primary"
-        size="mini"
-        @click.native="listExport"
-        plain
-      >
-        导出优惠券发放记录
-      </el-button>
-      <el-button
         v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic"
         type="primary"
         size="mini"
@@ -261,23 +252,6 @@
 
       endSending() {
         this.$data.formSending = false;
-      },
-
-      //列表导出
-      listExport() {
-        let queryStr = Config.api.itemCouponList;
-        let { query } = this;
-        let q = {
-          province_code: this.province.code,
-          status: query.status,
-          coupon_type: query.coupon_type,
-          is_auto_dis: query.is_auto_dis
-        };
-        queryStr += `?province_code=${this.province.code}`;
-        for (let item in q) {
-          queryStr += `&${item}=${q[item]}`
-        }
-        window.open(queryStr);
       },
 
       handleAddItem() {

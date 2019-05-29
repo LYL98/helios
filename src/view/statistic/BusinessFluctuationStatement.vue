@@ -3,7 +3,6 @@
 -->
 <template>
     <div>
-
       <query-business-fluctuation
         v-model="query"
         @change="changeQuery"
@@ -258,8 +257,8 @@ export default {
           case 'check_chg':
             result = cellItem.check_chg || cellItem.check_chg === 0 ? '¥' + that.returnPrice(cellItem.check_chg) : '-';
             break;
-          case 'amount_pay':
-            result = cellItem.amount_pay || cellItem.amount_pay === 0 ? '¥' + that.returnPrice(cellItem.amount_pay) : '-';
+          case 'real_price':
+            result = cellItem.real_price || cellItem.real_price === 0 ? '¥' + that.returnPrice(cellItem.real_price) : '-';
             break;
           case 'customer':
             result = cellItem.cust_price || cellItem.cust_price === 0 ? '¥' + that.returnPrice(cellItem.cust_price) : '-';
@@ -294,8 +293,8 @@ export default {
             case 'check_chg':
               result = cellItem.check_chg ? cellItem.check_chg : 0;
               break;
-            case 'amount_pay':
-              result = cellItem.amount_pay ? cellItem.amount_pay : 0;
+            case 'real_price':
+              result = cellItem.real_price ? cellItem.real_price : 0;
               break;
             case 'customer':
               result = cellItem.cust_price ? cellItem.cust_price : 0;
@@ -313,9 +312,17 @@ export default {
         case 'amount_delivery':
         case 'bonus_promotion':
         case 'check_chg':
-        case 'amount_pay':
+        case 'real_price':
         case 'customer':
-          return sum || sum === 0 ? '¥' + that.returnPrice(sum) : '-';
+          if(sum || sum === 0){
+            if(sum < 0){
+              return '-¥' + that.returnPrice(Math.abs(sum));
+            }else{
+              return '¥' + that.returnPrice(sum);
+            }
+          }else{
+            return '-';
+          }
         default:
           return '-';
       }
@@ -332,8 +339,20 @@ export default {
             case 'merchant':
               result = cellItem.store_num_ord ? cellItem.store_num_ord : 0;
               break;
-            case 'amount':
-              result = cellItem.amount_item_sum ? cellItem.amount_item_sum : 0;
+            case 'item_total_price':
+              result = cellItem.item_total_price ? cellItem.item_total_price : 0;
+              break;
+            case 'amount_delivery':
+              result = cellItem.amount_delivery ? cellItem.amount_delivery : 0;
+              break;
+            case 'bonus_promotion':
+              result = cellItem.bonus_promotion ? cellItem.bonus_promotion : 0;
+              break;
+            case 'check_chg':
+              result = cellItem.check_chg ? cellItem.check_chg : 0;
+              break;
+            case 'real_price':
+              result = cellItem.real_price ? cellItem.real_price : 0;
               break;
             case 'customer':
               result = cellItem.cust_price ? cellItem.cust_price : 0;
@@ -347,9 +366,21 @@ export default {
       switch (selectType) {
         case 'merchant':
           return sum || sum === 0 ? DataHandle.formatCount(sum / rowItems.length) : '-';
-        case 'amount':
+        case 'item_total_price':
+        case 'amount_delivery':
+        case 'bonus_promotion':
+        case 'check_chg':
+        case 'real_price':
         case 'customer':
-          return sum || sum === 0 ? '¥' + that.returnPrice(sum / rowItems.length) : '-';
+          if(sum || sum === 0){
+            if(sum < 0){
+              return '-¥' + that.returnPrice(Math.abs(sum / rowItems.length));
+            }else{
+              return '¥' + that.returnPrice(sum / rowItems.length);
+            }
+          }else{
+            return '-';
+          }
         default:
           return '-';
       }

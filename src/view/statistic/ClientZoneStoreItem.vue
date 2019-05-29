@@ -126,16 +126,6 @@
             {{ scope.row.item_total_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.item_total_price) }}
           </template>
         </el-table-column>
-        <el-table-column label="运费金额" sortable="custom" prop="amount_delivery">
-          <template slot-scope="scope">
-            {{ scope.row.amount_delivery > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_delivery) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
-          <template slot-scope="scope">
-            {{ scope.row.bonus_promotion > 0 ? '￥' : '' }}{{ returnPrice(scope.row.bonus_promotion) }}
-          </template>
-        </el-table-column>
         <el-table-column label="称重金额" sortable="custom" prop="check_chg">
           <template slot-scope="scope">
             <span v-if="scope.row.check_chg === 0">0</span>
@@ -143,9 +133,9 @@
             <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="订单实付金额" sortable="custom" prop="amount_pay">
+        <el-table-column label="称重后商品金额" sortable="custom" prop="real_price">
           <template slot-scope="scope">
-            {{ scope.row.amount_pay > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_pay) }}
+            {{ scope.row.amount_real > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
       </el-table>
