@@ -24,11 +24,12 @@
       <div class="echart-container">
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
-          <li>总销售额: <span>{{ returnPrice(total) }}</span> 元</li>
+          <li>总订单商品金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
+          <li>总称重金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
+          <li>总称重后商品金额: <span>{{ returnPrice(totalAmountReal) }}</span> 元</li>
           <li>总销售量: <span>{{ totalCount }}</span> 件</li>
         </ul>
       </div>
-
       <!-- 列表 -->
       <el-table
         class="list-table"
@@ -67,7 +68,9 @@
         </el-table-column>
         <el-table-column label="称重金额" sortable="custom" prop="check_chg">
           <template slot-scope="scope">
-            {{ scope.row.check_chg > 0 ? '￥' : '' }}{{ returnPrice(scope.row.check_chg) }}
+            <span v-if="scope.row.check_chg === 0">0</span>
+            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
+            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
@@ -78,7 +81,7 @@
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
-            {{ returnPercentage(scope.row.amount_real, total) }}%
+            {{ returnPercentage(scope.row.amount_real, totalAmountReal) }}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
@@ -135,7 +138,9 @@
         query: { },
         listItem: [],
         orderClassSumData2: [],
-        total: 0,
+        totalItemTotalPrice: 0,
+        totalCheckChg: 0,
+        totalAmountReal: 0,
         totalCount: 0,
         currentRow: {},
         chart: null,
@@ -239,6 +244,24 @@
       },
       onSort({ column, prop, order }) {
         switch (prop) {
+          case 'item_total_price':
+            if (order === 'ascending') {
+              this.query.sort = 'item_total_price'
+            } else if (order === 'descending') {
+              this.query.sort = '-item_total_price'
+            } else {
+              this.query.sort = ''
+            }
+            break;
+          case 'check_chg':
+            if (order === 'ascending') {
+              this.query.sort = 'check_chg'
+            } else if (order === 'descending') {
+              this.query.sort = '-check_chg'
+            } else {
+              this.query.sort = ''
+            }
+            break;
           case 'amount_real':
             if (order === 'ascending') {
               this.query.sort = 'amount_real'
@@ -292,14 +315,17 @@
           { value: 500, name: "其它" }
         ]
         */
-        let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {}, total = 0, totalCount = 0;
+        let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {},
+        totalItemTotalPrice = 0, totalCheckChg = 0, totalAmountReal = 0, totalCount = 0;
         for (let i = 0; i < orderClassSumData.length; i++) {
           //总数据
-          total += orderClassSumData[i].amount_real;
+          totalItemTotalPrice += orderClassSumData[i].item_total_price;
+          totalCheckChg += orderClassSumData[i].check_chg;
+          totalAmountReal += orderClassSumData[i].amount_real;
         }
         for(let i = 0; i < orderClassSumData.length; i++){
           //饼图数据
-          let percent = orderClassSumData[i].amount_real/total;
+          let percent = orderClassSumData[i].amount_real / totalAmountReal;
           if(percent > 0.05 && orderClassSumData[i].item_display_class !== '其它'){
             data.push({
               value: that.returnPrice(orderClassSumData[i].amount_real),
@@ -330,7 +356,9 @@
         }
 
         that.$data.orderClassSumData2 = data2;
-        that.$data.total = total;
+        that.$data.totalItemTotalPrice = totalItemTotalPrice;
+        that.$data.totalCheckChg = totalCheckChg;
+        that.$data.totalAmountReal = totalAmountReal;
         that.$data.totalCount = totalCount;
 
         let formatter = "{all|{b}：{c}元}  {per|{d}%}";

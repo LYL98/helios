@@ -87,9 +87,21 @@
             {{ scope.row.store_title || '-' }}
           </template>
         </el-table-column>
-        <el-table-column label="金额" sortable="custom" prop="amount_real">
+        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
           <template slot-scope="scope">
-            {{ scope.row.amount_real > 0 ? '￥' : '' }}{{ scope.row.amount_real }}
+            {{ scope.row.item_total_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.item_total_price) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="称重金额" sortable="custom" prop="check_chg">
+          <template slot-scope="scope">
+            <span v-if="scope.row.check_chg === 0">0</span>
+            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
+            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
+          <template slot-scope="scope">
+            {{ scope.row.amount_real > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="count_real" />
@@ -259,6 +271,24 @@
       },
       onSort({ column, prop, order }) {
         switch (prop) {
+          case 'item_total_price':
+            if (order === 'ascending') {
+              this.query.sort = 'item_total_price'
+            } else if (order === 'descending') {
+              this.query.sort = '-item_total_price'
+            } else {
+              this.query.sort = ''
+            }
+            break;
+          case 'check_chg':
+            if (order === 'ascending') {
+              this.query.sort = 'check_chg'
+            } else if (order === 'descending') {
+              this.query.sort = '-check_chg'
+            } else {
+              this.query.sort = ''
+            }
+            break;
           case 'amount_real':
             if (order === 'ascending') {
               this.query.sort = 'amount_real'

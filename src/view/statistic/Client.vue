@@ -28,7 +28,7 @@
           <li>总运费金额: <span>{{ returnPrice(totalAmountDelivery) }}</span> 元</li>
           <li>总优惠金额: <span>{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
           <li>总称重金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
-          <li>总订单应付金额: <span>{{ returnPrice(totalItemAmountPay) }}</span> 元</li>
+          <li>总订单应付金额: <span>{{ returnPrice(totalItemRealPrice) }}</span> 元</li>
           <li>总订单量: <span>{{ totalOrder }}</span> 单</li>
           <li>总件数: <span>{{ totalPiece }}</span> 件</li>
         </ul>
@@ -162,7 +162,7 @@
         totalAmountDelivery: 0,
         totalBonusPromotion: 0,
         totalCheckChg: 0,
-        totalItemAmountPay: 0,
+        totalItemRealPrice: 0,
         totalOrder: 0,
         totalPiece: 0,
         currentRow: {},
@@ -361,15 +361,18 @@
         let orderClassSumData = that.$data.listItem;
 
         let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {},
-        totalItemTotalPrice = 0, totalAmountDelivery = 0, totalBonusPromotion = 0, totalCheckChg = 0, totalItemAmountPay = 0, totalOrder = 0, totalPiece = 0;
+        totalItemTotalPrice = 0, totalAmountDelivery = 0, totalBonusPromotion = 0, totalCheckChg = 0, totalItemRealPrice = 0, totalOrder = 0, totalPiece = 0;
 
-        for(let i = 0; i < orderClassSumData.length; i++){
+        for (let i = 0; i < orderClassSumData.length; i++) {
           //总数据
           totalItemTotalPrice += orderClassSumData[i].item_total_price;
           totalAmountDelivery += orderClassSumData[i].amount_delivery;
           totalBonusPromotion += orderClassSumData[i].bonus_promotion;
           totalCheckChg += orderClassSumData[i].check_chg;
-          totalItemAmountPay += orderClassSumData[i].real_price;
+          totalItemRealPrice += orderClassSumData[i].real_price;
+        }
+
+        for(let i = 0; i < orderClassSumData.length; i++){
 
           //饼图数据
           let percent = orderClassSumData[i].item_total_price / totalItemTotalPrice;
@@ -397,7 +400,7 @@
         that.$data.totalAmountDelivery = totalAmountDelivery;
         that.$data.totalBonusPromotion = totalBonusPromotion;
         that.$data.totalCheckChg = totalCheckChg;
-        that.$data.totalItemAmountPay = totalItemAmountPay;
+        that.$data.totalItemRealPrice = totalItemRealPrice;
         that.$data.totalOrder = totalOrder;
         that.$data.totalPiece = totalPiece;
 
