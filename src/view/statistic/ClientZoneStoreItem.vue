@@ -111,16 +111,6 @@
             <span :class="isEllipsis(scope.row)">{{scope.row.count_real}}件</span>
           </template>
         </el-table-column>
-        <!--<el-table-column
-          prop="amount_real"
-          label="订单金额"
-          align="left"
-          sortable="custom"
-          min-width="180">
-          <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">&yen;{{scope.row.amount_real}}</span>
-          </template>
-        </el-table-column>-->
         <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
           <template slot-scope="scope">
             {{ scope.row.item_total_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.item_total_price) }}
@@ -391,7 +381,6 @@
         if(res.code === 0){
           res.data.items.map((item, index) => {
             item.id = index;
-            item.amount_real = that.returnPrice(Number(item.amount_real))
           });
           that.$data.merchantListData = res.data;
         }else{
