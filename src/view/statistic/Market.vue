@@ -24,10 +24,10 @@
       <div class="echart-container">
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
-          <li>总订单商品金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
-          <li>总称重金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
-          <li>总称重后商品金额: <span>{{ returnPrice(totalAmountReal) }}</span> 元</li>
-          <li>总销售量: <span>{{ totalCount }}</span> 件</li>
+          <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
+          <li>总称重总金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
+          <li>称重后商品总金额: <span>{{ returnPrice(totalAmountReal) }}</span> 元</li>
+          <li>销售总量: <span>{{ totalCount }}</span> 件</li>
         </ul>
       </div>
       <!-- 列表 -->

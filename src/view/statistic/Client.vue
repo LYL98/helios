@@ -24,12 +24,12 @@
       <div class="echart-container">
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
-          <li>总订单商品金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
-          <li>总运费金额: <span>{{ returnPrice(totalAmountDelivery) }}</span> 元</li>
-          <li>总优惠金额: <span>{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
-          <li>总称重金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
-          <li>总订单应付金额: <span>{{ returnPrice(totalItemRealPrice) }}</span> 元</li>
-          <li>总订单量: <span>{{ totalOrder }}</span> 单</li>
+          <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
+          <li>运费总金额: <span>{{ returnPrice(totalAmountDelivery) }}</span> 元</li>
+          <li>优惠总金额: <span>{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
+          <li>称重总金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
+          <li>订单应付总金额: <span>{{ returnPrice(totalItemRealPrice) }}</span> 元</li>
+          <li>订单总量: <span>{{ totalOrder }}</span> 单</li>
           <li>总件数: <span>{{ totalPiece }}</span> 件</li>
         </ul>
       </div>
