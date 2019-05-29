@@ -134,7 +134,11 @@ export default {
       switch (detail.selectType) {
         case 'merchant':
           return '';
-        case 'amount':
+        case 'item_total_price':
+        case 'amount_delivery':
+        case 'bonus_promotion':
+        case 'check_chg':
+        case 'real_price':
         case 'customer':
           return '(元)';
         default:
@@ -174,8 +178,20 @@ export default {
                 case 'merchant':
                   result = rowItem.store_num_ord ? rowItem.store_num_ord : 0;
                   break;
-                case 'amount':
-                  result = rowItem.amount_item_sum ? that.returnPrice(rowItem.amount_item_sum) : 0;
+                case 'item_total_price':
+                  result = rowItem.item_total_price ? that.returnPrice(rowItem.item_total_price) : 0;
+                  break;
+                case 'amount_delivery':
+                  result = rowItem.amount_delivery ? that.returnPrice(rowItem.amount_delivery) : 0;
+                  break;
+                case 'bonus_promotion':
+                  result = rowItem.bonus_promotion ? that.returnPrice(rowItem.bonus_promotion) : 0;
+                  break;
+                case 'check_chg':
+                  result = rowItem.check_chg ? that.returnPrice(rowItem.check_chg) : 0;
+                  break;
+                case 'real_price':
+                  result = rowItem.real_price ? that.returnPrice(rowItem.real_price) : 0;
                   break;
                 case 'customer':
                   result = rowItem.cust_price ? that.returnPrice(rowItem.cust_price) : 0;
@@ -205,8 +221,20 @@ export default {
                 case 'merchant':
                   result = rowItem.store_num_ord ? rowItem.store_num_ord : 0;
                   break;
-                case 'amount':
-                  result = rowItem.amount_item_sum ? that.returnPrice(rowItem.amount_item_sum) : 0;
+                case 'item_total_price':
+                  result = rowItem.item_total_price ? that.returnPrice(rowItem.item_total_price) : 0;
+                  break;
+                case 'amount_delivery':
+                  result = rowItem.amount_delivery ? that.returnPrice(rowItem.amount_delivery) : 0;
+                  break;
+                case 'bonus_promotion':
+                  result = rowItem.bonus_promotion ? that.returnPrice(rowItem.bonus_promotion) : 0;
+                  break;
+                case 'check_chg':
+                  result = rowItem.check_chg ? that.returnPrice(rowItem.check_chg) : 0;
+                  break;
+                case 'real_price':
+                  result = rowItem.real_price ? that.returnPrice(rowItem.real_price) : 0;
                   break;
                 case 'customer':
                   result = rowItem.cust_price ? that.returnPrice(rowItem.cust_price) : 0;
@@ -235,8 +263,20 @@ export default {
               case 'merchant':
                 result = rowItem.store_num_ord ? rowItem.store_num_ord : 0;
                 break;
-              case 'amount':
-                result = rowItem.amount_item_sum ? that.returnPrice(rowItem.amount_item_sum) : 0;
+              case 'item_total_price':
+                result = rowItem.item_total_price ? that.returnPrice(rowItem.item_total_price) : 0;
+                break;
+              case 'amount_delivery':
+                result = rowItem.amount_delivery ? that.returnPrice(rowItem.amount_delivery) : 0;
+                break;
+              case 'bonus_promotion':
+                result = rowItem.bonus_promotion ? that.returnPrice(rowItem.bonus_promotion) : 0;
+                break;
+              case 'check_chg':
+                result = rowItem.check_chg ? that.returnPrice(rowItem.check_chg) : 0;
+                break;
+              case 'real_price':
+                result = rowItem.real_price ? that.returnPrice(rowItem.real_price) : 0;
                 break;
               case 'customer':
                 result = rowItem.cust_price ? that.returnPrice(rowItem.cust_price) : 0;
