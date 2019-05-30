@@ -242,52 +242,12 @@ page_size:*/
     },
 
     onSort({ column, prop, order }) {
-      switch (prop) {
-        case 'order_num':
-          if (order === 'ascending') {
-            this.query.sort = 'order_num'
-          } else if (order === 'descending') {
-            this.query.sort = '-order_num'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'member_num':
-          if (order === 'ascending') {
-            this.query.sort = 'member_num'
-          } else if (order === 'descending') {
-            this.query.sort = '-member_num'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'sale_num':
-          if (order === 'ascending') {
-            this.query.sort = 'sale_num'
-          } else if (order === 'descending') {
-            this.query.sort = '-sale_num'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'pay_amount':
-          if (order === 'ascending') {
-            this.query.sort = 'pay_amount'
-          } else if (order === 'descending') {
-            this.query.sort = '-pay_amount'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'sale_amount':
-          if (order === 'ascending') {
-            this.query.sort = 'sale_amount'
-          } else if (order === 'descending') {
-            this.query.sort = '-sale_amount'
-          } else {
-            this.query.sort = ''
-          }
-          break;
+      if (order === 'ascending') {
+        this.query.sort = prop;
+      } else if (order === 'descending') {
+        this.query.sort = '-' + prop
+      } else {
+        this.query.sort = ''
       }
       this.statisticalSumGroupBuyItem()
     },

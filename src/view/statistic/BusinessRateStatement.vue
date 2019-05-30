@@ -314,53 +314,13 @@ export default {
       this.loadOrderFourRateListFirstPage();
     },
     onSort({ column, prop, order }) {
-      switch (prop) {
-        case 'cover_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'cover_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-cover_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'convert_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'convert_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-convert_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'aftersale_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'aftersale_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-aftersale_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'repeat_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'repeat_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-repeat_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'cust_price':
-          if (order === 'ascending') {
-            this.query.sort = 'cust_price'
-          } else if (order === 'descending') {
-            this.query.sort = '-cust_price'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-      }
+      if (order === 'ascending') {
+          this.query.sort = prop;
+        } else if (order === 'descending') {
+          this.query.sort = '-' + prop
+        } else {
+          this.query.sort = ''
+        }
       this.loadOrderFourRateListFirstPage()
     },
     changeQuery() {

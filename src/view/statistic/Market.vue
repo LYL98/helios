@@ -243,43 +243,12 @@
         });
       },
       onSort({ column, prop, order }) {
-        switch (prop) {
-          case 'item_total_price':
-            if (order === 'ascending') {
-              this.query.sort = 'item_total_price'
-            } else if (order === 'descending') {
-              this.query.sort = '-item_total_price'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'check_chg':
-            if (order === 'ascending') {
-              this.query.sort = 'check_chg'
-            } else if (order === 'descending') {
-              this.query.sort = '-check_chg'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'amount_real':
-            if (order === 'ascending') {
-              this.query.sort = 'amount_real'
-            } else if (order === 'descending') {
-              this.query.sort = '-amount_real'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'count_real':
-            if (order === 'ascending') {
-              this.query.sort = 'count_real'
-            } else if (order === 'descending') {
-              this.query.sort = '-count_real'
-            } else {
-              this.query.sort = ''
-            }
-            break;
+        if (order === 'ascending') {
+          this.query.sort = prop;
+        } else if (order === 'descending') {
+          this.query.sort = '-' + prop
+        } else {
+          this.query.sort = ''
         }
         // this.$data.query.page = 1;
         this.saleClassList();

@@ -268,70 +268,12 @@
       },
 
       onSort({ column, prop, order }) {
-        switch (prop) {
-          case 'item_total_price':
-            if (order === 'ascending') {
-              this.query.sort = 'item_total_price'
-            } else if (order === 'descending') {
-              this.query.sort = '-item_total_price'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'amount_delivery':
-            if (order === 'ascending') {
-              this.query.sort = 'amount_delivery'
-            } else if (order === 'descending') {
-              this.query.sort = '-amount_delivery'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'bonus_promotion':
-            if (order === 'ascending') {
-              this.query.sort = 'bonus_promotion'
-            } else if (order === 'descending') {
-              this.query.sort = '-bonus_promotion'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'check_chg':
-            if (order === 'ascending') {
-              this.query.sort = 'check_chg'
-            } else if (order === 'descending') {
-              this.query.sort = '-check_chg'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'real_price':
-            if (order === 'ascending') {
-              this.query.sort = 'real_price'
-            } else if (order === 'descending') {
-              this.query.sort = '-real_price'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'order_count':
-            if (order === 'ascending') {
-              this.query.sort = 'order_count'
-            } else if (order === 'descending') {
-              this.query.sort = '-order_count'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'piece_num':
-            if (order === 'ascending') {
-              this.query.sort = 'piece_num'
-            } else if (order === 'descending') {
-              this.query.sort = '-piece_num'
-            } else {
-              this.query.sort = ''
-            }
-            break;
+        if (order === 'ascending') {
+          this.query.sort = prop;
+        } else if (order === 'descending') {
+          this.query.sort = '-' + prop
+        } else {
+          this.query.sort = ''
         }
         // this.$data.query.page = 1;
         this.zoneOrderList();
@@ -477,7 +419,6 @@
         });
       },
       handleShowZoneDetail(item) {
-        console.log("选中的项目", item);
         let zone_code = item.zone_code;
         let zone_title = item.zone_title;
         this.$router.push({

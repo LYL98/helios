@@ -243,97 +243,12 @@ export default {
       // this.loadOrderStoreAnalysisListFirstPage()
     },
     onSort({ column, prop, order }) {
-      switch (prop) {
-        case 'item_total_price':
-          if (order === 'ascending') {
-            this.query.sort = 'item_total_price'
-          } else if (order === 'descending') {
-            this.query.sort = '-item_total_price'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'amount_delivery':
-          if (order === 'ascending') {
-            this.query.sort = 'amount_delivery'
-          } else if (order === 'descending') {
-            this.query.sort = '-amount_delivery'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'bonus_promotion':
-          if (order === 'ascending') {
-            this.query.sort = 'bonus_promotion'
-          } else if (order === 'descending') {
-            this.query.sort = '-bonus_promotion'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'check_chg':
-          if (order === 'ascending') {
-            this.query.sort = 'check_chg'
-          } else if (order === 'descending') {
-            this.query.sort = '-check_chg'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'real_price':
-          if (order === 'ascending') {
-            this.query.sort = 'real_price'
-          } else if (order === 'descending') {
-            this.query.sort = '-real_price'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'buy_days':
-          if (order === 'ascending') {
-            this.query.sort = 'buy_days'
-          } else if (order === 'descending') {
-            this.query.sort = '-buy_days'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'repeat_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'repeat_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-repeat_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'aftersale_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'aftersale_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-aftersale_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'cust_price':
-          if (order === 'ascending') {
-            this.query.sort = 'cust_price'
-          } else if (order === 'descending') {
-            this.query.sort = '-cust_price'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'lost_days':
-          if (order === 'ascending') {
-            this.query.sort = 'lost_days'
-          } else if (order === 'descending') {
-            this.query.sort = '-lost_days'
-          } else {
-            this.query.sort = ''
-          }
-          break;
+      if (order === 'ascending') {
+        this.query.sort = prop;
+      } else if (order === 'descending') {
+        this.query.sort = '-' + prop
+      } else {
+        this.query.sort = ''
       }
       this.loadOrderStoreAnalysisListFirstPage()
     },
