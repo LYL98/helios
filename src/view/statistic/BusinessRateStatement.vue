@@ -62,6 +62,16 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="aftersale_rate"
+          label="退赔率"
+          align="left"
+          sortable="custom"
+          min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{formatRate(scope.row.aftersale_rate)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
             prop="cust_price"
             label="平均客单价"
             align="left"
@@ -99,6 +109,15 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="new_store_num"
+          label="新增门店数"
+          align="left"
+          min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{formatValue(scope.row.new_store_num)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="order_num_store"
           label="门店下单次数"
           align="left"
@@ -108,12 +127,52 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="amount_item_sum"
-          label="订单总额"
+          prop="item_total_price"
+          label="订单商品金额"
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_item_sum)}}</div>
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.item_total_price)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="amount_delivery"
+          label="运费金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_delivery)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="bonus_promotion"
+          label="优惠金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{returnPrice(scope.row.bonus_promotion)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="check_chg"
+          label="称重金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              <span v-if="scope.row.check_chg < 0" class="color-green">{{returnPrice(scope.row.check_chg)}}</span>
+              <span v-else-if="scope.row.check_chg > 0" class="color-red">{{returnPrice(scope.row.check_chg)}}</span>
+              <span v-else>{{returnPrice(scope.row.check_chg)}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="real_price"
+          label="订单应付金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.real_price)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -226,7 +285,15 @@ export default {
     },
     //返回价格
     returnPrice(price){
-      return price || price === 0 ? '¥' + DataHandle.returnPrice(price) : '-';
+      if(price || price === 0){
+        if(price < 0){
+          return '-¥' + DataHandle.returnPrice(Math.abs(price));
+        }else{
+          return '¥' + DataHandle.returnPrice(price);
+        }
+      }else{
+        return '-';
+      }
     },
     //返回加价率
     returnMarkup(markup){
@@ -247,44 +314,13 @@ export default {
       this.loadOrderFourRateListFirstPage();
     },
     onSort({ column, prop, order }) {
-      switch (prop) {
-        case 'cover_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'cover_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-cover_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'convert_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'convert_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-convert_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'repeat_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'repeat_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-repeat_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'cust_price':
-          if (order === 'ascending') {
-            this.query.sort = 'cust_price'
-          } else if (order === 'descending') {
-            this.query.sort = '-cust_price'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-      }
+      if (order === 'ascending') {
+          this.query.sort = prop;
+        } else if (order === 'descending') {
+          this.query.sort = '-' + prop
+        } else {
+          this.query.sort = ''
+        }
       this.loadOrderFourRateListFirstPage()
     },
     changeQuery() {

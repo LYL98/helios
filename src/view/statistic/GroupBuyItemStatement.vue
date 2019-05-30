@@ -63,6 +63,18 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="order_num"
+          label="订单数量"
+          sortable="custom"
+          align="left"
+          min-width="80">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              <span>{{formatValue(scope.row.order_num)}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="pay_amount"
           label="下单金额"
           sortable="custom"
@@ -230,43 +242,12 @@ page_size:*/
     },
 
     onSort({ column, prop, order }) {
-      switch (prop) {
-        case 'member_num':
-          if (order === 'ascending') {
-            this.query.sort = 'member_num'
-          } else if (order === 'descending') {
-            this.query.sort = '-member_num'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'sale_num':
-          if (order === 'ascending') {
-            this.query.sort = 'sale_num'
-          } else if (order === 'descending') {
-            this.query.sort = '-sale_num'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'pay_amount':
-          if (order === 'ascending') {
-            this.query.sort = 'pay_amount'
-          } else if (order === 'descending') {
-            this.query.sort = '-pay_amount'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'sale_amount':
-          if (order === 'ascending') {
-            this.query.sort = 'sale_amount'
-          } else if (order === 'descending') {
-            this.query.sort = '-sale_amount'
-          } else {
-            this.query.sort = ''
-          }
-          break;
+      if (order === 'ascending') {
+        this.query.sort = prop;
+      } else if (order === 'descending') {
+        this.query.sort = '-' + prop
+      } else {
+        this.query.sort = ''
       }
       this.statisticalSumGroupBuyItem()
     },

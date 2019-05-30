@@ -1,10 +1,11 @@
 <template>
   <div>
-    <!--<div class="wp-query">-->
-      <!--<el-input style="width: 300px;" placeholder="输入优惠券编号或名称查询" v-model="query.condition" @keyup.enter.native="handleQuery"></el-input>-->
-      <!--<el-button type="primary" icon="el-icon-search" @click="handleQuery"></el-button>-->
-      <!--<el-button type="primary" @click="resetQuery">重置</el-button>-->
-    <!--</div>-->
+    <div class="wp-query">
+      <el-button v-if="auth.isAdmin || auth.MarketingCouponDistributeLogExport" type="primary" size="mini" @click.native="listExport" plain>
+        导出优惠券发放记录
+      </el-button>
+    </div>
+
     <el-table
       style="margin-top: -15px;"
       :data="listItem.items"
@@ -66,7 +67,7 @@
   import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message, Popover } from 'element-ui';
   import { OmissionText } from '@/common';
-  import { Constant } from '@/util';
+  import { Constant, Config } from '@/util';
   import { Item } from '@/service';
   export default {
     name: "TableMarketingCouponLog",
@@ -84,6 +85,7 @@
     },
     computed: {
       ...mapGetters({
+        auth: 'globalAuth',
         province: 'globalProvince'
       })
     },
@@ -105,6 +107,13 @@
       }
     },
     methods: {
+      //列表导出
+      listExport() {
+        let queryStr = Config.api.itemCouponList;
+        queryStr += `?province_code=${this.province.code}&coupon_id=${this.query.coupon_id}`;
+        window.open(queryStr);
+      },
+
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;
@@ -192,8 +201,9 @@
 
 <style scoped>
   .wp-query {
-    padding: 0 10px 15px;
+    padding: 0 10px 25px;
     border-bottom: 1px solid #f3f4f6;
+    text-align: right;
   }
   .table-footer {
     padding: 12px 10px 0;

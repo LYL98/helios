@@ -1122,6 +1122,27 @@
     color: #ff5252;
   }
 
+  .color-red {
+    color: #ff3724;
+  }
+
+  .color-green {
+    color: #00d600;
+  }
+
+  /*提示*/
+  .span-help-tooltip{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: center;
+    border-radius: 50%;
+    color: #999;
+    border: 1px solid #999;
+    font-size: 12px;
+  }
+
   //共用右边选择菜单
   .right-select-item-body {
     position: fixed;

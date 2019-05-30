@@ -28,9 +28,33 @@
             <span>{{ formatValue(scope.row.store_title) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="amount_item_sum" label="总金额" min-width="120" align="left" sortable="custom">
+        <el-table-column prop="item_total_price" label="订单商品金额" min-width="140" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.amount_item_sum) }}</span>
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.item_total_price) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="amount_delivery" label="运费金额" min-width="120" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.amount_delivery) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="bonus_promotion" label="优惠金额" min-width="120" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{ returnPrice(scope.row.bonus_promotion) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="check_chg" label="称重金额" min-width="120" align="left">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              <span v-if="scope.row.check_chg < 0" class="color-green">{{returnPrice(scope.row.check_chg)}}</span>
+              <span v-else-if="scope.row.check_chg > 0" class="color-red">{{returnPrice(scope.row.check_chg)}}</span>
+              <span v-else>{{returnPrice(scope.row.check_chg)}}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="real_price" label="订单应付金额" min-width="140" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.real_price) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="buy_days" label="购买天数" min-width="130" align="left" sortable="custom">
@@ -43,6 +67,11 @@
             <span :class="isEllipsis(scope.row)">{{ formatRate(scope.row.repeat_rate) }}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="aftersale_rate" label="退赔率" min-width="100" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ formatRate(scope.row.aftersale_rate) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="cust_price" label="客单价" min-width="100" align="left" sortable="custom">
           <template slot-scope="scope">
             <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.cust_price) }}</span>
@@ -53,7 +82,7 @@
             <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.lost_days) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="下单金额" align="left">
+        <el-table-column label="订单商品金额" align="left">
           <el-table-column
             min-width="100"
             align="left"
@@ -175,7 +204,15 @@ export default {
     },
     //返回价格
     returnPrice(price){
-      return price || price === 0 ? '¥' + DataHandle.returnPrice(price) : '-';
+      if(price || price === 0){
+        if(price < 0){
+          return '-¥' + DataHandle.returnPrice(Math.abs(price));
+        }else{
+          return '¥' + DataHandle.returnPrice(price);
+        }
+      }else{
+        return '-';
+      }
     },
     //返回加价率
     returnMarkup(markup){
@@ -206,52 +243,12 @@ export default {
       // this.loadOrderStoreAnalysisListFirstPage()
     },
     onSort({ column, prop, order }) {
-      switch (prop) {
-        case 'amount_item_sum':
-          if (order === 'ascending') {
-            this.query.sort = 'amount_item_sum'
-          } else if (order === 'descending') {
-            this.query.sort = '-amount_item_sum'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'buy_days':
-          if (order === 'ascending') {
-            this.query.sort = 'buy_days'
-          } else if (order === 'descending') {
-            this.query.sort = '-buy_days'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'repeat_rate':
-          if (order === 'ascending') {
-            this.query.sort = 'repeat_rate'
-          } else if (order === 'descending') {
-            this.query.sort = '-repeat_rate'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'cust_price':
-          if (order === 'ascending') {
-            this.query.sort = 'cust_price'
-          } else if (order === 'descending') {
-            this.query.sort = '-cust_price'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'lost_days':
-          if (order === 'ascending') {
-            this.query.sort = 'lost_days'
-          } else if (order === 'descending') {
-            this.query.sort = '-lost_days'
-          } else {
-            this.query.sort = ''
-          }
-          break;
+      if (order === 'ascending') {
+        this.query.sort = prop;
+      } else if (order === 'descending') {
+        this.query.sort = '-' + prop
+      } else {
+        this.query.sort = ''
       }
       this.loadOrderStoreAnalysisListFirstPage()
     },

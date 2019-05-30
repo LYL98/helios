@@ -190,22 +190,12 @@ export default {
       this.$attrs.callback();
     },
     onSort({ column, prop, order }) {
-      if (prop === 'amount_real') {
-        if (order === 'ascending') {
-          this.query.sort = 'amount_real'
-        } else if (order === 'descending') {
-          this.query.sort = '-amount_real'
-        } else {
-          this.query.sort = ''
-        }
-      } else if (prop === 'count_real') {
-        if (order === 'ascending') {
-          this.query.sort = 'count_real'
-        } else if (order === 'descending') {
-          this.query.sort = '-count_real'
-        } else {
-          this.query.sort = ''
-        }
+      if (order === 'ascending') {
+        this.query.sort = prop;
+      } else if (order === 'descending') {
+        this.query.sort = '-' + prop
+      } else {
+        this.query.sort = ''
       }
       this.loadItemSalesListWithFirstPage()
     },

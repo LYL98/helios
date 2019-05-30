@@ -6,7 +6,7 @@
       :reset="resetQuery"
     >
     </query-marketing-coupon>
-    <div class="operate" v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
+    <div class="operate" v-if="auth.isAdmin || auth.MarketingCouponListExport || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
       <el-button
         v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic"
         type="primary"
@@ -153,7 +153,7 @@
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox} from 'element-ui';
   import {QueryMarketingCoupon, TableMarketingCoupon, TableMarketingCouponLog, TableMarketingCouponStatistic, FormMarketingCouponAdd, FormMarketingCouponSend} from '@/container';
   import { Item } from '@/service';
-  import {Constant, DataHandle} from '@/util';
+  import {Constant, DataHandle, Config} from '@/util';
 
   export default {
     name: "CouponList",

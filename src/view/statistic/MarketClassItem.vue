@@ -87,9 +87,21 @@
             {{ scope.row.store_title || '-' }}
           </template>
         </el-table-column>
-        <el-table-column label="金额" sortable="custom" prop="amount_real">
+        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
           <template slot-scope="scope">
-            {{ scope.row.amount_real > 0 ? '￥' : '' }}{{ scope.row.amount_real }}
+            ￥{{ returnPrice(scope.row.item_total_price) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="称重金额" prop="check_chg">
+          <template slot-scope="scope">
+            <span v-if="scope.row.check_chg === 0">￥0</span>
+            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
+            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="count_real" />
@@ -216,7 +228,7 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-amount_real',
+          sort: '-item_total_price',
           item_id: this.$route.query.item_id,
           zone_code: '',
           city_code: '',
@@ -258,25 +270,12 @@
         this.saleClassItemStoreQuery();
       },
       onSort({ column, prop, order }) {
-        switch (prop) {
-          case 'amount_real':
-            if (order === 'ascending') {
-              this.query.sort = 'amount_real'
-            } else if (order === 'descending') {
-              this.query.sort = '-amount_real'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'count_real':
-            if (order === 'ascending') {
-              this.query.sort = 'count_real'
-            } else if (order === 'descending') {
-              this.query.sort = '-count_real'
-            } else {
-              this.query.sort = ''
-            }
-            break;
+        if (order === 'ascending') {
+          this.query.sort = prop;
+        } else if (order === 'descending') {
+          this.query.sort = '-' + prop
+        } else {
+          this.query.sort = ''
         }
         // this.$data.query.page = 1;
         this.saleClassItemStoreQuery();
@@ -291,7 +290,6 @@
         if(res.code === 0){
           res.data.items.map((item, index) => {
             item.id = index;
-            item.amount_real = DataHandle.returnPrice(Number(item.amount_real))
           });
           that.$data.listItem = res.data;
         }else{

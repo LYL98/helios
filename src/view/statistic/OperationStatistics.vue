@@ -34,12 +34,14 @@
           <div style="flex: initial; width: 200px;">
             <div style="margin-top: 80px; font-size: 18px; color: black;">指标放大倍数</div>
             <div style="margin-top: 10px;">
-              <span>下单金额: {{zoomRate[0]}}倍</span><br/>
-              <span>发货金额: {{zoomRate[1]}}倍</span><br/>
-              <span>下单门店数: {{zoomRate[2]}}倍</span><br/>
-              <span>订单数量: {{zoomRate[3]}}倍</span><br/>
-              <span>下单件数: {{zoomRate[4]}}倍</span><br/>
-              <span>下单商品数: {{zoomRate[5]}}倍</span><br/>
+              <span>订单商品金额: {{zoomRate[0]}}倍</span><br/>
+              <span>优惠金额: {{zoomRate[2]}}倍</span><br/>
+              <span>订单应付金额: {{zoomRate[4]}}倍</span><br/>
+              <span>发货金额: {{zoomRate[5]}}倍</span><br/>
+              <span>下单门店数: {{zoomRate[7]}}倍</span><br/>
+              <span>订单数量: {{zoomRate[8]}}倍</span><br/>
+              <span>下单件数: {{zoomRate[9]}}倍</span><br/>
+              <span>下单商品数: {{zoomRate[10]}}倍</span><br/>
             </div>
           </div>
         </div>
@@ -53,10 +55,13 @@
           <el-table-column
             label="指标"
             fixed="left"
-            width="100px"
+            width="120px"
             prop="city_title">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
+              <el-tooltip class="item" effect="dark" content="优惠金额：优惠券和优惠活动的合计" placement="right" v-if="scope.row.name === '优惠金额'">
+                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column
@@ -87,7 +92,7 @@
 </template>
 
 <script>
-  import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
+  import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message, Tooltip } from 'element-ui';
   import { mapGetters, mapActions } from 'vuex';
   import { Statistic } from '@/service';
   import { DataHandle, Constant } from '@/util';
@@ -119,7 +124,8 @@
       'el-option': Option,
       'el-input': Input,
       'my-search-item': SearchItem,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'el-tooltip': Tooltip,
     },
     created() {
       documentTitle("统计 - 运营统计");
@@ -150,26 +156,40 @@
         dataItem: [],
         selectArea: 'zone',
         selectItemName: '',
-        zoomRate: [1, 1, 1, 1, 1, 1],
+        zoomRate: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         lineColors: [
-          '#E3D557',   //1
-          '#8BC867',   //2
-          '#E081AF',   //3
-          '#819DE0',   //4
-          '#C08DDB',   //5
-          '#66BFD5',   //6
+          '#D27575',   //1
+          '#E2BA6F',   //2
+          '#E8E676',   //3
+          '#C5E26F',   //4
+          '#9AD782',   //5
+          '#82D7AE',   //6
+          '#82D7D7',   //7
+          '#82A1D7',   //8
+          '#8E82D7',   //9
+          '#C682D7',   //10
+          '#E58FBC',   //11
         ],
         /**
-         * item_cat_num: 下单商品数
-         item_num: 下单件数
-         item_total_price: 下单金额
+         * 
+         - item_total_price: 订单商品金额
+        - amount_delivery: 运费金额
+        - bonus_promotion: 优惠金额
+        - check_chg: 称重金额
+        - real_price: 订单应付金额
          order_num: 订单数量
+         item_total_price / store_num: 客单价 (订单商品金额 / 下单门店数)
          store_num: 下单门店数
          total_delivery_item_price: 发货金额
          * */
         indexNames: [
-          '下单金额',
+          '订单商品金额',
+          '运费金额',
+          '优惠金额',
+          '称重金额',
+          '订单应付金额',
           '发货金额',
+          '客单价',
           '下单门店数',
           '订单数量',
           '下单件数',
@@ -221,7 +241,15 @@
 
       //返回价格
       returnPrice(price){
-        return price || price === 0 ? '¥' + DataHandle.returnPrice(price) : '-';
+        if(price || price === 0){
+          if(price < 0){
+            return '-¥' + DataHandle.returnPrice(Math.abs(price));
+          }else{
+            return '¥' + DataHandle.returnPrice(price);
+          }
+        }else{
+          return '-';
+        }
       },
       formatValue(value) {
         return value || value === 0 ? Math.round(value) : '-'
@@ -339,7 +367,9 @@
           legend: {
             data: indexNames,
             selected: {
-              '下单金额': true,
+              '订单商品金额': true,
+              '优惠金额': false,
+              '订单应付金额': false,
               '发货金额': false,
               '下单门店数': true,
               '订单数量': false,
@@ -364,46 +394,60 @@
           ],
           series : [
             {
-              name:'下单金额',
+              name:'订单商品金额',
               type:'line',
               itemStyle: {normal: {color: lineColors[0], lineStyle: {color: lineColors[0]}}},
               smooth: true,
               data: this.lineData(0, xDates)
             },
             {
-              name:'发货金额',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[1], lineStyle: {color: lineColors[1]}}},
-              smooth: true,
-              data: this.lineData(1, xDates)
-            },
-            {
-              name:'下单门店数',
+              name:'优惠金额',
               type:'line',
               itemStyle: {normal: {color: lineColors[2], lineStyle: {color: lineColors[2]}}},
               smooth: true,
               data: this.lineData(2, xDates)
             },
             {
-              name:'订单数量',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
-              smooth: true,
-              data: this.lineData(3, xDates)
-            },
-            {
-              name:'下单件数',
+              name:'订单应付金额',
               type:'line',
               itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
               smooth: true,
               data: this.lineData(4, xDates)
             },
             {
-              name:'下单商品数',
+              name:'发货金额',
               type:'line',
               itemStyle: {normal: {color: lineColors[5], lineStyle: {color: lineColors[5]}}},
               smooth: true,
               data: this.lineData(5, xDates)
+            },
+            {
+              name:'下单门店数',
+              type:'line',
+              itemStyle: {normal: {color: lineColors[7], lineStyle: {color: lineColors[7]}}},
+              smooth: true,
+              data: this.lineData(7, xDates)
+            },
+            {
+              name:'订单数量',
+              type:'line',
+              itemStyle: {normal: {color: lineColors[8], lineStyle: {color: lineColors[8]}}},
+              smooth: true,
+              data: this.lineData(8, xDates)
+            },
+            {
+              name:'下单件数',
+              type:'line',
+              itemStyle: {normal: {color: lineColors[9], lineStyle: {color: lineColors[9]}}},
+              smooth: true,
+              data: this.lineData(9, xDates)
+            },
+            {
+              name:'下单商品数',
+              type:'line',
+              itemStyle: {normal: {color: lineColors[10], lineStyle: {color: lineColors[10]}}},
+              smooth: true,
+              data: this.lineData(10, xDates)
             }
           ]
         };
@@ -425,27 +469,29 @@
           let priceMaxValues = Array();
           let type1MaxValues = Array();
           let type2MaxValues = Array();
-          for (let i=0; i<dataItem.length; i++) {
+          for (let i = 0; i < dataItem.length; i++) {
             let item = dataItem[i];
             let length = item.cells.length;
             let originValues = Array();
-            for (let j=0; j<length; j++) {
+            for (let j = 0; j < length; j++) {
               let cellValue = item.cells[j].origin_value;
               originValues.push(Number(this.handleIndexValue(i, cellValue)));
             }
             let maxCellValue = Math.max(...originValues);
             switch (i) {
               case 0:
-              case 1:
+              case 4:
+              case 5:
                 //价格
                 priceMaxValues.push(maxCellValue);
                 break;
-              case 2:
-              case 5:
+              case 7:
+              case 10:
                 type1MaxValues.push(maxCellValue);
                 break;
-              case 3:
-              case 4:
+              case 2:
+              case 8:
+              case 9:
                 type2MaxValues.push(maxCellValue);
                 break;
               default:
@@ -456,20 +502,19 @@
           let type1MaxValue = Math.max(...type1MaxValues);
           let type2MaxValue = Math.max(...type2MaxValues);
 
-          let maxValue = priceMaxValue;
-
           //销售量放大比例
-          if (maxValue !== 0 && maxValue / type1MaxValue > zoomThreshold) {
-            let zoom = parseInt(maxValue / type1MaxValue - 1);
-            zoomRate[2] = zoom;
-            zoomRate[5] = zoom;
+          if (priceMaxValue !== 0 && priceMaxValue / type1MaxValue > zoomThreshold) {
+            let zoom = parseInt(priceMaxValue / type1MaxValue - 1);
+            zoomRate[7] = zoom;
+            zoomRate[10] = zoom;
           }
 
-          //采购价和销售价放大比例
-          if (maxValue !== 0 && maxValue / type2MaxValue > zoomThreshold) {
-            let zoom = parseInt(maxValue / type2MaxValue - 1);
-            zoomRate[3] = zoom;
-            zoomRate[4] = zoom;
+          //采购价、销售价、优惠价放大比例
+          if (priceMaxValue !== 0 && priceMaxValue / type2MaxValue > zoomThreshold) {
+            let zoom = parseInt(priceMaxValue / type2MaxValue - 1);
+            zoomRate[2] = zoom;
+            zoomRate[8] = zoom;
+            zoomRate[9] = zoom;
           }
         }
       },
@@ -477,18 +522,28 @@
       narrowRate(seriesName) {
         let { zoomRate } = this;
         switch (seriesName) {
-          case '下单金额':
+          case '订单商品金额':
             return zoomRate[0];
-          case '发货金额':
+          case '运费金额':
             return zoomRate[1];
-          case '下单门店数':
+          case '优惠金额':
             return zoomRate[2];
-          case '订单数量':
+          case '称重金额':
             return zoomRate[3];
-          case '下单件数':  //下单件数
+          case '订单应付金额':
             return zoomRate[4];
-          case '下单商品数':  //下单商品数
+          case '发货金额':
             return zoomRate[5];
+          case '客单价':
+            return zoomRate[6];
+          case '下单门店数':
+            return zoomRate[7];
+          case '订单数量':
+            return zoomRate[8];
+          case '下单件数':  //下单件数
+            return zoomRate[9];
+          case '下单商品数':  //下单商品数
+            return zoomRate[10];
         }
       },
       /**
@@ -504,11 +559,11 @@
           //得到特定指标的行数据
           let item = dataItem[index];
 
-          for (let i=0; i<xDates.length; i++) {
+          for (let i = 0; i < xDates.length; i++) {
             //得到当前列的日期
             let colDate = xDates[i];
             let hasDate = false;
-            for (let i=0; i<item.cells.length; i++) {
+            for (let i = 0; i < item.cells.length; i++) {
               let cellDate = item.cells[i].date;
               let cellValue = item.cells[i].origin_value;
 
@@ -534,11 +589,16 @@
         switch (index) {
           case 0:
           case 1:
-            return DataHandle.returnPrice(value);
           case 2:
           case 3:
           case 4:
           case 5:
+          case 6:
+            return DataHandle.returnPrice(value);
+          case 7:
+          case 8:
+          case 9:
+          case 10:
             return value;
           default:
             return 0;
@@ -549,11 +609,16 @@
         switch (index) {
           case 0:
           case 1:
-            return this.returnPrice(value);
           case 2:
           case 3:
           case 4:
           case 5:
+          case 6:
+            return this.returnPrice(value);
+          case 7:
+          case 8:
+          case 9:
+          case 10:
             return this.formatValue(value);
           default:
             return 0;
@@ -568,18 +633,33 @@
             result = that.returnPrice(cellItem.item_total_price);
             break;
           case 1:
-            result = that.returnPrice(cellItem.total_delivery_item_price);
+            result = that.returnPrice(cellItem.amount_delivery);
             break;
           case 2:
-            result = that.formatValue(cellItem.store_num);
+            result = that.returnPrice(cellItem.bonus_promotion);
             break;
           case 3:
-            result = that.formatValue(cellItem.order_num);
+            result = that.returnPrice(cellItem.check_chg);
             break;
           case 4:
-            result = that.formatValue(cellItem.item_num);
+            result = that.returnPrice(cellItem.real_price);
             break;
           case 5:
+            result = that.returnPrice(cellItem.total_delivery_item_price);
+            break;
+          case 6:
+            result = that.returnPrice(cellItem.item_total_price / cellItem.store_num); //(订单商品金额 / 下单门店数)
+            break;
+          case 7:
+            result = that.formatValue(cellItem.store_num);
+            break;
+          case 8:
+            result = that.formatValue(cellItem.order_num);
+            break;
+          case 9:
+            result = that.formatValue(cellItem.item_num);
+            break;
+          case 10:
             result = that.formatValue(cellItem.item_cat_num);
             break;
           default:
@@ -595,18 +675,33 @@
             result = cellItem.item_total_price;
             break;
           case 1:
-            result = cellItem.total_delivery_item_price;
+            result = cellItem.amount_delivery;
             break;
           case 2:
-            result = cellItem.store_num;
+            result = cellItem.bonus_promotion;
             break;
           case 3:
-            result = cellItem.order_num;
+            result = cellItem.check_chg;
             break;
           case 4:
-            result = cellItem.item_num;
+            result = cellItem.real_price;
             break;
           case 5:
+            result = cellItem.total_delivery_item_price;
+            break;
+          case 6:
+            result = cellItem.item_total_price / cellItem.store_num; //(订单商品金额 / 下单门店数)
+            break;
+          case 7:
+            result = cellItem.store_num;
+            break;
+          case 8:
+            result = cellItem.order_num;
+            break;
+          case 9:
+            result = cellItem.item_num;
+            break;
+          case 10:
             result = cellItem.item_cat_num;
             break;
           default:
@@ -728,5 +823,4 @@
 </script>
 
 <style scoped>
-
 </style>

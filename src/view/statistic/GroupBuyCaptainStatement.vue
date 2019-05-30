@@ -24,15 +24,6 @@
         @sort-change="onSort"
         style="width: 100%; margin-top: 20px">
         <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod"/>
-
-        <el-table-column
-          :min-width="maxLabelWidth < 120 ? 120 : maxLabelWidth"
-          prop="realname"
-          label="团长名称">
-          <template slot-scope="scope">
-            <span id="titleScope" :class="isEllipsis(scope.row)">{{ formatValue(scope.row.realname) }}</span>
-          </template>
-        </el-table-column>
         <el-table-column
           prop="store_title"
           label="门店名称"
@@ -71,6 +62,18 @@
           min-width="80">
           <template slot-scope="scope">
             <span :class="isEllipsis(scope.row)">{{formatValue(scope.row.sale_num)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="order_num"
+          label="订单数量"
+          sortable="custom"
+          align="left"
+          min-width="80">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              <span>{{formatValue(scope.row.order_num)}}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
@@ -253,43 +256,12 @@ page_size:*/
     },
 
     onSort({ column, prop, order }) {
-      switch (prop) {
-        case 'member_num':
-          if (order === 'ascending') {
-            this.query.sort = 'member_num'
-          } else if (order === 'descending') {
-            this.query.sort = '-member_num'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'sale_num':
-          if (order === 'ascending') {
-            this.query.sort = 'sale_num'
-          } else if (order === 'descending') {
-            this.query.sort = '-sale_num'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'pay_amount':
-          if (order === 'ascending') {
-            this.query.sort = 'pay_amount'
-          } else if (order === 'descending') {
-            this.query.sort = '-pay_amount'
-          } else {
-            this.query.sort = ''
-          }
-          break;
-        case 'sale_amount':
-          if (order === 'ascending') {
-            this.query.sort = 'sale_amount'
-          } else if (order === 'descending') {
-            this.query.sort = '-sale_amount'
-          } else {
-            this.query.sort = ''
-          }
-          break;
+      if (order === 'ascending') {
+        this.query.sort = prop;
+      } else if (order === 'descending') {
+        this.query.sort = '-' + prop
+      } else {
+        this.query.sort = ''
       }
       this.statisticalSumGroupBuyCaptain()
     },

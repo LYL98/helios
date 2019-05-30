@@ -14,6 +14,11 @@
             <el-option label="其他" value="other"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="处理件数" prop="num">
+          <el-input v-model.number="editData.num" style="width: 190px;">
+            <template slot="append">件</template>
+          </el-input>
+        </el-form-item>
         <el-form-item label="是否退款" class="required">
           <el-radio v-model="editData.isNeedRefund" :label="true" border size="small" @change="changeRadio">是</el-radio>
           <el-radio v-model="editData.isNeedRefund" :label="false" border size="small" @change="changeRadio">否</el-radio>
@@ -64,8 +69,11 @@ export default {
   }),
   created() {
     this.initEditDate();
+    this.$data.rules.num[1].max = this.detail.count_real;
+    this.$data.rules.num[1].message = `件数不能大于${this.detail.count_real}件`;
   },
   data(){
+    
     return{
       tencentPath: Config.tencentPath,
       orderStatus: Constant.ORDER_STATUS,
@@ -75,11 +83,16 @@ export default {
         isNeedRefund: false,
         opt_detail: '',
         opt_type: '',
-        refund: 0
+        refund: 0,
+        num: 0
       },
       rules: {
         opt_type: [
           { required: true, message: '请选择处理类型', trigger: 'change' }
+        ],
+        num: [
+          { required: true, type: 'integer', message: '请输入正确的处理件数', trigger: 'change' },
+          { type: 'integer', min: 0, max: 10, message: '件数不能大于10件', trigger: 'change' }
         ],
         opt_detail: [
           { max: 200, message: '处理描述不能超过200个字符', trigger: 'blur' }
@@ -107,6 +120,7 @@ export default {
         isNeedRefund: false,
         opt_detail: '',
         opt_type: '',
+        num: '',
         refund: 0
       }
     },
@@ -150,7 +164,8 @@ export default {
               aftersale_id: detail.id,
               opt_detail: editData.opt_detail,
               opt_type: editData.opt_type,
-              refund: that.handlePrice(editData.refund)
+              refund: that.handlePrice(editData.refund),
+              num: editData.num,
             },
             callback(){
               that.cancel();

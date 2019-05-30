@@ -88,7 +88,7 @@
           label="序号"
           :index="indexMethod"
         />
-        <!-- 县域、金额、订单量、件数、占比、操作 -->
+        <!-- 县域、订单金额、订单量、件数、占比、操作 -->
         <el-table-column label="门店名称" prop="city_title">
           <template slot-scope="scope">
             <!--{{ scope.row.store_title }}-->
@@ -105,9 +105,31 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="金额" sortable="custom" prop="amount_item">
+        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price" min-width="120">
           <template slot-scope="scope">
-            {{ scope.row.amount_item > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_item) }}
+            ￥{{ returnPrice(scope.row.item_total_price) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="运费金额" sortable="custom" prop="amount_delivery">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.amount_delivery) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
+          <template slot-scope="scope">
+            {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="称重金额" prop="check_chg">
+          <template slot-scope="scope">
+            <span v-if="scope.row.check_chg === 0">￥0</span>
+            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
+            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="120">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.real_price) }}
           </template>
         </el-table-column>
         <el-table-column label="订单量" sortable="custom" prop="order_count">
@@ -115,7 +137,7 @@
         <el-table-column label="件数" sortable="custom" prop="piece_num"/>
         <el-table-column label="占比" prop="percent">
           <template slot-scope="scope">
-            {{returnPercentage(scope.row.amount_item, total)}}%
+            {{returnPercentage(scope.row.item_total_price, total)}}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
@@ -257,7 +279,7 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-amount_real',
+          sort: '-item_total_price',
           zone_code: this.$route.query.zone_code,
           zone_title: this.$route.query.zone_title,
           city_code: this.$route.query.city_code,
@@ -314,34 +336,12 @@
         this.statisticalOrderMerchantSum();
       },
       onSort({ column, prop, order }) {
-        switch (prop) {
-          case 'amount_item':
-            if (order === 'ascending') {
-              this.query.sort = 'amount_item'
-            } else if (order === 'descending') {
-              this.query.sort = '-amount_item'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'order_count':
-            if (order === 'ascending') {
-              this.query.sort = 'order_count'
-            } else if (order === 'descending') {
-              this.query.sort = '-order_count'
-            } else {
-              this.query.sort = ''
-            }
-            break;
-          case 'piece_num':
-            if (order === 'ascending') {
-              this.query.sort = 'piece_num'
-            } else if (order === 'descending') {
-              this.query.sort = '-piece_num'
-            } else {
-              this.query.sort = ''
-            }
-            break;
+        if (order === 'ascending') {
+          this.query.sort = prop;
+        } else if (order === 'descending') {
+          this.query.sort = '-' + prop
+        } else {
+          this.query.sort = ''
         }
         // this.$data.query.page = 1;
         this.statisticalOrderMerchantSum();
@@ -356,7 +356,7 @@
         if(res.code === 0){
           this.total = 0
           res.data.items.map(item => {
-            this.total += item.amount_item
+            this.total += item.item_total_price
           })
 
           that.$data.orderItemSumData = res.data;

@@ -2,22 +2,28 @@
   <div>
     <el-dialog title="售后单详情" :visible.sync="isShow" v-if="isShow" width="1200px" :before-close="cancel" append-to-body>
       <div class="after-title">
-        <div>
+        <div class="title">
           <span>申请时间：{{detail.created}}</span>
-          <span style="margin-left: 140px;">服务单号：{{detail.code}}</span>
+          <span>服务单号：{{detail.code}}</span>
         </div>
         <el-tag size="small" :disable-transitions="true" :type="detail.status === 'close' ? 'info' : 'danger'">
           {{ afterSaleStatus[detail.status] }}
         </el-tag>
       </div>
       <div class="process-result">
+        <li class="process-title">
+            <span class="item">商户等级：{{ detail.merchant_grade_code || '无' }}</span>
+            <span class="item">商户过去7天退赔率：{{detail.aftersale_rate === null ? '-' : (detail.aftersale_rate / 10) + '%'}}</span>
+            <span class="item">该商品（同发货日期）所有客户提报次数：{{detail.merchant_as_same_item}} 次</span>
+        </li>
         <h6 class="title">处理结果</h6>
         <ul v-if="detail.status === 'close'">
           <li>
-            <span>处理类型：{{ afterSaleOptType[detail.opt_type] }}</span>
-            <span v-if="detail.amount_refund" style="margin-left: 210px;">
+            <span class="item">处理类型：{{ afterSaleOptType[detail.opt_type] }}</span>
+            <span class="item" v-if="detail.amount_refund">
               退款金额：<span style="color: #ff3724;">&yen;{{ returnPrice(detail.amount_refund) }}</span>
             </span>
+            <span class="item">处理件数：{{ detail.num }} 件</span>
           </li>
           <li>处理描述：<span style="word-break: break-word;">{{ detail.opt_detail || '无' }}</span></li>
         </ul>
@@ -342,13 +348,16 @@ export default {
     }
   }
   .after-title{
-    padding: 0 10px 10px;
-    border-bottom: 1px solid #f3f4f6;
+    padding: 0 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    > div{
+    > .title{
       flex: 1;
+      >span{
+        display: inline-block;
+        width: 360px;
+      }
     }
     > .after-date{
       text-align: right;
@@ -359,8 +368,17 @@ export default {
   .process-result {
     padding: 10px 0 10px 10px;
     border-bottom: 1px solid #f3f4f6;
+    >.process-title{
+      border-bottom: 1px solid #f3f4f6;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
     li, p {
       line-height: 2;
+      >.item{
+        display: inline-block;
+        width: 360px;
+      }
     }
   }
 
