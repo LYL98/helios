@@ -171,15 +171,14 @@
           '#E58FBC',   //11
         ],
         /**
-         * item_cat_num: 下单商品数
-         item_num: 下单件数
+         * 
          - item_total_price: 订单商品金额
         - amount_delivery: 运费金额
         - bonus_promotion: 优惠金额
         - check_chg: 称重金额
         - real_price: 订单应付金额
          order_num: 订单数量
-         price_per_order: 客单价
+         item_total_price / store_num: 客单价 (订单商品金额 / 下单门店数)
          store_num: 下单门店数
          total_delivery_item_price: 发货金额
          * */
@@ -649,7 +648,7 @@
             result = that.returnPrice(cellItem.total_delivery_item_price);
             break;
           case 6:
-            result = that.returnPrice(cellItem.price_per_order);
+            result = that.returnPrice(cellItem.item_total_price / cellItem.store_num); //(订单商品金额 / 下单门店数)
             break;
           case 7:
             result = that.formatValue(cellItem.store_num);
@@ -691,7 +690,7 @@
             result = cellItem.total_delivery_item_price;
             break;
           case 6:
-            result = cellItem.price_per_order;
+            result = cellItem.item_total_price / cellItem.store_num; //(订单商品金额 / 下单门店数)
             break;
           case 7:
             result = cellItem.store_num;
