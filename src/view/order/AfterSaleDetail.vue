@@ -2,9 +2,9 @@
   <div>
     <el-dialog title="售后单详情" :visible.sync="isShow" v-if="isShow" width="1200px" :before-close="cancel" append-to-body>
       <div class="after-title">
-        <div>
+        <div class="title">
           <span>申请时间：{{detail.created}}</span>
-          <span style="margin-left: 140px;">服务单号：{{detail.code}}</span>
+          <span>服务单号：{{detail.code}}</span>
         </div>
         <el-tag size="small" :disable-transitions="true" :type="detail.status === 'close' ? 'info' : 'danger'">
           {{ afterSaleStatus[detail.status] }}
@@ -352,8 +352,12 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    > div{
+    > .title{
       flex: 1;
+      >span{
+        display: inline-block;
+        width: 360px;
+      }
     }
     > .after-date{
       text-align: right;

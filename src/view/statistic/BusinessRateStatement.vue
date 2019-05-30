@@ -159,7 +159,11 @@
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.check_chg)}}</div>
+            <div :class="isEllipsis(scope.row)">
+              <span v-if="scope.row.check_chg < 0" class="color-green">{{returnPrice(scope.row.check_chg)}}</span>
+              <span v-else-if="scope.row.check_chg > 0" class="color-red">{{returnPrice(scope.row.check_chg)}}</span>
+              <span v-else>{{returnPrice(scope.row.check_chg)}}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column
@@ -281,7 +285,15 @@ export default {
     },
     //返回价格
     returnPrice(price){
-      return price || price === 0 ? '¥' + DataHandle.returnPrice(price) : '-';
+      if(price || price === 0){
+        if(price < 0){
+          return '-¥' + DataHandle.returnPrice(Math.abs(price));
+        }else{
+          return '¥' + DataHandle.returnPrice(price);
+        }
+      }else{
+        return '-';
+      }
     },
     //返回加价率
     returnMarkup(markup){

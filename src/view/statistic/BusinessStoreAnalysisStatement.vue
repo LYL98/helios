@@ -45,7 +45,11 @@
         </el-table-column>
         <el-table-column prop="check_chg" label="称重金额" min-width="120" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.check_chg) }}</span>
+            <div :class="isEllipsis(scope.row)">
+              <span v-if="scope.row.check_chg < 0" class="color-green">{{returnPrice(scope.row.check_chg)}}</span>
+              <span v-else-if="scope.row.check_chg > 0" class="color-red">{{returnPrice(scope.row.check_chg)}}</span>
+              <span v-else>{{returnPrice(scope.row.check_chg)}}</span>
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="real_price" label="订单应付金额" min-width="140" align="left" sortable="custom">
@@ -200,7 +204,15 @@ export default {
     },
     //返回价格
     returnPrice(price){
-      return price || price === 0 ? '¥' + DataHandle.returnPrice(price) : '-';
+      if(price || price === 0){
+        if(price < 0){
+          return '-¥' + DataHandle.returnPrice(Math.abs(price));
+        }else{
+          return '¥' + DataHandle.returnPrice(price);
+        }
+      }else{
+        return '-';
+      }
     },
     //返回加价率
     returnMarkup(markup){
