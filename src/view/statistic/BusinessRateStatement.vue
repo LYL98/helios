@@ -150,7 +150,7 @@
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.bonus_promotion)}}</div>
+            <div :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{returnPrice(scope.row.bonus_promotion)}}</div>
           </template>
         </el-table-column>
         <el-table-column

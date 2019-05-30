@@ -40,7 +40,7 @@
         </el-table-column>
         <el-table-column prop="bonus_promotion" label="优惠金额" min-width="120" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.bonus_promotion) }}</span>
+            <span :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{ returnPrice(scope.row.bonus_promotion) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="check_chg" label="称重金额" min-width="120" align="left" sortable="custom">

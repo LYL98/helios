@@ -63,25 +63,25 @@
         </el-table-column>
         <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
           <template slot-scope="scope">
-            {{ scope.row.item_total_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.item_total_price) }}
+            ￥{{ returnPrice(scope.row.item_total_price) }}
           </template>
         </el-table-column>
         <el-table-column label="称重金额" sortable="custom" prop="check_chg">
           <template slot-scope="scope">
-            <span v-if="scope.row.check_chg === 0">0</span>
+            <span v-if="scope.row.check_chg === 0">￥0</span>
             <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
             <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
-            {{ scope.row.amount_real > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_real) }}
+            ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
-            {{ returnPercentage(scope.row.amount_real, totalAmountReal) }}%
+            {{ returnPercentage(scope.row.item_total_price, totalItemTotalPrice) }}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
@@ -223,7 +223,7 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-amount_real',
+          sort: '-item_total_price',
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -325,14 +325,14 @@
         }
         for(let i = 0; i < orderClassSumData.length; i++){
           //饼图数据
-          let percent = orderClassSumData[i].amount_real / totalAmountReal;
+          let percent = orderClassSumData[i].item_total_price / totalItemTotalPrice;
           if(percent > 0.05 && orderClassSumData[i].item_display_class !== '其它'){
             data.push({
-              value: that.returnPrice(orderClassSumData[i].amount_real),
+              value: that.returnPrice(orderClassSumData[i].item_total_price),
               name: orderClassSumData[i].item_display_class,
             });
           }else{
-            dataTemp.value += orderClassSumData[i].amount_real;
+            dataTemp.value += orderClassSumData[i].item_total_price;
           }
 
           //列表数据

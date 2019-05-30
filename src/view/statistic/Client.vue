@@ -26,7 +26,7 @@
         <ul class="description">
           <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
           <li>运费总金额: <span>{{ returnPrice(totalAmountDelivery) }}</span> 元</li>
-          <li>优惠总金额: <span>{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
+          <li>优惠总金额: <span>-{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
           <li>称重总金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
           <li>订单应付总金额: <span>{{ returnPrice(totalItemRealPrice) }}</span> 元</li>
           <li>订单总量: <span>{{ totalOrder }}</span> 单</li>
@@ -70,29 +70,29 @@
           </el-table-column>
           <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price" min-width="130">
             <template slot-scope="scope">
-              {{ scope.row.item_total_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.item_total_price) }}
+              ￥{{ returnPrice(scope.row.item_total_price) }}
             </template>
           </el-table-column>
           <el-table-column label="运费金额" sortable="custom" prop="amount_delivery" min-width="100">
             <template slot-scope="scope">
-              {{ scope.row.amount_delivery > 0 ? '￥' : '' }}{{ returnPrice(scope.row.amount_delivery) }}
+              ￥{{ returnPrice(scope.row.amount_delivery) }}
             </template>
           </el-table-column>
           <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion" min-width="100">
             <template slot-scope="scope">
-              {{ scope.row.bonus_promotion > 0 ? '￥' : '' }}{{ returnPrice(scope.row.bonus_promotion) }}
+              {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
             </template>
           </el-table-column>
           <el-table-column label="称重金额" sortable="custom" prop="check_chg" min-width="100">
             <template slot-scope="scope">
-              <span v-if="scope.row.check_chg === 0">0</span>
+              <span v-if="scope.row.check_chg === 0">￥0</span>
               <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
               <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="130">
             <template slot-scope="scope">
-              {{ scope.row.real_price > 0 ? '￥' : '' }}{{ returnPrice(scope.row.real_price) }}
+              ￥{{ returnPrice(scope.row.real_price) }}
             </template>
           </el-table-column>
           <el-table-column label="订单量" sortable="custom" prop="order_count"  min-width="100"/>
