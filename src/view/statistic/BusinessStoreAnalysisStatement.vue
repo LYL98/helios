@@ -43,7 +43,7 @@
             <span :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{ returnPrice(scope.row.bonus_promotion) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="check_chg" label="称重金额" min-width="120" align="left" sortable="custom">
+        <el-table-column prop="check_chg" label="称重金额" min-width="120" align="left">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               <span v-if="scope.row.check_chg < 0" class="color-green">{{returnPrice(scope.row.check_chg)}}</span>

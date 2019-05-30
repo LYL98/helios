@@ -103,7 +103,7 @@
             ￥{{ returnPrice(scope.row.item_total_price) }}
           </template>
         </el-table-column>
-        <el-table-column label="称重金额" sortable="custom" prop="check_chg">
+        <el-table-column label="称重金额" prop="check_chg">
           <template slot-scope="scope">
             <span v-if="scope.row.check_chg === 0">￥0</span>
             <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
