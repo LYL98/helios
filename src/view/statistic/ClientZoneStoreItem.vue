@@ -123,9 +123,9 @@
             <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="称重后商品金额" sortable="custom" prop="real_price">
+        <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.real_price) }}
+            ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
       </el-table>
