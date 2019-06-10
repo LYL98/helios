@@ -417,9 +417,6 @@ export default {
       if(res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
           let averages = res.data.averages;
-          averages.map(average => {
-            average.store_num_ord = DataHandle.returnAverage(average.store_num_ord)
-          });
           res.data.items.unshift({
             city_title: '平均值',
             zone_title: '平均值',
