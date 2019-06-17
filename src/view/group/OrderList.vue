@@ -459,13 +459,13 @@
 
       handleOrderExport() {
         let queryStr = Config.api.groupOrderExport;
-        let { status, condition } = this.$data.query;
-        let query = { status, condition };
+        let { status, condition, begin_date, end_date } = this.query;
+        let query = { status, condition, begin_date, end_date };
 
         queryStr += `?province_code=${this.province.code}`;
 
         for (let item in query) {
-          queryStr += `&${item}=${query[item]}`
+          queryStr += `&${item}=${query[item] || ''}`
         }
         window.open(queryStr);
       },
