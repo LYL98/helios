@@ -81,7 +81,7 @@
   import Table from './Table';
   import AddMerchant from './Add';
   import MerchantDetail from './Detail';
-  import {Config, Constant, DataHandle, Method} from '@/util';
+  import {Config, Constant, DataHandle, Method, Http} from '@/util';
   import {Merchant, Base} from '@/service';
 
   export default {
@@ -265,8 +265,8 @@
         this.storeQuery();
       },
       //商户列表导出
-      merchantListExport() {
-        let queryStr = Config.api.merchantExport;
+      async merchantListExport() {
+        let api = Config.api.merchantExport;
         let {is_approve, is_freeze, is_post_pay, gb_included, city_code, condition, begin_date, end_date} = this.query;
         let query = {
           is_approve,
@@ -282,11 +282,19 @@
           query.begin_date = '';
           query.end_date = '';
         }
-        queryStr += `?province_code=${this.province.code}`;
-        for (let item in query) {
-          queryStr += `&${item}=${query[item]}`
+        //判断是否可导出
+        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        let res = await Http.get(`${api}_check?province_code=${this.province.code}`, query);
+        if(res.code === 0){
+          let queryStr = `${api}?province_code=${this.province.code}`;
+          for (let item in query) {
+            queryStr += `&${item}=${query[item]}`
+          }
+          window.open(queryStr);
+        }else{
+          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        window.open(queryStr);
+        this.$store.dispatch('loading', {isShow: false});
       },
       /**
        * 根据审核状态，筛选商户列表

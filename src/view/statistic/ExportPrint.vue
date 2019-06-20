@@ -124,7 +124,7 @@ const apis = {
   "7": Config.api.orderBalanceExport,
   "8": Config.api.orderBalanceLogExport,
   "9": Config.api.orderRouteExport,
-  "10": Config.api.orderStoreExport, //已移动订单列表
+  "10": Config.api.orderStoreExport,
   "print": Config.api.orderLabelPrint
 };
 

@@ -110,7 +110,7 @@
   // import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
   import Constant from "@/util/constant";
   import { Statistic } from '@/service';
-  import { DataHandle, Config } from '@/util';
+  import { DataHandle, Config, Http } from '@/util';
   import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -239,8 +239,8 @@ export default {
       this.statisticalSumGroupBuyMember()
     },
 
-    listExport() {
-      let queryStr = Config.api.statisticalSumGroupBuyMemberExport;
+    async listExport() {
+      let api = Config.api.statisticalSumGroupBuyMemberExport;
       /*
         sort: '',
         condition: '',*/
@@ -250,11 +250,20 @@ export default {
         condition,
         sort
       };
-      queryStr += `?province_code=${this.province.code}`;
-      for (let item in query) {
-        queryStr += `&${item}=${query[item]}`
+      
+      //判断是否可导出
+      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      let res = await Http.get(`${api}_check?province_code=${this.province.code}`, query);
+      if(res.code === 0){
+        let queryStr = `${api}?province_code=${this.province.code}`;
+        for (let item in query) {
+          queryStr += `&${item}=${query[item]}`
+        }
+        window.open(queryStr);
+      }else{
+        this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
       }
-      window.open(queryStr);
+      this.$store.dispatch('loading', {isShow: false});
     },
 
     loadListDataFirstPage() {
