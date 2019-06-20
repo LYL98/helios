@@ -188,7 +188,7 @@
   } from 'element-ui';
   import { ButtonGroup, TableOperate, SelectCity } from '@/common';
   import { QueryOrder } from '@/container';
-  import {Config, DataHandle, Constant} from '@/util';
+  import {Config, DataHandle, Constant, Http} from '@/util';
   import OrderDetail from './OrderDetail';
   import AfterSaleDetail from "./AfterSaleDetail";
   import ManualDelivery from './ManualDelivery';
@@ -338,8 +338,8 @@
       },
 
       // 默认不导出详情
-      orderListExport(hasItemDetail = false) {
-        let queryStr = hasItemDetail ? Config.api.orderItemExport : Config.api.orderListExport;
+      async orderListExport(hasItemDetail = false) {
+        let api = hasItemDetail ? Config.api.orderItemExport : Config.api.orderListExport;
         let {city_code, status, pay_status, order_type, to_be_canceled, condition, begin_date, end_date, is_init} = this.query;
         let query = {
           city_code,
@@ -352,11 +352,22 @@
           end_date,
           is_init
         }
-        queryStr += `?province_code=${this.province.code}`;
-        for (let item in query) {
-          queryStr += `&${item}=${query[item]}`
+        //判断是否可导出
+        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        let res = await Http.get(`${api}_check`, {
+          province_code: this.province.code,
+          ...query
+        });
+        if(res.code === 0){
+          let queryStr = `${api}?province_code=${this.province.code}`;
+          for (let item in query) {
+            queryStr += `&${item}=${query[item]}`
+          }
+          window.open(queryStr);
+        }else{
+          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        window.open(queryStr);
+        this.$store.dispatch('loading', {isShow: false});
       },
 
       handleOrderCancel(id) {

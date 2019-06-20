@@ -133,7 +133,7 @@
     TableFinanceBalanceLog,
     TableFinanceBalanceMerchantLog
   } from '@/container';
-  import {Constant, DataHandle, Config} from '@/util';
+  import {Constant, DataHandle, Config, Http} from '@/util';
 
   export default {
     name: "BalanceList",
@@ -246,11 +246,24 @@
         this.$data.item = item;
         this.$data.dialog.isShowBalanceLog = true;
       },
-
-      handleBalanceExport() {
-        let {province_code, title} = this.$data.query;
-        let queryStr = Config.api.financeBalanceExport + '?province_code=' + province_code + '&title=' + title;
-        window.open(queryStr);
+      //导出
+      async handleBalanceExport() {
+        let {province_code, title} = this.query;
+        let api = Config.api.financeBalanceExport;
+        //判断是否可导出
+        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        let res = await Http.get(`${api}_check`, {
+          province_code: this.province.code,
+          title: title
+        });
+        if(res.code === 0){
+          let queryStr = `${api}?province_code=${this.province.code}&title=${title}`;
+          
+          window.open(queryStr);
+        }else{
+          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+        }
+        this.$store.dispatch('loading', {isShow: false});
       },
 
       handleBalanceMerchantLogExport() {

@@ -66,7 +66,7 @@
   import {Button, Pagination, Dialog} from 'element-ui';
   import {QueryPurchaseSupplier, TablePurchaseSupplier, FormPurchaseSupplier} from '@/container';
 
-  import { Config, Constant} from '@/util';
+  import { Config, Constant, Http} from '@/util';
 
   export default {
     name: "SupplierList",
@@ -154,19 +154,30 @@
         this.pruchaseSupplierQuery({query: this.$data.query});
       },
       //供应商列表导出
-      supplierListExport() {
-        let queryStr = Config.api.purchaseSupplierExport;
+      async supplierListExport() {
         let {condition, is_check, is_freeze} = this.query;
+        let api = Config.api.purchaseSupplierExport;
         let query = {
           is_check,
           is_freeze,
           condition,
         };
-        queryStr += `?province_code=${this.province.code}`;
-        for (let item in query) {
-          queryStr += `&${item}=${query[item]}`
+        //判断是否可导出
+        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        let res = await Http.get(`${api}_check`, {
+          province_code: this.province.code,
+          ...query
+        });
+        if(res.code === 0){
+          let queryStr = `${api}?province_code=${this.province.code}`;
+          for (let item in query) {
+            queryStr += `&${item}=${query[item]}`
+          }
+          window.open(queryStr);
+        }else{
+          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        window.open(queryStr);
+        this.$store.dispatch('loading', {isShow: false});
       },
       // 新增供应商
       handleAddItem() {

@@ -171,7 +171,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import { Button, Input, Table, TableColumn, Tag, Pagination, RadioGroup, RadioButton, MessageBox, Select, Option } from 'element-ui';
 import {TableOperate, ImagePreview} from '@/common';
-import { Config, Constant, DataHandle } from '@/util';
+import { Config, Constant, DataHandle, Http } from '@/util';
 import { QueryItem } from '@/container';
 import { tableMixin } from '@/mixins';
 import { Item } from '@/service';
@@ -297,8 +297,8 @@ export default {
       this.loadItemsFromFirstPage(this.query);
     },
     //商品列表导出
-    itemListExport() {
-      let queryStr = Config.api.itemExport;
+    async itemListExport() {
+      let api = Config.api.itemExport;
       let {condition, item_status, buyer_id, is_audited, is_on_sale, is_presale, is_gift, display_class_code, item_stock_lt} = this.query;
       let query = {
         condition,
@@ -312,11 +312,23 @@ export default {
         display_class_code,
         item_stock_lt
       };
-      queryStr += `?province_code=${this.province.code}`;
-      for (let item in query) {
-        queryStr += `&${item}=${query[item]}`
+      
+      //判断是否可导出
+      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      let res = await Http.get(`${api}_check`, {
+        province_code: this.province.code,
+        ...query
+      });
+      if(res.code === 0){
+        let queryStr = `${api}?province_code=${this.province.code}`;
+        for (let item in query) {
+          queryStr += `&${item}=${query[item]}`
+        }
+        window.open(queryStr);
+      }else{
+        this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
       }
-      window.open(queryStr);
+      this.$store.dispatch('loading', {isShow: false});
     },
     changQuery() {
       this.loadItemsFromFirstPage(this.query);

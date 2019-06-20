@@ -248,7 +248,7 @@
   import { mapGetters } from 'vuex';
   import { Dialog, Row, Col, Button, Input, Select, Option, Table, TableColumn, Tag, DatePicker, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
-  import { Constant, Config, DataHandle } from '@/util';
+  import { Constant, Config, DataHandle, Http } from '@/util';
   import { Group } from "@/service";
   import { tableMixin } from "@/mixins";
   import OrderAllShip from './OrderAllShip';
@@ -330,6 +330,8 @@
           province_code: this.province.code,
           status: '',
           condition: '',
+          begin_date: '',
+          end_date: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
         }
@@ -457,17 +459,27 @@
         });
       },
 
-      handleOrderExport() {
-        let queryStr = Config.api.groupOrderExport;
+      async handleOrderExport() {
+        let api = Config.api.groupOrderExport;
         let { status, condition, begin_date, end_date } = this.query;
         let query = { status, condition, begin_date, end_date };
 
-        queryStr += `?province_code=${this.province.code}`;
-
-        for (let item in query) {
-          queryStr += `&${item}=${query[item] || ''}`
+        //判断是否可导出
+        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        let res = await Http.get(`${api}_check`, {
+          province_code: this.province.code,
+          ...query
+        });
+        if(res.code === 0){
+          let queryStr = `${api}?province_code=${this.province.code}`;
+          for (let item in query) {
+            queryStr += `&${item}=${query[item]}`
+          }
+          window.open(queryStr);
+        }else{
+          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        window.open(queryStr);
+        this.$store.dispatch('loading', {isShow: false});
       },
 
       handleOrderCancel(id) {

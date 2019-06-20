@@ -67,7 +67,7 @@
   import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message, Popover } from 'element-ui';
   import { OmissionText } from '@/common';
-  import { Constant, Config } from '@/util';
+  import { Constant, Config, Http } from '@/util';
   import { Item } from '@/service';
   export default {
     name: "TableMarketingCouponLog",
@@ -108,10 +108,22 @@
     },
     methods: {
       //列表导出
-      listExport() {
-        let queryStr = Config.api.itemCouponList;
-        queryStr += `?province_code=${this.province.code}&coupon_id=${this.query.coupon_id}`;
-        window.open(queryStr);
+      async listExport() {
+        let api = Config.api.itemCouponListExport;
+        //判断是否可导出
+        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        let res = await Http.get(`${api}_check`, {
+          province_code: this.province.code,
+          coupon_id: this.query.coupon_id
+        });
+        if(res.code === 0){
+          let queryStr = `${api}?province_code=${this.province.code}&coupon_id=${this.query.coupon_id}`;
+          
+          window.open(queryStr);
+        }else{
+          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+        }
+        this.$store.dispatch('loading', {isShow: false});
       },
 
       cellMouseEnter(row, column, cell, event) {

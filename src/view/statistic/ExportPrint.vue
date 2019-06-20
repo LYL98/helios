@@ -123,8 +123,8 @@ const apis = {
   "6": Config.api.orderAftersaleExport,
   "7": Config.api.orderBalanceExport,
   "8": Config.api.orderBalanceLogExport,
-  "9": Config.api.OrderRouteExport,
-  "10": Config.api.OrderStoreExport,
+  "9": Config.api.orderRouteExport,
+  "10": Config.api.orderStoreExport,
   "print": Config.api.orderLabelPrint
 };
 

@@ -127,7 +127,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { Button, Badge, Input, Select, Option, Table, TableColumn, MessageBox, Pagination, Tag, DatePicker } from 'element-ui';
 import { OmissionText, SelectCity, TableOperate } from '@/common';
 import { QueryOrderAfterSale } from "@/container";
-import { Config, DataHandle, Constant } from '@/util';
+import { Config, DataHandle, Constant, Http } from '@/util';
 import AfterSaleDetail from './AfterSaleDetail';
 import OrderDetail from './OrderDetail';
 import { tableMixin } from '@/mixins';
@@ -232,8 +232,9 @@ export default {
     myCallBack(res){
       this.orderAfterSaleQuery(this.query);
     },
-    afterSaleListExport() {
-      let queryStr = Config.api.afterSaleListExport + `?province_code=${this.province.code}`;
+    //导出
+    async afterSaleListExport() {
+      let api = Config.api.afterSaleListExport;
       let {city_code, status, opt_type, condition, item, begin_date, end_date} = this.query;
       let query = {
         city_code,
@@ -244,10 +245,23 @@ export default {
         begin_date,
         end_date
       }
-      for (let item in query) {
-        queryStr += `&${item}=${query[item]}`
+      
+      //判断是否可导出
+      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      let res = await Http.get(`${api}_check`, {
+        province_code: this.province.code,
+        ...query
+      });
+      if(res.code === 0){
+        let queryStr = `${api}?province_code=${this.province.code}`;
+        for (let item in query) {
+          queryStr += `&${item}=${query[item]}`
+        }
+        window.open(queryStr);
+      }else{
+        this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
       }
-      window.open(queryStr);
+      this.$store.dispatch('loading', {isShow: false});
     },
     ...mapActions(['orderAfterSaleQuery', 'orderShowHideAfterSaleDetail', 'orderShowHideDetail'])
   }

@@ -29,10 +29,6 @@ export default {
     orderShip(data) {
       return Http.post(Config.api.orderShip, data);
     },
-    //导出订单商品列表
-    orderItemExport(data) {
-        return Http.get(Config.api.orderItemExport, data);
-    },
     //修改订单价格
     orderPriceUpdate(data){
         return Http.post(Config.api.orderPriceUpdate, data);

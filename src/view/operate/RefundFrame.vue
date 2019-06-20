@@ -256,7 +256,7 @@
   import {ButtonGroup, QueryItem, TableOperate, CollapseQuery, OmissionText, ToPrice} from '@/common';
   import {SelectLine, SelectCity} from '@/container';
   import {Operate} from '@/service';
-  import {Config, Constant, DataHandle} from '@/util';
+  import {Config, Constant, DataHandle, Http} from '@/util';
   import { tableMixin } from "@/mixins";
   import RefundAddStore from './RefundAddStore';
 
@@ -406,8 +406,8 @@
         this.$refs['store_title'].currentValue = '';
       },
 
-      returnFrameListExport() {
-        let queryStr = Config.api.operateRefundFrameExport;
+      async returnFrameListExport() {
+        let api = Config.api.operateRefundFrameExport;
         let {line_code, city_code, store_title, status, begin_date, end_date} = this.query;
         let query = {
           line_code,
@@ -421,11 +421,23 @@
           query.begin_date = '';
           query.end_date = '';
         }
-        queryStr += `?province_code=${this.province.code}`;
-        for (let item in query) {
-          queryStr += `&${item}=${query[item]}`
+        
+        //判断是否可导出
+        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        let res = await Http.get(`${api}_check`, {
+          province_code: this.province.code,
+          ...query
+        });
+        if(res.code === 0){
+          let queryStr = `${api}?province_code=${this.province.code}`;
+          for (let item in query) {
+            queryStr += `&${item}=${query[item]}`
+          }
+          window.open(queryStr);
+        }else{
+          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        window.open(queryStr);
+        this.$store.dispatch('loading', {isShow: false});
       },
 
       async listQuery() {

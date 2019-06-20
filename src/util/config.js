@@ -38,8 +38,8 @@ const Config = (() => {
       orderLabelPrint: apiM + '/order/label/print', //打印商品标签(打印)
       orderBalanceExport: apiM + '/balance/export', //商户余额导出
       orderBalanceLogExport: apiM + '/balance/log/export', //商户余额流水
-      OrderRouteExport: apiM + '/order/line/export', //线路导出
-      OrderStoreExport: apiM + '/order/store/export', //门店分货表
+      orderRouteExport: apiM + '/order/line/export', //线路导出
+      orderStoreExport: apiM + '/order/store/export', //门店分货表
 
       orderQuery: apiM + '/order/query', //订单列表
       orderPriceUpdate: apiM + '/order/price/update', //修改订单价格
@@ -88,7 +88,7 @@ const Config = (() => {
       itemCouponAutoDis: apiM + '/coupon/auto/dis', // 自动发放优惠券状态切换
       itemCouponDistributeLog: apiM + '/coupon/distribute/log/query', // 优惠券发放记录
       itemCouponDistributeStatistic: apiM + '/coupon/distribute/merchants/query', // 优惠券发放记录
-      itemCouponList: apiM + '/coupon/distribute/log/export', //优惠券导出
+      itemCouponListExport: apiM + '/coupon/distribute/log/export', //优惠券导出
 
       // 团购商品
       groupBuyQuery: apiM + '/gb_activity/query',  //团购列表
