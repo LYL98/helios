@@ -330,6 +330,8 @@
           province_code: this.province.code,
           status: '',
           condition: '',
+          begin_date: '',
+          end_date: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
         }
