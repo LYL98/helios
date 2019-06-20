@@ -55,7 +55,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import { Form, FormItem, DatePicker, Button, Dialog } from 'element-ui';
-  import { DataHandle, Config, Constant } from '@/util';
+  import { DataHandle, Config, Constant, Http } from '@/util';
 
   export default {
     name: "FormFinanceBalanceMerchantLogExport",
@@ -84,11 +84,19 @@
       }
     },
     methods: {
-      submit() {
-        let queryStr = Config.api.financeBalanceMerchantLogExport + '?province_code=' + this.province.code;
-        queryStr += '&begin_date=' + this.pickerValue[0];
-        queryStr += '&end_date=' + this.pickerValue[1];
-        window.open(queryStr);
+      async submit() {
+        let api = Config.api.financeBalanceMerchantLogExport;
+        //判断是否可导出
+        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        let res = await Http.get(`${api}_check?province_code=${this.province.code}&begin_date=${this.pickerValue[0]}&end_date=${this.pickerValue[0]}`, {});
+        if(res.code === 0){
+          let queryStr = `${api}?province_code=${this.province.code}&begin_date=${this.pickerValue[0]}&end_date=${this.pickerValue[0]}`;
+          
+          window.open(queryStr);
+        }else{
+          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+        }
+        this.$store.dispatch('loading', {isShow: false});
       },
       handleClose() {
         this.$props.close();

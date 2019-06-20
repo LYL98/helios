@@ -10,9 +10,6 @@ export default {
   balanceLogQuery(data) {
     return Http.get(Config.api.financeBalanceLogQuery, data);
   },
-  balanceExport(data) {
-    return Http.get(Config.api.financeBalanceExport, data);
-  },
   balanceMerchantLogExport(data) {
     return Http.get(Config.api.financeBalanceMerchantLogExport, data);
   },

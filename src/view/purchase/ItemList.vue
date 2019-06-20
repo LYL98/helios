@@ -102,7 +102,7 @@
   import { mapGetters, mapActions } from 'vuex';
   import { Button, Pagination, Dialog } from 'element-ui';
   import { ToPrice } from '@/common';
-  import {Constant, DataHandle, Config} from '@/util';
+  import {Constant, DataHandle, Config, Http} from '@/util';
   import { QueryPurchaseItem, TablePurchaseItem, FormPurchaseItemAdd, FormPurchaseItemModify, FormPurchaseItemHighAuthor } from '@/container';
 
   export default {
@@ -194,8 +194,8 @@
         this.dialog.isShowAddItem = true;
       },
       //采购商品列表导出
-      supplierItemListExport() {
-        let queryStr = Config.api.purchaseItemExport;
+      async supplierItemListExport() {
+        let api = Config.api.purchaseItemExport;
         let {supplier_name, item_condition, status, begin_date, end_date, buyer_id} = this.query;
         let query = {
           supplier_name,
@@ -209,11 +209,19 @@
           query.begin_date = '';
           query.end_date = '';
         }
-        queryStr += `?province_code=${this.province.code}`;
-        for (let item in query) {
-          queryStr += `&${item}=${query[item]}`
+        //判断是否可导出
+        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        let res = await Http.get(`${api}_check?province_code=${this.province.code}`, query);
+        if(res.code === 0){
+          let queryStr = `${api}?province_code=${this.province.code}`;
+          for (let item in query) {
+            queryStr += `&${item}=${query[item]}`
+          }
+          window.open(queryStr);
+        }else{
+          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        window.open(queryStr);
+        this.$store.dispatch('loading', {isShow: false});
       },
       handleAddSubmit(entity_dicts) {
         this.$data.formSending = true;
