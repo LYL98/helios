@@ -164,7 +164,10 @@
         };
         //判断是否可导出
         this.$store.dispatch('loading', {isShow: true, isWhole: true});
-        let res = await Http.get(`${api}_check?province_code=${this.province.code}`, query);
+        let res = await Http.get(`${api}_check`, {
+          province_code: this.province.code,
+          ...query
+        });
         if(res.code === 0){
           let queryStr = `${api}?province_code=${this.province.code}`;
           for (let item in query) {

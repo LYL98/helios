@@ -252,7 +252,10 @@
         let api = Config.api.financeBalanceExport;
         //判断是否可导出
         this.$store.dispatch('loading', {isShow: true, isWhole: true});
-        let res = await Http.get(`${api}_check?province_code=${this.province.code}&title=${title}`, {});
+        let res = await Http.get(`${api}_check`, {
+          province_code: this.province.code,
+          title: title
+        });
         if(res.code === 0){
           let queryStr = `${api}?province_code=${this.province.code}&title=${title}`;
           

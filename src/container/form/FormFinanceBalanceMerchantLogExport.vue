@@ -88,7 +88,11 @@
         let api = Config.api.financeBalanceMerchantLogExport;
         //判断是否可导出
         this.$store.dispatch('loading', {isShow: true, isWhole: true});
-        let res = await Http.get(`${api}_check?province_code=${this.province.code}&begin_date=${this.pickerValue[0]}&end_date=${this.pickerValue[0]}`, {});
+        let res = await Http.get(`${api}_check`, {
+          province_code: this.province.code,
+          begin_date: this.pickerValue[0],
+          end_date: this.pickerValue[1]
+        });
         if(res.code === 0){
           let queryStr = `${api}?province_code=${this.province.code}&begin_date=${this.pickerValue[0]}&end_date=${this.pickerValue[0]}`;
           
