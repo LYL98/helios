@@ -13,8 +13,8 @@
       <div class="process-result">
         <li class="process-title">
             <span class="item">商户等级：{{ detail.merchant_grade_code || '无' }}</span>
-            <span class="item">商户过去7天退赔率：{{detail.aftersale_rate === null ? '-' : (detail.aftersale_rate / 10) + '%'}}</span>
-            <span class="item">该商品（同发货日期）所有客户提报次数：{{detail.merchant_as_same_item}} 次</span>
+            <span class="item" style="width: 300px;">商户过去7天退赔率：{{detail.aftersale_rate === null ? '-' : (detail.aftersale_rate / 10) + '%'}}</span>
+            <span class="item" style="width: 470px;">该商品（同发货日期）所有客户提报次数/销售人次：{{detail.merchant_as_same_item}} 次 / {{detail.distinct_merchant}} 人次</span>
         </li>
         <h6 class="title">处理结果</h6>
         <ul v-if="detail.status === 'close'">
