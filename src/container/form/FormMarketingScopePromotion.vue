@@ -231,7 +231,7 @@
       async itemScopePromotionRepeat(value, callback) {
         let res = await Item.scopePromotionRepeat({province_code: this.province.code, time_start: value[0], time_end: value[1]});
         if (res.code === 0) {
-          if (res.data.length === 0) {
+          if (!res.data) {
             callback();
           } else {
             callback(new Error('当前时间段已经存在全场营销活动'));
