@@ -68,7 +68,8 @@ export default {
   computed: mapGetters({
     loading: 'loading',
     isShowAddEdit: 'bannerIsShowAddEdit',
-    bannerDetail: 'bannerDataDetail'
+    bannerDetail: 'bannerDataDetail',
+    province: 'globalProvince'
   }),
   created: function() {
 
@@ -100,8 +101,8 @@ export default {
 
       rules: {
         images: [
-          { validator: validImages, trigger: 'change' },
-          { required: true, message: '请上传图片', trigger: 'change' }
+          //{ validator: validImages, trigger: 'change' },
+          { required: true, type: 'array', message: '请上传图片', trigger: 'change' }
         ],
         rank: [
           { required: false},
@@ -216,7 +217,10 @@ export default {
             return false
           }
           that.systemBannerAddEdit({
-            data: detail,
+            data: {
+              ...detail,
+              province_code: that.province.code
+            },
             callback: (res)=>{
               that.$attrs.callback();//回调
               that.cancelAddEdit();

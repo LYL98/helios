@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h2 style="margin-bottom: 20px; font-weight: 300; background-color: #fff; padding: 16px 20px;">编辑商品统一描述</h2>
+    <div style="margin-top: 20px; font-weight: bold; background-color: #fff; padding:0 20px;">编辑商品统一描述</div>
     <div style="background-color: #fff; padding: 16px 20px;">
       <div style="max-width: 960px;">
         <el-form :model="item" :rules="rules" ref="ruleForm">
           <el-form-item prop="content">
-            <div :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - offsetHeight + 'px'}">
+            <div :style="{ overflowY: 'auto', overflowX: 'auto', maxHeight: '500px'}">
               <my-quill-editor v-model="item.content"></my-quill-editor>
             </div>
           </el-form-item>
@@ -21,12 +21,11 @@
 <script>
   import { Form, FormItem, Button, Message, MessageBox } from 'element-ui';
   import { QuillEditor } from '@/common';
-  import { BasicData } from '@/service';
   import { mapGetters } from 'vuex';
-  import { Constant } from '@/util';
+  import { Constant, Config, Http } from '@/util';
 
   export default {
-    name: "ItemCommonDescription",
+    name: "FormSystemSettingItemCommonDes",
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
@@ -47,7 +46,8 @@
       }
     },
     computed: mapGetters({
-      windowHeight: 'windowHeight'
+      windowHeight: 'windowHeight',
+      province: 'globalProvince'
     }),
     created() {
       // 从后端拉取content，将获取到的content 赋值给 content。
@@ -56,7 +56,9 @@
 
     methods: {
       async getItemCommon() {
-        let res = await BasicData.basicdataGetCommonDescription();
+        let res = await Http.get(Config.api.basicdataGetCommonDescription, {
+          province_code: this.province.code
+        });
         if (res.code === 0) {
           this.item.content = res.data;
         } else {
@@ -65,7 +67,10 @@
       },
 
       async setItemCommon(unified_description) {
-        let res = await BasicData.basicdataSetCommonDescription({unified_description});
+        let res = await Http.post(Config.api.basicdataSetCommonDescription, {
+          province_code: this.province.code,
+          unified_description: unified_description
+        });
         if (res.code === 0) {
           Message.success('商品统一描述设置成功');
         } else {
@@ -74,11 +79,6 @@
       },
 
       handleSubmit() {
-        // this.$refs['ruleForm'].validate(valid => {
-        //   if (valid) {
-        //   }
-        // })
-
         if (!this.item.content) {
           MessageBox.confirm('确认清空商品统一描述?', '提示', {
             confirmButtonText: '确定',
