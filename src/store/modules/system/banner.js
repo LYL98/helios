@@ -31,9 +31,9 @@ const actions = {
       });
     }
   },
-  async systemBannerList({commit, dispatch, state}){
+  async systemBannerList({commit, dispatch, state}, {data, callback}){
     dispatch('loading', {isShow: true, isWhole: true});
-    let res = await System.systemBannerList();
+    let res = await System.systemBannerList(data);
     dispatch('loading', {isShow: false});
     if (res.code === 0) {
       commit(Types.SYSTEM_BANNER_LIST, res.data);

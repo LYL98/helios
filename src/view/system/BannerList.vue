@@ -98,7 +98,8 @@
     computed: mapGetters({
       auth: 'globalAuth',
       dataItem: 'bannerDataItem',
-      windowHeight: 'windowHeight'
+      windowHeight: 'windowHeight',
+      province: 'globalProvince'
     }),
     data: function () {
       return {
@@ -109,7 +110,9 @@
     },
     created: function () {
       documentTitle("设置 - Banner管理");
-      this.systemBannerList();
+      this.systemBannerList({
+        data: { province_code: this.province.code }
+      });
     },
     methods: {
       highlightRowClassName({row, rowIndex}) {
@@ -153,7 +156,9 @@
       },
       //组件回调
       myCallBack(res){
-        this.systemBannerList();
+        this.systemBannerList({
+          data: { province_code: this.province.code }
+        });
       },
       ...mapActions(['systemBannerList', 'systemBannerShowHideAddEdit', 'systemBannerDelete', 'systemBannerAddEdit'])
     }

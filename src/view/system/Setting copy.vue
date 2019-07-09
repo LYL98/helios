@@ -122,6 +122,25 @@
             </el-form-item>
           </el-form>
         </div>
+        <div v-else-if="dialogSettingItem.settingType === 'operating'">
+          <!--营业设置-->
+          <el-form label-position="right"
+                   class="custom-form-operating-config"
+                   label-width="100px" :model="orderTime" :rules="orderTimeRules" ref="ruleForm2">
+            <el-form-item :label="dialogSettingItem.content[0].name" prop="orderTimeRange">
+              <el-time-picker
+                is-range
+                size="small"
+                v-model="orderTime.orderTimeRange"
+                range-separator="至"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
+                value-format="HH:mm:ss"
+                placeholder="选择时间范围">
+              </el-time-picker>
+            </el-form-item>
+          </el-form>
+        </div>
         <div v-else-if="dialogSettingItem.settingType === 'order'">
           <!--订单确认设置-->
           <el-form
@@ -162,6 +181,20 @@
                 <el-radio border size="small" label="merchant">是</el-radio>
                 <el-radio border size="small" label="third_party">否</el-radio>
               </el-radio-group>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div v-else-if="dialogSettingItem.settingType === 'advert'">
+          <!--广告设置-->
+          <el-form
+            style="margin-left: 20px"
+            label-position="right"
+            class="custom-form-operating-config"
+            :model="advert"
+            :rules="adRules"
+            ref="adRuleForm">
+            <el-form-item label="广告语" prop="ad">
+              <el-input size="small" v-model="advert.ad" style="width: 270px" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -222,6 +255,9 @@ export default {
     that.systemBrandGet((brandInfo) => {
       that.updateSettingItemsInfo('brand', brandInfo);
     });
+    that.basicdataAdGet((advert) => {
+      that.updateSettingItemsInfo('advert', advert);
+    })
   },
   computed: mapGetters({
     auth: 'globalAuth',
@@ -298,7 +334,7 @@ export default {
             },
             {
               name: '品牌名',
-              value: '蒲公英',
+              value: '前海农交所',
               type: 'text'
             },
             {
@@ -330,6 +366,17 @@ export default {
           ]
         },
         {
+          title: '营业时间设置',
+          settingType: 'operating',
+          content: [
+            {
+              name: '营业时间',
+              value: '---',
+              type: 'text'
+            }
+          ]
+        },
+        {
           title: '订单确认设置',
           settingType: 'order',
           content: [
@@ -352,6 +399,17 @@ export default {
             }
           ]
         },
+        {
+          title: '广告设置',
+          settingType: 'advert',
+          content: [
+            {
+              name: '广告语',
+              value: '巨峰葡萄新品优惠',
+              type: 'text'
+            }
+          ]
+        }
       ],
       confirmTime: {
         is_auto_confirmed: '1',
@@ -372,6 +430,9 @@ export default {
         brand_icon: [],
         complaint_hotline: '',
         qr_code: []
+      },
+      advert: {
+        ad: ''
       },
       confirmTimeRules:{
         confirm_time: [
@@ -414,6 +475,12 @@ export default {
           {required: true, message: '请上传图片', trigger: 'change'}
         ],
       },
+      adRules: {
+        ad: [
+          {required: true, message: '广告语不能为空', trigger: 'change'},
+          { max: 10, message: '广告语不能超过10个字符', trigger: 'blur' },
+        ]
+      }
     }
   },
   methods: {
@@ -453,6 +520,10 @@ export default {
           that.basicdataShipTypeGet((shipType) => {
           });
           break;
+        case 'advert':
+          that.basicdataAdGet((shipType) => {
+          });
+          break;
       }
     },
 
@@ -462,7 +533,7 @@ export default {
     },
     onConfirm(item) {
       let that = this;
-      let {orderTime, deliveryInfo, confirmTime, shipType, brandInfo} = that;
+      let {orderTime, deliveryInfo, confirmTime, shipType, brandInfo, advert} = that;
       switch (item.settingType) {
         case 'brand':
           that.submitBrandInfo(() => {
@@ -476,6 +547,12 @@ export default {
             that.updateSettingItemsInfo('delivery', deliveryInfo);
           });
           break;
+        case 'operating':
+          that.submitOrderTime(() => {
+            that.onCancelDialog();
+            that.updateSettingItemsInfo('operating', orderTime);
+          });
+          break;
         case 'order':
           that.submitConfirmTime(() => {
             that.onCancelDialog();
@@ -486,6 +563,12 @@ export default {
           that.basicdataShipTypeSet(() => {
             that.onCancelDialog();
             that.updateSettingItemsInfo('shipping', shipType);
+          });
+          break;
+        case 'advert':
+          that.submitAdvert(() => {
+            that.onCancelDialog();
+            that.updateSettingItemsInfo('advert', advert);
           });
           break;
       }
@@ -510,17 +593,24 @@ export default {
           settingItems[1].content[0].value = '全场满' + data.discount_delivery_line + '元，免运费';
           settingItems[1].content[1].value = data.delivery_price + '元';
           break;
+        case 'operating':
+          //运营时间段设置
+          settingItems[2].content[0].value = data.orderTimeRange[0] + ' 至 ' + data.orderTimeRange[1];
+          break;
         case 'order':
           //订单确认方式设置
-          settingItems[2].content[0].value = data.is_auto_confirmed === '1' ? '自动确认和手动确认' : '手动确认';
+          settingItems[3].content[0].value = data.is_auto_confirmed === '1' ? '自动确认和手动确认' : '手动确认';
           if (data.is_auto_confirmed === '1') {
-            settingItems[2].content[0].appendix = '(截单时间: ' + data.confirm_time + ')';
+            settingItems[3].content[0].appendix = '(截单时间: ' + data.confirm_time + ')';
           } else {
-            settingItems[2].content[0].appendix = null;
+            settingItems[3].content[0].appendix = null;
           }
           break;
         case 'shipping':
-          settingItems[3].content[0].value = data.ship_type === 'merchant' ? '是' : '否';
+          settingItems[4].content[0].value = data.ship_type === 'merchant' ? '是' : '否';
+          break;
+        case 'advert':
+          settingItems[5].content[0].value = data.ad;
           break;
       }
     },
@@ -730,6 +820,34 @@ export default {
         MessageBox.alert(res.message, '提示');
       }
     },
+
+    //设置广告语
+    async basicdataAdGet(callback) {
+      let that = this;
+      let { advert } = that;
+      let res = await System.basicdataAdGet();
+      if (res.code === 0) {
+        advert.ad = res.data;
+        typeof callback === 'function' && callback(advert);
+      }
+    },
+    //获取广告语
+    async basicdataAdSet(callback) {
+      let that = this;
+      let { advert } = that;
+      let res = await System.basicdataAdSet({
+        ad: advert.ad,
+      });
+      if (res.code === 0) {
+        Notification.success({
+          title: '提示',
+          message: '广告语设置成功'
+        });
+        typeof callback === 'function' && callback();
+      }else{
+        MessageBox.alert(res.message, '提示');
+      }
+    },
   },
 };
 </script>
@@ -788,4 +906,3 @@ export default {
   }
 
 </style>
-

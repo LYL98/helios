@@ -68,7 +68,8 @@ export default {
   computed: mapGetters({
     loading: 'loading',
     isShowAddEdit: 'bannerIsShowAddEdit',
-    bannerDetail: 'bannerDataDetail'
+    bannerDetail: 'bannerDataDetail',
+    province: 'globalProvince'
   }),
   created: function() {
 
@@ -100,8 +101,8 @@ export default {
 
       rules: {
         images: [
-          { validator: validImages, trigger: 'change' },
-          { required: true, message: '请上传图片', trigger: 'change' }
+          //{ validator: validImages, trigger: 'change' },
+          { required: true, type: 'array', message: '请上传图片', trigger: 'change' }
         ],
         rank: [
           { required: false},
@@ -216,7 +217,10 @@ export default {
             return false
           }
           that.systemBannerAddEdit({
-            data: detail,
+            data: {
+              ...detail,
+              province_code: that.province.code
+            },
             callback: (res)=>{
               that.$attrs.callback();//回调
               that.cancelAddEdit();
@@ -233,12 +237,13 @@ export default {
     bannerDetail: {
       deep: true,
       handler: function (a, b) {
-        let that = this;
-        that.detail = JSON.parse( JSON.stringify( a ) );
-        that.linkName(that.detail.url, type => that.bannerType = type);
-        that.detail.images = [];
-        if (that.detail.id && that.detail.image && that.detail.image !== '') {
-          that.detail.images.push(that.detail.image)
+        let { detail } = this;
+        let d = JSON.parse( JSON.stringify( a ) );
+        this.linkName(d.url, type => this.bannerType = type);
+        if (d.id && d.image && d.image !== '') {
+          detail.images = [d.image];
+        }else{
+          detail.images = [];
         }
       }
     }

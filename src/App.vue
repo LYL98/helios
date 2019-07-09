@@ -188,9 +188,6 @@
                 <el-menu-item index="BasicDataMerchantOuterTagsList" :route="{name: 'BasicDataMerchantOuterTagsList'}"
                               v-if="auth.isAdmin || auth.BasicDataMerchantOuterTagsList"><span>商户外标签列表</span>
                 </el-menu-item>
-                <el-menu-item index="BasicDataItemCommonDescription" :route="{name: 'BasicDataItemCommonDescription'}"
-                              v-if="auth.isAdmin || auth.BasicDataItemCommonDescription"><span>商品统一描述</span>
-                </el-menu-item>
               </el-submenu>
 
               <el-submenu index="System" v-if="auth.isAdmin || auth.System">
@@ -204,6 +201,8 @@
                               v-if="auth.isAdmin || auth.SystemOperatorList"><span>运营人员列表</span></el-menu-item>
                 <el-menu-item index="SystemSetting" :route="{name: 'SystemSetting'}"
                               v-if="auth.isAdmin || auth.SystemSetting"><span>运营配置</span></el-menu-item>
+                <el-menu-item index="SystemSettingCustom" :route="{name: 'SystemSettingCustom'}"
+                              v-if="auth.isAdmin || auth.SystemSettingCustom"><span>个性化设置</span></el-menu-item>
                 <el-menu-item index="SystemBannerList" :route="{name: 'SystemBannerList'}"
                               v-if="auth.isAdmin || auth.SystemBannerList"><span>Banner管理</span></el-menu-item>
               </el-submenu>

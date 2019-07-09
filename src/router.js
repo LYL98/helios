@@ -245,11 +245,6 @@ const router = new Router({
       name: 'BasicDataMerchantOuterTagsList',
       component: () => import(/* webpackChunkName: "basicdata" */ '@/view/basicdata/MerchantOuterTagsList')
     },
-    {
-      path: '/basicdata/item/common/description',
-      name: 'BasicDataItemCommonDescription',
-      component: () => import(/* webpackChunkName: "basicdata" */ '@/view/basicdata/ItemCommonDescription')
-    },
     /*系统设置*/
     {
       path: '/system/role/list',
@@ -265,6 +260,11 @@ const router = new Router({
       path: '/system/setting',
       name: 'SystemSetting',
       component: () => import(/* webpackChunkName: "system" */ '@/view/system/Setting')
+    },
+    {
+      path: '/system/setting/custom',
+      name: 'SystemSettingCustom',
+      component: () => import(/* webpackChunkName: "system" */ '@/view/system/SettingCustom')
     },
     {
       path: '/system/banner/list',

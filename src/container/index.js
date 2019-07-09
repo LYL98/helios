@@ -77,5 +77,8 @@ export {
   FormFinanceBalanceEdit,
   FormFinanceBalanceMerchantLogExport,
   FormFinanceApproveEdit,
-  FormGroupBuy
+  FormGroupBuy,
+  FormSystemSettingAd,
+  FormSystemSettingOperating,
+  FormSystemSettingItemCommonDes
 } from './form';
