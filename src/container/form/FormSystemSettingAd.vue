@@ -19,8 +19,8 @@
       <div>
         <!--广告设置-->
         <el-form  label-width="120px" style="width: 400px;" :model="itemData" :rules="rules" ref="ruleForm">
-          <el-form-item label="广告语" prop="inputAd">
-            <el-input size="small" maxLength="10" v-model="itemData.inputAd" style="width: 270px" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
+          <el-form-item label="广告语" prop="input_ad">
+            <el-input size="small" maxLength="10" v-model="itemData.input_ad" style="width: 270px" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -44,11 +44,11 @@
     data() {
       return{
         itemData: {
-          inputAd: '',
+          input_ad: '',
           ad: ''
         },
         rules: {
-          inputAd: [
+          input_ad: [
             { required: true, message: '广告语不能为空', trigger: 'change' },
           ]
         }
@@ -64,30 +64,30 @@
     },
     methods: {
       //获取广告语
-      async basicdataAdGet(callback) {
+      async basicdataAdGet() {
         let res = await Http.get(Config.api.basicdataAd, {
           province_code: this.province.code
         });
         if (res.code === 0) {
           let { itemData } = this;
           itemData.ad = res.data;
-          itemData.inputAd = res.data;
+          itemData.input_ad = res.data;
           this.$data.itemData = itemData;
         }else{
           MessageBox.alert(res.message, '提示');
         }
       },
       //设置广告语
-      basicdataAdSet(callback) {
+      basicdataAdSet() {
         this.$refs['ruleForm'].validate((valid) => {
           if (valid) {
             (async ()=>{
               let res = await Http.post(Config.api.basicdataAd, {
                 province_code: this.province.code,
-                ad: this.itemData.inputAd,
+                ad: this.itemData.input_ad,
               });
               if (res.code === 0) {
-                this.$data.itemData.ad = this.itemData.inputAd;
+                this.basicdataAdGet();
                 Notification.success({
                   title: '提示',
                   message: '广告语设置成功'

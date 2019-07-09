@@ -237,12 +237,13 @@ export default {
     bannerDetail: {
       deep: true,
       handler: function (a, b) {
-        let that = this;
-        that.detail = JSON.parse( JSON.stringify( a ) );
-        that.linkName(that.detail.url, type => that.bannerType = type);
-        that.detail.images = [];
-        if (that.detail.id && that.detail.image && that.detail.image !== '') {
-          that.detail.images.push(that.detail.image)
+        let { detail } = this;
+        let d = JSON.parse( JSON.stringify( a ) );
+        this.linkName(d.url, type => this.bannerType = type);
+        if (d.id && d.image && d.image !== '') {
+          detail.images = [d.image];
+        }else{
+          detail.images = [];
         }
       }
     }

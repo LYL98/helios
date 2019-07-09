@@ -74,7 +74,7 @@
     },
     methods: {
       //获取营业
-      async basicdataOrderTimeGet(callback) {
+      async basicdataOrderTimeGet() {
         let res = await Http.get(Config.api.basicdataOrderTime, {
           province_code: this.province.code
         });
@@ -89,7 +89,7 @@
         }
       },
       //设置营业
-      basicdataOrderTimeSet(callback) {
+      basicdataOrderTimeSet() {
         this.$refs['ruleForm'].validate((valid) => {
           if (valid) {
             (async ()=>{
@@ -100,11 +100,7 @@
                 order_end_time: itemData.orderTimeRange[1]
               });
               if (res.code === 0) {
-                this.$data.itemData = {
-                  order_start_time: itemData.orderTimeRange[0],
-                  order_end_time: itemData.orderTimeRange[1],
-                  orderTimeRange: itemData.orderTimeRange
-                }
+                this.basicdataOrderTimeGet();
                 Notification.success({
                   title: '提示',
                   message: '营业时间设置成功'
