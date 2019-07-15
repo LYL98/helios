@@ -94,20 +94,9 @@
             <el-table-column label="单价" width="170">
               <!-- 未享受单品满折扣的情况 原价 <= 折扣后的价格 -->
               <template slot-scope="scope">
-                <ul v-if="scope.row.item_price_sale_piece <= scope.row.item_price_discount">
+                <ul>
                   <li>
                     &yen;{{returnPrice(scope.row.item_price_sale_piece)}} / 件<span v-if="scope.row.frame_code !== ''">(含框)</span>
-                  </li>
-                </ul>
-                <ul v-else>
-                  <li style="text-decoration: line-through;">
-                    &yen;{{returnPrice(scope.row.item_price_sale_piece)}} / 件<span v-if="scope.row.frame_code !== ''">(含框)</span>
-                  </li>
-                  <li>
-                    &yen;{{returnPrice(scope.row.item_price_discount)}} / 件<span v-if="scope.row.frame_code !== ''">(含框)</span>
-                  </li>
-                  <li>
-                    (单品满折活动)
                   </li>
                 </ul>
               </template>
