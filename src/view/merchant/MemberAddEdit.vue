@@ -87,7 +87,7 @@ export default {
         ],
         phone: [
           { required: true, message: '登录手机不能为空', trigger: 'change' },
-          { pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/, message: '请输入11位手机号码', trigger: 'blur' }
+          { pattern: Verification.testStrs.checkMobile, message: '请输入11位手机号码', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '登录密码不能为空', trigger: 'change' },

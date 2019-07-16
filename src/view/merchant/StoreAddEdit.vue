@@ -149,7 +149,7 @@
           ],
           phone: [
             { required: true, message: '联系方式不能为空', trigger: 'change' },
-            { pattern: /^1[3|4|5|6|7|8|9][0-9]{9}$/, message: '请输入11位手机号码', trigger: 'blur' }
+            { pattern: Verification.testStrs.checkMobile, message: '请输入11位手机号码', trigger: 'blur' }
           ],
           address: [
             { required: true, message: '收货地址不能为空', trigger: 'change' },

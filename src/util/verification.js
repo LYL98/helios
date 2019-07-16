@@ -10,7 +10,7 @@ export default {
     isPrice: /^[0-9]*\.*[0-9]{0,2}$/,
     isWeight: /^[0-9]*\.*[0-9]{0,1}$/,
     isInteger: /^[-]{0,1}[0-9]{1,}$/,
-    checkMobile: /^1[3|4|5|6|7|8|9][0-9]{9}$/,
+    checkMobile: /^1\d{10}$/, ///^1[3|4|5|7|8|9][0-9]{9}$/;
     isNumber: /^[0-9]+$/,
     isEmail: /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/,
     isNumberOrAlpha: /^[0-9a-zA-Z]+$/,
@@ -62,7 +62,7 @@ export default {
     *
     */
   checkMobile: function (s) {
-    var regu = /^1[3|4|5|7|8|9][0-9]{9}$/;
+    var regu = /^1\d{10}$/; ///^1[3|4|5|7|8|9][0-9]{9}$/;
     var re = new RegExp(regu);
     if (re.test(s)) {
       return true;
