@@ -12,6 +12,8 @@
     "inspect": "vue inspect > inspect.js"
   },
   "dependencies": {
+    "@sentry/browser": "^5.5.0",
+    "@sentry/integrations": "^5.5.0",
     "echarts": "4.1.0",
     "element-ui": "2.4.11",
     "md5": "^2.2.1",
