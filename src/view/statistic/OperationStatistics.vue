@@ -178,7 +178,7 @@
         - check_chg: 称重金额
         - real_price: 订单应付金额
          order_num: 订单数量
-         item_total_price / store_num: 客单价 (订单商品金额 / 下单门店数)
+         total_delivery_item_price / store_num: 客单价 (发货金额 / 下单门店数)
          store_num: 下单门店数
          total_delivery_item_price: 发货金额
          * */
@@ -648,7 +648,7 @@
             result = that.returnPrice(cellItem.total_delivery_item_price);
             break;
           case 6:
-            result = that.returnPrice(cellItem.item_total_price / cellItem.store_num); //(订单商品金额 / 下单门店数)
+            result = that.returnPrice(cellItem.total_delivery_item_price / cellItem.store_num); //(发货金额 / 下单门店数)
             break;
           case 7:
             result = that.formatValue(cellItem.store_num);
@@ -690,7 +690,7 @@
             result = cellItem.total_delivery_item_price;
             break;
           case 6:
-            result = cellItem.item_total_price / cellItem.store_num; //(订单商品金额 / 下单门店数)
+            result = cellItem.total_delivery_item_price / cellItem.store_num; //(发货金额 / 下单门店数)
             break;
           case 7:
             result = cellItem.store_num;
