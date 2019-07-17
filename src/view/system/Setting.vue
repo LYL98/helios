@@ -205,7 +205,7 @@ export default {
   },
   created(){
     let that = this;
-    documentTitle("设置 - 运营配置");
+    ww.documentTitle("设置 - 运营配置");
 
     that.basicdataOrderTimeGet((orderTime) => {
       that.updateSettingItemsInfo('operating', orderTime);
