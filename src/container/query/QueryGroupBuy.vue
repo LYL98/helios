@@ -46,7 +46,7 @@
 <script>
   import { Row, Col, Button, Input, Select, Option } from 'element-ui';
   import { ButtonGroup, QueryItem } from '@/common';
-  import { queryMixin } from '@/mixins';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryGroupBuy",

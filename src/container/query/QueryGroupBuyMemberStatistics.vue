@@ -27,7 +27,7 @@
   import { mapGetters } from 'vuex';
   import { QueryItem, CollapseQuery, SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
   import { DataHandle } from '@/util';
-  import { queryMixin } from '@/mixins';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryGroupBuyMemberStatistics",

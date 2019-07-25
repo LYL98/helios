@@ -105,12 +105,13 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import {Table, TableColumn, Dialog, Form, FormItem, Tag} from 'element-ui';
   import {ToPrice, OmissionText, TableOperate} from '@/common';
   import {Constant, DataHandle} from '@/util';
   import { Finance } from '@/service';
-  import { tableMixin } from '@/mixins';
+  import tableMixin from './table.mixin';
+  import viewMixin from '@/view/view.mixin';
+  
   export default {
     name: "TableFinanceApprove",
     components: {
@@ -124,7 +125,7 @@
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     props: {
       data: { type: Array, required: true },
       stripe: {type: Boolean, default: true},
@@ -135,10 +136,6 @@
       itemEdit: { type: Function, required: true }
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
     },
     data() {
       return {

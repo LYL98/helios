@@ -114,7 +114,8 @@
   import {TableOperate} from '@/common';
   import {Merchant} from '@/service';
   import {DataHandle} from '@/util';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     components: {
@@ -124,7 +125,7 @@
       'el-tag': Tag,
       'my-table-operate': TableOperate,
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     props: {
       dataItem: Object, // 商户列表队列
       page: Number, // 当前查询的页码
@@ -134,13 +135,6 @@
       affirmStoreFreeze: Function, // 冻结商户 的处理函数
       affirmStoreUnFreeze: Function, // 解冻商户 的处理函数
       offsetHeight: Number // 列表偏置高度
-    },
-
-    computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
     },
 
     methods: {

@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import { Http, Config } from '@/util';
+import { MessageBox, Notification } from 'element-ui';
 
 Vue.use(Router);
 
@@ -279,33 +281,87 @@ const router = new Router({
   ]
 });
 
-//全局守卫
-/*router.beforeEach((to, from, next) => {
-  if(to.name !== 'Login' && to.name !== 'SimulateLogin' && to.name !== 'Hint'){
-    Indicator.open();
-    //判断是否登录
-    Account.getSignIsLogin().then((res)=>{
-      if(res.code === 0){
-        let rd = res.data;
-        let d = Method.getLocalStorage('appleLoginInfo');
-        if(d){
-          if(d.id !== rd.id){
-            Method.setLocalStorage('appleLoginInfo', rd);
-          }
-        }else{
-          Method.setLocalStorage('appleLoginInfo', rd);
-        }
-        next();
-        window.scrollTo(0,0);
-      }else{
-        Config.accreditLogin();
-      }
-      Indicator.close();
+let myInfo = {}, nextPage = ()=>{}, auth = {}, page = '', pageName = '';
+
+//判断是否已登录
+const getIsLogin = async ()=>{
+  let res = await Http.get(Config.api.signIsLogin, {});
+  if(res.code === 0){
+    myInfo = res.data;
+    getAuthorityList();//用户权限
+  }else if(res.code === 200){
+    router.replace({ name: "Login" });
+  }else{
+    MessageBox.alert(res.message, '提示', {
+      type: 'error'
     });
+  }
+}
+
+//路由跳转时是否有权限
+const judgeAuth = ()=>{
+  if(pageName === 'Home'){
+    return true;
+  }
+  for(let a in auth){
+    if(a === 'isAdmin'){
+      return true;
+    }else if(auth[a] === page){
+      return true;
+    }
+  }
+  return false;
+}
+
+//获取当前登录用户权限
+const getAuthorityList = ()=>{
+  let data = { permissions: [] };
+  if (myInfo) {
+      data = myInfo;
+  }
+  let a = {};
+  if(data.is_admin){
+      a.isAdmin = true;
+  }else{
+      let pl = data.permissions;
+      if (pl && pl.length > 0) {
+          for (let i = 0; i < pl.length; i++) {
+            let p = pl[i].code;
+            let url = pl[i].url;
+            a[p.toLocaleLowerCase()] = url || true;
+          }
+      }
+  }
+  auth = a;
+  Vue.use({
+    install(Vue){
+      Vue.prototype.$auth = a; //放入全局
+      Vue.prototype.$myInfo = myInfo; //放入全局
+    }
+  });
+  //如果没有权限
+  if(!judgeAuth()){
+    Notification.error({
+      title: '提示',
+      message: '您没有权限访问',
+      offset: 50
+    });
+    //router.go(-1);
+  }else{
+    nextPage();
+  }
+}
+
+//全局守卫
+router.beforeEach((to, from, next) => {
+  if(to.name !== 'Login'){
+    page = to.path;
+    pageName = to.name;
+    nextPage = next;
+    getIsLogin();
   }else{
     next();
-    window.scrollTo(0,0);
   }
-});*/
+});
 
 export default router;

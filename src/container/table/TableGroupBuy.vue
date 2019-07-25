@@ -100,11 +100,12 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import { Table, TableColumn, MessageBox, Tag } from 'element-ui';
   import {TableOperate} from '@/common';
   import { Constant, DataHandle } from '@/util';
-  import { tableMixin } from '@/mixins';
+  import tableMixin from './table.mixin';
+  import viewMixin from '@/view/view.mixin';
+  
   export default {
     name: "TableGroupBuy",
     components: {
@@ -113,7 +114,7 @@
       'el-tag': Tag,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     props: {
       data: { type: Array, required: true},
       page: { type: Number, required: true },
@@ -127,10 +128,6 @@
       edit: { type: Function, required: true },
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
     },
     created() {
       // console.log('TableGroupBuy: ', this.data)

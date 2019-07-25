@@ -31,12 +31,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      auth: 'globalAuth',
       province: "globalProvince"
     })
   },
   data() {
     return {
+      auth: this.$auth,
       componentName: 'HeadDetail',
       isShow: false,
       dataItem: [],

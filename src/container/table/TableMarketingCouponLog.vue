@@ -85,12 +85,12 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince'
       })
     },
     data() {
       return {
+        auth: this.$auth,
         query: { },
         listItem: {
           items: [],

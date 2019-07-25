@@ -134,7 +134,7 @@
   import { QueryItem } from '@/common';
   import { Constant, Config, DataHandle } from '@/util';
   import { Item } from "@/service";
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
 
   export default {
     name: "BuyLogList",

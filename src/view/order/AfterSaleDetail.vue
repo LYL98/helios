@@ -223,9 +223,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      auth: 'globalAuth',
-      windowWidth: 'windowWidth',
-      windowHeight: 'windowHeight',
       isShow: 'orderIsShowAfterSaleDetail',
       detail: 'orderAfterSaleDetail'
     }),
@@ -243,6 +240,7 @@ export default {
   },
   data(){
     return{
+      auth: this.$auth,
       tencentPath: Config.tencentPath,
       orderStatus: Constant.ORDER_STATUS,
       priceChange: Constant.PRICE_CHANGE,

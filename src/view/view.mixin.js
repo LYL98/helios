@@ -2,18 +2,18 @@
 export default {
   data() {
     return {
-      //windowHeight: 0
+      windowHeight: 0
     }
   },
   created() {
-    /*const fun = ()=>{
+    const fun = ()=>{
       let wh = window.innerHeight;
       this.$data.windowHeight = wh;
     }
     fun();
     window.onresize = () => {
       fun();
-    };*/
+    };
   },
   methods: {
     //获取当前页面的组件

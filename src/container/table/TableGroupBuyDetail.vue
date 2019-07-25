@@ -53,7 +53,6 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import { Table, TableColumn, MessageBox, Tag } from 'element-ui';
   import {TableOperate} from '@/common';
   import { Constant, DataHandle } from '@/util';
@@ -74,13 +73,11 @@
       showItem: { type: Function, required: true },
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
+      
     },
     data() {
       return {
+        auth: this.$auth,
         currentRow: {},
         statusTagType: {
           pre: 'warning',

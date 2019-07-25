@@ -201,7 +201,8 @@
   import { ButtonGroup, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
   import { Group } from "@/service";
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "MemberList",
@@ -220,12 +221,10 @@
       'my-table-operate': TableOperate,
       'my-image-preview': ImagePreview
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince',
-        windowHeight: 'windowHeight'
+        province: 'globalProvince'
       })
     },
     data() {

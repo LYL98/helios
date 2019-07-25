@@ -57,11 +57,11 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import {Table, TableColumn, MessageBox, Tag} from 'element-ui';
   import {TableOperate, ToPrice} from '@/common';
   import {Constant, DataHandle} from '@/util';
-  import { tableMixin } from '@/mixins';
+  import tableMixin from './table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "TableFinanceBalance",
@@ -72,12 +72,8 @@
       'my-table-operate': TableOperate,
       'my-to-price': ToPrice
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
     },
     props: {
       data: {type: Array, required: true},

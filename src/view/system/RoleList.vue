@@ -68,11 +68,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { Button, Checkbox, MessageBox,Tree, RadioGroup, RadioButton } from 'element-ui';
-import { Config, Constant, DataHandle } from '@/util';
+import { Http, Config, Constant, DataHandle } from '@/util';
 import RoleAddEdit from './RoleAddEdit';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: 'RoleList',
+  mixins: [viewMixin],
   components: {
     'el-button': Button,
     'el-checkbox': Checkbox,
@@ -100,11 +102,9 @@ export default {
     });
   },
   computed: mapGetters({
-    windowHeight: 'windowHeight',
     dataItem: 'systemRoleListDataItem',
     permissionList: 'systemRoleListPermissionList',
     roleDetail: 'systemRoleDetail',
-    auth: 'globalAuth',
   }),
   data(){
     return {

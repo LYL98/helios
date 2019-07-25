@@ -257,8 +257,9 @@
   import {SelectLine, SelectCity} from '@/container';
   import {Operate} from '@/service';
   import {Config, Constant, DataHandle, Http} from '@/util';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
   import RefundAddStore from './RefundAddStore';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "RefundFrame",
@@ -286,12 +287,10 @@
       'my-table-operate': TableOperate,
       'my-collapse-query': CollapseQuery
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince',
-        windowHeight: 'windowHeight'
+        province: 'globalProvince'
       }),
       multipleReturnNum: {
         get() {

@@ -141,9 +141,11 @@
   import { QueryItem, TableOperate, SelectZone } from '@/common';
   import { Statistic } from '@/service';
   import { DataHandle, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "ClientZone",
+    mixins: [viewMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -158,9 +160,7 @@
       'my-select-zone': SelectZone
     },
     computed: mapGetters({
-      auth: 'globalAuth',
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
+      province: 'globalProvince'
     }),
     data() {
       return {

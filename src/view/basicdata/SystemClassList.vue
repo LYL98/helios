@@ -48,9 +48,11 @@ import { mapGetters, mapActions } from 'vuex';
 import { Tree, Button, MessageBox } from 'element-ui';
 import { Config, Constant } from '@/util';
 import SystemClassAddEdit from './SystemClassAddEdit';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: 'SystemClassList',
+  mixins: [viewMixin],
   components: {
     'el-tree': Tree,
     'el-button': Button,
@@ -65,9 +67,7 @@ export default {
     }
   },
   computed: mapGetters({
-    dataItem: 'basicDataSystemClassListDataItem',
-    auth: 'globalAuth',
-    windowHeight: 'windowHeight'
+    dataItem: 'basicDataSystemClassListDataItem'
   }),
   data() {
     return {

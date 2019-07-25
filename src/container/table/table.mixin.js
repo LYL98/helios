@@ -5,6 +5,7 @@ import { DataHandle } from '@/util';
 export default {
   data() {
     return {
+      auth: this.$auth,
       rowIdentifier: 'id',
       currentRow: {},
       currentRowLocked: false,

@@ -58,11 +58,10 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import { Table, TableColumn, MessageBox, Tag } from 'element-ui';
   import { TableOperate } from '@/common';
   import { Config, DataHandle, Http } from '@/util';
-  import { tableMixin } from '@/mixins';
+  import tableMixin from './table.mixin';
 
   export default {
     name: "TableGroupHeadDetail",
@@ -78,12 +77,11 @@
       getPageComponents: { type: Function, require: true }, //获取页面组件
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-      }),
+      
     },
     data() {
       return {
+        
       }
     },
     methods: {

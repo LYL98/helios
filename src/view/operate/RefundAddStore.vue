@@ -140,7 +140,6 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince'
       }),
       showList: {
@@ -160,6 +159,7 @@
         editList: []
       };
       return {
+        auth: this.$auth,
         // 查询门店
         query: {},
         // 搜索完毕后，获取搜索到的城市列表storeList，

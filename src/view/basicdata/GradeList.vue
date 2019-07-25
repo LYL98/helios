@@ -93,7 +93,8 @@
   import {TableOperate} from '@/common';
   import {Config, Constant} from '@/util';
   import GradeAddEdit from './GradeAddEdit';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: 'GradeList',
@@ -108,7 +109,7 @@
       'my-grade-add-edit': GradeAddEdit,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     created() {
       documentTitle("信息 - 商户等级列表");
       this.basicDataGradeList();
@@ -118,9 +119,7 @@
       }
     },
     computed: mapGetters({
-      dataItem: 'basicDataGradeListDataItem',
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
+      dataItem: 'basicDataGradeListDataItem'
     }),
     data() {
       return {

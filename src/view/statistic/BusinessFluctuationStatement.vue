@@ -88,13 +88,14 @@ import { SelectZone } from '@/common';
 import { Statistic } from '@/service';
 import { DataHandle, Constant } from '@/util';
 import BusinessFluctuationChart from "./BusinessFluctuationChart";
-import {QueryBusinessFluctuation} from '@/container'
+import {QueryBusinessFluctuation} from '@/container';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "BusinessFluctuationStatement",
+  mixins: [viewMixin],
   computed: mapGetters({
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
+    province: 'globalProvince'
   }),
   components: {
     'el-button': Button,

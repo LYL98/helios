@@ -234,7 +234,6 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince'
       }),
       showList: {
@@ -256,6 +255,7 @@
     },
     data() {
       return {
+        auth: this.$auth,
         isShowEdit: false,  // 显示编辑区
         // 查询商品
         query: {

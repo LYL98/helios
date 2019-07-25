@@ -173,12 +173,13 @@ import { Button, Input, Table, TableColumn, Tag, Pagination, RadioGroup, RadioBu
 import {TableOperate, ImagePreview} from '@/common';
 import { Config, Constant, DataHandle, Http } from '@/util';
 import { QueryItem } from '@/container';
-import { tableMixin } from '@/mixins';
+import tableMixin from '@/container/table/table.mixin';
 import { Item } from '@/service';
 import AddEdit from './AddEdit';
 import Detail from './Detail';
 import Tags from './Tags';
 import CodeEdit from './CodeEdit';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "ItemList",
@@ -201,7 +202,7 @@ export default {
     'query-item': QueryItem,
     'my-table-operate': TableOperate
   },
-  mixins: [tableMixin],
+  mixins: [tableMixin, viewMixin],
   created() {
     let that = this;
     documentTitle('商品 - 商品列表');
@@ -217,10 +218,8 @@ export default {
     }
   },
   computed: mapGetters({
-    auth: 'globalAuth',
     dataItem: 'itemItemListDataItem',
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
+    province: 'globalProvince'
   }),
   data(){
     return {

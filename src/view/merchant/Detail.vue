@@ -220,13 +220,14 @@
       storeQuery: Function
     },
     computed: {
-      ...mapGetters({ auth: 'globalAuth', merchant_id: 'merchant_id' }),
+      ...mapGetters({ merchant_id: 'merchant_id' }),
       tableData() {
         // console.log('merchant id: ', this.merchant_id)
         return [ { merchant_id: this.merchant_id, ...this.merchantDetail } ]
       }
     },
     data: () => ({
+      auth: this.$auth,
       tencentPath: Config.tencentPath,
       merchantDetail: {
         inner_tags: [],

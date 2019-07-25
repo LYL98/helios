@@ -144,7 +144,8 @@
   import {TableOperate, QueryItem} from '@/common';
   import {Config, Constant} from '@/util';
   import LineAddEdit from './LineAddEdit';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: 'LineList',
@@ -163,12 +164,10 @@
       'my-table-operate': TableOperate,
       'my-query-item': QueryItem,
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     computed: mapGetters({
-      auth: 'globalAuth',
       dataItem: 'operateLineListDataItem',
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
+      province: 'globalProvince'
     }),
     created() {
       let that = this;
@@ -197,48 +196,6 @@
       }
     },
     methods: {
-      // handleTableMouseMove(e) {
-      //   if (e.target.alt === 'operate-icon') {
-      //     return;
-      //   }
-      //   if (this.$data.currentRowLocked) {
-      //     this.$data.currentRowLocked = false;
-      //   }
-      // },
-      //
-      // cellMouseEnter(row, column, cell, event) {
-      //   if(row.code !== this.$data.currentRow.code && !this.$data.currentRowLocked) {
-      //     this.$data.currentRow = row;
-      //   }
-      // },
-      //
-      // cellMouseLeave(row, column, cell, event) {
-      //   if (!this.$data.currentRowLocked) {
-      //     this.$data.currentRow = {};
-      //   }
-      // },
-      //
-      // handleCommandVisible(visible) {
-      //   this.$data.currentRowLocked = visible;
-      // },
-      //
-      // handleCommandClick(row) {
-      //   this.$data.currentRowLocked = true;
-      //   this.$refs['singleTable'] && this.$refs['singleTable'].setCurrentRow(row);
-      // },
-      //
-      // isEllipsis(row) {
-      //   return row.code != this.$data.currentRow.code ? 'ellipsis' : ''
-      // },
-      //
-      // highlightRowClassName({row, rowIndex}) {
-      //   if (rowIndex % 2 == 0) {
-      //     return 'stripe-row';
-      //   } else if (rowIndex % 2 != 0) {
-      //     return 'default-row'
-      //   }
-      //   return '';
-      // },
 
       indexMethod(index) {
         return (this.query.page - 1) * this.query.page_size + index + 1;

@@ -38,9 +38,11 @@
   import { Config, Verification } from '@/util';
   import {Base} from '@/service';
   import {UploadImg} from '@/common';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "BrandSettings",
+    mixins: [viewMixin],
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
@@ -51,8 +53,7 @@
     },
     computed: mapGetters({
       brand: 'brand',
-      brandService: 'brandService',
-      windowHeight: 'windowHeight'
+      brandService: 'brandService'
     }),
     data() {
       let validImages = function (rules, value, callback) {

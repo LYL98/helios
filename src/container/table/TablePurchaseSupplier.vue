@@ -102,8 +102,8 @@
   import { Table, TableColumn, Dialog, Form, FormItem, MessageBox } from 'element-ui';
   import {TableOperate, OmissionText} from '@/common';
   import { Constant, DataHandle } from '@/util';
-  import { tableMixin } from '@/mixins';
-
+  import tableMixin from './table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "TablePurchaseSupplier",
@@ -116,7 +116,7 @@
       'my-table-operate': TableOperate,
       'my-omission-text': OmissionText
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     props: {
       data: { type: Array, required: true },
       stripe: { type: Boolean, default: true },
@@ -127,10 +127,6 @@
       offsetHeight: { type: Number, required: true}
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      })
     },
     data() {
       return {

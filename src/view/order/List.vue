@@ -192,7 +192,8 @@
   import OrderDetail from './OrderDetail';
   import AfterSaleDetail from "./AfterSaleDetail";
   import ManualDelivery from './ManualDelivery';
-  import { tableMixin } from '@/mixins';
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "OrderList",
@@ -215,7 +216,7 @@
       'after-sale-detail': AfterSaleDetail,
       'query-order': QueryOrder,
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     created() {
       documentTitle('订单 - 订单列表');
       this.initQuery();
@@ -226,8 +227,6 @@
       }
     },
     computed: mapGetters({
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
       dataItem: 'orderDataItem',
       province: 'globalProvince',
       isShowDetail: 'orderIsShowDetail'

@@ -120,13 +120,13 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince',
         listItem: 'pruchaseItemListItem'
       }),
     },
     data() {
       return {
+        auth: this.$auth,
         query: {},
         items: [], // 新增的采购商品列表
         item: {}, // 需要修改的采购商品项

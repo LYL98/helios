@@ -207,7 +207,8 @@
   import {SearchRole} from '@/container';
   import { ImagePreview } from  '@/common'
   import {DataHandle} from "../../util";
-  import { tableMixin } from '@/mixins';
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
   export default {
     name: 'operatorList',
     components: {
@@ -235,7 +236,7 @@
       'my-collapse-query': CollapseQuery,
       'my-image-preview': ImagePreview,
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     created() {
       let that = this;
       documentTitle("设置 - 运营人员列表");
@@ -248,8 +249,6 @@
     },
     computed: mapGetters({
       dataItem: 'systemOperatorListDataItem',
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
       province: 'globalProvince'
     }),
     data() {

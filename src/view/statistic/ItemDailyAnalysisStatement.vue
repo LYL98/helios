@@ -148,12 +148,13 @@ import { Statistic } from '@/service';
 import { DataHandle } from '@/util';
 import { QueryItemDailyAnalysis } from '@/container'
 import Constant from "@/util/constant";
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "ItemDailyAnalysisStatement",
+  mixins: [viewMixin],
   computed: mapGetters({
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
+    province: 'globalProvince'
   }),
   components: {
     'el-button': Button,

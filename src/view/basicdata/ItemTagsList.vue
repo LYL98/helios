@@ -83,7 +83,8 @@
   import {TableOperate} from '@/common';
   import {Config, Constant} from '@/util';
   import ItemTagsAddEdit from './ItemTagsAddEdit';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: 'ItemTagsList',
@@ -98,7 +99,7 @@
       'my-item-tags-add-edit': ItemTagsAddEdit,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     created() {
       documentTitle("信息 - 商品标签列表");
       this.basicDataItemTagsList();
@@ -108,9 +109,7 @@
       }
     },
     computed: mapGetters({
-      dataItem: 'basicDataItemTagsListDataItem',
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
+      dataItem: 'basicDataItemTagsListDataItem'
     }),
     data() {
       return {

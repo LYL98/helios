@@ -70,13 +70,13 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince',
         listItem: 'pruchaseFinanceListItem'
       }),
     },
     data() {
       return {
+        auth: this.$auth,
         query: {},
         item: {}, // 需要审核的项目
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,

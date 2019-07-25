@@ -153,9 +153,11 @@
   import { QueryItem, TableOperate, SelectBuyer, SelectDisplayClass } from '@/common';
   import { Statistic } from '@/service';
   import { DataHandle, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "ClientZoneStoreItem",
+    mixins: [viewMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -172,9 +174,7 @@
       'my-select-display-class': SelectDisplayClass,
     },
     computed: mapGetters({
-      auth: 'globalAuth',
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
+      province: 'globalProvince'
     }),
     data() {
       return {

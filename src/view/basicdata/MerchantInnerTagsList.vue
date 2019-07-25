@@ -86,7 +86,8 @@
   import {TableOperate} from '@/common';
   import {Config, Constant} from '@/util';
   import MerchantInnerTagsAddEdit from './MerchantInnerTagsAddEdit';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: 'MerchantInnerTagsList',
@@ -101,7 +102,7 @@
       'my-merchant-inner-tags-add-edit': MerchantInnerTagsAddEdit,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     created() {
       documentTitle("信息 - 商户内标签列表");
       this.basicDataMerchantInnerTagsList();
@@ -111,9 +112,7 @@
       }
     },
     computed: mapGetters({
-      dataItem: 'basicDataMerchantInnerTagsListDataItem',
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
+      dataItem: 'basicDataMerchantInnerTagsListDataItem'
     }),
     data() {
       return {

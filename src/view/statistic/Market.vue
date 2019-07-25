@@ -108,6 +108,7 @@
   import { QueryItem, TableOperate } from '@/common';
   import { Statistic } from '@/service';
   import { DataHandle, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   import echarts from "echarts/lib/echarts";
   import "echarts/lib/chart/pie";
@@ -115,6 +116,7 @@
 
   export default {
     name: "Market",
+    mixins: [viewMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -126,9 +128,7 @@
       'my-table-operate': TableOperate
     },
     computed: mapGetters({
-      auth: 'globalAuth',
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
+      province: 'globalProvince'
     }),
     data() {
       return {

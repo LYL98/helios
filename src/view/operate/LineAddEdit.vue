@@ -48,7 +48,6 @@ export default {
     'my-select-distributor-multi': SelectDistributorMulti
   },
   computed: mapGetters({
-    auth: 'globalAuth',
     isShow: 'operateLineIsShowAddEdit',
     operateLineDetail: 'operateLineDetail'
   }),

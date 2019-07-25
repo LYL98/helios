@@ -95,7 +95,8 @@
   import {TableOperate} from '@/common';
   import {Config, Constant} from '@/util';
   import DisplayClassAddEdit from './DisplayClassAddEdit';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: 'DisplayClassList',
@@ -110,7 +111,7 @@
       'my-display-class-add-edit': DisplayClassAddEdit,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     created() {
       documentTitle("信息 - 展示分类列表");
       this.basicDataDisplayClassList();
@@ -120,9 +121,7 @@
       }
     },
     computed: mapGetters({
-      dataItem: 'basicDataDisplayClassListDataItem',
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
+      dataItem: 'basicDataDisplayClassListDataItem'
     }),
     data() {
       return {

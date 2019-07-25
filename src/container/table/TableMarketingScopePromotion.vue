@@ -117,7 +117,9 @@
   import {TableOperate} from '@/common';
   import { Constant, DataHandle } from '@/util';
   import { Item } from '@/service';
-  import { tableMixin } from '@/mixins';
+  import tableMixin from './table.mixin';
+  import viewMixin from '@/view/view.mixin';
+  
   export default {
     name: "TableMarketingScopePromotion",
     components: {
@@ -129,7 +131,7 @@
       'el-form-item': FormItem,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     props: {
       data: { type: Array, required: true },
       stripe: { type: Boolean, default: true },
@@ -150,10 +152,6 @@
       }
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
       promotionStatus: {
         get() {
           return Constant.ITEM_PROMOTION_STATUS;

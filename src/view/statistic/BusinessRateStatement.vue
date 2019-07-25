@@ -210,12 +210,13 @@ import { SelectZone } from '@/common';
 import { Statistic } from '@/service';
 import { QueryBusinessFourRate } from '@/container';
 import { DataHandle, Constant } from '@/util';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "BusinessRateStatement",
+  mixins: [viewMixin],
   computed: mapGetters({
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
+    province: 'globalProvince'
   }),
   components: {
     'el-button': Button,

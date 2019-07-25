@@ -74,7 +74,8 @@ import { Form, FormItem, Button, Input, Table, TableColumn, Tag, RadioGroup, Rad
 import {TableOperate} from '@/common';
 import { Config, Constant } from '@/util';
 import MerchantOuterTagsAddEdit from './MerchantOuterTagsAddEdit';
-import { tableMixin } from "@/mixins";
+import tableMixin from '@/container/table/table.mixin';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: 'MerchantOuterTagsList',
@@ -89,7 +90,7 @@ export default {
     'my-merchant-outer-tags-add-edit': MerchantOuterTagsAddEdit,
     'my-table-operate': TableOperate
   },
-  mixins: [tableMixin],
+  mixins: [tableMixin, viewMixin],
   created(){
     documentTitle("信息 - 商户外标签列表");
     this.basicDataMerchantOuterTagsList();
@@ -99,9 +100,7 @@ export default {
     }
   },
   computed: mapGetters({
-    dataItem: 'basicDataMerchantOuterTagsListDataItem',
-    auth: 'globalAuth',
-    windowHeight: 'windowHeight',
+    dataItem: 'basicDataMerchantOuterTagsListDataItem'
   }),
   data(){
     return {

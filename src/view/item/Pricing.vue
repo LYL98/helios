@@ -213,9 +213,11 @@ import { QueryItem, CollapseQuery, ButtonGroup, SelectDisplayClass, SelectBuyer 
 import { Config, Constant, DataHandle, Method } from '@/util';
 import { Item } from '@/service';
 import PricingEdit from './PricingEdit.vue';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "ItemPricing",
+  mixins: [viewMixin],
   components: {
     'el-row': Row,
     'el-col': Col,
@@ -240,8 +242,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
       province: 'globalProvince',
       priceLisDataItem: 'itemPricingPriceListDataItem'
     }),

@@ -133,9 +133,11 @@ import { Config, Constant, DataHandle } from '@/util';
 import { Operate } from '@/service';
 import { NumberKey } from '@/common';
 import ReceivingEditWeigh from './ReceivingEditWeigh';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "ReceivingWeigh",
+  mixins: [viewMixin],
   components: {
     'el-button': Button,
     'el-radio-group': RadioGroup,
@@ -146,8 +148,6 @@ export default {
     'my-receiving-edit-weigh': ReceivingEditWeigh
   },
   computed: mapGetters({
-    auth: 'globalAuth',
-    windowHeight: 'windowHeight',
     optData: 'operateReceivingOptData',
     isShow: 'operateReceivingIsShowWeigh',
     storeItem: 'operateReceivingWeighStoreItem',
@@ -156,6 +156,7 @@ export default {
   }),
   data(){
     return {
+      auth: this.$auth,
       weightScope: Constant.WEIGHT_SCOPE,//重量浮动范围
       total1: 0,
       total2: 0,

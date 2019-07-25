@@ -81,7 +81,8 @@ import { Form, FormItem, Button, Input, Table, TableColumn, Tag, RadioGroup, Rad
 import {TableOperate} from '@/common';
 import { Config, Constant } from '@/util';
 import ProvinceAddEdit from './ProvinceAddEdit';
-import { tableMixin } from "@/mixins";
+import tableMixin from '@/container/table/table.mixin';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: 'ProvinceList',
@@ -96,7 +97,7 @@ export default {
     'my-province-add-edit': ProvinceAddEdit,
     'my-table-operate': TableOperate
   },
-  mixins: [tableMixin],
+  mixins: [tableMixin, viewMixin],
   created(){
     documentTitle("信息 - 省列表");
     this.basicDataProvinceList();
@@ -106,9 +107,7 @@ export default {
     }
   },
   computed: mapGetters({
-    dataItem: 'basicDataProvinceListDataItem',
-    auth: 'globalAuth',
-    windowHeight: 'windowHeight',
+    dataItem: 'basicDataProvinceListDataItem'
   }),
   data(){
     return {

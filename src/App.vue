@@ -1,19 +1,18 @@
 <template>
   <div>
-    <div id="app" v-if="pageName && pageName !== 'Login'" @click="openCloseFullScreen(true)" :style="`min-width: ${needAdaptIpad ? 950 : 1300}px;`">
-      <div v-if="isInit" class="init-div"></div>
+    <div id="app" v-if="pageName !== 'Login'" @click="openCloseFullScreen(true)" :style="`min-width: ${needAdaptIpad ? 950 : 1300}px;`">
       <div id="head-div">
         <div id="logo-div" class="ellipsis" :style="`transition: width .2s; ${isHideMenu && 'width: 54px;'}`">
           {{ !isHideMenu ? globalBrand.brand_name + '运营中心' : '' }}
         </div>
-        <div class="global-province" v-if="pageName && pageName !== 'Login'">
+        <div class="global-province" v-if="pageName !== 'Login'">
           <my-global-province/>
         </div>
         <el-dropdown trigger="click" placement="bottom" class="f-r login-username" @command="clickDropdown">
           <div style="display: flex; align-items: center;">
-            <img v-if="loginInfo.avatar && loginInfo.avatar !== ''" :src="tencentPath + loginInfo.avatar" alt="avatar" width="24" height="24" style="margin-right: 8px; border-radius: 12px">
+            <img v-if="myInfo.avatar && myInfo.avatar !== ''" :src="tencentPath + myInfo.avatar" alt="avatar" width="24" height="24" style="margin-right: 8px; border-radius: 12px">
             <img v-else src="@/assets/img/default_avatar.png" alt="avatar" width="24" height="24" style="margin-right: 8px; border-radius: 12px">
-            {{loginInfo.realname}}
+            {{myInfo.realname}}
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="editPassword">修改密码</el-dropdown-item>
@@ -229,25 +228,16 @@
 
 <script>
   import {mapGetters, mapActions} from 'vuex';
-  import {
-    Menu,
-    Submenu,
-    MenuItem,
-    MenuItemGroup,
-    Dropdown,
-    DropdownMenu,
-    DropdownItem,
-    Loading,
-    Notification,
-    MessageBox
-  } from 'element-ui';
-  import {Config, Method, DataHandle} from '@/util';
+  import { Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Loading, Notification, MessageBox } from 'element-ui';
+  import {Http, Config, Method, DataHandle} from '@/util';
   import {GlobalProvince, PwdModify} from '@/common';
+  import viewMixin from '@/view/view.mixin';
 
   let LoadingInstance;
 
   export default {
     name: 'app',
+    mixins: [viewMixin],
     data() {
       let appSetting = Method.getPageSetting('App'); //获取页面设置
 
@@ -262,9 +252,10 @@
         isHideMenu: appSetting.isHideMenu ? true : false,
         menuIndex: 1,
         menuSubIndex: 0,
-        pageName: name,
-        isPad: isPad,
-        isInit: true
+        pageName: 'Login',
+        auth: {}, //用户权限,
+        myInfo: {}, //当前登录信息
+        isPad: isPad
       }
     },
     components: {
@@ -279,24 +270,9 @@
     },
     created() {
       this.getBrand();
-      let that = this;
-      //that.judgeIsLogin();//判断是否登录
-      let WH = DataHandle.getWindowHeight();
-      that.windowInnerHeight(WH);
-      window.onresize = () => {
-        let WH = DataHandle.getWindowHeight();
-        let WH2 = DataHandle.getWindowScreenHeight();
-        let {isPad} = that;
-        that.windowInnerHeight(Method.isFullScreen() ? WH2 : WH);
-      };
     },
     computed: {
       ...mapGetters({
-        loading: 'loading',
-        message: 'message',
-        loginInfo: 'loginInfo',
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight',
         globalBrand: 'globalBrand',
       }),
       needAdaptIpad: {
@@ -306,71 +282,6 @@
       }
     },
     methods: {
-      //判断登录
-      judgeIsLogin() {
-        let that = this;
-        let pageName = that.$router.history.current.name;
-        that.$data.pageName = pageName;
-        if (pageName !== 'Login') {
-          that.isLogin((data, state) => {
-            if (state === 'success') {
-              let {isInit} = this;
-              if (isInit) that.$data.isInit = false;
-
-              Method.setLocalStorage('appleLoginInfo', data);
-              that.getAuthorityList();//用户权限
-            }
-          });
-        }
-      },
-      //获取当前登录用户权限
-      getAuthorityList() {
-        let that = this;
-        let {pageName, loginInfo} = that;
-        let data = {permission_list: []};
-        if (loginInfo) data = loginInfo;
-        let auth = {};
-        if (data.is_admin) {
-          auth.isAdmin = true;
-        } else {
-          let pl = data.permission_list;
-          if (pl && pl.length > 0) {
-            for (let i = 0; i < pl.length; i++) {
-              let p = pl[i].code;
-              if (p) auth[p] = true;
-            }
-          }
-        }
-        that.setGlobalAuth(auth);//设置全局权限
-        Method.setSessionStorage('appleGlobalAuth', auth); //缓存
-
-        //如果没有权限
-        if (!that.judgeAuth()) {
-          Notification.error({
-            title: '提示',
-            message: '您没有权限访问',
-            offset: 50
-          });
-          that.$router.go(-1);
-        }
-      },
-      //路由跳转时是否有权限
-      judgeAuth() {
-        let that = this;
-        let {pageName, auth} = that;
-
-        if (pageName === 'Home') {
-          return true;
-        }
-
-        for (let a in auth) {
-          if (a === 'isAdmin' || a === pageName) {
-            return true;
-          }
-        }
-
-        return false;
-      },
       //下拉菜单
       clickDropdown(command) {
         let that = this;
@@ -380,16 +291,24 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            that.loginLoginOut(() => {
-              that.openCloseFullScreen(false); //退出全屏
-              window.location.replace('/');
-            });
-          })
-            .catch(() => {
-              // console.log('取消');
-            });
+            this.loginOut();
+          }).catch(() => {
+            // console.log('取消');
+          });
         } else if (command === 'editPassword') {
           PwdModify.show(); //修改密码
+        }
+      },
+      //登出
+      async loginOut(){
+        this.$loading({ isShow: true });
+        let res = await Http.get(Config.api.signLogout, {});
+        this.$loading({ isShow: false });
+        if(res.code === 0){
+          this.$router.replace({ name: "Login" });
+          //window.location.replace('/');
+        }else{
+          this.$message({ message: res.message, type: 'error' });
         }
       },
       //全屏
@@ -405,43 +324,15 @@
         this.$data.isHideMenu = !this.$data.isHideMenu;
         Method.setPageSetting('App', {isHideMenu: this.$data.isHideMenu});
       },
-      ...mapActions(['isLogin', 'loginLoginOut', 'setGlobalAuth', 'windowInnerHeight', 'getBrand'])
+      ...mapActions(['getBrand'])
     },
     watch: {
       //监听路由变化
-      $route() {
-        this.judgeIsLogin();//判断是否登录
+      $route(a, b){
+        this.$data.pageName = a.name;
+        this.$data.auth = this.$auth || {};
+        this.$data.myInfo = this.$myInfo || {};
       },
-      globalBrand(a, b) {
-        if (a.brand_name) {
-          documentTitle(`${a.brand_name}运营中心`);
-          localStorage.setItem('globalBrand', JSON.stringify(a))
-        }
-      },
-      //监听message变化
-      message(a, b) {
-        if (a.type === 'error') {
-          MessageBox.alert(a.message, a.title, {
-            type: 'error'
-          });
-        } else {
-          Notification[a.type]({
-            title: a.title,
-            message: a.message,
-            offset: 50
-          });
-        }
-      },
-      //监听loading变华
-      loading(a, b) {
-        if (a.isShow && a.isWhole) {
-          LoadingInstance = Loading.service({
-            background: 'rgba(255, 255, 255, 0.2)'
-          });
-        } else {
-          LoadingInstance && LoadingInstance.close();
-        }
-      }
     }
   }
 
@@ -455,15 +346,6 @@
     color: #2c3e50;
     min-width: 1300px;
     box-sizing: border-box;
-    > .init-div {
-      background: #fff;
-      position: fixed;
-      z-index: 2;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      top: 0;
-    }
   }
 
   * {
@@ -557,63 +439,6 @@
   /*链接样式*/
   .link-active:active {
     background: #f3f4f6;
-  }
-
-  /*字体大小*/
-  .f-s8 {
-    font-size: 8px !important;
-  }
-
-  .f-s10 {
-    font-size: 10px !important;
-  }
-
-  .f-s11 {
-    font-size: 11px !important;
-  }
-
-  .f-s12 {
-    font-size: 12px !important;
-  }
-
-  .f-s13 {
-    font-size: 13px !important;
-  }
-
-  .f-s14 {
-    font-size: 14px !important;
-  }
-
-  .f-s16 {
-    font-size: 16px !important;
-  }
-
-  .f-s18 {
-    font-size: 18px !important;
-  }
-
-  .f-s20 {
-    font-size: 20px !important;
-  }
-
-  .f-s24 {
-    font-size: 24px !important;
-  }
-
-  .f-s28 {
-    font-size: 28px !important;
-  }
-
-  .f-s30 {
-    font-size: 30px !important;
-  }
-
-  .f-s32 {
-    font-size: 32px !important;
-  }
-
-  .f-s36 {
-    font-size: 36px !important;
   }
 
   .main-padding {

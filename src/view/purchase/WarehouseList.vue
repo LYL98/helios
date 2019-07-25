@@ -70,13 +70,13 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince',
         listItem: 'pruchaseWarehouseListItem'
       }),
     },
     data() {
       return {
+        auth: this.$auth,
         query: {},
         item: {}, // 需要审核的项目
         formSending: false,

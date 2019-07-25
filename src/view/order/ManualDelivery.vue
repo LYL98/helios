@@ -99,6 +99,7 @@ export default {
   name: "ManualDelivery",
   data() {
     return {
+      auth: this.$auth,
       isShowModify: false,
       manualDetail: {},
       weightScope: Constant.WEIGHT_SCOPE,
@@ -146,7 +147,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      auth: 'globalAuth',
       isShow: 'orderIsShowManualDelivery',
       detail: 'orderDataDetail'
     })

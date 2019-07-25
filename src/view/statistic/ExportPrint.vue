@@ -113,6 +113,7 @@ import { Config, DataHandle, Request } from "@/util";
 import { Operate } from "@/service";
 import { SelectCity, SelectCityMulti } from "@/common";
 import Constant from "@/util/constant";
+import viewMixin from '@/view/view.mixin';
 
 const apis = {
   "1": Config.api.orderCityExport,
@@ -130,6 +131,7 @@ const apis = {
 
 export default {
   name: "ExportPrint",
+  mixins: [viewMixin],
   components: {
     "el-form": Form,
     "el-form-item": FormItem,
@@ -225,10 +227,8 @@ export default {
     };
   },
   computed: mapGetters({
-    auth: "globalAuth",
     province: "globalProvince",
-    globalBrand: 'globalBrand',
-    windowHeight: 'windowHeight'
+    globalBrand: 'globalBrand'
   }),
   methods: {
     preview() {

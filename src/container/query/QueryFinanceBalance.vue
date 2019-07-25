@@ -27,7 +27,7 @@
 <script>
   import {Row, Col, Input, Button} from 'element-ui';
   import {QueryItem} from '@/common';
-  import { queryMixin } from '@/mixins';
+  import queryMixin from './query.mixin';
   export default {
     name: "QueryFinanceBalance",
     mixins: [queryMixin],

@@ -65,7 +65,7 @@
 <script>
   import {Row, Col, Button, Input, DatePicker, Select, Option} from 'element-ui';
   import {ButtonGroup, QueryItem, CollapseQuery} from '@/common';
-  import { queryMixin } from '@/mixins';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryMarketingScopePromotion",

@@ -154,7 +154,8 @@
   import { ButtonGroup, QueryItem, SelectCity, TableOperate } from '@/common';
   import { Constant, Http, Config } from '@/util';
   import { Group } from "@/service";
-  import { tableMixin } from '@/mixins';
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "HeadList",
@@ -172,16 +173,14 @@
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     props: {
       itemAdd: { type: Function, require: true }, //新增
       getPageComponents: { type: Function, require: true }, //获取页面组件
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince',
-        windowHeight: 'windowHeight'
+        province: 'globalProvince'
       })
     },
     data() {

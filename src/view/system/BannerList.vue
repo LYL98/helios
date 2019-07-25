@@ -80,9 +80,11 @@
   import {TableOperate, ImagePreview} from '@/common';
   import { Config, Constant } from '@/util';
   import BannerAddEdit from './BannerAddEdit';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "BannerList",
+    mixins: [viewMixin],
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
@@ -96,9 +98,7 @@
       'my-image-preview': ImagePreview,
     },
     computed: mapGetters({
-      auth: 'globalAuth',
       dataItem: 'bannerDataItem',
-      windowHeight: 'windowHeight',
       province: 'globalProvince'
     }),
     data: function () {

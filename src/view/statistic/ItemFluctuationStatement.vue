@@ -96,12 +96,13 @@ import { Statistic } from '@/service';
 import { DataHandle, Constant } from '@/util';
 import ItemFluctuationChart from "./ItemFluctuationChart";
 import { QueryItemFluctuationAnalysis } from '@/container'
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "ItemFluctuationStatement",
+  mixins: [viewMixin],
   computed: mapGetters({
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
+    province: 'globalProvince'
   }),
   components: {
     'el-button': Button,

@@ -162,7 +162,8 @@
   import { Merchant } from '@/service';
   import RefundLog from './RefundLog';
   import RefundEdit from './RefundEdit';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "ReturnFrameList",
@@ -185,11 +186,9 @@
       'refund-edit': RefundEdit,
       'my-table-operate': TableOperate,
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     computed: mapGetters({
-      auth: 'globalAuth',
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
+      province: 'globalProvince'
     }),
     data() {
       return {

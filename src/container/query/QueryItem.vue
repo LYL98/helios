@@ -110,7 +110,7 @@
 <script>
   import {Row, Col, Input, Button, Collapse, CollapseItem} from 'element-ui';
   import {ButtonGroup, QueryItem, CollapseQuery, SelectBuyer, SelectDisplayClass} from '@/common';
-  import { queryMixin } from '@/mixins';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryItem",

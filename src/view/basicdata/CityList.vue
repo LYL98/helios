@@ -164,7 +164,8 @@
   import {Config, Constant} from '@/util';
   import { Base } from '@/service';
   import CityAddEdit from './CityAddEdit';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: 'CityList',
@@ -185,7 +186,7 @@
       'my-city-add-edit': CityAddEdit,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     created() {
       documentTitle("信息 - 县域列表");
       this.basicDataCityList(this.query);
@@ -198,9 +199,7 @@
     },
     computed: {
       ...mapGetters({
-        dataItem: 'basicDataCityListDataItem',
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight',
+        dataItem: 'basicDataCityListDataItem'
       }),
       pageList: {
         get() {

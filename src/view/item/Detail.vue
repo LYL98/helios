@@ -232,12 +232,12 @@ export default {
 
   },
   computed: mapGetters({
-    auth: 'globalAuth',
     isShow: 'itemItemIsShowDetail',
     itemItemDetail: 'itemItemDetail'
   }),
   data(){
     return {
+      auth: this.$auth,
       tencentPath: Config.tencentPath,
       isTitleFloat: false,
       itemStatus: Constant.ITEM_STATUS,

@@ -30,11 +30,9 @@ export default {
     'my-business-fluctuation-statement': BusinessFluctuationStatement,
     'my-business-store-analysis-statement': BusinessStoreAnalysisStatement,
   },
-  computed: mapGetters({
-    auth: 'globalAuth'
-  }),
   data() {
     return {
+      auth: this.$auth,
       activeTab: 'first'
     }
   },

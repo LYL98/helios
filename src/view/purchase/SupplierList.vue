@@ -80,13 +80,13 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince',
         listItem: 'pruchaseSupplierListItem'
       }),
     },
     data() {
       return {
+        auth: this.$auth,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION + Constant.OFFSET_OPERATE,
         // 查询条件
         query: {},

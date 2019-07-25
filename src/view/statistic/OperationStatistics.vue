@@ -97,6 +97,7 @@
   import { Statistic } from '@/service';
   import { DataHandle, Constant } from '@/util';
   import { QueryItem, SearchItem } from '@/common';
+  import viewMixin from '@/view/view.mixin';
 
   import echarts from "echarts/lib/echarts";
   import 'echarts/lib/chart/line';
@@ -108,9 +109,9 @@
 
   export default {
     name: "OperationStatistics",
+    mixins: [viewMixin],
     computed: mapGetters({
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
+      province: 'globalProvince'
     }),
     components: {
       'el-button': Button,

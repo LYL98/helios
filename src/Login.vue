@@ -27,9 +27,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
 import { Form, FormItem, Button, Input, Checkbox } from 'element-ui';
-import { Method, Config } from '@/util';
+import { Method, Config, Http } from '@/util';
 import md5 from 'md5';
 
 export default {
@@ -41,9 +40,6 @@ export default {
     'el-input': Input,
     'el-checkbox': Checkbox
   },
-  computed: mapGetters({
-    loading: 'loading',
-  }),
   created() {
     documentTitle('登录');
     let loc = localStorage.getItem('globalBrand')
@@ -57,6 +53,7 @@ export default {
     }
 
     return{
+      loading: false,
       brand: {},
       tencentPath: Config.tencentPath,
       isPad: isPad,
@@ -77,35 +74,41 @@ export default {
   methods: {
     //提交登录
     submitLogin() {
-      let that = this;
-      that.$refs['ruleForm'].validate((valid, vs) => {
+      this.$refs['ruleForm'].validate((valid, vs) => {
         if (valid) {
-          let { loginData, isPad } = that;
-          let isSuccess = false, si = null;
-          //防止错误时回车穿透
-          let dom = document.getElementById('btn-submit');
-          dom.focus();
-          
-          that.loginSubmit({
-            data: {
+          (async ()=>{
+            let { loginData, isPad, loading } = this;
+            let isSuccess = false, si = null;
+            //防止错误时回车穿透
+            let dom = document.getElementById('btn-submit');
+            dom.focus();
+            
+            if(loading) return;
+
+            this.$data.loading = true;
+            let res = await Http.post(Config.api.signLogin, {
               login_name: loginData.login_name,
               password: md5(loginData.password)
-            },
-            callback: (data) => {
-              Method.setLocalStorage('appleLoginInfo', data);
-              that.$router.replace({ name: "Home" });
+            });
+            if(res.code === 0){
+              this.$router.replace({ name: "Home" });
               isSuccess = true;
+            }else{
+              this.$message({message: res.message, type: 'error'});
             }
-          });
-          if(isPad){
-            clearInterval(si);
-            si = setInterval(()=>{
-              if(isSuccess){
-                Method.openFullScreen(); //如果为pad，打开全屏
-                clearInterval(si);
-              }
-            }, 500);
-          }
+            this.$data.loading = false;
+
+            
+            if(isPad){
+              clearInterval(si);
+              si = setInterval(()=>{
+                if(isSuccess){
+                  Method.openFullScreen(); //如果为pad，打开全屏
+                  clearInterval(si);
+                }
+              }, 500);
+            }
+          })();
         }else{
           if(vs.login_name){
             document.getElementById('txt-login-name').focus();
@@ -116,7 +119,6 @@ export default {
       });
       
     },
-    ...mapActions(['loginSubmit'])
   }
 }
 </script>

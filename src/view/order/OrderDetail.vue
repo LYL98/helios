@@ -329,7 +329,6 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         isShow: 'orderIsShowDetail',
         detail: 'orderDataDetail',
         isShowAfterSaleDetail: 'orderIsShowAfterSaleDetail',
@@ -357,6 +356,7 @@
     },
     data() {
       return {
+        auth: this.$auth,
         tencentPath: Config.tencentPath,
         orderStatus: Constant.ORDER_STATUS,
         afterSaleStatus: Constant.AFTER_SALE_STATUS,

@@ -80,18 +80,6 @@ const actions = {
       dispatch('message', {title: '提示', message: res.message, type: 'error'});
     }
   },
-  //通过token登录
-  async loginLoginByToken({ commit, dispatch }, callback){
-    dispatch('loading', {isShow: true, isWhole: true});
-    let res = await Account.loginByToken();
-    dispatch('loading', {isShow: false});
-    if(res.code === 0){
-      commit(Types.LOGIN_SAVE_LOGIN_INFO, res.data);
-      typeof callback === 'function' && callback();
-    }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
-    }
-  },
   async getBrand({commit, dispatch, state}, data){
     dispatch('loading', {isShow: true, isWhole: true});
     let res = await Account.getBrand(data);

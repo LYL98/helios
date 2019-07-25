@@ -123,9 +123,11 @@
   import { Statistic } from '@/service';
   import { DataHandle, Config, Http } from '@/util';
   import { mapGetters, mapActions } from 'vuex';
+  import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "GroupBuyCaptainStatement",
+  mixins: [viewMixin],
   data() {
     return {
       dataItem: {
@@ -157,9 +159,7 @@ page_size:*/
     }
   },
   computed: mapGetters({
-    auth: 'globalAuth',
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
+    province: 'globalProvince'
   }),
   components: {
     'el-button': Button,

@@ -101,8 +101,8 @@
   import {TableOperate} from '@/common';
   import {Config, Constant, DataHandle} from '@/util';
   import FrameAddEdit from './FrameAddEdit';
-  import { tableMixin } from "@/mixins";
-
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: 'FrameList',
@@ -117,7 +117,7 @@
       'my-frame-add-edit': FrameAddEdit,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     created() {
       documentTitle("信息 - 框信息列表");
       this.basicDataFrameList(this.query);
@@ -127,9 +127,7 @@
       }
     },
     computed: mapGetters({
-      dataItem: 'basicDataFrameListDataItem',
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
+      dataItem: 'basicDataFrameListDataItem'
     }),
     data() {
       return {

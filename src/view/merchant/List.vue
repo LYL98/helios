@@ -114,12 +114,12 @@
       }
     },
     computed: mapGetters({
-      auth: 'globalAuth',
       province: 'globalProvince',
       merchant_id: 'merchant_id'
     }),
     data() {
       return {
+        auth: this.$auth,
         tencentPath: Config.tencentPath,
         provinceList: [],//省列表
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,

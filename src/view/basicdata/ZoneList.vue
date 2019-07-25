@@ -118,7 +118,8 @@
   import {Config, Constant} from '@/util';
   import { Base } from '@/service';
   import ZoneAddEdit from './ZoneAddEdit';
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: 'ZoneList',
@@ -136,7 +137,7 @@
       'my-zone-add-edit': ZoneAddEdit,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     created() {
       documentTitle("信息 - 片区列表");
       this.basicDataZoneList(this.query);
@@ -147,9 +148,7 @@
       }
     },
     computed: mapGetters({
-      dataItem: 'basicDataZoneListDataItem',
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
+      dataItem: 'basicDataZoneListDataItem'
     }),
     data() {
       return {

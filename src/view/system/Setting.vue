@@ -181,15 +181,16 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from "vuex";
 import { Form, FormItem, Button, Input, MessageBox, TimePicker, Notification, RadioGroup, Radio, Row, Col, Dialog } from 'element-ui';
 import { DataHandle, Verification, Config, Constant } from '@/util';
 import { System } from '@/service';
 import {UploadImg} from '@/common';
 import brand from "@/store/modules/system/brand";
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: 'Setting',
+  mixins: [viewMixin],
   components: {
     'el-form': Form,
     'el-form-item': FormItem,
@@ -223,10 +224,6 @@ export default {
       that.updateSettingItemsInfo('brand', brandInfo);
     });
   },
-  computed: mapGetters({
-    auth: 'globalAuth',
-    windowHeight: 'windowHeight'
-  }),
   data(){
     let validImages = function (rules, value, callback) {
       if (value.length && value.length > 0) {

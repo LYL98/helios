@@ -130,9 +130,11 @@
   import { QueryItem, SelectZone, SelectCity } from '@/common';
   import { Statistic } from '@/service';
   import { DataHandle, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "MarketClassItem",
+    mixins: [viewMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -149,8 +151,7 @@
       'my-select-city': SelectCity,
     },
     computed: mapGetters({
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
+      province: 'globalProvince'
     }),
     data() {
       return {

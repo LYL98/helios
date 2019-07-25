@@ -61,13 +61,13 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince',
         listItem: 'financeApproveListItem'
       }),
     },
     data() {
       return {
+        auth: this.$auth,
         query: {},
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
         dialog: {

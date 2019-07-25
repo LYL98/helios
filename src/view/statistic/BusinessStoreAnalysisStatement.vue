@@ -130,12 +130,13 @@ import { SelectZone, SelectCity } from '@/common';
 import { Statistic } from '@/service';
 import { DataHandle, Constant } from '@/util';
 import { QueryBusinessStore } from '@/container';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "BusinessStoreAnalysisStatement",
+  mixins: [viewMixin],
   computed: mapGetters({
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
+    province: 'globalProvince'
   }),
   components: {
     'el-button': Button,

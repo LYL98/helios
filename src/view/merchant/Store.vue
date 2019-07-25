@@ -173,7 +173,7 @@
   import {Merchant} from '@/service';
   import StoreAddEdit from './StoreAddEdit';
   import StoreEditCity from './StoreEditCity';
-  import {tableMixin} from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
 
   export default {
     name: "MerchantAdd",
@@ -209,7 +209,6 @@
       storeQuery: Function
     },
     computed: mapGetters({
-      auth: 'globalAuth',
       merchant_id: 'merchant_id'
     }),
     data() {

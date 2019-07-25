@@ -114,7 +114,7 @@
   import {ButtonGroup, QueryItem, CollapseQuery} from '@/common';
   import {SelectCity} from "@/container";
   import { Constant } from '@/util';
-  import { queryMixin } from '@/mixins';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryOrder",

@@ -181,12 +181,12 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions} from 'vuex';
   import { Table, TableColumn, Form, FormItem, Popover, Dialog, Message, Tag } from 'element-ui';
   import {TableOperate, ImagePreview} from '@/common';
   import { Purchase } from '@/service';
   import { DataHandle, Constant, Config } from '@/util';
-  import { tableMixin } from '@/mixins';
+  import tableMixin from './table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "TablePurchaseWarehouse",
@@ -201,7 +201,7 @@
       'my-image-preview': ImagePreview,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     props: {
       data: { type: Array, required: true },
       query: { type: Object, default: {} },
@@ -250,10 +250,6 @@
       }
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      })
     },
     methods: {
 

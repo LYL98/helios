@@ -82,6 +82,7 @@
     },
     data() {
       return {
+        auth: this.$auth,
         query: {}, //查询条件
         item: {}, // 需要添加的活动对象
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
@@ -93,7 +94,6 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince',
         listItem: 'itemScopePromotionListItem'
       })

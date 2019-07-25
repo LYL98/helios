@@ -172,6 +172,7 @@
     },
     data() {
       return {
+        auth: this.$auth,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         query: {}, // 查询条件
         item: {},   // 需要新增的项
@@ -199,7 +200,6 @@
     },
     computed: {
       ...mapGetters({
-        auth: 'globalAuth',
         province: 'globalProvince',
         listItem: 'itemCouponListItem'
       })

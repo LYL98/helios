@@ -181,13 +181,12 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions} from 'vuex';
   import { Table, TableColumn, Form, FormItem, Popover, Dialog, Message, Tag } from 'element-ui';
   import {TableOperate, ToPrice, ImagePreview} from '@/common';
   import { Purchase } from '@/service';
   import { DataHandle, Constant, Config } from '@/util';
-  import { tableMixin } from '@/mixins';
-
+  import tableMixin from './table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "TablePurchaseItem",
@@ -203,7 +202,7 @@
       'my-table-operate': TableOperate,
       'my-to-price': ToPrice
     },
-    mixins: [tableMixin],
+    mixins: [tableMixin, viewMixin],
     props: {
       data: { type: Array, required: true },
       stripe: { type: Boolean, default: true },
@@ -242,10 +241,6 @@
       }
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      })
     },
     methods: {
 

@@ -17,10 +17,9 @@
 </template>
 
 <script>
-import viewMixin from './../view.mixin';
-import {mapGetters, mapActions} from "vuex";
 import { FormSystemSettingAd, FormSystemSettingOperating, FormSystemSettingItemCommonDes } from '@/container';
 import { Constant } from '@/util';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: 'Setting',
@@ -34,10 +33,6 @@ export default {
     let that = this;
     documentTitle("设置 - 个性化设置");
   },
-  computed: mapGetters({
-    auth: 'globalAuth',
-    windowHeight: 'windowHeight'
-  }),
   data(){
     return{
       offsetHeight: Constant.OFFSET_BASE_HEIGHT,

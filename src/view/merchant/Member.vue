@@ -95,7 +95,7 @@
   import {Merchant} from '@/service';
   import md5 from 'md5';
   import MemberAddEdit from './MemberAddEdit';
-  import {tableMixin} from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
 
   export default {
     name: "MerchantAdd",
@@ -124,9 +124,6 @@
       that.$data.query = query;
       that.memberList();//获取用户列表
     },
-    computed: mapGetters({
-      auth: 'globalAuth'
-    }),
     watch: {
       updateCount: 'memberList'
     },

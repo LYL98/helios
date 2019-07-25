@@ -130,7 +130,8 @@ import { QueryOrderAfterSale } from "@/container";
 import { Config, DataHandle, Constant, Http } from '@/util';
 import AfterSaleDetail from './AfterSaleDetail';
 import OrderDetail from './OrderDetail';
-import { tableMixin } from '@/mixins';
+import tableMixin from '@/container/table/table.mixin';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "AfterSale",
@@ -147,7 +148,7 @@ export default {
     'order-detail': OrderDetail,
     'my-table-operate': TableOperate
   },
-  mixins: [tableMixin],
+  mixins: [tableMixin, viewMixin],
   created(){
     let that = this;
     documentTitle('订单 - 售后列表');
@@ -159,8 +160,6 @@ export default {
     }
   },
   computed: mapGetters({
-    auth: 'globalAuth',
-    windowHeight: 'windowHeight',
     dataItem: 'orderAfterSaleDataItem',
     province: 'globalProvince',
     isShow: 'orderIsShowAfterSaleDetail'

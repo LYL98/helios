@@ -112,9 +112,11 @@
   import { Statistic } from '@/service';
   import { DataHandle, Config, Http } from '@/util';
   import { mapGetters, mapActions } from 'vuex';
+  import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "GroupBuyMemberStatement",
+  mixins: [viewMixin],
   data() {
     return {
       dataItem: {
@@ -138,9 +140,7 @@ export default {
     }
   },
   computed: mapGetters({
-    auth: 'globalAuth',
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
+    province: 'globalProvince'
   }),
   components: {
     'el-button': Button,

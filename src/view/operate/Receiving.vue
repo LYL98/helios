@@ -210,9 +210,11 @@ import { DataHandle, Constant } from '@/util';
 import ReceivingAllot from './ReceivingAllot';
 import ReceivingNumber from './ReceivingNumber';
 import ReceivingWeigh from './ReceivingWeigh';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "Receiving",
+  mixins: [viewMixin],
   components: {
     'el-row': Row,
     'el-col': Col,
@@ -233,8 +235,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      auth: 'globalAuth',
-      windowHeight: 'windowHeight',
       province: 'globalProvince',
       receivingDataItem: 'operateReceivingDataItem'
     }),
