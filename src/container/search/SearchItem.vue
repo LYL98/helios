@@ -11,7 +11,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Autocomplete, Button } from 'element-ui';
   import { Base } from '@/service';
 
@@ -35,11 +34,6 @@
     model: {
       prop: 'item',
       event: 'select'
-    },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
     },
     data() {
       let {title} = this.$props.item;

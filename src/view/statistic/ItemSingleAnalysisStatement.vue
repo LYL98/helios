@@ -101,7 +101,7 @@
 
 <script>
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import { Statistic } from '@/service';
   import { DataHandle, Constant } from '@/util';
   import { QueryItem, SearchItem } from '@/common';
@@ -118,9 +118,6 @@
   export default {
     name: "ItemSingleAnalysisStatement",
     mixins: [viewMixin],
-    computed: mapGetters({
-      province: 'globalProvince'
-    }),
     components: {
       'el-button': Button,
       'el-date-picker': DatePicker,
@@ -833,7 +830,7 @@
       async itemSingleAnalysisList(callback){
         let that = this;
         let { query } = that;
-        that.loading({isShow: true, isWhole: true});
+        this.$loading({ isShow: true, isWhole: true });
         let res = await Statistic.statisticalItemSingleAnalysis(query);
         if(res.code === 0){
           //将日期维度转化成指标维度
@@ -868,22 +865,22 @@
           that.$data.dataItem = indexItems;
           typeof callback === 'function' && callback();
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
 
       async defaultItem(callback){
         let that = this;
         let { defaultItemQuery } = that;
-        that.loading({isShow: true, isWhole: true});
+        this.$loading({ isShow: true, isWhole: true });
         let res = await Statistic.statisticalItemSaleGreatest(defaultItemQuery);
         if(res.code === 0){
           typeof callback === 'function' && callback(res.data);
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
 
       ...mapActions(['message', 'loading'])

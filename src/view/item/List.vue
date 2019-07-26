@@ -218,11 +218,11 @@ export default {
     }
   },
   computed: mapGetters({
-    dataItem: 'itemItemListDataItem',
-    province: 'globalProvince'
+    dataItem: 'itemItemListDataItem'
   }),
   data(){
     return {
+      province: this.$province,
       tencentPath: Config.tencentPath,
       provinceList: [],//省列表
       offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
@@ -313,7 +313,7 @@ export default {
       };
       
       //判断是否可导出
-      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(`${api}_check`, {
         province_code: this.province.code,
         ...query
@@ -327,7 +327,7 @@ export default {
       }else{
         this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
       }
-      this.$store.dispatch('loading', {isShow: false});
+      this.$loading({ isShow: false });
     },
     changQuery() {
       this.loadItemsFromFirstPage(this.query);

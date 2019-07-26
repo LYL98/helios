@@ -4,7 +4,7 @@ import VueResource from 'vue-resource';
 import App from './App';
 import store from './store';
 import router from './router';
-import { DataHandle } from '@/util';
+import { DataHandle, Method } from '@/util';
 import { MessageBox, Notification, Loading } from 'element-ui';
 
 import * as Sentry from '@sentry/browser';
@@ -59,6 +59,10 @@ Vue.use({
     }
     //全局MessageBox
     Vue.prototype.$messageBox = MessageBox;
+
+    //全局省份
+    let province = Method.getLocalStorage('appleGlobalProvince');
+    Vue.prototype.$province = province;
   }
 });
 

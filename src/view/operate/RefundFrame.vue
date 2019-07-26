@@ -251,7 +251,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {Row, Col, Table, TableColumn, Popover, Pagination, Button, Input, Select, Option, DatePicker, Dialog, Tag, MessageBox, Message} from 'element-ui';
   import {ButtonGroup, QueryItem, TableOperate, CollapseQuery, OmissionText, ToPrice} from '@/common';
   import {SelectLine, SelectCity} from '@/container';
@@ -289,9 +288,6 @@
     },
     mixins: [tableMixin, viewMixin],
     computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
       multipleReturnNum: {
         get() {
           return this.multipleSelection.reduce((accumulator, currentValue) => accumulator + Number(currentValue.return_num), 0);
@@ -422,7 +418,7 @@
         }
         
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           ...query
@@ -436,7 +432,7 @@
         }else{
           this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       },
 
       async listQuery() {

@@ -80,12 +80,12 @@
     },
     computed: {
       ...mapGetters({
-        province: 'globalProvince',
         listItem: 'pruchaseSupplierListItem'
       }),
     },
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION + Constant.OFFSET_OPERATE,
         // 查询条件
@@ -163,7 +163,7 @@
           condition,
         };
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           ...query
@@ -177,7 +177,7 @@
         }else{
           this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       },
       // 新增供应商
       handleAddItem() {

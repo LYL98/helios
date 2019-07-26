@@ -166,8 +166,7 @@
     },
     mixins: [tableMixin, viewMixin],
     computed: mapGetters({
-      dataItem: 'operateLineListDataItem',
-      province: 'globalProvince'
+      dataItem: 'operateLineListDataItem'
     }),
     created() {
       let that = this;

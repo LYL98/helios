@@ -204,7 +204,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {Row, Col, Input, Checkbox, CheckboxGroup, Table, Dialog, TableColumn, Form, FormItem, Button, Message} from 'element-ui';
   import {ButtonGroup, ToPrice, QueryItem, SelectBuyer, SelectDisplayClass} from '@/common';
   import {SelectSupplier} from '@/container';
@@ -233,9 +232,6 @@
       'my-select-display-class': SelectDisplayClass
     },
     computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
       showList: {
         // 如果筛选到的城市itemList不在右侧编辑中的列表中editList，则填充在showList中显示出来。
         get() {
@@ -255,6 +251,7 @@
     },
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         isShowEdit: false,  // 显示编辑区
         // 查询商品

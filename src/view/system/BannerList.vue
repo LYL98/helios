@@ -98,8 +98,7 @@
       'my-image-preview': ImagePreview,
     },
     computed: mapGetters({
-      dataItem: 'bannerDataItem',
-      province: 'globalProvince'
+      dataItem: 'bannerDataItem'
     }),
     data: function () {
       return {

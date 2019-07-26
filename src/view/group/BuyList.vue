@@ -310,7 +310,6 @@
     },
     computed: {
       ...mapGetters({
-        province: 'globalProvince',
         groupBuyList: 'groupBuyListData',
         detailStoreList: 'groupBuyStoreListData',
         merchantMemberList: 'groupBuyMemberListData'
@@ -318,6 +317,7 @@
     },
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         query: {},
         detailQuery: {},

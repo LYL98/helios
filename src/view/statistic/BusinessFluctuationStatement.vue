@@ -83,7 +83,7 @@
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import { SelectZone } from '@/common';
 import { Statistic } from '@/service';
 import { DataHandle, Constant } from '@/util';
@@ -94,9 +94,6 @@ import viewMixin from '@/view/view.mixin';
 export default {
   name: "BusinessFluctuationStatement",
   mixins: [viewMixin],
-  computed: mapGetters({
-    province: 'globalProvince'
-  }),
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -113,6 +110,7 @@ export default {
   },
   data() {
     return {
+      province: this.$province,
       dataItem: {},
       selectArea: 'zone',
       selectType: 'merchant',
@@ -413,7 +411,7 @@ export default {
     async orderTrendCity(){
       let that = this;
       let { query, selectArea } = that;
-      that.loading({isShow: true, isWhole: true});
+      this.$loading({ isShow: true, isWhole: true });
       let res = selectArea === 'zone' ? await Statistic.statisticalOrderTrendZone(query): await Statistic.statisticalOrderTrendCity(query);
       if(res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
@@ -439,9 +437,9 @@ export default {
         that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
           item => selectArea === 'zone' ? item.zone_title : item.city_title)
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
 
     ...mapActions(['message', 'loading'])

@@ -248,8 +248,7 @@
       }
     },
     computed: mapGetters({
-      dataItem: 'systemOperatorListDataItem',
-      province: 'globalProvince'
+      dataItem: 'systemOperatorListDataItem'
     }),
     data() {
       return {

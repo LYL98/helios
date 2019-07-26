@@ -73,7 +73,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {Form, FormItem, Table, TableColumn, DatePicker, Radio, RadioGroup, Input, Button, Message} from 'element-ui';
   import {SearchItem} from '@/container/search';
   import {Item} from '@/service';
@@ -101,11 +100,6 @@
     model: {
       prop: 'item',
       event: 'change'
-    },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
     },
     data() {
       let that = this;
@@ -171,6 +165,7 @@
         callback();
       }
       return {
+        province: this.$province,
         editItem: item,
         error: {
           rules: ''

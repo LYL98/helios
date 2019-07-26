@@ -42,7 +42,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import fromMixin from './from.mixin';
   import { Http, Config } from '@/util';
   import { MessageBox, Notification } from 'element-ui';
@@ -63,11 +62,6 @@
           ]
         }
       }
-    },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
     },
     created() {
       this.basicdataOrderTimeGet();

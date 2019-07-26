@@ -235,7 +235,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      province: 'globalProvince',
       receivingDataItem: 'operateReceivingDataItem'
     }),
     isPad: {
@@ -462,7 +461,7 @@ export default {
         cityCodes.push(item.code);
       });
 
-      that.loading({isShow: true, isWhole: true});
+      this.$loading({ isShow: true, isWhole: true });
       let res = await Operate.deliveryPreCheck({
         opt_date: query.opt_date,
         city_codes: cityCodes.join()
@@ -489,9 +488,9 @@ export default {
         that.$data.isShowAudit = true;
 
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false});
+      this.$loading({ isShow: false });
     },
     //提交审核
     submitAudit(){

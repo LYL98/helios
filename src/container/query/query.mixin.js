@@ -42,6 +42,7 @@ export default {
   },
   data() {
     return {
+      province: this.$province,
       auth: this.$auth,
       isExpand: false,
       /*最近30天（以当天作为结尾，往前30天）

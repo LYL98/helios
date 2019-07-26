@@ -154,7 +154,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message, DatePicker, Select, Option, Dialog, Form, FormItem } from 'element-ui';
   import { ButtonGroup, QueryItem, ToPrice, OmissionText, TableOperate } from '@/common';
   import { Constant, DataHandle } from '@/util';
@@ -182,13 +181,9 @@
     props: {
       merchant_id: { type: String | Number, required: true }
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         pickerValue: null,
         query: { },

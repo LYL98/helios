@@ -196,7 +196,6 @@
    *
    */
 
-  import { mapGetters } from 'vuex';
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
@@ -222,11 +221,6 @@
       'my-image-preview': ImagePreview
     },
     mixins: [tableMixin, viewMixin],
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
         tencentPath: Config.tencentPath,
@@ -338,7 +332,7 @@
         let { city_code, is_freeze, condition } = this.query;
         let query = { city_code, is_freeze, condition };
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           ...query
@@ -352,7 +346,7 @@
         }else{
           this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       }
     }
   }

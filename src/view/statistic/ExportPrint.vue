@@ -322,7 +322,7 @@ export default {
       let { query ,province} = this;
       query.province_code = province.code;
       if (!province.code) {
-        that.message({ title: "提示", message: "省份信息读取失败", type: "error" });
+        this.$message({ title: "提示", message: "省份信息读取失败", type: "error" });
         return false;
       }
 
@@ -333,7 +333,7 @@ export default {
           that.printTemplate(res.data);
         }, 0);
       } else {
-        that.message({ title: "提示", message: res.message, type: "error" });
+        this.$message({ title: "提示", message: res.message, type: "error" });
       }
     },
     //打印模板

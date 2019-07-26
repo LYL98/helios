@@ -320,8 +320,7 @@ export default {
   computed: {
     ...mapGetters({
       isShow: 'itemItemIsShowAddEdit',
-      itemItemDetail: 'itemItemDetail',
-      province: 'globalProvince'
+      itemItemDetail: 'itemItemDetail'
     }),
   },
   data(){
@@ -472,6 +471,7 @@ export default {
       }
     };
     return {
+      province: this.$province,
       tencentPath: Config.tencentPath,
       id: 0,
       upData: {},//上传数据
@@ -783,7 +783,7 @@ export default {
       let index = selectSystemClassData.length - 1;
 
       if(index < 0){
-        this.message({title: '提示', message: '请选择分类', type: 'info'});
+        this.$message({title: '提示', message: '请选择分类', type: 'info'});
         return false;
       }
       detail.system_class = selectSystemClassData[index];

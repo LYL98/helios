@@ -17,7 +17,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import {Merchant} from '@/service';
   import { Form, FormItem, Input, Button, Message } from 'element-ui';
   import { SelectProvince, SelectCity } from '@/common';
@@ -38,6 +37,7 @@
     },
     data() {
       return {
+        province: this.$province,
         rules: {
           province: [
             {required: true, message: '请选择所在城市', trigger: 'blur'}
@@ -51,9 +51,6 @@
         }
       }
     },
-    computed: mapGetters({
-      province: 'globalProvince'
-    }),
     created() {
       this.addEditData.province_code = this.province.code;
       this.storeDetail();

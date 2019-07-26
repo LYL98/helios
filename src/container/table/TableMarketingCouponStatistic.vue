@@ -102,7 +102,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message } from 'element-ui';
   import { ButtonGroup } from '@/common';
   import { Constant } from '@/util';
@@ -120,14 +119,10 @@
     props: {
       showItem: { type: Function, required: true }
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
-        query: { },
+        province: this.$province,
+        query: {},
         listItem: {
           items: [],
           num: 0

@@ -40,9 +40,9 @@
     methods: {
       // 一键发货
       async handleAllShip() {
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Group.orderAllShip(this.query);
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
         if (res.code === 0) {
           this.$store.dispatch('message', {title: '提示', message: '发货成功', type: 'success'});
           this.$emit('callback', 'success');
@@ -56,9 +56,9 @@
       },
       //获取数据
       async groupOrderAllShipTotals(){
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Group.orderAllShipTotals(this.query);
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
         if (res.code === 0) {
           this.$data.detail = res.data;
         } else {

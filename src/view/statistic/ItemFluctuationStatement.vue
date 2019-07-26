@@ -90,7 +90,7 @@
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
 import { Statistic } from '@/service';
 import { DataHandle, Constant } from '@/util';
@@ -101,9 +101,6 @@ import viewMixin from '@/view/view.mixin';
 export default {
   name: "ItemFluctuationStatement",
   mixins: [viewMixin],
-  computed: mapGetters({
-    province: 'globalProvince'
-  }),
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -494,12 +491,12 @@ export default {
       this.loadItemTrendAnalysisList();
     },
     loadItemTrendAnalysisList() {
-      this.itemTrendAnalysis().catch(e => this.message({title: '提示', message: e, type: 'error'}));
+      this.itemTrendAnalysis().catch(e => this.$message({title: '提示', message: e, type: 'error'}));
     },
     async itemTrendAnalysis(){
       let that = this;
       let { query, selectArea } = that;
-      that.loading({isShow: true, isWhole: true});
+      this.$loading({ isShow: true, isWhole: true });
       let res = selectArea === 'item' ? await Statistic.statisticalItemTrendAnalysis(query) :
                 selectArea === 'buyer' ? await Statistic.statisticalItemTrendAnalysisBuyer(query) : await Statistic.statisticalItemTrendAnalysisClass(query);
       if(res.code === 0){
@@ -544,9 +541,9 @@ export default {
               : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.display_class_title)
         )
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
 
     ...mapActions(['message', 'loading'])

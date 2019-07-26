@@ -122,7 +122,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination } from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
   import { Statistic } from '@/service';
@@ -146,9 +146,6 @@
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate
     },
-    computed: mapGetters({
-      province: 'globalProvince'
-    }),
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
@@ -283,15 +280,15 @@
       async zoneOrderList(callback){
         let that = this;
         let { query } = that;
-        that.loading({isShow: true, isWhole: true});
+        this.$loading({ isShow: true, isWhole: true });
         let res = await Statistic.statisticalOrderGradeSum(query);
         if(res.code === 0){
           that.$data.listItem = res.data;
           typeof callback === 'function' && callback();
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
       initChart() {
         let that = this;

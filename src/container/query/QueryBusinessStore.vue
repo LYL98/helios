@@ -47,7 +47,6 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { mapGetters } from 'vuex';
   import {QueryItem, SelectZone, SelectCity} from '@/common';
   import { DataHandle } from '@/util';
   import Constant from "../../util/constant";
@@ -82,6 +81,7 @@
     },
     data() {
       return {
+        province: this.$province,
         currentDateRange: [],
         beforeDateRange: [],
         resetBeginDate: '',
@@ -121,8 +121,7 @@
         set(v) {
           this.$emit('change', v);
         }
-      },
-      ...mapGetters({province: 'globalProvince'})
+      }
     },
     methods: {
       //搜索日期

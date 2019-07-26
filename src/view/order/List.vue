@@ -228,7 +228,6 @@
     },
     computed: mapGetters({
       dataItem: 'orderDataItem',
-      province: 'globalProvince',
       isShowDetail: 'orderIsShowDetail'
     }),
     data() {
@@ -352,7 +351,7 @@
           is_init
         }
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           ...query
@@ -366,7 +365,7 @@
         }else{
           this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       },
 
       handleOrderCancel(id) {

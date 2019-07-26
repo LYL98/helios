@@ -69,6 +69,7 @@
     },
     data() {
       return {
+        province: this.$province,
         currentDateRange: [],
         beforeDateRange: [],
         resetBeginDate: '',
@@ -108,8 +109,7 @@
         set(v) {
           this.$emit('change', v);
         }
-      },
-      ...mapGetters({province: 'globalProvince'})
+      }
     },
     methods: {
       //搜索日期

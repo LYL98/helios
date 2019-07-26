@@ -173,7 +173,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem } from 'element-ui';
   import { QueryItem, TableOperate, SelectZone, SelectCity } from '@/common';
   import { Statistic } from '@/service';
@@ -197,9 +197,6 @@
       'my-select-zone': SelectZone,
       'my-select-city': SelectCity
     },
-    computed: mapGetters({
-      province: 'globalProvince'
-    }),
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
@@ -351,7 +348,7 @@
       async statisticalOrderMerchantSum(callback) {
         let that = this;
         let { query } = that;
-        that.loading({isShow: true, isWhole: true});
+        this.$loading({ isShow: true, isWhole: true });
         let res = await Statistic.statisticalOrderMerchantSum(query);
         if(res.code === 0){
           this.total = 0
@@ -362,9 +359,9 @@
           that.$data.orderItemSumData = res.data;
           typeof callback === 'function' && callback();
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
       handleShowClassDetail(item) {
         console.log('handleShowClassDetail' , this.$data.query)

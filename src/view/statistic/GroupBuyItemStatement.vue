@@ -120,7 +120,7 @@
   import Constant from "@/util/constant";
   import { Statistic } from '@/service';
   import { DataHandle, Config, Http } from '@/util';
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import viewMixin from '@/view/view.mixin';
 
 export default {
@@ -136,10 +136,10 @@ export default {
       offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
       /*
       * groupbuy_time: (YYYY-mm-dd HH:MM:ss)团购时间
-condition:
-sort: 排序字段指定 参团次数(member_num)/销售件数(sale_num)/下单金额(pay_amount)/收入金额(sale_amount)
-page:
-page_size:*/
+      condition:
+      sort: 排序字段指定 参团次数(member_num)/销售件数(sale_num)/下单金额(pay_amount)/收入金额(sale_amount)
+      page:
+      page_size:*/
       query: {
         page: 1,
         page_size: 20,
@@ -152,9 +152,6 @@ page_size:*/
       currentRow: {}
     }
   },
-  computed: mapGetters({
-    province: 'globalProvince'
-  }),
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -264,7 +261,7 @@ page_size:*/
         end_date,
       };
       //判断是否可导出
-      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(`${api}_check`, {
         province_code: this.province.code,
         ...query
@@ -278,7 +275,7 @@ page_size:*/
       }else{
         this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
       }
-      this.$store.dispatch('loading', {isShow: false});
+      this.$loading({ isShow: false });
     },
 
     loadListDataFirstPage() {
@@ -289,7 +286,7 @@ page_size:*/
     async statisticalSumGroupBuyItem(){
       let that = this;
       let { query } = that;
-      that.loading({isShow: true, isWhole: true});
+      this.$loading({ isShow: true, isWhole: true });
       let res = await Statistic.statisticalSumGroupBuyItem(query);
       if(res.code === 0){
         //手动增加总计和平均值的行数据
@@ -311,9 +308,9 @@ page_size:*/
         //     : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.display_class_title)
         // )
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
 
     ...mapActions(['message', 'loading'])

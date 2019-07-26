@@ -148,8 +148,6 @@
    * resetQuery
    *
    */
-
-  import { mapGetters } from 'vuex';
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate } from '@/common';
   import { Constant, Http, Config } from '@/util';
@@ -177,11 +175,6 @@
     props: {
       itemAdd: { type: Function, require: true }, //新增
       getPageComponents: { type: Function, require: true }, //获取页面组件
-    },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
     },
     data() {
       return {

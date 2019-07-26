@@ -21,7 +21,6 @@
 <script>
   import { Form, FormItem, Button, Message, MessageBox } from 'element-ui';
   import { QuillEditor } from '@/common';
-  import { mapGetters } from 'vuex';
   import { Constant, Config, Http } from '@/util';
 
   export default {
@@ -34,6 +33,7 @@
     },
     data() {
       return {
+        province: this.$province,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + 82 + 83 + 40 + 16,
         item: {
           content: ''
@@ -45,10 +45,6 @@
         }
       }
     },
-    computed: mapGetters({
-      windowHeight: 'windowHeight',
-      province: 'globalProvince'
-    }),
     created() {
       // 从后端拉取content，将获取到的content 赋值给 content。
       this.getItemCommon();

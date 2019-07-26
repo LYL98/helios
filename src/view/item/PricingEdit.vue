@@ -97,11 +97,11 @@ export default {
   },
   computed: mapGetters({
     isShow: 'itemPricingIsShowEdit',
-    editData: 'itemPricingEditData',
-    province: 'globalProvince',
+    editData: 'itemPricingEditData'
   }),
   data(){
     return {
+      province: this.$province,
       weightScope: Constant.WEIGHT_SCOPE,//重量浮动范围
       detail: {},
       query: {

@@ -91,7 +91,7 @@ export default {
       let that = this;
       let { dataItem } = that;
       if(dataItem.real_number != that.total()){
-        that.message({title: '提示', message: '数量分配有误，请重新分配', type: 'error'});
+        this.$message({title: '提示', message: '数量分配有误，请重新分配', type: 'error'});
         return false;
       }
       that.operatorReceivingOrderDistribute({

@@ -75,7 +75,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {Row, Col, Button, Input} from 'element-ui';
   import {ButtonGroup, QueryItem, CollapseQuery, SelectBuyer} from '@/common';
   import queryMixin from './query.mixin';
@@ -93,11 +92,6 @@
       'my-collapse-query': CollapseQuery
     },
     mixins: [queryMixin],
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
-    },
     methods: {
       changeQuery() {
 

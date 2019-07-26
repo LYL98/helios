@@ -2,6 +2,8 @@
 export default {
   data() {
     return {
+      province: this.$province,
+      auth: this.$auth,
       windowHeight: 0
     }
   },

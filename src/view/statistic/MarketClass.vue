@@ -149,7 +149,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
   import { QueryItem, TableOperate, SelectBuyer, SelectDisplayClass } from '@/common';
   import { Statistic } from '@/service';
@@ -174,9 +174,6 @@
       'my-select-buyer': SelectBuyer,
       'my-select-display-class': SelectDisplayClass
     },
-    computed: mapGetters({
-      province: 'globalProvince',
-    }),
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
@@ -297,14 +294,14 @@
       async saleClassItemQuery() {
         let that = this;
         let { query } = that;
-        that.loading({isShow: true, isWhole: true});
+        this.$loading({ isShow: true, isWhole: true });
         let res = await Statistic.statisticalOrderItemSum(query);
         if(res.code === 0){
           that.$data.listItem = res.data;
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
       handleShowClassDetail(item) {
         this.$router.push({

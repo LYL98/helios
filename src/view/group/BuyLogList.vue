@@ -129,7 +129,6 @@
 
 <script>
 
-  import { mapGetters } from 'vuex';
   import { Button, Input, Select, Option, DatePicker, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { QueryItem } from '@/common';
   import { Constant, Config, DataHandle } from '@/util';
@@ -151,11 +150,6 @@
       'my-query-item': QueryItem,
     },
     mixins: [tableMixin],
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince',
-      })
-    },
     data() {
       return {
         pickerValue: null,

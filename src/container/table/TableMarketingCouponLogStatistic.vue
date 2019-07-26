@@ -42,7 +42,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message } from 'element-ui';
   import { Constant } from '@/util';
   import { Item } from '@/service';
@@ -55,13 +54,9 @@
       'el-table-column': TableColumn,
       'el-pagination': Pagination
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
+        province: this.$province,
         query: { },
         listItem: {
           items: [],

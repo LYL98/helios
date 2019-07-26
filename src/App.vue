@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app-body">
     <div id="app" v-if="pageName !== 'Login'" @click="openCloseFullScreen(true)" :style="`min-width: ${needAdaptIpad ? 950 : 1300}px;`">
       <div id="head-div">
         <div id="logo-div" class="ellipsis" :style="`transition: width .2s; ${isHideMenu && 'width: 54px;'}`">
@@ -21,9 +21,8 @@
         </el-dropdown>
       </div>
       <div id="content-div">
-        <div id="nav-menu-div"
-             :style="`transition: width .2s;height: ${windowHeight - 42}px;${isHideMenu && 'width: 54px;'}`">
-          <div id="menu-div" :style="`height: ${windowHeight - 42}px;`">
+        <div id="nav-menu-div" :style="`transition: width .2s; ${isHideMenu && 'width: 54px;'}`">
+          <div id="menu-div">
             <el-menu
               router
               unique-opened
@@ -215,12 +214,12 @@
             <img v-else src="@/assets/img/menu-close.png">
           </div>
         </div>
-        <div id="router-view-div" :style="`height: ${windowHeight - 42}px; min-width: ${needAdaptIpad ? 770 : 1100}px;`">
+        <div id="router-view-div" :style="`min-width: ${needAdaptIpad ? 770 : 1100}px;`">
           <router-view/>
         </div>
       </div>
     </div>
-    <div v-else id="app">
+    <div v-else>
       <router-view/>
     </div>
   </div>
@@ -231,13 +230,11 @@
   import { Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Loading, Notification, MessageBox } from 'element-ui';
   import {Http, Config, Method, DataHandle} from '@/util';
   import {GlobalProvince, PwdModify} from '@/common';
-  import viewMixin from '@/view/view.mixin';
 
   let LoadingInstance;
 
   export default {
     name: 'app',
-    mixins: [viewMixin],
     data() {
       let appSetting = Method.getPageSetting('App'); //获取页面设置
 
@@ -305,6 +302,7 @@
         let res = await Http.get(Config.api.signLogout, {});
         this.$loading({ isShow: false });
         if(res.code === 0){
+          if(Method.isFullScreen()) Method.closeFullScreen(); //退出全屏
           this.$router.replace({ name: "Login" });
           //window.location.replace('/');
         }else{
@@ -339,18 +337,13 @@
 </script>
 
 <style lang="scss">
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
-    min-width: 1300px;
-    box-sizing: border-box;
-  }
 
   * {
     -webkit-tap-highlight-color: transparent;
     -webkit-appearance: none;
+  }
+  html{
+    height: 100%;
   }
 
   body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, div, dl, dt, dd, ul, ol, li, pre, form, fieldset, lengend, button, input, textarea, th, td {
@@ -362,6 +355,7 @@
   body {
     font: 14px "Microsoft YaHei", 微软雅黑, "Arail"; /* letter-spacing: 1px; */
     background: #fff;
+    height: 100%;
   }
 
   fieldset, img {
@@ -414,12 +408,6 @@
     opacity: 0.7;
   }
 
-  #nav-menu-div ::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    color: transparent;
-  }
-
   table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -445,43 +433,17 @@
     padding: 0 15px;
   }
 
-  .f-l {
-    float: left;
-  }
+  .f-l { float: left; }
+  .f-r {float: right;}
 
-  .f-r {
-    float: right;
-  }
+  .t-l {text-align: left;}
+  .t-c {text-align: center;}
+  .t-r {text-align: right;}
 
-  .t-l {
-    text-align: left;
-  }
-
-  .t-c {
-    text-align: center;
-  }
-
-  .t-r {
-    text-align: right;
-  }
-
-  .over-h {
-    overflow: hidden;
-  }
-
-  .d-b {
-    display: block;
-  }
-
-  .b-b-b {
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-  }
-
-  .b-c-fff {
-    background-color: #fff;
-  }
+  .over-h {overflow: hidden;}
+  .d-b {display: block;}
+  .b-b-b {background-repeat: no-repeat; background-size: cover; background-position: center center;}
+  .b-c-fff {background-color: #fff;}
 
   /*文本自动换行*/
   .pre {
@@ -531,6 +493,22 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  #app-body{
+    height: 100%;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+    min-width: 1300px;
+    box-sizing: border-box;
+  }
+  
+  #app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
   #head-div {
     background-color: #fff;
     height: 42px;
@@ -549,16 +527,138 @@
     }
 
     /*全局省份*/
-    .global-province {
+    >.global-province {
       float: left;
       margin-left: 16px;
     }
 
-    .login-username {
+    >.login-username {
       height: 42px;
       line-height: 42px;
       cursor: pointer;
       margin-right: 60px;
+    }
+  }
+
+  #content-div {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    background-color: #f7f7f8;
+    #nav-menu-div {
+      flex: initial;
+      width: 180px;
+      background-color: #20232C;
+      position: relative;      
+      #menu-div{
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 100%;
+        &::-webkit-scrollbar {
+          width: 0;
+          height: 0;
+          color: transparent;
+        }
+      }
+      i {
+        color: #fff;
+      }
+
+      li.el-submenu {
+        background-color: #101116 !important;
+
+        span {
+          margin-left: 6px;
+        }
+
+        .el-menu-item.is-active {
+          padding-left: 0px !important;
+        }
+
+        .el-menu-item.is-active::before {
+          content: '';
+          display: inline-block;
+          height: 18px;
+          border-left: 4px solid #00ADE7;
+        }
+
+        .el-menu-item.is-active span {
+          margin-left: 40px !important;
+        }
+
+        .el-menu--popup {
+          width: 180px !important;
+        }
+      }
+
+      li.el-menu-item {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        background-color: #2B2F39 !important;
+        width: 180px;
+        span {
+          margin-left: 4px;
+        }
+      }
+
+      li.el-menu-item.home {
+        background-color: #20232C !important;
+      }
+
+      li.el-menu-item:hover {
+        background-color: #050507 !important;
+      }
+
+      #show-hide-menu {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        width: 12px;
+        height: 76px;
+        background-color: #20232C;
+        border-radius: 0 20px 20px 0;
+        position: absolute;
+        top: 44vh;
+        left: 178px;
+      }
+
+      .el-menu--horizontal {
+        border-bottom: 0;
+      }
+    }
+
+    #router-view-div {
+      flex: 1;
+      padding: 16px;
+      min-width: 1120px;
+      box-sizing: border-box;
+      .breadcrumb {
+        padding: 0px 16px;
+        /*background-color: #fff;*/
+      }
+      .query {
+        font-size: 12px;
+        padding: 16px 16px;
+        margin-bottom: 16px;
+        background-color: #fff;
+      }
+      .operate {
+        text-align: right;
+        padding: 0 16px;
+        margin-bottom: 16px;
+      }
+      .operate.space-between {
+        display: flex;
+        justify-content: space-between;
+      }
+      .footer {
+        padding: 8px 20px;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
     }
   }
 
@@ -824,122 +924,6 @@
   }
 
   //筛选区响应式 end------------------------------
-
-  #content-div {
-    display: flex;
-    background-color: #f7f7f8;
-    #nav-menu-div {
-      flex: initial;
-      width: 180px;
-      background-color: #20232C;
-      position: relative;
-
-      #menu-div {
-        overflow-y: auto;
-        overflow-x: hidden;
-      }
-
-      i {
-        color: #fff;
-      }
-
-      li.el-submenu {
-        background-color: #101116 !important;
-
-        span {
-          margin-left: 6px;
-        }
-
-        .el-menu-item.is-active {
-          padding-left: 0px !important;
-        }
-
-        .el-menu-item.is-active::before {
-          content: '';
-          display: inline-block;
-          height: 18px;
-          border-left: 4px solid #00ADE7;
-        }
-
-        .el-menu-item.is-active span {
-          margin-left: 40px !important;
-        }
-
-        .el-menu--popup {
-          width: 180px !important;
-        }
-      }
-
-      li.el-menu-item {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        background-color: #2B2F39 !important;
-        width: 180px;
-        span {
-          margin-left: 4px;
-        }
-      }
-
-      li.el-menu-item.home {
-        background-color: #20232C !important;
-      }
-
-      li.el-menu-item:hover {
-        background-color: #050507 !important;
-      }
-
-      #show-hide-menu {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        width: 12px;
-        height: 76px;
-        background-color: #20232C;
-        border-radius: 0 20px 20px 0;
-        position: absolute;
-        top: 44vh;
-        left: 178px;
-      }
-
-      .el-menu--horizontal {
-        border-bottom: 0;
-      }
-    }
-
-    #router-view-div {
-      flex: 1;
-      padding: 16px;
-      min-width: 1120px;
-      box-sizing: border-box;
-      .breadcrumb {
-        padding: 0px 16px;
-        /*background-color: #fff;*/
-      }
-      .query {
-        font-size: 12px;
-        padding: 16px 16px;
-        margin-bottom: 16px;
-        background-color: #fff;
-      }
-      .operate {
-        text-align: right;
-        padding: 0 16px;
-        margin-bottom: 16px;
-      }
-      .operate.space-between {
-        display: flex;
-        justify-content: space-between;
-      }
-      .footer {
-        padding: 8px 20px;
-        background-color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-    }
-  }
 
   //共用价格颜色
   .price {

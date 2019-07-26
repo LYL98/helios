@@ -66,7 +66,6 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { mapGetters } from 'vuex';
   import { QueryItem, CollapseQuery, SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
   import { DataHandle } from '@/util';
   import queryMixin from './query.mixin';
@@ -128,8 +127,7 @@
         set(v) {
           this.$emit('change', v);
         }
-      },
-      ...mapGetters({province: 'globalProvince'})
+      }
     },
     methods: {
       //搜索日期

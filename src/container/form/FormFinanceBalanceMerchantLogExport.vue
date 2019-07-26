@@ -53,7 +53,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Form, FormItem, DatePicker, Button, Dialog } from 'element-ui';
   import { DataHandle, Config, Constant, Http } from '@/util';
 
@@ -69,15 +68,11 @@
     props: {
       close: { type: Function, required: true }
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
-    },
     data() {
       let d = DataHandle.returnDateStr();
       let nowDate = DataHandle.returnDateFormat(d, "yyyy-MM-dd");
       return {
+        province: this.$province,
         isShowPreview: false,
         pickerValue: [nowDate, nowDate],
         fixDateOptions: Constant.FIX_DATE_RANGE,
@@ -87,7 +82,7 @@
       async submit() {
         let api = Config.api.financeBalanceMerchantLogExport;
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           begin_date: this.pickerValue[0],
@@ -100,7 +95,7 @@
         }else{
           this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       },
       handleClose() {
         this.$props.close();

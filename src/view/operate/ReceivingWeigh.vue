@@ -280,7 +280,7 @@ export default {
     //提交称重数据
     async orderDeliveryWeightData(selectStoreId, selectItemId, realWeight, callback){
       let that = this;
-      that.loading({isShow: true, isWhole: true});
+      this.$loading({ isShow: true, isWhole: true });
       let { query } = that;
       let res = await Operate.orderDeliveryWeightData({
         ...query,
@@ -291,9 +291,9 @@ export default {
       if(res.code === 0){
         typeof callback === 'function' && callback();
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false});
+      this.$loading({ isShow: false });
     },
     //计算数据
     refreshData(data){

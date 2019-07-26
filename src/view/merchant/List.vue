@@ -74,7 +74,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from 'vuex';
+  import {mapGetters, mapMutations } from 'vuex';
   import { MERCHANT_SET_ID, MERCHANT_INIT_STATE } from '@/store/mutationTypes';
   import {MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination} from "element-ui";
   import { QueryMerchantStore } from '@/container';
@@ -114,11 +114,11 @@
       }
     },
     computed: mapGetters({
-      province: 'globalProvince',
       merchant_id: 'merchant_id'
     }),
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         tencentPath: Config.tencentPath,
         provinceList: [],//省列表
@@ -283,7 +283,7 @@
           query.end_date = '';
         }
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           ...query
@@ -297,7 +297,7 @@
         }else{
           this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       },
       /**
        * 根据审核状态，筛选商户列表
@@ -708,9 +708,6 @@
             border-radius: 6px;
             margin-left: 10px;
           }
-        }
-        .status {
-
         }
       }
       .label-div {

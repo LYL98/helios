@@ -125,7 +125,7 @@
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import { SelectZone, SelectCity } from '@/common';
 import { Statistic } from '@/service';
 import { DataHandle, Constant } from '@/util';
@@ -135,9 +135,6 @@ import viewMixin from '@/view/view.mixin';
 export default {
   name: "BusinessStoreAnalysisStatement",
   mixins: [viewMixin],
-  computed: mapGetters({
-    province: 'globalProvince'
-  }),
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -316,7 +313,7 @@ export default {
     async orderStoreAnalysisList(){
       let that = this;
       let { query } = that;
-      that.loading({isShow: true, isWhole: true});
+      this.$loading({ isShow: true, isWhole: true });
       let res = await Statistic.statisticalOrderStoreAnalysis(query);
       if (res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
@@ -332,9 +329,9 @@ export default {
         that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
           item => item.store_title)
       } else {
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
 
     ...mapActions(['message', 'loading'])

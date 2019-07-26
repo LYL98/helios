@@ -82,6 +82,7 @@
     },
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         query: {}, //查询条件
         item: {}, // 需要添加的活动对象
@@ -94,7 +95,6 @@
     },
     computed: {
       ...mapGetters({
-        province: 'globalProvince',
         listItem: 'itemScopePromotionListItem'
       })
     },

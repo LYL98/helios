@@ -50,7 +50,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import {Form, FormItem, Radio, RadioGroup, Dialog, Button, Message, MessageBox} from 'element-ui';
   import { SearchMerchantGrade, SearchCity, SearchMerchant } from '@/container/search';
   import { Base } from '@/service';
@@ -78,14 +77,10 @@
       prop: 'item',
       event: 'change'
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince',
-      })
-    },
     data() {
       let item = Object.assign({}, this.$props.item);
       return {
+        province: this.$province,
         editItem: item,
         error: {
           type: '',

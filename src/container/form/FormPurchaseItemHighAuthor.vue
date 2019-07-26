@@ -46,7 +46,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Form, FormItem, Input, Radio, RadioGroup, DatePicker, Select, Option, Button, Message } from 'element-ui';
   import { SearchItem, SearchSupplier } from '@/container/search';
   import { SelectSupplier } from '@/container';
@@ -79,9 +78,6 @@
       event: 'change'
     },
     computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
       computedUnitPrice: {
         get() {
           let total = this.editItem.total_price;
@@ -194,6 +190,7 @@
       //  init', 'first_checked', 'second_checked', 'first_declined', 'second_declined'
 
       return {
+        province: this.$province,
         editItem: item,
         error: {
           unit_price: '',

@@ -70,12 +70,12 @@
     },
     computed: {
       ...mapGetters({
-        province: 'globalProvince',
         listItem: 'pruchaseWarehouseListItem'
       }),
     },
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         query: {},
         item: {}, // 需要审核的项目

@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import { Dialog, Button, Input, Table, TableColumn, Pagination } from 'element-ui';
 import { SelectProvince, SelectCity, SelectZone } from "@/common"
 import { Statistic } from '@/service';
@@ -112,9 +112,6 @@ export default {
   created() {
 
   },
-  computed: mapGetters({
-    province: 'globalProvince'
-  }),
   props: ['item'],
   data() {
     return {
@@ -229,7 +226,7 @@ export default {
     async itemSaleStores(){
       let that = this;
       let { query } = that;
-      that.loading({isShow: true, isWhole: true});
+      this.$loading({ isShow: true, isWhole: true });
       let res = await Statistic.statisticalOrderItemSaleStores(query);
       if(res.code === 0){
         res.data.items.map((item, index) => {
@@ -238,9 +235,9 @@ export default {
         });
         that.$data.merchantListData = res.data;
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
 
     ...mapActions(['message', 'loading'])

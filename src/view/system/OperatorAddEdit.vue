@@ -97,13 +97,13 @@ export default {
     this.getRoleList();
   },
   computed: mapGetters({
-    province: 'globalProvince',
     isShow: 'systemOperatorIsShowAddEdit',
     systemOperatorDetail: 'systemOperatorDetail'
   }),
   data(){
     let that = this;
     return{
+      province: this.$province,
       dataLevel: Constant.OPERATOR_DATA_LEVEL,
       roleList: [],
       detail: {

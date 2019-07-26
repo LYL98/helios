@@ -154,7 +154,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Row, Col, Dialog, Input, Radio, Button, DatePicker, Table, TableColumn, Pagination, Form, FormItem, Message } from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
   import { SelectCity } from '@/container';
@@ -187,9 +186,6 @@
       'my-table-operate': TableOperate,
     },
     mixins: [tableMixin, viewMixin],
-    computed: mapGetters({
-      province: 'globalProvince'
-    }),
     data() {
       return {
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,

@@ -136,7 +136,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem } from 'element-ui';
   import { QueryItem, TableOperate, SelectZone } from '@/common';
   import { Statistic } from '@/service';
@@ -159,9 +159,6 @@
       'my-table-operate': TableOperate,
       'my-select-zone': SelectZone
     },
-    computed: mapGetters({
-      province: 'globalProvince'
-    }),
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
@@ -295,7 +292,7 @@
       async zoneCityOrderList(callback) {
         let that = this;
         let { query } = that;
-        that.loading({isShow: true, isWhole: true});
+        this.$loading({ isShow: true, isWhole: true });
         let res = await Statistic.statisticalOrderCitySum(query);
         if(res.code === 0){
           this.total = 0
@@ -305,9 +302,9 @@
           that.$data.listItem = res.data;
           typeof callback === 'function' && callback();
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
       handleShowClassDetail(item) {
         this.$router.push({

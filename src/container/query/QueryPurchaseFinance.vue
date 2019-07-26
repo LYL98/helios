@@ -93,7 +93,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {Row, Col, Button, Input, DatePicker} from 'element-ui';
   import {ButtonGroup, QueryItem, CollapseQuery, SelectBuyer} from '@/common';
   import queryMixin from './query.mixin';
@@ -117,11 +116,6 @@
       return {
         pickerValue: null,
       }
-    },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
     },
     methods: {
       //搜索日期

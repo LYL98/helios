@@ -68,8 +68,7 @@ export default {
   computed: mapGetters({
     loading: 'loading',
     isShowAddEdit: 'bannerIsShowAddEdit',
-    bannerDetail: 'bannerDataDetail',
-    province: 'globalProvince'
+    bannerDetail: 'bannerDataDetail'
   }),
   created: function() {
 
@@ -85,6 +84,7 @@ export default {
     };
 
     return{
+      province: this.$province,
       tencentPathUp: Config.tencentUpPath,
       tencentPath: Config.tencentPath,
       upData: {

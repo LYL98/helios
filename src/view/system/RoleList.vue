@@ -56,7 +56,7 @@
           <!--菜单权限end-->
         </div>
         <div class="t-r">
-          <el-button type="primary" style="margin: 10px 10px 0 0;" v-if="auth.isAdmin || auth.SystemRoleEdit" :disabled="!isChange" @click.native="save">保存已修改</el-button>
+          <el-button type="primary" style="margin: 5px 10px 0 0;" v-if="auth.isAdmin || auth.SystemRoleEdit" :disabled="!isChange" @click.native="save">保存已修改</el-button>
         </div>
       </div>
       <!--权限列表start-->

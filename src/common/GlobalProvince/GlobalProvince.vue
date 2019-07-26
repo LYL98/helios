@@ -17,10 +17,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { Button, Input, MessageBox, Dialog, Tag} from 'element-ui';
-import { Base } from '@/service';
-import { Method } from '@/util';
+import { Button, Input, Dialog, Tag} from 'element-ui';
+import { Http, Config, Method } from '@/util';
 
 export default {
   name: "GlobalProvince",
@@ -34,11 +32,9 @@ export default {
     let pageName = this.$router.history.current.name;
     if(pageName) this.baseProvinceListMy();
   },
-  computed: mapGetters({
-    province: 'globalProvince'
-  }),
   data() {
     return {
+      province: this.$province,
       isShow: false,
       dataItem: []
     };
@@ -50,15 +46,11 @@ export default {
     },
     //取消选择
     cancel(){
-      let that = this;
-      let { province } = that;
+      let { province } = this;
       if(province && province.code){
-        that.$data.isShow = false;
+        this.$data.isShow = false;
       }else{
-        that.loginLoginOut(()=>{
-          Method.closeFullScreen(); //退出全屏
-          window.location.replace('/');
-        });
+        this.loginOut();
       }
     },
     //省改变
@@ -68,30 +60,41 @@ export default {
     },
     //获取所有省
     async baseProvinceListMy(){
-      let that = this;
-      let { province } = that;
-      let res = await Base.baseProvinceListMy();
+      let { province } = this;
+      let res = await Http.get(Config.api.baseProvinceListMy, {});
       if(res.code === 0){
         let rd = res.data;
-        that.$data.dataItem = rd;
+        this.$data.dataItem = rd;
         //如果只有一个省，默认选择
         if(rd.length === 1 && province.code != rd[0].code){
-          that.changeProvince(rd[0]);
+          this.changeProvince(rd[0]);
         }else if(rd.length === 0 || !province.code){
-          that.show();
+          this.show();
         }else{
           for(let i = 0; i < rd.length; i++){
             if(province.code === rd[i].code){
               return;
             }
           }
-          that.show();
+          this.show();
         }
       }else{
-        MessageBox.alert(res.message, '提示');
+        this.$message({ message: res.message, type: 'error' });
       }
     },
-    ...mapActions(['loginLoginOut'])
+    //登出
+    async loginOut(){
+      this.$loading({ isShow: true });
+      let res = await Http.get(Config.api.signLogout, {});
+      this.$loading({ isShow: false });
+      if(res.code === 0){
+        if(Method.isFullScreen()) Method.closeFullScreen(); //退出全屏
+        this.$router.replace({ name: "Login" });
+        //window.location.replace('/');
+      }else{
+        this.$message({ message: res.message, type: 'error' });
+      }
+    },
   }
 };
 </script>

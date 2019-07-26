@@ -79,7 +79,7 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from "vuex";
+  import { mapGetters } from "vuex";
   import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio, RadioGroup, DatePicker} from "element-ui";
   import {FormArea, SelectProvince, SelectCity, UploadImg} from '@/common';
   import {DataHandle, Verification} from '@/util';
@@ -108,7 +108,6 @@
       editMerchantCancel: Function
     },
     computed: mapGetters({
-      province: 'globalProvince',
       merchant_id: 'merchant_id'
     }),
     // 判断是否是编辑模式？
@@ -155,6 +154,7 @@
       };
 
       return {
+        province: this.$province,
         isModify: false,
         isSending: false,
         id: 0,

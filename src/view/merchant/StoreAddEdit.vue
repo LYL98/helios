@@ -37,7 +37,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {
     Table,
     TableColumn,
@@ -86,9 +85,6 @@
       editStoreSuccess: Function,
       editStoreCancel: Function
     },
-    computed: mapGetters({
-      province: 'globalProvince'
-    }),
     created() {
       let that = this;
       // 获取门店id
@@ -113,6 +109,7 @@
         }
       }
       return {
+        province: this.$province,
         tencentPath: Config.tencentPath,
         isSending: false,
         id: 0,

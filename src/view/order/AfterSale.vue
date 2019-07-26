@@ -161,7 +161,6 @@ export default {
   },
   computed: mapGetters({
     dataItem: 'orderAfterSaleDataItem',
-    province: 'globalProvince',
     isShow: 'orderIsShowAfterSaleDetail'
   }),
   data(){
@@ -246,7 +245,7 @@ export default {
       }
       
       //判断是否可导出
-      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(`${api}_check`, {
         province_code: this.province.code,
         ...query
@@ -260,7 +259,7 @@ export default {
       }else{
         this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
       }
-      this.$store.dispatch('loading', {isShow: false});
+      this.$loading({ isShow: false });
     },
     ...mapActions(['orderAfterSaleQuery', 'orderShowHideAfterSaleDetail', 'orderShowHideDetail'])
   }

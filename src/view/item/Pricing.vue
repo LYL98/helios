@@ -242,7 +242,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      province: 'globalProvince',
       priceLisDataItem: 'itemPricingPriceListDataItem'
     }),
     isPad: {

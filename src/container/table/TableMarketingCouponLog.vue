@@ -64,7 +64,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message, Popover } from 'element-ui';
   import { OmissionText } from '@/common';
   import { Constant, Config, Http } from '@/util';
@@ -83,13 +82,9 @@
     props: {
       coupon_log: { type: Object, required: true }
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         query: { },
         listItem: {
@@ -111,7 +106,7 @@
       async listExport() {
         let api = Config.api.itemCouponListExport;
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           coupon_id: this.query.coupon_id
@@ -123,7 +118,7 @@
         }else{
           this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       },
 
       cellMouseEnter(row, column, cell, event) {

@@ -55,7 +55,7 @@ export default {
     //获取团购门店详情
     async groupHeadStoreBindDetail() {
       let { dataItem } = this;
-      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(Config.api.groupHeadStoreBindDetail, {
         store_id: dataItem[0].id
       });
@@ -74,7 +74,7 @@ export default {
           type: "error"
         });
       }
-      this.$store.dispatch('loading', {isShow: false});
+      this.$loading({ isShow: false });
     },
     //新增
     handleAddItem() {

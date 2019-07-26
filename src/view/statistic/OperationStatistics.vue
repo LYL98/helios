@@ -93,7 +93,7 @@
 
 <script>
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message, Tooltip } from 'element-ui';
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import { Statistic } from '@/service';
   import { DataHandle, Constant } from '@/util';
   import { QueryItem, SearchItem } from '@/common';
@@ -110,9 +110,6 @@
   export default {
     name: "OperationStatistics",
     mixins: [viewMixin],
-    computed: mapGetters({
-      province: 'globalProvince'
-    }),
     components: {
       'el-button': Button,
       'el-date-picker': DatePicker,
@@ -775,7 +772,7 @@
       async statisticalSumBusinessDelivery(callback) {
         let that = this;
         let { query, indexNames } = that;
-        that.loading({isShow: true, isWhole: true});
+        this.$loading({ isShow: true, isWhole: true });
         let res = await Statistic.statisticalSumBusinessDelivery(query);
         if(res.code === 0){
           //将日期维度转化成指标维度
@@ -813,9 +810,9 @@
           that.$data.dataItem = indexItems;
           typeof callback === 'function' && callback();
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
 
       ...mapActions(['message', 'loading'])

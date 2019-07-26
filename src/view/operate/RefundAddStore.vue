@@ -115,7 +115,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {Input, Checkbox, CheckboxGroup, Table, TableColumn, Form, FormItem, Button, Message} from 'element-ui';
   import { ToPrice, QueryItem } from '@/common';
   import {SelectLine, SelectCity} from '@/container';
@@ -139,9 +138,6 @@
       'my-query-item': QueryItem
     },
     computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
       showList: {
         // 如果筛选到的城市storeList不在右侧编辑中的列表中editList，则填充在showList中显示出来。
         get() {
@@ -159,6 +155,7 @@
         editList: []
       };
       return {
+        province: this.$province,
         auth: this.$auth,
         // 查询门店
         query: {},

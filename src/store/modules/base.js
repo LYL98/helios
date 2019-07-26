@@ -1,9 +1,6 @@
 import * as Types from './../mutationTypes';
 import { Method } from '@/util';
 
-let globalAuth = Method.getSessionStorage('appleGlobalAuth');
-let globalProvince = Method.getLocalStorage('appleGlobalProvince');
-
 // initial state
 // shape: [{ id, quantity }]
 const state = {
@@ -16,9 +13,7 @@ const state = {
     message:'提示内容',
     type: 'success'
   },
-  windowHeight: 300,
-  globalAuth: globalAuth || {},//全局权限
-  globalProvince: globalProvince || {}, //全局省份
+  windowHeight: 300
 }
 
 // getters
@@ -49,10 +44,6 @@ const mutations = {
   [Types.BASE_WINDOW_INNER_HEIGHT](state, data){
     state.windowHeight = data;
   },
-  //全局权限
-  [Types.BASE_GLOBAL_AUTH](state, data){
-    state.globalAuth = data;
-  }
 }
 
 export default {

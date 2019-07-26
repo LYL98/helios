@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import { Dialog, Button, Input, Table, TableColumn, Pagination } from 'element-ui';
 import { SelectBuyer, SelectDisplayClass } from "@/common"
 import { Statistic } from '@/service';
@@ -94,9 +94,6 @@ export default {
   },
   created() {
   },
-  computed: mapGetters({
-    province: 'globalProvince'
-  }),
   props: ['item'],
   data() {
     return {
@@ -200,7 +197,7 @@ export default {
       let that = this;
       let { query } = that;
       query.is_gift = 0;
-      that.loading({isShow: true, isWhole: true});
+      this.$loading({ isShow: true, isWhole: true });
       let res = await Statistic.statisticalOrderStoreSaleItems(query);
       if(res.code === 0){
         res.data.items.map((item, index) => {
@@ -209,9 +206,9 @@ export default {
         });
         that.$data.merchantListData = res.data;
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
 
     ...mapActions(['message', 'loading'])

@@ -172,6 +172,7 @@
     },
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         query: {}, // 查询条件
@@ -200,7 +201,6 @@
     },
     computed: {
       ...mapGetters({
-        province: 'globalProvince',
         listItem: 'itemCouponListItem'
       })
     },

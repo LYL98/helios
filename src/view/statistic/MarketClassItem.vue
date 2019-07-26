@@ -125,7 +125,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Input, Button, Breadcrumb, BreadcrumbItem } from 'element-ui';
   import { QueryItem, SelectZone, SelectCity } from '@/common';
   import { Statistic } from '@/service';
@@ -150,9 +150,6 @@
       'my-select-zone': SelectZone,
       'my-select-city': SelectCity,
     },
-    computed: mapGetters({
-      province: 'globalProvince'
-    }),
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
@@ -286,7 +283,7 @@
       async saleClassItemStoreQuery() {
         let that = this;
         let { query } = that;
-        that.loading({isShow: true, isWhole: true});
+        this.$loading({ isShow: true, isWhole: true });
         let res = await Statistic.statisticalOrderItemSaleStores(query);
         if(res.code === 0){
           res.data.items.map((item, index) => {
@@ -294,9 +291,9 @@
           });
           that.$data.listItem = res.data;
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       }
     }
   }

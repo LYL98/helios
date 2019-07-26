@@ -129,7 +129,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Table, TableColumn, Pagination, Popover, Button, Input, Select, Option, DatePicker, Message } from 'element-ui';
   import { ToPrice } from '@/common';
   import { SelectCity } from '@/container';
@@ -153,11 +152,6 @@
     },
     props: {
       closeDialog: Function
-    },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince',
-      })
     },
     data() {
       return {

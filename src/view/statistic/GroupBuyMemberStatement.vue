@@ -111,7 +111,7 @@
   import Constant from "@/util/constant";
   import { Statistic } from '@/service';
   import { DataHandle, Config, Http } from '@/util';
-  import { mapGetters, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   import viewMixin from '@/view/view.mixin';
 
 export default {
@@ -139,9 +139,6 @@ export default {
       currentRow: {}
     }
   },
-  computed: mapGetters({
-    province: 'globalProvince'
-  }),
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -252,7 +249,7 @@ export default {
       };
       
       //判断是否可导出
-      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(`${api}_check`, {
         province_code: this.province.code,
         ...query
@@ -266,7 +263,7 @@ export default {
       }else{
         this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
       }
-      this.$store.dispatch('loading', {isShow: false});
+      this.$loading({ isShow: false });
     },
 
     loadListDataFirstPage() {
@@ -277,7 +274,7 @@ export default {
     async statisticalSumGroupBuyMember(){
       let that = this;
       let { query } = that;
-      that.loading({isShow: true, isWhole: true});
+      this.$loading({ isShow: true, isWhole: true });
       let res = await Statistic.statisticalSumGroupBuyMember(query);
       if(res.code === 0){
         //手动增加总计和平均值的行数据
@@ -299,9 +296,9 @@ export default {
         //     : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.display_class_title)
         // )
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
 
     ...mapActions(['message', 'loading'])

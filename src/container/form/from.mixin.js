@@ -23,6 +23,7 @@ export default {
   },
   data() {
     return {
+      province: this.$province,
       qiniuPath: Config.qiniuPath,
       defaultAvatar: Constant.IMGS.defaultAvatar,
       isShow: false,

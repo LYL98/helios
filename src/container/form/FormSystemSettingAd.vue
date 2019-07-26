@@ -33,7 +33,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import fromMixin from './from.mixin';
   import { Http, Config } from '@/util';
   import { MessageBox, Notification } from 'element-ui';
@@ -43,6 +42,7 @@
     mixins: [fromMixin],
     data() {
       return{
+        province: this.$province,
         itemData: {
           input_ad: '',
           ad: ''
@@ -53,11 +53,6 @@
           ]
         }
       }
-    },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
     },
     created() {
       this.basicdataAdGet();

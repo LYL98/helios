@@ -151,12 +151,12 @@
     },
     computed: {
       ...mapGetters({
-        province: 'globalProvince',
         listItem: 'financeBalanceListItem'
       }),
     },
     data() {
       return {
+        province: this.$province,
         auth: this.$auth,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         query: {},
@@ -251,7 +251,7 @@
         let {province_code, title} = this.query;
         let api = Config.api.financeBalanceExport;
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           title: title
@@ -263,7 +263,7 @@
         }else{
           this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       },
 
       handleBalanceMerchantLogExport() {
