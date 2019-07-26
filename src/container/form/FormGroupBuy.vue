@@ -42,7 +42,7 @@
         </el-row>
         <el-row>
           <el-form-item label="商品名" prop="item_title">
-            <el-input size="medium" v-model="editItem.item_title" :maxlength="20" placeholder="请输入20位以内的字符"></el-input>
+            <el-input size="medium" v-model="editItem.item_title" :maxlength="25" placeholder="请输入25位以内的字符"></el-input>
           </el-form-item>
         </el-row>
         <el-row>
