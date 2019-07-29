@@ -30,7 +30,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Dialog, Upload } from "element-ui";
+import { Form, FormItem, Button, Input, Dialog, Upload } from 'element-ui';
 import { Config, Constant, Verification } from '@/util';
 import { UploadImg, Avatar } from '@/common';
 

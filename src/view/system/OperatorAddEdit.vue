@@ -70,7 +70,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Transfer } from "element-ui";
+import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Transfer } from 'element-ui';
 import { Config, Constant, Verification } from '@/util';
 import { System } from '@/service';
 import { SelectProvince, SelectProvinceMulti, SelectZoneMulti, SelectCityMulti, SelectLineMulti,Avatar } from '@/common';

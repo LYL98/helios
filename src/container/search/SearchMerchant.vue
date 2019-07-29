@@ -58,7 +58,7 @@
   import { Table, TableColumn, Input, Button, Pagination, Checkbox, CheckboxGroup, Message } from 'element-ui';
   import { SelectCity } from '@/container/select';
   import { SelectZone } from '@/common';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
   export default {
     name: "SearchMerchant",
     components: {
@@ -223,7 +223,7 @@
       },
 
       async queryMerchant() {
-        let res = await Base.baseMerchantList(this.$data.query);
+        let res = await Http.get(Config.api.baseMerchantList, this.$data.query);
         if (res.code === 0) {
           // console.log('res.data', res.data);
           this.$data.itemList = res.data.map(item => ({ code: item.id, title: item.title }));

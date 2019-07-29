@@ -15,7 +15,7 @@
 <script>
   import BuyList from './BuyList';
   import BuyLogList from './BuyLogList';
-  import { Dialog } from "element-ui";
+  import { Dialog } from 'element-ui';
 
   export default {
     name: "Buy",

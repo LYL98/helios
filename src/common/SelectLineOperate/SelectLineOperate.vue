@@ -11,7 +11,7 @@
 
 <script>
 import { Select, Option, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectLineOperate",
@@ -44,7 +44,7 @@ export default {
     async baseLineList(){
       let that = this;
       let { pCode } = that;
-      let res = await Base.baseLineList({
+      let res = await Http.get(Config.api.baseLineList, {
         province_code: pCode
       });
       if(res.code === 0){

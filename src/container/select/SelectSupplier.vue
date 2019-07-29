@@ -21,7 +21,7 @@
 
 <script>
   import { Select, Option, MessageBox } from 'element-ui';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
 
   export default {
     name: "SelectSupplier",
@@ -61,12 +61,12 @@
       }
     },
     created() {
-      this.baseSupplierList();
+      this.baseSupplierListSelect();
     },
     methods: {
       //根据传进来的省份code 获取城市列表
-      async baseSupplierList(){
-        let res = await Base.baseSupplierListSelect({
+      async baseSupplierListSelect(){
+        let res = await Http.get(Config.api.baseSupplierListSelect, {
           province_code: this.$props.provinceCode || '',
           condition: '',
           is_check: 1, // 是否审核通过？ 0 否 1 是 null 全部

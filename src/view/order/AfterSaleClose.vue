@@ -48,7 +48,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Select, Option, Radio, Input, Dialog } from "element-ui";
+import { Form, FormItem, Button, Select, Option, Radio, Input, Dialog } from 'element-ui';
 import { Config, DataHandle, Constant, Verification } from '@/util';
 
 export default {

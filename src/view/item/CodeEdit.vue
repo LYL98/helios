@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, MessageBox, Dialog, Input } from "element-ui";
+import { Form, FormItem, Button, MessageBox, Dialog, Input } from 'element-ui';
 import { Config, DataHandle, Verification } from '@/util';
 import { Item, Base } from '@/service';
 

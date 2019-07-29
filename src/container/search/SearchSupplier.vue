@@ -10,7 +10,7 @@
 
 <script>
   import { Autocomplete, Button } from 'element-ui';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
 
   export default {
     name: "SearchSupplier",
@@ -50,7 +50,7 @@
         this.$emit('select', item)
       },
       async baseSupplierList({query, id}, callback) {
-        let res = await Base.baseSupplierList({
+        let res = await Http.get(Config.api.baseSupplierList, {
           condition: query
         });
         if (res.code === 0) {

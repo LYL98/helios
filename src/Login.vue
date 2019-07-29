@@ -42,8 +42,9 @@ export default {
   },
   created() {
     documentTitle('登录');
-    let loc = localStorage.getItem('globalBrand')
-    this.brand =  loc ? JSON.parse(loc) : {};
+    this.$getBrand().then(res => {
+      this.$data.brand = res;
+    });
   },
   data(){
     let isPad = false; //判断是否安卓
@@ -54,7 +55,10 @@ export default {
 
     return{
       loading: false,
-      brand: {},
+      brand: {
+        brand_name: '',
+        brand_icon: ''
+      },
       tencentPath: Config.tencentPath,
       isPad: isPad,
       loginData: {

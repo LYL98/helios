@@ -18,7 +18,7 @@
 
 <script>
   import { Select, Option, MessageBox } from 'element-ui';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
   export default {
     name: "SelectLine",
     components: {
@@ -62,7 +62,7 @@
       // 获取所有线路的列表
       async baseLineList(){
         try {
-          let res = await Base.baseLineList({
+          let res = await Http.get(Config.api.baseLineList, {
             province_code: this.$props.provinceCode
           });
           if(res.code === 0){

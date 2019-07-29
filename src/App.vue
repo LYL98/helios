@@ -3,7 +3,7 @@
     <div id="app" v-if="pageName !== 'Login'" @click="openCloseFullScreen(true)" :style="`min-width: ${needAdaptIpad ? 950 : 1300}px;`">
       <div id="head-div">
         <div id="logo-div" class="ellipsis" :style="`transition: width .2s; ${isHideMenu && 'width: 54px;'}`">
-          {{ !isHideMenu ? globalBrand.brand_name + '运营中心' : '' }}
+          {{ !isHideMenu ? brand.brand_name + '运营中心' : '' }}
         </div>
         <div class="global-province" v-if="pageName !== 'Login'">
           <my-global-province/>
@@ -245,6 +245,10 @@
       }
       let name = this.$router.history.current.name;
       return {
+        brand: {
+          brand_name: '',
+          brand_icon: ''
+        },
         tencentPath: Config.tencentPath,
         isHideMenu: appSetting.isHideMenu ? true : false,
         menuIndex: 1,
@@ -266,12 +270,11 @@
       'my-global-province': GlobalProvince
     },
     created() {
-      this.getBrand();
+      this.$getBrand().then(res => {
+        this.$data.brand = res;
+      });
     },
     computed: {
-      ...mapGetters({
-        globalBrand: 'globalBrand',
-      }),
       needAdaptIpad: {
         get() {
           return this.isPad && ['ItemPricing', 'OperateReceiving'].some(item => item === this.$data.pageName);
@@ -322,7 +325,6 @@
         this.$data.isHideMenu = !this.$data.isHideMenu;
         Method.setPageSetting('App', {isHideMenu: this.$data.isHideMenu});
       },
-      ...mapActions(['getBrand'])
     },
     watch: {
       //监听路由变化

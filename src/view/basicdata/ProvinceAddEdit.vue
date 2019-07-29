@@ -22,9 +22,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Dialog } from "element-ui";
-import { Config, Constant, Verification } from '@/util';
-import { Base } from '@/service';
+import { Form, FormItem, Button, Input, Dialog } from 'element-ui';
+import { Http, Config, Constant, Verification } from '@/util';
 
 export default {
   name: "ProvinceAddEdit",
@@ -45,7 +44,7 @@ export default {
 
     let validCode = function (rules, value, callback) {
       let asyncValid = () => {
-        Base.baseProvinceList({
+        Http.get(Config.api.baseProvinceList, {
           code: value
         }).then(res => {
           if (res.data && res.data.length > 0) {

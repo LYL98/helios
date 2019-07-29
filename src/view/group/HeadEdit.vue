@@ -70,9 +70,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { Form, FormItem, Row, Col, Button, Input, Autocomplete, Select, Option, Dialog } from "element-ui";
-import { Base, Group } from "@/service";
+import { Form, FormItem, Row, Col, Button, Input, Autocomplete, Select, Option, Dialog } from 'element-ui';
+import { Group } from "@/service";
+import { Http, Config } from '@/util';
 
 export default {
   name: "HeadEdit",
@@ -91,13 +91,9 @@ export default {
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件
   },
-  computed: {
-    ...mapGetters({
-      province: "globalProvince"
-    })
-  },
   data() {
     return {
+      province: this.$province,
       showType: 'add',
       isShow: false,
       storeList: [],
@@ -217,7 +213,7 @@ export default {
         this.$data.storeList = [];
         return;
       }
-      let res = await Base.baseStoreList({
+      let res = await Http.get(Config.api.baseStoreList, {
         province_code: this.province.code,
         condition: condition
       });
@@ -255,7 +251,7 @@ export default {
       if (!id) {
         return;
       }
-      let res = await Group.headStoreDetail({ store_id: id });
+      let res = await Http.get(Config.api.groupHeadStoreBindDetail ,{ store_id: id });
       if (res.code === 0) {
         this.$data.editItem.store_id = id;
         let rd = this.setMembersStatus(res.data);

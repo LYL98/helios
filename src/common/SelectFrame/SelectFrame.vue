@@ -11,7 +11,7 @@
 
 <script>
 import { Select, Option, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectFrame",
@@ -42,7 +42,7 @@ export default {
     //获取所有框
     async baseFrameList(){
       let that = this;
-      let res = await Base.baseFrameList();
+      let res = await Http.get(Config.api.baseFrameList, {});
       if(res.code === 0){
         let rd = res.data;
         that.$data.dataItem = rd;

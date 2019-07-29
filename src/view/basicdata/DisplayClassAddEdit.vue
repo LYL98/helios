@@ -25,9 +25,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Config, Constant, Verification } from '@/util';
-import { Form, FormItem, Button, Input, Dialog } from "element-ui";
-import { Base } from '@/service';
+import { Config, Http, Constant, Verification } from '@/util';
+import { Form, FormItem, Button, Input, Dialog } from 'element-ui';
 
 export default {
   name: "DisplayClassAddEdit",
@@ -48,7 +47,7 @@ export default {
 
     let validCode = function (rules, value, callback) {
       let asyncValid = () => {
-        Base.baseDisplayClassList({
+        Http.get(Config.api.baseDisplayClassList, {
           code: value
         }).then(res => {
           if (res.data && res.data.length > 0) {

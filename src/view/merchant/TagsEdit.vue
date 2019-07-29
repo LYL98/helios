@@ -26,7 +26,8 @@
 </template>
 <script>
 import { Form, FormItem, Tag, Button } from 'element-ui';
-import {Merchant, Base} from '@/service';
+import { Merchant } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: 'TagsEdit',
@@ -85,7 +86,7 @@ export default {
      */
     async baseMerchantInnerTagsList() {
       let that = this;
-      let res = await Base.baseMerchantInnerTagsList();
+      let res = await Http.get(Config.api.baseMerchantInnerTagsList, {});
       if (res.code === 0) {
         that.$data.innerTags = res.data;
       } else {
@@ -99,7 +100,7 @@ export default {
      */
     async baseMerchantOuterTagsList(data) {
       let that = this;
-      let res = await Base.baseMerchantOuterTagsList();
+      let res = await Http.get(Config.api.baseMerchantOuterTagsList, {});
       if (res.code === 0) {
         that.$data.outerTags = res.data;
       } else {
@@ -165,7 +166,7 @@ export default {
      */
     async baseMerchantGradeList(data) {
       let that = this;
-      let res = await Base.baseMerchantGradeList();
+      let res = await Http.get(Config.api.baseMerchantGradeList, {});
       if (res.code === 0) {
         that.$data.gradeList = res.data;
       } else {

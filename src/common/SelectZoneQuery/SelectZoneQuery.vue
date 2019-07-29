@@ -11,7 +11,7 @@
 
 <script>
 import { RadioGroup, RadioButton, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config } from '@/service';
 
 export default {
   name: "SelectZoneQuery",
@@ -44,7 +44,7 @@ export default {
     async baseZoneList(){
       let that = this;
       let { pCode } = that;
-      let res = await Base.baseZoneList({
+      let res = await Http.get(Config.api.baseZoneList, {
         province_code: pCode
       });
       if(res.code === 0){

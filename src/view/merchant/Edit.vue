@@ -26,7 +26,7 @@
 </template>
 <script>
   import {mapGetters, mapActions} from "vuex";
-  import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio } from "element-ui";
+  import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio } from 'element-ui';
   import {Config, DataHandle, Verification} from '@/util';
   import {Merchant, Base} from '@/service';
 

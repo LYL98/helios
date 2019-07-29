@@ -25,10 +25,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Dialog } from "element-ui";
-import { Config, Constant, Verification } from '@/util';
+import { Form, FormItem, Button, Input, Dialog } from 'element-ui';
+import { Http, Config, Constant, Verification } from '@/util';
 import { SelectProvince } from '@/common';
-import { Base } from '@/service';
 
 export default {
   name: "ZoneAddEdit",
@@ -49,7 +48,7 @@ export default {
 
     let validCode = function (rules, value, callback) {
       let asyncValid = () => {
-        Base.baseZoneList({
+        Http.get(Config.api.baseZoneList, {
           code: value
         }).then(res => {
           if (res.data && res.data.length > 0) {

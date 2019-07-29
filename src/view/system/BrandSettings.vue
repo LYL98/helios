@@ -34,7 +34,7 @@
 </template>
 <script>
   import {mapGetters, mapActions} from "vuex";
-  import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from "element-ui";
+  import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from 'element-ui';
   import { Config, Verification } from '@/util';
   import {Base} from '@/service';
   import {UploadImg} from '@/common';
@@ -141,24 +141,24 @@
         this.$refs['ruleFormQR'].validateField('qr_code');
       },
       submit(formName) {
-        let self = this;
+        let that = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (formName == 'ruleForm') {
-              let data = JSON.parse(JSON.stringify(self.ruleForm));
+              let data = JSON.parse(JSON.stringify(that.ruleForm));
               data.brand_icon = data.brand_icon.join()
               this.systemBrand({
                 data: data, callback: (res) => {
-                  self.systemBrand({data: 'get'});
-                  self.getBrand();
+                  that.systemBrand({data: 'get'});
+                  that.getBrand();
                 }
               });
             } else {
-              let data = JSON.parse(JSON.stringify(self.ruleFormQR));
+              let data = JSON.parse(JSON.stringify(that.ruleFormQR));
               data.qr_code = data.qr_code.join()
               this.systemBrandService({
                 data: data, callback: (res) => {
-                  self.systemBrandService({data: 'get'});
+                  that.systemBrandService({data: 'get'});
                 }
               });
             }

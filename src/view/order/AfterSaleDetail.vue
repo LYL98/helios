@@ -199,7 +199,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Table, TableColumn, Tag, Button, Select, Option, Input, Dialog, Popover } from "element-ui";
+import { Form, FormItem, Table, TableColumn, Tag, Button, Select, Option, Input, Dialog, Popover } from 'element-ui';
 import { ImagePreview } from '@/common';
 import { Config, DataHandle, Constant } from '@/util';
 import AfterSaleClose from './AfterSaleClose';

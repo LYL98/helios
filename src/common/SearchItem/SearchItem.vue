@@ -12,7 +12,7 @@
 
 <script>
 import { Autocomplete, Button } from 'element-ui'
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SearchItem",
@@ -45,7 +45,7 @@ export default {
       this.inputValue = '';
     },
     async baseItemList({query, id}, callback) {
-      let res = await Base.baseItemList({
+      let res = await Http.get(Config.api.baseItemList, {
         condition: query
       });
       if (res.code === 0) {

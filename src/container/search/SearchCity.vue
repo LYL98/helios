@@ -49,7 +49,7 @@
 <script>
   import { Table, TableColumn, Input, Button, Pagination, Checkbox, CheckboxGroup, Message } from 'element-ui';
   import { SelectZone } from '@/common';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/service';
   export default {
     name: "SearchCity",
     components: {
@@ -209,7 +209,7 @@
       },
 
       async queryCity() {
-        let res = await Base.baseCityList(this.$data.query);
+        let res = await Http.get(Config.api.baseCityList, this.$data.query);
         if (res.code === 0) {
           this.$data.itemList = this.$data.cityTitle === '' ? res.data : res.data.filter(item => item.title.indexOf(this.$data.cityTitle) != -1);;
         } else {

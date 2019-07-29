@@ -209,7 +209,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Col, Row, Tag } from "element-ui";
+import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Col, Row, Tag } from 'element-ui';
 import { Config, Constant, DataHandle } from '@/util';
 import { ImagePreview, Label } from  '@/common'
 

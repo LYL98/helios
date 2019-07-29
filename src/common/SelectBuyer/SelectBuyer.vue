@@ -13,7 +13,7 @@
 
 <script>
 import { Select, Option, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectBuyer",
@@ -50,7 +50,7 @@ export default {
         that.$data.dataItem = [];
         return false;
       }
-      let res = await Base.baseCommonBuyerList({
+      let res = await Http.get(Config.api.baseCommonBuyerList, {
         province_code: pCode
       });
       if(res.code === 0){

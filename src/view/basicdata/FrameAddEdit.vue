@@ -28,9 +28,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Dialog } from "element-ui";
-import { Verification, DataHandle } from '@/util';
-import { Base } from '@/service';
+import { Form, FormItem, Button, Input, Dialog } from 'element-ui';
+import { Http, Config, Verification, DataHandle } from '@/util';
 
 export default {
   name: "FrameAddEdit",
@@ -101,7 +100,7 @@ export default {
 
     let validCode = function (rules, value, callback) {
       let asyncValid = () => {
-        Base.baseFrameList({
+        Http.get(Config.api.baseFrameList, {
           code: value
         }).then(res => {
           if (res.data && res.data.length > 0) {

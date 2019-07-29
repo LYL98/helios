@@ -161,8 +161,7 @@
     Option
   } from 'element-ui';
   import {TableOperate, QueryItem} from '@/common';
-  import {Config, Constant} from '@/util';
-  import { Base } from '@/service';
+  import { Http, Config, Constant} from '@/util';
   import CityAddEdit from './CityAddEdit';
   import tableMixin from '@/container/table/table.mixin';
   import viewMixin from '@/view/view.mixin';
@@ -268,7 +267,7 @@
       //获取所有省
       async baseProvinceList(){
         let that = this;
-        let res = await Base.baseProvinceList();
+        let res = await Http.get(Config.api.baseProvinceList, {});
         if(res.code === 0){
           let rd = res.data;
           that.$data.provinceList = rd;
@@ -289,7 +288,7 @@
       async baseZoneList(){
         let that = this;
         let { province_code } = that.query;
-        let res = await Base.baseZoneList({
+        let res = await Http.get(Config.api.baseZoneList, {
           province_code: province_code
         });
         if(res.code === 0){

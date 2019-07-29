@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import {Row, Col, Button, Form, FormItem} from "element-ui";
+  import {Row, Col, Button, Form, FormItem} from 'element-ui';
   import {Config, DataHandle, Constant} from '@/util';
   import { Group } from '@/service';
 

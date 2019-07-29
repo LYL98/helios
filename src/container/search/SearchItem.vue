@@ -12,7 +12,7 @@
 
 <script>
   import { Autocomplete, Button } from 'element-ui';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
 
   export default {
     name: "SearchItem",
@@ -93,7 +93,7 @@
           data.promotion_time_end = this.$props.is_promotion.promotion_time_end;
         }
 
-        let res = await Base.baseItemList(data);
+        let res = await Http.get(Config.api.baseItemList, data);
         if (res.code === 0) {
           let rd = res.data;
           if (rd.length === 0) { // 如果查询结果为空，则提示没有结果

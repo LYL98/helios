@@ -18,9 +18,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, MessageBox, Dialog, Tag } from "element-ui";
-import { Config, DataHandle } from '@/util';
-import { Item, Base } from '@/service';
+import { Form, FormItem, Button, MessageBox, Dialog, Tag } from 'element-ui';
+import { Http, Config, DataHandle } from '@/util';
+import { Item } from '@/service';
 
 export default {
   name: "ItemPricing",
@@ -107,7 +107,7 @@ export default {
     //获取商品标签列表
     async baseItemTagsList(){
       let that = this;
-      let res = await Base.baseItemTagsList();
+      let res = await Http.get(Config.api.baseItemTagsList, {});
       if(res.code === 0){
         that.$data.itemTags = res.data;
       }else{

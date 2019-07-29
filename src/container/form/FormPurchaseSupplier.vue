@@ -62,8 +62,7 @@
 
   import {mapGetters} from 'vuex';
   import {Form, FormItem, Input, Autocomplete, Radio, RadioGroup, Button} from 'element-ui';
-  import {Verification} from '@/util';
-  import { Base } from '@/service';
+  import { Http, Config, Verification } from '@/util';
 
   export default {
     name: "FormPurchaseSupplier",
@@ -78,10 +77,10 @@
     },
     props: {
       item: { type: Object, required: true }, // 需要编辑的项
-      isModify: {type: Boolean, default: false}, // 是否为编辑模式
-      submit: {type: Function, required: true},
-      close: {type: Function, required: true},
-      sending: { type: Boolean, required: true}
+      isModify: { type: Boolean, default: false }, // 是否为编辑模式
+      submit: { type: Function, required: true },
+      close: { type: Function, required: true },
+      sending: { type: Boolean, required: true }
     },
     model: {
       prop: 'item',
@@ -114,7 +113,7 @@
         if (!Verification.isNumber(value)) {
           return callback(new Error('请输入12位以内的数字'));
         }
-        Base.baseSupplierList({ code: value })
+        Http.get(Config.api.baseSupplierList, { code: value })
           .then(res => {
             if (res.data && res.data.length > 0) {
               return callback(new Error('供应商编码重复,请重新输入'));

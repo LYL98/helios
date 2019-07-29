@@ -12,8 +12,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { Dialog, Button} from "element-ui";
+import { Dialog, Button} from 'element-ui';
 import { Base, Group } from "@/service";
 import { TableGroupHeadDetail, TableGroupHeadDetailList } from '@/container';
 import { Http, Config } from '@/util';
@@ -29,13 +28,9 @@ export default {
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件
   },
-  computed: {
-    ...mapGetters({
-      province: "globalProvince"
-    })
-  },
   data() {
     return {
+      province: this.$province,
       auth: this.$auth,
       componentName: 'HeadDetail',
       isShow: false,

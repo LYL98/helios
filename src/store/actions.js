@@ -1,10 +1,5 @@
 import * as Types from './mutationTypes';
 
-//判断是否登录
-export const isLogin = ({ dispatch }, callback) => {
-    dispatch('loginIsLogin', callback);
-};
-
 //保存窗口高度
 export const windowInnerHeight = ({ commit }, windowHeight) => {
     commit(Types.BASE_WINDOW_INNER_HEIGHT, windowHeight);

@@ -42,9 +42,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Message, Dialog, RadioGroup, Radio, Select, Option, Upload } from "element-ui";
-import { Config, Verification } from '@/util';
-import { Base } from '@/service';
+import { Form, FormItem, Button, Input, Message, Dialog, RadioGroup, Radio, Select, Option, Upload } from 'element-ui';
+import { Config, Verification, Http } from '@/util';
 import { SearchItem, UploadImg, SelectDisplayClass, SelectTag } from '@/common'
 
 export default {
@@ -176,18 +175,14 @@ export default {
       });
     },
     async baseItemDetail(id, callback) {
-      let res = await Base.baseItemDetail({
-        id: id
-      });
+      let res = await Http.get(Config.api.baseItemDetail, { id: id });
       if (res.code === 0) {
         let rd = res.data;
         callback(rd)
       }
     },
     async baseDisplayClassList(code, callback) {
-      let res = await Base.baseDisplayClassList({
-        code: code
-      });
+      let res = await Http.get(Config.api.baseDisplayClassList, { code: code });
       if (res.code === 0) {
         let rd = res.data;
         callback(rd)

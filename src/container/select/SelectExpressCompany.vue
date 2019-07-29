@@ -21,7 +21,7 @@
 
 <script>
   import { Select, Option, MessageBox } from 'element-ui';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
 
   export default {
     name: "SelectCity",
@@ -65,7 +65,7 @@
     methods: {
       //根据传进来的省份code 获取城市列表
       async baseOrderShipList(){
-        let res = await Base.baseOrderShipList();
+        let res = await Http.get(Config.api.baseOrderShipList, {});
 
         if(res.code === 0){
           this.$data.dataItem = res.data;

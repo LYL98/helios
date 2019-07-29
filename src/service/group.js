@@ -16,9 +16,6 @@ export default {
   storeFreeze(data){
     return Http.post(Config.api.groupStoreFreeze, data);
   },
-  headStoreDetail(data) {
-    return Http.get(Config.api.groupHeadStoreBindDetail, data)
-  },
   headAdd(data) {
     return Http.post(Config.api.groupHeadAdd, data)
   },

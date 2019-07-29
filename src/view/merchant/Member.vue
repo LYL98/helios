@@ -89,7 +89,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
-  import {Table, TableColumn, Tag, Form, FormItem, Message, MessageBox, Button, Dialog, Input, Pagination} from "element-ui";
+  import {Table, TableColumn, Tag, Form, FormItem, Message, MessageBox, Button, Dialog, Input, Pagination} from 'element-ui';
   import {TableOperate} from '@/common';
   import {Config, Constant, DataHandle, Method, Http} from '@/util';
   import {Merchant} from '@/service';

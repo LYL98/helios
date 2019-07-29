@@ -148,7 +148,7 @@
 
 <script>
   import {mapGetters} from "vuex";
-  import {Row, Col, Button, Dialog, Tag, Table, TableColumn} from "element-ui";
+  import {Row, Col, Button, Dialog, Tag, Table, TableColumn} from 'element-ui';
   import {ImagePreview} from '@/common';
   import {Config, DataHandle, Constant} from '@/util';
 

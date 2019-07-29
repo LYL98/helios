@@ -76,13 +76,13 @@
 <script>
   import {mapGetters, mapMutations } from 'vuex';
   import { MERCHANT_SET_ID, MERCHANT_INIT_STATE } from '@/store/mutationTypes';
-  import {MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination} from "element-ui";
+  import {MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination} from 'element-ui';
   import { QueryMerchantStore } from '@/container';
   import Table from './Table';
   import AddMerchant from './Add';
   import MerchantDetail from './Detail';
   import {Config, Constant, DataHandle, Method, Http} from '@/util';
-  import {Merchant, Base} from '@/service';
+  import { Merchant } from '@/service';
 
   export default {
     name: "MerchantList",
@@ -434,7 +434,7 @@
        */
       async baseMerchantInnerTagsList() {
         let that = this;
-        let res = await Base.baseMerchantInnerTagsList();
+        let res = await Http.get(Config.api.baseMerchantInnerTagsList, {});
         if (res.code === 0) {
           that.$data.innerTags = res.data;
         } else {
@@ -448,7 +448,7 @@
        */
       async baseMerchantOuterTagsList(data) {
         let that = this;
-        let res = await Base.baseMerchantOuterTagsList();
+        let res = await Http.get(Config.api.baseMerchantOuterTagsList, {});
         if (res.code === 0) {
           that.$data.outerTags = res.data;
         } else {
@@ -514,7 +514,7 @@
        */
       async baseMerchantGradeList(data) {
         let that = this;
-        let res = await Base.baseMerchantGradeList();
+        let res = await Http.get(Config.api.baseMerchantGradeList, {});
         if (res.code === 0) {
           that.$data.gradeList = res.data;
         } else {

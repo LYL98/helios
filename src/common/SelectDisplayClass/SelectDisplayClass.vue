@@ -12,7 +12,7 @@
 
 <script>
 import { Select, Option, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectDisplayClass",
@@ -43,7 +43,7 @@ export default {
     //获取所有展示分类
     async baseDisplayClassList(){
       let that = this;
-      let res = await Base.baseDisplayClassList();
+      let res = await Http.get(Config.api.baseDisplayClassList, {});
       if(res.code === 0){
         let rd = res.data;
         that.$data.dataItem = rd;

@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, MessageBox, Dialog } from "element-ui";
+import { Form, FormItem, Button, Input, MessageBox, Dialog } from 'element-ui';
 import md5 from 'md5';
 
 export default {

@@ -29,7 +29,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Select, Option } from "element-ui";
+import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Select, Option } from 'element-ui';
 import { Config, Constant } from '@/util';
 
 export default {

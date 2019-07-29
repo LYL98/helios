@@ -45,7 +45,8 @@
 
 <script>
   import { Table, TableColumn, Button, Select, Option, Message } from 'element-ui';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
+
   export default {
     name: "SearchMerchantGrade",
     components: {
@@ -111,7 +112,7 @@
       },
 
       async queryGrade() {
-        let res = await Base.baseMerchantGradeList();
+        let res = await Http.get(Config.api.baseMerchantGradeList, {});
         if (res.code === 0) {
           this.$data.listItem = res.data;
         } else {

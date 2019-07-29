@@ -4,7 +4,7 @@ import VueResource from 'vue-resource';
 import App from './App';
 import store from './store';
 import router from './router';
-import { DataHandle, Method } from '@/util';
+import { DataHandle, Method, Http, Config } from '@/util';
 import { MessageBox, Notification, Loading } from 'element-ui';
 
 import * as Sentry from '@sentry/browser';
@@ -24,6 +24,9 @@ if(isPro){
     ],
   });
 }
+
+//全局品牌
+let globalBrand = {};
 
 Vue.use(VueResource);
 Vue.config.productionTip = false;
@@ -63,6 +66,19 @@ Vue.use({
     //全局省份
     let province = Method.getLocalStorage('appleGlobalProvince');
     Vue.prototype.$province = province;
+
+    //全局品牌 refresh (true,false)
+    Vue.prototype.$getBrand = async (refresh)=>{
+      if(globalBrand && globalBrand.brand_name && !refresh){
+        return globalBrand;
+      }
+      let res = await Http.get(Config.api.getBrand, {});
+      if(res.code === 0){
+        globalBrand = res.data;
+        return globalBrand;
+      }
+      return { brand_name: '', brand_icon: ''};
+    }
   }
 });
 

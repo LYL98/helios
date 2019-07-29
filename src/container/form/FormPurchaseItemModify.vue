@@ -38,8 +38,7 @@
   import { Form, FormItem, Input, Radio, RadioGroup, DatePicker, Button, Message } from 'element-ui';
   import { SearchItem, SearchSupplier } from '@/container/search';
   import { SelectSupplier } from '@/container';
-  import { Base } from '@/service';
-  import { DataHandle } from '@/util';
+  import { Http, Config, DataHandle } from '@/util';
   export default {
     name: "FormPurchaseItemModify",
     components: {
@@ -188,7 +187,7 @@
         return DataHandle.returnPrice(price);
       },
       async setFramePrice() {
-        let res = await Base.baseFrameList();
+        let res = await Http.get(Config.api.baseFrameList, {});
         if (res.code === 0) {
           res.data.some(item => {
             if (item.code === this.$data.editItem.frame_code) {

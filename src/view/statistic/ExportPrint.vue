@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import {
   Form,
   FormItem,
@@ -108,7 +108,7 @@ import {
   DatePicker,
   Select,
   Option
-} from "element-ui";
+} from 'element-ui';
 import { Config, DataHandle, Request } from "@/util";
 import { Operate } from "@/service";
 import { SelectCity, SelectCityMulti } from "@/common";
@@ -190,6 +190,7 @@ export default {
     let d = DataHandle.returnDateStr();
     let nowDate = DataHandle.returnDateFormat(d, "yyyy-MM-dd");
     return {
+      province: this.$province,
       isShow: false,
       isPreview: false,
       selectIndex: 0,
@@ -226,10 +227,6 @@ export default {
       fixDateOptions: Constant.FIX_DATE_RANGE,
     };
   },
-  computed: mapGetters({
-    province: "globalProvince",
-    globalBrand: 'globalBrand'
-  }),
   methods: {
     preview() {
       this.isPreview = true;
@@ -338,65 +335,70 @@ export default {
     },
     //打印模板
     printTemplate(data) {
-      let tagTemplate = "",
-          dataTemp = [];
-      let { brand_name } = this.globalBrand;
-      //处理数据
-      data.forEach(item => {
-        if (item.num === 1) {
-          let d = {
-            rank: 1,
-            ...item
-          };
-          d.rank = 1;
-          dataTemp.push(d);
-        } else {
-          for (let i = 0; i < item.num; i++) {
+      //打印
+      const fun = (brandName) =>{
+        let tagTemplate = "", dataTemp = [];
+        //处理数据
+        data.forEach(item => {
+          if (item.num === 1) {
             let d = {
-              rank: i + 1,
+              rank: 1,
               ...item
             };
+            d.rank = 1;
             dataTemp.push(d);
+          } else {
+            for (let i = 0; i < item.num; i++) {
+              let d = {
+                rank: i + 1,
+                ...item
+              };
+              dataTemp.push(d);
+            }
           }
-        }
-      });
-      dataTemp.map(item => {
-        tagTemplate += `
-          <div class="item-div">
-            <div class="item">
-              <div class="top">
-                ${item.store_title}
-              </div>
-              <div class="centre">
-                <div class="item-code">
-                  ${item.item_code}
-                  <span>${item.item_title}</span>
+        });
+        dataTemp.map(item => {
+          tagTemplate += `
+            <div class="item-div">
+              <div class="item">
+                <div class="top">
+                  ${item.store_title}
                 </div>
-                <div class="item-ad">${item.ad}</div>
-              </div>
-              <div class="bottom">
-                <div class="left">
-                  <div class="num-rank">${item.rank} / ${item.num}</div>
+                <div class="centre">
+                  <div class="item-code">
+                    ${item.item_code}
+                    <span>${item.item_title}</span>
+                  </div>
+                  <div class="item-ad">${item.ad}</div>
                 </div>
-                <div class="right">
-                  <div class="date" style="color: #000;">
-                    <span class="logo">${brand_name}</span>${item.date}
+                <div class="bottom">
+                  <div class="left">
+                    <div class="num-rank">${item.rank} / ${item.num}</div>
+                  </div>
+                  <div class="right">
+                    <div class="date" style="color: #000;">
+                      <span class="logo">${brandName}</span>${item.date}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          `;
+        });
+        document.getElementById("app").innerHTML = `
+          <div class="order-label-print">
+            ${tagTemplate}
           </div>
         `;
+        window.onafterprint = function() {
+          document.location.reload();
+        };
+        window.print();
+      }
+      //获取品牌
+      this.$getBrand().then(res => {
+        fun(res.brand_name);
       });
-      document.getElementById("app").innerHTML = `
-        <div class="order-label-print">
-          ${tagTemplate}
-        </div>
-      `;
-      window.onafterprint = function() {
-        document.location.reload();
-      };
-      window.print();
     },
     ...mapActions(["message"])
   }

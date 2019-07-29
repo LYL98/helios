@@ -22,7 +22,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, MessageBox, Dialog, RadioGroup, Radio } from "element-ui";
+import { Form, FormItem, Button, Input, MessageBox, Dialog, RadioGroup, Radio } from 'element-ui';
 import { Config, DataHandle, Constant, Verification } from '@/util';
 
 export default {

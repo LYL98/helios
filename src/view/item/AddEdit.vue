@@ -284,9 +284,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Select, Option, MessageBox, Dialog, Radio, Col, Row, Checkbox, DatePicker, Cascader } from "element-ui";
-import { Config, DataHandle, Verification, Constant } from '@/util';
-import { Base } from '@/service';
+import { Form, FormItem, Button, Input, Select, Option, MessageBox, Dialog, Radio, Col, Row, Checkbox, DatePicker, Cascader } from 'element-ui';
+import { Http, Config, DataHandle, Verification, Constant } from '@/util';
 import { SelectProvince, SelectBuyer, SelectFrame, SelectDisplayClass, UploadImg, QuillEditor } from '@/common';
 
 export default {
@@ -715,7 +714,7 @@ export default {
     },
     //根据传进来的省份code 获取城市列表
     async baseCityList(){
-      let res = await Base.baseCityList({
+      let res = await Http.get(Config.api.baseCityList, {
         province_code: this.province.code || '',
         zone_code: ''
       });
@@ -729,7 +728,7 @@ export default {
     //获取商品科学分类
     async baseSystemClassList(topCode, callback){
       let that = this;
-      let res = await Base.baseSystemClassList({
+      let res = await Http.get(Config.api.baseSystemClassList, {
         top_code: topCode || ''
       });
       if(res.code === 0){

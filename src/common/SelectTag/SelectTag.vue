@@ -11,7 +11,7 @@
 
 <script>
 import { Select, Option, MessageBox} from 'element-ui'
-import { Base } from '@/service';
+import { Http, Config } from '@/service';
 
   export default {
     name: "SelectTag",
@@ -33,7 +33,7 @@ import { Base } from '@/service';
       //获取商品标签列表
       async baseItemTagsList(){
         let that = this;
-        let res = await Base.baseItemTagsList();
+        let res = await Http.get(Config.api.baseItemTagsList, {});
         if(res.code === 0){
           res.data.map(item => {item.label=item.title; item.value=item.title});
           that.$data.itemTags = res.data;

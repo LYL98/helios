@@ -19,7 +19,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Dialog } from "element-ui";
+import { Form, FormItem, Button, Input, Dialog } from 'element-ui';
 import { Config, Constant, Verification } from '@/util';
 
 export default {

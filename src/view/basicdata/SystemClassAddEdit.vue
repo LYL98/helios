@@ -28,9 +28,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Verification } from '@/util';
-import { Form, FormItem, Button, Input, Dialog } from "element-ui";
-import { Base } from '@/service';
+import { Http, Config, Verification } from '@/util';
+import { Form, FormItem, Button, Input, Dialog } from 'element-ui';
 
 export default {
   name: "SystemClassAddEdit",
@@ -50,7 +49,7 @@ export default {
 
     let validCode = function (rules, value, callback) {
       let asyncValid = () => {
-        Base.baseSystemClassList({
+        Http.get(Config.api.baseSystemClassList, {
           code: value
         }).then(res => {
           if (res.data && res.data.length > 0) {

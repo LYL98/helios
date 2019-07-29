@@ -91,7 +91,7 @@
 
 <script>
 import {mapGetters, mapActions} from "vuex";
-import {Row, Col, Button, Dialog, RadioGroup, Radio, Form, FormItem, Input, Table, TableColumn, InputNumber, MessageBox} from "element-ui";
+import {Row, Col, Button, Dialog, RadioGroup, Radio, Form, FormItem, Input, Table, TableColumn, InputNumber, MessageBox} from 'element-ui';
 import { SelectExpressCompany } from '@/container'
 import { DataHandle, Verification, Constant } from '@/util';
 
