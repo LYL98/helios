@@ -276,7 +276,7 @@
             items: res.data.items
           });
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
 
@@ -297,9 +297,9 @@
           let res = await Group.memberFreeze({gb_member_id: id});
           if (res.code === 0) {
             this.memberQuery();
-            this.$store.dispatch('message', {title: '提示', message: '冻结成功', type: 'success'});
+            this.$message({title: '提示', message: '冻结成功', type: 'success'});
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');
@@ -316,9 +316,9 @@
           let res = await Group.memberUnFreeze({gb_member_id: id});
           if (res.code === 0) {
             this.memberQuery();
-            this.$store.dispatch('message', {title: '提示', message: '解冻成功', type: 'success'});
+            this.$message({title: '提示', message: '解冻成功', type: 'success'});
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');
@@ -344,7 +344,7 @@
           }
           window.open(queryStr);
         }else{
-          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+          this.$message({ title: '提示', message: res.message, type: 'error' });
         }
         this.$loading({ isShow: false });
       }

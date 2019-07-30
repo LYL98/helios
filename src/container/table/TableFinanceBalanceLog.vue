@@ -128,7 +128,7 @@
 <script>
   import { Input, Button, Select, Option, Table, TableColumn, Pagination, Message, DatePicker } from 'element-ui';
   import { ButtonGroup, QueryItem, ToPrice, OmissionText, TableOperate } from '@/common';
-  import { Constant, DataHandle } from '@/util';
+  import { Http, Config, Constant, DataHandle } from '@/util';
   import { Finance } from '@/service';
   export default {
     name: "TableFinanceBalanceLog",
@@ -247,7 +247,7 @@
         this.BalanceLogQuery();
       },
       async BalanceLogQuery() {
-        let res = await Finance.balanceLogQuery(this.$data.query);
+        let res = await Http.get(Config.api.financeBalanceLogQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign({}, this.$data.listItem, res.data);
         } else {

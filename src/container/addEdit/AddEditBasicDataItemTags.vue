@@ -1,6 +1,6 @@
 <template>
   <div class="user-reset-password">
-    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'编辑':'新增'}商品标签`" :visible="isShow" width="720px" :before-close="cancelAddEdit">
+    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'编辑':'新增'}商品标签`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入4位以内的字符" :maxlength="4"></el-input>
@@ -21,7 +21,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click.native="cancelAddEdit">取 消</el-button>
+        <el-button @click.native="handleCancel">取 消</el-button>
         <el-button type="primary" @click.native="submitAddEdit">确 定</el-button>
       </span>
     </el-dialog>
@@ -29,13 +29,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Dialog, Upload } from 'element-ui';
-import { Config, Constant, Verification } from '@/util';
+import addEditMixin from './add.edit.mixin';
+import { Http, Config, Verification } from '@/util';
 import { UploadImg, Avatar } from '@/common';
 
 export default {
-  name: "ItemTagsAddEdit",
+  name: "AddEditItemTags",
+  mixins: [addEditMixin],
   components: {
     'el-form': Form,
     'el-form-item': FormItem,
@@ -96,7 +96,7 @@ export default {
       this.choseImg = "";
     },
     //取消
-    cancelAddEdit(){
+    handleCancel(){
       this.basicDataItemTagsShowHideAddEdit({ isShow: false });
       if(this.detail.image.length)this.$refs.upload.handleRemove(Config.tencentPath+this.detail.image)
       this.reset();
@@ -130,7 +130,7 @@ export default {
             data: req,
             callback: (res)=>{
               that.$attrs.callback();//回调
-              that.cancelAddEdit();
+              that.handleCancel();
             }
           });
         } else {

@@ -23,35 +23,35 @@ const actions = {
     if (res.code === 0) {
       commit(Types.ITEM_SCOPE_PROMOTION_SET_LIST_ITEM, { listItem: res.data });
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   async itemScopePromotionAdd({commit, dispatch, state}, {item, success, error}) {
     let res = await Item.scopePromotionAdd(item);
     if (res.code === 0) {
-      dispatch('message', {title: '提示', message: '促销活动添加成功！', type: 'success'});
+      this.$message({title: '提示', message: '促销活动添加成功！', type: 'success'});
       success && success();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
       error && error();
     }
   },
   async itemScopePromotionStart({commit, dispatch, state}, {promotion_id, callback}) {
     let res = await Item.promotionStart({promotion_id});
     if (res.code === 0) {
-      dispatch('message', {title: '提示', message: '活动已经上架！', type: 'success'});
+      this.$message({title: '提示', message: '活动已经上架！', type: 'success'});
       callback && callback();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   async itemScopePromotionHalt({commit, dispatch, state}, {promotion_id, callback}) {
     let res = await Item.promotionHalt({promotion_id});
     if (res.code === 0) {
-      dispatch('message', {title: '提示', message: '活动已经下架！', type: 'success'});
+      this.$message({title: '提示', message: '活动已经下架！', type: 'success'});
       callback && callback();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 }

@@ -16,27 +16,27 @@ const getters = {
 const actions = {
   //获取品牌信息
   async systemBrand({commit, dispatch, state},{data,callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.systemBrand(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if (res.code === 0) {
-      if(data !='get')dispatch('message', {title: '提示', message: res.message, type: 'success'});
+      if(data !='get')this.$message({title: '提示', message: res.message, type: 'success'});
       commit(Types.SYSTEM_BRAND, res.data);
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   async systemBrandService({commit, dispatch, state},{data,callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.systemBrandService(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if (res.code === 0) {
-      if(data !='get')dispatch('message', {title: '提示', message: res.message, type: 'success'});
+      if(data !='get')this.$message({title: '提示', message: res.message, type: 'success'});
       commit(Types.SYSTEM_BRAND_SERVICE, res.data);
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 };

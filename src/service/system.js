@@ -57,14 +57,6 @@ export default {
     operatorUnFreeze(data){
         return Http.post(Config.api.operatorUnFreeze, data);
     },
-    // //获取常量
-    // basicdataConstantGet(data){
-    //     return Http.get(Config.api.basicdataConstantGet, data);
-    // },
-    // //设置常量
-    // basicdataConstantSet(data){
-    //     return Http.post(Config.api.basicdataConstantSet, data);
-    // },
     //获取截单时间
     basicdataConfirmTimeGet(data){
       return Http.get(Config.api.basicdataConfirmTime, data);

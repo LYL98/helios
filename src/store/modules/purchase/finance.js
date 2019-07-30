@@ -26,17 +26,17 @@ const actions = {
     if (res.code === 0) {
       commit(Types.PURCHASE_FINANCE_SET_LIST_ITEM, { listItem: res.data });
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   async pruchaseFinanceApprove({commit, dispatch, state}, {id, remark, success, error}) {
     let res = await Purchase.itemSecondCheck({id, remark});
     if (res.code === 0) {
       // 如果审核通过
-      dispatch('message', {title: '提示', message: '采购财务审核成功！', type: 'success'});
+      this.$message({title: '提示', message: '采购财务审核成功！', type: 'success'});
       success && success();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
       error && error();
     }
   },
@@ -44,10 +44,10 @@ const actions = {
   async pruchaseFinanceDecline({commit, dispatch, state}, {id, remark, success, error}) {
     let res = await Purchase.itemDecline({id, remark});
     if (res.code === 0) {
-      dispatch('message', {title: '提示', message: '采购财务审核驳回！', type: 'success'});
+      this.$message({title: '提示', message: '采购财务审核驳回！', type: 'success'});
       success && success();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
       error && error();
     }
   },

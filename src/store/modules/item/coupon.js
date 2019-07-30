@@ -23,26 +23,26 @@ const actions = {
     if (res.code === 0) {
       commit(Types.ITEM_COUPON_SET_LIST_ITEM, { listItem: res.data });
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   async itemCouponAdd({commit, dispatch, state}, {item, success, error}) {
     let res = await Item.couponAdd(item);
     if (res.code === 0) {
-      dispatch('message', {title: '提示', message: '优惠券添加成功！', type: 'success'});
+      this.$message({title: '提示', message: '优惠券添加成功！', type: 'success'});
       success && success();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
       error && error();
     }
   },
   async itemCouponDistribute({commit, dispatch, state}, {item, success, error}) {
     let res = await Item.couponDistribute(item);
     if (res.code === 0) {
-      dispatch('message', {title: '提示', message: '优惠券发放成功！', type: 'success'});
+      this.$message({title: '提示', message: '优惠券发放成功！', type: 'success'});
       success && success();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
       error && error();
     }
   },
@@ -50,10 +50,10 @@ const actions = {
     let res = await Item.couponAutoDis(data);
     let message = data.auto_dis_status == 0 ? '自动发放已暂停！' : '自动发放已开始！';
     if (res.code === 0) {
-      dispatch('message', {title: '提示', message: message, type: 'success'});
+      this.$message({title: '提示', message: message, type: 'success'});
       success && success();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
       error && error();
     }
   },
@@ -62,7 +62,7 @@ const actions = {
   //   if (res.code === 0) {
   //     commit(Types.ITEM_COUPON_SET_LIST_ITEM, { listItem: res.data });
   //   } else {
-  //     dispatch('message', {title: '提示', message: res.message, type: 'error'});
+  //     this.$message({title: '提示', message: res.message, type: 'error'});
   //   }
   // },
   // async itemCouponDistributeStatistic({commit, dispatch, state}, {query}) {
@@ -70,7 +70,7 @@ const actions = {
   //   if (res.code === 0) {
   //     commit(Types.ITEM_COUPON_SET_LIST_ITEM, { listItem: res.data });
   //   } else {
-  //     dispatch('message', {title: '提示', message: res.message, type: 'error'});
+  //     this.$message({title: '提示', message: res.message, type: 'error'});
   //   }
   // },
 }

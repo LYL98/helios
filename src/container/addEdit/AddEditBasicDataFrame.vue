@@ -1,6 +1,6 @@
 <template>
   <div class="user-reset-password">
-    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'编辑':'新增'}商品框`" :visible="isShow" width="720px" :before-close="cancelAddEdit">
+    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'编辑':'新增'}商品框`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">
         <el-form-item label="编号" prop="code">
           <el-input v-model="detail.code" :disabled="detail.id" placeholder="请输入12位以内的字母和数字组合" :maxlength="12"></el-input>
@@ -19,7 +19,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click.native="cancelAddEdit">取 消</el-button>
+        <el-button @click.native="handleCancel">取 消</el-button>
         <el-button type="primary" @click.native="submitAddEdit">确 定</el-button>
       </span>
     </el-dialog>
@@ -27,23 +27,14 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Dialog } from 'element-ui';
-import { Http, Config, Verification, DataHandle } from '@/util';
+import addEditMixin from './add.edit.mixin';
+import { Http, Config, Verification } from '@/util';
 
 export default {
-  name: "FrameAddEdit",
+  name: "AddEditBasicDataFrame",
+  mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog
   },
-  computed: mapGetters({
-    isShow: 'basicDataFrameIsShowAddEdit',
-    basicDataFrameDetail: 'basicDataFrameDetail'
-  }),
   data(){
     //判断是否是重量
     let isWeight = (rule, value, callback) => {
@@ -128,7 +119,8 @@ export default {
     };
 
     return{
-      detail: {
+      initDetail: {
+
       },
       rules: {
         code: [
@@ -153,64 +145,33 @@ export default {
     }
   },
   methods: {
-    //返回价格
-    returnPrice(data){
-      return DataHandle.returnPrice(data);
-    },
-    //返回重量
-    returnWeight(data){
-      return DataHandle.returnWeight(data);
-    },
-    //处理价格
-    handlePrice(data){
-      return DataHandle.handlePrice(data);
-    },
-    //处理重量
-    handleWeight(data){
-      return DataHandle.handleWeight(data);
-    },
-    //取消
-    cancelAddEdit(){
-      this.detail = {};
-      this.$refs['ruleForm'].resetFields();
-      this.basicDataFrameShowHideAddEdit({ isShow: false});
-    },
     //确认提交
     submitAddEdit(){
       let that = this;
       that.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          let { detail } = that;
-          that.basicDataFrameAddEdit({
-            data: {
+          (async ()=>{
+            let { detail } = that;
+            that.$loading({ isShow: true });
+            let res = await Http.post(Config.api[detail.id ? 'basicdataFrameEdit' : 'basicdataFrameAdd'], {
               ...detail,
               weight: that.handleWeight(detail.weight),
               price: that.handlePrice(detail.price)
-            },
-            callback: (res)=>{
-              that.$attrs.callback();//回调
-              that.cancelAddEdit();
+            });
+            that.$loading({ isShow: false });
+            if(res.code === 0){
+              that.$message({title: '提示', message: `商品框${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+              that.handleCancel();
+            }else{
+              that.$message({title: '提示', message: res.message, type: 'error'});
             }
-          });
+          })();
         } else {
           return false;
         }
       });
     },
-    ...mapActions(['basicDataFrameShowHideAddEdit', 'basicDataFrameAddEdit'])
   },
-  watch:{
-    basicDataFrameDetail: {
-      deep: true,
-      handler: function (a, b) {
-        this.detail = Object.assign({}, this.detail, a);
-        if (this.detail.id) {
-          this.detail.weight = this.returnWeight(this.detail.weight) || '';
-          this.detail.price = this.returnPrice(this.detail.price) || '';
-        }
-      }
-    }
-  }
 };
 </script>
 

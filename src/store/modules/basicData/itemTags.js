@@ -37,59 +37,59 @@ const actions = {
   },
   //获取商品标签列表
   async basicDataItemTagsList({commit, dispatch, state}, data){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataItemTagsList(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.BASIC_DATA_ITEM_TAGS_SAVE_DATA_ITEM, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //获取商品标签删除
   async basicDataItemTagsDelete({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataItemTagsDelete(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '商品标签已删除', type: 'success'});
+      this.$message({title: '提示', message: '商品标签已删除', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //新增修改商品标签
   async basicDataItemTagsAddEdit({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData[data.id?'basicdataItemTagsEdit':'basicdataItemTagsAdd'](data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: `商品标签${data.id ? '修改' : '新增'}成功`, type: 'success'});
+      this.$message({title: '提示', message: `商品标签${data.id ? '修改' : '新增'}成功`, type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //获取icons
   async basicdataItemTagsIcons({commit, dispatch, state}, data ) {
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataItemTagsIcons(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.BASIC_DATA_ITEM_TAGS_ICONS, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //获取详情
   async basicdataItemTagsDetail({commit, dispatch, state}, data) {
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataItemTagsDetail(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.BASIC_DATA_ITEM_TAGS_DETAIL, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   }
 }

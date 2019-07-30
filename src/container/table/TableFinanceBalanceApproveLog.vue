@@ -156,8 +156,8 @@
 <script>
   import { Input, Button, Table, TableColumn, Pagination, Message, DatePicker, Select, Option, Dialog, Form, FormItem } from 'element-ui';
   import { ButtonGroup, QueryItem, ToPrice, OmissionText, TableOperate } from '@/common';
-  import { Constant, DataHandle } from '@/util';
-  import { Finance } from '@/service';
+  import { Http, Config, Constant, DataHandle } from '@/util';
+  
   export default {
     name: "TableFinanceBalanceApproveLog",
     components: {
@@ -280,7 +280,7 @@
         this.ApproveQuery();
       },
       async ApproveQuery() {
-        let res = await Finance.approveQuery(this.$data.query);
+        let res = await Http.get(Config.api.financeApproveQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign({}, this.$data.listItem, res.data);
         } else {
@@ -288,7 +288,7 @@
         }
       },
       async handleShowDetail(item) {
-        let res = await Finance.approveDetail({ id: item.id });
+        let res = await Http.get(Config.api.financeApproveDetail, { id: item.id });
         if (res.code === 0) {
           this.$data.dialog.detail = res.data;
           this.$data.dialog.isShow = true;

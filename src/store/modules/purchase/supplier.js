@@ -23,28 +23,28 @@ const actions = {
     if (res.code === 0) {
       commit(Types.PURCHASE_SUPPLIER_SET_LIST_ITEM, { listItem: res.data });
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   async pruchaseSupplierAdd({commit, dispatch, state}, {item, success, error}) {
     let res = await Purchase.supplierAdd(item);
     if (res.code === 0) {
-      dispatch('message', {title: '提示', message: '供应商添加成功！', type: 'success'});
+      this.$message({title: '提示', message: '供应商添加成功！', type: 'success'});
       // 如果有callback 则执行callback
       success && success();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
       error && error();
     }
   },
   async pruchaseSupplierModify({commit, dispatch, state}, {item, success, error}) {
     let res = await Purchase.supplierModify(item);
     if (res.code === 0) {
-      dispatch('message', {title: '提示', message: '供应商修改成功！', type: 'success'});
+      this.$message({title: '提示', message: '供应商修改成功！', type: 'success'});
       // 如果有callback 则执行callback
       success && success();
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
       error && error();
     }
   },
@@ -52,10 +52,10 @@ const actions = {
     let res = await Purchase.supplierApprove({id});
     if (res.code === 0) {
       // 如果审核通过
-      dispatch('message', {title: '提示', message: '供应商审核成功！', type: 'success'});
+      this.$message({title: '提示', message: '供应商审核成功！', type: 'success'});
       commit(Types.PURCHASE_SUPPLIER_SET_ITEM_APPROVE, { id: id, isApprove: true });
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 
@@ -63,10 +63,10 @@ const actions = {
     let res = await Purchase.supplierFreeze({id});
     if (res.code === 0) {
       // 如果审核通过
-      dispatch('message', {title: '提示', message: '供应商冻结成功！', type: 'success'});
+      this.$message({title: '提示', message: '供应商冻结成功！', type: 'success'});
       commit(Types.PURCHASE_SUPPLIER_SET_ITEM_FREEZE, { id: id, isFreeze: true });
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 
@@ -74,10 +74,10 @@ const actions = {
     let res = await Purchase.supplierUnFreeze({id});
     if (res.code === 0) {
       // 如果审核通过
-      dispatch('message', {title: '提示', message: '供应商解冻成功！', type: 'success'});
+      this.$message({title: '提示', message: '供应商解冻成功！', type: 'success'});
       commit(Types.PURCHASE_SUPPLIER_SET_ITEM_FREEZE, { id: id, isFreeze: false });
     } else {
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 

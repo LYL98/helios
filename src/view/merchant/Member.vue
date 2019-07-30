@@ -183,14 +183,14 @@
             id: data.id
           });
           if(res.code === 0){
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: '已解除绑定',
               type: 'success'
             });
             this.memberList(); //重新取数据
           }else{
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: res.message,
               type: 'error'

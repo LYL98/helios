@@ -34,7 +34,7 @@
       </el-button>
     </div>
     <table-finance-balance
-      :data="listItem.items"
+      :data="dataItem.items"
       :page="query.page"
       :pageSize="query.page_size"
       :itemEdit="handleBalanceEdit"
@@ -51,7 +51,7 @@
           :page-sizes="[10, 20, 30, 40, 50]"
           @size-change="changePageSize"
           @current-change="changePage"
-          :total="listItem.num"
+          :total="dataItem.num"
           :page-size="query.page_size"
           :current-page="query.page"
         />
@@ -122,7 +122,6 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
   import {Button, Pagination, Dialog} from 'element-ui';
   import {
     QueryFinanceBalance,
@@ -149,17 +148,16 @@
       'table-finance-balance-log': TableFinanceBalanceLog,
       'table-finance-balance-merchant-log': TableFinanceBalanceMerchantLog,
     },
-    computed: {
-      ...mapGetters({
-        listItem: 'financeBalanceListItem'
-      }),
-    },
     data() {
       return {
         province: this.$province,
         auth: this.$auth,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         query: {},
+        dataItem: {
+          item: [],
+          num: 0
+        },
         item: {}, // 需要编辑的项
         formSending: false,
         dialog: {
@@ -174,14 +172,13 @@
     created() {
       documentTitle('财务 - 客户财务管理');
       this.initQuery();
-      this.financeBalanceQuery({query: this.$data.query});
+      this.getData();
 
       if (!this.auth.isAdmin && !this.auth.FinanceBalanceExport && !this.auth.FinanceBalanceMerchantLogExport && !this.auth.FinanceBalanceMerchantLog) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
       }
     },
     methods: {
-      ...mapActions(['financeBalanceQuery', 'financeBalanceEdit']),
       initQuery() {
         this.$data.query = Object.assign(this.$data.query, {
           province_code: this.province.code,
@@ -190,22 +187,33 @@
           page_size: Constant.PAGE_SIZE
         });
       },
+      //获取数据
+      async getData(){
+        this.$loading({ isShow: true });
+        let res = await Http.get(Config.api.financeBalanceQuery, this.query);
+        this.$loading({ isShow: false });
+        if (res.code === 0) {
+          this.$data.dataItem = res.data;
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
       changeQuery() {
-        this.financeBalanceQuery({query: this.$data.query});
+        this.getData();
       },
       resetQuery() {
         this.initQuery();
-        this.financeBalanceQuery({query: this.$data.query});
+        this.getData();
       },
 
       changePage(page) {
         this.$data.query.page = page;
-        this.financeBalanceQuery({query: this.$data.query});
+        this.getData();
       },
       changePageSize(size) {
         this.$data.query.page = 1;
         this.$data.query.page_size = size;
-        this.financeBalanceQuery({query: this.$data.query});
+        this.getData();
       },
       handleBalanceEdit(item) {
         this.$data.item = Object.assign(this.$data.item, {
@@ -228,7 +236,7 @@
           remark: item.remark
         }
         let success = () => {
-          this.financeBalanceQuery({query: this.$data.query});
+          this.getData();
           this.$data.formSending = false;
           this.dialog.isShowBalanceEdit = false;
         };
@@ -236,6 +244,19 @@
           this.$data.formSending = false;
         }
         this.financeBalanceEdit({item: item, success, error})
+      },
+      //余额修改
+      async financeBalanceEdit({item, success, error}){
+        let res = await Http.post(Config.financeBalanceEdit, item);
+        let message = (item.amount >= 0 ? '充值' : '扣款') + '记录提交成功！等待财务审核...';
+        if (res.code === 0) {
+          this.$message({title: '提示', message: message, type: 'success'});
+          // 如果有callback 则执行callback
+          success && success();
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          error && error();
+        }
       },
       handleApproveLog(item) {
         this.$data.item = item;
@@ -261,7 +282,7 @@
           
           window.open(queryStr);
         }else{
-          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+          this.$store.this.$message({ title: '提示', message: res.message, type: 'error' });
         }
         this.$loading({ isShow: false });
       },

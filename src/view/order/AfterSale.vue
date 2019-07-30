@@ -257,7 +257,7 @@ export default {
         }
         window.open(queryStr);
       }else{
-        this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+        this.$message({ title: '提示', message: res.message, type: 'error' });
       }
       this.$loading({ isShow: false });
     },

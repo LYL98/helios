@@ -31,37 +31,37 @@ const actions = {
   },
   //获取片区列表
   async basicDataZoneList({commit, dispatch, state}, data){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataZoneList(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.BASIC_DATA_ZONE_SAVE_DATA_ITEM, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //获取片区删除
   async basicDataZoneDelete({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataZoneDelete(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '片区已删除', type: 'success'});
+      this.$message({title: '提示', message: '片区已删除', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //新增修改片区
   async basicDataZoneAddEdit({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData[data.id?'basicdataZoneEdit':'basicdataZoneAdd'](data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: `片区${data.id ? '修改' : '新增'}成功`, type: 'success'});
+      this.$message({title: '提示', message: `片区${data.id ? '修改' : '新增'}成功`, type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 }

@@ -105,10 +105,9 @@
 </template>
 
 <script>
-  import {Table, TableColumn, Dialog, Form, FormItem, Tag} from 'element-ui';
-  import {ToPrice, OmissionText, TableOperate} from '@/common';
-  import {Constant, DataHandle} from '@/util';
-  import { Finance } from '@/service';
+  import { Table, TableColumn, Dialog, Form, FormItem, Tag } from 'element-ui';
+  import { ToPrice, OmissionText, TableOperate } from '@/common';
+  import { Http, Config, Constant, DataHandle } from '@/util';
   import tableMixin from './table.mixin';
   import viewMixin from '@/view/view.mixin';
   
@@ -166,7 +165,7 @@
         this.$props.itemEdit(item);
       },
       async handleShowDetail(item) {
-        let res = await Finance.approveDetail({ id: item.id });
+        let res = await Http.get(Config.api.financeApproveDetail, { id: item.id });
         if (res.code === 0) {
           this.$data.dialog.detail = res.data;
           this.$data.dialog.isShow = true;

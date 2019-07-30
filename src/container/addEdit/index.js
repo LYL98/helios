@@ -1,0 +1,10 @@
+export { default as AddEditBasicDataCity } from './AddEditBasicDataCity';
+export { default as AddEditBasicDataDisplayClass } from './AddEditBasicDataDisplayClass';
+export { default as AddEditBasicDataFrame } from './AddEditBasicDataFrame';
+export { default as AddEditBasicDataGrade } from './AddEditBasicDataGrade';
+export { default as AddEditBasicDataItemTags } from './AddEditBasicDataItemTags';
+export { default as AddEditBasicDataMerchantInnerTags } from './AddEditBasicDataMerchantInnerTags';
+export { default as AddEditBasicDataMerchantOuterTags } from './AddEditBasicDataMerchantOuterTags';
+export { default as AddEditBasicDataProvince } from './AddEditBasicDataProvince';
+export { default as AddEditBasicDataSystemClass } from './AddEditBasicDataSystemClass';
+export { default as AddEditBasicDataZone } from './AddEditBasicDataZone';

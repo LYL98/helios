@@ -52,8 +52,7 @@
   import { mapGetters } from 'vuex';
   import { Table, TableColumn, Pagination, Popover } from 'element-ui';
   import { ToPrice, OmissionText } from '@/common';
-  import { Merchant } from '@/service';
-  import { Constant, DataHandle } from '@/util';
+  import { Http, Config, Constant, DataHandle } from '@/util';
   export default {
     name: 'Balance',
     components: {
@@ -102,11 +101,9 @@
 
       // 获取商户的转账记录
       async getBalanceLog() {
-        let that = this;
-        let { query } = this;
-        let res = await Merchant.balanceLogQuery(query);
-        if (res.code === 0) {
-          this.dataItem = res.data;
+        let res = await Http.get(Config.api.merchantBalanceLogQuery, this.query);
+        if(res.code === 0) {
+          this.$data.dataItem = res.data;
         }
       },
 

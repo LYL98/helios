@@ -11,7 +11,7 @@
 
 <script>
 import { Select, Option, MessageBox} from 'element-ui'
-import { Http, Config } from '@/service';
+import { Http, Config } from '@/util';
 
   export default {
     name: "SelectTag",

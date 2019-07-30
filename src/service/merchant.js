@@ -41,9 +41,6 @@ export default {
     balanceEdit(data) {
         return Http.post(Config.api.merchantBalanceEdit, data);
     },
-    balanceLogQuery(data) {
-        return Http.get(Config.api.merchantBalanceLogQuery, data);
-    },
     // 修改门店的退框信息
     refundListEdit(data) {
         return Http.post(Config.api.merchantRefundListEdit, data);

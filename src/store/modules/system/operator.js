@@ -32,14 +32,14 @@ const actions = {
   },
   //重置密码
   async systemOperatorResetPwd({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = System.operatorPwdReset(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(!res.code){
       typeof callback === 'function' && callback(res.data);
-      dispatch('message', {title: '提示', message: '密码重置成功', type: 'success'});
+      this.$message({title: '提示', message: '密码重置成功', type: 'success'});
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //显示隐藏运营人员新增修改
@@ -53,61 +53,61 @@ const actions = {
   },
   //获取运营人员列表
   async systemOperatorList({commit, dispatch, state}, data){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.operatorList(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.SYSTEM_OPERATOR_SAVE_DATA_ITEM, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //获取运营人员详情
   async systemOperatorDetail({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.operatorDetail(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.SYSTEM_OPERATOR_DETAIL, res.data);
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //冻结运营人员
   async systemOperatorFreeze({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.operatorFreeze(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '已冻结', type: 'success'});
+      this.$message({title: '提示', message: '已冻结', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //解冻运营人员
   async systemOperatorUnFreeze({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.operatorUnFreeze(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '已解冻', type: 'success'});
+      this.$message({title: '提示', message: '已解冻', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //新增修改运营人员
   async systemOperatorAddEdit({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System[data.id?'operatorEdit':'operatorAdd'](data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: `运营人员${data.id ? '修改' : '新增'}成功`, type: 'success'});
+      this.$message({title: '提示', message: `运营人员${data.id ? '修改' : '新增'}成功`, type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 }

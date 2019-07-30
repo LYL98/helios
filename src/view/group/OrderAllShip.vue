@@ -44,10 +44,10 @@
         let res = await Group.orderAllShip(this.query);
         this.$loading({ isShow: false });
         if (res.code === 0) {
-          this.$store.dispatch('message', {title: '提示', message: '发货成功', type: 'success'});
+          this.$message({title: '提示', message: '发货成功', type: 'success'});
           this.$emit('callback', 'success');
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
       //取消一键发货
@@ -62,7 +62,7 @@
         if (res.code === 0) {
           this.$data.detail = res.data;
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       }
     },

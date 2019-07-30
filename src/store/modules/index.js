@@ -7,6 +7,5 @@ import Login from './login';
 import System from './system';
 import BasicData from './basicData';
 import Operate from './operate';
-import Finance from './finance';
 
-export default { Order, Base, Login, ...Merchant, ...Purchase, ...Item, ...System, ...BasicData, ...Operate, ...Finance }
+export default { Order, Base, Login, ...Merchant, ...Purchase, ...Item, ...System, ...BasicData, ...Operate }

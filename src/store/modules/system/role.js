@@ -27,9 +27,9 @@ const getters = {
 const actions = {
   //获取rolwList列表
   async systemRoleListQuery({commit, dispatch, state}, data){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.roleList(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       let rd = res.data;
       commit(Types.SYSTEM_ROLE_LIST_SAVE_DATA_ITEM, rd);
@@ -37,19 +37,19 @@ const actions = {
         commit(Types.SYSTEM_ROLE_LIST_SAVE_DETAIL, rd[0]);
       }
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //获取权限列表
   async systemRoleListPermissionList({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.permissionTree(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.SYSTEM_ROLE_LIST_SAVE_PERMISSION_LIST, res.data);
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //更新角色详情
@@ -62,26 +62,26 @@ const actions = {
   },
   //新增或修改角色
   async systemRoleListAddEdit({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System[data.id ? 'roleEdit' : 'roleAdd'](data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: `角色${data.id ? '修改' : '新增'}成功`, type: 'success'});
+      this.$message({title: '提示', message: `角色${data.id ? '修改' : '新增'}成功`, type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //删除角色
   async systemRoleListDelete({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.roleDelete(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '已删除', type: 'success'});
+      this.$message({title: '提示', message: '已删除', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   }
 }

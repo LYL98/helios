@@ -1,10 +1,6 @@
 import { Config, Http } from '@/util';
 
 export default {
-    //商品框列表
-    basicdataFrameList(data){
-        return Http.get(Config.api.basicdataFrameList, data);
-    },
     //商品框信息添加
     basicdataFrameAdd(data){
         return Http.post(Config.api.basicdataFrameAdd, data);

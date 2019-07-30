@@ -5,9 +5,8 @@ import Item from './item';
 import Operate from './operate';
 import Merchant from './merchant';
 import Purchase from './purchase';
-import Finance from './finance';
 import Statistic from './statistic';
 import System from './system';
 import Group from './group';
 
-export { Base, BasicData, Order, Item, Operate, Merchant, Purchase, Finance, Statistic, System, Group }
+export { Base, BasicData, Order, Item, Operate, Merchant, Purchase, Statistic, System, Group }

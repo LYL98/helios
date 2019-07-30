@@ -1,3 +1,16 @@
+export {
+  AddEditBasicDataCity,
+  AddEditBasicDataDisplayClass,
+  AddEditBasicDataFrame,
+  AddEditBasicDataGrade,
+  AddEditBasicDataItemTags,
+  AddEditBasicDataMerchantInnerTags,
+  AddEditBasicDataMerchantOuterTags,
+  AddEditBasicDataProvince,
+  AddEditBasicDataSystemClass,
+  AddEditBasicDataZone
+} from './addEdit';
+
 // 下拉选择组件
 export {
   SelectCity,
@@ -39,7 +52,18 @@ export {
   QueryGroupBuy,
   QueryGroupBuyItemStatistics,
   QueryGroupBuyCaptainStatistics,
-  QueryGroupBuyMemberStatistics
+  QueryGroupBuyMemberStatistics,
+
+  QueryBasicDataCity,
+  QueryBasicDataDisplayClass,
+  //QueryBasicDataFrame,
+  QueryBasicDataGrade,
+  QueryBasicDataItemTags,
+  QueryBasicDataMerchantInnerTags,
+  QueryBasicDataMerchantOuterTags,
+  QueryBasicDataProvince,
+  QueryBasicDataSystemClass,
+  QueryBasicDataZone
 } from './query';
 
 // 表格
@@ -61,7 +85,18 @@ export {
   TableGroupBuyDetail,
   TableGroupBuyMerchantDetail,
   TableGroupHeadDetail,
-  TableGroupHeadDetailList
+  TableGroupHeadDetailList,
+
+  TableBasicDataCity,
+  TableBasicDataDisplayClass,
+  TableBasicDataFrame,
+  TableBasicDataGrade,
+  TableBasicDataItemTags,
+  TableBasicDataMerchantInnerTags,
+  TableBasicDataMerchantOuterTags,
+  TableBasicDataProvince,
+  TableBasicDataSystemClass,
+  TableBasicDataZone
 } from './table';
 
 // 表单

@@ -228,7 +228,7 @@
             items: res.data.items
           });
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
 
@@ -249,7 +249,7 @@
             is_freeze_header: !data.is_freeze_header
           });
           if(res.code === 0){
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: `已${str}`,
               type: 'success'
@@ -257,7 +257,7 @@
             //更新页面数据
             this.$data.listItem.items[index].is_freeze_header = !data.is_freeze_header;
           }else{
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: res.message,
               type: 'error'

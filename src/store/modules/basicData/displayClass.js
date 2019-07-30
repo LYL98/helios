@@ -31,37 +31,37 @@ const actions = {
   },
   //获取展示分类列表
   async basicDataDisplayClassList({commit, dispatch}, data){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataDisplayClassList(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.BASIC_DATA_DISPLAY_CLASS_SAVE_DATA_ITEM, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //获取展示分类删除
   async basicDataDisplayClassDelete({dispatch}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataDisplayClassDelete(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '展示分类已删除', type: 'success'});
+      this.$message({title: '提示', message: '展示分类已删除', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //新增修改展示分类
   async basicDataDisplayClassAddEdit({dispatch}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData[data.id?'basicdataDisplayClassEdit':'basicdataDisplayClassAdd'](data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: `展示分类${data.id ? '修改' : '新增'}成功`, type: 'success'});
+      this.$message({title: '提示', message: `展示分类${data.id ? '修改' : '新增'}成功`, type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 }

@@ -32,35 +32,35 @@ const actions = {
     }
   },
   async systemBannerList({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.systemBannerList(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if (res.code === 0) {
       commit(Types.SYSTEM_BANNER_LIST, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   async systemBannerAddEdit({commit, dispatch, state}, {data, callback}) {
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System[data.id?'systemBannerUpdate':'systemBannerAdd'](data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: `Banner${data.id ? '修改' : '新增'}成功`, type: 'success'});
+      this.$message({title: '提示', message: `Banner${data.id ? '修改' : '新增'}成功`, type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   async systemBannerDelete({commit, dispatch, state}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await System.systemBannerDelete(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '已删除', type: 'success'});
+      this.$message({title: '提示', message: '已删除', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 };

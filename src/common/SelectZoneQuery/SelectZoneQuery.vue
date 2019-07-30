@@ -11,7 +11,7 @@
 
 <script>
 import { RadioGroup, RadioButton, MessageBox } from 'element-ui';
-import { Http, Config } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectZoneQuery",

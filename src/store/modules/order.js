@@ -48,13 +48,13 @@ const getters = {
 const actions = {
   //获取订单列表
   async orderGetList({commit, dispatch}, query){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.orderQuery(query);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.ORDER_SAVE_DATA_ITEM, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
 
   },
@@ -74,25 +74,25 @@ const actions = {
   },
   //获取订单详情
   async orderGetDetail({commit, dispatch}, id){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.orderDetail({ id: id });
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.ORDER_SAVE_DETAIL, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //取消订单
   async orderCancel({commit, dispatch}, {id, callback}) {
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.orderCancel({ id: id });
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '订单取消成功！', type: 'success'});
+      this.$message({title: '提示', message: '订单取消成功！', type: 'success'});
       callback && callback();
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //显示隐藏手动发货
@@ -112,14 +112,14 @@ const actions = {
 
   //确认订单
   async orderConfirm({commit, dispatch}, {id, callback}) {
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.orderConfirm({ id: id });
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '订单确认成功！', type: 'success'});
+      this.$message({title: '提示', message: '订单确认成功！', type: 'success'});
       callback && callback();
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 
@@ -133,25 +133,25 @@ const actions = {
   },
   //订单价格变动
   async orderPriceUpdate({dispatch}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.orderPriceUpdate(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '订单价格修改成功', type: 'success'});
+      this.$message({title: '提示', message: '订单价格修改成功', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //获取负责处理的售后单
   async orderAfterSaleQuery({commit, dispatch}, query){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.afterSaleQuery(query);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.ORDER_SAVE_AFTER_SALE_DATA_ITEM, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //显示隐藏售后单详情
@@ -169,25 +169,25 @@ const actions = {
   },
   //获取售后单详情
   async orderAfterSaleDetail({commit, dispatch}, id){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.afterSaleDetail({ id: id });
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       commit(Types.ORDER_SAVE_AFTER_SALE_DETAIL, res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //售后处理
   async orderAfterSaleUpdate({dispatch}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.afterSaleUpdate(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '售后处理成功', type: 'success'});
+      this.$message({title: '提示', message: '售后处理成功', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //显示隐藏售后单关闭
@@ -197,40 +197,40 @@ const actions = {
   },
   //售后单回复
   async orderAftersaleAppend({dispatch}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.aftersaleAppend(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '售后回复成功', type: 'success'});
+      this.$message({title: '提示', message: '售后回复成功', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 
   //手动修改订单
   async orderManualChange({commit, dispatch}, {data, callback}) {
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.orderManualChange(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '修改订单成功！', type: 'success'});
+      this.$message({title: '提示', message: '修改订单成功！', type: 'success'});
       callback && callback();
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 
   //手动发货
   async orderShip({commit, dispatch}, {data, callback}) {
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await Order.orderShip(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '手动发货成功！', type: 'success'});
+      this.$message({title: '提示', message: '手动发货成功！', type: 'success'});
       callback && callback();
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 };

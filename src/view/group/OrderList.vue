@@ -366,7 +366,7 @@
             items: res.data.items
           });
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
 
@@ -399,10 +399,10 @@
               ids: ids
             });
             if (res.code === 0) {
-              this.$store.dispatch('message', {title: '提示', message: '发货成功', type: 'success'});
+              this.$message({title: '提示', message: '发货成功', type: 'success'});
               this.orderQuery();
             } else {
-              this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+              this.$message({title: '提示', message: res.message, type: 'error'});
             }
           }).catch(() => {
             // console.log('取消');
@@ -416,9 +416,9 @@
           this.$data.isShowAllShip = false;
         }else{
           if(this.query.status !== 'wait_delivery_customer'){
-            this.$store.dispatch('message', {title: '提示', message: '请筛选待发货的订单再进行一键发货', type: 'error'});
+            this.$message({title: '提示', message: '请筛选待发货的订单再进行一键发货', type: 'error'});
           }else if(this.listItem.num === 0){
-            this.$store.dispatch('message', {title: '提示', message: '暂无待发货的订单', type: 'error'});
+            this.$message({title: '提示', message: '暂无待发货的订单', type: 'error'});
           }else{
             this.$data.isShowAllShip = true;
           }
@@ -442,10 +442,10 @@
             ids: ids
           });
           if (res.code === 0) {
-            this.$store.dispatch('message', {title: '提示', message: '发货成功', type: 'success'});
+            this.$message({title: '提示', message: '发货成功', type: 'success'});
             this.orderQuery();
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');
@@ -470,7 +470,7 @@
           }
           window.open(queryStr);
         }else{
-          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+          this.$message({ title: '提示', message: res.message, type: 'error' });
         }
         this.$loading({ isShow: false });
       },
@@ -483,10 +483,10 @@
         }).then(async () => {
           let res = await Group.orderCancel({id: id});
           if (res.code === 0) {
-            this.$store.dispatch('message', {title: '提示', message: '订单取消成功', type: 'success'});
+            this.$message({title: '提示', message: '订单取消成功', type: 'success'});
             this.orderQuery();
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');
@@ -502,10 +502,10 @@
         }).then(async () => {
           let res = await Group.orderConfirmPickUp({id: id});
           if (res.code === 0) {
-            this.$store.dispatch('message', {title: '提示', message: '取货成功', type: 'success'});
+            this.$message({title: '提示', message: '取货成功', type: 'success'});
             this.orderQuery();
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');

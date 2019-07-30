@@ -31,9 +31,9 @@ const actions = {
   },
   //获取科学分类列表(树型)
   async basicdataSystemClassListTree({commit, dispatch}, data){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataSystemClassListTree(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
       let rd = res.data;
       let fun = (dd) =>{
@@ -49,31 +49,31 @@ const actions = {
       fun(rd);//递归
       commit(Types.BASIC_DATA_SYSTEM_CLASS_SAVE_DATA_ITEM, rd);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //获取科学分类删除
   async basicDataSystemClassDelete({dispatch}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData.basicdataSystemClassDelete(data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: '科学分类已删除', type: 'success'});
+      this.$message({title: '提示', message: '科学分类已删除', type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
   //新增修改科学分类
   async basicDataSystemClassAddEdit({dispatch}, {data, callback}){
-    dispatch('loading', {isShow: true, isWhole: true});
+    this.$loading({isShow: true, isWhole: true});
     let res = await BasicData[data.id?'basicdataSystemClassEdit':'basicdataSystemClassAdd'](data);
-    dispatch('loading', {isShow: false});
+    this.$loading({isShow: false});
     if(res.code === 0){
-      dispatch('message', {title: '提示', message: `科学分类${data.id ? '修改' : '新增'}成功`, type: 'success'});
+      this.$message({title: '提示', message: `科学分类${data.id ? '修改' : '新增'}成功`, type: 'success'});
       typeof callback === 'function' && callback(res.data);
     }else{
-      dispatch('message', {title: '提示', message: res.message, type: 'error'});
+      this.$message({title: '提示', message: res.message, type: 'error'});
     }
   },
 }

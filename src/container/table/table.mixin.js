@@ -1,8 +1,22 @@
-import { DataHandle } from '@/util';
+import { Table, TableColumn, Dropdown, DropdownMenu, DropdownItem, Tag, Pagination, Button, Tooltip, Popover } from 'element-ui';
+import { DataHandle, Constant } from '@/util';
 
 // 表格宽度： 860 / 830（带全选）
 
 export default {
+  components: {
+    'el-tag': Tag,
+    'el-tooltip': Tooltip,
+    'el-button': Button,
+    'el-table': Table,
+    'el-table-column': TableColumn,
+    'el-pagination': Pagination,
+    'el-popover': Popover
+  },
+  props: {
+    getPageComponents: { type: Function, require: true }, //获取页面组件
+    windowHeight: {type: Number, default: 0}
+  },
   data() {
     return {
       province: this.$province,
@@ -10,10 +24,43 @@ export default {
       rowIdentifier: 'id',
       currentRow: {},
       currentRowLocked: false,
-      clickedRow: {}
+      clickedRow: {},
+      query: {
+        page: 1,
+        page_size: Constant.PAGE_SIZE
+      },
+      dataItem: {
+        items: []
+      },
     }
   },
   methods: {
+    //返回表格序号
+    indexMethod(index) {
+      let { query } = this;
+      return (query.page - 1) * query.page_size + index + 1;
+    },
+    //显示新增修改(新增组件，数据)
+    handleShowAddEdit(pageComponents, data){
+      let pc = this.getPageComponents(pageComponents);
+      pc.showAddEdit(data);
+    },
+    //显示详情
+    handleShowDetail(pageComponents, data){
+      let pc = this.getPageComponents(pageComponents);
+      pc.showDetail(data);
+    },
+    // 设置每页显示数量
+    changePageSize(pageSize) {
+      this.$data.query.page_size = pageSize;
+      this.$data.query.page = 1;
+      this.getData(this.query);
+    },
+    //翻页
+    changePage(page) {
+      this.$data.query.page = page;
+      this.getData(this.query);
+    },
     /**
      * 当鼠标在表格中移动时，解除当前行的锁定状态。 如果仅仅是在操作按钮上移动，则不做响应
      */

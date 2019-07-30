@@ -98,7 +98,7 @@
             is_freeze_header: !data.is_freeze_header
           });
           if(res.code === 0){
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: `已${str}`,
               type: 'success'
@@ -109,7 +109,7 @@
               com.$data.dataItem[0].is_freeze_header = !data.is_freeze_header;
             }
           }else{
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: res.message,
               type: 'error'
