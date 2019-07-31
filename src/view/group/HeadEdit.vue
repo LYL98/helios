@@ -5,7 +5,7 @@
           <el-select
             style="width: 100%"
             clearable
-            v-model="editItem.store_id"
+            v-model="editItem.mall_store_id"
             @change="handleStoreChange"
             filterable
             remote
@@ -109,7 +109,7 @@ export default {
         phone: ''
       }],
       editItem: {
-        store_id: '',
+        mall_store_id: '',
         member_ids: []
       },
       loading: false
@@ -127,7 +127,7 @@ export default {
       if(data){
         let rd = this.setMembersStatus(data);
         this.$data.detail = rd;
-        this.$data.editItem.store_id = data.id;
+        this.$data.editItem.mall_store_id = data.id;
         this.$data.showType = 'edit';
         this.$data.isShow = true;
       }
@@ -255,9 +255,9 @@ export default {
       if (!id) {
         return;
       }
-      let res = await Group.headStoreDetail({ store_id: id });
+      let res = await Group.headStoreDetail({ mall_store_id: id }); //商城门店id
       if (res.code === 0) {
-        this.$data.editItem.store_id = id;
+        this.$data.editItem.mall_store_id = id;
         let rd = this.setMembersStatus(res.data);
         this.$data.detail = rd;
       } else {

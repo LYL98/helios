@@ -102,7 +102,7 @@ const Config = (() => {
       groupBuyActive: apiM + '/gb_activity/active',  //生效团购活动
       groupBuyStoreList: apiM + '/gb_act/store/query',  //团购详情门店列表
       groupBuyStoreDetail: apiM + '/gb_store/activity/detail',  //团购门店详情
-      groupBuyStoreMemberList: apiM + '/store_gb_activity/member/query',  //门店用户列表
+      groupBuyStoreMemberList: apiM + '/gb_store_activity/member/query',  //门店用户列表
 
       // 团长
       groupHeadQuery: apiM + '/gb_activity/header/query', // 团长列表
