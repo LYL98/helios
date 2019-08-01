@@ -1,0 +1,9 @@
+.avatar {
+  border-radius: 50%;
+  display: block;
+}
+
+.pagination-div {
+  text-align: right;
+  margin-top: 20px;
+}
