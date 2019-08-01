@@ -80,7 +80,7 @@
         }
         
         //获取账户列表
-        this.$data.query.id = data.id;
+        this.$data.query.store_id = data.id;
         this.groupStoreBalanceLog();
       },
       //获取账户列表
