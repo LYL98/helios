@@ -97,6 +97,13 @@
             </div>
           </template>
         </el-table-column>
+        <el-table-column label="账户余额" prop="balance" min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              &yen;{{ returnPrice(scope.row.balance) }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="状态" prop="is_freeze_header" min-width="80">
           <template slot-scope="scope">
             <el-tag disable-transitions size="small" :type="scope.row.is_freeze_header ? 'regular' : 'info'" style="width: 66px; text-align: center;"
