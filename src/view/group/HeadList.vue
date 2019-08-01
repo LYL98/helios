@@ -113,6 +113,11 @@
                   title: scope.row.is_freeze_header ? '解冻' : '冻结',
                   isDisplay: (auth.isAdmin || auth.GroupStoreFreeze),
                   command: () => groupStoreFreeze(scope.row, scope.$index)
+                },
+                {
+                  title: '余额明细',
+                  isDisplay: (auth.isAdmin || auth.GroupStoreBalanceLog),
+                  command: () => groupStoreBalanceLog(scope.row)
                 }
               ]"
             />
@@ -242,6 +247,12 @@
 
       indexMethod(index) {
         return (this.query.page - 1) * this.query.page_size + index + 1;
+      },
+
+      //余额明细
+      groupStoreBalanceLog(data){
+        let page = this.getPageComponents('DetailHeadBalanceLog');
+        page.showDetail(data);
       },
 
       //冻结解冻门店
