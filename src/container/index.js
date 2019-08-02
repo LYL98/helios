@@ -117,3 +117,7 @@ export {
   FormSystemSettingOperating,
   FormSystemSettingItemCommonDes
 } from './form';
+
+export {
+  DetailHeadBalanceLog
+} from './detail';

@@ -102,7 +102,7 @@ const Config = (() => {
       groupBuyActive: apiM + '/gb_activity/active',  //生效团购活动
       groupBuyStoreList: apiM + '/gb_act/store/query',  //团购详情门店列表
       groupBuyStoreDetail: apiM + '/gb_store/activity/detail',  //团购门店详情
-      groupBuyStoreMemberList: apiM + '/store_gb_activity/member/query',  //门店用户列表
+      groupBuyStoreMemberList: apiM + '/gb_store_activity/member/query',  //门店用户列表
 
       // 团长
       groupHeadQuery: apiM + '/gb_activity/header/query', // 团长列表
@@ -110,6 +110,7 @@ const Config = (() => {
       groupHeadAdd: apiM + '/gb_activity/header/add', // 新增团长
       groupHeadFreeze: apiM + '/gb_activity/header/freeze', // 冻结 解冻团长
       groupStoreFreeze: apiM + '/gb_activity/store/freeze', // 团购门店 冻结/解冻
+      groupStoreBalanceLog: apiM + '/gb_activity/balance_log/query', //余额明细
 
       // 团员
       groupMemberQuery: apiM + '/gb_activity/gb_member/query', // 团员列表

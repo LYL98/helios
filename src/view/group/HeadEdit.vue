@@ -1,11 +1,11 @@
 <template>
   <el-dialog :title="showType === 'add' ? '新增团购门店' : '新增团长'" :visible.sync="isShow" width="680px" append-to-body :close-on-click-modal="false">
       <el-form :model="editItem" v-if="isShow" style="width: 580px;" label-position="right" label-width="120px" ref="ruleForm">
-        <el-form-item v-if="showType === 'add'" label="请选择门店" prop="store_id" :rules="[{ required: true, message: '请选择门店', trigger: 'change' }]">
+        <el-form-item v-if="showType === 'add'" label="请选择门店" prop="mall_store_id" :rules="[{ required: true, message: '请选择门店', trigger: 'change' }]">
           <el-select
             style="width: 100%"
             clearable
-            v-model="editItem.store_id"
+            v-model="editItem.mall_store_id"
             @change="handleStoreChange"
             filterable
             remote
@@ -105,7 +105,7 @@ export default {
         phone: ''
       }],
       editItem: {
-        store_id: '',
+        mall_store_id: '',
         member_ids: []
       },
       loading: false
@@ -123,7 +123,7 @@ export default {
       if(data){
         let rd = this.setMembersStatus(data);
         this.$data.detail = rd;
-        this.$data.editItem.store_id = data.id;
+        this.$data.editItem.mall_store_id = data.id;
         this.$data.showType = 'edit';
         this.$data.isShow = true;
       }
@@ -251,9 +251,9 @@ export default {
       if (!id) {
         return;
       }
-      let res = await Http.get(Config.api.groupHeadStoreBindDetail ,{ store_id: id });
+      let res = await Http.get(Config.api.groupHeadStoreBindDetail, { mall_store_id: id });
       if (res.code === 0) {
-        this.$data.editItem.store_id = id;
+        this.$data.editItem.mall_store_id = id;
         let rd = this.setMembersStatus(res.data);
         this.$data.detail = rd;
       } else {

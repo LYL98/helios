@@ -5,6 +5,7 @@
     <head-detail :getPageComponents="getPageComponents" ref="HeadDetail"></head-detail>
     <!--新增-->
     <head-edit :getPageComponents="getPageComponents" ref="HeadEdit"></head-edit>
+    <detail-head-balance-log :getPageComponents="getPageComponents" ref="DetailHeadBalanceLog"/>
   </div>
 </template>
 
@@ -13,12 +14,14 @@
   import HeadList from './HeadList';
   import HeadEdit from './HeadEdit';
   import HeadDetail from './HeadDetail';
+  import { DetailHeadBalanceLog } from '@/container';
   export default {
     name: "Head",
     components: {
       'head-list': HeadList,
       'head-edit': HeadEdit,
-      'head-detail': HeadDetail
+      'head-detail': HeadDetail,
+      'detail-head-balance-log': DetailHeadBalanceLog
     },
     data() {
       return {

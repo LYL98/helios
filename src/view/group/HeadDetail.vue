@@ -52,11 +52,11 @@ export default {
       let { dataItem } = this;
       this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(Config.api.groupHeadStoreBindDetail, {
-        store_id: dataItem[0].id
+        gb_store_id: dataItem[0].id, //团购门店id
       });
       if(res.code === 0){
         let rd = res.data;
-        let ms = rd.members.filter(item => item.store_id === dataItem[0].id);
+        let ms = rd.members.filter(item => item.gb_store_id === dataItem[0].id);
         this.$data.groupDetail = {
           ...rd,
           members2: ms

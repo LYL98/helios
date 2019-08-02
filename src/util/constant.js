@@ -55,7 +55,7 @@ const Constant = {
     manual_frame_return: '周转筐充值(手动充值)',
     manual_return_cash: '返点充值(手动充值)',
     manual_freight_redone: '运费充值(手动充值)',
-    gb_profit: '团购收益金',
+    gb_transfer: '团购余额转账',
     manual_other: '其他(手动充值)'
   },
   PURCHASE_SUPPLIER_PAY_TYPE: {
