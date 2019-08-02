@@ -69,7 +69,7 @@
               {
                 title: '删除',
                 isDisplay: auth.isAdmin || auth.BasicDataFrameListDelete,
-                command: () => handleDelete(scope.row)
+                command: () => deleteFrame(scope.row)
               }
             ]"
             />
@@ -93,15 +93,17 @@
     },
     mixins: [tableMixin],
     created() {
+      this.getData();
+
       if (!this.auth.isAdmin && !this.auth.BasicDataFrameListAdd) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
       }
-
-      this.getData();
     },
     data() {
       return {
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE,
+        query: {
+        },
         dataItem: [],
         rowIdentifier: 'code'
       }
@@ -121,7 +123,7 @@
       //删除数据
       async deleteData(data) {
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.basicdataFrameDelete, {
+        let res = await Http.post(Config.api.basicdataGradeDelete, {
           code: data.code
         });
         this.$loading({ isShow: false });

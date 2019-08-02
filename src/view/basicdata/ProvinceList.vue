@@ -1,25 +1,25 @@
 <template>
   <div>
-    <query-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataCity"/>
-    <table-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataCity"/>
-    <add-edit-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataCity"/>
+    <query-province :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataProvince"/>
+    <table-province :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataProvince"/>
+    <add-edit-province :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataProvince"/>
   </div>
 </template>
 
 <script>
-  import { QueryBasicDataCity, TableBasicDataCity, AddEditBasicDataCity } from '@/container';
+  import { QueryBasicDataProvince, TableBasicDataProvince, AddEditBasicDataProvince } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'CityList',
+    name: 'Province',
     components: {
-      'query-city': QueryBasicDataCity,
-      'table-city': TableBasicDataCity,
-      'add-edit-city': AddEditBasicDataCity,
+      'query-province': QueryBasicDataProvince,
+      'table-province': TableBasicDataProvince,
+      'add-edit-province': AddEditBasicDataProvince,
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("信息 - 县域列表");
+      documentTitle("信息 - 省列表");
     },
   };
 </script>

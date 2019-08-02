@@ -14,7 +14,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click.native="handleCancel">取 消</el-button>
-        <el-button type="primary" @click.native="submitAddEdit">确 定</el-button>
+        <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -28,16 +28,7 @@ export default {
   name: "AddEditGrade",
   mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog
   },
-  computed: mapGetters({
-    isShow: 'basicDataGradeIsShowAddEdit',
-    basicDataGradeDetail: 'basicDataGradeDetail'
-  }),
   data(){
     let that = this;
 
@@ -56,7 +47,7 @@ export default {
         })
       };
 
-      let detail = that.basicDataGradeDetail;
+      let { detail } = that;
       if (detail.id) {
         //编辑模式
         if (value === detail.code) {
@@ -71,7 +62,7 @@ export default {
     };
 
     return{
-      detail: {},
+      initDetail: {},
       rules: {
         code: [
             { required: true, message: '编号不能为空', trigger: 'blur' },
@@ -88,41 +79,32 @@ export default {
     }
   },
   methods: {
-    //取消
-    handleCancel(){
-      this.basicDataGradeShowHideAddEdit({ isShow: false });
-      // setTimeout(()=>{
-      //   this.$refs['ruleForm'].resetFields();
-      // },0);
+    //显示新增修改(重写)
+    showAddEdit(data){
+      if(data){
+        this.$data.detail = JSON.parse(JSON.stringify({ ...data, id: true }));
+      }else{
+        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+      }
+      this.$data.isShow = true;
     },
-    //确认提交
-    submitAddEdit(){
-      let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          let { detail } = that;
-          that.basicDataGradeAddEdit({
-            data: detail,
-            callback: (res)=>{
-              that.$attrs.callback();//回调
-              that.handleCancel();
-            }
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    ...mapActions(['basicDataGradeShowHideAddEdit', 'basicDataGradeAddEdit'])
-  },
-  watch:{
-    basicDataGradeDetail: {
-      deep: true,
-      handler: function (a, b) {
-        this.detail = JSON.parse( JSON.stringify( a ) );
+    //提交数据
+    async addEditData(){
+      let { detail } = this;
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api[detail.id ? 'basicdataGradeEdit' : 'basicdataGradeAdd'], detail);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.handleCancel(); //隐藏
+        //刷新数据(列表)
+        let pc = this.getPageComponents('TableBasicDataGrade');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
       }
     }
-  }
+  },
 };
 </script>
 

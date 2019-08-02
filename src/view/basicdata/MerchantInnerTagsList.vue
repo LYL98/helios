@@ -1,25 +1,25 @@
 <template>
   <div>
-    <query-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataCity"/>
-    <table-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataCity"/>
-    <add-edit-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataCity"/>
+    <query-merchant-inner-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataMerchantInnerTags"/>
+    <table-merchant-inner-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataMerchantInnerTags"/>
+    <add-edit-merchant-inner-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataMerchantInnerTags"/>
   </div>
 </template>
 
 <script>
-  import { QueryBasicDataCity, TableBasicDataCity, AddEditBasicDataCity } from '@/container';
+  import { QueryBasicDataMerchantInnerTags, TableBasicDataMerchantInnerTags, AddEditBasicDataMerchantInnerTags } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'CityList',
+    name: 'MerchantInnerTagsList',
     components: {
-      'query-city': QueryBasicDataCity,
-      'table-city': TableBasicDataCity,
-      'add-edit-city': AddEditBasicDataCity,
+      'query-merchant-inner-tags': QueryBasicDataMerchantInnerTags,
+      'table-merchant-inner-tags': TableBasicDataMerchantInnerTags,
+      'add-edit-merchant-inner-tags': AddEditBasicDataMerchantInnerTags,
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("信息 - 县域列表");
+      documentTitle("信息 - 商户内标签列表");
     },
   };
 </script>

@@ -32,17 +32,8 @@ export default {
   name: "AddEditZone",
   mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog,
     'my-select-province': SelectProvince
   },
-  computed: mapGetters({
-    isShow: 'basicDataZoneIsShowAddEdit',
-    basicDataZoneDetail: 'basicDataZoneDetail'
-  }),
   data(){
     let that = this;
 
@@ -76,7 +67,7 @@ export default {
     };
 
     return{
-      detail: {},
+      initDetail: {},
       rules: {
         code: [
             { required: true, message: '编号不能为空', trigger: 'blur' },
@@ -120,8 +111,7 @@ export default {
           return false;
         }
       });
-    },
-    ...mapActions(['basicDataZoneShowHideAddEdit', 'basicDataZoneAddEdit'])
+    }
   },
   watch:{
     basicDataZoneDetail: {

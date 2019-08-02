@@ -20,7 +20,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click.native="handleCancel">取 消</el-button>
-        <el-button type="primary" @click.native="submitAddEdit">确 定</el-button>
+        <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -120,7 +120,6 @@ export default {
 
     return{
       initDetail: {
-
       },
       rules: {
         code: [
@@ -145,32 +144,35 @@ export default {
     }
   },
   methods: {
-    //确认提交
-    submitAddEdit(){
-      let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          (async ()=>{
-            let { detail } = that;
-            that.$loading({ isShow: true });
-            let res = await Http.post(Config.api[detail.id ? 'basicdataFrameEdit' : 'basicdataFrameAdd'], {
-              ...detail,
-              weight: that.handleWeight(detail.weight),
-              price: that.handlePrice(detail.price)
-            });
-            that.$loading({ isShow: false });
-            if(res.code === 0){
-              that.$message({title: '提示', message: `商品框${detail.id ? '修改' : '新增'}成功`, type: 'success'});
-              that.handleCancel();
-            }else{
-              that.$message({title: '提示', message: res.message, type: 'error'});
-            }
-          })();
-        } else {
-          return false;
-        }
-      });
+    //显示新增修改(重写)
+    showAddEdit(data){
+      if(data){
+        this.$data.detail = JSON.parse(JSON.stringify({ ...data, id: true }));
+      }else{
+        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+      }
+      this.$data.isShow = true;
     },
+    //提交数据
+    async addEditData(){
+      let { detail } = this;
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api[detail.id ? 'basicdataFrameEdit' : 'basicdataFrameAdd'], {
+        ...detail,
+        weight: that.handleWeight(detail.weight),
+        price: that.handlePrice(detail.price)
+      });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.handleCancel(); //隐藏
+        //刷新数据(列表)
+        let pc = this.getPageComponents('TableBasicDataDisplayClass');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
+    }
   },
 };
 </script>

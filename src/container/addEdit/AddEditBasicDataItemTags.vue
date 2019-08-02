@@ -22,7 +22,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click.native="handleCancel">取 消</el-button>
-        <el-button type="primary" @click.native="submitAddEdit">确 定</el-button>
+        <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -31,24 +31,14 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Verification } from '@/util';
-import { UploadImg, Avatar } from '@/common';
+import { Avatar } from '@/common';
 
 export default {
   name: "AddEditItemTags",
   mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog,
     'my-avatar': Avatar
   },
-  computed: mapGetters({
-    isShow: 'basicDataItemTagsIsShowAddEdit',
-    images: 'basicdataItemTagsIcons',
-    basicDataItemTagsDetail: 'basicDataItemTagsDetail'
-  }),
   created() {
     //this.basicdataItemTagsIcons();
     if(this.images.length){
@@ -56,13 +46,12 @@ export default {
     }
   },
   data(){
-
     return{
-      tencentPath: Config.tencentPath,
-      detail: {
+      initDetail: {
         image:[],
       },
-      choseImg:'',
+      images: [],
+      choseImg: '',
       icon_check: 0,
       rules: {
         title: [
@@ -95,68 +84,79 @@ export default {
       this.icon_check = 0;
       this.choseImg = "";
     },
-    //取消
-    handleCancel(){
-      this.basicDataItemTagsShowHideAddEdit({ isShow: false });
-      if(this.detail.image.length)this.$refs.upload.handleRemove(Config.tencentPath+this.detail.image)
-      this.reset();
-      setTimeout(()=>{
-        this.$refs['ruleForm'].resetFields();
-        this.$data.detail.id = '';
-      },0);
-    },
-
-    //确认提交
-    submitAddEdit(){
-      let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          let { detail } = that;
-          let req = JSON.parse(JSON.stringify(detail));
-          if(req.image && typeof req.image != 'string') {
-            req.image = req.image.join();
-          }
-          // else{
-          //   req.image = req.image.length ? req.image : this.images[0].image;
-          // }
-
-          if(this.choseImg) {
-            req.image = this.choseImg;
-          }else if(!this.choseImg && !req.image[0]) {
-            req.image = this.images[0].image
-          }
-
-          that.basicDataItemTagsAddEdit({
-            data: req,
-            callback: (res)=>{
-              that.$attrs.callback();//回调
-              that.handleCancel();
-            }
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    ...mapActions(['basicDataItemTagsShowHideAddEdit', 'basicDataItemTagsAddEdit'])
-  },
-  watch:{
-    basicDataItemTagsDetail: {
-      deep: true,
-      handler: function (c, b) {
-        let a = c || b;
-        if(a.id) {
-          this.detail = JSON.parse( JSON.stringify( a ) );
-          this.detail.image = this.detail.image.split();
-          if(this.detail.image[0]) {
-            this.icon_check = -1;
-          }
-        }
+    //获取icons
+    async basicdataItemTagsIcons() {
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.get(Config.api.basicdataItemTagsIcons, {});
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$data.images = res.data;
+      }else{
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
     },
-    detail(a, b) {
+    //取消
+    handleCancel(){
+      if(this.detail.image.length) this.$refs.upload.handleRemove(Config.tencentPath+this.detail.image)
+      this.reset();
+      this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+      if(this.$refs['ruleForm']) this.$refs['ruleForm'].resetFields();
+      this.$data.isShow = false;
+    },
+    //显示新增修改(重写)
+    async showAddEdit(data){
+      this.basicdataItemTagsIcons(); //获取icons
+      if(data){
+        this.$loading({isShow: true});
+        let res = await Http.get(Config.api.basicdataItemTagsDetail, { id: data.id });
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          let rd = res.data;
+          rd.image = rd.image.split();
+          if(rd.image[0]) {
+            this.icon_check = -1;
+          }
+          this.$data.detail = JSON.parse(JSON.stringify(rd));
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+        this.$data.isShow = true;
+      }else{
+        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.isShow = true;
+      }
+    },
+    //提交数据
+    async addEditData(){
+      let { detail } = this;
+      let req = JSON.parse(JSON.stringify(detail));
+      if(req.image && typeof req.image != 'string') {
+        req.image = req.image.join();
+      }
+      // else{
+      //   req.image = req.image.length ? req.image : this.images[0].image;
+      // }
+
+      if(this.choseImg) {
+        req.image = this.choseImg;
+      }else if(!this.choseImg && !req.image[0]) {
+        req.image = this.images[0].image
+      }
+
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api[detail.id ? 'basicdataItemTagsEdit' : 'basicdataItemTagsAdd'], req);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.handleCancel(); //隐藏
+        //刷新数据(列表)
+        let pc = this.getPageComponents('TableBasicDataItemTags');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
     }
-  }
+  },
 };
 </script>
 

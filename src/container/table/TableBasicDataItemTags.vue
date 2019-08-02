@@ -1,56 +1,38 @@
 <template>
   <div>
-    <div class="operate" v-if="auth.isAdmin || auth.BasicDataFrameListAdd">
-      <el-button @click="handleShowAddEdit('AddEditBasicDataFrame')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataFrameListAdd">新增
+    <div class="operate" v-if="auth.isAdmin || auth.BasicDataItemTagsListAdd">
+      <el-button @click="handleShowAddEdit('AddEditBasicDataItemTags')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataItemTagsListAdd">新增
       </el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove">
-      <el-table
-        :data="dataItem"
-        :row-class-name="highlightRowClassName"
-        style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
-        :highlight-current-row="true"
-        :row-key="rowIdentifier"
-        :current-row-key="clickedRow[rowIdentifier]"
+      <el-table :data="dataItem"
+                :row-class-name="highlightRowClassName"
+                style="width: 100%"
+                :height="windowHeight - offsetHeight"
+                class="list-table"
+                @cell-mouse-enter="cellMouseEnter"
+                @cell-mouse-leave="cellMouseLeave"
+                :highlight-current-row="true"
+                :row-key="rowIdentifier"
+                :current-row-key="clickedRow[rowIdentifier]"
       >
         <el-table-column width="20"/>
-        <el-table-column prop="code" label="编号" min-width="150">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.code }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="title" label="名称" min-width="150">
+        <el-table-column prop="title" label="名称" min-width="200">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="框重量" min-width="100">
-          <template slot-scope="scope">
-            {{ returnWeight(scope.row.weight) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="框价格" min-width="100">
+        <el-table-column prop="rank" label="排序" min-width="200">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
-              {{ scope.row.price == 0 ? '' : '￥' }}{{scope.row.price == 0 ? '-' : returnPrice(scope.row.price)}}
+              {{ scope.row.rank }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="remark" label="备注" min-width="160">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{ scope.row.remark || '-' }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="created" label="创建时间" min-width="160">
+        <el-table-column prop="created" label="创建时间" min-width="200">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">{{ scope.row.created }}</div>
           </template>
@@ -63,12 +45,12 @@
               :list="[
               {
                 title: '编辑',
-                isDisplay: auth.isAdmin || auth.BasicDataFrameListUpdate,
-                command: () => handleShowAddEdit('AddEditBasicDataFrame', scope.row)
+                isDisplay: auth.isAdmin || auth.BasicDataItemTagsListUpdate,
+                command: () => handleShowAddEdit('AddEditBasicDataItemTags', scope.row)
               },
               {
                 title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataFrameListDelete,
+                isDisplay: auth.isAdmin || auth.BasicDataItemTagsListDelete,
                 command: () => handleDelete(scope.row)
               }
             ]"
@@ -93,10 +75,9 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.BasicDataFrameListAdd) {
+      if (!this.auth.isAdmin && !this.auth.BasicDataItemTagsListAdd) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
       }
-
       this.getData();
     },
     data() {
@@ -110,7 +91,7 @@
       //获取数据
       async getData(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.basicdataFrameList, {});
+        let res = await Http.get(Config.api.basicdataItemTagsList, {});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -121,8 +102,8 @@
       //删除数据
       async deleteData(data) {
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.basicdataFrameDelete, {
-          code: data.code
+        let res = await Http.post(Config.api.basicdataItemTagsDelete, {
+          id: data.id
         });
         this.$loading({ isShow: false });
         if(res.code === 0){

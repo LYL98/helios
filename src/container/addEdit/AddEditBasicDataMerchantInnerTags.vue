@@ -25,11 +25,6 @@ export default {
   name: "AddEditMerchantInnerTags",
   mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog
   },
   data(){
     return{
@@ -70,7 +65,6 @@ export default {
         }
       });
     },
-    ...mapActions(['basicDataMerchantInnerTagsShowHideAddEdit', 'basicDataMerchantInnerTagsAddEdit'])
   },
   watch:{
     basicDataMerchantInnerTagsDetail: {

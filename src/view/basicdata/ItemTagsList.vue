@@ -1,25 +1,25 @@
 <template>
   <div>
-    <query-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataCity"/>
-    <table-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataCity"/>
-    <add-edit-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataCity"/>
+    <query-item-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataItemTags"/>
+    <table-item-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataItemTags"/>
+    <add-edit-item-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataItemTags"/>
   </div>
 </template>
 
 <script>
-  import { QueryBasicDataCity, TableBasicDataCity, AddEditBasicDataCity } from '@/container';
+  import { QueryBasicDataItemTags, TableBasicDataItemTags, AddEditBasicDataItemTags } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'CityList',
+    name: 'ItemTagsList',
     components: {
-      'query-city': QueryBasicDataCity,
-      'table-city': TableBasicDataCity,
-      'add-edit-city': AddEditBasicDataCity,
+      'query-item-tags': QueryBasicDataItemTags,
+      'table-item-tags': TableBasicDataItemTags,
+      'add-edit-item-tags': AddEditBasicDataItemTags,
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("信息 - 县域列表");
+      documentTitle("信息 - 商品标签列表");
     },
   };
 </script>

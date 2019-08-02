@@ -32,7 +32,7 @@ export default {
     return {
       today: today, //今天
       tomorrow: tomorrow, //明天
-      qiniuPath: Config.qiniuPath,
+      tencentPath: Config.tencentPath,
       defaultAvatar: Constant.IMGS.defaultAvatar,
       isShow: false,
       detail: {},
@@ -67,6 +67,16 @@ export default {
         this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
       }
       this.$data.isShow = true;
+    },
+    //提交
+    handleAddEdit(){
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          this.addEditData();
+        } else {
+          return false;
+        }
+      });
     },
     //取消新增修改
     handleCancel(){

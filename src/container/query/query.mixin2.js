@@ -1,8 +1,11 @@
 import { DataHandle, Http, Method, Constant } from '@/util';
-import {Form, FormItem, DatePicker, Input, Button, RadioGroup, RadioButton, Radio, Dialog} from 'element-ui';
+import { QueryItem } from '@/common';
+import { Form, FormItem, DatePicker, Input, Button, RadioGroup, RadioButton, Radio, Dialog, Row, Col, Select, Option } from 'element-ui';
 
 export default {
   components: {
+    'el-row': Row,
+    'el-col': Col,
     'el-form': Form,
     'el-form-item': FormItem,
     'el-date-picker': DatePicker,
@@ -11,7 +14,10 @@ export default {
     'el-radio': Radio,
     'el-radio-group': RadioGroup,
     'el-radio-button': RadioButton,
-    'el-dialog': Dialog
+    'el-dialog': Dialog,
+    'el-select': Select,
+    'el-option': Option,
+    'my-query-item': QueryItem
   },
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件

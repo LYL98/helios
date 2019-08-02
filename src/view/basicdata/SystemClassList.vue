@@ -1,25 +1,25 @@
 <template>
   <div>
-    <query-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataCity"/>
-    <table-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataCity"/>
-    <add-edit-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataCity"/>
+    <query-system-class :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataSystemClass"/>
+    <table-system-class :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataSystemClass"/>
+    <add-edit-system-class :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataSystemClass"/>
   </div>
 </template>
 
 <script>
-  import { QueryBasicDataCity, TableBasicDataCity, AddEditBasicDataCity } from '@/container';
+  import { QueryBasicDataSystemClass, TableBasicDataSystemClass, AddEditBasicDataSystemClass } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'CityList',
+    name: 'SystemClassList',
     components: {
-      'query-city': QueryBasicDataCity,
-      'table-city': TableBasicDataCity,
-      'add-edit-city': AddEditBasicDataCity,
+      'query-system-class': QueryBasicDataSystemClass,
+      'table-system-class': TableBasicDataSystemClass,
+      'add-edit-system-class': AddEditBasicDataSystemClass,
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("信息 - 县域列表");
+      documentTitle("信息 - 科学分类列表");
     },
   };
 </script>

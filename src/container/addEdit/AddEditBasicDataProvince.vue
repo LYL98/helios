@@ -28,16 +28,7 @@ export default {
   name: "AddEditProvince",
   mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog
   },
-  computed: mapGetters({
-    isShow: 'basicDataProvinceIsShowAddEdit',
-    basicDataProvinceDetail: 'basicDataProvinceDetail'
-  }),
   data(){
 
     let that = this;
@@ -72,7 +63,7 @@ export default {
     };
 
     return{
-      detail: {},
+      initDetail: {},
       rules: {
         code: [
             { required: true, message: '编号不能为空', trigger: 'blur' },
@@ -113,8 +104,7 @@ export default {
           return false;
         }
       });
-    },
-    ...mapActions(['basicDataProvinceShowHideAddEdit', 'basicDataProvinceAddEdit'])
+    }
   },
   watch:{
     basicDataProvinceDetail: {

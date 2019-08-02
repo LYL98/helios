@@ -6,7 +6,7 @@
   import queryMixin from './query.mixin2';
 
   export default {
-    name: "QueryFrame",
+    name: "QueryBasicDataGrade",
     mixins: [queryMixin],
     components: {
     },

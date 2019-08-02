@@ -25,19 +25,10 @@ export default {
   name: "AddEditMerchantOuterTags",
   mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog
   },
-  computed: mapGetters({
-    isShow: 'basicDataMerchantOuterTagsIsShowAddEdit',
-    basicDataMerchantOuterTagsDetail: 'basicDataMerchantOuterTagsDetail'
-  }),
   data(){
     return{
-      detail: {},
+      initDetail: {},
       rules: {
         title: [
           { required: true, message: '名称不能为空', trigger: 'blur' }
@@ -73,8 +64,7 @@ export default {
           return false;
         }
       });
-    },
-    ...mapActions(['basicDataMerchantOuterTagsShowHideAddEdit', 'basicDataMerchantOuterTagsAddEdit'])
+    }
   },
   watch:{
     basicDataMerchantOuterTagsDetail: {

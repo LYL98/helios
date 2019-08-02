@@ -34,16 +34,7 @@ export default {
   name: "AddEditSystemClass",
   mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog
   },
-  computed: mapGetters({
-    isShow: 'basicDataSystemClassIsShowAddEdit',
-    basicDataSystemClassDetail: 'basicDataSystemClassDetail'
-  }),
   data(){
     let that = this;
 
@@ -77,7 +68,7 @@ export default {
     };
 
     return{
-      detail: {},
+      initDetail: {},
       rules: {
         code: [
             { required: true, message: '编号不能为空', trigger: 'blur' },
@@ -94,12 +85,18 @@ export default {
     }
   },
   methods: {
-    //取消
-    handleCancel(){
-      this.basicDataSystemClassShowHideAddEdit({ isShow: false });
-      // setTimeout(()=>{
-      //   this.$refs['ruleForm'].resetFields();
-      // },0);
+    //显示
+    showDetail(){
+      let d = JSON.parse( JSON.stringify( a ) );
+      let data = {};
+      if(d.is_top_add){
+        data.top_code = d.code;
+        data.top_title = d.title;
+        data.is_top_add = true;
+      }else{
+        data = d;
+      }
+      this.detail = data;
     },
     //确认提交
     submitAddEdit(){
@@ -119,25 +116,7 @@ export default {
         }
       });
     },
-    ...mapActions(['basicDataSystemClassShowHideAddEdit', 'basicDataSystemClassAddEdit'])
   },
-  watch:{
-    basicDataSystemClassDetail: {
-      deep: true,
-      handler: function (a, b) {
-        let d = JSON.parse( JSON.stringify( a ) );
-        let data = {};
-        if(d.is_top_add){
-          data.top_code = d.code;
-          data.top_title = d.title;
-          data.is_top_add = true;
-        }else{
-          data = d;
-        }
-        this.detail = data;
-      }
-    }
-  }
 };
 </script>
 

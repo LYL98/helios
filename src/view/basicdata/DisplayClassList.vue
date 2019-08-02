@@ -1,25 +1,25 @@
 <template>
   <div>
-    <query-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataCity"/>
-    <table-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataCity"/>
-    <add-edit-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataCity"/>
+    <query-display-class :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataDisplayClass"/>
+    <table-display-class :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataDisplayClass"/>
+    <add-edit-display-class :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataDisplayClass"/>
   </div>
 </template>
 
 <script>
-  import { QueryBasicDataCity, TableBasicDataCity, AddEditBasicDataCity } from '@/container';
+  import { QueryBasicDataDisplayClass, TableBasicDataDisplayClass, AddEditBasicDataDisplayClass } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'CityList',
+    name: 'DisplayClassList',
     components: {
-      'query-city': QueryBasicDataCity,
-      'table-city': TableBasicDataCity,
-      'add-edit-city': AddEditBasicDataCity,
+      'query-display-class': QueryBasicDataDisplayClass,
+      'table-display-class': TableBasicDataDisplayClass,
+      'add-edit-display-class': AddEditBasicDataDisplayClass,
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("信息 - 县域列表");
+      documentTitle("信息 - 展示分类列表");
     },
   };
 </script>

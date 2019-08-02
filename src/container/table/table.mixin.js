@@ -30,7 +30,8 @@ export default {
         page_size: Constant.PAGE_SIZE
       },
       dataItem: {
-        items: []
+        items: [],
+        num: 0
       },
     }
   },
@@ -49,6 +50,18 @@ export default {
     handleShowDetail(pageComponents, data){
       let pc = this.getPageComponents(pageComponents);
       pc.showDetail(data);
+    },
+    //删除
+    handleDelete(data){
+      this.$messageBox.confirm(`您确认要删除？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.deleteData(data);
+      }).catch(() => {
+        //console.log('取消');
+      });
     },
     // 设置每页显示数量
     changePageSize(pageSize) {

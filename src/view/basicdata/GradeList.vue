@@ -1,25 +1,25 @@
 <template>
   <div>
-    <query-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataCity"/>
-    <table-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataCity"/>
-    <add-edit-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataCity"/>
+    <query-grade :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataGrade"/>
+    <table-grade :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataGrade"/>
+    <add-edit-grade :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataGrade"/>
   </div>
 </template>
 
 <script>
-  import { QueryBasicDataCity, TableBasicDataCity, AddEditBasicDataCity } from '@/container';
+  import { QueryBasicDataGrade, TableBasicDataGrade, AddEditBasicDataGrade } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'CityList',
+    name: 'GradeList',
     components: {
-      'query-city': QueryBasicDataCity,
-      'table-city': TableBasicDataCity,
-      'add-edit-city': AddEditBasicDataCity,
+      'query-grade': QueryBasicDataGrade,
+      'table-grade': TableBasicDataGrade,
+      'add-edit-grade': AddEditBasicDataGrade,
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("信息 - 县域列表");
+      documentTitle("信息 - 商户等级列表");
     },
   };
 </script>
