@@ -1,4 +1,4 @@
-import { Table, TableColumn, Dropdown, DropdownMenu, DropdownItem, Tag, Pagination, Button, Tooltip, Popover } from 'element-ui';
+import { Table, TableColumn, Dropdown, DropdownMenu, DropdownItem, Tag, Pagination, Button, Tooltip, Popover, Tree } from 'element-ui';
 import { DataHandle, Constant } from '@/util';
 
 // 表格宽度： 860 / 830（带全选）
@@ -6,6 +6,7 @@ import { DataHandle, Constant } from '@/util';
 export default {
   components: {
     'el-tag': Tag,
+    'el-tree': Tree,
     'el-tooltip': Tooltip,
     'el-button': Button,
     'el-table': Table,

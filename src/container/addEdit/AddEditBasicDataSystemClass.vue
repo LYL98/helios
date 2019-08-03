@@ -20,7 +20,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click.native="handleCancel">取 消</el-button>
-        <el-button type="primary" @click.native="submitAddEdit">确 定</el-button>
+        <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -53,7 +53,7 @@ export default {
         })
       };
 
-      let detail = that.basicDataSystemClassDetail;
+      let { detail } = that;
       if (detail.id) {
         //编辑模式
         if (value === detail.code) {
@@ -85,37 +85,41 @@ export default {
     }
   },
   methods: {
-    //显示
-    showDetail(){
-      let d = JSON.parse( JSON.stringify( a ) );
-      let data = {};
-      if(d.is_top_add){
-        data.top_code = d.code;
-        data.top_title = d.title;
-        data.is_top_add = true;
-      }else{
-        data = d;
-      }
-      this.detail = data;
-    },
-    //确认提交
-    submitAddEdit(){
-      let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          let { detail } = that;
-          that.basicDataSystemClassAddEdit({
-            data: detail,
-            callback: (res)=>{
-              that.$attrs.callback();//回调
-              that.handleCancel();
-            }
-          });
-        } else {
-          return false;
+    //显示新增修改(重写)
+    showAddEdit(data){
+      if(data){
+        let d = JSON.parse(JSON.stringify(data));
+        let dd = {};
+        if(d.is_top_add){
+          dd.top_code = d.code;
+          dd.top_title = d.title;
+          dd.is_top_add = true;
+        }else{
+          dd = d;
+          dd.id = true;
         }
-      });
+        this.$data.detail = JSON.parse(JSON.stringify(dd));
+      }else{
+        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+      }
+      this.$data.isShow = true;
     },
+    //提交数据
+    async addEditData(){
+      let { detail } = this;
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api[detail.id ? 'basicdataSystemClassEdit' : 'basicdataSystemClassAdd'], detail);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.handleCancel(); //隐藏
+        //刷新数据(列表)
+        let pc = this.getPageComponents('TableBasicDataSystemClass');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
+    }
   },
 };
 </script>

@@ -1,83 +1,42 @@
 <template>
   <div>
-    <div class="operate" v-if="auth.isAdmin || auth.BasicDataFrameListAdd">
-      <el-button @click="handleShowAddEdit('AddEditBasicDataFrame')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataFrameListAdd">新增
-      </el-button>
+    <div class="operate" v-if="auth.isAdmin || auth.BasicDataSystemClassListAdd">
+      <el-button @click="handleShowAddEdit('AddEditBasicDataSystemClass')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataSystemClassListAdd">新增(第一层)</el-button>
     </div>
-    <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove">
-      <el-table
-        :data="dataItem"
-        :row-class-name="highlightRowClassName"
-        style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
-        :highlight-current-row="true"
-        :row-key="rowIdentifier"
-        :current-row-key="clickedRow[rowIdentifier]"
-      >
-        <el-table-column width="20"/>
-        <el-table-column prop="code" label="编号" min-width="150">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.code }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="title" label="名称" min-width="150">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.title }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="框重量" min-width="100">
-          <template slot-scope="scope">
-            {{ returnWeight(scope.row.weight) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="框价格" min-width="100">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.price == 0 ? '' : '￥' }}{{scope.row.price == 0 ? '-' : returnPrice(scope.row.price)}}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="remark" label="备注" min-width="160">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{ scope.row.remark || '-' }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="created" label="创建时间" min-width="160">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{ scope.row.created }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="100">
-          <template slot-scope="scope">
-            <my-table-operate
-              @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
-              :list="[
-              {
-                title: '编辑',
-                isDisplay: auth.isAdmin || auth.BasicDataFrameListUpdate,
-                command: () => handleShowAddEdit('AddEditBasicDataFrame', scope.row)
-              },
-              {
-                title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataFrameListDelete,
-                command: () => deleteFrame(scope.row)
-              }
-            ]"
-            />
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <!-- 表格end -->
+    <!-- 树型start -->
+    <el-tree
+      :data="dataItem"
+      node-key="id"
+      :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - offsetHeight + 'px'}"
+      default-expand-all>
+      <span class="custom-tree-node" slot-scope="{node, data}">
+        <span>{{ node.label }}</span>
+        <span>
+          <el-button
+            type="text"
+            size="mini"
+            v-if="auth.isAdmin || auth.BasicDataSystemClassListAdd"
+            @click="() => addSystemClass(data)">
+            添加子分类
+          </el-button>
+          <el-button
+            type="text"
+            size="mini"
+            v-if="auth.isAdmin || auth.BasicDataSystemClassListUpdate"
+            @click="() => editSystemClass(data)">
+            编辑
+          </el-button>
+          <el-button
+            type="text"
+            size="mini"
+            v-if="auth.isAdmin || auth.BasicDataSystemClassListDelete"
+            @click="() => handleDelete(data)">
+            删除
+          </el-button>
+        </span>
+      </span>
+    </el-tree>
+    <!-- 树型end -->
   </div>
 </template>
 
@@ -93,17 +52,14 @@
     },
     mixins: [tableMixin],
     created() {
-      this.getData();
-
-      if (!this.auth.isAdmin && !this.auth.BasicDataFrameListAdd) {
+      if (!this.auth.isAdmin && !this.auth.BasicDataSystemClassListAdd) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
       }
+      this.getData();
     },
     data() {
       return {
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE,
-        query: {
-        },
         dataItem: [],
         rowIdentifier: 'code'
       }
@@ -112,18 +68,41 @@
       //获取数据
       async getData(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.basicdataFrameList, {});
+        let res = await Http.get(Config.api.basicdataSystemClassListTree, {});
         this.$loading({isShow: false});
         if(res.code === 0){
-          this.$data.dataItem = res.data;
+          let rd = res.data;
+          let fun = (dd) =>{
+            dd.forEach(item => {
+              item.id = item.code;
+              item.label = item.title;
+              if(item.childs && item.childs.length > 0){
+                fun(item.childs);
+              }
+              item.children = item.childs;
+            });
+          }
+          fun(rd);//递归
+          this.$data.dataItem = rd;
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+      //添加子分类
+      addSystemClass(data){
+        this.handleShowAddEdit('AddEditBasicDataSystemClass', {
+          ...data,
+          is_top_add: true
+        });
+      },
+      //编辑子分类
+      editSystemClass(data){
+        this.handleShowAddEdit('AddEditBasicDataSystemClass', data);
+      },
       //删除数据
       async deleteData(data) {
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.basicdataGradeDelete, {
+        let res = await Http.post(Config.api.basicdataSystemClassDelete, {
           code: data.code
         });
         this.$loading({ isShow: false });
@@ -139,5 +118,21 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+  .custom-tree-node {
+    flex: 1;
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+  }
+  .div-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: white
+  }
 </style>
