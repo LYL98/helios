@@ -29,27 +29,6 @@ const router = new Router({
       name: 'MerchantRefundQuery',
       component: () => import(/* webpackChunkName: "merchant" */ '@/view/merchant/RefundList')
     },
-    /*采购*/
-    {
-      path: '/purchase/supplier/query',
-      name: 'PurchaseSupplierQuery',
-      component: () => import(/* webpackChunkName: "purchase" */ '@/view/purchase/SupplierList')
-    },
-    {
-      path: '/purchase/item/query',
-      name: 'PurchaseItemQuery',
-      component: () => import(/* webpackChunkName: "purchase" */ '@/view/purchase/ItemList')
-    },
-    {
-      path: '/purchase/warehouse/query',
-      name: 'PurchaseWarehouseQuery',
-      component: () => import(/* webpackChunkName: "purchase" */ '@/view/purchase/WarehouseList')
-    },
-    {
-      path: '/purchase/finance/query',
-      name: 'PurchaseFinanceQuery',
-      component: () => import(/* webpackChunkName: "purchase" */ '@/view/purchase/FinanceList')
-    },
     /*商品*/
     {
       path: '/item/list',

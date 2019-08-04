@@ -185,7 +185,7 @@ import { Form, FormItem, Button, Input, MessageBox, TimePicker, Notification, Ra
 import { DataHandle, Verification, Config, Constant } from '@/util';
 import { System } from '@/service';
 import {UploadImg} from '@/common';
-import brand from "@/store/modules/system/brand";
+//import brand from "@/store/modules/system/brand";
 import viewMixin from '@/view/view.mixin';
 
 export default {

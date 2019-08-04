@@ -1,18 +1,7 @@
 <template>
   <div>
-    <query-finance-approve
-      v-model="query"
-      @change="changeQuery"
-      :reset="resetQuery"
-      @expandChange="onExpandChange"
-    />
-    <table-finance-approve
-      :data="dataItem.items"
-      :page="query.page"
-      :pageSize="query.page_size"
-      :offset-height="offsetHeight"
-      :itemEdit="handleItemEdit"
-    />
+    <query-finance-approve v-model="query" @change="changeQuery" :reset="resetQuery" @expandChange="onExpandChange"/>
+    <table-finance-approve :data="dataItem.items" :page="query.page" :pageSize="query.page_size" :offset-height="offsetHeight" :itemEdit="handleItemEdit"/>
     <div class="footer">
       <div class="table-pagination">
         <el-pagination

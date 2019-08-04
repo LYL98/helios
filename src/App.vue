@@ -51,21 +51,6 @@
                               v-if="auth.isAdmin || auth.MerchantRefundQuery"><span>门店框信息</span></el-menu-item>
               </el-submenu>
 
-              <el-submenu index="Purchase" v-if="auth.isAdmin || auth.Purchase">
-                <template slot="title">
-                  <i class="iconfont menu-icon">&#xe64b;</i>
-                  <span>采购</span>
-                </template>
-                <el-menu-item index="PurchaseSupplierQuery" :route="{name: 'PurchaseSupplierQuery'}"
-                              v-if="auth.isAdmin || auth.PurchaseSupplierQuery"><span>供应商管理</span></el-menu-item>
-                <el-menu-item index="PurchaseItemQuery" :route="{name: 'PurchaseItemQuery'}"
-                              v-if="auth.isAdmin || auth.PurchaseItemQuery"><span>采购商品管理</span></el-menu-item>
-                <el-menu-item index="PurchaseWarehouseQuery" :route="{name: 'PurchaseWarehouseQuery'}"
-                              v-if="auth.isAdmin || auth.PurchaseWarehouseQuery"><span>采购仓管审核</span></el-menu-item>
-                <el-menu-item index="PurchaseFinanceQuery" :route="{name: 'PurchaseFinanceQuery'}"
-                              v-if="auth.isAdmin || auth.PurchaseFinanceQuery"><span>采购财务审核</span></el-menu-item>
-              </el-submenu>
-
               <el-submenu index="Item" v-if="auth.isAdmin || auth.Item">
                 <template slot="title">
                   <i class="iconfont menu-icon">&#xe73e;</i>

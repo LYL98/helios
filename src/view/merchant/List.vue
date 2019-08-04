@@ -75,7 +75,6 @@
 
 <script>
   import {mapGetters, mapMutations } from 'vuex';
-  import { MERCHANT_SET_ID, MERCHANT_INIT_STATE } from '@/store/mutationTypes';
   import {MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination} from 'element-ui';
   import { QueryMerchantStore } from '@/container';
   import Table from './Table';
@@ -159,8 +158,8 @@
     },
     methods: {
       ...mapMutations({
-        merchantSetId: MERCHANT_SET_ID,
-        merchantInitState: MERCHANT_INIT_STATE
+        //merchantSetId: MERCHANT_SET_ID,
+        //merchantInitState: MERCHANT_INIT_STATE
       }),
 
       orderGetList() {

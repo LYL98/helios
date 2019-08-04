@@ -1,11 +1,6 @@
 <template>
   <div>
-    <query-marketing-coupon
-      v-model="query"
-      @change="changeQuery"
-      :reset="resetQuery"
-    >
-    </query-marketing-coupon>
+    <query-marketing-coupon v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="operate" v-if="auth.isAdmin || auth.MarketingCouponListExport || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
       <el-button
         v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic"

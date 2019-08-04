@@ -2,10 +2,6 @@ export { default as TableMarketingCoupon } from './TableMarketingCoupon';
 export { default as TableMarketingCouponLog } from './TableMarketingCouponLog';
 export { default as TableMarketingCouponStatistic } from './TableMarketingCouponStatistic';
 export { default as TableMarketingScopePromotion } from './TableMarketingScopePromotion';
-export { default as TablePurchaseSupplier } from './TablePurchaseSupplier';
-export { default as TablePurchaseItem } from './TablePurchaseItem';
-export { default as TablePurchaseWarehouse } from './TablePurchaseWarehouse';
-export { default as TablePurchaseFinance } from './TablePurchaseFinance';
 export { default as TableFinanceBalance } from './TableFinanceBalance';
 export { default as TableFinanceBalanceApproveLog } from './TableFinanceBalanceApproveLog';
 export { default as TableFinanceBalanceLog } from './TableFinanceBalanceLog';
@@ -27,3 +23,5 @@ export { default as TableBasicDataMerchantOuterTags } from './TableBasicDataMerc
 export { default as TableBasicDataProvince } from './TableBasicDataProvince';
 export { default as TableBasicDataSystemClass } from './TableBasicDataSystemClass';
 export { default as TableBasicDataZone } from './TableBasicDataZone';
+
+export { default as TableOperateLine } from './TableOperateLine';

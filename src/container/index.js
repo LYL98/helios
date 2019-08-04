@@ -8,7 +8,9 @@ export {
   AddEditBasicDataMerchantOuterTags,
   AddEditBasicDataProvince,
   AddEditBasicDataSystemClass,
-  AddEditBasicDataZone
+  AddEditBasicDataZone,
+
+  AddEditOperateLine
 } from './addEdit';
 
 // 下拉选择组件
@@ -38,10 +40,6 @@ export {
   QueryMerchantStore,
   QueryOrder,
   QueryOrderAfterSale,
-  QueryPurchaseSupplier,
-  QueryPurchaseItem,
-  QueryPurchaseWarehouse,
-  QueryPurchaseFinance,
   QueryBusinessFourRate,
   QueryBusinessFluctuation,
   QueryBusinessStore,
@@ -63,7 +61,9 @@ export {
   QueryBasicDataMerchantOuterTags,
   QueryBasicDataProvince,
   QueryBasicDataSystemClass,
-  QueryBasicDataZone
+  QueryBasicDataZone,
+
+  QueryOperateLine
 } from './query';
 
 // 表格
@@ -72,10 +72,6 @@ export {
   TableMarketingCouponLog,
   TableMarketingCouponStatistic,
   TableMarketingScopePromotion,
-  TablePurchaseItem,
-  TablePurchaseWarehouse,
-  TablePurchaseFinance,
-  TablePurchaseSupplier,
   TableFinanceBalance,
   TableFinanceBalanceApproveLog,
   TableFinanceBalanceLog,
@@ -86,6 +82,8 @@ export {
   TableGroupBuyMerchantDetail,
   TableGroupHeadDetail,
   TableGroupHeadDetailList,
+
+  TableOperateLine,
 
   TableBasicDataCity,
   TableBasicDataDisplayClass,
@@ -104,11 +102,6 @@ export {
   FormMarketingCouponAdd,
   FormMarketingCouponSend,
   FormMarketingScopePromotion,
-  FormPurchaseItemAdd,
-  FormPurchaseItemModify,
-  FormPurchaseItemHighAuthor,
-  FormPurchaseItemApprove,
-  FormPurchaseSupplier,
   FormFinanceBalanceEdit,
   FormFinanceBalanceMerchantLogExport,
   FormFinanceApproveEdit,

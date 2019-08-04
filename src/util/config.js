@@ -242,30 +242,6 @@ const Config = (() => {
       memberUnFreeze: apiM + '/member/unfreeze', //解冻用户账号
       memberUnBindWechat: apiM + '/member/unbind_wechat', //解除微信绑定
 
-      // 采购管理
-      purchaseSupplierQuery: apiM + '/supplier/query', // 供应商查询
-      purchaseSupplierAdd: apiM + '/supplier/add', // 供应商新增
-      purchaseSupplierModify: apiM + '/supplier/edit', // 供应商修改
-      purchaseSupplierApprove: apiM + '/supplier/check', // 供应商审核
-      purchaseSupplierFreeze: apiM + '/supplier/freeze', // 供应商冻结
-      purchaseSupplierUnFreeze: apiM + '/supplier/unfreeze', // 供应商解冻
-      purchaseSupplierExport: apiM + '/supplier/export', // 导出
-
-      purchaseItemQuery: apiM + '/purchase_record/query', // 采购商品记录查询
-      purchaseWarehouseQuery: apiM + '/purchase_record/first/query', // 仓管审核查询
-      purchaseFinanceQuery: apiM + '/purchase_record/second/query', // 财务审核查询
-      purchaseItemList: apiM + '/purchase_item/list', // 采购商品查询
-      purchaseItemDetail: apiM + '/purchase_record/detail', // 采购商品查询
-      purchaseItemAdd: apiM + '/purchase_records/add', // 批量增加采购商品
-      purchaseItemModify: apiM + '/purchase_record/edit', // 修改采购商品
-      purchaseItemFirstCheck: apiM + '/purchase_record/first_check', // 一审
-      purchaseItemSecondCheck: apiM + '/purchase_record/second_check', // 二审
-      purchaseItemDecline: apiM + '/purchase_record/decline', // 驳回
-      purchaseItemApproveLog: apiM + '/purchase_record/log', //审核日志
-      purchaseItemExport: apiM + '/purchase_record/export', //导出
-      purchaseItemHighAuthor: apiM + '/purchase_record/edit/high_author', //越权修改
-
-
       //角色、权限
       permissionTree: apiM + '/system/permission/list/tree',//权限树
       roleAdd: apiM + '/system/role/add',//修改权限角色

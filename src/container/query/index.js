@@ -4,10 +4,6 @@ export { default as QueryMarketingScopePromotion } from './QueryMarketingScopePr
 export { default as QueryMerchantStore } from './QueryMerchantStore';
 export { default as QueryOrder } from './QueryOrder';
 export { default as QueryOrderAfterSale } from './QueryOrderAfterSale';
-export { default as QueryPurchaseSupplier } from './QueryPurchaseSupplier';
-export { default as QueryPurchaseItem } from './QueryPurchaseItem';
-export { default as QueryPurchaseWarehouse } from './QueryPurchaseWarehouse';
-export { default as QueryPurchaseFinance } from './QueryPurchaseFinance';
 export { default as QueryBusinessFourRate } from './QueryBusinessFourRate';
 export { default as QueryBusinessFluctuation } from './QueryBusinessFluctuation';
 export { default as QueryBusinessStore } from './QueryBusinessStore';
@@ -30,3 +26,5 @@ export { default as QueryBasicDataMerchantOuterTags } from './QueryBasicDataMerc
 export { default as QueryBasicDataProvince } from './QueryBasicDataProvince';
 export { default as QueryBasicDataSystemClass } from './QueryBasicDataSystemClass';
 export { default as QueryBasicDataZone } from './QueryBasicDataZone';
+
+export { default as QueryOperateLine } from './QueryOperateLine';

@@ -8,3 +8,5 @@ export { default as AddEditBasicDataMerchantOuterTags } from './AddEditBasicData
 export { default as AddEditBasicDataProvince } from './AddEditBasicDataProvince';
 export { default as AddEditBasicDataSystemClass } from './AddEditBasicDataSystemClass';
 export { default as AddEditBasicDataZone } from './AddEditBasicDataZone';
+
+export { default as AddEditOperateLine } from './AddEditOperateLine';

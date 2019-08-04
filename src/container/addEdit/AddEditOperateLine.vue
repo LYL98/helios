@@ -1,6 +1,6 @@
 <template>
   <div class="zone-add-eidt">
-    <el-dialog :title="`${detail.id?'编辑':'新增'}线路`" :visible="isShow" width="720px" :before-close="cancelAddEdit" :close-on-click-modal="false">
+    <el-dialog :title="`${detail.id?'编辑':'新增'}线路`" :visible="isShow" width="720px" :before-close="handleCancel" :close-on-click-modal="false">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="编号" prop="code">
           <el-input v-model="detail.code" :maxlength="12" placeholder="请输入编号" :disabled="detail.id"></el-input>
@@ -22,35 +22,26 @@
         <!--</el-form-item>-->
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click.native="cancelAddEdit">取 消</el-button>
-        <el-button type="primary" @click.native="submitAddEdit">确 定</el-button>
+        <el-button @click.native="handleCancel">取 消</el-button>
+        <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Dialog } from 'element-ui';
-import { Config, Constant, Verification } from '@/util';
+import addEditMixin from './add.edit.mixin';
+import { Http, Config, Constant, Verification } from '@/util';
 import { SelectProvince, SelectCityMulti, SelectDistributorMulti } from '@/common';
 
 export default {
   name: "LineAddEdit",
+  mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog,
     'my-select-province': SelectProvince,
     'my-select-city-multi': SelectCityMulti,
     'my-select-distributor-multi': SelectDistributorMulti
   },
-  computed: mapGetters({
-    isShow: 'operateLineIsShowAddEdit',
-    operateLineDetail: 'operateLineDetail'
-  }),
   data(){
     let validCode = (rules, value, callback) => {
       if (value && !Verification.isNumber(value)) {
@@ -59,7 +50,7 @@ export default {
       callback();
     };
     return{
-      detail: {
+      initDetail: {
         code: '',
         title: '',
         city_codes: [],
@@ -87,43 +78,33 @@ export default {
     }
   },
   methods: {
+    //显示新增修改(重写)
+    showAddEdit(data){
+      if(data){
+        this.$data.detail = JSON.parse(JSON.stringify({ ...data, id: true }));
+      }else{
+        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+      }
+      this.$data.isShow = true;
+    },
     //省份改变
     changeProvince(){
       this.$data.detail.city_codes = [];
     },
-    //取消
-    cancelAddEdit(){
-      this.operateLineShowHideAddEdit({ isShow: false });
-      setTimeout(()=>{
-        this.$refs['ruleForm'].resetFields();
-      },0);
-    },
-    //确认提交
-    submitAddEdit(){
-      let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          let { detail } = that;
-          that.operateLineAddEdit({
-            data: detail,
-            callback: (res)=>{
-              let c = that.$attrs.callback;
-              typeof c === 'function' && c(res);//回调
-              that.cancelAddEdit();
-            }
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    ...mapActions(['operateLineShowHideAddEdit', 'operateLineAddEdit'])
-  },
-  watch:{
-    operateLineDetail: {
-      deep: true,
-      handler: function (a, b) {
-        this.detail = JSON.parse( JSON.stringify( a ) );
+    //提交数据
+    async addEditData(){
+      let { detail } = this;
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api[detail.id ? 'operateLineEdit' : 'operateLineAdd'], detail);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.handleCancel(); //隐藏
+        //刷新数据(列表)
+        let pc = this.getPageComponents('TableOperateLine');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
       }
     }
   }
