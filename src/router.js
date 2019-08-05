@@ -197,6 +197,11 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "basicdata" */ '@/view/basicdata/ItemTagsList')
     },
     {
+      path: '/basicdata/item/inner/tags/list',
+      name: 'BasicDataItemInnerTagsList',
+      component: () => import(/* webpackChunkName: "basicdata" */ '@/view/basicdata/ItemInnerTagsList')
+    },
+    {
       path: '/basicdata/province/list',
       name: 'BasicDataProvinceList',
       component: () => import(/* webpackChunkName: "basicdata" */ '@/view/basicdata/ProvinceList')

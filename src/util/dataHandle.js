@@ -140,6 +140,22 @@ const dataHandle = {
     }
     return d;
   },
+  //返回计算百分比
+  returnPercent(data){
+    if(!data) return 0;
+    let v = data / 10;
+    let p = v.toFixed(1);
+    if(p.substring(p.length - 2, p.length) === '.0'){
+      return p.substring(0, p.length - 2);
+    }
+    return p;
+  },
+  //处理百分比
+  handlePercent(data){
+    if(!data) return 0;
+    let v = data * 10;
+    return Math.round(v);
+  },
   //返回要支付类型(微信额度，余额额度)
   returnPayType(weixin, balance) {
     if (balance === 0){

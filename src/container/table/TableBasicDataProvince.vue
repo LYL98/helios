@@ -78,7 +78,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'FrameList',
+    name: 'TableBasicDataProvince',
     components: {
       'my-table-operate': TableOperate
     },

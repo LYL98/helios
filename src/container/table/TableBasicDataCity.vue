@@ -114,7 +114,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'FrameList',
+    name: 'TableBasicDataCity',
     components: {
       'my-table-operate': TableOperate
     },

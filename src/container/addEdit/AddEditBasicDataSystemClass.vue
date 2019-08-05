@@ -5,8 +5,8 @@
         <el-form-item label="父分类" v-if="detail.is_top_add">
           {{detail.top_title}}
         </el-form-item>
-        <el-form-item label="编号" prop="code">
-          <el-input v-model="detail.code" :disabled="detail.id" placeholder="请输入12位以内的字母和数字组合" :maxlength="12"></el-input>
+        <el-form-item label="编号">
+          <el-input v-model="detail.code" :disabled="detail.id" placeholder="系统自动生成" disabled></el-input>
         </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入10位以内字符" :maxlength="10"></el-input>
@@ -36,45 +36,9 @@ export default {
   components: {
   },
   data(){
-    let that = this;
-
-    let validCode = function (rules, value, callback) {
-      let asyncValid = () => {
-        Http.get(Config.api.baseSystemClassList, {
-          code: value
-        }).then(res => {
-          if (res.data && res.data.length > 0) {
-            callback(new Error('编号重复，请重新输入'))
-          } else {
-            callback()
-          }
-        }).catch(e => {
-          callback();
-        })
-      };
-
-      let { detail } = that;
-      if (detail.id) {
-        //编辑模式
-        if (value === detail.code) {
-          //没有修改编号
-          callback();
-        } else {
-          asyncValid()
-        }
-      } else {
-        asyncValid()
-      }
-    };
-
     return{
       initDetail: {},
       rules: {
-        code: [
-            { required: true, message: '编号不能为空', trigger: 'blur' },
-          { pattern: Verification.testStrs.isNumberOrAlpha, message: '请输入12位以内的字母和数字组合', trigger: 'blur' },
-          { validator: validCode, trigger: 'blur' },
-        ],
         title: [
             { required: true, message: '名称不能为空', trigger: 'blur' },
         ],

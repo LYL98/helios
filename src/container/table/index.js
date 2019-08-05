@@ -18,6 +18,7 @@ export { default as TableBasicDataDisplayClass } from './TableBasicDataDisplayCl
 export { default as TableBasicDataFrame } from './TableBasicDataFrame';
 export { default as TableBasicDataGrade } from './TableBasicDataGrade';
 export { default as TableBasicDataItemTags } from './TableBasicDataItemTags';
+export { default as TableBasicDataItemInnerTags } from './TableBasicDataItemInnerTags';
 export { default as TableBasicDataMerchantInnerTags } from './TableBasicDataMerchantInnerTags';
 export { default as TableBasicDataMerchantOuterTags } from './TableBasicDataMerchantOuterTags';
 export { default as TableBasicDataProvince } from './TableBasicDataProvince';

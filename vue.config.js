@@ -4,12 +4,13 @@ const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const configBase = require('./configBase');
 
 const HappyPack = require('happypack');
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 module.exports = {
-  outputDir: '../dist',
+  outputDir: configBase.BuildOutputDir || 'dist',
   productionSourceMap: false,
   chainWebpack: config => {
     config.module.rule('js').uses.clear();

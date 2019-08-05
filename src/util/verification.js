@@ -9,6 +9,7 @@ export default {
     isNull: /^[ ]+$/,
     isPrice: /^[0-9]*\.*[0-9]{0,2}$/,
     isWeight: /^[0-9]*\.*[0-9]{0,1}$/,
+    isPercent: /^[0-9]*\.*[0-9]{0,1}$/,
     isInteger: /^[-]{0,1}[0-9]{1,}$/,
     checkMobile: /^1\d{10}$/, ///^1[3|4|5|7|8|9][0-9]{9}$/;
     isNumber: /^[0-9]+$/,
@@ -45,6 +46,15 @@ export default {
     // var regu=/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/;
     // var regu=/^[1-9]*\.*[0-9]{0,2}$/;
     var regu = /^[0-9]*\.*[0-9]{0,1}$/;
+    return regu.test(str);
+  },
+
+  /**
+   * 判断是否输入百分数
+   * @param str
+   */
+  isPercent: function (str) {
+    var regu = this.testStrs.isPercent;
     return regu.test(str);
   },
 

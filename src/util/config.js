@@ -188,6 +188,11 @@ const Config = (() => {
       basicdataItemTagsIcons: apiM + '/common/tag_images/list', //商品icon默认标签
       basicdataItemTagsDetail: apiM + '/basicdata/item_tags/detail', //icon标签详情
 
+      basicdataItemInnerTagsAdd: apiM + '/basicdata/item_inner_tags/add',//商品内标签新增
+      basicdataItemInnerTagsEdit: apiM + '/basicdata/item_inner_tags/edit',//商品内标签修改
+      basicdataItemInnerTagsList: apiM + '/basicdata/item_inner_tags/list',//商品内标签列表
+      basicdataItemInnerTagsDelete: apiM + '/basicdata/item_inner_tags/delete',//商品内标签删除
+
       basicdataMerchantInnerTagsList: apiM + '/basicdata/merchant_inner_tags/list', //商户内标签
       basicdataMerchantInnerTagsAdd: apiM + '/basicdata/merchant_inner_tags/add', //商户内标签添加
       basicdataMerchantInnerTagsEdit: apiM + '/basicdata/merchant_inner_tags/edit', //商户内标签修改

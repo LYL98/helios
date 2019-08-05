@@ -3,6 +3,7 @@ export { default as AddEditBasicDataDisplayClass } from './AddEditBasicDataDispl
 export { default as AddEditBasicDataFrame } from './AddEditBasicDataFrame';
 export { default as AddEditBasicDataGrade } from './AddEditBasicDataGrade';
 export { default as AddEditBasicDataItemTags } from './AddEditBasicDataItemTags';
+export { default as AddEditBasicDataItemInnerTags } from './AddEditBasicDataItemInnerTags';
 export { default as AddEditBasicDataMerchantInnerTags } from './AddEditBasicDataMerchantInnerTags';
 export { default as AddEditBasicDataMerchantOuterTags } from './AddEditBasicDataMerchantOuterTags';
 export { default as AddEditBasicDataProvince } from './AddEditBasicDataProvince';

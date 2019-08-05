@@ -79,7 +79,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'FrameList',
+    name: 'TableBasicDataGrade',
     components: {
       'my-table-operate': TableOperate
     },

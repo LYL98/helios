@@ -1,5 +1,7 @@
 import { Table, TableColumn, Dropdown, DropdownMenu, DropdownItem, Tag, Pagination, Button, Tooltip, Popover, Tree } from 'element-ui';
-import { DataHandle, Constant } from '@/util';
+import { DataHandle, Constant, Method } from '@/util';
+import { TableOperate } from '@/common';
+import SettingColumnTitle from './SettingColumnTitle';
 
 // 表格宽度： 860 / 830（带全选）
 
@@ -12,7 +14,9 @@ export default {
     'el-table': Table,
     'el-table-column': TableColumn,
     'el-pagination': Pagination,
-    'el-popover': Popover
+    'el-popover': Popover,
+    'my-table-operate': TableOperate,
+    'setting-column-title': SettingColumnTitle
   },
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件
@@ -26,6 +30,7 @@ export default {
       currentRow: {},
       currentRowLocked: false,
       clickedRow: {},
+      tableShowColumn: [],
       query: {
         page: 1,
         page_size: Constant.PAGE_SIZE
@@ -35,6 +40,9 @@ export default {
         num: 0
       },
     }
+  },
+  created() {
+    this.isShowTableTitle(); //显示表头
   },
   methods: {
     //返回表格序号
@@ -140,14 +148,17 @@ export default {
       return '';
     },
 
-
+    //处理日期
     returnDateFormat(dateStr) {
       return DataHandle.returnDateFormat(dateStr, 'yyyy-MM-dd');
     },
 
+    //处理日期
     returnDate(dateStr) {
       return DataHandle.returnDateFormat(dateStr, 'yyyy-MM-dd')
     },
+
+    //处理时间
     returnTime(dateStr) {
       return DataHandle.returnDateFormat(dateStr, 'HH:mm:ss')
     },
@@ -169,6 +180,65 @@ export default {
     // 返回折扣
     returnDiscount(discount) {
       return DataHandle.returnDiscount(discount);
+    },
+
+    // 返回百分比
+    returnPercent(data) {
+      return DataHandle.returnPercent(data) + '%';
+    },
+
+    //是否显示表头哪一项
+    isShowTableTitle() {
+      let { tableName, tableColumn, tableShowColumn } = this;
+      if (tableName) {
+        let ts = Method.getPageSetting('Table'); //获取页面设置
+        //添加默认
+        let fun = ()=>{
+          tableColumn.forEach(item => {
+            if(item.isShow) tableShowColumn.push(item.key);
+          });
+        }
+
+        if (ts && Object.keys(ts).length > 0 && ts[tableName]) {
+          if (ts[tableName].columnTitle) {
+            let tsct = ts[tableName].columnTitle;
+            tableShowColumn = [];
+            tableColumn.forEach(item => {
+              if (tsct[item.key]) {
+                item.isShow = true;
+                tableShowColumn.push(item.key);
+              } else {
+                item.isShow = false;
+              }
+            });
+          }else{
+            fun();
+          }
+        }else{
+          fun();
+        }
+        this.$data.tableColumn = tableColumn;
+        this.$data.tableShowColumn = tableShowColumn;
+      }
+    },
+    //改变表头
+    changeTableColumn(value) {
+      let { tableName } = this;
+      this.$data.tableShowColumn = value;
+      let dataTepm = {};
+      value.forEach(item => {
+        dataTepm[item] = true;
+      });
+      let ts = Method.getPageSetting('Table'); //获取页面设置
+      if (ts[tableName] && ts[tableName].columnTitle) {
+        ts[tableName].columnTitle = dataTepm;
+      } else {
+        ts[tableName] = {
+          columnTitle: dataTepm
+        };
+      }
+      Method.setPageSetting('Table', ts);
+      this.isShowTableTitle();//重新刷新表头
     },
 
   }

@@ -72,7 +72,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'FrameList',
+    name: 'TableBasicDataMerchantInnerTags',
     components: {
       'my-table-operate': TableOperate
     },

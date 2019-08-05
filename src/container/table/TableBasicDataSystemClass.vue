@@ -10,12 +10,12 @@
       :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - offsetHeight + 'px'}"
       default-expand-all>
       <span class="custom-tree-node" slot-scope="{node, data}">
-        <span>{{ node.label }}</span>
-        <span>
+        <span class="label">{{ node.label }}</span>
+        <span class="options" @click.stop>
           <el-button
             type="text"
             size="mini"
-            v-if="auth.isAdmin || auth.BasicDataSystemClassListAdd"
+            v-if="data.code.length >= 8 && (auth.isAdmin || auth.BasicDataSystemClassListAdd)"
             @click="() => addSystemClass(data)">
             添加子分类
           </el-button>
@@ -46,7 +46,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'FrameList',
+    name: 'TableBasicDataSystemClass',
     components: {
       'my-table-operate': TableOperate
     },
@@ -122,17 +122,20 @@
   .custom-tree-node {
     flex: 1;
     display: flex;
-    margin-top: 10px;
     align-items: center;
-    justify-content: space-between;
     font-size: 14px;
     padding-right: 8px;
-  }
-  .div-sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: white
+    >.label{
+      margin-right: 60px;
+    }
+    >.options{
+      display: none;
+    }
   }
 </style>
+<style>
+  .custom-tree-node:hover .options{
+    display: block;
+  }
+</style>
+
