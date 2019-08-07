@@ -1,5 +1,5 @@
 import { DataHandle, Http, Method, Constant } from '@/util';
-import { QueryItem } from '@/common';
+import { QueryItem, CollapseQuery } from '@/common';
 import { Form, FormItem, DatePicker, Input, Button, RadioGroup, RadioButton, Radio, Dialog, Row, Col, Select, Option } from 'element-ui';
 
 export default {
@@ -17,7 +17,8 @@ export default {
     'el-dialog': Dialog,
     'el-select': Select,
     'el-option': Option,
-    'my-query-item': QueryItem
+    'my-query-item': QueryItem,
+    'my-collapse-query': CollapseQuery
   },
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件
@@ -25,6 +26,7 @@ export default {
   },
   data() {
     return {
+      province: this.$province,
       auth: this.$auth,
       query: {
         page: 1,
@@ -66,6 +68,6 @@ export default {
     //隐藏高级筛选
     handleHideFiltrate(){
       this.$data.isShowFiltrate = false;
-    }
+    },
   }
 }

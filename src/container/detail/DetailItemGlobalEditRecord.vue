@@ -1,39 +1,25 @@
 <template>
-  <el-dialog title="团长账户余额明细" :visible="isShow" width="1200px" :before-close="handleCancel">
-    <el-table :data="balanceList.items" width="100%" :height="460">
-      <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
-      <el-table-column label="时间" prop="created" width="260"/>
-      <el-table-column label="原有余额" width="200">
-        <template slot-scope="scope">&yen;{{returnPrice(scope.row.old_balance)}}</template>
-      </el-table-column>
-      <el-table-column label="变动金额" prop="str_obj.acc_amount" width="200">
+  <el-dialog title="修改明细" :visible="isShow" width="1200px" :before-close="handleCancel">
+    <el-table :data="dataItem.items" width="100%" :height="460">
+      <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
+      <el-table-column label="操作时间" prop="created" width="260"/>
+      <el-table-column label="操作内容" width="600">
         <template slot-scope="scope">
-          <div class="amount">
-            <div class="up" v-if="scope.row.reason === 'gb_profit'">&yen;{{returnPrice(scope.row.amount)}}</div>
-            <div class="down" v-else>&yen;{{returnPrice(Math.abs(scope.row.amount))}}</div>
-          </div>
+          <span v-for="item,key in scope.row.modified_attrs" :key="key">{{fields[item]}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="现有余额" width="200">
-        <template slot-scope="scope">&yen;{{returnPrice(scope.row.new_balance)}}</template>
-      </el-table-column>
-      <el-table-column label="变动原因">
-        <template slot-scope="scope">
-          <div>
-            <div v-if="scope.row.reason === 'gb_profit'">团购收益</div>
-            <div v-else>余额转账</div>
-          </div>
-        </template>
+      <el-table-column label="操作人">
+        <template slot-scope="scope">{{scope.row.operator.realname}}</template>
       </el-table-column>
     </el-table>
-    <div class="pagination-div" v-if="balanceList.num > 0">
+    <div class="pagination-div" v-if="dataItem.num > 0">
         <el-pagination
           background
           layout="total, sizes, prev, pager, next, jumper"
           :page-sizes="[10, 20, 30, 40, 50]"
           @size-change="changePageSize"
           @current-change="changePage"
-          :total="balanceList.num"
+          :total="dataItem.num"
           :page-size="query.page_size"
           :current-page="query.page"
         />
@@ -46,29 +32,39 @@
   import { Http, Config, Constant } from '@/util';
 
   export default {
-    name: "DetailHeadBalanceLog",
+    name: "DetailItemGlobalEditRecord",
     mixins: [detailMixin],
     components: {
     },
     data() {
       return {
+        fields: {
+          title: '商品名称',
+          images: '商品图片',
+          package_spec: '包装规格',
+          item_spec: '商品规格',
+          origin_place: '产地',
+          gross_weight: '毛重',
+          net_weight: '净重',
+          system_class_code: '科学分类',
+          frame_code: '框',
+          content: '商品详细',
+        },
         query: {
-          store_id: '',
+          id: '',
           page: 1,
           page_size: Constant.PAGE_SIZE,
         },
-        balanceList: {
+        dataItem: {
           items: [],
           num: 0
-        },
-        initDetail: {
         },
       }
     },
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.$data.balanceList = {
+        this.$data.dataItem = {
           items: [],
           num: 0
         };
@@ -79,20 +75,20 @@
           this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
         }
         
-        //获取账户列表
-        this.$data.query.store_id = data.id;
-        this.groupStoreBalanceLog();
+        //获取明细列表
+        this.$data.query.id = data.id;
+        this.pItemModifyDetail();
       },
-      //获取账户列表
-      async groupStoreBalanceLog(){
+      //获取明细列表
+      async pItemModifyDetail(){
         this.$loading({isShow: true, isWhole: true});
         let { query } = this;
-        let res = await Http.get(Config.api.groupStoreBalanceLog, query);
+        let res = await Http.get(Config.api.pItemModifyDetail, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.isShow = true;
           let rd = res.data;
-          this.$data.balanceList = rd;
+          this.$data.dataItem = rd;
         }else{
           this.$store.dispatch('message', {message: res.message, type: 'error'});
         }
@@ -101,13 +97,13 @@
       changePageSize(pageSize) {
         this.$data.query.page_size = pageSize;
         this.$data.query.page = 1;
-        this.groupStoreBalanceLog();
+        this.pItemModifyDetail();
       },
 
       //翻页
       changePage(page) {
         this.$data.query.page = page;
-        this.groupStoreBalanceLog();
+        this.pItemModifyDetail();
       },
     }
   }

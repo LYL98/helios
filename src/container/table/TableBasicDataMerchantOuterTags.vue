@@ -46,7 +46,7 @@
               @command-visible="handleCommandVisible"
               :list="[
               {
-                title: '编辑',
+                title: '修改',
                 isDisplay: auth.isAdmin || auth.BasicDataMerchantOuterTagsListUpdate,
                 command: () => handleShowAddEdit('AddEditBasicDataMerchantOuterTags', scope.row)
               },

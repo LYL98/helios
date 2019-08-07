@@ -1,6 +1,6 @@
 <template>
   <div class="user-reset-password">
-    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'编辑':'新增'}运营人员`" :visible="isShow" width="720px" :before-close="cancelAddEdit">
+    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}运营人员`" :visible="isShow" width="720px" :before-close="cancelAddEdit">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm">
         <!-- <el-form-item label="用户" v-show="detail.id">
           <div>{{detail.realname}}&nbsp;<span v-show="detail.phone">({{detail.phone}})</span></div>

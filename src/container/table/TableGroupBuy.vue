@@ -87,7 +87,7 @@
               command: () => handleCopyItem(scope.row)
             },
             {
-              title: '编辑',
+              title: '修改',
               isDisplay: (auth.isAdmin || auth.GroupBuyEdit) && (scope.row.progress_status !== 'post'),
               command: () => handleEdit(scope.row)
             }

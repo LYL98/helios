@@ -1,6 +1,6 @@
 <template>
   <div class="user-reset-password">
-    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'编辑':'新增'}商品框`" :visible="isShow" width="720px" :before-close="handleCancel">
+    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}商品框`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">
         <el-form-item label="编号" prop="code">
           <el-input v-model="detail.code" :disabled="detail.id" placeholder="请输入12位以内的字母和数字组合" :maxlength="12"></el-input>
@@ -104,7 +104,7 @@ export default {
         })
       };
 
-      let detail = that.basicDataFrameDetail;
+      let { detail } = that;
       if (detail.id) {
         //编辑模式
         if (value === detail.code) {

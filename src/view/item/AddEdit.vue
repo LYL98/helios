@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="`${detail.id?'编辑':'新增'}商品`"
+      :title="`${detail.id?'修改':'新增'}商品`"
       :visible="isShow" v-if="isShow"
       width="1200px"
       ref="myDialog"

@@ -64,7 +64,7 @@
               @command-visible="handleCommandVisible"
               :list="[
               {
-                title: '编辑',
+                title: '修改',
                 isDisplay: auth.isAdmin || auth.BasicDataZoneListUpdate,
                 command: () => basicDataZoneShowHideAddEdit({ isShow: true, data: scope.row })
               },

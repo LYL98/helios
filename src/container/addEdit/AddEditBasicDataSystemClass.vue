@@ -1,6 +1,6 @@
 <template>
   <div class="user-reset-password">
-    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'编辑':'新增'}科学分类`" :visible="isShow" width="720px" :before-close="handleCancel">
+    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}科学分类`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">
         <el-form-item label="父分类" v-if="detail.is_top_add">
           {{detail.top_title}}

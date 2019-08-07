@@ -25,4 +25,8 @@ export { default as TableBasicDataProvince } from './TableBasicDataProvince';
 export { default as TableBasicDataSystemClass } from './TableBasicDataSystemClass';
 export { default as TableBasicDataZone } from './TableBasicDataZone';
 
+export { default as TableItemGlobal } from './TableItemGlobal';
+
 export { default as TableOperateLine } from './TableOperateLine';
+
+export { default as TableSystemBanner } from './TableSystemBanner';

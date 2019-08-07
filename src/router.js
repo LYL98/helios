@@ -31,6 +31,11 @@ const router = new Router({
     },
     /*商品*/
     {
+      path: '/item/global',
+      name: 'ItemGlobal',
+      component: () => import(/* webpackChunkName: "item" */ '@/view/item/Global')
+    },
+    {
       path: '/item/list',
       name: 'ItemList',
       component: () => import(/* webpackChunkName: "item" */ '@/view/item/List')

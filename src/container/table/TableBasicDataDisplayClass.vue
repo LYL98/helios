@@ -56,7 +56,7 @@
               @command-visible="handleCommandVisible"
               :list="[
               {
-                title: '编辑',
+                title: '修改',
                 isDisplay: auth.isAdmin || auth.BasicDataDisplayClassListUpdate,
                 command: () => handleShowAddEdit('AddEditBasicDataDisplayClass', scope.row)
               },

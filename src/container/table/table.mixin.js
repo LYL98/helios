@@ -1,5 +1,5 @@
-import { Table, TableColumn, Dropdown, DropdownMenu, DropdownItem, Tag, Pagination, Button, Tooltip, Popover, Tree } from 'element-ui';
-import { DataHandle, Constant, Method } from '@/util';
+import { Table, TableColumn, Tag, Pagination, Button, Tooltip, Popover, Tree } from 'element-ui';
+import { DataHandle, Constant, Method, Config, Http } from '@/util';
 import { TableOperate } from '@/common';
 import SettingColumnTitle from './SettingColumnTitle';
 
@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      tencentPath: Config.tencentPath,
       province: this.$province,
       auth: this.$auth,
       rowIdentifier: 'id',
@@ -31,6 +32,7 @@ export default {
       currentRowLocked: false,
       clickedRow: {},
       tableShowColumn: [],
+      multipleSelection: [],
       query: {
         page: 1,
         page_size: Constant.PAGE_SIZE
@@ -240,6 +242,23 @@ export default {
       Method.setPageSetting('Table', ts);
       this.isShowTableTitle();//重新刷新表头
     },
-
+    //列表导出
+    async handleExport(apiStr, query) {
+      let api = Config.api[apiStr];
+      //判断是否可导出
+      this.$loading({ isShow: true });
+      let res = await Http.get(`${api}_check`, query);
+      if(res.code === 0){
+        let queryStr = `${api}?`;
+        for(let item in query){
+          queryStr += `${item}=${query[item]}&`;
+        }
+        queryStr = queryStr.substring(0, queryStr.length - 1);
+        window.open(queryStr);
+      }else{
+        this.$message({ title: '提示', message: res.message, type: 'error' });
+      }
+      this.$loading({ isShow: false });
+    },
   }
 }

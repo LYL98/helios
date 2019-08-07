@@ -23,10 +23,21 @@
     position: relative;
 }
 
+.td-item{
+    height: 48px;
+    &.link-item{
+        text-decoration: underline;
+        &:hover{
+            cursor: pointer;
+            font-weight: bold;
+        }
+    }
+}
+
 .table-bottom{
     display: flex;
     align-items: center;
-    height: 50px;
+    padding-bottom: 12px;
     >.left{
         flex: 1;
     }

@@ -141,7 +141,7 @@
                       command: () => unFreezeData(scope.row)
                     },
                     {
-                      title: '编辑',
+                      title: '修改',
                       isDisplay: auth.isAdmin || auth.SystemOperatorEdit,
                       command: () => systemOperatorShowHideAddEdit({ isShow: true, data: scope.row })
                     },

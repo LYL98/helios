@@ -1,6 +1,6 @@
 <template>
   <el-input v-model="changeValue" :placeholder="placeholder">
-    <template slot="append">%</template>
+    <template slot="append" v-if="unit">{{unit}}</template>
   </el-input>
 </template>
 <script>
@@ -8,7 +8,7 @@
   import { DataHandle, Verification } from '@/util';
 
   export default {
-    name: 'InputPercent',
+    name: 'InputWeight',
     mixins: [inputMixin],
     data(){
       return{
@@ -21,9 +21,9 @@
           let v = this.$props.value;
           let p = '';
           if(v !== '' && typeof v !== 'undefined'){
-            p = DataHandle.returnPercent(v);
+            p = DataHandle.returnWeight(v);
           }
-          return v;//p + this.isFinallyDot;
+          return p + this.isFinallyDot;
         },
         set(v) {
           /*if(v === '0.0') return;
@@ -37,7 +37,7 @@
           }else{
             this.$data.isFinallyDot = '';
             if(!Verification.isPercent(v)) return;
-          }
+          }*/
 
           let p = '';
           if(v === ''){
@@ -45,9 +45,9 @@
           }else{
             let { max } = this.$props;
             if(Number(v) > Number(max)) return; //最大值
-            p = DataHandle.handlePercent(v);
-          }*/
-          this.$emit('change', v);
+            p = DataHandle.handleWeight(v);
+          }
+          this.$emit('change', p);
         }
       }
     },

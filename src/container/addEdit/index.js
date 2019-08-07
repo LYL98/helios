@@ -10,4 +10,9 @@ export { default as AddEditBasicDataProvince } from './AddEditBasicDataProvince'
 export { default as AddEditBasicDataSystemClass } from './AddEditBasicDataSystemClass';
 export { default as AddEditBasicDataZone } from './AddEditBasicDataZone';
 
+export { default as AddEditItemGlobal } from './AddEditItemGlobal';
+
 export { default as AddEditOperateLine } from './AddEditOperateLine';
+
+export { default as AddEditSystemRole } from './AddEditSystemRole';
+export { default as AddEditSystemBanner } from './AddEditSystemBanner';

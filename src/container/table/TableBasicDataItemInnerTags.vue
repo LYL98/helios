@@ -1,6 +1,6 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataItemInnerTagsListAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataItemInnerTagsAdd">
       <el-button @click="handleShowAddEdit('AddEditBasicDataItemInnerTags')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataItemInnerTagsAdd">新增
       </el-button>
     </div>
@@ -41,7 +41,7 @@
               @command-visible="handleCommandVisible"
               :list="[
               {
-                title: '编辑',
+                title: '修改',
                 isDisplay: auth.isAdmin || auth.BasicDataItemInnerTagsEdit,
                 command: () => handleShowAddEdit('AddEditBasicDataItemInnerTags', scope.row)
               },

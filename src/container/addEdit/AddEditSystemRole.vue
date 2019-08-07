@@ -1,9 +1,9 @@
 <template>
   <div class="system-role-add-edit">
-    <el-dialog :close-on-click-modal="false" title="编辑角色" :visible="isShow" width="540px" :before-close="cancelAddEdit">
+    <el-dialog :close-on-click-modal="false" title="修改角色" :visible="isShow" width="540px" :before-close="cancelAddEdit">
       <el-form label-position="right" label-width="120px" style="width: 400px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="角色名称" prop="title">
-          <el-input v-model="detail.title" placeholder="请输入角色名称"></el-input>
+          <el-input v-model="detail.title" placeholder="请输入角色名称" :maxLength="10"></el-input>
         </el-form-item>
         <el-form-item label="继承角色">
           <el-select v-model="selectRoleVal" placeholder="请选择现有角色" clearable filterable @change="selectRole" style="width: 100%;">
@@ -28,9 +28,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Select, Option } from 'element-ui';
-import { Config, Constant } from '@/util';
+import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Select, Option } from "element-ui";
+import { Config, Constant, Http } from '@/util';
 
 export default {
   name: "RoleAddEdit",
@@ -44,29 +43,32 @@ export default {
     'el-select': Select,
     'el-option': Option
   },
-  computed: mapGetters({
-    isShow: 'systemRoleShowAddEdit',
-    roleDetail: 'systemRoleDetail',
-    dataItem: 'systemRoleListDataItem',
-  }),
   data(){
     return{
+      isShow: false,
       selectRoleVal: '',
+      dataItem: [],
       detail: {
         is_super_admin: false
       },
       rules: {
         title: [
-          { required: true, message: '角色名称不能为空', trigger: 'change' },
-          { max: 10, message: '角色名称不能超过10个字符', trigger: 'blur' }
+          { required: true, message: '角色名称不能为空', trigger: 'change' }
         ]
       }
     }
   },
   methods: {
+    //显示
+    showAddEdit(dataItem, roleDetail){
+      this.$data.dataItem = dataItem;
+      this.$data.detail = JSON.parse( JSON.stringify( roleDetail ) );
+      this.selectRoleVal = '';
+      this.$data.isShow = true;
+    },
     //取消
     cancelAddEdit(e, res){
-      this.systemRoleShowHideAddEidt(false);
+      this.$data.isShow = false;
       this.$attrs.callback(res);//回调
       setTimeout(()=>{
         this.$refs['ruleForm'].resetFields();
@@ -77,40 +79,35 @@ export default {
       let { detail, dataItem } = this;
       if(index === ''){
         detail.is_super_admin = false;
-        detail.permission_ids = [];
+        detail.permission_codes = [];
       }else{
         detail.is_super_admin = dataItem[index].is_super_admin;
-        detail.permission_ids = dataItem[index].permission_ids;
+        detail.permission_codes = dataItem[index].permission_codes;
       }
       this.$data.detail = detail;
     },
     //确认提交
     submitAddEdit(e){
-      let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
+      this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          that.systemRoleListAddEdit({
-            data: that.$data.detail,
-            callback: (res)=>{
-              that.cancelAddEdit(e, res);
+          (async ()=>{
+            let { detail } = this;
+            this.$loading({isShow: true});
+            let res = await Http.post(detail.id ? Config.api.roleEdit : Config.api.roleAdd, detail);
+            this.$loading({isShow: false});
+            if(res.code === 0){
+              this.cancelAddEdit(e, res.data);
+              this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+            }else{
+              this.$message({message: res.message, type: 'error'});
             }
-          });
+          })();
         } else {
           return false;
         }
       });
     },
-    ...mapActions(['systemRoleShowHideAddEidt', 'systemRoleListAddEdit'])
   },
-  watch:{
-    roleDetail: {
-      deep: true,
-      handler: function (a, b) {
-        this.detail = JSON.parse( JSON.stringify( a ) );
-        this.selectRoleVal = '';
-      }
-    }
-  }
 };
 </script>
 

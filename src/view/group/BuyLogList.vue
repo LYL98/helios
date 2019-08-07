@@ -158,7 +158,7 @@
           action_create: '创建',
           action_active: '上架',
           action_deactive: '下架',
-          action_edit: '编辑',
+          action_edit: '修改',
           action_close: '结算'
         },
         query: {},

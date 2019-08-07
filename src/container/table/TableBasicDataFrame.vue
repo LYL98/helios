@@ -62,7 +62,7 @@
               @command-visible="handleCommandVisible"
               :list="[
               {
-                title: '编辑',
+                title: '修改',
                 isDisplay: auth.isAdmin || auth.BasicDataFrameListUpdate,
                 command: () => handleShowAddEdit('AddEditBasicDataFrame', scope.row)
               },

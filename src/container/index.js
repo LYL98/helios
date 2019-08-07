@@ -11,7 +11,12 @@ export {
   AddEditBasicDataSystemClass,
   AddEditBasicDataZone,
 
-  AddEditOperateLine
+  AddEditItemGlobal,
+
+  AddEditOperateLine,
+
+  AddEditSystemRole,
+  AddEditSystemBanner
 } from './addEdit';
 
 // 下拉选择组件
@@ -55,7 +60,7 @@ export {
 
   QueryBasicDataCity,
   QueryBasicDataDisplayClass,
-  //QueryBasicDataFrame,
+  QueryBasicDataFrame,
   QueryBasicDataGrade,
   QueryBasicDataItemTags,
   QueryBasicDataMerchantInnerTags,
@@ -63,6 +68,8 @@ export {
   QueryBasicDataProvince,
   QueryBasicDataSystemClass,
   QueryBasicDataZone,
+
+  QueryItemGlobal,
 
   QueryOperateLine
 } from './query';
@@ -84,6 +91,8 @@ export {
   TableGroupHeadDetail,
   TableGroupHeadDetailList,
 
+  TableItemGlobal,
+
   TableOperateLine,
 
   TableBasicDataCity,
@@ -96,7 +105,9 @@ export {
   TableBasicDataMerchantOuterTags,
   TableBasicDataProvince,
   TableBasicDataSystemClass,
-  TableBasicDataZone
+  TableBasicDataZone,
+
+  TableSystemBanner
 } from './table';
 
 // 表单
@@ -114,5 +125,7 @@ export {
 } from './form';
 
 export {
+  DetailItemGlobal,
+  DetailItemGlobalEditRecord,
   DetailHeadBalanceLog
 } from './detail';

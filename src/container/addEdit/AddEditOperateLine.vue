@@ -1,6 +1,6 @@
 <template>
   <div class="zone-add-eidt">
-    <el-dialog :title="`${detail.id?'编辑':'新增'}线路`" :visible="isShow" width="720px" :before-close="handleCancel" :close-on-click-modal="false">
+    <el-dialog :title="`${detail.id?'修改':'新增'}线路`" :visible="isShow" width="720px" :before-close="handleCancel" :close-on-click-modal="false">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="编号" prop="code">
           <el-input v-model="detail.code" :maxlength="12" placeholder="请输入编号" :disabled="detail.id"></el-input>

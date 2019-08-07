@@ -55,6 +55,17 @@ const Config = (() => {
       afterSaleUpdate: apiM + '/aftersale/update', //售后处理
       aftersaleAppend: apiM + '/aftersale/append', //售后单回复
 
+      //商品池
+      pItemAdd: apiM + '/p_item/add', //新商品资料添加
+      pItemEdit: apiM + '/p_item/edit', //商品信息资料修改
+      pItemQuery: apiM + '/p_item/query', //商品资料查询
+      pItemDetail: apiM + '/p_item/detail', //商品资料详情
+      pItemDelete: apiM + '/p_item/delete', //商品删除
+      pItemRecover: apiM + '/p_item/recover', //已删除商品恢复
+      pItemModifyDetail: apiM + '/p_item/modify_detail', //商品资料修改明细
+      pItemExportCheck: apiM + '/p_item/export_check', //商品导出之前进行校验
+      pItemExport: apiM + '/p_item/export', //商品导出
+
       // 商品管理
       itemAdd: apiM + '/item/add', //商品添加
       itemEdit: apiM + '/item/edit', //商品编辑
@@ -257,7 +268,7 @@ const Config = (() => {
 
       //banner管理
       systemBannerList: apiM + '/system/banner/list',  // banner列表
-      systemBannerUpdate: apiM + '/system/banner/update', // banner修改
+      systemBannerEdit: apiM + '/system/banner/update', // banner修改
       systemBannerAdd: apiM + '/system/banner/add', //banner新增
       systemBannerDelete: apiM + '/system/banner/delete', //banner删除
 

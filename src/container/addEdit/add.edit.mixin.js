@@ -30,8 +30,11 @@ export default {
     tomorrow = DataHandle.returnDateFormat(tomorrow, 'yyyy-MM-dd');
 
     return {
+      province: this.$province,
+      auth: this.$auth,
       today: today, //今天
       tomorrow: tomorrow, //明天
+      tencentPathUp: Config.tencentUpPath,
       tencentPath: Config.tencentPath,
       defaultAvatar: Constant.IMGS.defaultAvatar,
       isShow: false,

@@ -27,8 +27,9 @@ export default {
   },
   data() {
     return {
+      province: this.$province,
       auth: this.$auth,
-      qiniuPath: Config.qiniuPath,
+      tencentPath: Config.tencentPath,
       defaultAvatar: Constant.IMGS.defaultAvatar,
       isShow: false,
       detail: {}
@@ -38,9 +39,21 @@ export default {
     
   },
   methods: {
+    //返回价格
+    returnPrice(data){
+      return DataHandle.returnPrice(data);
+    },
+    //返回重量
+    returnWeight(data){
+      return DataHandle.returnWeight(data);
+    },
     //处理价格
-    returnPrice(price) {
-      return DataHandle.returnPrice(price);
+    handlePrice(data){
+      return DataHandle.handlePrice(data);
+    },
+    //处理重量
+    handleWeight(data){
+      return DataHandle.handleWeight(data);
     },
     //处理百分比
     returnPercent(data) {

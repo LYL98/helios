@@ -1,6 +1,6 @@
 <template>
   <div class="user-reset-password">
-    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'编辑':'新增'}商品标签`" :visible="isShow" width="720px" :before-close="handleCancel">
+    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}商品标签`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入4位以内的字符" :maxlength="4"></el-input>
