@@ -71,10 +71,11 @@ const Config = (() => {
       itemEdit: apiM + '/item/edit', //商品编辑
       itemDelete: apiM + '/item/delete', //商品删除
       itemTagsEdit: apiM + '/item/tags/edit', //商品标签编辑
-      itemList: apiM + '/item/query',//商品列表
+      itemQuery: apiM + '/item/query',//商品列表
       itemOnGround: apiM + '/item/on_ground',//商品上架
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemDetail: apiM + '/item/detail',//商品详情
+      itemModifyDetail: apiM + '/item/modify_detail', //商品修改明细
       itemStatusApprove: apiM + '/item/status/approve',//商品审核
       itemPriceList: apiM + '/item/price/query',//每日定价页面查询
       itemPriceFix: apiM + '/item/price/fix',//商品定价
@@ -150,6 +151,7 @@ const Config = (() => {
       baseSystemClassList: apiM + '/common/system_class/list', //科学分类列表（组件共用）
       baseDisplayClassList: apiM + '/common/display_class/list', //展示分类列表（组件共用）
       baseItemTagsList: apiM + '/common/item_tags/list', //商品标签接口（组件共用）
+      baseItemInnerTagsList: apiM + '/common/item_inner_tags/list', //商品内标签接口（组件共用）
       baseMerchantGradeList: apiM + '/common/grade/list', //商户级别列表（组件共用）
       baseMerchantInnerTagsList: apiM + '/common/merchant_inner_tags/list', //商户内标签列表（组件共用）
       baseMerchantOuterTagsList: apiM + '/common/merchant_outer_tags/list', //商户外标签列表（组件共用）

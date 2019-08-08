@@ -1,4 +1,3 @@
-export { default as QueryItem } from './QueryItem';
 export { default as QueryMarketingCoupon } from './QueryMarketingCoupon';
 export { default as QueryMarketingScopePromotion } from './QueryMarketingScopePromotion';
 export { default as QueryMerchantStore } from './QueryMerchantStore';
@@ -28,6 +27,7 @@ export { default as QueryBasicDataSystemClass } from './QueryBasicDataSystemClas
 export { default as QueryBasicDataZone } from './QueryBasicDataZone';
 
 export { default as QueryItemGlobal } from './QueryItemGlobal';
+export { default as QueryItemList } from './QueryItemList';
 
 export { default as QueryOperateLine } from './QueryOperateLine';
 

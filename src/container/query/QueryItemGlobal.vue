@@ -28,7 +28,7 @@
       'select-system-class': SelectSystemClass
     },
     props: {
-      page: { type: String, default: 'global' }, //页面global、recycle
+      page: { type: String, default: 'global' }, //页面global、recover
     },
     created() {
       this.$data.initQuery.province_code = this.province.code;

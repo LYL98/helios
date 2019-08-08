@@ -1,8 +1,10 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="page === 'global' && (auth.isAdmin || auth.ItemGlobalAdd || auth.ItemGlobalExport)">
-      <el-button @click="handleExport('pItemExport', query)" size="mini" v-if="auth.isAdmin || auth.ItemGlobalExport">导出商品池</el-button>
-      <el-button @click="handleShowAddEdit('AddEditItemGlobal')" size="mini" type="primary" v-if="auth.isAdmin || auth.ItemGlobalAdd">新增</el-button>
+    <div class="table-top" v-if="page === 'global' && (auth.isAdmin || auth.ItemListAdd || auth.ItemListExport)">
+      <el-button v-if="auth.isAdmin || auth.ItemExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品列表</el-button>
+      <el-button @click="itemItemShowHideAddEdit({
+          isShow: true
+      })" size="mini" type="primary">新增</el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -56,19 +58,39 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
+                  title: '修改商品编号',
+                  isDisplay: auth.isAdmin || auth.ItemCodeEdit,
+                  command: () => itemItemShowHideEditCode({ isShow: true, data: scope.row })
+                },
+                {
                   title: '修改',
-                  isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalEdit),
-                  command: () => handleShowAddEdit('AddEditItemGlobal', scope.row)
+                  isDisplay: auth.isAdmin || auth.ItemEdit,
+                  command: () => itemItemShowHideAddEdit({ isShow: true, data: scope.row })
                 },
                 {
                   title: '删除',
-                  isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalDelete),
-                  command: () => handleDelete(scope.row)
+                  isDisplay: auth.isAdmin || auth.ItemDelete,
+                  command: () => itemDelete(scope.row.id)
                 },
                 {
-                  title: '恢复',
-                  isDisplay: page === 'recover' && (auth.isAdmin || auth.ItemRecoverRecover),
-                  command: () => handleRecover(scope.row)
+                  title: '审核',
+                  isDisplay: (auth.isAdmin || auth.ItemAudit) && !scope.row.is_audited,
+                  command: () => affirmApprove(scope.row.id)
+                },
+                {
+                  title: '上架',
+                  isDisplay: (auth.isAdmin || auth.ItemOnGround) && scope.row.is_audited && !scope.row.is_on_sale,
+                  command: () => affirmOnGround(scope.row.id)
+                },
+                {
+                  title: '下架',
+                  isDisplay: (auth.isAdmin || auth.ItemUnderGround) && scope.row.is_audited && scope.row.is_on_sale,
+                  command: () => affirmUnderGround(scope.row.id)
+                },
+                {
+                  title: '修改标签',
+                  isDisplay: (auth.isAdmin || auth.ItemTagsEdit) && scope.row.is_audited,
+                  command: () => itemItemShowHideEditTags({ isShow: true, data: scope.row })
                 }
               ]"
             />
@@ -102,7 +124,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableItemGlobal',
+    name: 'TableItemList',
     components: {
     },
     mixins: [tableMixin],
@@ -110,16 +132,16 @@
       page: { type: String, default: 'global' }, //页面global、recover
     },
     created() {
-      if ((!this.auth.isAdmin && !this.auth.ItemGlobalAdd && !this.auth.ItemGlobalExport) || this.page === 'recover') {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
+      if (!this.auth.isAdmin && !this.auth.ItemAdd) {
+        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
       }
-      let pc = this.getPageComponents('QueryItemGlobal');
+      let pc = this.getPageComponents('QueryItemList');
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
-        tableName: 'TableItemGlobal',
+        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
+        tableName: 'TableItemList',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '240', isShow: true },
           { label: '筐', key: 'frame', width: '160', isShow: true },
@@ -139,7 +161,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.pItemQuery, query);
+        let res = await Http.get(Config.api.itemQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -161,30 +183,6 @@
           this.$message({message: res.message, type: 'error'});
         }
       },
-      //恢复数据（回收站页面用）
-      handleRecover(data){
-        this.$messageBox.confirm(`您确认要恢复？`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          (async ()=>{
-            this.$loading({ isShow: true });
-            let res = await Http.post(Config.api.pItemRecover, {
-              id: data.id
-            });
-            this.$loading({ isShow: false });
-            if(res.code === 0){
-              this.getData(this.query);
-              this.$message({message: '已恢复', type: 'success'});
-            }else{
-              this.$message({message: res.message, type: 'error'});
-            }
-          })();
-        }).catch(() => {
-          //console.log('取消');
-        });
-      }
     }
   };
 </script>

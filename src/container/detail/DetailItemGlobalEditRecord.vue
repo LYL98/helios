@@ -4,9 +4,7 @@
       <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
       <el-table-column label="操作时间" prop="created" width="260"/>
       <el-table-column label="操作内容" width="600">
-        <template slot-scope="scope">
-          <span v-for="item,key in scope.row.modified_attrs" :key="key">{{fields[item]}}</span>
-        </template>
+        <template slot-scope="scope">{{returnAttrStr(scope.row.modified_attrs)}}</template>
       </el-table-column>
       <el-table-column label="操作人">
         <template slot-scope="scope">{{scope.row.operator.realname}}</template>
@@ -38,6 +36,7 @@
     },
     data() {
       return {
+        initDetail: {},
         fields: {
           title: '商品名称',
           images: '商品图片',
@@ -105,6 +104,17 @@
         this.$data.query.page = page;
         this.pItemModifyDetail();
       },
+
+      //返回str
+      returnAttrStr(list){
+        let str = '';
+        let { fields } = this;
+        list.forEach(item => {
+          str += fields[item] + '/';
+        });
+        str = str.substring(0, str.length - 1);
+        return str;
+      }
     }
   }
 </script>

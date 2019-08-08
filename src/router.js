@@ -36,6 +36,11 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "item" */ '@/view/item/Global')
     },
     {
+      path: '/item/recover',
+      name: 'ItemRecover',
+      component: () => import(/* webpackChunkName: "item" */ '@/view/item/Recover')
+    },
+    {
       path: '/item/list',
       name: 'ItemList',
       component: () => import(/* webpackChunkName: "item" */ '@/view/item/List')

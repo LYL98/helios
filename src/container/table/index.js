@@ -26,6 +26,7 @@ export { default as TableBasicDataSystemClass } from './TableBasicDataSystemClas
 export { default as TableBasicDataZone } from './TableBasicDataZone';
 
 export { default as TableItemGlobal } from './TableItemGlobal';
+export { default as TableItemList } from './TableItemList';
 
 export { default as TableOperateLine } from './TableOperateLine';
 

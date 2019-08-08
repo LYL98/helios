@@ -289,7 +289,7 @@ import { Http, Config, DataHandle, Verification, Constant } from '@/util';
 import { SelectProvince, SelectBuyer, SelectFrame, SelectDisplayClass, UploadImg, QuillEditor } from '@/common';
 
 export default {
-  name: "ItemPricing",
+  name: "AddEditItemList",
   components: {
     'el-form': Form,
     'el-form-item': FormItem,

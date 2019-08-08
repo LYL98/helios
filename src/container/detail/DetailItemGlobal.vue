@@ -10,7 +10,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="2">
-          <el-button @click.native="handleShowEditRecord" v-if="auth.isAdmin || auth.ItemGlobalEditRecord">修改明细</el-button>
+          <el-button @click.native="handleShowEditRecord" v-if="page === 'global' && (auth.isAdmin || auth.ItemGlobalEditRecord)">修改明细</el-button>
         </el-col>
       </el-row>
       <el-row :gutter="10">
@@ -80,6 +80,9 @@
     mixins: [detailMixin],
     components: {
       'image-preview': ImagePreview
+    },
+    props: {
+      page: { type: String, default: 'global' }, //页面global、recover
     },
     data() {
       let initDetail = {

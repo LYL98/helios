@@ -214,7 +214,7 @@ import { Config, Constant, DataHandle } from '@/util';
 import { ImagePreview, Label } from  '@/common'
 
 export default {
-  name: "Detail",
+  name: "DetailItemList",
   components: {
     'el-form': Form,
     'el-form-item': FormItem,

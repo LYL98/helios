@@ -12,6 +12,7 @@ export {
   AddEditBasicDataZone,
 
   AddEditItemGlobal,
+  AddEditItemList,
 
   AddEditOperateLine,
 
@@ -41,7 +42,6 @@ export {
 
 // 高级搜索
 export {
-  QueryItem,
   QueryMarketingCoupon,
   QueryMarketingScopePromotion,
   QueryMerchantStore,
@@ -71,6 +71,7 @@ export {
   QueryBasicDataZone,
 
   QueryItemGlobal,
+  QueryItemList,
 
   QueryOperateLine,
 
@@ -95,6 +96,7 @@ export {
   TableGroupHeadDetailList,
 
   TableItemGlobal,
+  TableItemList,
 
   TableOperateLine,
 
@@ -132,6 +134,8 @@ export {
 export {
   DetailItemGlobal,
   DetailItemGlobalEditRecord,
+  DetailItemList,
+
   DetailHeadBalanceLog,
 
   DetailSystemOperator
