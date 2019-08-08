@@ -30,3 +30,4 @@ export { default as TableItemGlobal } from './TableItemGlobal';
 export { default as TableOperateLine } from './TableOperateLine';
 
 export { default as TableSystemBanner } from './TableSystemBanner';
+export { default as TableSystemOperator } from './TableSystemOperator';

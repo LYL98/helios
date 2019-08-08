@@ -30,3 +30,5 @@ export { default as QueryBasicDataZone } from './QueryBasicDataZone';
 export { default as QueryItemGlobal } from './QueryItemGlobal';
 
 export { default as QueryOperateLine } from './QueryOperateLine';
+
+export { default as QuerySystemOperator } from './QuerySystemOperator';

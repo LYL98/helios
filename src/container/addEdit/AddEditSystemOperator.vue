@@ -1,6 +1,6 @@
 <template>
   <div class="user-reset-password">
-    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}运营人员`" :visible="isShow" width="720px" :before-close="cancelAddEdit">
+    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}运营人员`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm">
         <!-- <el-form-item label="用户" v-show="detail.id">
           <div>{{detail.realname}}&nbsp;<span v-show="detail.phone">({{detail.phone}})</span></div>
@@ -61,31 +61,23 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click.native="cancelAddEdit">取 消</el-button>
-        <el-button type="primary" @click.native="submitAddEdit">确 定</el-button>
+        <el-button @click.native="handleCancel">取 消</el-button>
+        <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Transfer } from 'element-ui';
-import { Config, Constant, Verification } from '@/util';
-import { System } from '@/service';
-import { SelectProvince, SelectProvinceMulti, SelectZoneMulti, SelectCityMulti, SelectLineMulti,Avatar } from '@/common';
+import addEditMixin from './add.edit.mixin';
+import { Config, Constant, Verification, Http } from '@/util';
+import { SelectProvince, SelectProvinceMulti, SelectZoneMulti, SelectCityMulti, SelectLineMulti, Avatar } from '@/common';
 import md5 from 'md5';
 
 export default {
-  name: "userAddEditManage",
+  name: "AddEditSystemOperator",
+  mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog,
-    'el-radio': Radio,
-    'el-transfer': Transfer,
     'my-select-province': SelectProvince,
     'my-select-city-multi': SelectCityMulti,
     'my-select-province-multi': SelectProvinceMulti,
@@ -96,22 +88,17 @@ export default {
   created(){
     this.getRoleList();
   },
-  computed: mapGetters({
-    isShow: 'systemOperatorIsShowAddEdit',
-    systemOperatorDetail: 'systemOperatorDetail'
-  }),
   data(){
     let that = this;
     return{
-      province: this.$province,
       dataLevel: Constant.OPERATOR_DATA_LEVEL,
       roleList: [],
-      detail: {
+      initDetail: {
         data_level: '1',
         data_value: [],
         role_ids: [],
         post: '',
-        avatar:[]
+        avatar: []
       },
       size:1,
       current:'',
@@ -155,14 +142,6 @@ export default {
         this.$set(this.detail, 'province_code', v);
       }
     },
-    //取消
-    cancelAddEdit(){
-      this.systemOperatorShowHideAddEdit({ isShow: false });
-      setTimeout(()=>{
-        this.$refs.upload.parentHandleclick()
-        this.$refs['ruleForm'].resetFields();
-      },0);
-    },
     //判断添加校验
     judgeAddRules(detail){
       if(detail && detail.data_level !== '1'){
@@ -180,7 +159,7 @@ export default {
     //获取角色列表
     getRoleList(){
       let that = this;
-      System.roleList().then(res=>{
+      Http.get(Config.api.roleList, {}).then(res=>{
         if(!res.code){
           let rd = res.data;
           let d = [];
@@ -211,44 +190,45 @@ export default {
       }
       this.leveChange(this.detail.data_level)
     },
-    //确认提交
-    submitAddEdit(){
-      let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          let { detail } = that;
-          if(!detail.id){
-            detail.password = md5(detail.password);
-          }
-          detail.avatar = Array.isArray(detail.avatar) ? detail.avatar.join('') : detail.avatar
-          that.systemOperatorAddEdit({
-            data: detail,
-            callback: (res)=>{
-              let c = that.$attrs.callback;
-              typeof c === 'function' && c();
-              that.cancelAddEdit();
-            }
-          });
-        } else {
-          return false;
+    //显示新增修改(重写)
+    showAddEdit(data){
+      let d = {};
+      if(data){
+        d = JSON.parse(JSON.stringify(data));
+        d.avatar= [];
+        if(data.avatar && typeof data.avatar == 'string'){
+          d.avatar = [data.avatar];
         }
-      });
-    },
-    ...mapActions(['systemOperatorShowHideAddEdit', 'systemOperatorAddEdit'])
-  },
-  watch:{
-    systemOperatorDetail: {
-      deep: true,
-      handler: function (a, b) {
-        this.detail = JSON.parse( JSON.stringify( a ) );
-        this.detail.avatar= [];
-        if(a.avatar && typeof a.avatar == 'string'){
-          this.detail.avatar = [a.avatar];
-        }
-        this.judgeAddRules(a);
+      }else{
+        d = JSON.parse(JSON.stringify(this.initDetail));
       }
+      this.judgeAddRules(data);
+      this.$data.detail = d;
+      this.$data.isShow = true;
     },
-  }
+    //提交数据
+    async addEditData(){
+      let { detail } = this;
+      if(!detail.id){
+        detail.password = md5(detail.password);
+      }
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api[detail.id ? 'operatorEdit' : 'operatorAdd'], {
+        ...detail,
+        avatar: Array.isArray(detail.avatar) ? detail.avatar.join('') : detail.avatar
+      });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.handleCancel(); //隐藏
+        //刷新数据(列表)
+        let pc = this.getPageComponents('TableSystemOperator');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
+    }
+  },
 };
 </script>
 

@@ -15,4 +15,5 @@ export { default as AddEditItemGlobal } from './AddEditItemGlobal';
 export { default as AddEditOperateLine } from './AddEditOperateLine';
 
 export { default as AddEditSystemRole } from './AddEditSystemRole';
+export { default as AddEditSystemOperator } from './AddEditSystemOperator';
 export { default as AddEditSystemBanner } from './AddEditSystemBanner';

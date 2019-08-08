@@ -16,6 +16,7 @@ export {
   AddEditOperateLine,
 
   AddEditSystemRole,
+  AddEditSystemOperator,
   AddEditSystemBanner
 } from './addEdit';
 
@@ -71,7 +72,9 @@ export {
 
   QueryItemGlobal,
 
-  QueryOperateLine
+  QueryOperateLine,
+
+  QuerySystemOperator
 } from './query';
 
 // 表格
@@ -107,7 +110,8 @@ export {
   TableBasicDataSystemClass,
   TableBasicDataZone,
 
-  TableSystemBanner
+  TableSystemBanner,
+  TableSystemOperator
 } from './table';
 
 // 表单
@@ -121,11 +125,14 @@ export {
   FormGroupBuy,
   FormSystemSettingAd,
   FormSystemSettingOperating,
-  FormSystemSettingItemCommonDes
+  FormSystemSettingItemCommonDes,
+  FormSystemOperatorResetPwd
 } from './form';
 
 export {
   DetailItemGlobal,
   DetailItemGlobalEditRecord,
-  DetailHeadBalanceLog
+  DetailHeadBalanceLog,
+
+  DetailSystemOperator
 } from './detail';

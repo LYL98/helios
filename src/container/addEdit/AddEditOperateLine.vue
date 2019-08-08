@@ -35,7 +35,7 @@ import { Http, Config, Constant, Verification } from '@/util';
 import { SelectProvince, SelectCityMulti, SelectDistributorMulti } from '@/common';
 
 export default {
-  name: "LineAddEdit",
+  name: "AddEditOperateLine",
   mixins: [addEditMixin],
   components: {
     'my-select-province': SelectProvince,

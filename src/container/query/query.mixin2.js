@@ -33,6 +33,7 @@ export default {
         page_size: Constant.PAGE_SIZE
       },
       isShowFiltrate: false, //显示高级筛选
+      isExpand: false,
     }
   },
   created() {
@@ -69,5 +70,9 @@ export default {
     handleHideFiltrate(){
       this.$data.isShowFiltrate = false;
     },
+    onExpandChange(isExpand) {
+      this.isExpand = isExpand;
+      this.$emit('expandChange', this.isExpand)
+    }
   }
 }

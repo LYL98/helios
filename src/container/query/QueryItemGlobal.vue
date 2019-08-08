@@ -31,9 +31,10 @@
       page: { type: String, default: 'global' }, //页面global、recycle
     },
     created() {
-      this.initQuery.province_code = this.province.code;
-      this.query.province_code = this.province.code;
-      this.query.is_deleted = this.page === 'global' ? '0' : '1'
+      this.$data.initQuery.province_code = this.province.code;
+      this.$data.query.province_code = this.province.code;
+      this.$data.initQuery.is_deleted = this.page === 'global' ? '0' : '1'
+      this.$data.query.is_deleted = this.page === 'global' ? '0' : '1'
     },
     data() {
       let initQuery = {
