@@ -1,5 +1,5 @@
 <template>
-  <el-input v-model="changeValue" :placeholder="placeholder">
+  <el-input v-model="changeValue" :placeholder="placeholder" :disabled="disabled" :size="size">
     <template slot="append" v-if="unit">{{unit}}</template>
   </el-input>
 </template>

@@ -1,325 +1,196 @@
 <template>
-  <div class="item-detail">
-    <el-dialog title="商品详情" :visible="isShow" width="1200px" top="5vh" :before-close="handleCancel">
-      <el-form class="custom-form-detail" label-position="right" label-width="110px" style="width: 1160px;">
-        <el-form-item label="商品图片">
-          <div style="display: flex">
-            <div class="img-div" style="flex: 1;">
-              <my-image-preview><img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/></my-image-preview>
-            </div>
-            <div style="width: 100px; display: flex; justify-content: flex-end">
-              <el-tag :type="detail.is_audited ? 'info' : 'warning'">{{detail.is_audited ? '已审核' : '未审核'}}</el-tag>
-            </div>
-          </div>
-        </el-form-item>
+  <div>
+    <el-dialog title="商品详情" :visible="isShow" width="1200px" top="5vh" append-to-body :before-close="handleCancel" :close-on-click-modal="false">
+      <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail">
+        <el-row :gutter="10">
+          <el-col :span="22">
+            <el-form-item label="商品图片">
+              <image-preview>
+                <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
+              </image-preview>
+            </el-form-item>
+          </el-col>
+          <el-col :span="2">
+            <el-button @click.native="handleShowEditRecord" v-if="auth.isAdmin || auth.ItemListEditRecord">修改明细</el-button>
+          </el-col>
+        </el-row>
+        <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="上架状态" prop="rank">
-              <span class="detail">{{detail.is_audited ? (detail.is_on_sale ? '已上架' : '已下架') : '未上架'}}</span>
+            <el-form-item label="商品名称">{{detail.title}}</el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="框">
+              <span v-if="detail.frame_code">{{detail.frame.title}}&nbsp;(&yen;{{returnPrice(detail.frame.price)}})</span>
+              <span v-else>-</span>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="框"><span class="detail">{{detail.frame_code ? detail.frame.title : '-'}}</span></el-form-item>
+            <el-form-item label="产地">{{detail.origin_place}}</el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="今日销量">
-              <span class="detail">{{detail.sale_num_day}} 件</span>
-            </el-form-item>
+            <el-form-item label="包装规格">{{detail.package_spec}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="总销量">
-              <span class="detail">{{detail.sale_num_total}} 件</span>
-            </el-form-item>
+            <el-form-item label="规格">{{detail.item_spec}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="采购员">
-              <span class="detail">{{detail.buyer && detail.buyer.id ? detail.buyer.realname + ' ' + detail.buyer.phone : '-'}}</span>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <h6 class="subtitle" style="padding-bottom: 8px; padding-top: 8px">基本信息</h6>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="商品名称"><span class="detail">{{detail.title}}</span></el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="商品编号"><span class="detail">{{detail.code}}</span></el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="产地"><span class="detail">{{detail.origin_place?detail.origin_place:'-'}}</span></el-form-item>
+            <el-form-item label="毛重">{{returnWeight(detail.gross_weight)}}斤</el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="省份"><span class="detail">{{detail.province ? detail.province.title : '-'}}</span></el-form-item>
+            <el-form-item label="净重">{{returnWeight(detail.net_weight)}}斤</el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="科学分类">{{detail.system_class.title}}</el-form-item>
+          </el-col>
+        </el-row>
+        <h6 class="subtitle" style="padding-bottom: 16px">销售信息</h6>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <el-form-item label="采购价">&yen;{{returnPrice(detail.price_buy)}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="销售单位"><span class="detail">{{detail.sale_unit}}</span></el-form-item>
+            <el-form-item label="销售价">&yen;{{returnPrice(detail.price_sale)}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="是否称重"><span class="detail">{{detail.is_weigh?'是':'否'}}</span></el-form-item>
+            <el-form-item label="单价">&yen;{{returnPrice(detail.markup_rate)}}</el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="包装规格"><span class="detail">{{detail.package_spec?detail.package_spec:'-'}}</span></el-form-item>
+            <el-form-item label="原价">&yen;{{returnPrice(detail.price_origin)}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="规格"><span class="detail">{{detail.item_spec?detail.item_spec:'-'}}</span></el-form-item>
+            <el-form-item label="展示分类">{{detail.display_class.title}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="毛重"><span class="detail">{{detail.gross_weight_temp}}斤</span></el-form-item>
+            <el-form-item label="最大订货数量">{{detail.order_num_max}}件</el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="净重"><span class="detail">{{detail.net_weight_temp}}斤</span></el-form-item>
-          </el-col>
-        </el-row>
-        <!--商品价格分类-->
-        <h6 class="subtitle" style="padding-bottom: 8px; padding-top: 8px">商品价格</h6>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="采购价">
-              <span class="price">&yen;{{detail.price_buy_temp}}</span>
-            </el-form-item>
+            <el-form-item label="库存">{{detail.item_stock}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="售价">
-              <span class="price">&yen;{{detail.price_sale_temp}}</span>
-            </el-form-item>
+            <el-form-item label="排序">{{detail.rank}}</el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="计划加价率">
-              <span class="detail">{{detail.markup_rate_temp}}%</span>
-            </el-form-item>
+          <el-col :span="8" v-if="!detail.frame_code">
+            <el-form-item label="是否赠品">{{detail.is_gift ? '是' : '否'}}</el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="原价">
-              <span class="price">&yen;{{detail.price_origin}}</span>
-            </el-form-item>
+            <el-form-item v-if="!detail.is_gift" label="是否预售">{{detail.is_presale ? '是' : '否'}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="区域定价">
-              <ul>
-                <li
-                  v-for="(item, index) in detail.city_prices"
-                  style="display: flex; justify-content: space-between;"
-                  v-if="index < 3 || isShowAllCityPrices"
-                >
-                  <div style="width: 200px;" class="ellipsis">{{ item.city_title }}</div>
-                  <div style="width: 120px;"><span v-if="item.percent > 0">+</span>{{ item.percent }}%</div>
-                  <div style="width: 120px;">{{ item.price_sale_piece }}元</div>
-                </li>
-              </ul>
-              <el-button
-                size="mini"
-                plain
-                type="primary"
-                v-if="detail.city_prices.length > 3 && !isShowAllCityPrices"
-                @click="isShowAllCityPrices = true"
-              >查看全部</el-button>
-              <el-button
-                size="mini"
-                plain
-                type="primary"
-                v-if="detail.city_prices.length > 3 && isShowAllCityPrices"
-                @click="isShowAllCityPrices = false"
-              >收起</el-button>
-            </el-form-item>
+            <el-form-item v-if="!detail.is_gift && detail.is_presale" label="配送日期">{{detail.presale_date}}</el-form-item>
           </el-col>
         </el-row>
-
-        <!--其他信息分类-->
-        <h6 class="subtitle" style="padding-bottom: 8px; padding-top: 8px">其他信息</h6>
+        <h6 class="subtitle" style="padding-bottom: 16px">其他信息</h6>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="排序" prop="rank">
-              <span class="detail">{{detail.rank}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="展示分类">
-              <span class="detail">{{detail.display_class ? detail.display_class.title : '-'}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="科学分类">
-              <span class="detail">{{detail.system_class ? detail.system_class.title : '-'}}</span>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="预售商品">
-              <span class="detail">{{detail.is_presale?'是':'否'}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="报价状态">
-              <span class="detail">{{detail.is_quoted===0?'未报价':'已报价'}}</span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="下单率">
-              <span class="detail">{{returnLowerRate(detail.lower_rate)}}%</span>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="库存">
-              <span class="detail">{{detail.item_stock}} 件</span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="最大订货数量">
-              <span class="detail">{{detail.order_num_max}} 件</span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item v-if="detail.is_presale" label="配送日期">
-              <span class="detail">{{detail.presale_begin}} 至 {{detail.presale_end}}</span>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :span="16">
-            <el-form-item label="商品标签">
-              <my-label :tags="detail.tags"></my-label>
+            <el-form-item label="内标签">
+              <select-inner-tag v-model="detail.inner_tag_id"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="商品详情">
-          <div v-html="!detail.content || detail.content === '' ? '-' : detail.content" class="my-quill-editor-detail"></div>
+          <div class="content-div" v-html="detail.content"></div>
         </el-form-item>
-        <el-form-item style="float: right">
-          <el-button type="primary" @click.native="handleCancel">确 认</el-button>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <el-form-item label="第一次上架人">{{detail.first_grounder.realname}}</el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="创建时间">{{detail.created}}</el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <el-form-item label="最后更新人">{{detail.last_updater.realname || detail.first_grounder.realname}}</el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="最后更新时间">{{detail.updated}}</el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item>
+          <div style="float: right">
+            <el-button @click.native="handleCancel">取 消</el-button>
+            <el-button type="primary" @click.native="handleAddEdit">确 认</el-button>
+          </div>
         </el-form-item>
       </el-form>
-      <div style="height: 40px;"></div>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import detailMixin from './detail.mixin';
-import { mapGetters, mapActions } from "vuex";
-import { Config, Constant, DataHandle } from '@/util';
-import { ImagePreview, Label } from  '@/common'
+import { Http, Config, Constant, DataHandle } from '@/util';
+import { ImagePreview } from  '@/common'
 
 export default {
   name: "DetailItemList",
   mixins: [detailMixin],
   components: {
-    'my-image-preview': ImagePreview,
-    'my-label': Label
+    'image-preview': ImagePreview,
   },
   created() {
   },
   data(){
+    let initDetail = {
+      images: [],
+      is_weigh: true,
+      price_origin: '',
+      markup_rate_temp: 10,
+      inner_tag_id: '',
+      tags: [],
+      content: '',
+      is_presale: false,
+      is_gift: false,
+      order_num_max: 999,
+      display_class: {},
+      frame: {},
+      system_class: {},
+      first_grounder: {},
+      last_updater: {}
+    }
     return {
-      isTitleFloat: false,
-      itemStatus: Constant.ITEM_STATUS,
-      detail: {
-        images: [],
-        tags: [],
-        city_prices: []
-      },
-      isShowAllCityPrices: false
+      initDetail: initDetail,
+      detail: JSON.parse(JSON.stringify(initDetail)),
     }
   },
   methods: {
-    //确认商品上架
-    affirmOnGround(){
-      this.$messageBox.confirm('确认上架？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        (async ()=>{
-          let { detail } = this;
-          let res = await Http.get(Config.api.sdf, {
-            id: detail.id
-          });
-
-        })();
-      }).catch(() => {
-        //console.log('取消');
-      });
-    },
-    //确认商品下架
-    affirmUnderGround(){
-      let that = this;
-      MessageBox.confirm('确认下架？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let { detail } = that;
-        that.itemItemUnderGround({
-          data: { id: detail.id },
-          callback: ()=>{
-            that.handleCancel();
-            that.$attrs.callback();//回调
-          }
-        });
-      })
-      .catch(() => {
-        //console.log('取消');
-      });
-    },
-    //确认商品审核
-    affirmApprove(d){
-      let that = this;
-      MessageBox.confirm('确认通过审核？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        let { detail } = that;
-        that.itemItemStatusApprove({
-          data: { id: detail.id },
-          callback: ()=>{
-            that.handleCancel();
-            that.$attrs.callback();//回调
-          }
-        });
-      })
-      .catch(() => {
-        //console.log('取消');
-      });
-    },
-    ...mapActions(['itemItemOnGround', 'itemItemUnderGround', 'itemItemStatusApprove'])
-  },
-  watch:{
-    itemItemDetail: {
-      deep: true,
-      handler: function (a, b) {
-        let that = this;
-        let rd = JSON.parse( JSON.stringify( a ) );
-        if(rd.id){
-          rd.price_buy_temp = that.returnPrice(rd.price_buy);
-          rd.price_sale_temp = that.returnPrice(rd.price_sale);
-          rd.markup_rate_temp = that.returnMarkup(rd.markup_rate);
-          rd.price_origin = that.returnPrice(rd.price_origin);
-          rd.city_prices = rd.city_prices.map(item => {
-            item.percent = that.returnMarkup(item.percent);
-            item.price_sale_piece = that.returnPrice(item.price_sale_piece);
-            return item;
-          });
-          rd.gross_weight_temp = that.returnWeight(rd.gross_weight);
-          rd.net_weight_temp = that.returnWeight(rd.net_weight);
+    //显示新增修改(重写mixin)
+      showDetail(data){
+        if(data){
+          this.itemDetail(data.id);
+        }else{
+          this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+          this.$data.isShow = true;
         }
-
-        that.$data.detail = Object.assign({}, that.$data.detail, rd);
+      },
+      //显示修改明细
+      handleShowEditRecord(){
+        let pc = this.getPageComponents('DetailItemListEditRecord');
+        pc.showDetail(this.detail);
+      },
+    //获取详情
+    async itemDetail(id){
+      this.$loading({isShow: true});
+      let res = await Http.get(Config.api.itemDetail, { id: id });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$data.detail = res.data;
+        this.$data.isShow = true;
+      }else{
+        this.$message({message: res.message, type: 'error'});
       }
-    }
+    },
   }
 };
 </script>
@@ -351,5 +222,11 @@ export default {
       width: 480px;
       height: auto;
     }
+  }
+  .content-div{
+    height: 200px;
+    border: 1px solid #ececec;
+    overflow-y: auto;
+    padding: 0 10px;
   }
 </style>

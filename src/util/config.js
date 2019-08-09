@@ -72,8 +72,8 @@ const Config = (() => {
       itemDelete: apiM + '/item/delete', //商品删除
       itemTagsEdit: apiM + '/item/tags/edit', //商品标签编辑
       itemQuery: apiM + '/item/query',//商品列表
-      itemOnGround: apiM + '/item/on_ground',//商品上架
       itemUnderGround: apiM + '/item/under_ground',//商品下架
+      itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
       itemDetail: apiM + '/item/detail',//商品详情
       itemModifyDetail: apiM + '/item/modify_detail', //商品修改明细
       itemStatusApprove: apiM + '/item/status/approve',//商品审核

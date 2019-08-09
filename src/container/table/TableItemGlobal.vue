@@ -19,7 +19,7 @@
         <el-table-column type="index" width="100" label="序号"></el-table-column>
         <!--table-column start-->
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-          <template slot-scope="scope">
+          <div slot-scope="scope" class="my-td-item">
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
               <div v-if="(page === 'global' && (auth.isAdmin || auth.ItemGlobalDetail)) || (page === 'recover' && (auth.isAdmin || auth.ItemRecoverDetail))"
@@ -45,7 +45,7 @@
             <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
             <!--正常情况-->
             <div class="td-item" v-else>{{scope.row[item.key]}}</div>
-          </template>
+          </div>
         </el-table-column>
         <!--table-column end 操作占位-->
         <el-table-column label min-width="1"/>

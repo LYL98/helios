@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import { QueryItemList, TableItemList, AddEditItemList, DetailItemList } from '@/container';
+  import { QueryItemList, TableItemList, AddEditItemList, DetailItemList, DetailItemListEditRecord } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -19,6 +19,7 @@
       'table-item-list': TableItemList,
       'add-edit-item-list': AddEditItemList,
       'detail-item-list': DetailItemList,
+      'detail-item-list-edit-record': DetailItemListEditRecord
     },
     mixins: [viewMixin],
     created() {

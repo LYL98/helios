@@ -19,7 +19,7 @@
         <el-table-column type="index" width="100" label="序号"></el-table-column>
         <!--table-column start-->
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-          <template slot-scope="scope">
+          <div slot-scope="scope" class="my-td-item">
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
               <div v-if="auth.isAdmin || auth.ItemDetail"
@@ -45,7 +45,7 @@
             <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
             <!--正常情况-->
             <div class="td-item" v-else>{{scope.row[item.key]}}</div>
-          </template>
+          </div>
         </el-table-column>
         <!--table-column end 操作占位-->
         <el-table-column label min-width="1"/>
@@ -57,27 +57,27 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: auth.isAdmin || auth.ItemEdit,
-                  command: () => handleShowAddEdit('AddEditItemList', scope.row)
+                  isDisplay: (auth.isAdmin || auth.ItemEdit) && scope.row.is_on_sale,
+                  command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'edit' })
                 },
                 {
                   title: '上架',
                   isDisplay: (auth.isAdmin || auth.ItemOnGround) &&  !scope.row.is_on_sale,
-                  command: () => affirmOnGround(scope.row.id)
+                  command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'on_sale' })
                 },
                 {
                   title: '下架',
                   isDisplay: (auth.isAdmin || auth.ItemUnderGround) && scope.row.is_on_sale,
-                  command: () => affirmUnderGround(scope.row.id)
+                  command: () => itemUnderGround(scope.row)
                 },
                 {
                   title: '修改分类/外标签',
-                  isDisplay: auth.isAdmin || auth.ItemTagsEdit,
+                  isDisplay: (auth.isAdmin || auth.ItemTagsEdit) && scope.row.is_on_sale,
                   command: () => itemItemShowHideEditTags({ isShow: true, data: scope.row })
                 },
                 {
                   title: '修改内标签',
-                  isDisplay: auth.isAdmin || auth.ItemTagsEdit,
+                  isDisplay: (auth.isAdmin || auth.ItemTagsEdit) && scope.row.is_on_sale,
                   command: () => itemItemShowHideEditTags({ isShow: true, data: scope.row })
                 }
               ]"
@@ -157,22 +157,22 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
-      //上架
-      itemOnGround(data) {
-        this.$messageBox.confirm(`您确认要上架？`, '提示', {
+      //下架
+      itemUnderGround(data) {
+        this.$messageBox.confirm('您确认要下架？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           (async ()=>{
             this.$loading({ isShow: true });
-            let res = await Http.post(Config.api[data.is_on_sale ? 'itemOnGround' : 'itemUnderGround'], {
+            let res = await Http.post(Config.api.itemUnderGround, {
               id: data.id
             });
             this.$loading({ isShow: false });
             if(res.code === 0){
               this.getData(this.query);
-              this.$message({message: '已上架', type: 'success'});
+              this.$message({message: '已下架', type: 'success'});
             }else{
               this.$message({message: res.message, type: 'error'});
             }

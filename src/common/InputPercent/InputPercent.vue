@@ -1,5 +1,5 @@
 <template>
-  <el-input v-model="changeValue" :placeholder="placeholder">
+  <el-input v-model="changeValue" :placeholder="placeholder" :disabled="disabled" :size="size">
     <template slot="append">%</template>
   </el-input>
 </template>
@@ -23,10 +23,10 @@
           if(v !== '' && typeof v !== 'undefined'){
             p = DataHandle.returnPercent(v);
           }
-          return v;//p + this.isFinallyDot;
+          return p + this.isFinallyDot;
         },
         set(v) {
-          /*if(v === '0.0') return;
+          if(v === '0.0') return;
 
           if(v.indexOf('.') === v.length - 1 && v.length > 0){
             this.$data.isFinallyDot = '.';
@@ -46,8 +46,8 @@
             let { max } = this.$props;
             if(Number(v) > Number(max)) return; //最大值
             p = DataHandle.handlePercent(v);
-          }*/
-          this.$emit('change', v);
+          }
+          this.$emit('change', p);
         }
       }
     },

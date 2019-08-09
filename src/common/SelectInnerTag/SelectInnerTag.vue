@@ -1,51 +1,39 @@
 <template>
-  <el-select v-model="tagName" clearable placeholder="请选择品类链接" @change="onChange">
+  <el-select v-model="selectId" clearable placeholder="请选择品类链接" @change="handleChange" style="width: 100%;">
     <el-option
-      v-for="item in itemTags"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+      v-for="item in dataItem"
+      :key="item.id"
+      :label="item.title"
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
 
 <script>
-import { Select, Option, MessageBox} from 'element-ui'
+import selectMixin from './../select.mixin';
 import { Http, Config } from '@/util';
 
   export default {
     name: "SelectInnerTag",
-    props: ['tag'],
+    mixins: [selectMixin],
     created() {
-      let that = this;
-      that.baseItemInnerTagsList();//商品标签列表
     },
     data() {
       return {
-        itemTags: [], //商品标签
-        tagName: this.tag
       }
     },
     methods: {
-      onChange(v) {
-        this.$emit('change', v)
-      },
       //获取商品标签列表
-      async baseItemInnerTagsList(){
+      async getData(){
         let that = this;
         let res = await Http.get(Config.api.baseItemInnerTagsList, {});
         if(res.code === 0){
-          res.data.map(item => {item.label=item.title; item.value=item.title});
-          that.$data.itemTags = res.data;
+          that.$data.dataItem = res.data;
         }else{
-          MessageBox.alert(res.message, '提示');
+          this.$message({ message: res.message, type: 'error' });
         }
       },
     },
-    components: {
-      'el-select': Select,
-      'el-option': Option
-    }
   }
 </script>
 

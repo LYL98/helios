@@ -45,7 +45,10 @@ export default {
   data(){
     return{
       initDetail: {
-        price: ''
+        title: '',
+        rise_min: '',
+        rise_max: '',
+        remark: ''
       },
       rules: {
         title: [

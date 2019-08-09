@@ -23,8 +23,13 @@
     position: relative;
 }
 
-.td-item{
+.my-td-item{
     height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.td-item{
     &.link-item{
         text-decoration: underline;
         &:hover{

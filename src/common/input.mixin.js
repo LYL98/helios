@@ -9,7 +9,9 @@ export default {
     max: { type: Number | String, default: 1000000 },
     value: { type: Number | String, default: '' },
     placeholder: { type: String, default: '' },
-    unit: { type: String, default: '' }
+    unit: { type: String, default: '' },
+    disabled: { type: Boolean, default: false },
+    size: { type: String, default: '' }
   },
   model: {
     prop: 'value',

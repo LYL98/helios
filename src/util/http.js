@@ -18,7 +18,7 @@ function errHandling(err) {
     if (Config.isPrintRequestLog) console.log("【错误信息】：\n", err);
     return {
         code: 520,
-        message: '服务器异常，正在努力抢修中'
+        message: '请求出错啦，请检查网络或联系管理员'
     };
 }
 
