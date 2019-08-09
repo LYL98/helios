@@ -134,6 +134,7 @@ export {
 export {
   DetailItemGlobal,
   DetailItemGlobalEditRecord,
+  DetailItemListEditRecord,
   DetailItemList,
 
   DetailHeadBalanceLog,

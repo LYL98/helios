@@ -1,89 +1,44 @@
 <template>
   <div>
-    <el-dialog
-      :title="`${detail.id?'修改':'新增'}商品`"
-      :visible="isShow" v-if="isShow"
-      width="1200px"
-      ref="myDialog"
-      top="5vh"
-      append-to-body
-      :before-close="cancelAddEdit"
-      :close-on-click-modal="false"
-    >
+    <el-dialog :title="`${detail.id?'修改':'新增'}商品`" :visible="isShow" width="1200px" top="5vh" append-to-body :before-close="handleCancel" :close-on-click-modal="false">
       <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail" :rules="rules" ref="ruleForm">
-        <el-form-item label="商品图片" prop="images">
-          <my-upload-img v-model="detail.images" module="item" :limit="5"></my-upload-img>
+        <el-form-item label="商品图片">
+          <image-preview>
+            <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
+          </image-preview>
         </el-form-item>
         <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="商品名称" prop="title">
-              <el-input size="medium" v-model="detail.title" placeholder="请输入20位以内的字符"></el-input>
-            </el-form-item>
+            <el-form-item label="商品名称">{{detail.title}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="采购员" prop="buyer_id">
-              <my-select-buyer :provinceCode="detail.province_code" v-model="detail.buyer_id" />
-            </el-form-item>
+            <el-form-item label="框"><span v-if="detail.frame_code">{{detail.frame.title}}&nbsp;(&yen;{{returnPrice(detail.frame.price)}})</span></el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-if="!detail.is_gift" label="框">
-              <my-select-frame v-model="detail.frame_code" />
-            </el-form-item>
+            <el-form-item label="产地">{{detail.origin_place}}</el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="省份" prop="province_code">
-              <my-select-province :value="detail.province_code" :disabled="true" @change="changeProvince" />
-            </el-form-item>
+            <el-form-item label="包装规格">{{detail.package_spec}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="产地" prop="origin_place">
-              <el-input size="medium" v-model="detail.origin_place" placeholder="请输入1到30个字符"></el-input>
-            </el-form-item>
+            <el-form-item label="规格">{{detail.item_spec}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item v-if="detail.is_gift" label="销售单位">
-              <el-radio v-model="detail.sale_unit_gift" label="件" border size="small">件</el-radio>
-            </el-form-item>
-            <el-form-item v-else label="销售单位" >
-              <el-radio v-model="detail.sale_unit" label="件" border size="mini">件</el-radio>
-              <el-radio v-model="detail.sale_unit" label="斤" border size="mini">斤</el-radio>
-            </el-form-item>
+            <el-form-item label="毛重">{{returnWeight(detail.gross_weight)}}斤</el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="包装规格" prop="package_spec">
-              <el-input size="medium" v-model="detail.package_spec" placeholder="请输入1到6个字符"></el-input>
-            </el-form-item>
+            <el-form-item label="净重">{{returnWeight(detail.net_weight)}}斤</el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="规格" prop="item_spec">
-              <el-input size="medium" v-model="detail.item_spec" placeholder="请输入0到20个字符"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item v-if="!detail.is_gift && detail.sale_unit === '斤'" label="称重">
-              <el-radio v-model="detail.is_weigh" :label="true" border size="mini">是</el-radio>
-              <el-radio v-model="detail.is_weigh" :label="false" border size="mini">否</el-radio>
-            </el-form-item>
+          <el-col :span="10">
+            <el-form-item label="科学分类">{{detail.system_class.title}}</el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="毛重" prop="gross_weight_temp">
-              <el-input size="medium" v-model="detail.gross_weight_temp" placeholder="0 - 100000"><template slot="append">斤</template></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="净重" prop="net_weight_temp">
-              <el-input size="medium" v-model="detail.net_weight_temp" placeholder="0 - 100000"><template slot="append">斤</template></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <h6 class="subtitle" style="padding-bottom: 16px">商品价格</h6>
+        <h6 class="subtitle" style="padding-bottom: 16px">销售信息</h6>
         <el-row :gutter="10">
           <el-col :span="8">
             <el-form-item label="采购价" prop="price_buy_temp">
@@ -91,13 +46,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="售价" prop="price_sale_temp">
+            <el-form-item label="销售价" prop="price_sale_temp">
               <el-input size="medium" v-model="detail.price_sale_temp" @input="changePriceSale" placeholder="0 - 1000000"><template slot="append">元</template></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="计划加价率" prop="markup_rate_temp">
-              <el-input size="medium" v-model="detail.markup_rate_temp" placeholder="0 - 1000"><template slot="append">%</template></el-input>
+            <el-form-item label="单价" prop="markup_rate_temp">
+              <el-input size="medium" v-model="detail.markup_rate_temp" placeholder="0 - 1000"><template slot="append">元</template></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -107,97 +62,16 @@
               <el-input size="medium" v-model="detail.price_origin" placeholder="0 - 1000000"><template slot="append">元</template></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="16">
-            <el-form-item label="区域定价">
-              <ul>
-                <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center; justify-content: space-between;  margin-bottom: 20px;">
-                  <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <el-form-item
-                      :prop="'city_prices_temp.' + index + '.city_code'"
-                      :rules="[{ required: true, message: '请选择所在仓', trigger: 'change' }]"
-                    >
-                      <el-select v-model="item.city_code" placeholder="请选择所在仓">
-                        <el-option
-                          v-for="city in cityList"
-                          :key="city.code"
-                          :label="city.title"
-                          :value="city.code"
-                          :disabled="detail.city_prices_temp.some(item => item.city_code === city.code)"
-                        >
-                        </el-option>
-                      </el-select>
-
-                    </el-form-item>
-
-                    <el-form-item
-                      :prop="'city_prices_temp.' + index + '.percent'"
-                      :rules="[
-                        { required: true, message: '请输入浮动比例', trigger: 'change' },
-                        { validator: validCityPercent, trigger: 'blur' },
-                      ]"
-                      style="margin-left: 10px;"
-                    >
-                      <el-input
-                        style="width: 230px;"
-                        v-model="item.percent"
-                        @input="changeCityPercent(index)"
-                        placeholder="浮动(-100% ~ 1000%)"
-                      >
-                        <template slot="append">%</template>
-                      </el-input>
-                    </el-form-item>
-
-                    <el-form-item
-                      style="margin-left: 10px;"
-                      :prop="'city_prices_temp.' + index + '.price'"
-                      :rules="[
-                          { validator: validCityPrice, trigger: 'change' },
-                        ]"
-                    >
-                      <el-input
-                        disabled
-                        v-model="item.price"
-                        placeholder="0 - 1000000"
-                        style="width: 180px;"
-                      >
-                        <template slot="append">元</template>
-                      </el-input>
-                    </el-form-item>
-
-                  </div>
-
-                  <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="handleRemoveCityPrice(index)"></i>
-                </li>
-              </ul>
-              <!-- 新增区域定价按钮 -->
-              <el-button plain size="medium" type="primary" @click="handleAddCityPrice">增加区域定价</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <h6 class="subtitle" style="padding-bottom: 16px">其他信息</h6>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="科学分类" prop="system_class_code">
-              <el-cascader
-                :options="scientificTypeList"
-                change-on-select
-                size="medium"
-                style="width: 100%"
-                clearable
-                expand-trigger="hover"
-                :props="systemClassProps"
-                @change="onSystemClassChange"
-              ></el-cascader>
-            </el-form-item>
-          </el-col>
           <el-col :span="8">
             <el-form-item label="展示分类" prop="display_class_code">
               <my-select-display-class size="medium" v-model="detail.display_class_code"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="排序" prop="rank">
-              <el-input size="medium" v-model="detail.rank" :maxlength="3"></el-input>
+            <el-form-item label="最大订货数量" prop="order_num_max">
+              <el-input size="medium" v-model="detail.order_num_max" placeholder="1 - 999" :maxlength="3">
+                <template slot="append">件</template>
+              </el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -208,10 +82,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="最大订货数量" prop="order_num_max">
-              <el-input size="medium" v-model="detail.order_num_max" placeholder="1 - 999" :maxlength="3">
-                <template slot="append">件</template>
-              </el-input>
+            <el-form-item label="排序" prop="rank">
+              <el-input size="medium" v-model="detail.rank" :maxlength="3"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -243,84 +115,41 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <h6 class="subtitle" style="padding-bottom: 16px">其他信息</h6>
+        <el-row :gutter="0">
+          <el-col :span="8">
+            <el-form-item label="内标签" prop="">
+              
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="商品详情">
-          <my-quill-editor v-model="detail.content" module="item"></my-quill-editor>
+          <div class="content-div" v-html="detail.content"></div>
         </el-form-item>
         <el-form-item>
           <div style="float: right">
-            <el-button @click.native="cancelAddEdit">取 消</el-button>
+            <el-button @click.native="handleCancel">取 消</el-button>
             <el-button type="primary" @click.native="submitAddEdit">确 认</el-button>
           </div>
         </el-form-item>
       </el-form>
-      <!--选择科学分类start-->
-      <div class="right-select-item-body" v-if="isShowSelectSystemClass" @click="showHideSelectSystemClass">
-        <div class="right-select-item system-class" @click.stop>
-          <div class="title">选择科学分类</div>
-          <div class="select-div">
-            当前选择:<span v-for="(item, index) in selectSystemClassData" :key="index" @click="clickSelectStyleClass(index)">{{item.title}}</span><span class="select">请选择</span>
-          </div>
-          <div class="content">
-            <div class="display-class-item" v-for="(item, index) in systemClassList" :key="index" @click="selectSystemClass(item)">
-              {{item.title}}
-            </div>
-            <div v-if="systemClassList.length === 0" class="not-data">暂无数据</div>
-          </div>
-          <div class="bottom">
-            <div>
-              <el-button size="small" @click.native="showHideSelectSystemClass">取消</el-button>
-            </div>
-            <div class="interval"></div>
-            <div>
-              <el-button size="small" type="primary" @click.native="affirmSelectSystemClass">确认</el-button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!--选择科学分类end-->
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, Select, Option, MessageBox, Dialog, Radio, Col, Row, Checkbox, DatePicker, Cascader } from 'element-ui';
+import addEditMixin from './add.edit.mixin';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
-import { SelectProvince, SelectBuyer, SelectFrame, SelectDisplayClass, UploadImg, QuillEditor } from '@/common';
+import { SelectDisplayClass } from '@/common';
 
 export default {
   name: "AddEditItemList",
+  mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-select': Select,
-    'el-option': Option,
-    'el-dialog': Dialog,
-    'el-radio': Radio,
-    'el-col': Col,
-    'el-row': Row,
-    'el-cascader': Cascader,
-    'el-checkbox': Checkbox,
-    'el-date-picker': DatePicker,
-    'my-select-province': SelectProvince,
-    'my-select-frame': SelectFrame,
-    'my-select-buyer': SelectBuyer,
-    'my-select-display-class': SelectDisplayClass,
-    'my-quill-editor': QuillEditor,
-    'my-upload-img': UploadImg
+    'my-select-display-class': SelectDisplayClass
   },
   created() {
-    // this.$set('detail', 'province_code', this.province.code)
-    this.detail.province_code = this.province.code;
-    this.baseCityList();
-  },
-  computed: {
-    ...mapGetters({
-      isShow: 'itemItemIsShowAddEdit',
-      itemItemDetail: 'itemItemDetail'
-    }),
+    this.$data.detail.province_code = this.province.code;
   },
   data(){
     let validPresaleDate = function (rules, value, callback) {
@@ -470,15 +299,13 @@ export default {
       }
     };
     return {
-      province: this.$province,
-      tencentPath: Config.tencentPath,
       id: 0,
       upData: {},//上传数据
       systemClassList: [], //科学分类列表
       scientificTypeList: [],
       isShowSelectSystemClass: false,
       selectSystemClassData: [], //当前选择的科学分类
-      detail: {
+      initDetail: {
         images: [],
         sale_unit: '件',
         sale_unit_gift: '件',
@@ -558,12 +385,6 @@ export default {
           { pattern: Verification.testStrs.isValidValue, message: '净重必须为数字', trigger: 'blur' },
           { validator: validNetWeight, trigger: 'blur' },
         ],
-        province_code: [
-          { required: false, message: '请选择省份', trigger: 'change' }
-        ],
-        buyer_id: [
-          { required: true, message: '请选择采购员', trigger: 'change' }
-        ],
         order_num_max: [
           { required: true, message: '请输入最大订货件数', trigger: 'change' },
           { pattern: Verification.testStrs.isNumber, message: '最大订货件数必须为整数', trigger: 'blur' },
@@ -592,57 +413,6 @@ export default {
     }
   },
   methods: {
-    resetDetailData() {
-      this.$data.detail = {
-        images: [],
-        sale_unit: '件',
-        sale_unit_gift: '件',
-        is_weigh: true,
-        markup_rate_temp: 10,
-        tags: [],
-        content: '',
-        is_presale: false,
-        is_gift: false,
-        order_num_max: 999,
-        city_prices_temp: [],
-      }
-    },
-
-    //返回价格
-    returnPrice(price){
-      return DataHandle.returnPrice(price);
-    },
-    //处理价格
-    handlePrice(price){
-      return DataHandle.handlePrice(price);
-    },
-    //返回重量
-    returnWeight(data){
-      return DataHandle.returnWeight(data);
-    },
-    //处理重量
-    handleWeight(data){
-      return DataHandle.handleWeight(data);
-    },
-    //返回加价率
-    returnMarkup(data){
-      return DataHandle.returnMarkup(data);
-    },
-    //处理加价率
-    handleMarkup(data){
-      return DataHandle.handleMarkup(data);
-    },
-
-    handleAddCityPrice() {
-      let city_prices_temp = this.$data.detail.city_prices_temp;
-      city_prices_temp.push({ city_code: '', percent: '', price: '' });
-      this.$data.detail.city_prices_temp = city_prices_temp;
-    },
-
-    handleRemoveCityPrice(i) {
-      let city_prices_temp = this.$data.detail.city_prices_temp.filter((item, index) => index !== i);
-      this.$data.detail.city_prices_temp = city_prices_temp;
-    },
 
     changePriceSale() {
       let detail = this.$data.detail;
@@ -654,166 +424,6 @@ export default {
         }
         return item;
       });
-    },
-
-    changeCityPercent(index) {
-      let detail = this.$data.detail;
-      let item = this.$data.detail.city_prices_temp[index];
-      item.price = detail.price_sale_temp && item.percent && !isNaN(detail.price_sale_temp) && !isNaN(item.percent)
-        ? (Number(detail.price_sale_temp) + Number(this.returnMarkup(this.returnPrice((this.handlePrice(detail.price_sale_temp) * this.handleMarkup(item.percent) / 100))))).toFixed(2)
-        : ''
-      let city_prices_temp = this.$data.detail.city_prices_temp;
-      city_prices_temp[index] = item;
-      this.$data.detail.city_prices_temp = city_prices_temp;
-    },
-    onSystemClassChange(val) {
-      this.nodeList(val.length - 1, val)
-    },
-    //获取要查询的节点
-    nodeList(n, val) {
-      // console.log('n = ', n, val)
-      if (n < 0) {
-        return;
-      }
-      if (n === 0) {
-        let index = -1;
-        for (let i = 0; i < this.scientificTypeList.length; i++) {
-          if (this.scientificTypeList[i].code === val[n]) {
-            index = i;
-            break;
-          }
-        }
-        if (!this.scientificTypeList[index].children || this.scientificTypeList[index].children.length === 0) {
-          if (index >= 0) {
-            this.baseSystemClassList(val[0], list => {
-              this.scientificTypeList[index].children = list;
-            });
-          }
-          return;
-        } else {
-          return this.scientificTypeList[index].children
-        }
-      }
-
-      let parentNodeList = this.nodeList(n - 1, val);
-      let currentIndex = -1;
-      for (let i = 0; i < parentNodeList.length; i ++) {
-        if (parentNodeList[i].code === val[n]) {
-          currentIndex = i;
-        }
-      }
-      if (!parentNodeList[currentIndex].children || parentNodeList[currentIndex].children.length === 0) {
-        if (currentIndex >= 0) {
-          this.baseSystemClassList(val[n], list => {
-            parentNodeList[currentIndex].children = list;
-          })
-        }
-      } else {
-        return parentNodeList[currentIndex].children
-      }
-    },
-    //根据传进来的省份code 获取城市列表
-    async baseCityList(){
-      let res = await Http.get(Config.api.baseCityList, {
-        province_code: this.province.code || '',
-        zone_code: ''
-      });
-      if(res.code === 0){
-        let rd = res.data;
-        this.$data.cityList = rd;
-      }else{
-        MessageBox.alert(res.message, '提示');
-      }
-    },
-    //获取商品科学分类
-    async baseSystemClassList(topCode, callback){
-      let that = this;
-      let res = await Http.get(Config.api.baseSystemClassList, {
-        top_code: topCode || ''
-      });
-      if(res.code === 0){
-        res.data.map(item => {
-          item.label = item.title;
-          item.children = [];
-        });
-
-        that.$data.systemClassList = res.data;
-        typeof callback === 'function' && callback(res.data);
-      }else{
-        MessageBox.alert(res.message, '提示');
-      }
-    },
-    //显示隐藏科学分类
-    showHideSelectSystemClass(){
-      let d = this.isShowSelectSystemClass;
-      this.$data.isShowSelectSystemClass = !d;
-      if(!d){
-        let { selectSystemClassData } = this;
-        let code = '';
-        if(selectSystemClassData.length > 0){
-          code = selectSystemClassData[selectSystemClassData.length -1].code;
-        }
-        this.baseSystemClassList(code);//获取商品科学分类
-      }
-    },
-    //选择科学分类
-    selectSystemClass(item){
-      let { selectSystemClassData } = this;
-      selectSystemClassData.push(item);
-      this.$data.selectSystemClassData = selectSystemClassData;
-      this.baseSystemClassList(item.code);
-    },
-    //单击选择分类
-    clickSelectStyleClass(index){
-      let { selectSystemClassData } = this;
-      for(let i = index; i < selectSystemClassData.length; i++){
-        selectSystemClassData.remove(i--);
-      }
-      this.$data.selectSystemClassData = selectSystemClassData;
-      let code = '';
-      if(index > 0){
-        code = selectSystemClassData[index-1].code;
-      }
-      this.baseSystemClassList(code);
-    },
-    //确定选择科学分类
-    affirmSelectSystemClass(){
-      let { selectSystemClassData, detail } = this;
-      let index = selectSystemClassData.length - 1;
-
-      if(index < 0){
-        this.$message({title: '提示', message: '请选择分类', type: 'info'});
-        return false;
-      }
-      detail.system_class = selectSystemClassData[index];
-      detail.system_class_code = selectSystemClassData[index].code;
-      this.$data.detail = detail;
-      // console.log('detail: ' , detail)
-      this.showHideSelectSystemClass();
-    },
-    //省份改变
-    changeProvince(){
-      //this.$data.detail.sales_man = '';
-    },
-    //取消
-    cancelAddEdit(){
-      // 关闭弹窗 v-show = false;
-      this.$refs['ruleForm'].resetFields();
-      this.detail = {
-        images: [],
-        sale_unit: '件',
-        sale_unit_gift: '件',
-        is_weigh: true,
-        markup_rate_temp: 10,
-        tags: [],
-        content: '',
-        is_presale: false,
-        is_gift: false,
-        order_num_max: 999,
-        province_code: this.province.code,
-        city_prices_temp: []
-      };
-      this.itemItemShowHideAddEdit({ isShow: false });
     },
     //确认提交
     submitAddEdit(){
@@ -862,7 +472,7 @@ export default {
             },
             callback: (res)=>{
               that.$attrs.callback();//回调
-              that.cancelAddEdit();
+              that.handleCancel();
             }
           });
         } else {
@@ -870,7 +480,6 @@ export default {
         }
       });
     },
-    ...mapActions(['itemItemShowHideAddEdit', 'itemItemAddEdit', 'message'])
   },
   watch:{
     itemItemDetail: {
@@ -906,9 +515,6 @@ export default {
 
         that.$data.detail = Object.assign({}, that.$data.detail, rd);
 
-        this.baseSystemClassList('', (list) => {
-          this.scientificTypeList = list
-        });
       }
     }
   }

@@ -59,6 +59,14 @@ export default {
     returnPercent(data) {
       return DataHandle.returnPercent(data);
     },
+    //返回加价率
+    returnMarkup(data){
+      return DataHandle.returnMarkup(data);
+    },
+    //返回下单率
+    returnLowerRate(data){
+      return DataHandle.returnLowerRate(data);
+    },
     //返回表格序号
     indexMethod(index) {
       let { query } = this;

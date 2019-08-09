@@ -1,6 +1,6 @@
 <template>
   <div class="item-detail">
-    <el-dialog title="商品详情" :visible="isShow" width="1200px" top="5vh" :before-close="cancelAddEdit">
+    <el-dialog title="商品详情" :visible="isShow" width="1200px" top="5vh" :before-close="handleCancel">
       <el-form class="custom-form-detail" label-position="right" label-width="110px" style="width: 1160px;">
         <el-form-item label="商品图片">
           <div style="display: flex">
@@ -199,7 +199,7 @@
           <div v-html="!detail.content || detail.content === '' ? '-' : detail.content" class="my-quill-editor-detail"></div>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary" @click.native="cancelAddEdit">确 认</el-button>
+          <el-button type="primary" @click.native="handleCancel">确 认</el-button>
         </el-form-item>
       </el-form>
       <div style="height: 40px;"></div>
@@ -208,37 +208,22 @@
 </template>
 
 <script>
+import detailMixin from './detail.mixin';
 import { mapGetters, mapActions } from "vuex";
-import { Form, FormItem, Button, Input, MessageBox, Dialog, Radio, Col, Row, Tag } from 'element-ui';
 import { Config, Constant, DataHandle } from '@/util';
 import { ImagePreview, Label } from  '@/common'
 
 export default {
   name: "DetailItemList",
+  mixins: [detailMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-input': Input,
-    'el-dialog': Dialog,
-    'el-radio': Radio,
-    'el-col': Col,
-    'el-row': Row,
-    'el-tag': Tag,
     'my-image-preview': ImagePreview,
     'my-label': Label
   },
   created() {
-
   },
-  computed: mapGetters({
-    isShow: 'itemItemIsShowDetail',
-    itemItemDetail: 'itemItemDetail'
-  }),
   data(){
     return {
-      auth: this.$auth,
-      tencentPath: Config.tencentPath,
       isTitleFloat: false,
       itemStatus: Constant.ITEM_STATUS,
       detail: {
@@ -250,44 +235,21 @@ export default {
     }
   },
   methods: {
-    //返回价格
-    returnPrice(price){
-      return DataHandle.returnPrice(price);
-    },
-    //返回加价率
-    returnMarkup(data){
-      return DataHandle.returnMarkup(data);
-    },
-    //返回下单率
-    returnLowerRate(data){
-      return DataHandle.returnLowerRate(data);
-    },
-    //返回重量
-    returnWeight(data){
-      return DataHandle.returnWeight(data);
-    },
-    //取消
-    cancelAddEdit(){
-      this.itemItemShowHideDetail({ isShow: false });
-    },
     //确认商品上架
     affirmOnGround(){
-      let that = this;
-      MessageBox.confirm('确认上架？', '提示', {
+      this.$messageBox.confirm('确认上架？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let { detail } = that;
-        that.itemItemOnGround({
-          data: { id: detail.id },
-          callback: ()=>{
-            that.cancelAddEdit();
-            that.$attrs.callback();//回调
-          }
-        });
-      })
-      .catch(() => {
+        (async ()=>{
+          let { detail } = this;
+          let res = await Http.get(Config.api.sdf, {
+            id: detail.id
+          });
+
+        })();
+      }).catch(() => {
         //console.log('取消');
       });
     },
@@ -303,7 +265,7 @@ export default {
         that.itemItemUnderGround({
           data: { id: detail.id },
           callback: ()=>{
-            that.cancelAddEdit();
+            that.handleCancel();
             that.$attrs.callback();//回调
           }
         });
@@ -324,7 +286,7 @@ export default {
         that.itemItemStatusApprove({
           data: { id: detail.id },
           callback: ()=>{
-            that.cancelAddEdit();
+            that.handleCancel();
             that.$attrs.callback();//回调
           }
         });
@@ -333,7 +295,7 @@ export default {
         //console.log('取消');
       });
     },
-    ...mapActions(['itemItemShowHideDetail', 'itemItemOnGround', 'itemItemUnderGround', 'itemItemStatusApprove'])
+    ...mapActions(['itemItemOnGround', 'itemItemUnderGround', 'itemItemStatusApprove'])
   },
   watch:{
     itemItemDetail: {

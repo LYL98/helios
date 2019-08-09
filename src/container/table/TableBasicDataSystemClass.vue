@@ -10,12 +10,12 @@
       :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - offsetHeight + 'px'}"
       default-expand-all>
       <span class="custom-tree-node" slot-scope="{node, data}">
-        <span class="label">{{ node.label }}</span>
+        <span class="label">{{data.code}} {{ node.label }}</span>
         <span class="options" @click.stop>
           <el-button
             type="text"
             size="mini"
-            v-if="data.code.length >= 8 && (auth.isAdmin || auth.BasicDataSystemClassListAdd)"
+            v-if="data.code.length < 8 && (auth.isAdmin || auth.BasicDataSystemClassListAdd)"
             @click="() => addSystemClass(data)">
             添加子分类
           </el-button>

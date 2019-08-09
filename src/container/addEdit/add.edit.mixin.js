@@ -47,20 +47,28 @@ export default {
   },
   methods: {
     //返回价格
-    returnPrice(data){
-      return DataHandle.returnPrice(data);
+    returnPrice(price){
+      return DataHandle.returnPrice(price);
+    },
+    //处理价格
+    handlePrice(price){
+      return DataHandle.handlePrice(price);
     },
     //返回重量
     returnWeight(data){
       return DataHandle.returnWeight(data);
     },
-    //处理价格
-    handlePrice(data){
-      return DataHandle.handlePrice(data);
-    },
     //处理重量
     handleWeight(data){
       return DataHandle.handleWeight(data);
+    },
+    //返回加价率
+    returnMarkup(data){
+      return DataHandle.returnMarkup(data);
+    },
+    //处理加价率
+    handleMarkup(data){
+      return DataHandle.handleMarkup(data);
     },
     //显示新增修改(供外部也调用)
     showAddEdit(data){

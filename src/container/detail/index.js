@@ -1,4 +1,5 @@
 export { default as DetailItemGlobalEditRecord } from './DetailItemGlobalEditRecord';
+export { default as DetailItemListEditRecord } from './DetailItemListEditRecord';
 export { default as DetailItemGlobal } from './DetailItemGlobal';
 export { default as DetailItemList } from './DetailItemList';
 

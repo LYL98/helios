@@ -1,10 +1,8 @@
 <template>
   <div class="table-body">
     <div class="table-top" v-if="page === 'global' && (auth.isAdmin || auth.ItemListAdd || auth.ItemListExport)">
-      <el-button v-if="auth.isAdmin || auth.ItemExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品列表</el-button>
-      <el-button @click="itemItemShowHideAddEdit({
-          isShow: true
-      })" size="mini" type="primary">新增</el-button>
+      <el-button v-if="auth.isAdmin || auth.ItemExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
+      <el-button @click="handleShowAddEdit('AddEditItemList')" size="mini" type="primary">审核内标签</el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -24,8 +22,8 @@
           <template slot-scope="scope">
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
-              <div v-if="(page === 'global' && (auth.isAdmin || auth.ItemGlobalDetail)) || (page === 'recover' && (auth.isAdmin || auth.ItemRecoverDetail))"
-                class="td-item link-item add-dot2" @click="handleShowDetail('DetailItemGlobal', scope.row)">
+              <div v-if="auth.isAdmin || auth.ItemDetail"
+                class="td-item link-item add-dot2" @click="handleShowDetail('DetailItemList', scope.row)">
                 <span>{{scope.row.code}}</span>
                 <span>/</span>
                 <span>{{scope.row.title}}</span>
@@ -58,38 +56,28 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '修改商品编号',
-                  isDisplay: auth.isAdmin || auth.ItemCodeEdit,
-                  command: () => itemItemShowHideEditCode({ isShow: true, data: scope.row })
-                },
-                {
                   title: '修改',
                   isDisplay: auth.isAdmin || auth.ItemEdit,
-                  command: () => itemItemShowHideAddEdit({ isShow: true, data: scope.row })
-                },
-                {
-                  title: '删除',
-                  isDisplay: auth.isAdmin || auth.ItemDelete,
-                  command: () => itemDelete(scope.row.id)
-                },
-                {
-                  title: '审核',
-                  isDisplay: (auth.isAdmin || auth.ItemAudit) && !scope.row.is_audited,
-                  command: () => affirmApprove(scope.row.id)
+                  command: () => handleShowAddEdit('AddEditItemList', scope.row)
                 },
                 {
                   title: '上架',
-                  isDisplay: (auth.isAdmin || auth.ItemOnGround) && scope.row.is_audited && !scope.row.is_on_sale,
+                  isDisplay: (auth.isAdmin || auth.ItemOnGround) &&  !scope.row.is_on_sale,
                   command: () => affirmOnGround(scope.row.id)
                 },
                 {
                   title: '下架',
-                  isDisplay: (auth.isAdmin || auth.ItemUnderGround) && scope.row.is_audited && scope.row.is_on_sale,
+                  isDisplay: (auth.isAdmin || auth.ItemUnderGround) && scope.row.is_on_sale,
                   command: () => affirmUnderGround(scope.row.id)
                 },
                 {
-                  title: '修改标签',
-                  isDisplay: (auth.isAdmin || auth.ItemTagsEdit) && scope.row.is_audited,
+                  title: '修改分类/外标签',
+                  isDisplay: auth.isAdmin || auth.ItemTagsEdit,
+                  command: () => itemItemShowHideEditTags({ isShow: true, data: scope.row })
+                },
+                {
+                  title: '修改内标签',
+                  isDisplay: auth.isAdmin || auth.ItemTagsEdit,
                   command: () => itemItemShowHideEditTags({ isShow: true, data: scope.row })
                 }
               ]"
@@ -169,19 +157,29 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
-      //删除数据
-      async deleteData(data) {
-        this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.pItemDelete, {
-          id: data.id
+      //上架
+      itemOnGround(data) {
+        this.$messageBox.confirm(`您确认要上架？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          (async ()=>{
+            this.$loading({ isShow: true });
+            let res = await Http.post(Config.api[data.is_on_sale ? 'itemOnGround' : 'itemUnderGround'], {
+              id: data.id
+            });
+            this.$loading({ isShow: false });
+            if(res.code === 0){
+              this.getData(this.query);
+              this.$message({message: '已上架', type: 'success'});
+            }else{
+              this.$message({message: res.message, type: 'error'});
+            }
+          })();
+        }).catch(() => {
+          //console.log('取消');
         });
-        this.$loading({ isShow: false });
-        if(res.code === 0){
-          this.getData(this.query);
-          this.$message({message: '已删除', type: 'success'});
-        }else{
-          this.$message({message: res.message, type: 'error'});
-        }
       },
     }
   };
