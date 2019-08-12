@@ -3,7 +3,7 @@
     <div class="item">
       <div class="label">科学分类</div>
       <div class="content">
-        <select-system-class v-model="query.system_class_code" size="small" style="width: 260px;"/>
+        <select-system-class v-model="query.system_class_codes" @change="selectSystemClass" size="small" style="width: 260px;"/>
       </div>
       <div class="label">搜索</div>
       <div class="content" style="margin-right: 0;">
@@ -39,6 +39,7 @@
     data() {
       let initQuery = {
         system_class_code: '',
+        system_class_codes: [],
         condition: '',
         province_code: '',
         is_deleted: '0'
@@ -49,7 +50,15 @@
       }
     },
     methods: {
-
+      //选择科学分类
+      selectSystemClass(value){
+        if(value.length === 0){
+          this.$data.query.system_class_code = '';
+        }else{
+          this.$data.query.system_class_code = value[value.length - 1];
+        }
+        this.handleQuery('TableItemGlobal');
+      },
     }
   }
 </script>

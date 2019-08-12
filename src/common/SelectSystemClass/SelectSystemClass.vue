@@ -1,14 +1,15 @@
 <template>
   <el-cascader
-    :options="scientificTypeList"
+    :options="systemClassTree"
     change-on-select
     :size="size"
     style="width: 100%"
-    clearable
+    :clearable="clearable"
     expand-trigger="hover"
     :props="systemClassProps"
-    @change="onSystemClassChange"
+    @change="onChang"
     placeholder="请选择科学分类"
+    :value="value"
   ></el-cascader>
 </template>
 
@@ -22,11 +23,14 @@ export default {
     'el-cascader': Cascader
   },
   created(){
-    this.baseSystemClassList('', list => {
-      this.$data.scientificTypeList = list;
-    });
+    this.baseSystemClassListTree();
   },
-  props: ['value', 'size', 'hasAllSelection', 'clearable'],
+  props: {
+    value: {type: Array, default: []},
+    size: {type: String, default: ''},
+    hasAllSelection: { type: Boolean, default: false },
+    clearable: { type: Boolean, default: true }
+  },
   model: {
     prop: 'value',
     event: 'ev'
@@ -35,76 +39,26 @@ export default {
     return {
       systemClassProps: {
         value: 'code',
+        label: 'title',
+        children: 'childs'
       },
-      systemClassList: [], //科学分类列表
-      scientificTypeList: [],
+      systemClassTree: [],
     };
   },
   methods: {
     //获取所有科学分类
-    async baseSystemClassList(topCode, callback){
-      if(topCode.length >= 8) return;
-      let res = await Http.get(Config.api.baseSystemClassList, {
-        top_code: topCode || ''
-      });
+    async baseSystemClassListTree(){
+      let res = await Http.get(Config.api.baseSystemClassListTree, {});
       if(res.code === 0){
-        let rd = res.data;
-        rd.map(item => {
-          item.label = item.title;
-          item.children = [];
-        });
-        this.$data.systemClassList = rd;
+        this.$data.systemClassTree = res.data;
         typeof callback === 'function' && callback(rd);
       }else{
         MessageBox.alert(res.message, '提示');
       }
     },
     //选择改变
-    onSystemClassChange(val) {
-      this.nodeList(val.length - 1, val)
-    },
-    //获取要查询的节点
-    nodeList(n, val) {
-      // console.log('n = ', n, val)
-      if (n < 0) {
-        return;
-      }
-      if (n === 0) {
-        let index = -1;
-        for (let i = 0; i < this.scientificTypeList.length; i++) {
-          if (this.scientificTypeList[i].code === val[n]) {
-            index = i;
-            break;
-          }
-        }
-        if (!this.scientificTypeList[index].children || this.scientificTypeList[index].children.length === 0) {
-          if (index >= 0) {
-            this.baseSystemClassList(val[0], list => {
-              this.scientificTypeList[index].children = list;
-            });
-          }
-          return;
-        } else {
-          return this.scientificTypeList[index].children
-        }
-      }
-
-      let parentNodeList = this.nodeList(n - 1, val);
-      let currentIndex = -1;
-      for (let i = 0; i < parentNodeList.length; i ++) {
-        if (parentNodeList[i].code === val[n]) {
-          currentIndex = i;
-        }
-      }
-      if (!parentNodeList[currentIndex].children || parentNodeList[currentIndex].children.length === 0) {
-        if (currentIndex >= 0) {
-          this.baseSystemClassList(val[n], list => {
-            parentNodeList[currentIndex].children = list;
-          })
-        }
-      } else {
-        return parentNodeList[currentIndex].children
-      }
+    onChang(val) {
+      this.$emit('change', val);
     },
   },
 };

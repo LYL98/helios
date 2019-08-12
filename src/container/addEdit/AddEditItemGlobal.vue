@@ -46,7 +46,7 @@
         </el-col>
         <el-col :span="10">
           <el-form-item label="科学分类" prop="system_class_code">
-            <select-system-class v-model="detail.system_class_code" />
+            <select-system-class v-model="detail.system_class_codes" @change="selectSystemClass"/>
           </el-form-item>
         </el-col>
       </el-row>
@@ -108,19 +108,22 @@ export default {
         callback('必须是数值类型')
       }
     };
+    let initDetail = {
+      title: '', //商品名称(必填项)
+      images: [], //图片(必填项, 列表),
+      package_spec: '', //包装规格
+      item_spec: '', //商品规格
+      origin_place: '', //产地
+      gross_weight: '', //毛重
+      net_weight: '', //净重
+      system_class_code: '', //科学分类编号
+      system_class_codes: [], //科学分类编号s
+      frame_code: '', //框code
+      content: '', //详细信息
+    }
     return{
-      initDetail: {
-        title: '', //商品名称(必填项)
-        images: [], //图片(必填项, 列表),
-        package_spec: '', //包装规格
-        item_spec: '', //商品规格
-        origin_place: '', //产地
-        gross_weight: '', //毛重
-        net_weight: '', //净重
-        system_class_code: '', //科学分类编号
-        frame_code: '', //框code
-        content: '', //详细信息
-      },
+      initDetail: initDetail,
+      detail: JSON.parse(JSON.stringify(initDetail)),
       rules: {
         images: [
           { type: 'array', required: true, message: '至少要上传一张图片', trigger: 'change' }
@@ -143,7 +146,7 @@ export default {
           { validator: validNetWeight, trigger: 'blur' },
         ],
         system_class_code: [
-          { required: false, message: '请选择科学分类', trigger: 'change' }
+          { required: true, message: '请选择科学分类', trigger: 'change' }
         ],
       },
     }
@@ -164,10 +167,23 @@ export default {
       let res = await Http.get(Config.api.pItemDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$data.detail = res.data;
+        let rd = res.data;
+        rd.system_class_codes = [];
+        for(let i = 0; i < rd.system_classes.length; i++){
+          rd.system_class_codes.push(rd.system_classes[i].code);
+        }
+        this.$data.detail = JSON.parse(JSON.stringify(rd));
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
+      }
+    },
+    //选择科学分类
+    selectSystemClass(value){
+      if(value.length === 0){
+        this.$data.detail.system_class_code = '';
+      }else{
+        this.$data.detail.system_class_code = value[value.length - 1];
       }
     },
     //提交数据

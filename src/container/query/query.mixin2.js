@@ -47,7 +47,7 @@ export default {
           this.query[key] = this.initQuery[key]
         }
         this.query.page = 1;
-        this.$data.query = this.query;
+        this.$data.query = JSON.parse(JSON.stringify(this.query));
       }
     },
     //搜索方法(页面组件)

@@ -93,9 +93,7 @@
         <h6 class="subtitle" style="padding-bottom: 16px">其他信息</h6>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="内标签">
-              <select-inner-tag v-model="detail.inner_tag_id"/>
-            </el-form-item>
+            <el-form-item label="内标签">{{detail.inner_tag.title}}</el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="商品详情">
@@ -148,6 +146,7 @@ export default {
       price_origin: '',
       markup_rate_temp: 10,
       inner_tag_id: '',
+      inner_tag: {},
       tags: [],
       content: '',
       is_presale: false,

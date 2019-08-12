@@ -5,7 +5,7 @@
         <el-row>
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="上架状态">
-              <my-button-group
+              <button-group
                 :options="{'已上架': 1, '未上架': 0}"
                 v-model="query.is_on_sale"
                 @change="handleQuery('TableItemList')"
@@ -15,7 +15,7 @@
           </el-col>
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="展示分类">
-              <my-select-display-class
+              <select-display-class
                 size="small"
                 :isUseToQuery="true"
                 v-model="query.display_class_code"
@@ -48,17 +48,17 @@
         <el-row style="margin-top: 16px;">
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="内标签">
-              
+              <select-inner-tag size="small" v-model="query.inner_tag_id" @change="handleQuery('TableItemList')" style="width: 225px;"/>
             </my-query-item>
           </el-col>
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="科学分类">
-              
+              <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass" style="width: 225px;"/>
             </my-query-item>
           </el-col>
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="活动类型">
-              <my-button-group
+              <button-group
                 :options="{'全部': '', '预售': 1, '非预售': 0}"
                 v-model="query.is_presale"
                 @change="handleQuery('TableItemList')"
@@ -70,7 +70,7 @@
         <el-row style="margin-top: 16px">
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="是否赠品">
-              <my-button-group
+              <button-group
                 :options="{'全部': '', '赠品': 1, '非赠品': 0}"
                 v-model="query.is_gift"
                 @change="handleQuery('TableItemList')"
@@ -87,7 +87,7 @@
 
 <script>
   import { Collapse, CollapseItem } from 'element-ui';
-  import { ButtonGroup, SelectBuyer, SelectDisplayClass } from '@/common';
+  import { ButtonGroup, SelectDisplayClass, SelectInnerTag, SelectSystemClass } from '@/common';
   import queryMixin from './query.mixin2';
 
   export default {
@@ -95,9 +95,10 @@
     components: {
       'el-collapse': Collapse,
       'el-collapse-item': CollapseItem,
-      'my-select-buyer': SelectBuyer,
-      'my-select-display-class': SelectDisplayClass,
-      'my-button-group': ButtonGroup,
+      'select-display-class': SelectDisplayClass,
+      'button-group': ButtonGroup,
+      'select-inner-tag': SelectInnerTag,
+      'select-system-class': SelectSystemClass
     },
     mixins: [queryMixin],
     created() {
@@ -106,7 +107,9 @@
     },
     data() {
       let initQuery = {
-        is_on_sale: 1
+        is_on_sale: 1,
+        system_class_code: '',
+        system_class_codes: []
       }
       return {
         initQuery: initQuery,
@@ -114,6 +117,16 @@
       }
     },
     methods: {
+      //选择科学分类
+      selectSystemClass(value){
+        if(value.length === 0){
+          this.$data.query.system_class_code = '';
+        }else{
+          this.$data.query.system_class_code = value[value.length - 1];
+        }
+        console.log(query);
+        this.handleQuery('TableItemList');
+      },
     }
   }
 </script>
