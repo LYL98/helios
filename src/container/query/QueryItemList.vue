@@ -108,6 +108,11 @@
     data() {
       let initQuery = {
         is_on_sale: 1,
+        display_class_code: '',
+        condition: '',
+        inner_tag_id: '',
+        is_presale: '',
+        is_gift: '',
         system_class_code: '',
         system_class_codes: []
       }

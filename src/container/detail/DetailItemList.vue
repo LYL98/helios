@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="商品详情" :visible="isShow" width="1200px" top="5vh" append-to-body :before-close="handleCancel" :close-on-click-modal="false">
+    <el-dialog title="商品详情" :visible="isShow" width="1200px" top="5vh" append-to-body :before-close="handleCancel">
       <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail">
         <el-row :gutter="10">
           <el-col :span="22">
@@ -91,11 +91,8 @@
           </el-col>
         </el-row>
         <h6 class="subtitle" style="padding-bottom: 16px">其他信息</h6>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="内标签">{{detail.inner_tag.title}}</el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="内标签">{{detail.inner_tag.title}}</el-form-item>
+        <el-form-item label="外标签"><el-tag v-for="(item, index) in detail.tags" :key="index" type="info" style="margin-right: 10px;">{{item}}</el-tag></el-form-item>
         <el-form-item label="商品详情">
           <div class="content-div" v-html="detail.content"></div>
         </el-form-item>
@@ -117,8 +114,7 @@
         </el-row>
         <el-form-item>
           <div style="float: right">
-            <el-button @click.native="handleCancel">取 消</el-button>
-            <el-button type="primary" @click.native="handleAddEdit">确 认</el-button>
+            <el-button type="primary" @click.native="handleCancel">确 认</el-button>
           </div>
         </el-form-item>
       </el-form>

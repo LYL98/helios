@@ -9,3 +9,5 @@ export { default as FormSystemSettingAd } from './FormSystemSettingAd';
 export { default as FormSystemSettingOperating } from './FormSystemSettingOperating';
 export { default as FormSystemSettingItemCommonDes } from './FormSystemSettingItemCommonDes';
 export { default as FormSystemOperatorResetPwd } from './FormSystemOperatorResetPwd';
+export { default as FormItemListEditClassTag } from './FormItemListEditClassTag';
+export { default as FormItemListEditInnerTag } from './FormItemListEditInnerTag';

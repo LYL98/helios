@@ -62,6 +62,11 @@ export default {
       let pc = this.getPageComponents(pageComponents);
       pc.showDetail(data);
     },
+    //显示form
+    handleShowForm(pageComponents, data){
+      let pc = this.getPageComponents(pageComponents);
+      pc.showForm(data);
+    },
     //删除
     handleDelete(data){
       this.$messageBox.confirm(`您确认要删除？`, '提示', {

@@ -1,5 +1,5 @@
 import { DataHandle, Http, Method, Constant, Config } from '@/util';
-import {Table, TableColumn, Pagination, DatePicker, Row, Col, Input, Button, RadioGroup, RadioButton, Radio, Dialog, Form, FormItem, Transfer, TabPane, Tabs, Tag} from 'element-ui';
+import {Table, TableColumn, Pagination, DatePicker, Row, Col, Input, Button, RadioGroup, RadioButton, Radio, Dialog, Form, FormItem, Transfer, TabPane, Tabs, Tag, Popover} from 'element-ui';
 
 export default {
   components: {
@@ -20,7 +20,8 @@ export default {
     'el-col': Col,
     'el-tabs': Tabs,
     'el-tab-pane': TabPane,
-    'el-tag': Tag
+    'el-tag': Tag,
+    'el-popover': Popover
   },
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件

@@ -1,5 +1,5 @@
 import { DataHandle, Http, Method, Constant, Config } from '@/util';
-import {DatePicker, Row, Col, Input, Button, Message, RadioGroup, RadioButton, Radio, Dialog, Form, FormItem, Transfer, Slider} from 'element-ui';
+import {DatePicker, Row, Col, Input, Button, Message, RadioGroup, RadioButton, Radio, Dialog, Form, FormItem, Transfer, Slider, Tag} from 'element-ui';
 
 export default {
   components: {
@@ -15,7 +15,8 @@ export default {
     'el-dialog': Dialog,
     'el-row': Row,
     'el-col': Col,
-    'el-slider': Slider
+    'el-slider': Slider,
+    'el-tag': Tag
   },
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件

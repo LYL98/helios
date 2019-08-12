@@ -128,7 +128,10 @@ export {
   FormSystemSettingAd,
   FormSystemSettingOperating,
   FormSystemSettingItemCommonDes,
-  FormSystemOperatorResetPwd
+  FormSystemOperatorResetPwd,
+
+  FormItemListEditClassTag,
+  FormItemListEditInnerTag
 } from './form';
 
 export {
@@ -136,6 +139,7 @@ export {
   DetailItemGlobalEditRecord,
   DetailItemListEditRecord,
   DetailItemList,
+  DetailItemListAuditInnerTag,
 
   DetailHeadBalanceLog,
 

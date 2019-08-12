@@ -67,20 +67,24 @@ const Config = (() => {
       pItemExport: apiM + '/p_item/export', //商品导出
 
       // 商品管理
-      itemAdd: apiM + '/item/add', //商品添加
+      //itemAdd: apiM + '/item/add', //商品添加
       itemEdit: apiM + '/item/edit', //商品编辑
-      itemDelete: apiM + '/item/delete', //商品删除
-      itemTagsEdit: apiM + '/item/tags/edit', //商品标签编辑
+      //itemDelete: apiM + '/item/delete', //商品删除
+      //itemTagsEdit: apiM + '/item/tags/edit', //商品标签编辑
+      itemOutEdit: apiM + '/item/out/edit', //商品外边标签，展示分类 修改
+      itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品内标签修改
+      itemInnerTagAudit: apiM + '/item/inner_tag/audit', //内标签审核审核
+      itemInnerTagLogQuery: apiM + '/item/inner_tag/log_query', //商品内标签修改申请查询
       itemQuery: apiM + '/item/query',//商品列表
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
       itemDetail: apiM + '/item/detail',//商品详情
       itemModifyDetail: apiM + '/item/modify_detail', //商品修改明细
-      itemStatusApprove: apiM + '/item/status/approve',//商品审核
+      //itemStatusApprove: apiM + '/item/status/approve',//商品审核
       itemPriceList: apiM + '/item/price/query',//每日定价页面查询
       itemPriceFix: apiM + '/item/price/fix',//商品定价
       itemPriceAudit: apiM + '/item/price/audit', //商品定价审核
-      itemCodeEdit: apiM + '/item/code_edit', //商品编号修改
+      //itemCodeEdit: apiM + '/item/code_edit', //商品编号修改
       itemExport: apiM + '/item/export', //商品列表导出
 
       // 促销活动

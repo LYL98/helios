@@ -1,8 +1,8 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="page === 'global' && (auth.isAdmin || auth.ItemListAdd || auth.ItemListExport)">
-      <el-button v-if="auth.isAdmin || auth.ItemExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
-      <el-button @click="handleShowAddEdit('AddEditItemList')" size="mini" type="primary">审核内标签</el-button>
+    <div class="table-top" v-if="page === 'global' && (auth.isAdmin || auth.ItemListExport || auth.ItemListAuditInnerTag)">
+      <el-button v-if="auth.isAdmin || auth.ItemListExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
+      <el-button v-if="auth.isAdmin || auth.ItemListAuditInnerTag" @click="handleShowDetail('DetailItemListAuditInnerTag')" size="mini" type="primary">审核内标签</el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -57,28 +57,28 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: (auth.isAdmin || auth.ItemEdit) && scope.row.is_on_sale,
+                  isDisplay: (auth.isAdmin || auth.ItemListEdit) && scope.row.is_on_sale,
                   command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'edit' })
                 },
                 {
                   title: '上架',
-                  isDisplay: (auth.isAdmin || auth.ItemOnGround) &&  !scope.row.is_on_sale,
+                  isDisplay: (auth.isAdmin || auth.ItemListOnGround) &&  !scope.row.is_on_sale,
                   command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'on_sale' })
                 },
                 {
                   title: '下架',
-                  isDisplay: (auth.isAdmin || auth.ItemUnderGround) && scope.row.is_on_sale,
+                  isDisplay: (auth.isAdmin || auth.ItemListUnderGround) && scope.row.is_on_sale,
                   command: () => itemUnderGround(scope.row)
                 },
                 {
                   title: '修改分类/外标签',
-                  isDisplay: (auth.isAdmin || auth.ItemTagsEdit) && scope.row.is_on_sale,
-                  command: () => itemItemShowHideEditTags({ isShow: true, data: scope.row })
+                  isDisplay: (auth.isAdmin || auth.ItemListTagsClassEdit) && scope.row.is_on_sale,
+                  command: () => handleShowForm('FormItemListEditClassTag', scope.row)
                 },
                 {
                   title: '修改内标签',
-                  isDisplay: (auth.isAdmin || auth.ItemTagsEdit) && scope.row.is_on_sale,
-                  command: () => itemItemShowHideEditTags({ isShow: true, data: scope.row })
+                  isDisplay: (auth.isAdmin || auth.ItemListInnerTagsEdit) && scope.row.is_on_sale,
+                  command: () => handleShowForm('FormItemListEditInnerTag', scope.row)
                 }
               ]"
             />
@@ -120,7 +120,7 @@
       page: { type: String, default: 'global' }, //页面global、recover
     },
     created() {
-      if (!this.auth.isAdmin && !this.auth.ItemAdd) {
+      if (!this.auth.isAdmin && !this.auth.ItemListExport && !this.auth.ItemListAuditInnerTag) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
       }
       let pc = this.getPageComponents('QueryItemList');

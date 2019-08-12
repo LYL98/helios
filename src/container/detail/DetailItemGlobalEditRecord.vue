@@ -118,7 +118,7 @@
           let rd = res.data;
           this.$data.dataItem = rd;
         }else{
-          this.$store.dispatch('message', {message: res.message, type: 'error'});
+          this.$message({message: res.message, type: 'error'});
         }
       },
       // 设置每页显示数量
