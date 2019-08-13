@@ -13,6 +13,7 @@ export {
 
   AddEditItemGlobal,
   AddEditItemList,
+  AddEditItemPricing,
 
   AddEditOperateLine,
 
@@ -72,6 +73,7 @@ export {
 
   QueryItemGlobal,
   QueryItemList,
+  QueryItemPricing,
 
   QueryOperateLine,
 
@@ -97,6 +99,7 @@ export {
 
   TableItemGlobal,
   TableItemList,
+  TableItemPricing,
 
   TableOperateLine,
 

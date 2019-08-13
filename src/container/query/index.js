@@ -28,6 +28,7 @@ export { default as QueryBasicDataZone } from './QueryBasicDataZone';
 
 export { default as QueryItemGlobal } from './QueryItemGlobal';
 export { default as QueryItemList } from './QueryItemList';
+export { default as QueryItemPricing } from './QueryItemPricing';
 
 export { default as QueryOperateLine } from './QueryOperateLine';
 

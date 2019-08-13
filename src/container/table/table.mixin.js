@@ -174,6 +174,10 @@ export default {
     returnPrice(price){
       return DataHandle.returnPrice(price);
     },
+    //处理价格
+    handlePrice(price){
+      return DataHandle.handlePrice(price);
+    },
     //返回重量
     returnWeight(weight){
       return DataHandle.returnWeight(weight);

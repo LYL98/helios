@@ -1,6 +1,6 @@
 <template>
   <div class="receiving-allot">
-    <el-dialog :title="`报价：${detail.code} ${detail.title}`" :visible="isShow" width="680px" :before-close="cancel" :close-on-click-modal="false">
+    <el-dialog :title="`报价：${detail.code} ${detail.title}`" :visible="isShow" width="680px" :before-close="handleCancel" :close-on-click-modal="false">
       <el-form label-position="right" label-width="100px" style="width: 620px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-row>
           <el-col :span="10">
@@ -72,38 +72,28 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click.native="cancel">取 消</el-button>
-        <el-button type="primary" @click.native="submit">确定报价</el-button>
+        <el-button @click.native="handleCancel">取 消</el-button>
+        <el-button type="primary" @click.native="handleAddEdit">确定报价</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { Form, FormItem, Button, Dialog, Col, Row } from 'element-ui';
+import addEditMixin from './add.edit.mixin';
 import { Constant, DataHandle, } from '@/util';
 import { NumberKey } from '@/common';
 
 export default {
-  name: "ReceivingEditWeigh",
+  name: "AddEditItemPricing",
+  mixins: [addEditMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-dialog': Dialog,
-    'el-row': Row,
-    'el-col': Col,
   },
-  computed: mapGetters({
-    isShow: 'itemPricingIsShowEdit',
-    editData: 'itemPricingEditData'
-  }),
   data(){
     return {
       province: this.$province,
       weightScope: Constant.WEIGHT_SCOPE,//重量浮动范围
-      detail: {},
+      initDetail: {},
       query: {
         item_id: '',
         price_buy: '',
@@ -132,6 +122,29 @@ export default {
     }
   },
   methods: {
+    //显示新增修改(重写)
+    showAddEdit(data){
+      let { query } = this;
+      let d = {};
+      if(data){
+        if (data.query) {
+          query.is_quoted = data.query.is_quoted === '' ? null : data.query.is_quoted;
+          query.is_approve = data.query.is_approve === '' ? null : data.query.is_approve;
+          query.buyer_id = data.query.buyer_id === '' ? null : data.query.buyer_id;
+          query.display_class_code = data.query.display_class_code === '' ? null : data.query.display_class_code;
+          query.province_code = data.query.province_code;
+          query.opt_date = data.query.opt_date
+        }
+
+        d = JSON.parse( JSON.stringify(data));
+        d.new_item_stock = d.item_stock;
+        d.price_buy_last = Number(d.price_buy_last);
+        d.price_buy = d.price_buy ? Number(d.price_buy) : '';
+        d.price_sale = d.price_sale ? Number(d.price_sale) : '';
+      }
+      this.$data.detail = d;
+      this.$data.isShow = true;
+    },
     //返回建议价(今日询价，加价率)
     returnSuggestPrice(priceBuy, markupRate){
       return DataHandle.returnSuggestPrice(priceBuy, markupRate);
@@ -197,68 +210,30 @@ export default {
         }
       });
     },
-    //取消
-    cancel(){
-      this.itemPricingShowHideEdit({ isShow: false });
-      setTimeout(()=>{
-        this.$refs['ruleForm'].resetFields();
-      },0);
-    },
 
-    //确认提交
-    submit(){
-      let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          let { detail, query } = that;
-          query.item_id = detail.item_id;
-          query.price_buy = DataHandle.handlePrice(detail.price_buy);
-          query.price_sale = DataHandle.handlePrice(detail.price_sale);
-          query.item_stock = detail.new_item_stock;
+    //提交数据
+    async addEditData(){
+      let { detail, query } = this;
+      query.item_id = detail.item_id;
+      query.price_buy = DataHandle.handlePrice(detail.price_buy);
+      query.price_sale = DataHandle.handlePrice(detail.price_sale);
+      query.item_stock = detail.new_item_stock;
 
-          that.itemPricingPriceFix({
-            data: query,
-            callback: (data)=>{
-              data.index = detail.index;
-              let c = that.$attrs.callback;
-              typeof c === 'function' && c(data);//回调
-              that.cancel();
-            }
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    ...mapActions(['itemPricingShowHideEdit', 'itemPricingPriceFix'])
-  },
-  watch:{
-    editData: {
-      deep: true,
-      handler: function (a, b) {
-        let that = this;
-        let { query } = this;
-        let d = {};
-        if(a){
-          if (a.query) {
-            query.is_quoted = a.query.is_quoted === '' ? null : a.query.is_quoted;
-            query.is_approve = a.query.is_approve === '' ? null : a.query.is_approve;
-            query.buyer_id = a.query.buyer_id === '' ? null : a.query.buyer_id;
-            query.display_class_code = a.query.display_class_code === '' ? null : a.query.display_class_code;
-            query.province_code = a.query.province_code;
-            query.opt_date = a.query.opt_date
-          }
-
-          d = JSON.parse( JSON.stringify(a));
-          d.new_item_stock = d.item_stock;
-          d.price_buy_last = Number(d.price_buy_last);
-          d.price_buy = d.price_buy ? Number(d.price_buy) : '';
-          d.price_sale = d.price_sale ? Number(d.price_sale) : '';
-        }
-        that.$data.detail = d;
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api.itemPriceFix, detail);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        //data.index = detail.index;
+        this.$message({message: '商品已报价', type: 'success'});
+        this.handleCancel(); //隐藏
+        //刷新数据(列表)
+        let pc = this.getPageComponents('TableItemPricing');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
