@@ -41,7 +41,6 @@
               </div>
             </my-query-item>
           </el-col>
-
         </el-row>
       </template>
       <template slot="expand">

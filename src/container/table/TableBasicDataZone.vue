@@ -2,9 +2,7 @@
   <div>
     <!-- 头部end -->
     <div class="operate" v-if="auth.isAdmin || auth.BasicDataZoneListAdd">
-      <el-button @click="basicDataZoneShowHideAddEdit({
-          isShow: true
-      })" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataZoneListAdd">新增
+      <el-button @click="handleShowAddEdit('AddEditBasicDataZone')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataZoneListAdd">新增
       </el-button>
     </div>
     <!-- 表格start -->
@@ -57,7 +55,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -66,12 +64,12 @@
               {
                 title: '修改',
                 isDisplay: auth.isAdmin || auth.BasicDataZoneListUpdate,
-                command: () => basicDataZoneShowHideAddEdit({ isShow: true, data: scope.row })
+                command: () => handleShowAddEdit('AddEditBasicDataZone', scope.row)
               },
               {
                 title: '删除',
                 isDisplay: auth.isAdmin || auth.BasicDataZoneListDelete,
-                command: () => deleteZone(scope.row)
+                command: () => handleDelete(scope.row)
               }
             ]"
             />

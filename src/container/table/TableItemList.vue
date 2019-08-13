@@ -16,7 +16,7 @@
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="index" width="100" label="序号"></el-table-column>
+        <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
           <div slot-scope="scope" class="my-td-item">
@@ -49,7 +49,7 @@
         </el-table-column>
         <!--table-column end 操作占位-->
         <el-table-column label min-width="1"/>
-        <el-table-column label="操作" width="100" fixed="right" header-align="center">
+        <el-table-column label="操作" width="100" fixed="right" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"

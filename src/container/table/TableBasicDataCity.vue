@@ -162,7 +162,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.basicdataCityList, {});
+        let res = await Http.get(Config.api.basicdataCityList, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

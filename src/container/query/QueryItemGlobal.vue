@@ -1,19 +1,25 @@
 <template>
   <div class="query">
-    <div class="item">
-      <div class="label">科学分类</div>
-      <div class="content">
-        <select-system-class v-model="query.system_class_codes" @change="selectSystemClass" size="small" style="width: 260px;"/>
-      </div>
-      <div class="label">搜索</div>
-      <div class="content" style="margin-right: 0;">
-        <el-input v-model="query.condition" size="small" placeholder="请输入商品编号、名称" @keyup.enter.native="handleQuery('TableItemGlobal')" style="width: 200px;"/>
-      </div>
-      <div class="content">
-        <el-button class="search" size="small" type="primary" @click="handleQuery('TableItemGlobal')" icon="el-icon-search"></el-button>
-        <el-button class="reset" size="small"  type="primary" plain @click="handleClearQuery('TableItemGlobal')">重置</el-button>
-      </div>
-    </div>
+    <my-collapse-query @expandChange="onExpandChange">
+      <template slot="header">
+        <el-row>
+          <el-col :xl="6" :lg="7" :span="7">
+            <my-query-item label="科学分类">
+              <select-system-class v-model="query.system_class_codes" @change="selectSystemClass" size="small" style="width: 224px;"/>
+            </my-query-item>
+          </el-col>
+          <el-col :xl="6" :lg="7" :span="7">
+            <my-query-item label="搜索">
+              <div style="display: flex">
+                <el-input v-model="query.condition" size="small" placeholder="请输入商品编号、名称" @keyup.enter.native="handleQuery('TableItemGlobal')" class="query-item-input"/>
+                <el-button class="search" size="small" type="primary" @click="handleQuery('TableItemGlobal')" icon="el-icon-search"></el-button>
+                <el-button class="reset" size="small"  type="primary" plain @click="handleClearQuery('TableItemGlobal')">重置</el-button>
+              </div>
+            </my-query-item>
+          </el-col>
+        </el-row>
+      </template>
+    </my-collapse-query>
   </div>
 </template>
 

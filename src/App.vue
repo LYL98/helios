@@ -1158,7 +1158,6 @@
   }
 
   .el-table.list-table {
-    padding: 0 20px;
     background-color: #fff;
   }
 
