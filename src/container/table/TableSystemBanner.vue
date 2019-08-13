@@ -42,7 +42,7 @@
           <el-tag size="mini" :type="scope.row.is_usable ? 'regular' : 'info'">{{scope.row.is_usable ? '可用' : '不可用'}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <my-table-operate
             :list="[

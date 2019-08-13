@@ -14,7 +14,7 @@
     },
     data() {
       let initQuery = {
-        condition: '', //手机号、姓名
+        province_code: this.$province.code
       }
       return {
         initQuery: initQuery,

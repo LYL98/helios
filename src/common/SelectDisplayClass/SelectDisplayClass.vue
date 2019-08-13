@@ -31,6 +31,9 @@ export default {
   data() {
     return {
       frameCode: this.value || '',
+      query: {
+        province_code: this.$province.code
+      },
       dataItem: []
     };
   },
@@ -43,7 +46,7 @@ export default {
     //获取所有展示分类
     async baseDisplayClassList(){
       let that = this;
-      let res = await Http.get(Config.api.baseDisplayClassList, {});
+      let res = await Http.get(Config.api.baseDisplayClassList, this.query);
       if(res.code === 0){
         let rd = res.data;
         that.$data.dataItem = rd;

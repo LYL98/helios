@@ -37,7 +37,7 @@
             >
               <el-menu-item class="home" index="Home" :route="{name: 'Home'}" v-if="auth.isAdmin || auth.Home">
                 <i class="iconfont menu-icon">&#xe751;</i>
-                <span style="margin-left: 10px;">首页</span>
+                <span>首页</span>
               </el-menu-item>
 
               <el-submenu index="Merchant" v-if="auth.isAdmin || auth.Merchant">

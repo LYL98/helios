@@ -14,7 +14,7 @@
     },
     data() {
       let initQuery = {
-        
+        province_code: this.$province.code
       }
       return {
         initQuery: initQuery,

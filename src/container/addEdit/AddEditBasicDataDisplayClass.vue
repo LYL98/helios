@@ -66,7 +66,9 @@ export default {
     };
 
     return{
-      initDetail: {},
+      initDetail: {
+        province_code: this.$province.code
+      },
       rules: {
         code: [
             { required: true, message: '编号不能为空', trigger: 'blur' },

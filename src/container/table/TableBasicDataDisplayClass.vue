@@ -49,7 +49,7 @@
             <div :class="isEllipsis(scope.row)">{{ scope.row.created }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -90,7 +90,8 @@
       if (!this.auth.isAdmin && !this.auth.BasicDataDisplayClassListAdd) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT
       }
-      this.getData();
+      let pc = this.getPageComponents('QueryBasicDataDisplayClass'); //获取query组件
+      this.getData(pc.query);
     },
     data() {
       return {
@@ -101,9 +102,10 @@
     },
     methods: {
       //获取数据
-      async getData(){
+      async getData(query){
+        this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.basicdataDisplayClassList, {});
+        let res = await Http.get(Config.api.basicdataDisplayClassList, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

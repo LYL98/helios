@@ -57,7 +57,7 @@
           </template>
         </el-table-column>
         <!--<el-table-column prop="created" label="创建时间" width="100"/>-->
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"

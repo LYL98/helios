@@ -65,7 +65,7 @@
         <!--</template>-->
       <!--</el-table-column>-->
       <!--未生效：生效、删除、编辑；   已生效：结束、编辑-->
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <my-table-operate
             @command-click="handleCommandClick(scope.row)"

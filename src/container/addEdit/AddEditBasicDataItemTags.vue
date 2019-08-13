@@ -48,6 +48,7 @@ export default {
   data(){
     return{
       initDetail: {
+        province_code: this.$province.code,
         image:[],
       },
       images: [],

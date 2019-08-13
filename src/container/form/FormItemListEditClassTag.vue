@@ -83,7 +83,7 @@ export default {
     //获取商品标签列表
     async baseItemTagsList(){
       let that = this;
-      let res = await Http.get(Config.api.baseItemTagsList, {});
+      let res = await Http.get(Config.api.baseItemTagsList, { province_code: this.province.code });
       if(res.code === 0){
         that.$data.itemTags = res.data;
       }else{
