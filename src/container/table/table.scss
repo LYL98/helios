@@ -30,7 +30,7 @@
 }
 
 .td-item{
-    &.link-item{
+    &.link-item, .link-item{
         text-decoration: underline;
         &:hover{
             cursor: pointer;

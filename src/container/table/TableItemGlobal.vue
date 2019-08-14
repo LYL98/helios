@@ -24,27 +24,29 @@
             <template v-if="item.key === 'code_title'">
               <div v-if="(page === 'global' && (auth.isAdmin || auth.ItemGlobalDetail)) || (page === 'recover' && (auth.isAdmin || auth.ItemRecoverDetail))"
                 class="td-item link-item add-dot2" @click="handleShowDetail('DetailItemGlobal', scope.row)">
-                <span>{{scope.row.code}}</span>
-                <span>/</span>
-                <span>{{scope.row.title}}</span>
+                {{scope.row.code}}/{{scope.row.title}}
               </div>
               <div class="td-item add-dot2" v-else>
-                <span>{{scope.row.code}}</span>
-                <span>/</span>
-                <span>{{scope.row.title}}</span>
+                {{scope.row.code}}/{{scope.row.title}}
               </div>
             </template>
+            <!--商品参数-->
+            <div class="td-item add-dot2" v-else-if="item.key === 'parameter'">
+              <span>{{scope.row.origin_place}}、</span>
+              <span v-if="scope.row.item_spec">{{scope.row.item_spec}}、</span>
+              <span>{{returnWeight(scope.row.gross_weight)}}斤</span>
+            </div>
             <!--框-->
             <div class="td-item" v-else-if="item.key === 'frame'">
               <span v-if="scope.row.frame_code">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
               <span v-else>-</span>
             </div>
-            <!--毛重、净重-->
-            <div class="td-item" v-else-if="item.key === 'gross_weight' || item.key === 'net_weight'">{{returnWeight(scope.row[item.key])}}斤</div>
+            <!--净重-->
+            <div class="td-item" v-else-if="item.key === 'net_weight'">{{returnWeight(scope.row.net_weight)}}斤</div>
             <!--科学分类-->
             <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
             <!--正常情况-->
-            <div class="td-item" v-else>{{scope.row[item.key]}}</div>
+            <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
         </el-table-column>
         <!--table-column end 操作占位-->
@@ -121,12 +123,10 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         tableName: 'TableItemGlobal',
         tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '240', isShow: true },
+          { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
+          { label: '商品参数', key: 'parameter', width: '240', isShow: true },
           { label: '筐', key: 'frame', width: '160', isShow: true },
-          { label: '产地', key: 'origin_place', width: '200', isShow: true },
           { label: '包装规格', key: 'package_spec', width: '160', isShow: false },
-          { label: '规格', key: 'item_spec', width: '160', isShow: false },
-          { label: '毛重', key: 'gross_weight', width: '120', isShow: false },
           { label: '净重', key: 'net_weight', width: '120', isShow: false },
           { label: '科学分类', key: 'system_class', width: '200', isShow: true },
           { label: '创建时间', key: 'created', width: '160', isShow: true },

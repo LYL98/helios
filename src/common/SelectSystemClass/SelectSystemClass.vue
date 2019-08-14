@@ -8,6 +8,7 @@
     expand-trigger="hover"
     :props="systemClassProps"
     @change="onChang"
+    @visible-change="onVisibleChange"
     placeholder="请选择科学分类"
     :value="value"
   ></el-cascader>
@@ -43,6 +44,7 @@ export default {
         children: 'childs'
       },
       systemClassTree: [],
+      tempValue: []
     };
   },
   methods: {
@@ -50,7 +52,18 @@ export default {
     async baseSystemClassListTree(){
       let res = await Http.get(Config.api.baseSystemClassListTree, {});
       if(res.code === 0){
-        this.$data.systemClassTree = res.data;
+        let rd = res.data;
+        let fun = (d) =>{
+          for(let i = 0; i < d.length; i++){
+            if(d[i].childs.length === 0){
+              delete d[i].childs;
+            }else{
+              fun(d[i].childs);
+            }
+          }
+        }
+        fun(rd);
+        this.$data.systemClassTree = rd;
         typeof callback === 'function' && callback(rd);
       }else{
         MessageBox.alert(res.message, '提示');
@@ -58,8 +71,17 @@ export default {
     },
     //选择改变
     onChang(val) {
-      this.$emit('change', val);
+      this.$data.tempValue = val;
+      if(val.length === 0){
+        this.$emit('change', val);
+      }
     },
+    //显示隐藏时
+    onVisibleChange(visible){
+      if(!visible){
+        this.$emit('change', this.tempValue);
+      }
+    }
   },
 };
 </script>

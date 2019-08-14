@@ -55,7 +55,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="单价" prop="markup_rate">
-              <input-price size="medium" v-model="detail.markup_rate" disabled/>
+              <!--销售价 / 毛重-->
+              <input-price size="medium" disabled :value="detail.price_sale / (detail.gross_weight / 10)"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -234,7 +235,6 @@ export default {
       images: [],
       is_weigh: true,
       price_origin: '',
-      markup_rate_temp: 10,
       inner_tag_id: '',
       tags: [],
       content: '',

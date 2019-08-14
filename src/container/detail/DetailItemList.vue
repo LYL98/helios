@@ -45,7 +45,7 @@
             <el-form-item label="净重">{{returnWeight(detail.net_weight)}}斤</el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="科学分类">{{detail.system_class.title}}</el-form-item>
+            <el-form-item label="科学分类">{{returnSystemClass(detail.system_classes)}}</el-form-item>
           </el-col>
         </el-row>
         <h6 class="subtitle" style="padding-bottom: 16px">销售信息</h6>
@@ -57,7 +57,8 @@
             <el-form-item label="销售价">&yen;{{returnPrice(detail.price_sale)}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="单价">&yen;{{returnPrice(detail.markup_rate)}}</el-form-item>
+            <!--销售价 / 毛重-->
+            <el-form-item label="单价">&yen;{{returnPrice(detail.price_sale / (detail.gross_weight / 10))}}</el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
@@ -140,7 +141,6 @@ export default {
       images: [],
       is_weigh: true,
       price_origin: '',
-      markup_rate_temp: 10,
       inner_tag_id: '',
       inner_tag: {},
       tags: [],
@@ -152,7 +152,8 @@ export default {
       frame: {},
       system_class: {},
       first_grounder: {},
-      last_updater: {}
+      last_updater: {},
+      system_classes: []
     }
     return {
       initDetail: initDetail,
@@ -186,6 +187,15 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
+    //返回科技分类
+    returnSystemClass(data){
+      let str = '';
+      data.forEach(item => {
+        str += item.title + ' / ';
+      });
+      str = str.substring(0, str.length - 1);
+      return str;
+    }
   }
 };
 </script>
@@ -219,7 +229,7 @@ export default {
     }
   }
   .content-div{
-    height: 200px;
+    height: 360px;
     border: 1px solid #ececec;
     overflow-y: auto;
     padding: 0 10px;

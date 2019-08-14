@@ -40,7 +40,7 @@
           <el-form-item label="净重">{{returnWeight(detail.net_weight)}}斤</el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="科学分类">{{detail.system_class.title}}</el-form-item>
+          <el-form-item label="科学分类">{{returnSystemClass(detail.system_classes)}}</el-form-item>
         </el-col>
       </el-row>
       
@@ -90,7 +90,8 @@
         creater: {},
         last_updater: {},
         system_class: {},
-        frame: {}
+        frame: {},
+        system_classes: []
       }
       return {
         initDetail: initDetail,
@@ -124,6 +125,15 @@
           this.$message({message: res.message, type: 'error'});
         }
       },
+      //返回科技分类
+      returnSystemClass(data){
+        let str = '';
+        data.forEach(item => {
+          str += item.title + ' / ';
+        });
+        str = str.substring(0, str.length - 3);
+        return str;
+      }
     }
   }
 </script>
@@ -131,7 +141,7 @@
 <style lang="scss" scoped>
   @import "./detail.scss";
   .content-div{
-    height: 200px;
+    height: 360px;
     border: 1px solid #ececec;
     overflow-y: auto;
     padding: 0 10px;

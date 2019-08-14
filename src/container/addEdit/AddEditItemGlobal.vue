@@ -146,7 +146,7 @@ export default {
           { validator: validNetWeight, trigger: 'blur' },
         ],
         system_class_code: [
-          { required: true, message: '请选择科学分类', trigger: 'change' }
+          { required: true, message: '请选择科学分类', trigger: 'blur' }
         ],
       },
     }
