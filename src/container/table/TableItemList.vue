@@ -157,6 +157,14 @@
       }
     },
     methods: {
+      //展开隐藏搜索(重写)
+      onExpandChange(isExpand){
+        if (isExpand) {
+          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
+        } else {
+          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
+        }
+      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用

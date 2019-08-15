@@ -105,13 +105,13 @@
         
         //获取明细列表
         this.$data.query.id = data.id;
-        this.itemModifyDetail();
+        this.pItemModifyDetail();
       },
       //获取明细列表
-      async itemModifyDetail(){
+      async pItemModifyDetail(){
         this.$loading({isShow: true, isWhole: true});
         let { query } = this;
-        let res = await Http.get(Config.api.itemModifyDetail, query);
+        let res = await Http.get(Config.api.pItemModifyDetail, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.isShow = true;

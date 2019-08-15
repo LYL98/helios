@@ -33,6 +33,7 @@ export default {
       clickedRow: {},
       tableShowColumn: [],
       multipleSelection: [],
+      isExpand: false, //是否展开搜索区
       query: {
         page: 1,
         page_size: Constant.PAGE_SIZE
@@ -47,6 +48,10 @@ export default {
     this.isShowTableTitle(); //显示表头
   },
   methods: {
+    //展开隐藏搜索(外部重写)
+    onExpandChange(isExpand){
+      //this.$data.isExpand = isExpand;
+    },
     //返回表格序号
     indexMethod(index) {
       let { query } = this;

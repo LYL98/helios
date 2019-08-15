@@ -125,7 +125,7 @@
         salePriceScope: Constant.SALE_PRICE_SCOPE,
         total1: 0,
         total2: 0,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION + 60,
+        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableItemPricing',
         tableColumn: [
           { label: '商品', key: 'code_title', width: '140', isShow: true },
@@ -146,6 +146,14 @@
       }
     },
     methods: {
+      //展开隐藏搜索(重写)
+      onExpandChange(isExpand){
+        if (isExpand) {
+          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
+        } else {
+          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
+        }
+      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用

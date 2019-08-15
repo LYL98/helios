@@ -1,6 +1,6 @@
 <template>
   <div class="query">
-    <my-collapse-query @expandChange="onExpandChange">
+    <my-collapse-query @expandChange="(isExpand) => onExpandChange(isExpand, 'TableItemList')">
       <template slot="header">
         <el-row>
           <el-col :xl="6" :lg="7" :span="7">

@@ -70,9 +70,13 @@ export default {
     handleHideFiltrate(){
       this.$data.isShowFiltrate = false;
     },
-    onExpandChange(isExpand) {
+    //收起展开
+    onExpandChange(isExpand, pageComponent) {
       this.isExpand = isExpand;
-      this.$emit('expandChange', this.isExpand)
+      let pc = this.getPageComponents(pageComponent);
+      if(pc){
+        pc.onExpandChange(isExpand);
+      }
     }
   }
 }
