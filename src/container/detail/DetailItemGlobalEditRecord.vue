@@ -4,10 +4,7 @@
       <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
       <el-table-column label="操作时间" prop="created" width="260"/>
       <el-table-column label="操作内容" width="600">
-        <template slot-scope="scope">
-          <span v-if="scope.row.c === 'item_edit'">{{returnAttrStr(scope.row.modified_attrs)}}</span>
-          <span v-else>{{categorys[scope.row.category]}}</span>
-        </template>
+        <template slot-scope="scope">{{returnAttrStr(scope.row.modified_attrs)}}</template>
       </el-table-column>
       <el-table-column label="操作人">
         <template slot-scope="scope">{{scope.row.operator.realname}}</template>
@@ -41,42 +38,16 @@
       return {
         initDetail: {},
         fields: {
-          code: '商品编号',
           title: '商品名称',
-          images: '图片',
-          price_buy: '采购价',
-          price_sale: '销售价',
-          markup_rate: '加价率',
-          sale_unit: '销售单位',
+          images: '商品图片',
           package_spec: '包装规格',
           item_spec: '商品规格',
           origin_place: '产地',
           gross_weight: '毛重',
           net_weight: '净重',
-          system_class_code: '科学分类编号',
-          display_class_code: '展示分类编号',
+          system_class_code: '科学分类',
           frame_code: '框',
-          is_weigh: '是否称重',
-          tags: '商品标签',
-          content: '详细信息',
-          price_sale_piece: '商品的件价格',
-          frame: '框的信息',
-          buyer_id: '业务员',
-          item_stock: '商品库存',
-          is_audited: '是否已审核',
-          is_on_sale: '是否已上架',
-          is_deleted: '是否已删除',
-          order_num_max: '商品的最大订货数',
-          is_presale: '商品是否预售类型',
-          presale_begin: '预售开始日期',
-          presale_end: '预售结束日期',
-        },
-        categorys: {
-          item_under_ground: '下架',
-          item_on_ground: '上架',
-          item_out_edit: '外标签相关修改',
-          item_edit: '编辑',
-          item_inner_audit: '内标签审核'
+          content: '商品详细',
         },
         query: {
           id: '',
@@ -125,13 +96,13 @@
       changePageSize(pageSize) {
         this.$data.query.page_size = pageSize;
         this.$data.query.page = 1;
-        this.itemModifyDetail();
+        this.pItemModifyDetail();
       },
 
       //翻页
       changePage(page) {
         this.$data.query.page = page;
-        this.itemModifyDetail();
+        this.pItemModifyDetail();
       },
 
       //返回str
