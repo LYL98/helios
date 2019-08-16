@@ -9,19 +9,8 @@
     </query-merchant-store>
 
     <div class="operate" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
-      <el-button
-        v-if="auth.isAdmin || auth.MerchantExport"
-        @click.native="() => {merchantListExport();}"
-        size="mini"
-        type="primary"
-        plain
-      >导出商户列表</el-button>
-      <el-button
-        v-if="auth.isAdmin || auth.MerchantAdd"
-        @click="() => addMerchantDialogVisible = true"
-        size="mini"
-        type="primary"
-      >新增</el-button>
+      <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出商户列表</el-button>
+      <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="() => addMerchantDialogVisible = true" size="mini" type="primary">新增</el-button>
     </div>
     <!-- 头部end -->
 
@@ -35,6 +24,8 @@
       :affirmStoreFreeze="affirmStoreFreeze"
       :affirmStoreUnFreeze="affirmStoreUnFreeze"
       :offset-height="offsetHeight"
+      :windowHeight="windowHeight"
+      :getPageComponents="getPageComponents"
     >
     </merchant-table>
 
@@ -54,34 +45,25 @@
       </div>
     </div>
 
-    <el-dialog
-      title="商户详情"
-      width="1200px"
-      :visible.sync="detailDialog.isShow"
-      append-to-body
-    >
+    <el-dialog title="商户详情" width="1200px" :visible.sync="detailDialog.isShow" append-to-body>
       <merchant-detail :storeQuery="storeQuery" v-if="detailDialog.isShow"></merchant-detail>
     </el-dialog>
 
     <el-dialog title="新增商户" width="808px" :close-on-click-modal="false" :visible.sync="addMerchantDialogVisible" append-to-body>
-      <add-merchant
-        v-if="addMerchantDialogVisible"
-        :editMerchantSuccess="addMerchantSuccess"
-        :editMerchantCancel="addMerchantCancel">
-      </add-merchant>
+      <add-merchant v-if="addMerchantDialogVisible" :editMerchantSuccess="addMerchantSuccess" :editMerchantCancel="addMerchantCancel"></add-merchant>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapMutations } from 'vuex';
-  import {MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination} from 'element-ui';
+  import { MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
   import { QueryMerchantStore } from '@/container';
   import Table from './Table';
   import AddMerchant from './Add';
   import MerchantDetail from './Detail';
-  import {Config, Constant, DataHandle, Method, Http} from '@/util';
+  import { Config, Constant, DataHandle, Method, Http } from '@/util';
   import { Merchant } from '@/service';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "MerchantList",
@@ -100,6 +82,7 @@
       'merchant-detail': MerchantDetail,
       'query-merchant-store': QueryMerchantStore,
     },
+    mixins: [viewMixin],
     created() {
       let that = this;
       documentTitle('门店 - 门店列表');
@@ -112,9 +95,9 @@
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
       }
     },
-    computed: mapGetters({
+    /*computed: mapGetters({
       merchant_id: 'merchant_id'
-    }),
+    }),*/
     data() {
       return {
         province: this.$province,
@@ -157,14 +140,6 @@
       }
     },
     methods: {
-      ...mapMutations({
-        //merchantSetId: MERCHANT_SET_ID,
-        //merchantInitState: MERCHANT_INIT_STATE
-      }),
-
-      orderGetList() {
-
-      },
       //刷新
       refresh() {
         let {query} = this;
@@ -343,7 +318,7 @@
         let that = this;
         let {query} = that;
         // get merchant list data
-        let res = await Merchant.storeQuery(query);
+        let res = await Http.get(Config.api.storeQuery, query);
         // 如果返回结果正确，则将该数据 赋值给 dataItem；
         if (res.code === 0) {
           that.$data.dataItem = res.data;
@@ -379,7 +354,7 @@
        */
       async storeFreeze(data) {
         let that = this;
-        let res = await Merchant.storeFreeze({
+        let res = await Http.post(Config.api.storeFreeze, {
           id: data.id
         });
         if (res.code === 0) {
@@ -416,7 +391,7 @@
        */
       async storeUnFreeze(data) {
         let that = this;
-        let res = await Merchant.storeUnFreeze({
+        let res = await Http.post(Config.api.storeUnFreeze, {
           id: data.id
         });
         if (res.code === 0) {
@@ -574,7 +549,7 @@
       //删除门店
       async storeDelete(data){
         let that = this;
-        let res = await Merchant.storeDelete({
+        let res = await Http.post(Config.api.storeDelete, {
           id: data.id
         });
         if(res.code === 0){
@@ -604,12 +579,8 @@
 
       showDetail(item) {
         this.detailDialog.item = item;
-        this.merchantSetId({ id: item.merchant_id });
-        if (!this.merchant_id) { // 如果全局的商户id 无法获取，则不打开详情页弹窗。
-          return;
-        } else {
-          this.detailDialog.isShow = true;
-        }
+        this.$data.merchant_id = item.merchant_id;
+        this.detailDialog.isShow = true;
       },
 
       cacelDetail() {
@@ -629,7 +600,7 @@
       async merchantGradeTagsEdit() {
         let that = this;
         let {selectData, gradeTagData} = that;
-        let res = await Merchant.merchantGradeTagsEdit({
+        let res = await Http.post(Config.api.merchantGradeTagsEdit, {
           id: selectData.id,
           ...gradeTagData
         });

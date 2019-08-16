@@ -38,17 +38,6 @@
           >{{scope.row.merchant && scope.row.merchant.is_post_pay ? '是' : '否'}}</el-tag>
         </template>
       </el-table-column>
-      <!--<el-table-column label="团购门店" min-width="80">-->
-        <!--<template slot-scope="scope">-->
-          <!--<el-tag disable-transitions :type="scope.row.gb_included ? 'regular' : 'info'" size="small"-->
-          <!--&gt;{{scope.row.gb_included ? '是' : '否'}}</el-tag>-->
-        <!--</template>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column label="商户等级" min-width="80">-->
-      <!--<template slot-scope="scope">-->
-      <!--<div>{{ scope.row.merchant.grade }}</div>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
       <el-table-column label="所在仓" min-width="80" prop="city.title">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
@@ -56,11 +45,6 @@
           </div>
         </template>
       </el-table-column>
-      <!--<el-table-column label="收货地址" min-width="120">-->
-      <!--<template slot-scope="scope">-->
-      <!--<div :class="isEllipsis(scope.row)">{{ scope.row.address }}</div>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
       <el-table-column label="审核状态" min-width="80">
         <template slot-scope="scope">
           <el-tag disable-transitions :type="scope.row.is_approve ? 'regular' : 'info'" size="small"
@@ -115,7 +99,6 @@
   import {Merchant} from '@/service';
   import {DataHandle} from '@/util';
   import tableMixin from '@/container/table/table.mixin';
-  import viewMixin from '@/view/view.mixin';
 
   export default {
     components: {
@@ -125,7 +108,7 @@
       'el-tag': Tag,
       'my-table-operate': TableOperate,
     },
-    mixins: [tableMixin, viewMixin],
+    mixins: [tableMixin],
     props: {
       dataItem: Object, // 商户列表队列
       page: Number, // 当前查询的页码

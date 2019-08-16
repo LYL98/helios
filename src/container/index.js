@@ -76,6 +76,7 @@ export {
   QueryItemPricing,
 
   QueryOperateLine,
+  QueryOperateReceiving,
 
   QuerySystemOperator
 } from './query';
@@ -102,6 +103,7 @@ export {
   TableItemPricing,
 
   TableOperateLine,
+  TableOperateReceiving,
 
   TableBasicDataCity,
   TableBasicDataDisplayClass,

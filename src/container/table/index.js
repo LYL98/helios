@@ -30,6 +30,7 @@ export { default as TableItemList } from './TableItemList';
 export { default as TableItemPricing } from './TableItemPricing';
 
 export { default as TableOperateLine } from './TableOperateLine';
+export { default as TableOperateReceiving } from './TableOperateReceiving';
 
 export { default as TableSystemBanner } from './TableSystemBanner';
 export { default as TableSystemOperator } from './TableSystemOperator';

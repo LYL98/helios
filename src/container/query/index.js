@@ -31,5 +31,6 @@ export { default as QueryItemList } from './QueryItemList';
 export { default as QueryItemPricing } from './QueryItemPricing';
 
 export { default as QueryOperateLine } from './QueryOperateLine';
+export { default as QueryOperateReceiving } from './QueryOperateReceiving';
 
 export { default as QuerySystemOperator } from './QuerySystemOperator';

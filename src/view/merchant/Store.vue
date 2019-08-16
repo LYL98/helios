@@ -39,17 +39,6 @@
             </div>
           </template>
         </el-table-column>
-        <!--<el-table-column label="是否团购" width="100" prop="phone">-->
-          <!--<template slot-scope="scope">-->
-            <!--<div :class="isEllipsis(scope.row)">-->
-              <!--<el-tag-->
-                <!--size="small"-->
-                <!--:type="scope.row.gb_included ? 'regular' : 'info'"-->
-                <!--disable-transitions>{{scope.row.gb_included ? '是' : '否'}}-->
-              <!--</el-tag>-->
-            <!--</div>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
         <el-table-column label="收货地址" width="160" prop="address">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
@@ -154,23 +143,9 @@
 
 <script>
   import {mapGetters} from 'vuex';
-  import {
-    Table,
-    TableColumn,
-    MessageBox,
-    Message,
-    Button,
-    Tag,
-    Dialog,
-    Pagination,
-    Form,
-    FormItem,
-    Input,
-    Select
-  } from 'element-ui';
+  import { Table, TableColumn, MessageBox, Message, Button, Tag, Dialog, Pagination, Form, FormItem, Input, Select} from 'element-ui';
   import {TableOperate, OmissionText, SelectProvince} from '@/common';
-  import {Config, Constant, DataHandle, Method} from '@/util';
-  import {Merchant} from '@/service';
+  import {Http, Config, Constant, DataHandle, Method} from '@/util';
   import StoreAddEdit from './StoreAddEdit';
   import StoreEditCity from './StoreEditCity';
   import tableMixin from '@/container/table/table.mixin';
@@ -208,11 +183,9 @@
       updateCount: Number,
       storeQuery: Function
     },
-    computed: mapGetters({
-      merchant_id: 'merchant_id'
-    }),
     data() {
       return {
+        merchant_id: '',
         tencentPath: Config.tencentPath,
         query: {
           merchant_id: '',
@@ -231,7 +204,6 @@
       updateCount: 'storeList'
     },
     methods: {
-
       //刷新
       refresh() {
         let {query} = this;
@@ -257,7 +229,7 @@
 
         let that = this;
         let {query, merchant_id} = that;
-        let res = await Merchant.storeList({merchant_id: merchant_id});
+        let res = await Http.get(Config.api.storeList, {merchant_id: merchant_id});
         if (res.code === 0) {
           that.$data.dataItem = res.data;
           window.scrollTo(0, 0);
@@ -282,7 +254,7 @@
       //门店审核
       async storeApprove(data) {
         let that = this;
-        let res = await Merchant.storeApprove({
+        let res = await Http.post(Config.api.storeApprove, {
           id: data.id
         });
         if (res.code === 0) {
@@ -353,7 +325,7 @@
       //删除门店
       async storeDelete(data) {
         let that = this;
-        let res = await Merchant.storeDelete({
+        let res = await Http.get(Config.api.storeDelete, {
           id: data.id
         });
         if (res.code === 0) {
@@ -382,7 +354,7 @@
       //冻结
       async storeFreeze(data) {
         let that = this;
-        let res = await Merchant.storeFreeze({
+        let res = await Http.post(Config.api.storeFreeze, {
           id: data.id
         });
         if (res.code === 0) {
@@ -411,7 +383,7 @@
       //解冻
       async storeUnFreeze(data) {
         let that = this;
-        let res = await Merchant.storeUnFreeze({
+        let res = await Http.post(Config.api.storeUnFreeze, {
           id: data.id
         });
         if (res.code === 0) {
@@ -431,7 +403,6 @@
         window.scrollTo(0, 0);
         this.$data.query.page = page;
         this.storeList();
-
       },
     }
   };

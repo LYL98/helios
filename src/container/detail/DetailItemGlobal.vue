@@ -18,7 +18,10 @@
           <el-form-item label="商品名称">{{detail.title}}</el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="框"><span v-if="detail.frame_code">{{detail.frame.title}}&nbsp;(&yen;{{returnPrice(detail.frame.price)}})</span></el-form-item>
+          <el-form-item label="框">
+            <template v-if="detail.frame_code">{{detail.frame.title}}&nbsp;(&yen;{{returnPrice(detail.frame.price)}})</template>
+            <template v-else>-</template>
+          </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="产地">{{detail.origin_place}}</el-form-item>
@@ -29,7 +32,7 @@
           <el-form-item label="包装规格">{{detail.package_spec}}</el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="规格">{{detail.item_spec}}</el-form-item>
+          <el-form-item label="规格">{{detail.item_spec ? detail.item_spec : '-'}}</el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="毛重">{{returnWeight(detail.gross_weight)}}斤</el-form-item>
