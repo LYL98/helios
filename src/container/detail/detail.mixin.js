@@ -21,7 +21,7 @@ export default {
     'el-tabs': Tabs,
     'el-tab-pane': TabPane,
     'el-tag': Tag,
-    'el-popover': Popover
+    'el-popover': Popover,
   },
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件

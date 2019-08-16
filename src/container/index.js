@@ -145,6 +145,7 @@ export {
   DetailItemListEditRecord,
   DetailItemList,
   DetailItemListAuditInnerTag,
+  DetailItemPricingRecord,
 
   DetailHeadBalanceLog,
 

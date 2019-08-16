@@ -1,7 +1,7 @@
 <template>
   <!-- 头部start -->
     <div class="query">
-      <my-collapse-query @expandChange="onExpandChange" :defaultExpand="defaultExpand" :isShowExpandButton="isShowExpandButton">
+      <my-collapse-query @expandChange="(isExpand) => onExpandChange(isExpand, 'TableItemPricing')" :defaultExpand="defaultExpand" :isShowExpandButton="isShowExpandButton">
         <template slot="header">
           <el-row>
             <el-col :xl="6" :lg="7" :span="7">

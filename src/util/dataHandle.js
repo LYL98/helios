@@ -102,7 +102,11 @@ const dataHandle = {
   returnMarkup(data){
     if(!data) return 0;
     let v = data / 10;
-    return v;
+    let p = v.toFixed(1);
+    if(p.substring(p.length - 2, p.length) === '.0'){
+      return p.substring(0, p.length - 2);
+    }
+    return p;
   },
   //返回下单率
   returnLowerRate(data){

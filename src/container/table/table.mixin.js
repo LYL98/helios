@@ -203,6 +203,11 @@ export default {
       return DataHandle.returnPercent(data) + '%';
     },
 
+    //返回加价率
+    returnMarkup(markup){
+      return DataHandle.returnMarkup(markup);
+    },
+
     //是否显示表头哪一项
     isShowTableTitle() {
       let { tableName, tableColumn, tableShowColumn } = this;

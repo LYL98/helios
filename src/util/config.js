@@ -80,12 +80,13 @@ const Config = (() => {
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
       itemDetail: apiM + '/item/detail',//商品详情
       itemModifyDetail: apiM + '/item/modify_detail', //商品修改明细
+      itemExport: apiM + '/item/export', //商品列表导出
       //itemStatusApprove: apiM + '/item/status/approve',//商品审核
       itemPriceList: apiM + '/item/price/query',//每日定价页面查询
       itemPriceFix: apiM + '/item/price/fix',//商品定价
       itemPriceAudit: apiM + '/item/price/audit', //商品定价审核
+      itemPricingRecord: apiM + '/item/price_history/query', //商品定价记录
       //itemCodeEdit: apiM + '/item/code_edit', //商品编号修改
-      itemExport: apiM + '/item/export', //商品列表导出
 
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询

@@ -3,14 +3,14 @@
     <el-dialog :title="`报价：${detail.code} ${detail.title}`" :visible="isShow" width="680px" :before-close="handleCancel" :close-on-click-modal="false">
       <el-form label-position="right" label-width="100px" style="width: 620px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-row>
-          <el-col :span="10">
+          <el-col :span="8">
             <el-form-item label="昨日询价">
               <span class="show-span">
-                {{detail.price_buy_last}}&nbsp;元
+                &yen;{{detail.price_buy_last}}
               </span>
             </el-form-item>
           </el-col>
-          <el-col :span="14">
+          <el-col :span="16">
             <el-form-item label="今日询价" prop="price_buy">
               <span class="input-span" @click="clickPriceBuy">
                 {{detail.price_buy}}
@@ -21,47 +21,48 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="10">
-            <el-form-item label="计划加价率">
+          <el-col :span="8">
+            <el-form-item label="昨日加价率">
               <span class="show-span">
-                {{detail.markup_rate}}%
+                {{returnRate(detail.price_buy_last, detail.price_sale_last)}}
               </span>
             </el-form-item>
           </el-col>
-          <el-col :span="14">
+          <el-col :span="16">
             <el-form-item label="建议价" prop="net_weight_temp">
               <span class="show-span">
-                {{detail.suggest_price}}&nbsp;元
+                {{detail.suggest_price}}
               </span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="10">
+          <el-col :span="8">
             <el-form-item label="昨日销售价">
               <span class="show-span">
-                {{detail.price_sale_last}}&nbsp;元
+                &yen;{{detail.price_sale_last}}
               </span>
             </el-form-item>
           </el-col>
-          <el-col :span="14">
+          <el-col :span="16">
             <el-form-item label="今日销售价" prop="price_sale">
               <span class="input-span" @click="clickPriceSale">
                 {{detail.price_sale}}
               </span>
               <span class="input-behind-span">元</span>
+              <span style="margin-left: 10px;">今日加价率：{{returnRate(detail.price_buy, detail.price_sale)}}</span>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="10">
+          <el-col :span="8">
             <el-form-item label="库存">
               <span class="show-span">
                 {{detail.item_stock}}&nbsp;件
               </span>
             </el-form-item>
           </el-col>
-          <el-col :span="14">
+          <el-col :span="16">
             <el-form-item label="新库存" prop="new_item_stock">
               <span class="input-span" @click="clickNewItemStock">
                 {{detail.new_item_stock}}
@@ -81,7 +82,7 @@
 
 <script>
 import addEditMixin from './add.edit.mixin';
-import { Constant, DataHandle, } from '@/util';
+import { Http, Config, Constant, DataHandle } from '@/util';
 import { NumberKey } from '@/common';
 
 export default {
@@ -91,20 +92,9 @@ export default {
   },
   data(){
     return {
-      province: this.$province,
       weightScope: Constant.WEIGHT_SCOPE,//重量浮动范围
-      initDetail: {},
-      query: {
-        item_id: '',
-        price_buy: '',
-        price_sale: '',
-        item_stock: '',
-        province_code: '',
-        is_quoted: '',
-        is_approve: '',
-        buyer_id: '',
-        display_class_code: '',
-        opt_date: ''
+      initDetail: {
+        province_code: this.$province.code
       },
       rules: {
         price_buy: [
@@ -124,41 +114,39 @@ export default {
   methods: {
     //显示新增修改(重写)
     showAddEdit(data){
-      let { query } = this;
-      let d = {};
       if(data){
-        if (data.query) {
-          query.is_quoted = data.query.is_quoted === '' ? null : data.query.is_quoted;
-          query.is_approve = data.query.is_approve === '' ? null : data.query.is_approve;
-          query.buyer_id = data.query.buyer_id === '' ? null : data.query.buyer_id;
-          query.display_class_code = data.query.display_class_code === '' ? null : data.query.display_class_code;
-          query.province_code = data.query.province_code;
-          query.opt_date = data.query.opt_date
-        }
-
-        d = JSON.parse( JSON.stringify(data));
+        let d = JSON.parse( JSON.stringify(data));
+        d.province_code = this.$province.code;
         d.new_item_stock = d.item_stock;
         d.price_buy_last = Number(d.price_buy_last);
         d.price_buy = d.price_buy ? Number(d.price_buy) : '';
         d.price_sale = d.price_sale ? Number(d.price_sale) : '';
+        this.$data.detail = d;
+      }else{
+        this.$data.detail = JSON.parse( JSON.stringify( this.initDetail ));
       }
-      this.$data.detail = d;
       this.$data.isShow = true;
     },
     //返回建议价(今日询价，加价率)
-    returnSuggestPrice(priceBuy, markupRate){
-      return DataHandle.returnSuggestPrice(priceBuy, markupRate);
+    returnSuggestPrice(priceBuy){
+      let { detail } = this;
+      let min = DataHandle.returnSuggestPrice(priceBuy, detail.rise_min);
+      let max = DataHandle.returnSuggestPrice(priceBuy, detail.rise_max);
+      return `￥${min} - ￥${max}`;
+    },
+    //返回加价率(询价，销售价)
+    returnRate(p1, p2){
+      if(!p1 || !p2) return '-';
+      return this.returnMarkup(p2 / p1 - 1) + '%';
     },
     //使用昨日询价
     usePriceBuyLast(){
       let that = this;
       let { detail } = that;
       let price = detail.price_buy_last; //昨日采购价
-      let markupRate = detail.markup_rate; //加价率
-      let priceSale = that.returnSuggestPrice(price, markupRate); //今日售价(从建议价读取)
+      let priceSale = that.returnSuggestPrice(price); //今日售价(从建议价读取)
       detail.suggest_price = priceSale;
       detail.price_buy = price;
-      detail.price_sale = Number(priceSale);
       that.$data.detail = detail;
       that.$refs['ruleForm'].validate(()=>{return false;});
     },
@@ -171,11 +159,9 @@ export default {
         num: p || '',
         type: 'Price',
         confirm(price){
-          let markupRate = detail.markup_rate; //加价率
-          let priceSale = that.returnSuggestPrice(price, markupRate); //今日售价(从建议价读取)
+          let priceSale = that.returnSuggestPrice(price); //今日售价
           detail.suggest_price = priceSale;
           detail.price_buy = price;
-          detail.price_sale = Number(priceSale);
           that.$data.detail = detail;
           that.$refs['ruleForm'].validate(()=>{return false;});
         }
@@ -213,14 +199,13 @@ export default {
 
     //提交数据
     async addEditData(){
-      let { detail, query } = this;
-      query.item_id = detail.item_id;
-      query.price_buy = DataHandle.handlePrice(detail.price_buy);
-      query.price_sale = DataHandle.handlePrice(detail.price_sale);
-      query.item_stock = detail.new_item_stock;
-
+      let { detail } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.itemPriceFix, detail);
+      let res = await Http.post(Config.api.itemPriceFix, {
+        ...detail,
+        price_buy: this.handlePrice(detail.price_buy),
+        price_sale: this.handlePrice(detail.price_sale)
+      });
       this.$loading({isShow: false});
       if(res.code === 0){
         //data.index = detail.index;

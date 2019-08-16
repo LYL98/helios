@@ -1,7 +1,7 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="auth.isAdmin || auth.Itemxxx">
-      <el-button v-if="auth.isAdmin || auth.Itemxxx" @click.native="handleShowDetail('xxxx')" size="mini" type="primary" plain>报价记录</el-button>
+    <div class="table-top" v-if="auth.isAdmin || auth.ItemPriceRecord">
+      <el-button v-if="auth.isAdmin || auth.ItemPriceRecord" @click.native="handleShowDetail('DetailItemPricingRecord')" size="mini" type="primary" plain>报价记录</el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -11,6 +11,7 @@
         style="width: 100%; margin-top: 16px;"
         :height="windowHeight - offsetHeight"
         class="list-table"
+        @sort-change="onSort"
         :highlight-current-row="true"
         :row-key="returnTableKey"
         @selection-change="handleSelectionChange"
@@ -18,7 +19,7 @@
       >
         <el-table-column type="selection" :selectable="returnIsPricing" width="30" v-if="(auth.isAdmin || auth.ItemPriceAudit)"></el-table-column>
         <!--table-column start-->
-        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :width="item.width" v-if="item.isShow" :prop="item.key">
+        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :width="item.width" v-if="item.isShow" :prop="item.key" :sortable="item.key === 'sale_num_last' || item.key === 'item_stock' ? 'custom' : false">
           <div slot-scope="scope" class="my-td-item">
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
@@ -27,18 +28,8 @@
                 <span>{{scope.row.title}}</span>
               </div>
             </template>
-            <!--今日销售价-->
-            <div v-else-if="item.key === 'frame'">
-              <div class="num-input">
-                <span :style="scope.row.price_sale_style">{{scope.row.price_sale}}</span>
-              </div>
-            </div>
             <!--昨日销量-->
             <div v-else-if="item.key === 'sale_num_last'">{{scope.row.sale_num_last}}&nbsp;件</div>
-            <!--今日昨日加价率-->
-            <div v-else-if="item.key === 'today_rise_rate' || item.key === 'yesterday_rise_rate'">
-              {{returnMarkup(scope.row[item.key])}}%
-            </div>
             <!--库存-->
             <div v-else-if="item.key === 'item_stock'">{{scope.row.item_stock}}&nbsp;件</div>
             <!--正常情况-->
@@ -49,16 +40,8 @@
           <template slot-scope="scope">
             <div>
               <span v-if="scope.row.opt_type === 'is_approve'">已审核</span>
-              <el-button v-else-if="scope.row.opt_type === 'edit'" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', {
-                ...scope.row,
-                query: query,
-                index: scope.$index
-              })">修改</el-button>
-              <el-button v-else-if="scope.row.opt_type === 'pricing'" type="primary" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', {
-                ...scope.row,
-                query: query,
-                index: scope.$index
-              })">报价</el-button>
+              <el-button v-else-if="scope.row.opt_type === 'edit'" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', scope.row)">修改</el-button>
+              <el-button v-else-if="scope.row.opt_type === 'pricing'" type="primary" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', scope.row)">报价</el-button>
             </div>
             <div>
               <el-button v-if="scope.row.is_pricing" type="primary" size="mini" @click.native="audit([scope.row.item_id])">审核</el-button>
@@ -116,6 +99,10 @@
     },
     mixins: [tableMixin],
     created() {
+      if (!this.auth.isAdmin && !this.auth.ItemPriceRecord) {
+        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION + 60
+      }
+
       let pc = this.getPageComponents('QueryItemPricing');
       this.getData(pc.query);
     },
@@ -125,19 +112,19 @@
         salePriceScope: Constant.SALE_PRICE_SCOPE,
         total1: 0,
         total2: 0,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
+        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION + 60,
         tableName: 'TableItemPricing',
         tableColumn: [
           { label: '商品', key: 'code_title', width: '140', isShow: true },
           { label: '昨日询价', key: 'price_buy_last', width: '76', isShow: true },
           { label: '今日询价', key: 'price_buy', width: '76', isShow: true },
           { label: '昨日销售价', key: 'price_sale_last', width: '90', isShow: true },
-          { label: '建议价', key: 'suggest_price', width: '70', isShow: true },
+          { label: '建议价', key: 'suggest_price', width: '120', isShow: true },
           { label: '昨日加价率', key: 'yesterday_rise_rate', width: '100', isShow: true },
           { label: '今日加价率', key: 'today_rise_rate', width: '100', isShow: true },
-          { label: '今日销售价', key: 'gross_weight', width: '90', isShow: true },
-          { label: '昨日销量', key: 'sale_num_last', width: '106', isShow: true },
-          { label: '库存', key: 'item_stock', width: '120', isShow: true },
+          { label: '今日销售价', key: 'price_sale', width: '90', isShow: true },
+          { label: '昨日销量', key: 'sale_num_last', width: '100', isShow: true },
+          { label: '库存', key: 'item_stock', width: '80', isShow: true },
         ],
         priceDataItem: {
           items: [],
@@ -149,9 +136,9 @@
       //展开隐藏搜索(重写)
       onExpandChange(isExpand){
         if (isExpand) {
-          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
+          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
         } else {
-          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
+          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
         }
       },
       //获取数据
@@ -167,31 +154,6 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
-      //下架
-      itemUnderGround(data) {
-        this.$messageBox.confirm('您确认要下架？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          (async ()=>{
-            this.$loading({ isShow: true });
-            let res = await Http.post(Config.api.itemUnderGround, {
-              id: data.id
-            });
-            this.$loading({ isShow: false });
-            if(res.code === 0){
-              this.getData(this.query);
-              this.$message({message: '已下架', type: 'success'});
-            }else{
-              this.$message({message: res.message, type: 'error'});
-            }
-          })();
-        }).catch(() => {
-          //console.log('取消');
-        });
-      },
-
       //返回tabile key
       returnTableKey(d){
         return d.item_id;
@@ -200,13 +162,16 @@
       returnIsPricing(d){
         return d.is_pricing;
       },
-      //返回加价率
-      returnMarkup(markup){
-        return DataHandle.returnMarkup(markup);
-      },
       //返回建议价(今日询价，今日加价率)
       returnSuggestPrice(item){
-        return DataHandle.returnSuggestPrice(item.price_buy, item.today_rise_rate);
+        let min = DataHandle.returnSuggestPrice(item.price_buy, item.rise_min);
+        let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
+        return `${min} - ${max}`;
+      },
+      //返回加价率(询价，销售价)
+      returnRate(p1, p2){
+        if(!p1 || !p2) return '-';
+        return this.returnMarkup(p2 / p1 - 1) + '%';
       },
       //排序
       onSort({ column, prop, order }) {
@@ -234,56 +199,39 @@
         this.getData(this.query);
       },
 
-      showItemPriceEdit(obj, index) {
-        let { query } = this;
-        obj.data.index = index;
-        obj.data.query = query;
-        this.itemPricingShowHideEdit(obj);
-      },
       //选择
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
       //处理数据
       handleData() {
-        let that = this;
-        let { dataItem, priceScope, salePriceScope, auth } = that;
+        let { dataItem, priceScope, salePriceScope, auth } = this;
         let data = JSON.parse( JSON.stringify(dataItem)); //强转data
 
         // let d1 = 0, d2 = 0;
 
         data.items.map((item, index)=>{
-          //是否显示使用昨日询价按钮
-          let isShowShortcutPrice = false;
-          //无采购价、未审核
-          if(!item.price_buy && !item.is_approve){
-            isShowShortcutPrice = true;
-          }
-          item.is_show_shortcut_price = isShowShortcutPrice;
 
           //昨日询价
-          item.price_buy_last = that.returnPrice(item.price_buy_last);
+          item.price_buy_last = this.returnPrice(item.price_buy_last);
 
           //今日询价
-          item.price_buy = item.price_buy ? that.returnPrice(item.price_buy) : '';
+          item.price_buy = item.price_buy ? this.returnPrice(item.price_buy) : '';
 
           //昨日销售价
-          item.price_sale_last = that.returnPrice(item.price_sale_last);
+          item.price_sale_last = this.returnPrice(item.price_sale_last);
+
+          //昨日加价率
+          item.yesterday_rise_rate = this.returnRate(item.price_buy_last, item.price_sale_last);
+
+          //今日加价率
+          item.today_rise_rate = this.returnRate(item.today_rise_rate, item.today_rise_rate);
 
           //建议价
-          item.suggest_price = that.returnSuggestPrice(item);
+          item.suggest_price = this.returnSuggestPrice(item);
 
           //今日售价 及 样式
-          item.price_sale = item.price_sale ? that.returnPrice(item.price_sale) : '';
-
-          //昨日销量
-
-          let sp = item.suggest_price;
-          if(item.price_sale > sp && item.price_sale - sp > sp * priceScope){
-            item.price_sale_style = 'color: red; font-weight: bold;';
-          }else if(item.price_sale < sp && sp - item.price_sale > sp * priceScope){
-            item.price_sale_style = 'color: #52cd01; font-weight: bold;';
-          }
+          item.price_sale = item.price_sale ? this.returnPrice(item.price_sale) : '';
 
           //操作类型
           item.opt_type = '';
@@ -301,7 +249,7 @@
           }
         });
         //整体加价率
-        data.overall_markup = data.markup_rate_all | data.markup_rate_all ? that.returnMarkup(data.markup_rate_all) + '%' : '-';
+        data.overall_markup = data.markup_rate_all | data.markup_rate_all ? this.returnMarkup(data.markup_rate_all) + '%' : '-';
         // console.log(data);
         this.$data.priceDataItem = data;
       },
@@ -321,15 +269,19 @@
               ids.push(item.item_id);
             });
           }
-          //提交审核
-          that.itemPricingPriceAudit({
-            data: {
+          (async ()=>{
+            this.$loading({ isShow: true });
+            let res = await Http.post(Config.api.itemPriceAudit, {
               ids: ids
-            },
-            callback: ()=>{
-              that.itemPricingPriceList(that.query);
+            });
+            this.$loading({ isShow: false });
+            if(res.code === 0){
+              this.getData(this.query);
+              this.$message({message: '已审核', type: 'success'});
+            }else{
+              this.$message({message: res.message, type: 'error'});
             }
-          });
+          })();
         })
         .catch(() => {
           //console.log('取消');
