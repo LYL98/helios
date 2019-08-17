@@ -42,10 +42,6 @@ export default {
         return Http.post(Config.api.merchantBalanceEdit, data);
     },
     // 修改门店的退框信息
-    refundListEdit(data) {
-        return Http.post(Config.api.merchantRefundListEdit, data);
-    },
-    // 修改门店的退框信息
     refundEdit(data) {
         return Http.post(Config.api.merchantRefundEdit, data);
     },

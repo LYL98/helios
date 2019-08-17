@@ -24,9 +24,9 @@
           <template slot-scope="scope">
             <!--门店个数-->
             <div v-if="item.key === 'percent'" >
-              <span>{{returnPercent(scope.row.rise_min)}}</span>
+              <span>{{returnPercent(scope.row.rise_min)}}%</span>
               <span style="padding: 0 5px;">-</span>
-              <span>{{returnPercent(scope.row.rise_max)}}</span>
+              <span>{{returnPercent(scope.row.rise_max)}}%</span>
             </div>
             <!--正常情况-->
             <div v-else>{{scope.row[item.key]}}</div>

@@ -33,11 +33,7 @@
                 <span>/</span>
                 <span>{{scope.row.city_items[index].order_number}}</span>
                 <span class="f-r allot-btn" v-if="(auth.isAdmin || auth.OperateReceivingAllot) && !dataItem.is_all_line_checked && scope.row.city_items[index].is_show_allot">
-                  <a href="javascript:void(0);" style="font-size: 12px;" @click="operateReceivingShowHideAllot({
-                    isShow: true,
-                    data: scope.row,
-                    index: index
-                  })">分配</a>
+                  <a href="javascript:void(0);" style="font-size: 12px;" @click="handleShowForm('FormOperateReceivingAllot', scope.row.city_items[index])">分配</a>
                 </span>
               </div>
             </div>
@@ -50,15 +46,9 @@
           <!--已审核 checked -->
           <span v-if="scope.row.status === 'checked'" style="font-size: 12px;">已审核</span>
           <!--收货 receiving-->
-          <el-button size="mini" type="primary" v-else-if="(auth.isAdmin || auth.OperateReceivingAdd) &&  scope.row.status === 'receiving'" @click.native="operateReceivingShowHideEditNumber({
-            isShow: true,
-            data: scope.row
-          })">收货</el-button>
+          <el-button size="mini" type="primary" v-else-if="(auth.isAdmin || auth.OperateReceivingAdd) &&  scope.row.status === 'receiving'" @click.native="handleShowForm('FormOperateReceivingNumber', scope.row)">收货</el-button>
           <!--修改 update-->
-          <el-button size="mini" v-else-if="(auth.isAdmin || auth.OperateReceivingEdit) && scope.row.status === 'update'" @click.native="operateReceivingShowHideEditNumber({
-            isShow: true,
-            data: scope.row
-          })">修改</el-button>
+          <el-button size="mini" v-else-if="(auth.isAdmin || auth.OperateReceivingEdit) && scope.row.status === 'update'" @click.native="handleShowForm('FormOperateReceivingNumber', scope.row)">修改</el-button>
           <!--已收货没有修改权限 -->
           <span v-else>已收货</span>
         </template>
@@ -76,8 +66,8 @@
       </div>
       <div class="right t-r">
         <span v-if="dataItem.dataListLength === 0"></span>
-        <el-button type="primary" @click.native="showAudit" v-else-if="!dataItem.is_all_line_checked">审核预览</el-button>
-        <el-button @click.native="showAudit" v-else-if="dataItem.is_all_line_checked">已审核</el-button>
+        <el-button type="primary" @click.native="handleShowDetail('DetailOperateReceivingAudit', { query, dataItem })" v-else-if="!dataItem.is_all_line_checked">审核预览</el-button>
+        <el-button @click.native="handleShowDetail('DetailOperateReceivingAudit', { query, dataItem })" v-else-if="dataItem.is_all_line_checked">已审核</el-button>
       </div>
     </div>
   </div>
@@ -260,5 +250,37 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
+  @import './table.scss';
+  .operate-receiving {
+    .is-group {
+      tr {
+        th {
+          background-color: #fff;
+        }
+      }
+    }
+    .county{
+      text-align: center;
+      font-size: 16px;
+      >span{
+        &.warn{
+          color: red;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .bottom{
+      display: flex;
+      height: 48px;
+      line-height: 58px;
+      overflow: hidden;
+      padding: 0 10px;
+      .left{
+        font-size: 18px;
+        flex: 1;
+      }
+    }
+  }
 </style>

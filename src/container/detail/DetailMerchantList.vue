@@ -173,12 +173,12 @@
     Input, Select, Option, Switch, DatePicker, Tag, Upload, Button, ButtonGroup
   } from 'element-ui';
   import {TableOperate, ToPrice, OmissionText} from '@/common';
-  import TagsEdit from './TagsEdit';
-  import MerchantStore from './Store';
-  import MerchantMember from './Member';
-  import MerchantEdit from './Edit';
-  import MemberAddEdit from './MemberAddEdit';
-  import StoreAddEdit from './StoreAddEdit';
+  import TagsEdit from '@/view/merchant/TagsEdit';
+  import MerchantStore from '@/view/merchant/Store';
+  import MerchantMember from '@/view/merchant/Member';
+  import MerchantEdit from '@/view/merchant/Edit';
+  import MemberAddEdit from '@/view/merchant/MemberAddEdit';
+  import StoreAddEdit from '@/view/merchant/StoreAddEdit';
   import {Merchant, Base} from '@/service';
   import {Config, DataHandle} from '@/util';
 

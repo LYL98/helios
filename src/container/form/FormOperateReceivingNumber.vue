@@ -1,6 +1,6 @@
 <template>
   <div class="receiving-allot">
-    <el-dialog :title="`收货：${citiesNumItem.code} ${citiesNumItem.title}`" :visible="isShow" width="720px" :before-close="cancel" :close-on-click-modal="false">
+    <el-dialog :title="`收货：${citiesNumItem.code} ${citiesNumItem.title}`" :visible="isShow" width="720px" :before-close="handleCancel" :close-on-click-modal="false">
       <div class="city-title">
         <div v-for="(item, index) in dataItem.cities" :key="index">
           <p class="title">{{item.title}}</p>
@@ -22,7 +22,7 @@
           <span>/</span>
           <span>{{subtotal2}}</span>
         </div>
-        <el-button @click.native="cancel">取 消</el-button>
+        <el-button @click.native="handleCancel">取 消</el-button>
         <el-button type="primary" @click.native="submit">确 定</el-button>
       </div>
     </el-dialog>
@@ -30,41 +30,41 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { Form, FormItem, Button, Dialog } from 'element-ui';
-import { Config, Constant, DataHandle, Method } from '@/util';
+import fromMixin from './from.mixin';
+import { Http, Config, Constant, DataHandle } from '@/util';
 import { NumberKey } from '@/common';
 
 export default {
-  name: "ReceivingNumber",
+  name: "FormOperateReceivingNumber",
+  mixins: [fromMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-dialog': Dialog,
   },
-  computed: mapGetters({
-    isShow: 'operateReceivingIsShowEditNumber',
-    dataItem: 'operateReceivingDataItem',
-    editNumData: 'operateReceivingEditNumData'
-  }),
   created() {
-    
   },
   data(){
     return {
+      initDetail: {},
       subtotal1: 0, //实收
       subtotal2: 0, //应收
       citiesDataItem: [], // 县数据
       citiesNumItem: {
         city_items: []
       }, //县数量数据
+      dataItem: {
+        cities: []
+      },
     }
   },
   methods: {
-    //取消
-    cancel(){
-      this.operateReceivingShowHideEditNumber({ isShow: false });
+    //显示form(重写)
+    showForm(data){
+      let d = {};
+      if(data){
+        d = JSON.parse(JSON.stringify(data));
+      }
+      this.$data.citiesDataItem = d;
+      this.refreshData(d);
+      this.$data.isShow = true;
     },
     //修改数量
     editNumber(index){
@@ -84,9 +84,9 @@ export default {
       });
     },
     //确认提交
-    submit(){
+    async submit(){
       let that = this;
-      let { citiesNumItem } = that;
+      let { citiesNumItem } = this;
       let d = [];
       citiesNumItem.city_items.map((item)=>{
         if(item.id){
@@ -96,20 +96,22 @@ export default {
           });
         }
       });
-      that.operatorReceivingDeliveryItemsSubmit({
-        data: {
-          city_items: d
-        },
-        callback: ()=>{
-          let c = that.$attrs.callback;
-          typeof c === 'function' && c(citiesNumItem);//回调
-          that.cancel();
-        }
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api.orderDeliveryItemsSubmit, {
+        city_items: d
       });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.handleCancel();
+        //刷新数据
+        let pc = this.getPageComponents('TableOperateReceiving');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
     },
     //计算数据
     refreshData(data){
-      let that = this;
       let subtotal1 = 0;
       let subtotal2 = 0;
       data.city_items.map((item)=>{
@@ -128,28 +130,12 @@ export default {
         }
       });
 
-      that.subtotal1 = subtotal1;
-      that.subtotal2 = subtotal2;
+      this.subtotal1 = subtotal1;
+      this.subtotal2 = subtotal2;
 
-      that.citiesNumItem = data;
-    },
-    ...mapActions(['operateReceivingShowHideEditNumber', 'operatorReceivingDeliveryItemsSubmit'])
-  },
-  watch:{
-    editNumData: {
-      deep: true,
-      handler: function (a, b) {
-        let that = this;
-        if(a){
-          let d = JSON.parse( JSON.stringify(a));
-          that.citiesDataItem = d;
-          that.refreshData(d); //计算数据
-        }else{
-          that.citiesDataItem = {};
-        }
-      }
+      this.citiesNumItem = data;
     }
-  }
+  },
 };
 </script>
 

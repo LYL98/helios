@@ -19,3 +19,6 @@ export { default as AddEditOperateLine } from './AddEditOperateLine';
 export { default as AddEditSystemRole } from './AddEditSystemRole';
 export { default as AddEditSystemOperator } from './AddEditSystemOperator';
 export { default as AddEditSystemBanner } from './AddEditSystemBanner';
+
+export { default as AddEditMerchantList } from './AddEditMerchantList';
+export { default as AddEditMerchantRefund } from './AddEditMerchantRefund';

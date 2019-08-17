@@ -1,13 +1,6 @@
 <template>
   <div>
-    <query-merchant-store
-      v-model="query"
-      @change="changeQuery"
-      :reset="resetQuery"
-      @expandChange="onExpandChange"
-    >
-    </query-merchant-store>
-
+    <query-merchant-store v-model="query" @change="changeQuery" :reset="resetQuery" @expandChange="onExpandChange" />
     <div class="operate" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
       <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出商户列表</el-button>
       <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="() => addMerchantDialogVisible = true" size="mini" type="primary">新增</el-button>
@@ -15,7 +8,7 @@
     <!-- 头部end -->
 
     <!-- 列表渲染 -->
-    <merchant-table
+    <table-merchant-list
       :dataItem="dataItem"
       :page="query.page"
       :pageSize="query.page_size"
@@ -26,8 +19,8 @@
       :offset-height="offsetHeight"
       :windowHeight="windowHeight"
       :getPageComponents="getPageComponents"
-    >
-    </merchant-table>
+      ref="TableMerchantList"
+    />
 
     <!-- 分页标签 -->
     <div class="footer" v-if="dataItem.num > 0">
@@ -46,21 +39,18 @@
     </div>
 
     <el-dialog title="商户详情" width="1200px" :visible.sync="detailDialog.isShow" append-to-body>
-      <merchant-detail :storeQuery="storeQuery" v-if="detailDialog.isShow"></merchant-detail>
+      <detail-merchant-list :storeQuery="storeQuery" v-if="detailDialog.isShow"/>
     </el-dialog>
 
     <el-dialog title="新增商户" width="808px" :close-on-click-modal="false" :visible.sync="addMerchantDialogVisible" append-to-body>
-      <add-merchant v-if="addMerchantDialogVisible" :editMerchantSuccess="addMerchantSuccess" :editMerchantCancel="addMerchantCancel"></add-merchant>
+      <add-edit-merchant-list v-if="addMerchantDialogVisible" :editMerchantSuccess="addMerchantSuccess" :editMerchantCancel="addMerchantCancel"/>
     </el-dialog>
   </div>
 </template>
 
 <script>
   import { MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
-  import { QueryMerchantStore } from '@/container';
-  import Table from './Table';
-  import AddMerchant from './Add';
-  import MerchantDetail from './Detail';
+  import { QueryMerchantStore, TableMerchantList, AddEditMerchantList, DetailMerchantList } from '@/container';
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
   import { Merchant } from '@/service';
   import viewMixin from '@/view/view.mixin';
@@ -77,9 +67,9 @@
       'el-dialog': Dialog,
       'el-tag': Tag,
       'el-pagination': Pagination,
-      'merchant-table': Table,
-      'add-merchant': AddMerchant,
-      'merchant-detail': MerchantDetail,
+      'table-merchant-list': TableMerchantList,
+      'add-edit-merchant-list': AddEditMerchantList,
+      'detail-merchant-list': DetailMerchantList,
       'query-merchant-store': QueryMerchantStore,
     },
     mixins: [viewMixin],

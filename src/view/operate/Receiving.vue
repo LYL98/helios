@@ -2,12 +2,14 @@
   <div>
     <query-operate-receiving :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryOperateReceiving"/>
     <table-operate-receiving :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableOperateReceiving"/>
-    <add-edit-operate-receiving :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditOperateReceiving"/>
+    <form-operate-receiving-allot :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormOperateReceivingAllot"/>
+    <form-operate-receiving-number :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormOperateReceivingNumber"/>
+    <detail-operate-receiving-audit :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailOperateReceivingAudit"/>
   </div>
 </template>
 
 <script>
-  import { QueryOperateReceiving, TableOperateReceiving, AddEditOperateReceiving } from '@/container';
+  import { QueryOperateReceiving, TableOperateReceiving, FormOperateReceivingAllot, FormOperateReceivingNumber, DetailOperateReceivingAudit } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -15,7 +17,9 @@
     components: {
       'query-operate-receiving': QueryOperateReceiving,
       'table-operate-receiving': TableOperateReceiving,
-      'add-edit-operate-receiving': AddEditOperateReceiving,
+      'form-operate-receiving-allot': FormOperateReceivingAllot,
+      'form-operate-receiving-number': FormOperateReceivingNumber,
+      'detail-operate-receiving-audit': DetailOperateReceivingAudit
     },
     mixins: [viewMixin],
     created() {

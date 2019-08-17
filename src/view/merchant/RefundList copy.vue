@@ -215,37 +215,6 @@
     },
     methods: {
 
-      // cellMouseEnter(row, column, cell, event) {
-      //   if(row.id !== this.$data.currentRow.id) {
-      //     this.$data.currentRow = row;
-      //   }
-      // },
-      //
-      // cellMouseLeave(row, column, cell, event) {
-      //   this.$data.currentRow = {};
-      // },
-      //
-      // isEllipsis(row) {
-      //   return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
-      // },
-      //
-      // highlightRowClassName({row, rowIndex}) {
-      //   if (rowIndex % 2 == 0) {
-      //     return 'stripe-row';
-      //   } else if (rowIndex % 2 != 0) {
-      //     return 'default-row'
-      //   }
-      //   return '';
-      // },
-      //
-      // returnPrice(v) {
-      //   return DataHandle.returnPrice(v);
-      // },
-      //
-      // handlePrice(v) {
-      //   return DataHandle.handlePrice(v);
-      // },
-
       indexMethod(index) {
         return (this.query.page - 1) * this.query.page_size + index + 1;
       },
@@ -306,10 +275,6 @@
         this.$data.showEditDialog = true;
         this.$data.editStoreItem = Object.assign({}, this.$data.editStoreItem, item);
 
-      },
-
-      handleSubmitEdit() {
-        // console.log('确认修改');
       },
 
     }

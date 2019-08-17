@@ -93,8 +93,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
-  import {Table, TableColumn, Button, Tag, MessageBox, Message} from 'element-ui';
   import {TableOperate} from '@/common';
   import {Merchant} from '@/service';
   import {DataHandle} from '@/util';
@@ -102,10 +100,6 @@
 
   export default {
     components: {
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-button': Button,
-      'el-tag': Tag,
       'my-table-operate': TableOperate,
     },
     mixins: [tableMixin],
@@ -128,7 +122,7 @@
 
       //确认审核
       affirmApprove(item) {
-        MessageBox.confirm('确认通过审核?', '提示', {
+        this.$messageBox.confirm('确认通过审核?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -149,10 +143,10 @@
           id: id
         });
         if (res.code === 0) {
-          Message.success('商户审核通过！');
+          this.$message({ message: '商户审核通过！', type: 'success' });
           item.is_approve = true;
         } else {
-          Message.warning(res.message);
+          this.$message({ message: res.message, type: 'error' });
         }
       },
     }

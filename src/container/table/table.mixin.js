@@ -1,32 +1,18 @@
-import { Table, TableColumn, Tag, Pagination, Button, Tooltip, Popover, Tree } from 'element-ui';
-import { DataHandle, Constant, Method, Config, Http } from '@/util';
+import baseMixin from '@/container/base.mixin';
+import { Constant, Method, Config, Http } from '@/util';
 import { TableOperate } from '@/common';
 import SettingColumnTitle from './SettingColumnTitle';
 
 // 表格宽度： 860 / 830（带全选）
 
 export default {
+  mixins: [baseMixin],
   components: {
-    'el-tag': Tag,
-    'el-tree': Tree,
-    'el-tooltip': Tooltip,
-    'el-button': Button,
-    'el-table': Table,
-    'el-table-column': TableColumn,
-    'el-pagination': Pagination,
-    'el-popover': Popover,
     'my-table-operate': TableOperate,
     'setting-column-title': SettingColumnTitle
   },
-  props: {
-    getPageComponents: { type: Function, require: true }, //获取页面组件
-    windowHeight: {type: Number, default: 0}
-  },
   data() {
     return {
-      tencentPath: Config.tencentPath,
-      province: this.$province,
-      auth: this.$auth,
       rowIdentifier: 'id',
       currentRow: {},
       currentRowLocked: false,
@@ -158,54 +144,6 @@ export default {
         return 'default-row'
       }
       return '';
-    },
-
-    //处理日期
-    returnDateFormat(dateStr) {
-      return DataHandle.returnDateFormat(dateStr, 'yyyy-MM-dd');
-    },
-
-    //处理日期
-    returnDate(dateStr) {
-      return DataHandle.returnDateFormat(dateStr, 'yyyy-MM-dd')
-    },
-
-    //处理时间
-    returnTime(dateStr) {
-      return DataHandle.returnDateFormat(dateStr, 'HH:mm:ss')
-    },
-
-    //返回价格
-    returnPrice(price){
-      return DataHandle.returnPrice(price);
-    },
-    //处理价格
-    handlePrice(price){
-      return DataHandle.handlePrice(price);
-    },
-    //返回重量
-    returnWeight(weight){
-      return DataHandle.returnWeight(weight);
-    },
-
-    //处理重量
-    handleWeight(data){
-      return DataHandle.handleWeight(data);
-    },
-
-    // 返回折扣
-    returnDiscount(discount) {
-      return DataHandle.returnDiscount(discount);
-    },
-
-    // 返回百分比
-    returnPercent(data) {
-      return DataHandle.returnPercent(data) + '%';
-    },
-
-    //返回加价率
-    returnMarkup(markup){
-      return DataHandle.returnMarkup(markup);
     },
 
     //是否显示表头哪一项

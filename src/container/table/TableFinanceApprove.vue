@@ -63,7 +63,7 @@
       <el-table-column label="提交时间" prop="created" min-width="100">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">{{returnDate(scope.row.created)}}</div>
-          <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnTime(scope.row.created)}}</div>
+          <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnDateFormat(scope.row.created, 'HH:mm:ss')}}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100" align="center">

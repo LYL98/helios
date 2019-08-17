@@ -27,7 +27,7 @@ const router = new Router({
     {
       path: '/merchant/refund/query',
       name: 'MerchantRefundQuery',
-      component: () => import(/* webpackChunkName: "merchant" */ '@/view/merchant/RefundList')
+      component: () => import(/* webpackChunkName: "merchant" */ '@/view/merchant/Refund')
     },
     /*商品*/
     {

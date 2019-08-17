@@ -1,6 +1,8 @@
 export { default as QueryMarketingCoupon } from './QueryMarketingCoupon';
 export { default as QueryMarketingScopePromotion } from './QueryMarketingScopePromotion';
 export { default as QueryMerchantStore } from './QueryMerchantStore';
+export { default as QueryMerchantRefund } from './QueryMerchantRefund';
+
 export { default as QueryOrder } from './QueryOrder';
 export { default as QueryOrderAfterSale } from './QueryOrderAfterSale';
 export { default as QueryBusinessFourRate } from './QueryBusinessFourRate';

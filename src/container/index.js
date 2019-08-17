@@ -19,7 +19,10 @@ export {
 
   AddEditSystemRole,
   AddEditSystemOperator,
-  AddEditSystemBanner
+  AddEditSystemBanner,
+
+  AddEditMerchantList,
+  AddEditMerchantRefund
 } from './addEdit';
 
 // 下拉选择组件
@@ -46,6 +49,8 @@ export {
   QueryMarketingCoupon,
   QueryMarketingScopePromotion,
   QueryMerchantStore,
+  QueryMerchantRefund,
+
   QueryOrder,
   QueryOrderAfterSale,
   QueryBusinessFourRate,
@@ -118,7 +123,10 @@ export {
   TableBasicDataZone,
 
   TableSystemBanner,
-  TableSystemOperator
+  TableSystemOperator,
+
+  TableMerchantList,
+  TableMerchantRefund
 } from './table';
 
 // 表单
@@ -136,7 +144,10 @@ export {
   FormSystemOperatorResetPwd,
 
   FormItemListEditClassTag,
-  FormItemListEditInnerTag
+  FormItemListEditInnerTag,
+
+  FormOperateReceivingAllot,
+  FormOperateReceivingNumber
 } from './form';
 
 export {
@@ -149,5 +160,10 @@ export {
 
   DetailHeadBalanceLog,
 
-  DetailSystemOperator
+  DetailSystemOperator,
+
+  DetailOperateReceivingAudit,
+
+  DetailMerchantList,
+  DetailMerchantRefundLog
 } from './detail';

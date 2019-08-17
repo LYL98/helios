@@ -162,19 +162,19 @@ export default {
   },
   methods: {
     //显示新增修改(重写mixin)
-      showDetail(data){
-        if(data){
-          this.itemDetail(data.id);
-        }else{
-          this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
-          this.$data.isShow = true;
-        }
-      },
-      //显示修改明细
-      handleShowEditRecord(){
-        let pc = this.getPageComponents('DetailItemListEditRecord');
-        pc.showDetail(this.detail);
-      },
+    showDetail(data){
+      if(data){
+        this.itemDetail(data.id);
+      }else{
+        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.isShow = true;
+      }
+    },
+    //显示修改明细
+    handleShowEditRecord(){
+      let pc = this.getPageComponents('DetailItemListEditRecord');
+      pc.showDetail(this.detail);
+    },
     //获取详情
     async itemDetail(id){
       this.$loading({isShow: true});

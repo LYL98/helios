@@ -1,6 +1,6 @@
 <template>
   <div class="receiving-allot">
-    <el-dialog title="分配到门店" :visible="isShow" width="720px" :before-close="cancelAllot">
+    <el-dialog title="分配到门店" :visible="isShow" width="720px" :before-close="handleCancel">
       <div style="margin-bottom: 20px;">
         <div style="margin-bottom: 10px;">
         【{{dataItem.city_title}}】
@@ -21,7 +21,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click.native="cancelAllot">取 消</el-button>
+        <el-button @click.native="handleCancel">取 消</el-button>
         <el-button type="primary" @click.native="submitAllot">确 定</el-button>
       </span>
     </el-dialog>
@@ -29,28 +29,21 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { Form, FormItem, Button, Dialog } from 'element-ui';
-import { Config, Constant, DataHandle, Method } from '@/util';
+import fromMixin from './from.mixin';
+import { Config, Constant, DataHandle } from '@/util';
 import { NumberKey } from '@/common';
 
 export default {
   name: "ReceivingAllot",
+  mixins: [fromMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-dialog': Dialog,
   },
-  computed: mapGetters({
-    receivingStoresItem: 'operateReceivingStoresItem',
-    isShow: 'operateReceivingIsShowAllot'
-  }),
   created() {
     
   },
   data(){
     return {
+      initDetail: {},
       dataItem: {
         store_items: []
       },
@@ -58,9 +51,23 @@ export default {
     }
   },
   methods: {
-    //取消
-    cancelAllot(){
-      this.operateReceivingShowHideAllot({ isShow: false });
+    //显示form(重写)
+    showForm(data){
+      this.operatorOrderDistributeStores(data);
+    },
+    //获取分配到门店列表
+    async operatorOrderDistributeStores(data, index){
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.get(Config.api.operatorOrderDistributeStores, {
+        city_item_id: data.id
+      });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$data.dataItem = rd.data;
+        this.$data.isShow = true;
+      }else{
+        this.$message({title: '提示', message: res.message, type: 'error'});
+      }
     },
     //总数量
     total(){
@@ -87,30 +94,26 @@ export default {
       });
     },
     //确认提交
-    submitAllot(){
+    async submitAllot(){
       let that = this;
       let { dataItem } = that;
       if(dataItem.real_number != that.total()){
         this.$message({title: '提示', message: '数量分配有误，请重新分配', type: 'error'});
         return false;
       }
-      that.operatorReceivingOrderDistribute({
-        data: {
-          ...dataItem,
-          city_item_id: dataItem.id
-        },
-        callback: (res)=>{
-          that.cancelAllot();
-        }
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api.operatorOrderDistribute, {
+        ...dataItem,
+        city_item_id: dataItem.id
       });
-    },
-    ...mapActions(['operateReceivingShowHideAllot', 'operatorReceivingOrderDistribute', 'message'])
-  },
-  watch:{
-    receivingStoresItem: {
-      deep: true,
-      handler: function (a, b) {
-        this.dataItem = JSON.parse( JSON.stringify( a ) );
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.handleCancel();
+        //刷新数据
+        let pc = this.getPageComponents('TableOperateReceiving');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
       }
     }
   }

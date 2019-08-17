@@ -11,3 +11,5 @@ export { default as FormSystemSettingItemCommonDes } from './FormSystemSettingIt
 export { default as FormSystemOperatorResetPwd } from './FormSystemOperatorResetPwd';
 export { default as FormItemListEditClassTag } from './FormItemListEditClassTag';
 export { default as FormItemListEditInnerTag } from './FormItemListEditInnerTag';
+export { default as FormOperateReceivingAllot } from './FormOperateReceivingAllot';
+export { default as FormOperateReceivingNumber } from './FormOperateReceivingNumber';

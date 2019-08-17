@@ -34,3 +34,6 @@ export { default as TableOperateReceiving } from './TableOperateReceiving';
 
 export { default as TableSystemBanner } from './TableSystemBanner';
 export { default as TableSystemOperator } from './TableSystemOperator';
+
+export { default as TableMerchantList } from './TableMerchantList';
+export { default as TableMerchantRefund } from './TableMerchantRefund';

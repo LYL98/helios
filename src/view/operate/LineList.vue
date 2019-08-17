@@ -20,7 +20,6 @@
     },
     mixins: [viewMixin],
     created() {
-      let that = this;
       documentTitle('配送 - 线路规划');
     }
   };

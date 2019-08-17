@@ -21,10 +21,10 @@ const Config = (() => {
       orderDeliveryItemsSubmit: apiM + '/delivery/city/items/set_num',//提交收货单(post)
       operatorOrderDistributeStores: apiM + '/delivery/city/item/detail', //获取要分配商品的门店列表
       operatorOrderDistribute: apiM + '/delivery/store/items/set_num', //分配商品到门店
-      deliveryStoresByCity: apiM + '/delivery/stores/by_city',//获取指定城市所需配送的门店
-      deliveryItemsByCity: apiM + '/delivery/items/by_city',//获取指定城市所需配送的商品
-      deliveryStoreItems: apiM + '/delivery/store/items', //称重，查看门店商品的列表，可指定门店，或者指定商品
-      orderDeliveryWeightData: apiM + '/delivery/store/items/set_weight',//提交称重数据
+      //deliveryStoresByCity: apiM + '/delivery/stores/by_city',//获取指定城市所需配送的门店
+      //deliveryItemsByCity: apiM + '/delivery/items/by_city',//获取指定城市所需配送的商品
+      //deliveryStoreItems: apiM + '/delivery/store/items', //称重，查看门店商品的列表，可指定门店，或者指定商品
+      //orderDeliveryWeightData: apiM + '/delivery/store/items/set_weight',//提交称重数据
       deliveryPreCheck: apiM + '/delivery/pre_check', //称重收货，预审，查看缺货的，称重偏差在20%的
       orderDeliveryCheck: apiM + '/delivery/check',//审核通过(post)
 
@@ -241,7 +241,6 @@ const Config = (() => {
       merchantGradeTagsEdit: apiM + '/merchant/grade_tags/edit', //商户内标签修改
       merchantBalanceEdit: apiM + '/merchant/balance/edit',  // 商户充值 / 扣款
       merchantBalanceLogQuery: apiM + '/merchant/balance/log/query', // 商户充值/扣款记录查询
-      merchantRefundListEdit: apiM + '/store/frame/edit', // 修改多个门店的退框信息
       merchantRefundEdit: apiM + '/store/frame/edit', //修改门店的退框信息
       merchantRefundLogQuery: apiM + '/store/frame/log/query', // 退框日志查询
       merchantExport: apiM + '/store/export', // 商户导出

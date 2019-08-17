@@ -87,7 +87,7 @@
   import md5 from 'md5';
 
   export default {
-    name: 'MerchantAdd',
+    name: 'AddEditMerchantList',
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
