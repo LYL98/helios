@@ -144,7 +144,6 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox} from 'element-ui';
   import {QueryMarketingCoupon, TableMarketingCoupon, TableMarketingCouponLog, TableMarketingCouponStatistic, FormMarketingCouponAdd, FormMarketingCouponSend} from '@/container';
   import { Item } from '@/service';
@@ -193,11 +192,7 @@
           isShowDetail: false
         }
       }
-    },
-    computed: {
-      ...mapGetters({
-        listItem: 'itemCouponListItem'
-      })
+      listItem: 'itemCouponListItem' //
     },
     created() {
       documentTitle('营销 - 优惠券');

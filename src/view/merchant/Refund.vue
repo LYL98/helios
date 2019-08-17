@@ -1,9 +1,9 @@
 <template>
   <div>
-    <query-merchant-refund :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryMerchantRefund"/>
-    <table-merchant-refund :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableMerchantRefund"/>
-    <add-edit-merchant-refund :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditMerchantRefund"/>
-    <detail-merchant-refund-log :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailMerchantRefundLog"/>
+    <query-merchant-refund :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryMerchantRefund"/>
+    <table-merchant-refund :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableMerchantRefund"/>
+    <add-edit-merchant-refund :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditMerchantRefund"/>
+    <detail-merchant-refund-log :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailMerchantRefundLog"/>
   </div>
 </template>
 

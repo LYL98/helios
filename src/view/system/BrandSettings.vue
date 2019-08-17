@@ -33,7 +33,6 @@
   </div>
 </template>
 <script>
-  import {mapGetters, mapActions} from "vuex";
   import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from 'element-ui';
   import { Config, Verification } from '@/util';
   import {Base} from '@/service';
@@ -51,10 +50,6 @@
       'el-upload': Upload,
       'my-upload-img': UploadImg,
     },
-    computed: mapGetters({
-      brand: 'brand',
-      brandService: 'brandService'
-    }),
     data() {
       let validImages = function (rules, value, callback) {
         if (value.length && value.length > 0) {
@@ -80,6 +75,8 @@
         }
       }
       return {
+        brand: 'brand', //
+        brandService: 'brandService', //
         ruleForm: {
           brand_name: '',
           brand_icon: [],

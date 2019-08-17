@@ -1,10 +1,10 @@
 <template>
   <div>
-    <query-system-operator :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QuerySystemOperator" page="global"/>
-    <table-system-operator :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableSystemOperator" page="global"/>
-    <add-edit-system-operator :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditSystemOperator"/>
-    <detail-system-operator :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailSystemOperator" page="global"/>
-    <from-system-operator-reset-pwd :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormSystemOperatorResetPwd"/>
+    <query-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QuerySystemOperator" page="global"/>
+    <table-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableSystemOperator" page="global"/>
+    <add-edit-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditSystemOperator"/>
+    <detail-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailSystemOperator" page="global"/>
+    <from-system-operator-reset-pwd :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormSystemOperatorResetPwd"/>
   </div>
 </template>
 

@@ -167,7 +167,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {
     Table, TableColumn, MessageBox, Message, Dialog, Row, Col, Form, FormItem, Tabs, TabPane,
     Input, Select, Option, Switch, DatePicker, Tag, Upload, Button, ButtonGroup
@@ -220,13 +219,13 @@
       storeQuery: Function
     },
     computed: {
-      ...mapGetters({ merchant_id: 'merchant_id' }),
       tableData() {
         // console.log('merchant id: ', this.merchant_id)
         return [ { merchant_id: this.merchant_id, ...this.merchantDetail } ]
       }
     },
     data: () => ({
+      merchant_id: 'merchant_id', //
       auth: this.$auth,
       tencentPath: Config.tencentPath,
       merchantDetail: {

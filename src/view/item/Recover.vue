@@ -1,8 +1,8 @@
 <template>
   <div>
-    <query-item-global :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryItemGlobal" page="recover"/>
-    <table-item-global :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableItemGlobal" page="recover"/>
-    <detail-item-global :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailItemGlobal" page="recover"/>
+    <query-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemGlobal" page="recover"/>
+    <table-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemGlobal" page="recover"/>
+    <detail-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemGlobal" page="recover"/>
   </div>
 </template>
 

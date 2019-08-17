@@ -308,7 +308,6 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from "vuex";
   import {Row, Col, Button, Dialog, Tag, Table, TableColumn} from 'element-ui';
   import {ImagePreview} from '@/common';
   import {Config, DataHandle, Constant} from '@/util';
@@ -328,11 +327,6 @@
       'my-image-preview': ImagePreview
     },
     computed: {
-      ...mapGetters({
-        isShow: 'orderIsShowDetail',
-        detail: 'orderDataDetail',
-        isShowAfterSaleDetail: 'orderIsShowAfterSaleDetail',
-      }),
       stepActive() {
         let {detail} = this;
         switch (detail.status) {
@@ -356,6 +350,9 @@
     },
     data() {
       return {
+        isShow: 'orderIsShowDetail', //
+        detail: 'orderDataDetail', //
+        isShowAfterSaleDetail: 'orderIsShowAfterSaleDetail', //
         auth: this.$auth,
         tencentPath: Config.tencentPath,
         orderStatus: Constant.ORDER_STATUS,

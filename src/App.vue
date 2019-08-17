@@ -213,7 +213,6 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
   import { Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Loading, Notification, MessageBox } from 'element-ui';
   import {Http, Config, Method, DataHandle} from '@/util';
   import {GlobalProvince, PwdModify} from '@/common';

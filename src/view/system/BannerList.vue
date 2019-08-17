@@ -1,7 +1,7 @@
 <template>
   <div>
-    <table-system-banner :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableSystemBanner"/>
-    <add-edit-system-banner :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditSystemBanner"/>
+    <table-system-banner :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableSystemBanner"/>
+    <add-edit-system-banner :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditSystemBanner"/>
   </div>
 </template>
 

@@ -57,22 +57,6 @@ const actions = {
       error && error();
     }
   },
-  // async itemCouponDistributeLog({commit, dispatch, state}, {query}) {
-  //   let res = await Item.couponDistributeLog(query);
-  //   if (res.code === 0) {
-  //     commit(Types.ITEM_COUPON_SET_LIST_ITEM, { listItem: res.data });
-  //   } else {
-  //     this.$message({title: '提示', message: res.message, type: 'error'});
-  //   }
-  // },
-  // async itemCouponDistributeStatistic({commit, dispatch, state}, {query}) {
-  //   let res = await Item.couponDistributeStatistic(query);
-  //   if (res.code === 0) {
-  //     commit(Types.ITEM_COUPON_SET_LIST_ITEM, { listItem: res.data });
-  //   } else {
-  //     this.$message({title: '提示', message: res.message, type: 'error'});
-  //   }
-  // },
 }
 
 // mutations

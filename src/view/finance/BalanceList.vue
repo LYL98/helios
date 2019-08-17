@@ -41,6 +41,7 @@
       :approveLog="handleApproveLog"
       :balanceLog="handleBalanceLog"
       :offsetHeight="offsetHeight"
+      :windowHeight="viewWindowHeight"
     >
     </table-finance-balance>
     <div class="footer">
@@ -133,9 +134,11 @@
     TableFinanceBalanceMerchantLog
   } from '@/container';
   import {Constant, DataHandle, Config, Http} from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "BalanceList",
+    mixins: [viewMixin],
     components: {
       'el-button': Button,
       'el-pagination': Pagination,

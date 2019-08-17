@@ -171,7 +171,6 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
   import {
     Message,
     Button,
@@ -226,12 +225,10 @@
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
       }
     },
-    computed: mapGetters({
-      dataItem: 'orderDataItem',
-      isShowDetail: 'orderIsShowDetail'
-    }),
     data() {
       return {
+        dataItem: 'orderDataItem', //
+        isShowDetail: 'orderIsShowDetail', //
         tencentPath: Config.tencentPath,
         orderStatus: Constant.ORDER_STATUS,
         payStatus: Constant.PAY_STATUS,

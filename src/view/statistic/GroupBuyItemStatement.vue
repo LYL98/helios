@@ -120,7 +120,6 @@
   import Constant from "@/util/constant";
   import { Statistic } from '@/service';
   import { DataHandle, Config, Http } from '@/util';
-  import { mapActions } from 'vuex';
   import viewMixin from '@/view/view.mixin';
 
 export default {
@@ -312,8 +311,6 @@ export default {
       }
       this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

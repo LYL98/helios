@@ -90,7 +90,6 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from "vuex";
 import {Row, Col, Button, Dialog, RadioGroup, Radio, Form, FormItem, Input, Table, TableColumn, InputNumber, MessageBox} from 'element-ui';
 import { SelectExpressCompany } from '@/container'
 import { DataHandle, Verification, Constant } from '@/util';
@@ -99,6 +98,8 @@ export default {
   name: "ManualDelivery",
   data() {
     return {
+      isShow: 'orderIsShowManualDelivery', //
+      detail: 'orderDataDetail', //
       auth: this.$auth,
       isShowModify: false,
       manualDetail: {},
@@ -144,12 +145,6 @@ export default {
     'el-table': Table,
     'el-table-column': TableColumn,
     'my-select-express-company': SelectExpressCompany
-  },
-  computed: {
-    ...mapGetters({
-      isShow: 'orderIsShowManualDelivery',
-      detail: 'orderDataDetail'
-    })
   },
   watch: {
     detail: function (a, b) {

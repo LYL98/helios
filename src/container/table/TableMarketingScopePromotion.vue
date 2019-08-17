@@ -112,7 +112,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Table, TableColumn, Dialog, Form, FormItem, MessageBox, Tag } from 'element-ui';
   import {TableOperate} from '@/common';
   import { Constant, DataHandle } from '@/util';

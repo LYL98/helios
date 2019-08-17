@@ -63,8 +63,6 @@
   /**
    * 促销活动列表
    */
-
-  import { mapGetters, mapActions } from 'vuex';
   import { Pagination, Button, Dialog } from 'element-ui';
   import { QueryMarketingScopePromotion, TableMarketingScopePromotion, FormMarketingScopePromotion } from '@/container';
   import CouponList from './CouponList';
@@ -90,13 +88,9 @@
         formSending: false,
         dialog: {
           isShow: false
-        }
+        },
+        listItem: 'itemScopePromotionListItem' //
       }
-    },
-    computed: {
-      ...mapGetters({
-        listItem: 'itemScopePromotionListItem'
-      })
     },
     created() {
       documentTitle('营销 - 全场营销');

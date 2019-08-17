@@ -1,8 +1,8 @@
 <template>
   <div>
-    <query-item-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataItemTags"/>
-    <table-item-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataItemTags"/>
-    <add-edit-item-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataItemTags"/>
+    <query-item-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryBasicDataItemTags"/>
+    <table-item-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataItemTags"/>
+    <add-edit-item-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataItemTags"/>
   </div>
 </template>
 

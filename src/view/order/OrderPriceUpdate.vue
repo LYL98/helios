@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 import { Form, FormItem, Button, Input, MessageBox, Dialog, RadioGroup, Radio } from 'element-ui';
 import { Config, DataHandle, Constant, Verification } from '@/util';
 
@@ -36,12 +35,10 @@ export default {
     'el-radio-group': RadioGroup,
     'el-radio': Radio
   },
-  computed: mapGetters({
-    isShow: 'orderIsShowPriceUpdate',
-    detail: 'orderDataDetail'
-  }),
   data(){
     return{
+      isShow: 'orderIsShowPriceUpdate', //
+      detail: 'orderDataDetail', //
       editData: {
         new_amount: '',
         remark: ''

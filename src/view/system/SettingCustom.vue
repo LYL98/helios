@@ -2,15 +2,15 @@
   <div :style="{ overflowX: 'auto', height: windowHeight - offsetHeight + 'px', background: '#fff'}">
     <div class="top">
       <div class="setting-item" v-if="auth.isAdmin || auth.SystemSettingOperating">
-        <from-systen-setting-operating :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormSystemSettingOperating"/>
+        <from-systen-setting-operating :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormSystemSettingOperating"/>
       </div>
       <div class="setting-item" v-if="auth.isAdmin || auth.SystemSettingAdvert">
-        <from-systen-setting-ad :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormSystemSettingAd"/>
+        <from-systen-setting-ad :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormSystemSettingAd"/>
       </div>
     </div>
     <div class="bottom">
       <div class="setting-item" v-if="auth.isAdmin || auth.SystemSettingItemCommonDes">
-        <from-systen-setting-item-common-des :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormSystemSettingItemCommonDes"/>
+        <from-systen-setting-item-common-des :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormSystemSettingItemCommonDes"/>
       </div>
     </div>
   </div>

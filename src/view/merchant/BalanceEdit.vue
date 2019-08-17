@@ -31,7 +31,6 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex';
   import {Form, FormItem, Select, Option, Input, InputNumber, Radio, Button, Message, MessageBox} from 'element-ui';
   import {Merchant} from '@/service';
   import {DataHandle, Constant, Verification} from '@/util';
@@ -53,9 +52,6 @@
       cancelBalanceEdit: Function,
       confirmBalanceEdit: Function
     },
-    computed: mapGetters({
-      merchant_id: 'merchant_id'
-    }),
     data() {
 
       let validAmount = (rules, value, callback) => {
@@ -75,6 +71,7 @@
       };
 
       return {
+        merchant_id: 'merchant_id', //
         rechargeReason: Constant.MERCHANT_BALANCE_RECHARGE_REASON,
         isLostReason: '',
         isError: '',

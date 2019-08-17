@@ -4,13 +4,13 @@ export default {
     return {
       province: this.$province,
       auth: this.$auth,
-      windowHeight: 0
+      viewWindowHeight: 0
     }
   },
   created() {
     const fun = ()=>{
       let wh = window.innerHeight;
-      this.$data.windowHeight = wh;
+      this.$data.viewWindowHeight = wh;
     }
     fun();
     window.onresize = () => {
@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     //获取当前页面的组件
-    getPageComponents(name){
+    viewGetPageComponents(name){
       let com = null;
       const fun = (refs)=>{
         for(let item in refs){

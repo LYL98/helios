@@ -17,8 +17,8 @@
       :affirmStoreFreeze="affirmStoreFreeze"
       :affirmStoreUnFreeze="affirmStoreUnFreeze"
       :offset-height="offsetHeight"
-      :windowHeight="windowHeight"
-      :getPageComponents="getPageComponents"
+      :windowHeight="viewWindowHeight"
+      :getPageComponents="viewGetPageComponents"
       ref="TableMerchantList"
     />
 
@@ -85,11 +85,9 @@
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
       }
     },
-    /*computed: mapGetters({
-      merchant_id: 'merchant_id'
-    }),*/
     data() {
       return {
+        merchant_id: 'merchant_id', //
         province: this.$province,
         auth: this.$auth,
         tencentPath: Config.tencentPath,

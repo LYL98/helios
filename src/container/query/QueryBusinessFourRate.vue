@@ -35,7 +35,6 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { mapGetters } from 'vuex';
   import {QueryItem, SelectZone} from '@/common';
   import { DataHandle, Constant } from '@/util';
 

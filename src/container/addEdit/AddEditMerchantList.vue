@@ -79,7 +79,6 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
   import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio, RadioGroup, DatePicker} from 'element-ui';
   import {FormArea, SelectProvince, SelectCity, UploadImg} from '@/common';
   import {DataHandle, Verification} from '@/util';
@@ -107,9 +106,6 @@
       editMerchantSuccess: Function,
       editMerchantCancel: Function
     },
-    computed: mapGetters({
-      merchant_id: 'merchant_id'
-    }),
     // 判断是否是编辑模式？
     created() {
       let that = this;
@@ -154,6 +150,7 @@
       };
 
       return {
+        merchant_id: 'merchant_id', //
         province: this.$province,
         isModify: false,
         isSending: false,

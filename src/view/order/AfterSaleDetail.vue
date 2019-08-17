@@ -198,7 +198,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 import { Form, FormItem, Table, TableColumn, Tag, Button, Select, Option, Input, Dialog, Popover } from 'element-ui';
 import { ImagePreview } from '@/common';
 import { Config, DataHandle, Constant } from '@/util';
@@ -222,10 +221,6 @@ export default {
     'after-sale-close': AfterSaleClose
   },
   computed: {
-    ...mapGetters({
-      isShow: 'orderIsShowAfterSaleDetail',
-      detail: 'orderAfterSaleDetail'
-    }),
     stepActive() {
       let {detail} = this;
       switch(detail.status) {
@@ -240,6 +235,8 @@ export default {
   },
   data(){
     return{
+      isShow: 'orderIsShowAfterSaleDetail', //
+      detail: 'orderAfterSaleDetail', //
       auth: this.$auth,
       tencentPath: Config.tencentPath,
       orderStatus: Constant.ORDER_STATUS,

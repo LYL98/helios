@@ -1,8 +1,8 @@
 <template>
   <div>
-    <query-system-class :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataSystemClass"/>
-    <table-system-class :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataSystemClass"/>
-    <add-edit-system-class :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataSystemClass"/>
+    <query-system-class :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryBasicDataSystemClass"/>
+    <table-system-class :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataSystemClass"/>
+    <add-edit-system-class :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataSystemClass"/>
   </div>
 </template>
 

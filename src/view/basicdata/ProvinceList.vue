@@ -1,8 +1,8 @@
 <template>
   <div>
-    <query-province :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataProvince"/>
-    <table-province :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataProvince"/>
-    <add-edit-province :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataProvince"/>
+    <query-province :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryBasicDataProvince"/>
+    <table-province :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataProvince"/>
+    <add-edit-province :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataProvince"/>
   </div>
 </template>
 

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <query-zone :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataZone"/>
-    <table-zone :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataZone"/>
-    <add-edit-zone :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataZone"/>
+    <query-zone :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryBasicDataZone"/>
+    <table-zone :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataZone"/>
+    <add-edit-zone :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataZone"/>
   </div>
 </template>
 

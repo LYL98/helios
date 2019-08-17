@@ -1,9 +1,9 @@
 <template>
   <div>
-    <query-item-pricing :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryItemPricing"/>
-    <table-item-pricing :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableItemPricing"/>
-    <add-edit-item-pricing :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditItemPricing"/>
-    <detail-item-pricing-record :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailItemPricingRecord"/>
+    <query-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemPricing"/>
+    <table-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemPricing"/>
+    <add-edit-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemPricing"/>
+    <detail-item-pricing-record :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemPricingRecord"/>
   </div>
 </template>
 

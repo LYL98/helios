@@ -49,7 +49,6 @@
 
 </template>
 <script>
-  import { mapGetters } from 'vuex';
   import { Table, TableColumn, Pagination, Popover } from 'element-ui';
   import { ToPrice, OmissionText } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
@@ -66,14 +65,12 @@
     props: {
       updateCount: Number,
     },
-    computed: mapGetters({
-      merchant_id: 'merchant_id'
-    }),
     watch: {
       updateCount: 'getBalanceLog'
     },
     data() {
       return {
+        merchant_id: 'merchant_id', //
         dataItem: {
           items: [],
           num: 0

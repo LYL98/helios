@@ -205,7 +205,6 @@
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-import { mapActions } from 'vuex';
 import { SelectZone } from '@/common';
 import { Statistic } from '@/service';
 import { QueryBusinessFourRate } from '@/container';
@@ -381,8 +380,6 @@ export default {
       }
       this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

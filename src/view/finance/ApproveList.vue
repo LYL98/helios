@@ -1,7 +1,7 @@
 <template>
   <div>
     <query-finance-approve v-model="query" @change="changeQuery" :reset="resetQuery" @expandChange="onExpandChange"/>
-    <table-finance-approve :data="dataItem.items" :page="query.page" :pageSize="query.page_size" :offset-height="offsetHeight" :itemEdit="handleItemEdit"/>
+    <table-finance-approve :data="dataItem.items" :windowHeight="viewWindowHeight" :page="query.page" :pageSize="query.page_size" :offset-height="offsetHeight" :itemEdit="handleItemEdit"/>
     <div class="footer">
       <div class="table-pagination">
         <el-pagination
@@ -38,8 +38,11 @@
   import { Pagination, Dialog } from 'element-ui';
   import { QueryFinanceApprove, TableFinanceApprove, FormFinanceApproveEdit } from '@/container';
   import { Http, Config, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
+
   export default {
     name: "ApproveList",
+    mixins: [viewMixin],
     components: {
       'el-pagination': Pagination,
       'el-dialog': Dialog,

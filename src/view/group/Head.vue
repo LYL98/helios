@@ -1,11 +1,11 @@
 <template>
   <div>
-    <head-list :getPageComponents="getPageComponents" ref="HeadList"></head-list>
+    <head-list :getPageComponents="viewGetPageComponents" ref="HeadList"></head-list>
     <!--详情-->
-    <head-detail :getPageComponents="getPageComponents" ref="HeadDetail"></head-detail>
+    <head-detail :getPageComponents="viewGetPageComponents" ref="HeadDetail"></head-detail>
     <!--新增-->
-    <head-edit :getPageComponents="getPageComponents" ref="HeadEdit"></head-edit>
-    <detail-head-balance-log :getPageComponents="getPageComponents" ref="DetailHeadBalanceLog"/>
+    <head-edit :getPageComponents="viewGetPageComponents" ref="HeadEdit"></head-edit>
+    <detail-head-balance-log :getPageComponents="viewGetPageComponents" ref="DetailHeadBalanceLog"/>
   </div>
 </template>
 

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <query-grade :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataGrade"/>
-    <table-grade :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataGrade"/>
-    <add-edit-grade :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataGrade"/>
+    <query-grade :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryBasicDataGrade"/>
+    <table-grade :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataGrade"/>
+    <add-edit-grade :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataGrade"/>
   </div>
 </template>
 

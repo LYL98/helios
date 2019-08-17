@@ -1,8 +1,8 @@
 <template>
   <div>
-    <query-operate-line :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryOperateLine"/>
-    <table-operate-line :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableOperateLine"/>
-    <add-edit-operate-line :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditOperateLine"/>
+    <query-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateLine"/>
+    <table-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateLine"/>
+    <add-edit-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateLine"/>
 
   </div>
 </template>

@@ -122,7 +122,6 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination } from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
   import { Statistic } from '@/service';
@@ -198,7 +197,6 @@
       });
     },
     methods: {
-      ...mapActions(['message', 'loading']),
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;

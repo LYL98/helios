@@ -25,7 +25,6 @@
   </el-form>
 </template>
 <script>
-  import {mapGetters, mapActions} from "vuex";
   import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio } from 'element-ui';
   import {Config, DataHandle, Verification} from '@/util';
   import {Merchant, Base} from '@/service';
@@ -45,9 +44,6 @@
       editMerchantSuccess: Function,
       editMerchantCancel: Function
     },
-    computed: mapGetters({
-      merchant_id: 'merchant_id'
-    }),
     data() {
 
       let {id, title, is_post_pay, credit_limit} = this.$props.merchantDetail;
@@ -78,6 +74,7 @@
       };
 
       return {
+        merchant_id: 'merchant_id', //
         isSending: false,
         detail: detail,
         rules: {

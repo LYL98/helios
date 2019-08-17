@@ -1,7 +1,7 @@
 <template>
   <div>
-    <table-item-inner-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataItemInnerTags"/>
-    <add-edit-item-inner-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataItemInnerTags"/>
+    <table-item-inner-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataItemInnerTags"/>
+    <add-edit-item-inner-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataItemInnerTags"/>
   </div>
 </template>
 

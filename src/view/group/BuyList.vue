@@ -275,7 +275,6 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox, Col, Row} from 'element-ui';
   import {Constant, DataHandle} from '@/util';
   import {QueryGroupBuy, TableGroupBuy, FormGroupBuy, TableGroupBuyDetail, TableGroupBuyMerchantDetail} from '@/container';
@@ -308,15 +307,11 @@
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
       }
     },
-    computed: {
-      ...mapGetters({
-        groupBuyList: 'groupBuyListData',
-        detailStoreList: 'groupBuyStoreListData',
-        merchantMemberList: 'groupBuyMemberListData'
-      })
-    },
     data() {
       return {
+        groupBuyList: 'groupBuyListData', //
+        detailStoreList: 'groupBuyStoreListData', //
+        merchantMemberList: 'groupBuyMemberListData', //
         province: this.$province,
         auth: this.$auth,
         query: {},

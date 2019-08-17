@@ -1,10 +1,10 @@
 <template>
   <div>
-    <query-item-global :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryItemGlobal" page="global"/>
-    <table-item-global :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableItemGlobal" page="global"/>
-    <add-edit-item-global :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditItemGlobal"/>
-    <detail-item-global :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailItemGlobal" page="global"/>
-    <detail-item-global-edit-record :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailItemGlobalEditRecord"/>
+    <query-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemGlobal" page="global"/>
+    <table-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemGlobal" page="global"/>
+    <add-edit-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemGlobal"/>
+    <detail-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemGlobal" page="global"/>
+    <detail-item-global-edit-record :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemGlobalEditRecord"/>
   </div>
 </template>
 

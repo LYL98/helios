@@ -125,7 +125,6 @@
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-import { mapActions } from 'vuex';
 import { SelectZone, SelectCity } from '@/common';
 import { Statistic } from '@/service';
 import { DataHandle, Constant } from '@/util';
@@ -333,8 +332,6 @@ export default {
       }
       this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

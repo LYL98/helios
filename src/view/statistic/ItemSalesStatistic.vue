@@ -90,7 +90,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { Dialog, Button, Input, Table, TableColumn, Pagination } from 'element-ui';
 import { SelectProvince, SelectCity, SelectZone } from "@/common"
 import { Statistic } from '@/service';
@@ -239,8 +238,6 @@ export default {
       }
       this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   },
   watch: {
     item: function (a, b) {

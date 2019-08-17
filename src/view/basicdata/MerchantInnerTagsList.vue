@@ -1,8 +1,8 @@
 <template>
   <div>
-    <query-merchant-inner-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataMerchantInnerTags"/>
-    <table-merchant-inner-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataMerchantInnerTags"/>
-    <add-edit-merchant-inner-tags :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataMerchantInnerTags"/>
+    <query-merchant-inner-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryBasicDataMerchantInnerTags"/>
+    <table-merchant-inner-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataMerchantInnerTags"/>
+    <add-edit-merchant-inner-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataMerchantInnerTags"/>
   </div>
 </template>
 

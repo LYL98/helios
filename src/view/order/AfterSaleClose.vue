@@ -47,7 +47,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 import { Form, FormItem, Button, Select, Option, Radio, Input, Dialog } from 'element-ui';
 import { Config, DataHandle, Constant, Verification } from '@/util';
 
@@ -63,10 +62,6 @@ export default {
     'el-input': Input,
     'el-dialog': Dialog
   },
-  computed: mapGetters({
-    isShow: 'orderIsShowAfterSaleClose',
-    detail: 'orderAfterSaleDetail'
-  }),
   created() {
     this.initEditDate();
     this.$data.rules.num[1].max = this.detail.count_real;
@@ -75,6 +70,8 @@ export default {
   data(){
     
     return{
+      isShow: 'orderIsShowAfterSaleClose', //
+      detail: 'orderAfterSaleDetail', //
       tencentPath: Config.tencentPath,
       orderStatus: Constant.ORDER_STATUS,
       priceChange: Constant.PRICE_CHANGE,

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <query-operate-receiving :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryOperateReceiving"/>
-    <table-operate-receiving :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableOperateReceiving"/>
-    <form-operate-receiving-allot :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormOperateReceivingAllot"/>
-    <form-operate-receiving-number :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormOperateReceivingNumber"/>
-    <detail-operate-receiving-audit :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailOperateReceivingAudit"/>
+    <query-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateReceiving"/>
+    <table-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateReceiving"/>
+    <form-operate-receiving-allot :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateReceivingAllot"/>
+    <form-operate-receiving-number :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateReceivingNumber"/>
+    <detail-operate-receiving-audit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateReceivingAudit"/>
   </div>
 </template>
 

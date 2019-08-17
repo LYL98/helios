@@ -99,7 +99,6 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import {
   Form,
   FormItem,
@@ -400,7 +399,6 @@ export default {
         fun(res.brand_name);
       });
     },
-    ...mapActions(["message"])
   }
 };
 </script>

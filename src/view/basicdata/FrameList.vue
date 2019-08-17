@@ -1,7 +1,7 @@
 <template>
   <div>
-    <table-frame :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataFrame"/>
-    <add-edit-frame :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataFrame"/>
+    <table-frame :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataFrame"/>
+    <add-edit-frame :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataFrame"/>
   </div>
 </template>
 

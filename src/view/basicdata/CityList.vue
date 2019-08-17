@@ -1,8 +1,8 @@
 <template>
   <div>
-    <query-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryBasicDataCity"/>
-    <table-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableBasicDataCity"/>
-    <add-edit-city :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditBasicDataCity"/>
+    <query-city :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryBasicDataCity"/>
+    <table-city :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataCity"/>
+    <add-edit-city :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataCity"/>
   </div>
 </template>
 

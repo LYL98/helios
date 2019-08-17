@@ -173,7 +173,6 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem } from 'element-ui';
   import { QueryItem, TableOperate, SelectZone, SelectCity } from '@/common';
   import { Statistic } from '@/service';
@@ -219,7 +218,6 @@
       this.statisticalOrderMerchantSum();
     },
     methods: {
-      ...mapActions(['message', 'loading']),
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;

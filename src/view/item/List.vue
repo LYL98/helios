@@ -1,13 +1,13 @@
 <template>
   <div>
-    <query-item-list :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="QueryItemList"/>
-    <table-item-list :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="TableItemList"/>
-    <add-edit-item-list :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="AddEditItemList"/>
-    <detail-item-list :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailItemList"/>
-    <detail-item-list-edit-record :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailItemListEditRecord"/>
-    <form-item-list-edit-class-tag :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormItemListEditClassTag"/>
-    <form-item-list-edit-inner-tag :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="FormItemListEditInnerTag"/>
-    <detail-item-list-audit-inner-tag :getPageComponents="getPageComponents" :windowHeight="windowHeight" ref="DetailItemListAuditInnerTag"/>
+    <query-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemList"/>
+    <table-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemList"/>
+    <add-edit-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemList"/>
+    <detail-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemList"/>
+    <detail-item-list-edit-record :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemListEditRecord"/>
+    <form-item-list-edit-class-tag :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemListEditClassTag"/>
+    <form-item-list-edit-inner-tag :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemListEditInnerTag"/>
+    <detail-item-list-audit-inner-tag :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemListAuditInnerTag"/>
   </div>
 </template>
 

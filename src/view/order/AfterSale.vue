@@ -123,7 +123,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import { Button, Badge, Input, Select, Option, Table, TableColumn, MessageBox, Pagination, Tag, DatePicker } from 'element-ui';
 import { OmissionText, SelectCity, TableOperate } from '@/common';
 import { QueryOrderAfterSale } from "@/container";
@@ -159,12 +158,10 @@ export default {
       this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
     }
   },
-  computed: mapGetters({
-    dataItem: 'orderAfterSaleDataItem',
-    isShow: 'orderIsShowAfterSaleDetail'
-  }),
   data(){
     return {
+      dataItem: 'orderAfterSaleDataItem', //
+      isShow: 'orderIsShowAfterSaleDetail', //
       tencentPath: Config.tencentPath,
       afterSaleStatus: Constant.AFTER_SALE_STATUS,
       afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE,
