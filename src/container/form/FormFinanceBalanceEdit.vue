@@ -36,7 +36,6 @@
 <script>
   import {Form, FormItem, Select, Option, Input, InputNumber, Radio, Button, Message, MessageBox} from 'element-ui';
   import { ToPrice } from '@/common';
-  import {Merchant} from '@/service';
   import {DataHandle, Constant, Verification} from '@/util';
 
   export default {

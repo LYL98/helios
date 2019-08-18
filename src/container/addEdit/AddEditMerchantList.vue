@@ -82,7 +82,6 @@
   import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio, RadioGroup, DatePicker} from 'element-ui';
   import {FormArea, SelectProvince, SelectCity, UploadImg} from '@/common';
   import {DataHandle, Verification} from '@/util';
-  import {Merchant} from '@/service';
   import md5 from 'md5';
 
   export default {

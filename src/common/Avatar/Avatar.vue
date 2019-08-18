@@ -54,8 +54,7 @@
 
 <script>
   import { Upload, Message ,Dialog} from 'element-ui';
-  import { Base } from '@/service';
-  import { Config } from '@/util';
+  import { Http, Config } from '@/util';
 
   export default {
     name: "Avatar",
@@ -127,7 +126,7 @@
       //获取腾讯Bucketpresigned_url
       tencentPresignedUrl(file) {
         let {module} = this;
-        return Base.tencentPresignedUrl({module: module}).then(res => {
+        return Http.get(Config.api.tencentPresignedUrl, {module: module}).then(res => {
           this.uploadData = {
             file: file,
             key: res.data.key,
@@ -138,15 +137,15 @@
 
       //自定义上传
       async httpRequestUpload(e){
-        let { uploadData } = this;
-        let res = await Base.uploadToTencent(e.data);
+        let data = e.data;
+        let res = await Http.put(data.presigned_url, data);
         /**
-         *  也可在此处理成功或失败后事件
-         * if(res.code === 0){
+         * 也可在此处理成功或失败后事件
+          if(res.code === 0){
 
-            }else{
+          }else{
 
-            }
+          }
          */
       },
 

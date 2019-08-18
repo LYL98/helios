@@ -14,7 +14,7 @@
 
 <script>
 import { Autocomplete, Button } from 'element-ui'
-import { Base, System } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SearchItem",
@@ -60,7 +60,7 @@ export default {
       this.inputValue = '';
     },
     async roleList(callback) {
-      let res = await System.roleList();
+      let res = await Http.get(Config.api.roleList, {});
       if (res.code === 0) {
         res.data.map(item => item.value = item.title);
         this.itemList = res.data;

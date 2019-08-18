@@ -26,7 +26,6 @@
 </template>
 <script>
 import { Form, FormItem, Tag, Button } from 'element-ui';
-import { Merchant } from '@/service';
 import { Http, Config } from '@/util';
 
 export default {
@@ -195,7 +194,7 @@ export default {
       let that = this;
       let {gradeTagData, merchantDetail} = that;
       that.isSending = true;
-      let res = await Merchant.merchantGradeTagsEdit({
+      let res = await Http.post(Config.api.merchantGradeTagsEdit, {
         id: merchantDetail.id,
         ...gradeTagData
       });

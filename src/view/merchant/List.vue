@@ -52,7 +52,6 @@
   import { MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
   import { QueryMerchantStore, TableMerchantList, AddEditMerchantList, DetailMerchantList } from '@/container';
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
-  import { Merchant } from '@/service';
   import viewMixin from '@/view/view.mixin';
 
   export default {

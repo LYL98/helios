@@ -182,9 +182,8 @@
 
 <script>
 import { Form, FormItem, Button, Input, MessageBox, TimePicker, Notification, RadioGroup, Radio, Row, Col, Dialog } from 'element-ui';
-import { DataHandle, Verification, Config, Constant } from '@/util';
-import { System } from '@/service';
-import {UploadImg} from '@/common';
+import { Http, DataHandle, Verification, Config, Constant } from '@/util';
+import { UploadImg } from '@/common';
 //import brand from "@/store/modules/system/brand";
 import viewMixin from '@/view/view.mixin';
 
@@ -589,7 +588,7 @@ export default {
     async basicdataConfirmTimeGet(callback) {
       let that = this;
       let { confirmTime } = that;
-      let res = await System.basicdataConfirmTimeGet();
+      let res = await Http.get(Config.api.basicdataConfirmTime, {});
       if (res.code === 0) {
         confirmTime.confirm_time = res.data.confirm_time;
         confirmTime.is_auto_confirmed = res.data.is_auto_confirmed;
@@ -599,7 +598,7 @@ export default {
     async basicdataConfirmTimeSet(callback) {
       let that = this;
       let { confirmTime } = that;
-      let res = await System.basicdataConfirmTimeSet({
+      let res = await Http.post(Config.api.basicdataConfirmTime, {
         is_auto_confirmed: confirmTime.is_auto_confirmed,
         confirm_time: confirmTime.confirm_time
       });
@@ -616,7 +615,7 @@ export default {
     async basicdataOrderTimeGet(callback) {
       let that = this;
       let { orderTime } = that;
-      let res = await System.basicdataOrderTimeGet();
+      let res = await Http.get(Config.api.basicdataOrderTime, {});
       if (res.code === 0) {
         orderTime.orderTimeRange = [res.data.order_start_time, res.data.order_end_time]
         typeof callback === 'function' && callback(orderTime);
@@ -625,7 +624,7 @@ export default {
     async basicdataOrderTimeSet(callback) {
       let that = this;
       let { orderTime } = that;
-      let res = await System.basicdataOrderTimeSet({
+      let res = await Http.post(Config.api.basicdataOrderTime, {
         order_start_time: orderTime.orderTimeRange[0],
         order_end_time: orderTime.orderTimeRange[1]
       });
@@ -642,7 +641,7 @@ export default {
     async basicdataDeliveryInfoGet(callback) {
       let that = this;
       let { deliveryInfo } = that;
-      let res = await System.basicdataDeliveryInfoGet();
+      let res = await Http.get(Config.api.basicdataDeliveryInfo, {});
       if (res.code === 0) {
         deliveryInfo.delivery_price = DataHandle.returnPrice(res.data.delivery_price);
         deliveryInfo.discount_delivery_line = DataHandle.returnPrice(res.data.discount_delivery_line);
@@ -652,7 +651,7 @@ export default {
     async basicdataDeliveryInfoSet(callback) {
       let that = this;
       let { deliveryInfo } = that;
-      let res = await System.basicdataDeliveryInfoSet({
+      let res = await Http.post(Config.api.basicdataDeliveryInfo, {
         delivery_price: DataHandle.handlePrice(deliveryInfo.delivery_price),
         discount_delivery_line: DataHandle.handlePrice(deliveryInfo.discount_delivery_line)
       });
@@ -670,7 +669,7 @@ export default {
     async basicdataShipTypeGet(callback) {
       let that = this;
       let { shipType } = that;
-      let res = await System.basicdataShipTypeGet();
+      let res = await Http.get(Config.api.basicdataShipType, {});
       if (res.code === 0) {
         shipType.ship_type = res.data;
         typeof callback === 'function' && callback(shipType);
@@ -680,7 +679,7 @@ export default {
     async basicdataShipTypeSet(callback) {
       let that = this;
       let { shipType } = that;
-      let res = await System.basicdataShipTypeSet({
+      let res = await Http.post(Config.api.basicdataShipType, {
         ship_type: shipType.ship_type,
       });
       if (res.code === 0) {
@@ -698,7 +697,7 @@ export default {
     async systemBrandGet(callback) {
       let that = this;
       let { brandInfo } = that;
-      let res = await System.systemBrandGet();
+      let res = await Http.get(Config.BrandInfo, {});
       if (res.code === 0) {
         brandInfo.brand_name = res.data.brand_name;
         brandInfo.brand_icon = res.data.brand_icon.split();
@@ -711,7 +710,7 @@ export default {
     async systemBrandSet(callback) {
       let that = this;
       let { brandInfo } = that;
-      let res = await System.systemBrandSet({
+      let res = await Http.post(Config.api.BrandInfo, {
         brand_name: brandInfo.brand_name,
         brand_icon: brandInfo.brand_icon.join(),
         complaint_hotline: brandInfo.complaint_hotline,

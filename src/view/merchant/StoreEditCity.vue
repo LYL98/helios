@@ -17,9 +17,10 @@
 </template>
 
 <script>
-  import {Merchant} from '@/service';
   import { Form, FormItem, Input, Button, Message } from 'element-ui';
   import { SelectProvince, SelectCity } from '@/common';
+  import { Http, Config } from '@/util';
+
   export default {
     name: "StoreEditCity",
     components: {
@@ -59,7 +60,7 @@
       async storeDetail() {
         let that = this;
         let {store_id} = that;
-        let res = await Merchant.storeDetail({
+        let res = await Http.get(Config.api.storeDetail, {
           id: store_id
         });
         if (res.code === 0) {

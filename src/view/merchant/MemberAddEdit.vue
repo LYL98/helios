@@ -27,8 +27,7 @@
 
 <script>
 import { Table, TableColumn, Message, MessageBox, Button, Dialog, Form, FormItem, Input, Radio, Col, Row } from 'element-ui';
-import { Constant, DataHandle, Method, Verification } from '@/util';
-import { Merchant } from '@/service';
+import { Http, Config, Constant, DataHandle, Method, Verification } from '@/util';
 import { UploadImg } from '@/common';
 import md5 from 'md5';
 
@@ -111,7 +110,7 @@ export default {
         if (valid) {
           let { addData, query } = that;
           that.isSending = true;
-          let res = await Merchant.memberAdd({
+          let res = await Http.post(Config.api.memberAdd, {
             ...addData,
             password: md5(addData.password),
             avatar: addData.avatar.length === 0 ? '' : addData.avatar[0]

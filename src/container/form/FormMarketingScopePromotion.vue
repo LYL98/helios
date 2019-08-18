@@ -75,7 +75,7 @@
 <script>
   import {Form, FormItem, Table, TableColumn, DatePicker, Radio, RadioGroup, Input, Button, Message} from 'element-ui';
   import {SearchItem} from '@/container/search';
-  import {Item} from '@/service';
+  import { Http, Config } from '@/util';
 
   export default {
     name: "FormMarketingScopePromotion",
@@ -104,24 +104,6 @@
     data() {
       let that = this;
       let item = Object.assign({}, this.$props.item);
-      // let itemScopePromotionRepeat = async (value, callback) => {
-      //   console.log("获取查询时间段", value);
-      //   let res = await Item.scopePromotionRepeat({province_code: "01", time_start: value[0], time_end: value[1]});
-      //   if (res.code === 0) {
-      //     console.log("请求成功", res.data);
-      //   } else {
-      //     console.log("请求失败", res)
-      //   }
-      // };
-      // let validPickerValue = function (rules, value, callback) {
-      //   if (!value) {
-      //     return callback(new Error('请选择活动开始和结束时间'));
-      //   } else if (new Date().getTime() > new Date(value[1]).getTime()) {
-      //     return callback(new Error('活动结束时间不能小于当前时间'));
-      //   } else {
-      //     itemScopePromotionRepeat(value, callback);
-      //   }
-      // };
       let validFull = function (rules, value, callback) {
         if (!!value && (isNaN(value) || value <= 0)) {
           return callback(new Error('满金额必须为大于零的纯数字'));
@@ -224,7 +206,7 @@
       },
 
       async itemScopePromotionRepeat(value, callback) {
-        let res = await Item.scopePromotionRepeat({province_code: this.province.code, time_start: value[0], time_end: value[1]});
+        let res = await Http.get(Config.api.itemScopePromotionRepeat, {province_code: this.province.code, time_start: value[0], time_end: value[1]});
         if (res.code === 0) {
           if (!res.data) {
             callback();

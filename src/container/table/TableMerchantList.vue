@@ -93,9 +93,8 @@
 </template>
 
 <script>
-  import {TableOperate} from '@/common';
-  import {Merchant} from '@/service';
-  import {DataHandle} from '@/util';
+  import { TableOperate } from '@/common';
+  import { Http, Config, DataHandle } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
@@ -139,7 +138,7 @@
       async storeApprove(item) {
         let that = this;
         let {id} = item;
-        let res = await Merchant.storeApprove({
+        let res = await Http.post(Config.api.storeApprove, {
           id: id
         });
         if (res.code === 0) {

@@ -34,8 +34,7 @@
 </template>
 <script>
   import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from 'element-ui';
-  import { Config, Verification } from '@/util';
-  import {Base} from '@/service';
+  import { Http, Config, Verification } from '@/util';
   import {UploadImg} from '@/common';
   import viewMixin from '@/view/view.mixin';
 

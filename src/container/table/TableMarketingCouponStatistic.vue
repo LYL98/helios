@@ -104,8 +104,7 @@
 <script>
   import { Input, Button, Table, TableColumn, Pagination, Message } from 'element-ui';
   import { ButtonGroup } from '@/common';
-  import { Constant } from '@/util';
-  import { Item } from '@/service';
+  import { Http, Config, Constant } from '@/util';
   export default {
     name: "TableMarketingCouponStatistic",
     components: {
@@ -188,7 +187,7 @@
         this.queryLog();
       },
       async queryLog() {
-        let res = await Item.couponDistributeStatistic(this.$data.query);
+        let res = await Http.get(Config.api.itemCouponDistributeStatistic, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign({}, this.$data.listItem, res.data);
         } else {

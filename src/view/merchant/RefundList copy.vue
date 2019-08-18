@@ -157,8 +157,7 @@
   import { Row, Col, Dialog, Input, Radio, Button, DatePicker, Table, TableColumn, Pagination, Form, FormItem, Message } from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
   import { SelectCity } from '@/container';
-  import { Constant, DataHandle } from '@/util';
-  import { Merchant } from '@/service';
+  import { Http, Config, Constant, DataHandle } from '@/util';
   import RefundLog from './RefundLog';
   import RefundEdit from './RefundEdit';
   import tableMixin from '@/container/table/table.mixin';
@@ -260,7 +259,7 @@
         let that = this;
         let {query} = that;
         // get merchant list data
-        let res = await Merchant.storeQuery(query);
+        let res = await Http.get(Config.api.storeQuery, query);
         // 如果返回结果正确，则将该数据 赋值给 dataItem；
         if (res.code === 0) {
           that.$data.listItem = res.data;

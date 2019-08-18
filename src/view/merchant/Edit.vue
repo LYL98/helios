@@ -25,9 +25,8 @@
   </el-form>
 </template>
 <script>
-  import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio } from 'element-ui';
-  import {Config, DataHandle, Verification} from '@/util';
-  import {Merchant, Base} from '@/service';
+  import { Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio } from 'element-ui';
+  import { DataHandle, Verification } from '@/util';
 
   export default {
     name: 'MerchantEdit',

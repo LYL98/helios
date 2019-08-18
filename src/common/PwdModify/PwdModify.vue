@@ -20,7 +20,7 @@
 
 <script>
 import { Form, FormItem, Button, Input, MessageBox, Notification, Dialog } from 'element-ui';
-import { System } from '@/service';
+import { Http, Config } from '@/util';
 import md5 from 'md5';
 
 export default {
@@ -83,7 +83,7 @@ export default {
     async operatorPwdModify(){
       let that = this;
       let { editData } = that;
-      let res = await System.operatorPwdModify({
+      let res = await Http.get(Config.api.operatorPwdModify, {
         password_ori: md5(editData.password_ori),
         password: md5(editData.password)
       });

@@ -91,7 +91,6 @@
   import {Table, TableColumn, Tag, Form, FormItem, Message, MessageBox, Button, Dialog, Input, Pagination} from 'element-ui';
   import {TableOperate} from '@/common';
   import {Config, Constant, DataHandle, Method, Http} from '@/util';
-  import {Merchant} from '@/service';
   import md5 from 'md5';
   import MemberAddEdit from './MemberAddEdit';
   import tableMixin from '@/container/table/table.mixin';
@@ -164,7 +163,7 @@
       async memberList() {
         let that = this;
         let {query} = that;
-        let res = await Merchant.memberList(query);
+        let res = await Http.get(Config.api.memberList, query);
         if (res.code === 0) {
           that.$data.dataItem = res.data;
         } else {
@@ -215,7 +214,7 @@
       },
       //冻结
       async memberFreeze(data) {
-        let res = await Merchant.memberFreeze({
+        let res = await Http.post(Config.api.memberFreeze, {
           id: data.id
         });
         if (res.code === 0) {
@@ -242,7 +241,7 @@
       //解冻
       async memberUnFreeze(data) {
         let that = this;
-        let res = await Merchant.memberUnFreeze({
+        let res = await Http.post(Config.api.memberUnFreeze, {
           id: data.id
         });
         if (res.code === 0) {
@@ -256,7 +255,7 @@
       async memberPasswordReset() {
         let that = this;
         let {selectData, pwdData} = that;
-        let res = await Merchant.memberPasswordReset({
+        let res = await Http.post(Config.api.memberPasswordReset, {
           id: selectData.id,
           password: md5(pwdData.password)
         });

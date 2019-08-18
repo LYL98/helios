@@ -114,8 +114,7 @@
 <script>
   import { Table, TableColumn, Dialog, Form, FormItem, MessageBox, Tag } from 'element-ui';
   import {TableOperate} from '@/common';
-  import { Constant, DataHandle } from '@/util';
-  import { Item } from '@/service';
+  import { Http, Config, Constant, DataHandle } from '@/util';
   import tableMixin from './table.mixin';
   
   export default {
@@ -167,7 +166,7 @@
         return (this.$props.page - 1) * this.$props.pageSize + index + 1;
       },
       async handleShowDetail(id) {
-        let res = await Item.promotionDetail({ promotion_id: id });
+        let res = await Http.get(Config.api.itemPromotionDetail, { promotion_id: id });
         if (res.code === 0) {
           this.$data.dialog.item = res.data;
           this.$data.dialog.isShow = true;

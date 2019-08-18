@@ -254,7 +254,6 @@
   import {Row, Col, Table, TableColumn, Popover, Pagination, Button, Input, Select, Option, DatePicker, Dialog, Tag, MessageBox, Message} from 'element-ui';
   import {ButtonGroup, QueryItem, TableOperate, CollapseQuery, OmissionText, ToPrice} from '@/common';
   import {SelectLine, SelectCity} from '@/container';
-  import {Operate} from '@/service';
   import {Config, Constant, DataHandle, Http} from '@/util';
   import tableMixin from '@/container/table/table.mixin';
   import RefundAddStore from './RefundAddStore';
@@ -436,7 +435,7 @@
       },
 
       async listQuery() {
-        let res = await Operate.refundFrameQuery(this.$data.query);
+        let res = await Http.get(Config.api.operateRefundQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = res.data;
         } else {
@@ -459,7 +458,7 @@
             type: 'warning'
           }).then(async () => {
             let frame_return_ids = this.$data.multipleSelection.map(item => item.id);
-            let res = await Operate.refundFrameApprove({
+            let res = await Http.post(Config.api.operateRefundFrameApprove, {
               frame_return_ids: frame_return_ids
             });
             if (res.code === 0) {
@@ -481,7 +480,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Operate.refundFrameApprove({
+          let res = await Http.post(Config.api.operateRefundFrameApprove, {
             frame_return_ids: [item.id]
           });
           if (res.code === 0) {
@@ -502,7 +501,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Operate.refundFrameReject({
+          let res = await Http.post(Config.api.operateRefundFrameReject, {
             frame_return_id: item.id
           });
           if (res.code === 0) {

@@ -32,8 +32,7 @@
 
 <script>
   import {Form, FormItem, Select, Option, Input, InputNumber, Radio, Button, Message, MessageBox} from 'element-ui';
-  import {Merchant} from '@/service';
-  import {DataHandle, Constant, Verification} from '@/util';
+  import {Http, Config, DataHandle, Constant, Verification } from '@/util';
 
   export default {
     name: 'BalanceEdit',
@@ -124,7 +123,7 @@
               amount: that.handlePrice(dataItem.amount),
               remark: dataItem.remark
             }
-            let res = await Merchant.balanceEdit(data);
+            let res = await Http.post(Config.api.merchantBalanceEdit, data);
             that.isSending = false;
 
             if (res.code === 0) {

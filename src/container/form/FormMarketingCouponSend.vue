@@ -52,7 +52,6 @@
 <script>
   import {Form, FormItem, Radio, RadioGroup, Dialog, Button, Message, MessageBox} from 'element-ui';
   import { SearchMerchantGrade, SearchCity, SearchMerchant } from '@/container/search';
-  import { Base } from '@/service';
 
   export default {
     name: "FormMarketingCouponSend",

@@ -115,11 +115,10 @@
 </template>
 
 <script>
-  import {Input, Checkbox, CheckboxGroup, Table, TableColumn, Form, FormItem, Button, Message} from 'element-ui';
+  import { Input, Checkbox, CheckboxGroup, Table, TableColumn, Form, FormItem, Button, Message } from 'element-ui';
   import { ToPrice, QueryItem } from '@/common';
-  import {SelectLine, SelectCity} from '@/container';
-  import {Operate} from '@/service';
-  import {DataHandle, Verification} from '@/util';
+  import { SelectLine, SelectCity } from '@/container';
+  import { Http, Config, DataHandle, Verification } from '@/util';
 
   export default {
     name: "OperateRefundAddStore",
@@ -364,7 +363,7 @@
 
       // 获取退框的门店列表
       async refundStoreList() {
-        let res = await Operate.refundStoreList(this.$data.query);
+        let res = await Http.get(Config.api.operateRefundStoreList, this.query);
         if (res.code === 0) {
           this.$data.storeList = res.data.stores;
         } else {
@@ -407,7 +406,7 @@
         });
         let remark = this.$data.submitData.remark;
 
-        let res = await Operate.refundStoreReturn({ stores, remark });
+        let res = await Http.post(Config.api.operateRefundStoreReturn, { stores, remark });
         if (res.code === 0) {
           Message.success('新增退框门店成功！');
           this.$data.isSending = false;

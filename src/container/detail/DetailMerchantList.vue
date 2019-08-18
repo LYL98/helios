@@ -178,8 +178,7 @@
   import MerchantEdit from '@/view/merchant/Edit';
   import MemberAddEdit from '@/view/merchant/MemberAddEdit';
   import StoreAddEdit from '@/view/merchant/StoreAddEdit';
-  import {Merchant, Base} from '@/service';
-  import {Config, DataHandle} from '@/util';
+  import { Http, Config, DataHandle } from '@/util';
 
   export default {
     components: {
@@ -283,7 +282,7 @@
       async getMerchantDetail() {
         let that = this;
         let {merchant_id} = that;
-        let res = await Merchant.merchantDetail({
+        let res = await Http.get(Config.api.merchantDetail, {
           id: merchant_id
         });
         if (res.code === 0) {

@@ -54,8 +54,7 @@
     Radio,
     RadioGroup,
   } from 'element-ui';
-  import {Config, Constant, DataHandle, Method, Verification} from '@/util';
-  import {Merchant} from '@/service';
+  import {Http, Config, Constant, DataHandle, Method, Verification} from '@/util';
   import {SelectProvince, SelectCity, UploadImg} from '@/common';
 
   export default {
@@ -162,7 +161,7 @@
       async storeDetail() {
         let that = this;
         let {id} = that;
-        let res = await Merchant.storeDetail({
+        let res = await Http.get(Config.api.storeDetail, {
           id: id
         });
         if (res.code === 0) {

@@ -67,7 +67,7 @@
   import { Input, Button, Table, TableColumn, Pagination, Message, Popover } from 'element-ui';
   import { OmissionText } from '@/common';
   import { Constant, Config, Http } from '@/util';
-  import { Item } from '@/service';
+  
   export default {
     name: "TableMarketingCouponLog",
     components: {
@@ -169,7 +169,7 @@
         this.queryLog();
       },
       async queryLog() {
-        let res = await Item.couponDistributeLog(this.$data.query);
+        let res = await Http.get(Config.api.itemCouponDistributeLog, this.query);
         if (res.code === 0) {
           let items = res.data.items.map(item => {
             item.dis_scope_str = this.showDisLog(item);
