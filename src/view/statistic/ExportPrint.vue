@@ -1,5 +1,5 @@
 <template>
-  <div :style="`margin: 6px; background: white; height: ${windowHeight - 90}px`">
+  <div :style="`margin: 6px; background: white; height: ${viewWindowHeight - 90}px`">
     <div style="padding: 20px;">
       <h6 style="font-size: 14px">商户表</h6>
       <div style="margin-top: 18px; margin-left: 20px">
@@ -108,8 +108,7 @@ import {
   Select,
   Option
 } from 'element-ui';
-import { Config, DataHandle, Request } from "@/util";
-import { Operate } from "@/service";
+import { Http, Config, DataHandle, Request } from "@/util";
 import { SelectCity, SelectCityMulti } from "@/common";
 import Constant from "@/util/constant";
 import viewMixin from '@/view/view.mixin';
@@ -322,7 +321,7 @@ export default {
         return false;
       }
 
-      let res = await Operate.orderLabelPrint(query);
+      let res = await Http.get(Config.api.orderLabelPrint, query);
       if (res.code === 0) {
         that.cancel(); //先隐藏弹层，不然打印会模糊
         setTimeout(()=>{

@@ -154,7 +154,7 @@
                   <a
                     class="operator"
                     href="javascript:void(0);"
-                    @click="orderShowHideAfterSaleDetail({data: scope.row.aftersale, isShow: true})"
+                    @click="orderShowHideAfterSaleDetail(scope.row.aftersale)"
                     v-if="auth.isAdmin || auth.OrderAfterSaleDetail"
                   >
                     {{scope.row.aftersale.status === 'waiting_dispose' ? '查看进度':'查看详情'}}
@@ -308,22 +308,14 @@
 </template>
 
 <script>
-  import {Row, Col, Button, Dialog, Tag, Table, TableColumn} from 'element-ui';
-  import {ImagePreview} from '@/common';
-  import {Config, DataHandle, Constant} from '@/util';
-  import PriceHistory from './PriceHistory';
+  import { ImagePreview } from '@/common';
+  import { Http, Config, DataHandle, Constant } from '@/util';
+  import detailMixin from '@/container/detail/detail.mixin';
 
   export default {
     name: "OrderDetail",
+    mixins: [detailMixin],
     components: {
-      'el-row': Row,
-      'el-col': Col,
-      'el-button': Button,
-      'el-dialog': Dialog,
-      'el-tag': Tag,
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'price-history': PriceHistory,
       'my-image-preview': ImagePreview
     },
     computed: {
@@ -350,11 +342,8 @@
     },
     data() {
       return {
-        isShow: 'orderIsShowDetail', //
-        detail: 'orderDataDetail', //
-        isShowAfterSaleDetail: 'orderIsShowAfterSaleDetail', //
-        auth: this.$auth,
-        tencentPath: Config.tencentPath,
+        isShow: false,
+        detail: {},
         orderStatus: Constant.ORDER_STATUS,
         afterSaleStatus: Constant.AFTER_SALE_STATUS,
         afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE,
@@ -363,10 +352,6 @@
         activeName: 'second',
 
         isShowAmountDetail: false,
-        // afterSaleDetail: {
-        //   isShow: false,
-        //   item: {}
-        // },
         reasonPrice: {
           short: "缺货",
           weight_up: "实重上升",
@@ -414,14 +399,43 @@
       //取消
       cancel() {
         this.$attrs.callback(); // 调用父组件的callback
-        this.orderShowHideDetail({isShow: false});
+        this.orderShowHideDetail();
       },
       // 组件回调
       myCallBack(res) {
         let {detail} = this;
         this.orderGetDetail(detail.id);
       },
-      ...mapActions(['orderShowHideDetail', 'orderGetDetail', 'orderShowHideAfterSaleDetail'])
+      //显示隐藏订单详情
+      orderShowHideDetail(id){
+        if(id){
+          if(this.isShow){
+            this.$data.isShow = false;
+            this.orderGetDetail(id);
+          }else{
+            this.orderGetDetail(id);
+          }
+        }else{
+          this.$data.isShow = false;
+        }
+      },
+      //获取订单详情
+      async orderGetDetail(id){
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.get(Config.api.orderDetail, { id: id });
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$data.detail = res.data;
+          this.$data.isShow = true;
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //查看售后进度
+      orderShowHideAfterSaleDetail(aftersale){
+        let pc = this.getPageComponents('AfterSaleDetail');
+        pc.orderShowHideAfterSaleDetail(aftersale);
+      }
     }
   };
 </script>

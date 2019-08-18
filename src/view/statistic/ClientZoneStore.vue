@@ -78,7 +78,7 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="orderItemSumData.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         @sort-change="onSort"
       >
@@ -175,8 +175,7 @@
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem } from 'element-ui';
   import { QueryItem, TableOperate, SelectZone, SelectCity } from '@/common';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
+  import { Http, Config, DataHandle, Constant } from '@/util';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -347,7 +346,7 @@
         let that = this;
         let { query } = that;
         this.$loading({ isShow: true, isWhole: true });
-        let res = await Statistic.statisticalOrderMerchantSum(query);
+        let res = await Http.get(Config.api.statisticalOrderMerchantSum, query);
         if(res.code === 0){
           this.total = 0
           res.data.items.map(item => {

@@ -42,13 +42,13 @@
 </template>
 
 <script>
-  import fromMixin from './from.mixin';
+  import formMixin from './form.mixin';
   import { Http, Config } from '@/util';
   import { MessageBox, Notification } from 'element-ui';
 
   export default {
     name: "FormSystemSettingOperating",
-    mixins: [fromMixin],
+    mixins: [formMixin],
     data() {
       return{
         itemData: {

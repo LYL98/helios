@@ -34,7 +34,7 @@
         :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         style="width: 100%"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -50,7 +50,7 @@
           <template slot-scope="scope">
             <div style="position: relative;">
               <span v-if="auth.isAdmin || auth.OrderDetail">
-                <a :class="`order-no ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="orderShowHideDetail({ data: scope.row, isShow: true })">
+                <a :class="`order-no ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="orderShowHideDetail(scope.row.id)">
                   {{scope.row.code}}
                 </a>
               </span>
@@ -162,29 +162,15 @@
       </div>
     </div>
     <!--订单详情-->
-    <order-detail :callback="myCallBack"/>
-    <after-sale-detail :callback="myCallBack"/>
-    <my-manual-delivery :callback="myCallBack"/>
+    <order-detail :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="OrderDetail"/>
+    <after-sale-detail :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="AfterSaleDetail"/>
+    <my-manual-delivery :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="ManualDelivery"/>
     <!--订单修改价格-->
     <!--<order-price-update :callback="myCallBack" />-->
   </div>
 </template>
 
 <script>
-  import {
-    Message,
-    Button,
-    Checkbox,
-    Input,
-    Select,
-    Option,
-    Table,
-    TableColumn,
-    MessageBox,
-    Pagination,
-    Tag,
-    DatePicker
-  } from 'element-ui';
   import { ButtonGroup, TableOperate, SelectCity } from '@/common';
   import { QueryOrder } from '@/container';
   import {Config, DataHandle, Constant, Http} from '@/util';
@@ -197,16 +183,6 @@
   export default {
     name: "OrderList",
     components: {
-      'el-button': Button,
-      'el-checkbox': Checkbox,
-      'el-input': Input,
-      'el-select': Select,
-      'el-option': Option,
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-pagination': Pagination,
-      'el-tag': Tag,
-      'el-date-picker': DatePicker,
       'my-select-city': SelectCity,
       'my-button-group': ButtonGroup,
       'my-table-operate': TableOperate,
@@ -219,7 +195,7 @@
     created() {
       documentTitle('订单 - 订单列表');
       this.initQuery();
-      this.orderGetList(this.$data.query);
+      this.getOrderGetList(this.query);
 
       if (!this.auth.isAdmin && !this.auth.OrderListExport && !this.auth.OrderItemExport) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
@@ -227,9 +203,10 @@
     },
     data() {
       return {
-        dataItem: 'orderDataItem', //
-        isShowDetail: 'orderIsShowDetail', //
-        tencentPath: Config.tencentPath,
+        dataItem: {
+          items: [],
+          num: 0
+        },
         orderStatus: Constant.ORDER_STATUS,
         payStatus: Constant.PAY_STATUS,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
@@ -248,32 +225,9 @@
     },
     methods: {
 
-      indexMethod(index) {
-        return (this.query.page - 1) * this.query.page_size + index + 1;
-      },
-
-      //返回金额
-      returnPrice(price) {
-        return DataHandle.returnPrice(price);
-      },
-      //返回重量
-      returnWeight(data) {
-        return DataHandle.returnWeight(data);
-      },
-      //处理重量
-      handleWeight(data) {
-        return DataHandle.handleWeight(data);
-      },
-      returnDate(dateStr) {
-        return DataHandle.returnDateFormat(dateStr, 'yyyy-MM-dd')
-      },
-      returnTime(dateStr) {
-        return DataHandle.returnDateFormat(dateStr, 'HH:mm:ss')
-      },
-
       //组件回调
       myCallBack(res) {
-        this.orderGetList(this.query);
+        this.getOrderGetList(this.query);
       },
       onExpandChange(isExpand) {
         if (isExpand) {
@@ -287,7 +241,7 @@
         query.page = 1;
         query.page_size = pageSize;
         this.$data.query = query;
-        this.orderGetList(query);
+        this.getOrderGetList(query);
         window.scrollTo(0, 0);
       },
       //翻页
@@ -295,7 +249,7 @@
         let {query} = this;
         query.page = page;
         this.$data.query = query;
-        this.orderGetList(query);
+        this.getOrderGetList(query);
         window.scrollTo(0, 0);
       },
 
@@ -323,12 +277,12 @@
         } else {
           this.query.is_init = 1;
         }
-        this.orderGetList(this.query);
+        this.getOrderGetList(this.query);
         window.scrollTo(0, 0);
       },
       resetQuery() {
         this.initQuery();
-        this.orderGetList(this.query);
+        this.getOrderGetList(this.query);
         window.scrollTo(0, 0);
       },
 
@@ -365,8 +319,9 @@
         this.$loading({ isShow: false });
       },
 
+      //取消订单
       handleOrderCancel(id) {
-        let {orderCancel, orderGetList, query} = this;
+        let {orderCancel, getOrderGetList, query} = this;
         MessageBox.confirm('取消该订单?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -375,15 +330,17 @@
           orderCancel({
             id: id,
             callback: function () {
-              orderGetList(query);
+              getOrderGetList(query);
             }
           })
         }).catch(() => {
 
         })
       },
+
+      //确认订单
       handleOrderConfirm(id) {
-        let {orderConfirm, orderGetList, query} = this;
+        let {orderConfirm, getOrderGetList, query} = this;
         MessageBox.confirm('确认该订单?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -392,17 +349,30 @@
           orderConfirm({
             id: id,
             callback: function () {
-              orderGetList(query);
+              getOrderGetList(query);
             }
           })
         }).catch(() => {
 
         })
       },
-      manualDelivery() {
-
+      //获取订单列表
+      async getOrderGetList() {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.get(Config.api.orderQuery, this.query);
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$data.dataItem = res.data;
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
       },
-      ...mapActions(['orderGetList', 'orderShowHideDetail', 'orderShowHideManualDelivery', 'orderConfirm', 'orderCancel'])
+      //显示订单详情
+      orderShowHideDetail(id){
+        let pc = this.viewGetPageComponents('OrderDetail');
+        pc.orderShowHideDetail(id);
+      }
+      //...mapActions([ 'orderShowHideManualDelivery', 'orderConfirm', 'orderCancel'])
     }
   };
 </script>

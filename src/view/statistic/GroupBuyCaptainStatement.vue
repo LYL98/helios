@@ -17,7 +17,7 @@
     <div class="statistics-table-list-container" style="position: relative;">
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -120,7 +120,6 @@
   import { QueryGroupBuyCaptainStatistics } from '@/container'
   // import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
   import Constant from "@/util/constant";
-  import { Statistic } from '@/service';
   import { DataHandle, Config, Http } from '@/util';
   import viewMixin from '@/view/view.mixin';
 
@@ -305,7 +304,9 @@ export default {
       let that = this;
       let { query } = that;
       this.$loading({ isShow: true, isWhole: true });
-      let res = query.is_group === 1 ? await Statistic.statisticalSumGroupBuyCaptain(query) : await Statistic.statisticalSumGroupBuyCaptainNoGroup(query);
+      let res = query.is_group === 1 ?
+        await Http.get(Config.api.statisticalSumGroupBuyCaptain, query):
+        await Http.get(Config.api.statisticalSumGroupBuyCaptainNoGroup, query);
       if(res.code === 0){
         res.data.items.map((item, index) => item.id = index);
         that.$data.dataItem = res.data;

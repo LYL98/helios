@@ -75,9 +75,8 @@
 
 <script>
 import { Dialog, Button, Input, Table, TableColumn, Pagination } from 'element-ui';
-import { SelectBuyer, SelectDisplayClass } from "@/common"
-import { Statistic } from '@/service';
-import { DataHandle } from '@/util';
+import { SelectBuyer, SelectDisplayClass } from "@/common";
+import { Http, Config, DataHandle } from '@/util';
 
 export default {
   name: "ItemSalesStatistic",
@@ -197,7 +196,7 @@ export default {
       let { query } = that;
       query.is_gift = 0;
       this.$loading({ isShow: true, isWhole: true });
-      let res = await Statistic.statisticalOrderStoreSaleItems(query);
+      let res = await Http.get(Config.api.statisticalOrderStoreSaleItems, query);
       if(res.code === 0){
         res.data.items.map((item, index) => {
           item.id = index;

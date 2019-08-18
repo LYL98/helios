@@ -22,7 +22,7 @@
         </el-col>
       </el-row>
     </div>
-    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - offsetHeight + 'px'}">
+    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: viewWindowHeight - offsetHeight + 'px'}">
       <div style="background-color: white;">
         <!--<P style="text-align: center; padding-top: 10px">-->
           <!--<span style="color: blue; font-size: 20px">{{selectItemName ? selectItemName : '-'}}</span>-->
@@ -93,8 +93,7 @@
 
 <script>
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message, Tooltip } from 'element-ui';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
+  import { Http, Config, DataHandle, Constant } from '@/util';
   import { QueryItem, SearchItem } from '@/common';
   import viewMixin from '@/view/view.mixin';
 
@@ -772,7 +771,7 @@
         let that = this;
         let { query, indexNames } = that;
         this.$loading({ isShow: true, isWhole: true });
-        let res = await Statistic.statisticalSumBusinessDelivery(query);
+        let res = await Http.get(Config.api.statisticalSumBusinessDelivery, query);
         if(res.code === 0){
           //将日期维度转化成指标维度
           let dateItems = res.data;

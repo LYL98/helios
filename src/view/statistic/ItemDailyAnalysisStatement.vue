@@ -18,7 +18,7 @@
       </div>
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -143,8 +143,7 @@
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
 import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
-import { Statistic } from '@/service';
-import { DataHandle } from '@/util';
+import { Http, Config, DataHandle } from '@/util';
 import { QueryItemDailyAnalysis } from '@/container'
 import Constant from "@/util/constant";
 import viewMixin from '@/view/view.mixin';
@@ -281,8 +280,8 @@ export default {
       let that = this;
       let { query, selectArea } = that;
       this.$loading({ isShow: true, isWhole: true });
-      let res = selectArea === 'item' ? await Statistic.statisticalItemDailyAnalysis(query) :
-                selectArea === 'buyer' ? await Statistic.statisticalItemDailyAnalysisBuyer(query) : await Statistic.statisticalItemDailyAnalysisClass(query);
+      let res = selectArea === 'item' ? await Http.get(Config.api.statisticalItemDailyAnalysis, query) :
+                selectArea === 'buyer' ? await Http.get(Config.api.statisticalItemDailyAnalysisBuyer, query) : await Http.get(Config.api.statisticalItemDailyAnalysisClass, query);
       if(res.code === 0){
         //手动增加总计和平均值的行数据
         if (res.data.items && res.data.items.length > 0) {

@@ -16,7 +16,7 @@
     <div class="statistics-table-list-container" style="position: relative;">
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -107,10 +107,7 @@
 <script>
   import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
   import { QueryGroupBuyMemberStatistics } from '@/container'
-  // import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
-  import Constant from "@/util/constant";
-  import { Statistic } from '@/service';
-  import { DataHandle, Config, Http } from '@/util';
+  import { DataHandle, Config, Http, Constant } from '@/util';
   import viewMixin from '@/view/view.mixin';
 
 export default {
@@ -274,7 +271,7 @@ export default {
       let that = this;
       let { query } = that;
       this.$loading({ isShow: true, isWhole: true });
-      let res = await Statistic.statisticalSumGroupBuyMember(query);
+      let res = await Http.get(Config.api.statisticalSumGroupBuyMember, query);
       if(res.code === 0){
         //手动增加总计和平均值的行数据
         // if (res.data.items && res.data.items.length > 0) {

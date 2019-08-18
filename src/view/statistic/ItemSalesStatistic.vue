@@ -92,8 +92,7 @@
 <script>
 import { Dialog, Button, Input, Table, TableColumn, Pagination } from 'element-ui';
 import { SelectProvince, SelectCity, SelectZone } from "@/common"
-import { Statistic } from '@/service';
-import { DataHandle } from '@/util';
+import { Http, Config, DataHandle } from '@/util';
 
 export default {
   name: "ItemSalesStatistic",
@@ -226,7 +225,7 @@ export default {
       let that = this;
       let { query } = that;
       this.$loading({ isShow: true, isWhole: true });
-      let res = await Statistic.statisticalOrderItemSaleStores(query);
+      let res = await Http.get(Config.api.statisticalOrderItemSaleStores, query);
       if(res.code === 0){
         res.data.items.map((item, index) => {
           item.id = index;

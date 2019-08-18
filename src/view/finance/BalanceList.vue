@@ -158,7 +158,7 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         query: {},
         dataItem: {
-          item: [],
+          items: [],
           num: 0
         },
         item: {}, // 需要编辑的项

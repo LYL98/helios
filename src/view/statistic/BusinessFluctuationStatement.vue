@@ -16,7 +16,7 @@
       </div>
       <div class="statistics-table-list-container">
         <el-table :data="dataItem.items"
-                  :height="windowHeight - offsetHeight"
+                  :height="viewWindowHeight - offsetHeight"
                   :row-class-name="highlightRowClassName"
                   @cell-mouse-enter="cellMouseEnter"
                   @cell-mouse-leave="cellMouseLeave"
@@ -84,8 +84,7 @@
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
 import { SelectZone } from '@/common';
-import { Statistic } from '@/service';
-import { DataHandle, Constant } from '@/util';
+import { Http, Config, DataHandle, Constant } from '@/util';
 import BusinessFluctuationChart from "./BusinessFluctuationChart";
 import {QueryBusinessFluctuation} from '@/container';
 import viewMixin from '@/view/view.mixin';
@@ -411,7 +410,9 @@ export default {
       let that = this;
       let { query, selectArea } = that;
       this.$loading({ isShow: true, isWhole: true });
-      let res = selectArea === 'zone' ? await Statistic.statisticalOrderTrendZone(query): await Statistic.statisticalOrderTrendCity(query);
+      let res = selectArea === 'zone' ?
+        await Http.get(Config.api.statisticalOrderTrendZone, query):
+        await Http.get(Config.api.statisticalOrderTrendCity, query);
       if(res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
           let averages = res.data.averages;

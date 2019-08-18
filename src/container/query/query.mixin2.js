@@ -1,33 +1,15 @@
-import { DataHandle, Http, Method, Constant } from '@/util';
+import baseMixin from '@/container/base.mixin';
+import { Constant } from '@/util';
 import { QueryItem, CollapseQuery } from '@/common';
-import { Form, FormItem, DatePicker, Input, Button, RadioGroup, RadioButton, Radio, Dialog, Row, Col, Select, Option } from 'element-ui';
 
 export default {
+  mixins: [baseMixin],
   components: {
-    'el-row': Row,
-    'el-col': Col,
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-date-picker': DatePicker,
-    'el-input': Input,
-    'el-button': Button,
-    'el-radio': Radio,
-    'el-radio-group': RadioGroup,
-    'el-radio-button': RadioButton,
-    'el-dialog': Dialog,
-    'el-select': Select,
-    'el-option': Option,
     'my-query-item': QueryItem,
     'my-collapse-query': CollapseQuery
   },
-  props: {
-    getPageComponents: { type: Function, require: true }, //获取页面组件
-    windowHeight: {type: Number, default: 0}
-  },
   data() {
     return {
-      province: this.$province,
-      auth: this.$auth,
       query: {
         page: 1,
         page_size: Constant.PAGE_SIZE

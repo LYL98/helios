@@ -90,7 +90,7 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="merchantListData.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         @sort-change="onSort"
       >
@@ -150,8 +150,7 @@
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
   import { QueryItem, TableOperate, SelectBuyer, SelectDisplayClass } from '@/common';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
+  import { Http, Config, DataHandle, Constant } from '@/util';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -323,7 +322,7 @@
         let { query } = that;
         query.is_gift = 0;
         this.$loading({ isShow: true, isWhole: true });
-        let res = await Statistic.statisticalOrderStoreSaleItems(query);
+        let res = await Http.get(Config.api.statisticalOrderStoreSaleItems, query);
         if(res.code === 0){
           res.data.items.map((item, index) => {
             item.id = index;

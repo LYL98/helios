@@ -28,7 +28,7 @@
         :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         style="width: 100%"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -39,7 +39,7 @@
           <template slot-scope="scope">
           <span v-if="auth.isAdmin || auth.OrderAfterSaleDetail || auth.OrderAfterSaleAppend || auth.OrderAfterSaleUpdate">
             <a :class="`order-no ${isEllipsis(scope.row)}`" href="javascript:void(0);"
-               @click="orderShowHideAfterSaleDetail({ data: scope.row, isShow: true })">
+               @click="orderShowHideAfterSaleDetail(scope.row)">
               {{scope.row.code}}
             </a>
           </span>
@@ -91,7 +91,7 @@
                   {
                     title: scope.row.status === 'waiting_dispose' ? '待处理' : '详情',
                     isDisplay: scope.row.status === 'waiting_dispose' && (auth.isAdmin || auth.OrderAfterSaleUpdate),
-                    command: () => orderShowHideAfterSaleDetail({ data: scope.row, isShow: true })
+                    command: () => orderShowHideAfterSaleDetail(scope.row)
                   }
                 ]"
               >
@@ -117,8 +117,8 @@
         />
       </div>
     </div>
-    <after-sale-detail :callback="myCallBack" />
-    <order-detail :callback="myCallBack" />
+    <after-sale-detail :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="AfterSaleDetail"/>
+    <order-detail :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="OrderDetail"/>
   </div>
 </template>
 
@@ -152,7 +152,7 @@ export default {
     let that = this;
     documentTitle('订单 - 售后列表');
     this.initQuery();
-    this.orderAfterSaleQuery(this.query);
+    this.orderAfterSaleQuery();
 
     if (!this.auth.isAdmin && !this.auth.OrderAftersaleExport) {
       this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
@@ -160,22 +160,18 @@ export default {
   },
   data(){
     return {
-      dataItem: 'orderAfterSaleDataItem', //
-      isShow: 'orderIsShowAfterSaleDetail', //
-      tencentPath: Config.tencentPath,
+      dataItem: {
+        items: [],
+        num: 0
+      },
       afterSaleStatus: Constant.AFTER_SALE_STATUS,
       afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE,
       payStatus: Constant.PAY_STATUS,
       offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
-      query: { },
+      query: {},
     }
   },
   methods: {
-
-    indexMethod(index) {
-      return (this.query.page - 1) * this.query.page_size + index + 1;
-    },
-
     onExpandChange(isExpand) {
       if (isExpand) {
         this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
@@ -200,18 +196,18 @@ export default {
     },
     changeQuery() {
       this.query.page = 1;
-      this.orderAfterSaleQuery(this.query);
+      this.orderAfterSaleQuery();
     },
     resetQuery() {
       this.initQuery();
-      this.orderAfterSaleQuery(this.query);
+      this.orderAfterSaleQuery();
     },
     changePageSize(pageSize) {
       let {query} = this;
       query.page = 1;
       query.page_size = pageSize;
       this.$data.query = query;
-      this.orderAfterSaleQuery(query);
+      this.orderAfterSaleQuery();
       window.scrollTo(0, 0);
     },
     //翻页
@@ -219,13 +215,13 @@ export default {
       let { query } = this;
       query.page = page;
       this.$data.query = query;
-      this.orderAfterSaleQuery(query);
+      this.orderAfterSaleQuery();
       window.scrollTo(0, 0);
     },
 
     //组件回调
     myCallBack(res){
-      this.orderAfterSaleQuery(this.query);
+      this.orderAfterSaleQuery();
     },
     //导出
     async afterSaleListExport() {
@@ -258,7 +254,22 @@ export default {
       }
       this.$loading({ isShow: false });
     },
-    ...mapActions(['orderAfterSaleQuery', 'orderShowHideAfterSaleDetail', 'orderShowHideDetail'])
+    //获取售后列表
+    async orderAfterSaleQuery(){
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.get(Config.api.afterSaleQuery, this.query);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$data.dataItem = res.data;
+      }else{
+        this.$message({title: '提示', message: res.message, type: 'error'});
+      }
+    },
+    //售后详情
+    orderShowHideAfterSaleDetail(data){
+      let pc = this.viewGetPageComponents('AfterSaleDetail');
+      pc.orderShowHideAfterSaleDetail(data);
+    }
   }
 };
 </script>

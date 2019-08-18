@@ -47,20 +47,13 @@
 </template>
 
 <script>
-import { Form, FormItem, Button, Select, Option, Radio, Input, Dialog } from 'element-ui';
-import { Config, DataHandle, Constant, Verification } from '@/util';
+import formMixin from '@/container/form/form.mixin';
+import { Http, Config, DataHandle, Constant, Verification } from '@/util';
 
 export default {
   name: "AfterSaleClose",
+  mixins: [formMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-button': Button,
-    'el-select': Select,
-    'el-option': Option,
-    'el-radio': Radio,
-    'el-input': Input,
-    'el-dialog': Dialog
   },
   created() {
     this.initEditDate();
@@ -70,9 +63,8 @@ export default {
   data(){
     
     return{
-      isShow: 'orderIsShowAfterSaleClose', //
-      detail: 'orderAfterSaleDetail', //
-      tencentPath: Config.tencentPath,
+      isShow: false,
+      detail: {},
       orderStatus: Constant.ORDER_STATUS,
       priceChange: Constant.PRICE_CHANGE,
       afterSaleResult: Constant.AFTER_SALE_RESULT,
@@ -127,7 +119,7 @@ export default {
       let that = this;
       that.initEditDate();
       that.$refs['ruleForm'].resetFields();
-      that.orderShowHideAfterSaleClose({ isShow: false });
+      that.orderShowHideAfterSaleClose();
     },
     //选择处理结果
     changeRadio(){
@@ -153,29 +145,48 @@ export default {
     //提交审核结果
     submit(){
       let that = this;
-      let { detail, editData } = that;
       that.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          that.orderAfterSaleUpdate({
-            data: {
-              aftersale_id: detail.id,
-              opt_detail: editData.opt_detail,
-              opt_type: editData.opt_type,
-              refund: that.handlePrice(editData.refund),
-              num: editData.num,
-            },
-            callback(){
-              that.cancel();
-              that.$attrs.callback();//回调, 自于AfterSaleDetail Component，用于刷新售后详情的数据。
-              that.orderGetDetail(detail.order_id); // 由于订单详情中也有对售后结果的引用，所以在此处需要再次加载订单详情。
-              that.initEditDate();
-              that.$refs['ruleForm'].resetFields();
-            }
-          });
+          this.orderAfterSaleUpdate();
         }
       });
     },
-    ...mapActions(['orderShowHideAfterSaleClose', 'orderAfterSaleUpdate', 'orderGetDetail'])
+    //提交
+    async orderAfterSaleUpdate(){
+      let { detail, editData } = this;
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.post(Config.api.afterSaleUpdate, {
+        aftersale_id: detail.id,
+        opt_detail: editData.opt_detail,
+        opt_type: editData.opt_type,
+        refund: this.handlePrice(editData.refund),
+        num: editData.num,
+      });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.cancel();
+        this.$attrs.callback();//回调, 自于AfterSaleDetail Component，用于刷新售后详情的数据。
+        this.orderGetDetail(detail.order_id); // 由于订单详情中也有对售后结果的引用，所以在此处需要再次加载订单详情。
+        this.initEditDate();
+        this.$refs['ruleForm'].resetFields();
+      }else{
+        this.$message({title: '提示', message: res.message, type: 'error'});
+      }
+    },
+    //关闭显示
+    orderShowHideAfterSaleClose(data){
+      if(data){
+        this.$data.detail = data;
+        this.$data.isShow = true;
+      }else{
+        this.$data.isShow = false;
+      }
+    },
+    //订单详情
+    orderGetDetail(id){
+      let pc = this.getPageComponents('OrderDetail');
+      pc.orderGetDetail(id);
+    }
   }
 };
 </script>

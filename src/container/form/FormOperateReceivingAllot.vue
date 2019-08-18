@@ -29,13 +29,13 @@
 </template>
 
 <script>
-import fromMixin from './from.mixin';
+import formMixin from './form.mixin';
 import { Config, Constant, DataHandle } from '@/util';
 import { NumberKey } from '@/common';
 
 export default {
   name: "ReceivingAllot",
-  mixins: [fromMixin],
+  mixins: [formMixin],
   components: {
   },
   created() {

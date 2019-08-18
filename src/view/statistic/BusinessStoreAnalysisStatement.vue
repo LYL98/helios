@@ -11,7 +11,7 @@
     <div class="statistics-table-list-container">
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :header-cell-style="{'backgroundColor': '#ffffff'}"
         @sort-change="onSort"
         :row-class-name="highlightRowClassName"
@@ -126,8 +126,7 @@
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
 import { SelectZone, SelectCity } from '@/common';
-import { Statistic } from '@/service';
-import { DataHandle, Constant } from '@/util';
+import { Http, Config, DataHandle, Constant } from '@/util';
 import { QueryBusinessStore } from '@/container';
 import viewMixin from '@/view/view.mixin';
 
@@ -313,7 +312,7 @@ export default {
       let that = this;
       let { query } = that;
       this.$loading({ isShow: true, isWhole: true });
-      let res = await Statistic.statisticalOrderStoreAnalysis(query);
+      let res = await Http.get(Config.api.statisticalOrderStoreAnalysis, query);
       if (res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
           let total = res.data.total;

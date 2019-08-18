@@ -1,6 +1,6 @@
 <template>
   <!--确认审核start-->
-  <el-dialog title="审核预览" :visible="isShow" width="720px" :before-close="cancelAudit">
+  <el-dialog title="审核预览" :visible="isShow" width="720px" :before-close="handleCancel">
     <div v-if="checkData.length > 0">
       <div style="margin-bottom: 10px; color: red;">注：以下为异常的商品</div>
       <el-table :data="checkData" :row-class-name="highlightRowClassName" style="width: 100%" size="mini">
@@ -46,6 +46,7 @@ export default {
   data(){
     return {
       initDetail: {},
+      checkData: [],
       query: {},
       dataItem: {
         items: [],

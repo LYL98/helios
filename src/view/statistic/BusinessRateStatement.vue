@@ -16,7 +16,7 @@
     <div class="statistics-table-list-container">
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         @sort-change="onSort"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
@@ -206,9 +206,8 @@
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
 import { SelectZone } from '@/common';
-import { Statistic } from '@/service';
 import { QueryBusinessFourRate } from '@/container';
-import { DataHandle, Constant } from '@/util';
+import { Http, Config, DataHandle, Constant } from '@/util';
 import viewMixin from '@/view/view.mixin';
 
 export default {
@@ -347,7 +346,9 @@ export default {
       let that = this;
       let { query, selectArea } = that;
       this.$loading({ isShow: true, isWhole: true });
-      let res = selectArea === 'zone' ? await Statistic.statisticalOrderFourRateZone(query): await Statistic.statisticalOrderFourRateCity(query);
+      let res = selectArea === 'zone' ?
+        await Http.get(Config.api.statisticalOrderFourRateZone, query):
+        await Http.get(Config.api.statisticalOrderFourRateCity, query);
       if(res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
           //插入平均值

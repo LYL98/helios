@@ -20,7 +20,7 @@
           </el-select>
         </div>
         <el-table :data="dataItem.items"
-                  :height="windowHeight - offsetHeight"
+                  :height="viewWindowHeight - offsetHeight"
                   :row-class-name="highlightRowClassName"
                   @cell-mouse-enter="cellMouseEnter"
                   @cell-mouse-leave="cellMouseLeave"
@@ -91,8 +91,7 @@
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
 import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
-import { Statistic } from '@/service';
-import { DataHandle, Constant } from '@/util';
+import { Http, Config, DataHandle, Constant } from '@/util';
 import ItemFluctuationChart from "./ItemFluctuationChart";
 import { QueryItemFluctuationAnalysis } from '@/container'
 import viewMixin from '@/view/view.mixin';
@@ -496,8 +495,8 @@ export default {
       let that = this;
       let { query, selectArea } = that;
       this.$loading({ isShow: true, isWhole: true });
-      let res = selectArea === 'item' ? await Statistic.statisticalItemTrendAnalysis(query) :
-                selectArea === 'buyer' ? await Statistic.statisticalItemTrendAnalysisBuyer(query) : await Statistic.statisticalItemTrendAnalysisClass(query);
+      let res = selectArea === 'item' ? await Http.get(Config.api.statisticalItemTrendAnalysis, query) :
+                selectArea === 'buyer' ? await Http.get(Config.api.statisticalItemTrendAnalysisBuyer, query) : await Http.get(Config.api.statisticalItemTrendAnalysisClass, query);
       if(res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
           //插入平均值

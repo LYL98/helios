@@ -119,7 +119,7 @@
               <a
                 class="operator"
                 href="javascript:void(0);"
-                @click="orderShowHideDetail({ isShow: true, data: { id: scope.row.order_id } })"
+                @click="orderShowHideDetail(scope.row.order_id)"
                 v-if="auth.isAdmin || auth.OrderDetail"
               >
                 查看订单
@@ -187,36 +187,23 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click.native="cancel">关闭</el-button>
-        <el-button type="primary" @click.native="orderShowHideAfterSaleClose({
-          data: detail,
-          isShow: true
-        })" v-if="detail.status === 'waiting_dispose' && (auth.isAdmin || auth.OrderAfterSaleUpdate)">处理完成</el-button>
+        <el-button type="primary" @click.native="orderShowHideAfterSaleClose()" v-if="detail.status === 'waiting_dispose' && (auth.isAdmin || auth.OrderAfterSaleUpdate)">处理完成</el-button>
       </span>
     </el-dialog>
-    <after-sale-close :callback="myCallBack" />
+    <after-sale-close :callback="myCallBack" :getPageComponents="getPageComponents" ref="AfterSaleClose" />
   </div>
 </template>
 
 <script>
-import { Form, FormItem, Table, TableColumn, Tag, Button, Select, Option, Input, Dialog, Popover } from 'element-ui';
 import { ImagePreview } from '@/common';
-import { Config, DataHandle, Constant } from '@/util';
+import { Http, Config, DataHandle, Constant } from '@/util';
 import AfterSaleClose from './AfterSaleClose';
+import detailMixin from '@/container/detail/detail.mixin';
 
 export default {
   name: "AfterSaleDetail",
+  mixins: [detailMixin],
   components: {
-    'el-form': Form,
-    'el-form-item': FormItem,
-    'el-table': Table,
-    'el-table-column': TableColumn,
-    'el-button': Button,
-    'el-tag': Tag,
-    'el-select': Select,
-    'el-option': Option,
-    'el-input': Input,
-    'el-dialog': Dialog,
-    'el-popover': Popover,
     'my-image-preview': ImagePreview,
     'after-sale-close': AfterSaleClose
   },
@@ -235,10 +222,8 @@ export default {
   },
   data(){
     return{
-      isShow: 'orderIsShowAfterSaleDetail', //
-      detail: 'orderAfterSaleDetail', //
-      auth: this.$auth,
-      tencentPath: Config.tencentPath,
+      isShow: false,
+      detail: {},
       orderStatus: Constant.ORDER_STATUS,
       priceChange: Constant.PRICE_CHANGE,
       afterSaleStatus: Constant.AFTER_SALE_STATUS,
@@ -265,13 +250,6 @@ export default {
       }
       return '';
     },
-    returnWeight(value) {
-      return DataHandle.returnWeight(value);
-    },
-    //返回金额
-    returnPrice(price){
-      return DataHandle.returnPrice(price);
-    },
     //返回支付类型
     returnPayType(weixin, balance){
       return DataHandle.returnPayType(weixin, balance);
@@ -284,34 +262,74 @@ export default {
       this.editData.content = '';
       this.$refs['ruleForm'] && this.$refs['ruleForm'].resetFields();
       this.$attrs.callback();//回调
-      this.orderShowHideAfterSaleDetail({ isShow: false });
+      this.orderShowHideAfterSaleDetail();
     },
     //提交回复
     submit(){
-      let that = this;
-      let { detail, editData } = that;
-      that.$refs['ruleForm'].validate((valid) => {
+      this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          that.orderAftersaleAppend({
-            data: {
-              aftersale_id: detail.id,
-              content: editData.content,
-              images: []
-            },
-            callback(){
-              that.orderAfterSaleDetail(detail.id);
-              that.$refs['ruleForm'].resetFields();
-            }
-          });
+          this.orderAftersaleAppend();
         }
       });
+    },
+    //提交回复
+    async orderAftersaleAppend(){
+      let { detail, editData } = this;
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.post(Config.api.afterSaleDetail, {
+        aftersale_id: detail.id,
+        content: editData.content,
+        images: []
+      });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.orderAfterSaleDetail(detail.id);
+        this.$refs['ruleForm'].resetFields();
+        this.$message({title: '提示', message: '售后回复成功', type: 'success'});
+      }else{
+        this.$message({title: '提示', message: res.message, type: 'error'});
+      }
     },
     //组件回调
     myCallBack(res){
       let { detail } = this;
       this.orderAfterSaleDetail(detail.id);
     },
-    ...mapActions(['orderShowHideAfterSaleDetail', 'orderAfterSaleDetail', 'orderAftersaleAppend', 'orderShowHideAfterSaleClose', 'orderShowHideDetail'])
+    //关闭
+    orderShowHideAfterSaleClose(){
+      let pc = this.getPageComponents('AfterSaleClose');
+      pc.orderShowHideAfterSaleClose(this.detail);
+    },
+    //查看进度
+    orderShowHideAfterSaleDetail(aftersale){
+      if(aftersale){
+        if(this.isShow){
+          this.$data.isShow = false;
+          this.orderAfterSaleDetail(aftersale.id);
+        }else{
+          this.orderAfterSaleDetail(aftersale.id);
+        }
+      }else{
+        this.$data.isShow = false;
+      }
+    },
+    //详情
+    async orderAfterSaleDetail(id){
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.post(Config.api.afterSaleDetail, { id: id });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$data.detail = res.data;
+        this.$data.isShow = true;
+      }else{
+        this.$message({title: '提示', message: res.message, type: 'error'});
+      }
+    },
+    //显示订单详情
+    orderShowHideDetail(id){
+      let pc = this.getPageComponents('OrderDetail');
+      pc.orderShowHideDetail(id);
+    }
   }
 };
 </script>

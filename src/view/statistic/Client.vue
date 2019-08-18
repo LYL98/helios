@@ -19,7 +19,7 @@
       </my-query-item>
     </div>
 
-    <div :style="'height:' + (windowHeight - offsetHeight) + 'px; overflow-y: auto;'">
+    <div :style="'height:' + (viewWindowHeight - offsetHeight) + 'px; overflow-y: auto;'">
       <!-- 图表 -->
       <div class="echart-container">
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
@@ -124,8 +124,7 @@
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination } from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
+  import { Http, Config, DataHandle, Constant } from '@/util';
   import viewMixin from '@/view/view.mixin';
 
   import echarts from "echarts/lib/echarts";
@@ -279,7 +278,7 @@
         let that = this;
         let { query } = that;
         this.$loading({ isShow: true, isWhole: true });
-        let res = await Statistic.statisticalOrderGradeSum(query);
+        let res = await Http.get(Config.api.statisticalOrderGradeSum, query);
         if(res.code === 0){
           that.$data.listItem = res.data;
           typeof callback === 'function' && callback();

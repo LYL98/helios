@@ -98,7 +98,7 @@ export default {
   name: "ManualDelivery",
   data() {
     return {
-      isShow: 'orderIsShowManualDelivery', //
+      isShow: false, //
       detail: 'orderDataDetail', //
       auth: this.$auth,
       isShowModify: false,
@@ -396,7 +396,7 @@ export default {
       }
       // console.log('postData: ', this.postData)
     },
-    ...mapActions(['orderShowHideManualDelivery', 'orderManualChange', 'orderShip'])
+    //...mapActions(['orderShowHideManualDelivery', 'orderManualChange', 'orderShip'])
   }
 }
 </script>

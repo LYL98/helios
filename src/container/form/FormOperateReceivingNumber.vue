@@ -30,13 +30,13 @@
 </template>
 
 <script>
-import fromMixin from './from.mixin';
+import formMixin from './form.mixin';
 import { Http, Config, Constant, DataHandle } from '@/util';
 import { NumberKey } from '@/common';
 
 export default {
   name: "FormOperateReceivingNumber",
-  mixins: [fromMixin],
+  mixins: [formMixin],
   components: {
   },
   created() {
