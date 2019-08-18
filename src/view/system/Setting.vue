@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - offsetHeight + 'px', background: '#fff'}">
+    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: viewWindowHeight - offsetHeight + 'px', background: '#fff'}">
 
       <div class="settingItem" v-for="(settingItem, index) in settingItems" :key="index" v-if="index === 0 && (auth.isAdmin || auth.SystemSettingBrandInfo)">
         <p class="title">{{settingItem.title}}</p>

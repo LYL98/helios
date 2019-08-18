@@ -343,7 +343,11 @@
     data() {
       return {
         isShow: false,
-        detail: {},
+        detail: {
+          items: [{item_attrs: []}],
+          price_log: [],
+          pay_record: []
+        },
         orderStatus: Constant.ORDER_STATUS,
         afterSaleStatus: Constant.AFTER_SALE_STATUS,
         afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE,

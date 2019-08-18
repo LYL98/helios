@@ -31,7 +31,8 @@ export default {
   },
   data() {
     return {
-      activeTab: 'first'
+      activeTab: 'first',
+      auth: this.$auth
     }
   },
   created() {

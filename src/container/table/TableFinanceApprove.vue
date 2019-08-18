@@ -105,26 +105,18 @@
 </template>
 
 <script>
-  import { Table, TableColumn, Dialog, Form, FormItem, Tag } from 'element-ui';
   import { ToPrice, OmissionText, TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import tableMixin from './table.mixin';
-  import viewMixin from '@/view/view.mixin';
   
   export default {
     name: "TableFinanceApprove",
+    mixins: [tableMixin],
     components: {
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-dialog': Dialog,
-      'el-form': Form,
-      'el-form-item': FormItem,
-      'el-tag': Tag,
       'my-to-price': ToPrice,
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin, viewMixin],
     props: {
       data: { type: Array, required: true },
       stripe: {type: Boolean, default: true},

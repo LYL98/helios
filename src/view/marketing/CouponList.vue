@@ -28,7 +28,7 @@
       <!--</el-button>-->
     </div>
     <table-marketing-coupon
-      :data="listItem.items"
+      :data="dataItem.items"
       :page="query.page"
       :pageSize="query.page_size"
       :sendItem="handleSendItem"
@@ -36,6 +36,7 @@
       :showItem="handleShowItem"
       :showLog="handleShowLog"
       :offsetHeight="offsetHeight"
+      :windowHeight="viewWindowHeight"
     >
     </table-marketing-coupon>
     <div class="footer">
@@ -46,7 +47,7 @@
           :page-sizes="[10, 20, 30, 40, 50]"
           @size-change="changePageSize"
           @current-change="changePage"
-          :total="listItem.num"
+          :total="dataItem.num"
           :page-size="query.page_size"
           :current-page="query.page"
         />
@@ -146,11 +147,12 @@
 <script>
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox} from 'element-ui';
   import {QueryMarketingCoupon, TableMarketingCoupon, TableMarketingCouponLog, TableMarketingCouponStatistic, FormMarketingCouponAdd, FormMarketingCouponSend} from '@/container';
-  import { Item } from '@/service';
-  import {Constant, DataHandle, Config} from '@/util';
+  import {Constant, DataHandle, Config, Http} from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "CouponList",
+    mixins: [viewMixin],
     components: {
       'el-button': Button,
       'el-pagination': Pagination,
@@ -190,21 +192,68 @@
           isShowLog: false,
           isShowStatistic: false,
           isShowDetail: false
+        },
+        dataItem: {
+          items: [],
+          num: 0
         }
       }
-      listItem: 'itemCouponListItem' //
     },
     created() {
       documentTitle('营销 - 优惠券');
       this.initQuery();
-      this.itemCouponQuery({query: this.$data.query});
+      this.itemCouponQuery();
 
       if (!this.auth.isAdmin && !this.auth.MarketingCouponDistributeStatistic && !this.auth.MarketingCouponAdd) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
       }
     },
     methods: {
-      ...mapActions(['itemCouponQuery', 'itemCouponAdd', 'itemCouponDistribute', 'itemCouponAutoDis']),
+      //获取数据
+      async itemCouponQuery(){
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.get(Config.api.itemCouponQuery, this.query);
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$data.dataItem = res.data;
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //新增
+      async itemCouponAdd({item, success, error}) {
+        let res = await Http.post(Config.api.couponAdd, item);
+        if (res.code === 0) {
+          this.$message({title: '提示', message: '优惠券添加成功！', type: 'success'});
+          success && success();
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          error && error();
+        }
+      },
+      //发放
+      async itemCouponDistribute({item, success, error}) {
+        let res = await Http.post(Config.api.couponDistribute, item);
+        if (res.code === 0) {
+          this.$message({title: '提示', message: '优惠券发放成功！', type: 'success'});
+          success && success();
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          error && error();
+        }
+      },
+      //暂停开始
+      async itemCouponAutoDis({data, success, error}) {
+        let res = await Http.post(Config.api.couponAutoDis, data);
+        let message = data.auto_dis_status == 0 ? '自动发放已暂停！' : '自动发放已开始！';
+        if (res.code === 0) {
+          this.$message({title: '提示', message: message, type: 'success'});
+          success && success();
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          error && error();
+        }
+      },
       initQuery() {
         this.$data.query = Object.assign({}, this.$data.query, {
           province_code: this.province.code,
@@ -217,20 +266,20 @@
       },
 
       changeQuery() {
-        this.itemCouponQuery({query: this.$data.query});
+        this.itemCouponQuery();
       },
       resetQuery() {
         this.initQuery();
-        this.itemCouponQuery({query: this.$data.query});
+        this.itemCouponQuery();
       },
       changePage(page) {
         this.$data.query.page = page;
-        this.itemCouponQuery({query: this.$data.query});
+        this.itemCouponQuery();
       },
       changePageSize(size) {
         this.$data.query.page = 1;
         this.$data.query.page_size = size;
-        this.itemCouponQuery({query: this.$data.query});
+        this.itemCouponQuery();
       },
 
       returnPrice(price) {
@@ -340,7 +389,7 @@
         let success = () => {
           this.$data.formSending = false;
           this.$data.dialog.isShowAdd = false;
-          this.itemCouponQuery({query: this.$data.query});
+          this.itemCouponQuery();
         };
         let error = () => {
           this.$data.formSending = false;
@@ -372,7 +421,7 @@
       handleAutoDis(item) {
 
         let success = () => {
-          this.itemCouponQuery({query: this.$data.query});
+          this.itemCouponQuery();
         }
         let messageTitle = item.auto_dis_status ? '确认暂停自动发放？' : '确认开始自动发放？';
         let data = {
@@ -425,24 +474,13 @@
       },
       // 根据传递进来的id，显示优惠券的详情！
       async handleShowItem(id) {
-
-        let res = await Item.couponDetail({ coupon_id: id });
+        let res = await Http.get(Config.api.couponDetail, { coupon_id: id });
         if (res.code === 0) {
           this.detail = res.data;
           this.$data.dialog.isShowDetail = true;
         } else {
           Message.warning(res.message);
         }
-
-        // this.listItem.items.some(item => {
-        //   if(item.id === id) {
-        //     this.$data.detail = item;
-        //     return true;
-        //   }
-        // });
-        // if (this.$data.detail.id) {
-        //   this.$data.dialog.isShowDetail = true;
-        // }
       },
       // 显示发放记录
       handleShowLog(item) {

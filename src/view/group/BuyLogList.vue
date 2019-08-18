@@ -131,8 +131,7 @@
 
   import { Button, Input, Select, Option, DatePicker, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { QueryItem } from '@/common';
-  import { Constant, Config, DataHandle } from '@/util';
-  import { Item } from "@/service";
+  import { Http, Constant, Config, DataHandle } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
@@ -214,7 +213,7 @@
         this.logQuery();
       },
       async logQuery() {
-        let res = await Item.groupBuyLogQuery(this.$data.query);
+        let res = await Http.get(Config.api.groupBuyLogQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign(this.$data.listItem, {
             num: res.data.num,

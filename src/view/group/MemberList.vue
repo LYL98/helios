@@ -199,7 +199,6 @@
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
-  import { Group } from "@/service";
   import tableMixin from '@/container/table/table.mixin';
   import viewMixin from '@/view/view.mixin';
 
@@ -252,24 +251,24 @@
           page: 1,
           page_size: Constant.PAGE_SIZE
         }
-        this.memberQuery();
+        this.groupMemberQuery();
       },
       changeQuery() {
         this.$data.query = Object.assign(this.$data.query, { page: 1 });
-        this.memberQuery();
+        this.groupMemberQuery();
       },
 
       changePage(page) {
         this.$data.query.page = page;
-        this.memberQuery();
+        this.groupMemberQuery();
       },
       changePageSize(size) {
         this.$data.query.page = 1;
         this.$data.query.page_size = size;
-        this.memberQuery();
+        this.groupMemberQuery();
       },
-      async memberQuery() {
-        let res = await Group.memberQuery(this.$data.query);
+      async groupMemberQuery() {
+        let res = await Http.get(Config.api.groupMemberQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign(this.$data.listItem, {
             num: res.data.num,
@@ -294,9 +293,9 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Group.memberFreeze({gb_member_id: id});
+          let res = await Http.post(Config.api.memberFreeze, {gb_member_id: id});
           if (res.code === 0) {
-            this.memberQuery();
+            this.groupMemberQuery();
             this.$message({title: '提示', message: '冻结成功', type: 'success'});
           } else {
             this.$message({title: '提示', message: res.message, type: 'error'});
@@ -313,9 +312,9 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Group.memberUnFreeze({gb_member_id: id});
+          let res = await Http.post(Config.api.memberUnFreeze, {gb_member_id: id});
           if (res.code === 0) {
-            this.memberQuery();
+            this.groupMemberQuery();
             this.$message({title: '提示', message: '解冻成功', type: 'success'});
           } else {
             this.$message({title: '提示', message: res.message, type: 'error'});

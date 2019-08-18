@@ -98,8 +98,12 @@ export default {
   name: "ManualDelivery",
   data() {
     return {
-      isShow: false, //
-      detail: 'orderDataDetail', //
+      isShow: false,
+      detail: {
+        items: [{item_attrs: []}],
+        price_log: [],
+        pay_record: []
+      },
       auth: this.$auth,
       isShowModify: false,
       manualDetail: {},
@@ -147,38 +151,6 @@ export default {
     'my-select-express-company': SelectExpressCompany
   },
   watch: {
-    detail: function (a, b) {
-      let newItems = Array();
-      for (let i = 0; i < a.items.length; i++) {
-        let newItem = {};
-        let item = a.items[i];
-        newItem = Object.assign({}, item);
-        newItem.wgt_with_frm_real_t = this.returnWeight(item.wgt_with_frm_real_tmp);
-        newItem.count_real_t = item.count_real_tmp;
-        newItem.countHasError = false;
-        newItem.weighHasError = false;
-        newItems.push(newItem);
-      }
-      this.manualDetail.items = newItems;
-      this.manualDetail.store_title = a.store_title;
-      this.manualDetail.code = a.code;
-      this.manualDetail.id = a.id;
-
-      this.$data.postData = {
-        id: '',
-        ship_type: 'merchat',
-        ship_info: {
-          shipper_code: '',
-          express_code: ''
-        },
-        express_company: '',
-        ship_code: '',
-      };
-      this.$data.modifyPostData = {
-        id: '',
-        items: []
-      }
-    },
     isShowModify: function (a, b) {
       if (a) {
         //显示订单修改页面时校验
@@ -218,7 +190,7 @@ export default {
         this.isShowModify = false;
       } else {
         this.$attrs.callback();
-        this.orderShowHideManualDelivery({isShow: false});
+        this.orderShowHideManualDelivery();
       }
     },
     onCountInputChange(row, origin, value, limit) {
@@ -328,7 +300,7 @@ export default {
         this.manualDetail.code = this.detail.code;
       } else {
         this.$attrs.callback();
-        this.orderShowHideManualDelivery({isShow: false});
+        this.orderShowHideManualDelivery();
       }
     },
     onConfirm() {
@@ -372,7 +344,7 @@ export default {
           callback: () => {
             that.isShowModify = false;
             //提交成功，刷新manualDetail
-            this.orderShowHideManualDelivery({data: {id: manualDetail.id},isShow: true})
+            this.orderShowHideManualDelivery({id: manualDetail.id})
           }
         })
       } else {
@@ -396,7 +368,87 @@ export default {
       }
       // console.log('postData: ', this.postData)
     },
-    //...mapActions(['orderShowHideManualDelivery', 'orderManualChange', 'orderShip'])
+    //显示隐藏手动发货
+    orderShowHideManualDelivery(data){
+      if(data){
+        if (this.state.isShow) {
+          this.$data.isShow = false;
+          this.orderGetDetail(data.id);
+        } else {
+          this.orderGetDetail(data.id);
+        }
+      }else{
+        this.$data.isShow = false;
+      }
+    },
+    //获取订单详情
+    async orderGetDetail(id){
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.get(Config.api.orderDetail, { id: id });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        let a = res.data;
+        let newItems = Array();
+        for (let i = 0; i < a.items.length; i++) {
+          let newItem = {};
+          let item = a.items[i];
+          newItem = Object.assign({}, item);
+          newItem.wgt_with_frm_real_t = this.returnWeight(item.wgt_with_frm_real_tmp);
+          newItem.count_real_t = item.count_real_tmp;
+          newItem.countHasError = false;
+          newItem.weighHasError = false;
+          newItems.push(newItem);
+        }
+        this.manualDetail.items = newItems;
+        this.manualDetail.store_title = a.store_title;
+        this.manualDetail.code = a.code;
+        this.manualDetail.id = a.id;
+
+        this.$data.postData = {
+          id: '',
+          ship_type: 'merchat',
+          ship_info: {
+            shipper_code: '',
+            express_code: ''
+          },
+          express_company: '',
+          ship_code: '',
+        };
+        this.$data.modifyPostData = {
+          id: '',
+          items: []
+        }
+        this.$data.detail = a
+        this.$data.isShow = true;
+      }else{
+        this.$message({title: '提示', message: res.message, type: 'error'});
+      }
+    },
+    //手动修改订单
+    async orderManualChange({data, callback}) {
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.post(Config.api.orderManualChange, data);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({title: '提示', message: '修改订单成功！', type: 'success'});
+        callback && callback();
+      }else{
+        this.$message({title: '提示', message: res.message, type: 'error'});
+      }
+    },
+
+    //手动发货
+    async orderShip({data, callback}) {
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.post(Config.api.orderShip, data);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({title: '提示', message: '手动发货成功！', type: 'success'});
+        callback && callback();
+      }else{
+        this.$message({title: '提示', message: res.message, type: 'error'});
+      }
+    },
   }
 }
 </script>

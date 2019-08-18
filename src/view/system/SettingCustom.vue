@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ overflowX: 'auto', height: windowHeight - offsetHeight + 'px', background: '#fff'}">
+  <div :style="{ overflowX: 'auto', height: viewWindowHeight - offsetHeight + 'px', background: '#fff'}">
     <div class="top">
       <div class="setting-item" v-if="auth.isAdmin || auth.SystemSettingOperating">
         <from-systen-setting-operating :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormSystemSettingOperating"/>

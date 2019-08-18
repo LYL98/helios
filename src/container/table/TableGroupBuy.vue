@@ -104,7 +104,6 @@
   import {TableOperate} from '@/common';
   import { Constant, DataHandle } from '@/util';
   import tableMixin from './table.mixin';
-  import viewMixin from '@/view/view.mixin';
   
   export default {
     name: "TableGroupBuy",
@@ -114,7 +113,7 @@
       'el-tag': Tag,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin, viewMixin],
+    mixins: [tableMixin],
     props: {
       data: { type: Array, required: true},
       page: { type: Number, required: true },

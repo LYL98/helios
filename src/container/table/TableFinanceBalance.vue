@@ -57,22 +57,17 @@
 </template>
 
 <script>
-  import {Table, TableColumn, MessageBox, Tag} from 'element-ui';
   import {TableOperate, ToPrice} from '@/common';
   import {Constant, DataHandle} from '@/util';
   import tableMixin from './table.mixin';
-  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "TableFinanceBalance",
     components: {
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-tag': Tag,
       'my-table-operate': TableOperate,
       'my-to-price': ToPrice
     },
-    mixins: [tableMixin, viewMixin],
+    mixins: [tableMixin],
     computed: {
     },
     props: {

@@ -13,7 +13,6 @@
 
 <script>
 import { Dialog, Button} from 'element-ui';
-import { Base, Group } from "@/service";
 import { TableGroupHeadDetail, TableGroupHeadDetailList } from '@/container';
 import { Http, Config } from '@/util';
 

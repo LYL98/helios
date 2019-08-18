@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: #fff; padding: 16px 20px;">
-    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - 100 + 'px'}">
+    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: viewWindowHeight - 100 + 'px'}">
       <el-form label-position="right" label-width="160px" style="width: 700px;" :model="ruleForm" :rules="rules"
                ref="ruleForm">
         <el-form-item label="品牌名配置:" prop="brand_name">
@@ -75,8 +75,8 @@
         }
       }
       return {
-        brand: 'brand', //
-        brandService: 'brandService', //
+        brand: {},
+        brandService: {},
         ruleForm: {
           brand_name: '',
           brand_icon: [],
@@ -130,7 +130,32 @@
       this.systemBrandService({data: 'get'});
     },
     methods: {
-      ...mapActions(['systemBrand', 'systemBrandService', 'getBrand']),
+      //获取品牌信息
+      async systemBrand({data, callback}){
+        this.$loading({isShow: true, isWhole: true});
+        let res = data == 'get' ? await Http.get(Config.api.BrandInfo, {}) : await Http.post(Config.api.BrandInfo, data);
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          if(data !='get')this.$message({title: '提示', message: res.message, type: 'success'});
+          this.$data.brand = res.data;
+          typeof callback === 'function' && callback(res.data);
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //服务
+      async systemBrandService({data, callback}){
+        this.$loading({isShow: true, isWhole: true});
+        let res = data == 'get' ? await Http.get(Config.api.CustomerService, {}) : await Http.post(Config.api.CustomerService, data)
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          if(data !='get') this.$message({title: '提示', message: res.message, type: 'success'});
+          this.$data.brandService = res.data;
+          typeof callback === 'function' && callback(res.data);
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
       changeBrandIcon() {
         this.$refs['ruleForm'].validateField('brand_icon');
       },
@@ -147,7 +172,6 @@
               this.systemBrand({
                 data: data, callback: (res) => {
                   that.systemBrand({data: 'get'});
-                  that.getBrand();
                 }
               });
             } else {

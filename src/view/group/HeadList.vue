@@ -160,30 +160,19 @@
    * resetQuery
    *
    */
-  import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate } from '@/common';
   import { Constant, Http, Config } from '@/util';
-  import { Group } from "@/service";
   import tableMixin from '@/container/table/table.mixin';
-  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "HeadList",
     components: {
-      'el-row': Row,
-      'el-col': Col,
-      'el-input': Input,
-      'el-button': Button,
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-tag': Tag,
-      'el-pagination': Pagination,
       'my-select-city': SelectCity,
       'my-button-group': ButtonGroup,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin, viewMixin],
+    mixins: [tableMixin],
     props: {
       itemAdd: { type: Function, require: true }, //新增
       getPageComponents: { type: Function, require: true }, //获取页面组件
@@ -232,7 +221,7 @@
         this.headQuery();
       },
       async headQuery() {
-        let res = await Group.headQuery(this.$data.query);
+        let res = await Http.get(Config.api.headQuery, this.query);
         if (res.code === 0) {
           //console.log("当前行", this.$data.currentRow[this.$data.rowIdentifier]);
           this.$data.listItem = Object.assign(this.$data.listItem, {

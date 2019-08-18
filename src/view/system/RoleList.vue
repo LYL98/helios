@@ -7,7 +7,7 @@
           角色列表
           <el-button class="btn" icon="el-icon-plus" size="mini" @click.native="showAddEdit" v-if="auth.isAdmin || auth.SystemRoleAdd" >新增</el-button>
         </div>
-        <div class="content" :style="`height:${windowHeight - 116}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
+        <div class="content" :style="`height:${viewWindowHeight - 116}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
           <div v-for="(item,index) in dataItem" :class="`role-item ${detail.id === item.id && 'active'}`" @click="selectRoleItem(item, detail.id === item.id)" :key="index">
             <div class="add-dot" :title="item.title">
               {{item.title}}
@@ -34,10 +34,10 @@
             <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin">超级管理员</el-checkbox>
           </span>
         </div>
-        <div class="content" :style="`height:${windowHeight - 166}px;`">
+        <div class="content" :style="`height:${viewWindowHeight - 166}px;`">
           <div class="content-body" v-if="detail.is_super_admin"><div>超级管理员</div></div>
           <!--菜单权限start-->
-          <div class="per-item-body" :style="`height:${windowHeight - 186}px; padding: 10px 0; border-bottom: 1px solid #f3f4f6;`">
+          <div class="per-item-body" :style="`height:${viewWindowHeight - 186}px; padding: 10px 0; border-bottom: 1px solid #f3f4f6;`">
             <el-tree
             v-if="isShowTree"
             :data="permissionTree"

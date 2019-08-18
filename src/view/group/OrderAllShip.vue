@@ -14,8 +14,7 @@
 
 <script>
   import {Row, Col, Button, Form, FormItem} from 'element-ui';
-  import {Config, DataHandle, Constant} from '@/util';
-  import { Group } from '@/service';
+  import {Http, Config, DataHandle, Constant} from '@/util';
 
   export default {
     name: "OrderDetail",
@@ -41,7 +40,7 @@
       // 一键发货
       async handleAllShip() {
         this.$loading({ isShow: true,  isWhole: true });
-        let res = await Group.orderAllShip(this.query);
+        let res = await Http.post(Config.api.orderAllShip, this.query);
         this.$loading({ isShow: false });
         if (res.code === 0) {
           this.$message({title: '提示', message: '发货成功', type: 'success'});
@@ -57,7 +56,7 @@
       //获取数据
       async groupOrderAllShipTotals(){
         this.$loading({ isShow: true,  isWhole: true });
-        let res = await Group.orderAllShipTotals(this.query);
+        let res = await Http.get(Config.api.orderAllShipTotals, this.query);
         this.$loading({ isShow: false });
         if (res.code === 0) {
           this.$data.detail = res.data;

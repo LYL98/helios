@@ -117,7 +117,6 @@
   import { Constant, DataHandle } from '@/util';
   import { Item } from '@/service';
   import tableMixin from './table.mixin';
-  import viewMixin from '@/view/view.mixin';
   
   export default {
     name: "TableMarketingScopePromotion",
@@ -130,7 +129,7 @@
       'el-form-item': FormItem,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin, viewMixin],
+    mixins: [tableMixin],
     props: {
       data: { type: Array, required: true },
       stripe: { type: Boolean, default: true },

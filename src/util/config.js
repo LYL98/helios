@@ -110,7 +110,6 @@ const Config = (() => {
       // 团购商品
       groupBuyQuery: apiM + '/gb_activity/query',  //团购列表
       groupBuyLogQuery: apiM + '/gb_activity/log/query',  //团购列表
-      groupBuyItemList: apiM + '/gb_item/list',  //团购商品查询, 未使用
       groupBuyDetail: apiM + '/gb_activity/detail',  //团购详情
       groupBuyDelete: apiM + '/gb_activity/delete',  //删除团购活动
       groupBuyCancel: apiM + '/gb_activity/deactive',  //结束团购活动

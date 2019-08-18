@@ -71,7 +71,6 @@
 
 <script>
 import { Form, FormItem, Row, Col, Button, Input, Autocomplete, Select, Option, Dialog } from 'element-ui';
-import { Group } from "@/service";
 import { Http, Config } from '@/util';
 
 export default {
@@ -270,7 +269,7 @@ export default {
       this.$refs["ruleForm"].validate(async valid => {
         if (valid) {
           this.$data.loading = true;
-          let res = await Group.headAdd(this.$data.editItem);
+          let res = await Http.post(Config.api.headAdd, this.editItem);
           if (res.code == 0) {
             this.$data.loading = false;
             this.$store.dispatch("message", {

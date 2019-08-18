@@ -138,7 +138,7 @@
                 {
                   title: '手动发货',
                   isDisplay: (auth.isAdmin || auth.OrderManualDelivery) && orderStatus[scope.row.status] === '待发货',
-                  command: () => orderShowHideManualDelivery({ data: scope.row, isShow: true })
+                  command: () => orderShowHideManualDelivery(scope.row)
                 }
               ]"
             ></my-table-operate>
@@ -371,8 +371,36 @@
       orderShowHideDetail(id){
         let pc = this.viewGetPageComponents('OrderDetail');
         pc.orderShowHideDetail(id);
-      }
-      //...mapActions([ 'orderShowHideManualDelivery', 'orderConfirm', 'orderCancel'])
+      },
+      //显示隐藏手动发货
+      orderShowHideManualDelivery(data){
+        let pc = this.viewGetPageComponents('ManualDelivery');
+        pc.orderShowHideManualDelivery(data);
+      },
+      //确认订单
+      async orderConfirm({id, callback}) {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.post(Config.api.orderConfirm, { id: id });
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$message({title: '提示', message: '订单确认成功！', type: 'success'});
+          callback && callback();
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //取消订单
+      async orderCancel({id, callback}) {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.post(Config.api.orderCancel, { id: id });
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$message({title: '提示', message: '订单取消成功！', type: 'success'});
+          callback && callback();
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
     }
   };
 </script>
