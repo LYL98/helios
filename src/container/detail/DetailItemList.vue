@@ -105,9 +105,9 @@
             <el-form-item label="创建时间">{{detail.created}}</el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
+        <el-row :gutter="10" v-if="detail.updated && detail.last_updater.realname">
           <el-col :span="8">
-            <el-form-item label="最后更新人">{{detail.last_updater.realname || detail.first_grounder.realname}}</el-form-item>
+            <el-form-item label="最后更新人">{{detail.last_updater.realname}}</el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="最后更新时间">{{detail.updated}}</el-form-item>

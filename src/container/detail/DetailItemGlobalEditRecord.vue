@@ -4,7 +4,10 @@
       <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
       <el-table-column label="操作时间" prop="created" width="260"/>
       <el-table-column label="操作内容" width="600">
-        <template slot-scope="scope">{{returnAttrStr(scope.row.modified_attrs)}}</template>
+        <template slot-scope="scope">
+          <span v-if="scope.row.category === 'item_edit'">{{returnAttrStr(scope.row.modified_attrs)}}</span>
+          <span v-else>{{categorys[scope.row.category]}}</span>
+        </template>
       </el-table-column>
       <el-table-column label="操作人">
         <template slot-scope="scope">{{scope.row.operator.realname}}</template>
@@ -48,6 +51,12 @@
           system_class_code: '科学分类',
           frame_code: '框',
           content: '商品详细',
+        },
+        categorys: {
+          item_edit: '编辑商品',
+          item_add: '添加商品',
+          item_delete: '删除商品',
+          item_recover: '恢复商品'
         },
         query: {
           id: '',

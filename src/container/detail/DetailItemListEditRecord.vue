@@ -5,7 +5,8 @@
       <el-table-column label="操作时间" prop="created" width="260"/>
       <el-table-column label="操作内容" width="600">
         <template slot-scope="scope">
-          <span v-if="scope.row.c === 'item_edit'">{{returnAttrStr(scope.row.modified_attrs)}}</span>
+          <span v-if="scope.row.category === 'item_edit'">{{returnAttrStr(scope.row.modified_attrs)}}</span>
+          <span v-else-if="scope.row.category === 'item_on_ground'">上架：{{returnAttrStr(scope.row.modified_attrs)}}</span>
           <span v-else>{{categorys[scope.row.category]}}</span>
         </template>
       </el-table-column>
