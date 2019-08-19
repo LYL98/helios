@@ -13,7 +13,7 @@
             <el-form-item label="商品名称">{{detail.title}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="框">
+            <el-form-item label="筐">
               <span v-if="detail.frame_code">{{detail.frame.title}}&nbsp;(&yen;{{returnPrice(detail.frame.price)}})</span>
               <span v-else>-</span>
             </el-form-item>
@@ -121,7 +121,7 @@
         <el-row :gutter="10">
           <el-col :span="8">
             <el-form-item label="内标签" prop="inner_tag_id">
-              <select-inner-tag v-model="detail.inner_tag_id"/>
+              <select-inner-tag clearable v-model="detail.inner_tag_id" :disabled="type === 'edit' ? true : false"/>
             </el-form-item>
           </el-col>
         </el-row>

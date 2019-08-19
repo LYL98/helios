@@ -17,7 +17,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("信息 - 框信息列表");
+      documentTitle("信息 - 筐信息列表");
     },
   };
 </script>

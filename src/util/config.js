@@ -150,7 +150,7 @@ const Config = (() => {
       baseCityList: apiM + '/common/city/list', //县区列表（组件共用）
       baseLineList: apiM + '/common/my_line', //线路列表（组件共用）（运营时用）
       baseLineListOperator: apiM + '/common/line/list', //线路列表（组件共用）(新增运营人员时用)
-      baseFrameList: apiM + '/common/frame/list', //框列表（组件共用）
+      baseFrameList: apiM + '/common/frame/list', //筐列表（组件共用）
       baseSystemClassListTree: apiM + '/common/system_class/tree', //科学分类树形（组件共用）
       baseSystemClassList: apiM + '/common/system_class/list', //科学分类列表（组件共用）
       baseDisplayClassList: apiM + '/common/display_class/list', //展示分类列表（组件共用）
@@ -183,10 +183,10 @@ const Config = (() => {
       basicdataCityList: apiM + '/basicdata/city/list', //县区列表
       basicdataCityDelete: apiM + '/basicdata/city/delete', //县区删除
 
-      basicdataFrameList: apiM + '/basicdata/frame/list', //框列表
-      basicdataFrameAdd: apiM + '/basicdata/frame/add', //商品框信息添加
-      basicdataFrameEdit: apiM + '/basicdata/frame/edit', //商品框信息修改
-      basicdataFrameDelete: apiM + '/basicdata/frame/delete', //商品框信息删除
+      basicdataFrameList: apiM + '/basicdata/frame/list', //筐列表
+      basicdataFrameAdd: apiM + '/basicdata/frame/add', //商品筐信息添加
+      basicdataFrameEdit: apiM + '/basicdata/frame/edit', //商品筐信息修改
+      basicdataFrameDelete: apiM + '/basicdata/frame/delete', //商品筐信息删除
 
       basicdataDisplayClassList: apiM + '/basicdata/display_class/list',//商品展示分类列表
       basicdataDisplayClassAdd: apiM + '/basicdata/display_class/add',//商品展示分类新增
@@ -240,8 +240,8 @@ const Config = (() => {
       merchantGradeTagsEdit: apiM + '/merchant/grade_tags/edit', //商户内标签修改
       merchantBalanceEdit: apiM + '/merchant/balance/edit',  // 商户充值 / 扣款
       merchantBalanceLogQuery: apiM + '/merchant/balance/log/query', // 商户充值/扣款记录查询
-      merchantRefundEdit: apiM + '/store/frame/edit', //修改门店的退框信息
-      merchantRefundLogQuery: apiM + '/store/frame/log/query', // 退框日志查询
+      merchantRefundEdit: apiM + '/store/frame/edit', //修改门店的退筐信息
+      merchantRefundLogQuery: apiM + '/store/frame/log/query', // 退筐日志查询
       merchantExport: apiM + '/store/export', // 商户导出
       merchantBatchGroupBuy: apiM + '/store/batch/gb_include', // 批量设置团购商户
 
@@ -292,13 +292,13 @@ const Config = (() => {
       operateLineList: apiM + '/basicdata/line/list', //线路列表
       operateLineDelete: apiM + '/basicdata/line/delete', //线路删除
 
-      // 线路退框
-      operateRefundQuery: apiM + '/frame/return/query', // 线路的退框查询
-      operateRefundStoreList: apiM + '/frame/return/store/list', // 可以退框的门店列表
-      operateRefundStoreReturn: apiM + '/frame/return/add', // 退还多个门店的退框数据
-      operateRefundFrameApprove: apiM + '/frame/return/check', //退框记录审核
-      operateRefundFrameReject: apiM + '/frame/return/reject', //退框记录驳回
-      operateRefundFrameExport: apiM + '/frame/return/export', //退框记录导出
+      // 线路退筐
+      operateRefundQuery: apiM + '/frame/return/query', // 线路的退筐查询
+      operateRefundStoreList: apiM + '/frame/return/store/list', // 可以退筐的门店列表
+      operateRefundStoreReturn: apiM + '/frame/return/add', // 退还多个门店的退筐数据
+      operateRefundFrameApprove: apiM + '/frame/return/check', //退筐记录审核
+      operateRefundFrameReject: apiM + '/frame/return/reject', //退筐记录驳回
+      operateRefundFrameExport: apiM + '/frame/return/export', //退筐记录导出
 
       //常量
       // basicdataConstantGet: apiM + '/basicdata/constant/get', //获取常量

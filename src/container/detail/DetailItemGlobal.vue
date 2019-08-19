@@ -18,7 +18,7 @@
           <el-form-item label="商品名称">{{detail.title}}</el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="框">
+          <el-form-item label="筐">
             <template v-if="detail.frame_code">{{detail.frame.title}}&nbsp;(&yen;{{returnPrice(detail.frame.price)}})</template>
             <template v-else>-</template>
           </el-form-item>

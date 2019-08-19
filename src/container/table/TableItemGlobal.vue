@@ -36,7 +36,7 @@
               <span v-if="scope.row.item_spec">{{scope.row.item_spec}}、</span>
               <span>{{returnWeight(scope.row.gross_weight)}}斤</span>
             </div>
-            <!--框-->
+            <!--筐-->
             <div class="td-item" v-else-if="item.key === 'frame'">
               <span v-if="scope.row.frame_code">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
               <span v-else>-</span>

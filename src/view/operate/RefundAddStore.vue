@@ -60,10 +60,10 @@
           <li class="header">
             <ul style="display: flex; justify-content: space-between; align-items: center;">
               <li class="title">门店</li>
-              <li class="frame-num">剩余框数</li>
-              <li class="return-num">退框数量</li>
+              <li class="frame-num">剩余筐数</li>
+              <li class="return-num">退筐数量</li>
               <li class="frame-amount">剩余金额</li>
-              <li class="return-amount">退框金额(元)</li>
+              <li class="return-amount">退筐金额(元)</li>
               <li class="operate">操作</li>
             </ul>
           </li>
@@ -195,16 +195,16 @@
         value = this.$data.submitData.editList[index].return_num;
 
         if (!!value && (isNaN(value) || value <= 0)) {
-          return callback(new Error('退框数量必须为大于零的纯数字'));
+          return callback(new Error('退筐数量必须为大于零的纯数字'));
         }
         if (String(value).indexOf(".") > -1) {
-          return callback(new Error('退框数量必须为整数'));
+          return callback(new Error('退筐数量必须为整数'));
         }
         if (value > 100000) {
-          return callback(new Error('退框数量不能超过100000'));
+          return callback(new Error('退筐数量不能超过100000'));
         }
         if (value > frame_num) {
-          return callback(new Error('退框数量不能大于剩余框数'));
+          return callback(new Error('退筐数量不能大于剩余筐数'));
         }
         callback();
       },
@@ -215,7 +215,7 @@
         let return_num = this.$data.submitData.editList[index].return_num;
         value = this.$data.submitData.editList[index].return_amount;
         if (!return_num && !value) {
-          return callback(new Error('退框数量和退框金额不能同时为空'));
+          return callback(new Error('退筐数量和退筐金额不能同时为空'));
         }
         callback();
       },
@@ -227,16 +227,16 @@
         value = this.$data.submitData.editList[index].return_amount;
 
         if (!!value && (isNaN(value) || value <= 0)) {
-          return callback(new Error('退框金额必须为大于零的纯数字'));
+          return callback(new Error('退筐金额必须为大于零的纯数字'));
         }
         if (!!value && !/^[0-9]+([.]\d{0,2})?$/.test(value)) {
-          return callback(new Error('退框金额最多只能输入两位小数'));
+          return callback(new Error('退筐金额最多只能输入两位小数'));
         }
         if (value > 1000000) {
-          return callback(new Error('退框金额不能超过1000000'));
+          return callback(new Error('退筐金额不能超过1000000'));
         }
         if (DataHandle.handlePrice(value) > frame_amount) {
-          return callback(new Error('退框金额不能大于剩余金额'));
+          return callback(new Error('退筐金额不能大于剩余金额'));
         }
         callback();
       },
@@ -335,7 +335,7 @@
         this.$data.error.stores = ''; // 还原错误消息。
       },
 
-      // 默认为退框计价
+      // 默认为退筐计价
       changeReturnNum(item, index) {
         if (!!item.return_num && (isNaN(item.return_num) || item.return_num <= 0)) {
           return;
@@ -361,7 +361,7 @@
         this.$data.submitData.editList = this.$data.submitData.editList.filter(t => t.id !== item.id);
       },
 
-      // 获取退框的门店列表
+      // 获取退筐的门店列表
       async refundStoreList() {
         let res = await Http.get(Config.api.operateRefundStoreList, this.query);
         if (res.code === 0) {
@@ -401,14 +401,14 @@
           return {
             store_id: item.id,
             return_amount: this.handlePrice(item.return_amount),
-            return_num: Number(item.return_num) || 0  // 如果没有输入退框数量，则默认值为0
+            return_num: Number(item.return_num) || 0  // 如果没有输入退筐数量，则默认值为0
           }
         });
         let remark = this.$data.submitData.remark;
 
         let res = await Http.post(Config.api.operateRefundStoreReturn, { stores, remark });
         if (res.code === 0) {
-          Message.success('新增退框门店成功！');
+          Message.success('新增退筐门店成功！');
           this.$data.isSending = false;
           // 将编辑区的所有门店状态 设置为 非编辑模式。
           this.$data.submitData.editList = this.$data.submitData.editList.map(item => {

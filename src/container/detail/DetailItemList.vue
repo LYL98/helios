@@ -11,7 +11,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="2">
-            <el-button @click.native="handleShowEditRecord" v-if="auth.isAdmin || auth.ItemListEditRecord">修改明细</el-button>
+            <!--未上架不用显示-->
+            <el-button @click.native="handleShowEditRecord" v-if="(auth.isAdmin || auth.ItemListEditRecord) && detail.is_on_sale">修改明细</el-button>
           </el-col>
         </el-row>
         <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
@@ -20,7 +21,7 @@
             <el-form-item label="商品名称">{{detail.title}}</el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="框">
+            <el-form-item label="筐">
               <template v-if="detail.frame_code">{{detail.frame.title}}&nbsp;(&yen;{{returnPrice(detail.frame.price)}})</template>
               <template v-else>-</template>
             </el-form-item>
@@ -48,52 +49,60 @@
             <el-form-item label="科学分类">{{returnSystemClass(detail.system_classes)}}</el-form-item>
           </el-col>
         </el-row>
-        <h6 class="subtitle" style="padding-bottom: 16px">销售信息</h6>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="采购价">&yen;{{returnPrice(detail.price_buy)}}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="销售价">&yen;{{returnPrice(detail.price_sale)}}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <!--销售价 / 毛重-->
-            <el-form-item label="单价">&yen;{{returnPrice(detail.price_sale / (detail.gross_weight / 10))}}</el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="原价">&yen;{{returnPrice(detail.price_origin)}}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="展示分类">{{detail.display_class.title}}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="最大订货数量">{{detail.order_num_max}}件</el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="库存">{{detail.item_stock}}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="排序">{{detail.rank}}</el-form-item>
-          </el-col>
-          <el-col :span="8" v-if="!detail.frame_code">
-            <el-form-item label="是否赠品">{{detail.is_gift ? '是' : '否'}}</el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item v-if="!detail.is_gift" label="是否预售">{{detail.is_presale ? '是' : '否'}}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item v-if="!detail.is_gift && detail.is_presale" label="配送日期">{{detail.presale_date}}</el-form-item>
-          </el-col>
-        </el-row>
+        <!--未上架不用显示-->
+        <template v-if="detail.is_on_sale">
+          <h6 class="subtitle" style="padding-bottom: 16px">销售信息</h6>
+            <el-row :gutter="10">
+              <el-col :span="8">
+                <el-form-item label="采购价">&yen;{{returnPrice(detail.price_buy)}}</el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="销售价">&yen;{{returnPrice(detail.price_sale)}}</el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <!--销售价 / 毛重-->
+                <el-form-item label="单价">&yen;{{returnPrice(detail.price_sale / (detail.gross_weight / 10))}}</el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10">
+              <el-col :span="8">
+                <el-form-item label="原价">&yen;{{returnPrice(detail.price_origin)}}</el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="展示分类">{{detail.display_class.title}}</el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="最大订货数量">{{detail.order_num_max}}件</el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10">
+              <el-col :span="8">
+                <el-form-item label="库存">{{detail.item_stock}}</el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="排序">{{detail.rank}}</el-form-item>
+              </el-col>
+              <el-col :span="8" v-if="!detail.frame_code">
+                <el-form-item label="是否赠品">{{detail.is_gift ? '是' : '否'}}</el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10">
+              <el-col :span="8">
+                <el-form-item v-if="!detail.is_gift" label="是否预售">{{detail.is_presale ? '是' : '否'}}</el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item v-if="!detail.is_gift && detail.is_presale" label="配送日期">{{detail.presale_date}}</el-form-item>
+              </el-col>
+            </el-row>
+        </template>
+        
         <h6 class="subtitle" style="padding-bottom: 16px">其他信息</h6>
-        <el-form-item label="内标签">{{detail.inner_tag.title}}</el-form-item>
-        <el-form-item label="外标签"><el-tag v-for="(item, index) in detail.tags" :key="index" type="info" style="margin-right: 10px;">{{item}}</el-tag></el-form-item>
+        <!--未上架不用显示-->
+        <template v-if="detail.is_on_sale">
+          <el-form-item label="内标签">{{detail.inner_tag.title}}（加价率：{{returnPercent(detail.inner_tag.rise_min)}}% - {{returnPercent(detail.inner_tag.rise_max)}}%）</el-form-item>
+          <el-form-item label="外标签"><el-tag v-for="(item, index) in detail.tags" :key="index" type="info" style="margin-right: 10px;">{{item}}</el-tag></el-form-item>
+        </template>
+
         <el-form-item label="商品详情">
           <div class="content-div" v-html="detail.content"></div>
         </el-form-item>

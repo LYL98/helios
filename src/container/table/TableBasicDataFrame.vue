@@ -33,12 +33,12 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="框重量" min-width="100">
+        <el-table-column label="筐重量" min-width="100">
           <template slot-scope="scope">
             {{ returnWeight(scope.row.weight) }}
           </template>
         </el-table-column>
-        <el-table-column label="框价格" min-width="100">
+        <el-table-column label="筐价格" min-width="100">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.price == 0 ? '' : '￥' }}{{scope.row.price == 0 ? '-' : returnPrice(scope.row.price)}}

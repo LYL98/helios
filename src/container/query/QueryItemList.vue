@@ -47,7 +47,7 @@
         <el-row style="margin-top: 16px;">
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="内标签">
-              <select-inner-tag size="small" v-model="query.inner_tag_id" @change="handleQuery('TableItemList')" style="width: 225px;"/>
+              <select-inner-tag clearable size="small" v-model="query.inner_tag_id" @change="handleQuery('TableItemList')" style="width: 225px;"/>
             </my-query-item>
           </el-col>
           <el-col :xl="6" :lg="7" :span="7">

@@ -13,6 +13,8 @@ export default {
     this.getData();
   },
   props: {
+    clearable: {type: Boolean, default: false},
+    disabled: {type: Boolean, default: false},
     value: {type: Number | String, default: ''},
     size: {type: String, default: ''},
     hasAllSelection: { type: Boolean, default: false }

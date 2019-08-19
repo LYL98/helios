@@ -48,7 +48,7 @@
                 <el-menu-item index="MerchantStoreQuery" :route="{name: 'MerchantStoreQuery'}"
                               v-if="auth.isAdmin || auth.MerchantStoreQuery"><span>门店列表</span></el-menu-item>
                 <el-menu-item index="MerchantRefundQuery" :route="{name: 'MerchantRefundQuery'}"
-                              v-if="auth.isAdmin || auth.MerchantRefundQuery"><span>门店框信息</span></el-menu-item>
+                              v-if="auth.isAdmin || auth.MerchantRefundQuery"><span>门店筐信息</span></el-menu-item>
               </el-submenu>
 
               <el-submenu index="Item" v-if="auth.isAdmin || auth.Item">
@@ -111,7 +111,7 @@
                 <el-menu-item index="OperateLineList" :route="{name: 'OperateLineList'}"
                               v-if="auth.isAdmin || auth.OperateLineList"><span>线路规划</span></el-menu-item>
                 <el-menu-item index="OperateRefundFrame" :route="{name: 'OperateRefundFrame'}"
-                              v-if="auth.isAdmin || auth.OperateRefundFrame"><span>退框</span></el-menu-item>
+                              v-if="auth.isAdmin || auth.OperateRefundFrame"><span>退筐</span></el-menu-item>
               </el-submenu>
 
               <el-submenu index="Finance" v-if="auth.isAdmin || auth.Finance">
@@ -154,7 +154,7 @@
                 <el-menu-item index="BasicDataDisplayClassList" :route="{name: 'BasicDataDisplayClassList'}"
                               v-if="auth.isAdmin || auth.BasicDataDisplayClassList"><span>展示分类列表</span></el-menu-item>
                 <el-menu-item index="BasicDataFrameList" :route="{name: 'BasicDataFrameList'}"
-                              v-if="auth.isAdmin || auth.BasicDataFrameList"><span>框信息列表</span></el-menu-item>
+                              v-if="auth.isAdmin || auth.BasicDataFrameList"><span>筐信息列表</span></el-menu-item>
                 <el-menu-item index="BasicDataItemTagsList" :route="{name: 'BasicDataItemTagsList'}"
                               v-if="auth.isAdmin || auth.BasicDataItemTagsList"><span>商品外标签</span></el-menu-item>
                 <el-menu-item index="BasicDataItemInnerTagsList" :route="{name: 'BasicDataItemInnerTagsList'}"

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="退框信息修改" :close-on-click-modal="false" :visible.sync="isShow" width="600px" append-to-body>
+  <el-dialog title="退筐信息修改" :close-on-click-modal="false" :visible.sync="isShow" width="600px" append-to-body>
     <el-form :model="detail" label-position="right" label-width="100px" :rules="rules" ref="ruleForm" style="width: 520px;">
       <el-form-item label="门店">
         <el-input :value="detail.title" disabled/>
@@ -8,7 +8,7 @@
         <el-radio v-model="detail.radio" border size="small" @change="changeType" label="1">增加</el-radio>
         <el-radio v-model="detail.radio" border size="small" @change="changeType" label="2">减少</el-radio>
       </el-form-item>
-      <el-form-item label="剩余框数">
+      <el-form-item label="剩余筐数">
         <ul class="edit-number">
           <li>{{ frame_num }}个</li>
           <li class="edit">
@@ -70,32 +70,32 @@
         if (that.detail.radio != '1') { // 表示减
 
           if (!!value && (isNaN(value) || value <= 0)) {
-            return callback(new Error('减少的框数必须为大于零的纯数字'));
+            return callback(new Error('减少的筐数必须为大于零的纯数字'));
           }
 
           if (!!value && String(value).indexOf(".") > -1) {
-            return callback(new Error('减少的框数不能为小数'));
+            return callback(new Error('减少的筐数不能为小数'));
           }
 
           if (value > 100000) {
-            return callback(new Error('减少的框数不能大于100000'));
+            return callback(new Error('减少的筐数不能大于100000'));
           }
 
           if (Number(value) > that.frame_num) {
-            return callback(new Error('减少的框数不能大于剩余框数'));
+            return callback(new Error('减少的筐数不能大于剩余筐数'));
           }
         } else {
 
           if (!!value && (isNaN(value) || value <= 0)) {
-            return callback(new Error('增加的框数必须为大于零的纯数字'));
+            return callback(new Error('增加的筐数必须为大于零的纯数字'));
           }
 
           if (!!value && String(value).indexOf(".") > -1) {
-            return callback(new Error('增加的框数不能为小数'));
+            return callback(new Error('增加的筐数不能为小数'));
           }
 
           if (value > 100000) {
-            return callback(new Error('增加的框数不能大于100000'));
+            return callback(new Error('增加的筐数不能大于100000'));
           }
 
         }
@@ -195,7 +195,7 @@
       validFiled() {
 
         if (!this.$data.detail.frame_num && !this.$data.detail.frame_amount) {
-          this.$message({ message: '退框数量 和 退框金额 不能同时为0。', type: 'error' });
+          this.$message({ message: '退筐数量 和 退筐金额 不能同时为0。', type: 'error' });
           return false;
         }
 
@@ -205,7 +205,7 @@
       //提交数据
       async addEditData() {
         let {id, radio, frame_num, frame_amount, remark} = this.detail;
-        frame_num = Number(frame_num) || 0; // 如果没有输入框数，则设置默认值为0
+        frame_num = Number(frame_num) || 0; // 如果没有输入筐数，则设置默认值为0
         frame_amount = this.handlePrice(frame_amount);
         this.$loading({isShow: true});
         let res = await Http.post(Config.api.merchantRefundEdit, {
@@ -216,7 +216,7 @@
         });
         this.$loading({isShow: false});
         if(res.code === 0){
-          this.$message({ message: '门店退框信息修改成功！', type: 'success' });
+          this.$message({ message: '门店退筐信息修改成功！', type: 'success' });
           this.handleCancel(); //隐藏
           //刷新数据(列表)
           let pc = this.getPageComponents('TableMerchantRefund');

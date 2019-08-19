@@ -103,7 +103,7 @@
           size="mini"
           type="primary"
           plain
-        >导出退框列表
+        >导出退筐列表
         </el-button>
         <el-button
           v-if="auth.isAdmin || auth.OperateRefundStoreAdd"
@@ -143,14 +143,14 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="退框" prop="return_num" min-width="80">
+        <el-table-column label="退筐" prop="return_num" min-width="80">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.return_num || '-' }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="退框金额" prop="return_amount" min-width="80">
+        <el-table-column label="退筐金额" prop="return_amount" min-width="80">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.return_amount == 0 ? '' : '￥' }}{{ scope.row.return_amount == 0 ? '-' : returnPrice(scope.row.return_amount) }}
@@ -222,7 +222,7 @@
 
     <div class="footer">
       <div style="margin-left: 20px; display: flex; align-items: center;" v-if="multipleSelection.length > 0">
-        <span>总退框个数：{{ multipleReturnNum }}</span>
+        <span>总退筐个数：{{ multipleReturnNum }}</span>
         <span style="margin-left: 20px;">总退还金额：&yen;{{ returnPrice(multipleReturnAmount) }}</span>
       </div>
       <div class="table-pagination">
@@ -239,7 +239,7 @@
       </div>
     </div>
 
-    <el-dialog title="新增退框门店" :close-on-click-modal="false" :visible.sync="showDialog" width="1200px" append-to-body>
+    <el-dialog title="新增退筐门店" :close-on-click-modal="false" :visible.sync="showDialog" width="1200px" append-to-body>
       <refund-add-store
         v-if="showDialog"
         :closeDialog="() => { showDialog = false}"
@@ -315,7 +315,7 @@
         refundFrameStatus: Constant.OPERATE_REFUND_FRAME_STATUS,
         listItem: [],
         multipleSelection: [],  // 多选列表
-        showDialog: false, // 新增退框门店弹窗
+        showDialog: false, // 新增退筐门店弹窗
         /*最近30天（以当天作为结尾，往前30天）
          本周
          上周
@@ -327,7 +327,7 @@
       }
     },
     created() {
-      documentTitle('配送 - 退框');
+      documentTitle('配送 - 退筐');
       this.$data.query.province_code = this.province.code;
       this.listQuery();
     },
@@ -505,7 +505,7 @@
             frame_return_id: item.id
           });
           if (res.code === 0) {
-            Message.success('您已驳回该退框记录！');
+            Message.success('您已驳回该退筐记录！');
             this.listQuery();
           } else {
             Message.warning(res.message);

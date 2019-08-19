@@ -47,7 +47,7 @@ const Constant = {
     sys_refund: '系统退款',
     cancel_order_refund: '订单取消退款',
     after_sale_refund: '售后退款',
-    frame_return: '退框退款',
+    frame_return: '退筐退款',
     refund_for_pay_after_cancel: '金额退回',
     manual_aftersale: '退赔售后(手动充值)',
     manual_discount: '优惠充值(手动充值)',
@@ -84,9 +84,9 @@ const Constant = {
     decline: '驳回', // 兼容历史数据
     declined: '驳回' // 兼容接口
   },
-  // 退框变更原因
+  // 退筐变更原因
   MERCHANT_REFUND_REASON: {
-    frame_return: '门店退框',
+    frame_return: '门店退筐',
     order_done: '发货增加',
     manual_fix: '手动修改'
   },
@@ -220,7 +220,7 @@ const Constant = {
     buyer: '采购员',
     distributor: '配送员'
   },
-  // 退框记录的状态
+  // 退筐记录的状态
   OPERATE_REFUND_FRAME_STATUS: {
     init: '未审核',
     checked: '审核通过',

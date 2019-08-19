@@ -1,9 +1,10 @@
 <template>
-  <el-dialog :close-on-click-modal="false" title="修改分类/外标签" :visible="isShow" width="540px" :before-close="handleCancel">
-    <el-form label-position="right" label-width="100px" style="width: 400px;" :model="detail" :rules="rules" ref="ruleForm">
-      <el-form-item label="原内标签">{{detail.inner_tag.title}}</el-form-item>
+  <el-dialog :close-on-click-modal="false" title="修改内标签" :visible="isShow" width="540px" :before-close="handleCancel">
+    <el-form label-position="right" label-width="120px" style="width: 400px;" :model="detail" :rules="rules" ref="ruleForm">
+      <el-form-item label="商品编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
+      <el-form-item label="原内标签">{{detail.inner_tag.title}}（加价率：{{returnPercent(detail.inner_tag.rise_min)}}% - {{returnPercent(detail.inner_tag.rise_max)}}%）</el-form-item>
       <el-form-item label="现内标签" prop="new_inner_tag_id">
-        <select-inner-tag v-model="detail.new_inner_tag_id" style="width: 300px;"/>
+        <select-inner-tag clearable v-model="detail.new_inner_tag_id" style="width: 300px;"/>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

@@ -96,7 +96,7 @@
               <template slot-scope="scope">
                 <ul>
                   <li>
-                    &yen;{{returnPrice(scope.row.item_price_sale_piece)}} / 件<span v-if="scope.row.frame_code !== ''">(含框)</span>
+                    &yen;{{returnPrice(scope.row.item_price_sale_piece)}} / 件<span v-if="scope.row.frame_code !== ''">(含筐)</span>
                   </li>
                 </ul>
               </template>

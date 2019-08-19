@@ -33,6 +33,7 @@
                   <span>&yen;{{returnPrice(scope.row.price_sale)}}/件</span>
                   <!--销售价 / 毛重-->
                   <span>（单价：{{returnPrice(scope.row.price_sale / (scope.row.gross_weight / 10))}}元/斤）</span>
+                  <span class="is-presale" v-if="scope.row.is_presale">预售</span>
                 </div>
               </div>
             </template>
@@ -42,7 +43,7 @@
               <span v-if="scope.row.item_spec">{{scope.row.item_spec}}、</span>
               <span>{{returnWeight(scope.row.gross_weight)}}斤</span>
             </div>
-            <!--框-->
+            <!--筐-->
             <div class="td-item" v-else-if="item.key === 'frame'">
               <span v-if="scope.row.frame_code">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
               <span v-else>-</span>
@@ -208,4 +209,11 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './table.scss';
+  .is-presale{
+    color: #fff;
+    background: #FF5252;
+    font-size: 12px;
+    border-radius: 3px;
+    padding: 0 2px;
+  }
 </style>

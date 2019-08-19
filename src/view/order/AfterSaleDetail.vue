@@ -57,7 +57,7 @@
             <template slot-scope="scope">
               <ul>
                 <li>
-                  &yen;{{returnPrice(scope.row.item_price_sale_piece)}} / 件<span v-if="scope.row.frame_code !== ''">(含框)</span>
+                  &yen;{{returnPrice(scope.row.item_price_sale_piece)}} / 件<span v-if="scope.row.frame_code !== ''">(含筐)</span>
                 </li>
               </ul>
             </template>
@@ -276,7 +276,7 @@ export default {
     async orderAftersaleAppend(){
       let { detail, editData } = this;
       this.$loading({isShow: true, isWhole: true});
-      let res = await Http.post(Config.api.afterSaleDetail, {
+      let res = await Http.post(Config.api.aftersaleAppend, {
         aftersale_id: detail.id,
         content: editData.content,
         images: []

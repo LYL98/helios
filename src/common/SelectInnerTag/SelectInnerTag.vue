@@ -1,5 +1,10 @@
 <template>
-  <el-select v-model="selectId" clearable placeholder="请选择品类链接" @change="handleChange" style="width: 100%;" :size="size">
+  <el-select v-model="selectId"
+  :clearable="clearable"
+  placeholder="请选择商品内标签"
+  @change="handleChange"
+  style="width: 100%;" :size="size"
+  :disabled="disabled">
     <el-option
       v-for="item in dataItem"
       :key="item.id"

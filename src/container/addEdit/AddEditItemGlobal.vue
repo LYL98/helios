@@ -11,7 +11,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="框">
+          <el-form-item label="筐">
             <select-frame v-model="detail.frame_code" />
           </el-form-item>
         </el-col>
@@ -118,7 +118,7 @@ export default {
       net_weight: '', //净重
       system_class_code: '', //科学分类编号
       system_class_codes: [], //科学分类编号s
-      frame_code: '', //框code
+      frame_code: '', //筐code
       content: '', //详细信息
     }
     return{

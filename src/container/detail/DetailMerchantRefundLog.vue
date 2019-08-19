@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="退框变更记录" :visible.sync="isShow" width="1100px" append-to-body :before-close="handleCancel">
+  <el-dialog title="退筐变更记录" :visible.sync="isShow" width="1100px" append-to-body :before-close="handleCancel">
     <div class="container">
       <div class="wp-query">
         <select-city
@@ -75,7 +75,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="frame_num" label="框数变动" width="110">
+        <el-table-column prop="frame_num" label="筐数变动" width="110">
           <template slot-scope="scope">
             <div v-if="scope.row.frame_num == scope.row.frame_num_old">-</div>
             <div v-else :class="isEllipsis(scope.row) + (scope.row.frame_num > scope.row.frame_num_old ? ' red' : scope.row.frame_num < scope.row.frame_num_old ? ' green' : '')">
@@ -209,7 +209,7 @@
         this.query.page = page;
         this.listQuery();
       },
-      // 退框日志查询
+      // 退筐日志查询
       async listQuery() {
         this.$loading({isShow: true});
         let res = await Http.get(Config.api.merchantRefundLogQuery, this.query);

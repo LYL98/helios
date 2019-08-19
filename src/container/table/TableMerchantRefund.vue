@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="operate" v-if="auth.isAdmin || auth.MerchantRefundLogQuery">
-      <el-button size="mini" v-if="auth.isAdmin || auth.MerchantRefundLogQuery" type="primary" @click="handleShowDetail('DetailMerchantRefundLog')">退框变更记录</el-button>
+      <el-button size="mini" v-if="auth.isAdmin || auth.MerchantRefundLogQuery" type="primary" @click="handleShowDetail('DetailMerchantRefundLog')">退筐变更记录</el-button>
     </div>
 
     <div @mousemove="handleTableMouseMove">
@@ -32,14 +32,14 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="已退框数" min-width="100" prop="frame_num_real">
+        <el-table-column label="已退筐数" min-width="100" prop="frame_num_real">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.frame_num_real || '-' }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="剩余框数" min-width="100" prop="frame_num">
+        <el-table-column label="剩余筐数" min-width="100" prop="frame_num">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.frame_num || '-' }}

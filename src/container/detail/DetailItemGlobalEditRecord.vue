@@ -49,7 +49,7 @@
           gross_weight: '毛重',
           net_weight: '净重',
           system_class_code: '科学分类',
-          frame_code: '框',
+          frame_code: '筐',
           content: '商品详细',
         },
         categorys: {
