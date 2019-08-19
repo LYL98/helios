@@ -10,7 +10,7 @@
             <div class="space"></div>
             <div class="value" v-if="item.type === 'text'"><span>{{item.value}}</span><span class="appendix" v-if="item.appendix">{{item.appendix}}</span></div>
             <div class="value" v-else>
-              <img :src="item.value" style="width: 80px; height: 80px"/>
+              <img :src="item.value" style="width: 80px; height: 80px; background: #efefef;"/>
             </div>
           </div>
         </div>

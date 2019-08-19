@@ -22,13 +22,9 @@
           <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod">
           </el-table-column>
           <el-table-column label="姓名" prop="realname" min-width="130">
-            <template slot-scope="scope">
-              <a
-                href="javascript:void(0);"
-                :class="`title ${isEllipsis(scope.row)}`"
-                @click.prevent="handleShowDetail('DetailSystemOperator', scope.row)"
-              >{{scope.row.realname}}</a>
-            </template>
+            <div slot-scope="scope" :class="`td-item link-item ${isEllipsis(scope.row)}`" @click.prevent="handleShowDetail('DetailSystemOperator', scope.row)">
+              {{scope.row.realname}}
+            </div>
           </el-table-column>
           <el-table-column label="手机号" prop="phone" min-width="120"></el-table-column>
           <el-table-column label="职务" width="140">
@@ -200,5 +196,6 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
+  @import './table.scss';
 </style>

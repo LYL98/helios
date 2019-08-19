@@ -79,7 +79,7 @@
 
       async baseItemList({query, id}, callback) {
 
-        let data = { condition: query, province_code: this.province.code };
+        let data = { condition: query, province_code: this.$province.code };
 
         if (this.$props.is_gift !== null) {
           data.is_gift = this.$props.is_gift;
