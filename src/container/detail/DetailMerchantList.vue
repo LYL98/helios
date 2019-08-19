@@ -167,10 +167,7 @@
 </template>
 
 <script>
-  import {
-    Table, TableColumn, MessageBox, Message, Dialog, Row, Col, Form, FormItem, Tabs, TabPane,
-    Input, Select, Option, Switch, DatePicker, Tag, Upload, Button, ButtonGroup
-  } from 'element-ui';
+  import detailMixin from './detail.mixin';
   import {TableOperate, ToPrice, OmissionText} from '@/common';
   import TagsEdit from '@/view/merchant/TagsEdit';
   import MerchantStore from '@/view/merchant/Store';
@@ -181,25 +178,8 @@
   import { Http, Config, DataHandle } from '@/util';
 
   export default {
+    mixins: [detailMixin],
     components: {
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-form': Form,
-      'el-form-item': FormItem,
-      'el-dialog': Dialog,
-      'el-row': Row,
-      'el-col': Col,
-      'el-input': Input,
-      'el-tabs': Tabs,
-      'el-tab-pane': TabPane,
-      'el-select': Select,
-      'el-option': Option,
-      'el-switch': Switch,
-      'el-date-picker': DatePicker,
-      'el-upload': Upload,
-      'el-button': Button,
-      'el-button-group': ButtonGroup,
-      'el-tag': Tag,
       'merchant-tags-edit': TagsEdit,
       'merchant-edit': MerchantEdit,
       'merchant-store': MerchantStore,
@@ -211,21 +191,18 @@
       'my-omission-text': OmissionText
     },
     created() {
-      let that = this;
-      that.getMerchantDetail();
+      this.getMerchantDetail();
     },
     props: {
-      storeQuery: Function
+      storeQuery: Function,
+      merchant_id: { type: Number | String, default: '' },
     },
     computed: {
       tableData() {
-        // console.log('merchant id: ', this.merchant_id)
         return [ { merchant_id: this.merchant_id, ...this.merchantDetail } ]
       }
     },
     data: () => ({
-      merchant_id: 'merchant_id', //
-      auth: this.$auth,
       tencentPath: Config.tencentPath,
       merchantDetail: {
         inner_tags: [],
@@ -280,15 +257,14 @@
        * 获取商户的详情，在 组件加载时、编辑门店信息后、编辑用户信息后 调用
        */
       async getMerchantDetail() {
-        let that = this;
-        let {merchant_id} = that;
+        let { merchant_id } = this;
         let res = await Http.get(Config.api.merchantDetail, {
           id: merchant_id
         });
         if (res.code === 0) {
-          that.$data.merchantDetail = res.data;
+          this.$data.merchantDetail = res.data;
         } else {
-          Message.warning(res.message);
+          this.$message({message: res.message, type: 'error'});
         }
       },
 

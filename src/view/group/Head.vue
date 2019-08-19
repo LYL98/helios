@@ -33,24 +33,6 @@
     created() {
       documentTitle('团购 - 团长列表');
     },
-    methods: {
-      //获取当前页面的组件
-      getPageComponents(name){
-        let com = null;
-        const fun = (refs)=>{
-          for(let item in refs){
-            if(item === name){
-              com = refs[name];
-            }
-            if(refs[item] && refs[item].$refs){
-              fun(refs[item].$refs);
-            }
-          }
-        }
-        fun(this.$refs);
-        return com;
-      },
-    }
   }
 </script>
 

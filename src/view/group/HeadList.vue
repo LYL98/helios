@@ -175,7 +175,6 @@
     mixins: [tableMixin],
     props: {
       itemAdd: { type: Function, require: true }, //新增
-      getPageComponents: { type: Function, require: true }, //获取页面组件
     },
     data() {
       return {
@@ -221,7 +220,7 @@
         this.headQuery();
       },
       async headQuery() {
-        let res = await Http.get(Config.api.headQuery, this.query);
+        let res = await Http.get(Config.api.groupHeadQuery, this.query);
         if (res.code === 0) {
           //console.log("当前行", this.$data.currentRow[this.$data.rowIdentifier]);
           this.$data.listItem = Object.assign(this.$data.listItem, {

@@ -9,7 +9,7 @@
 
     <!-- 列表渲染 -->
     <table-merchant-list
-      :dataItem="dataItem"
+      :dataItemTemp="dataItem"
       :page="query.page"
       :pageSize="query.page_size"
       :deleteStore="deleteStore"
@@ -39,7 +39,7 @@
     </div>
 
     <el-dialog title="商户详情" width="1200px" :visible.sync="detailDialog.isShow" append-to-body>
-      <detail-merchant-list :storeQuery="storeQuery" v-if="detailDialog.isShow"/>
+      <detail-merchant-list :storeQuery="storeQuery" v-if="detailDialog.isShow" :merchant_id="merchant_id"/>
     </el-dialog>
 
     <el-dialog title="新增商户" width="808px" :close-on-click-modal="false" :visible.sync="addMerchantDialogVisible" append-to-body>
@@ -86,7 +86,7 @@
     },
     data() {
       return {
-        merchant_id: 'merchant_id', //
+        merchant_id: '',
         province: this.$province,
         auth: this.$auth,
         tencentPath: Config.tencentPath,
@@ -104,7 +104,8 @@
           page_size: Constant.PAGE_SIZE,
         },
         dataItem: {
-          items: []
+          items: [],
+          num: 0
         },
         isShowDetail: false,
         detailDialog: {

@@ -2,7 +2,7 @@
   <div @mousemove="handleTableMouseMove">
     <el-table
       class="list-table"
-      :data="dataItem.items"
+      :data="dataItemTemp.items"
       :height="windowHeight - offsetHeight"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
@@ -103,7 +103,7 @@
     },
     mixins: [tableMixin],
     props: {
-      dataItem: Object, // 商户列表队列
+      dataItemTemp: { type: Object, default: { items: [], num: 0 } }, // 商户列表队列
       page: Number, // 当前查询的页码
       pageSize: Number, // 每页的大小
       deleteStore: Function, // 删除门店 的处理函数

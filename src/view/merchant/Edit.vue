@@ -26,7 +26,7 @@
 </template>
 <script>
   import { Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio } from 'element-ui';
-  import { DataHandle, Verification } from '@/util';
+  import { Http, Config, DataHandle, Verification } from '@/util';
 
   export default {
     name: 'MerchantEdit',
@@ -73,7 +73,6 @@
       };
 
       return {
-        merchant_id: 'merchant_id', //
         isSending: false,
         detail: detail,
         rules: {
@@ -98,7 +97,7 @@
         that.$refs['ruleForm'].validate(async (valid) => {
           if (valid) {
             that.isSending = true;
-            let res = await Merchant['merchantEdit']({id, title, is_post_pay, credit_limit});
+            let res = await Http.post(Config.api.merchantEdit, {id, title, is_post_pay, credit_limit});
             that.isSending = false;
             if(res.code === 0){
               that.$refs['ruleForm'].resetFields();

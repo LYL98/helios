@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="operation">
-        <el-button style="margin-left: 124px" size="small" type="primary" plain @click="showFrom">编辑</el-button>
+        <el-button style="margin-left: 124px" size="small" type="primary" plain @click.native="showForm">编辑</el-button>
       </div>
     </div>
 
@@ -35,7 +35,6 @@
 <script>
   import formMixin from './form.mixin';
   import { Http, Config } from '@/util';
-  import { MessageBox, Notification } from 'element-ui';
 
   export default {
     name: "FormSystemSettingAd",
@@ -43,6 +42,7 @@
     data() {
       return{
         province: this.$province,
+        initDetail: {},
         itemData: {
           input_ad: '',
           ad: ''
@@ -69,7 +69,7 @@
           itemData.input_ad = res.data;
           this.$data.itemData = itemData;
         }else{
-          MessageBox.alert(res.message, '提示');
+          this.$message({message: res.message, type: 'error'});
         }
       },
       //设置广告语
@@ -83,13 +83,10 @@
               });
               if (res.code === 0) {
                 this.basicdataAdGet();
-                Notification.success({
-                  title: '提示',
-                  message: '广告语设置成功'
-                });
+                this.$message({message: '广告语设置成功', type: 'success'});
                 this.handleCancel();
               }else{
-                MessageBox.alert(res.message, '提示');
+                this.$message({message: res.message, type: 'error'});
               }
             })();
           } else {

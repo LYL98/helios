@@ -149,7 +149,6 @@
       };
 
       return {
-        merchant_id: 'merchant_id', //
         province: this.$province,
         isModify: false,
         isSending: false,

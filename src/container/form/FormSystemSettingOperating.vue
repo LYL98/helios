@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="operation">
-        <el-button style="margin-left: 124px" size="small" type="primary" plain @click="showFrom">编辑</el-button>
+        <el-button style="margin-left: 124px" size="small" type="primary" plain @click.native="showForm">编辑</el-button>
       </div>
     </div>
 
@@ -44,13 +44,13 @@
 <script>
   import formMixin from './form.mixin';
   import { Http, Config } from '@/util';
-  import { MessageBox, Notification } from 'element-ui';
 
   export default {
     name: "FormSystemSettingOperating",
     mixins: [formMixin],
     data() {
       return{
+        initDetail: {},
         itemData: {
           order_start_time: '',
           order_end_time: '',
@@ -79,35 +79,24 @@
             orderTimeRange: [rd.order_start_time, rd.order_end_time]
           };
         }else{
-          MessageBox.alert(res.message, '提示');
+          this.$message({message: res.message, type: 'error'});
         }
       },
       //设置营业
-      basicdataOrderTimeSet() {
-        this.$refs['ruleForm'].validate((valid) => {
-          if (valid) {
-            (async ()=>{
-              let { itemData } = this;
-              let res = await Http.post(Config.api.basicdataOrderTime, {
-                province_code: this.province.code,
-                order_start_time: itemData.orderTimeRange[0],
-                order_end_time: itemData.orderTimeRange[1]
-              });
-              if (res.code === 0) {
-                this.basicdataOrderTimeGet();
-                Notification.success({
-                  title: '提示',
-                  message: '营业时间设置成功'
-                });
-                this.handleCancel();
-              }else{
-                MessageBox.alert(res.message, '提示');
-              }
-            })();
-          } else {
-            return false;
-          }
+      async submitData() {
+        let { itemData } = this;
+        let res = await Http.post(Config.api.basicdataOrderTime, {
+          province_code: this.province.code,
+          order_start_time: itemData.orderTimeRange[0],
+          order_end_time: itemData.orderTimeRange[1]
         });
+        if (res.code === 0) {
+          this.basicdataOrderTimeGet();
+          this.$message({message: '营业时间设置成功', type: 'success'});
+          this.handleCancel();
+        }else{
+          this.$message({message: res.message, type: 'error'});
+        }
       },
     }
   }
