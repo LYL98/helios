@@ -181,7 +181,7 @@
 </template>
 
 <script>
-import { Form, FormItem, Button, Input, MessageBox, TimePicker, Notification, RadioGroup, Radio, Row, Col, Dialog } from 'element-ui';
+import { Form, FormItem, Button, Input, TimePicker, Notification, RadioGroup, Radio, Row, Col, Dialog } from 'element-ui';
 import { Http, DataHandle, Verification, Config, Constant } from '@/util';
 import { UploadImg } from '@/common';
 //import brand from "@/store/modules/system/brand";
@@ -599,6 +599,7 @@ export default {
       let that = this;
       let { confirmTime } = that;
       let res = await Http.post(Config.api.basicdataConfirmTime, {
+        province_code: this.$province.code,
         is_auto_confirmed: confirmTime.is_auto_confirmed,
         confirm_time: confirmTime.confirm_time
       });
@@ -609,7 +610,7 @@ export default {
         });
         typeof callback === 'function' && callback();
       }else{
-        MessageBox.alert(res.message, '提示');
+        this.$message({message: res.message, type: 'error'});
       }
     },
     async basicdataOrderTimeGet(callback) {
@@ -635,7 +636,7 @@ export default {
         });
         typeof callback === 'function' && callback();
       }else{
-        MessageBox.alert(res.message, '提示');
+        this.$message({message: res.message, type: 'error'});
       }
     },
     async basicdataDeliveryInfoGet(callback) {
@@ -662,7 +663,7 @@ export default {
         });
         typeof callback === 'function' && callback();
       }else{
-        MessageBox.alert(res.message, '提示');
+        this.$message({message: res.message, type: 'error'});
       }
     },
     //设置发货方式
@@ -689,7 +690,7 @@ export default {
         });
         typeof callback === 'function' && callback();
       }else{
-        MessageBox.alert(res.message, '提示');
+        this.$message({message: res.message, type: 'error'});
       }
     },
 
@@ -697,7 +698,7 @@ export default {
     async systemBrandGet(callback) {
       let that = this;
       let { brandInfo } = that;
-      let res = await Http.get(Config.BrandInfo, {});
+      let res = await Http.get(Config.api.BrandInfo, {});
       if (res.code === 0) {
         brandInfo.brand_name = res.data.brand_name;
         brandInfo.brand_icon = res.data.brand_icon.split();
@@ -723,7 +724,7 @@ export default {
         });
         typeof callback === 'function' && callback();
       }else{
-        MessageBox.alert(res.message, '提示');
+        this.$message({message: res.message, type: 'error'});
       }
     },
   },

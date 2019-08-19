@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import { Form, FormItem, Button, Message, MessageBox } from 'element-ui';
+  import { Form, FormItem, Button } from 'element-ui';
   import { QuillEditor } from '@/common';
   import { Constant, Config, Http } from '@/util';
 
@@ -58,7 +58,7 @@
         if (res.code === 0) {
           this.item.content = res.data;
         } else {
-          Message.warning(res.message);
+          this.$message({message: res.message, type: 'error'});
         }
       },
 
@@ -68,15 +68,15 @@
           unified_description: unified_description
         });
         if (res.code === 0) {
-          Message.success('商品统一描述设置成功');
+          this.$message({message: '商品统一描述设置成功', type: 'success'});
         } else {
-          Message.warning(res.message);
+          this.$message({message: res.message, type: 'error'});
         }
       },
 
       handleSubmit() {
         if (!this.item.content) {
-          MessageBox.confirm('确认清空商品统一描述?', '提示', {
+          this.$messageBox.confirm('确认清空商品统一描述?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'

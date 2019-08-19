@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="operate-receiving">
     <!-- 表格start -->
     <el-table :data="dataList" stripe style="width: 100%; margin-top: 16px;" size="mini" :height="windowHeight - offsetHeight" ref="myTable" :row-key="returnTableKey">
       <el-table-column prop="name" label="商品" width="160">

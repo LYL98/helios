@@ -250,7 +250,7 @@
       },
       //余额修改
       async financeBalanceEdit({item, success, error}){
-        let res = await Http.post(Config.financeBalanceEdit, item);
+        let res = await Http.post(Config.api.financeBalanceEdit, item);
         let message = (item.amount >= 0 ? '充值' : '扣款') + '记录提交成功！等待财务审核...';
         if (res.code === 0) {
           this.$message({title: '提示', message: message, type: 'success'});

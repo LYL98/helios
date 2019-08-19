@@ -35,7 +35,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="handleCancel">取 消</el-button>
-        <el-button type="primary" @click.native="basicdataOrderTimeSet">确 认</el-button>
+        <el-button type="primary" @click.native="handleFormSubmit">确 认</el-button>
       </div>
     </el-dialog>
   </div>

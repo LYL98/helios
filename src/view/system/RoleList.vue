@@ -241,7 +241,7 @@ export default {
             });
             this.getRoleList();
           }else{
-            this.$message({message: res.message, type: 'success'});
+            this.$message({message: res.message, type: 'error'});
           }
         })();
       }).catch(() => {
@@ -269,7 +269,7 @@ export default {
           this.$data.detail = rd[0];
         }
       }else{
-        this.$message({message: res.message, type: 'success'});
+        this.$message({message: res.message, type: 'error'});
       }
     },
     //获取角色详情(直接保存详情)
