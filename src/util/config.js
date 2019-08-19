@@ -344,7 +344,6 @@ const Config = (() => {
       statisticalOrderTrendZone: apiM + '/statistical/order/trend_zone', //统计分析 - 业务报表 - 业务波动表（片区）
       statisticalOrderStoreAnalysis: apiM + '/statistical/order/store_analysis', //统计分析 - 业务报表 - 客户分析表
       statisticalItemDailyAnalysis: apiM + '/statistical/item/day_analysis', //统计分析 - 商品报表 - 商品每日分析 - 商品
-      statisticalItemDailyAnalysisBuyer: apiM + '/statistical/item/day_analysis/buyer', //统计分析 - 商品报表 - 商品每日分析 - 采购员
       statisticalItemDailyAnalysisClass: apiM + '/statistical/item/day_analysis/class', //统计分析 - 商品报表 - 商品每日分析 - 展示分类
       statisticalItemTrendAnalysis: apiM + '/statistical/item/trend_analysis', //统计分析 - 商品报表 - 商品波动分析 - 商品
       statisticalItemTrendAnalysisBuyer: apiM + '/statistical/item/trend_analysis/buyer', //统计分析 - 商品报表 - 商品波动分析 - 采购员

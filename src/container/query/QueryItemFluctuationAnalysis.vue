@@ -58,21 +58,8 @@
       <template slot="expand">
         <el-row style="margin-top: 16px">
           <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="展示分类">
-              <my-select-display-class
-                                       size="small"
-                                       :isUseToQuery="true"
-                                       v-model="editQuery.display_class_code"
-                                       @change="changeQuery"/>
-            </my-query-item>
-          </el-col>
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="采购员">
-              <my-select-buyer :provinceCode="editQuery.province_code"
-                               v-model="editQuery.buyer_id"
-                               size="small"
-                               :isUseToQuery="true"
-                               @change="changeQuery"/>
+            <my-query-item label="科学分类">
+              <select-system-class size="small" v-model="editQuery.system_class_codes" @change="selectSystemClass" style="max-width: 224px;"/>
               <el-button size="small" type="primary" class="query-item-reset" plain @click="resetQuery">重置</el-button>
             </my-query-item>
           </el-col>
@@ -84,7 +71,7 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message, Select, Option} from 'element-ui';
-  import { QueryItem, CollapseQuery, SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
+  import { QueryItem, CollapseQuery, SelectSystemClass, SearchItem } from '@/common';
   import { DataHandle } from '@/util';
   import queryMixin from './query.mixin';
   import Constant from "../../util/constant";
@@ -99,8 +86,7 @@
       'el-button': Button,
       'el-select': Select,
       'el-option': Option,
-      'my-select-buyer': SelectBuyer,
-      'my-select-display-class': SelectDisplayClass,
+      'select-system-class': SelectSystemClass,
       'my-search-item': SearchItem,
       'my-query-item': QueryItem,
       'my-collapse-query': CollapseQuery
@@ -222,6 +208,15 @@
         //触发change事件
         this.editQuery = Object.assign({}, this.editQuery);
       },
+      //选择科学分类
+      selectSystemClass(value, data){
+        if(value.length === 0){
+          this.editQuery.system_class_code = '';
+        }else{
+          this.editQuery.system_class_code = data.code;
+        }
+        this.changeQuery();
+      },
       changeQuery() {
         //触发change事件
         this.editQuery = Object.assign({}, this.editQuery);
@@ -232,8 +227,8 @@
           page: 1,
           page_size: 20,
           province_code: this.province.code,
-          buyer_id: '',
-          display_class_code: '',
+          system_class_codes: [],
+          system_class_code: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,
           item_condition: '',

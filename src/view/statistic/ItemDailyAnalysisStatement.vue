@@ -12,7 +12,6 @@
       <div style="height: 0">
         <el-select style="position: absolute; top: 8px; left: 20px; width: 110px; z-index: 100" size="small" v-model="selectArea" @change="onSelectArea">
           <el-option label="编号/商品" value="item"></el-option>
-          <el-option label="采购员" value="buyer"></el-option>
           <el-option label="展示分类" value="class"></el-option>
         </el-select>
       </div>
@@ -29,19 +28,18 @@
           <template slot-scope="scope">
             <span id="titleScope">
               {{ scope.row.m_title ? scope.row.m_title : selectArea === 'item'
-                  ? formatString(scope.row.item_code) + '/' + formatString(scope.row.item_title)
-                  : selectArea === 'buyer' ?  formatString(scope.row.buyer_name) : formatString(scope.row.display_class_title)
-                }}
+                  ? formatString(scope.row.item_code) + '/' + formatString(scope.row.item_title): formatString(scope.row.system_class_title)
+              }}
             </span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="price_buy_real"
+          prop="price_buy"
           label="采购价"
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.price_buy_real)}}</span>
+            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.price_buy)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -142,7 +140,7 @@
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
+import { SearchItem } from '@/common';
 import { Http, Config, DataHandle } from '@/util';
 import { QueryItemDailyAnalysis } from '@/container'
 import Constant from "@/util/constant";
@@ -160,8 +158,6 @@ export default {
     'el-select': Select,
     'el-option': Option,
     'el-input': Input,
-    'my-select-buyer': SelectBuyer,
-    'my-select-display-class': SelectDisplayClass,
     'my-search-item': SearchItem,
     'query-item-daily-analysis': QueryItemDailyAnalysis
   },
@@ -182,8 +178,8 @@ export default {
         page_size: 20,
         province_code: '',
         opt_date: '',
-        buyer_id: '',
-        display_class_code: '',
+        system_class_codes: [],
+        system_class_code: '',
         item_condition: '',
       },
       currentRow: {}
@@ -263,8 +259,7 @@ export default {
       //   page: 1,
       //   page_size: 20,
       //   opt_date: '',
-      //   buyer_id: '',
-      //   display_class_code: '',
+      //   system_class_code: '',
       //   item_condition: '',
       // };
       // this.loadItemDailyAnalysisListFirstPage()
@@ -280,8 +275,7 @@ export default {
       let that = this;
       let { query, selectArea } = that;
       this.$loading({ isShow: true, isWhole: true });
-      let res = selectArea === 'item' ? await Http.get(Config.api.statisticalItemDailyAnalysis, query) :
-                selectArea === 'buyer' ? await Http.get(Config.api.statisticalItemDailyAnalysisBuyer, query) : await Http.get(Config.api.statisticalItemDailyAnalysisClass, query);
+      let res = selectArea === 'item' ? await Http.get(Config.api.statisticalItemDailyAnalysis, query) : await Http.get(Config.api.statisticalItemDailyAnalysisClass, query);
       if(res.code === 0){
         //手动增加总计和平均值的行数据
         if (res.data.items && res.data.items.length > 0) {
@@ -299,7 +293,7 @@ export default {
         that.$data.dataItem = res.data;
         that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
           item => item.m_title ? item.m_title : selectArea === 'item' ? that.formatString(item.item_code) + '/' + that.formatString(item.item_title)
-            : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.display_class_title)
+            : that.formatString(item.system_class_title)
         )
       }else{
         this.$message({title: '提示', message: res.message, type: 'error'});

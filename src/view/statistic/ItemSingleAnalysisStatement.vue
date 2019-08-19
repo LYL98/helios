@@ -686,7 +686,7 @@
         let result = '-';
         switch (index) {
           case 0:
-            result = that.returnPrice(cellItem.price_buy_real);
+            result = that.returnPrice(cellItem.price_buy);
             break;
           case 1:
             result = that.returnPrice(cellItem.price_sale);
@@ -721,7 +721,7 @@
         let result = '-';
         switch (index) {
           case 0:
-            result = cellItem.price_buy_real;
+            result = cellItem.price_buy;
             break;
           case 1:
             result = cellItem.price_sale;

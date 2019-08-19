@@ -47,17 +47,17 @@
           label="序号"
           :index="indexMethod"
         />
-        <el-table-column label="商品分类" prop="item_display_class">
+        <el-table-column label="商品分类" prop="item_system_class">
           <template slot-scope="scope">
             <a href="javascript:void(0)"
               class="title"
               @click="handleShowClassDetail(scope.row)"
-              v-if="!!scope.row.item_display_class && ( auth.isAdmin || auth.StatisticMarketClass )"
+              v-if="!!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass )"
             >
-              {{ scope.row.item_display_class || '其它' }}
+              {{ scope.row.item_system_class || '其它' }}
             </a>
             <div v-else>
-              {{ scope.row.item_display_class || '其它' }}
+              {{ scope.row.item_system_class || '其它' }}
             </div>
           </template>
         </el-table-column>
@@ -90,7 +90,7 @@
               :list="[
                   {
                     title: '查看',
-                    isDisplay: !!scope.row.item_display_class && ( auth.isAdmin || auth.StatisticMarketClass ),
+                    isDisplay: !!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass ),
                     command: () => handleShowClassDetail(scope.row)
                   }
                 ]"
@@ -289,17 +289,17 @@
         for(let i = 0; i < orderClassSumData.length; i++){
           //饼图数据
           let percent = orderClassSumData[i].item_total_price / totalItemTotalPrice;
-          if(percent > 0.05 && orderClassSumData[i].item_display_class !== '其它'){
+          if(percent > 0.05 && orderClassSumData[i].item_system_class !== '其它'){
             data.push({
               value: that.returnPrice(orderClassSumData[i].item_total_price),
-              name: orderClassSumData[i].item_display_class,
+              name: orderClassSumData[i].item_system_class,
             });
           }else{
             dataTemp.value += orderClassSumData[i].item_total_price;
           }
 
           //列表数据
-          if(orderClassSumData[i].item_display_class !== '其它'){
+          if(orderClassSumData[i].item_system_class !== '其它'){
             data2.push(orderClassSumData[i]);
           }else{
             dataTemp2 = orderClassSumData[i];
@@ -314,7 +314,7 @@
           });
         }
 
-        if(dataTemp2.item_display_class){
+        if(dataTemp2.item_system_class){
           data2.push(dataTemp2);
         }
 
@@ -385,7 +385,7 @@
             that.$router.push({
               path: '/statistic/market/class',
               query: {
-                display_class: params.name,
+                system_class: params.name,
                 begin_date: that.$data.query.begin_date,
                 end_date: that.$data.query.end_date
               }
@@ -394,11 +394,11 @@
         });
       },
       handleShowClassDetail(item) {
-        let display_class = item.item_display_class;
+        let system_class = item.item_system_class;
         this.$router.push({
           path: '/statistic/market/class',
           query: {
-            display_class: display_class,
+            system_class: system_class,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date
           }

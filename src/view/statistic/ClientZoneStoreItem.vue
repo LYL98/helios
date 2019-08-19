@@ -53,30 +53,12 @@
           </my-query-item>
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="采购员">
-            <my-select-buyer
-              :provinceCode="province.code"
-              v-model="query.buyer_id"
-              :clearable="true"
-              size="small"
-              :hasAllSelection="true"
-              @change="changeBuyer"
-              class="query-item-select"
-              :isUseToQuery="true"
-            />
-          </my-query-item>
-        </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="展示分类">
-            <my-select-display-class
-              v-model="query.display_class"
+            <my-select-system-class
+              v-model="query.system_class_codes"
               :clearable="true"
               size="small"
-              :hasAllSelection="true"
-              @change="changeDisplayClass"
-              class="query-item-select"
-              :isUseToQuery="true"
-              :use-name="true"
+              @change="changeSystemClass"
             />
             <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
           </my-query-item>
@@ -149,7 +131,7 @@
 
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
-  import { QueryItem, TableOperate, SelectBuyer, SelectDisplayClass } from '@/common';
+  import { QueryItem, TableOperate, SelectSystemClass } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import viewMixin from '@/view/view.mixin';
 
@@ -168,8 +150,7 @@
       'el-button': Button,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
-      'my-select-buyer': SelectBuyer,
-      'my-select-display-class': SelectDisplayClass,
+      'my-select-system-class': SelectSystemClass,
     },
     data() {
       return {
@@ -226,7 +207,6 @@
       },
 
       initBreadcrumb() {
-        console.log('initBreadcrumb', this.$route.query)
 
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
           store_id: this.$route.query.store_id,
@@ -240,7 +220,6 @@
         })
       },
       initQuery() {
-        console.log("当前的请求参数", this.$route.query);
         let pickerValue = [];
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
@@ -258,8 +237,8 @@
           zone_title: this.$route.query.zone_title,
           city_code: this.$route.query.city_code,
           city_title: this.$route.query.city_title,
-          buyer_id: '',
-          display_class: '',
+          system_class: '',
+          system_class_codes: [],
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -276,19 +255,10 @@
         this.$data.query.page = 1;
         this.storeSaleItems();
       },
-      changeBuyer(data, isInit) {
-        if (!isInit) {
-          // console.log("改变片区", data);
-          this.$data.query.zone_code = data;
-          this.storeSaleItems();
-        }
-      },
-      changeDisplayClass(data, isInit) {
-        if (!isInit) {
-          // console.log("改变县域", data);
-          this.$data.query.city_code = data;
-          this.storeSaleItems();
-        }
+      //改变科学分类
+      changeSystemClass(value, data) {
+        this.$data.query.system_class = data.title || '';
+        this.storeSaleItems();
       },
       changePage(page) {
         this.$data.query.page = page;

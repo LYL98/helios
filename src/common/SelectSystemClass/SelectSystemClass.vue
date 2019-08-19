@@ -79,7 +79,23 @@ export default {
     //显示隐藏时
     onVisibleChange(visible){
       if(!visible){
-        this.$emit('change', this.tempValue);
+        let data = {};
+        let { systemClassTree, tempValue } = this;
+        if(tempValue.length > 0){
+          let fun = (d) =>{
+            for(let i = 0; i < d.length; i++){
+              if(d[i].code === tempValue[tempValue.length - 1]){
+                data = d[i];
+                break;
+              }
+              if(d[i].childs){
+                fun(d[i].childs);
+              }
+            }
+          }
+          fun(systemClassTree);
+        }
+        this.$emit('change', tempValue, data);
       }
     }
   },

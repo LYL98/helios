@@ -144,7 +144,7 @@ export default {
          let result = 0;
         switch (detail.selectIndex) {
           case 0:
-            result = that.returnPriceValue(colItem.price_buy_real);
+            result = that.returnPriceValue(colItem.price_buy);
             break;
           case 1:
             result = that.returnPriceValue(colItem.price_sale);
@@ -187,7 +187,7 @@ export default {
             let result = 0;
             switch (detail.selectIndex) {
               case 0:
-                result = that.returnPriceValue(rowItem.price_buy_real);
+                result = that.returnPriceValue(rowItem.price_buy);
                 break;
               case 1:
                 result = that.returnPriceValue(rowItem.price_sale);

@@ -7,7 +7,7 @@
         >
           商品销售统计
         </el-breadcrumb-item>
-        <el-breadcrumb-item>{{ query.display_class === '' ? '全部分类' : query.display_class }}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ query.system_class === '' ? '全部分类' : query.system_class }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="query" style="margin-bottom: 20px;">
@@ -33,29 +33,11 @@
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="分类">
-            <my-select-display-class
-              v-model="query.display_class"
-              :use-name="true"
-              v-on:change="changeQuery"
-              :isUseToQuery="true"
-              :hasAllSelection="true"
+            <select-system-class
+              v-model="query.system_class_codes"
+              @change="selectSystemClass"
               size="small"
               :clearable="false"
-              class="query-item-select"
-            />
-          </my-query-item>
-        </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="采购员">
-            <my-select-buyer
-              :provinceCode="query.province_code"
-              v-model="query.buyer_id"
-              v-on:change="changeQuery"
-              :isUseToQuery="true"
-              size="small"
-              :clearable="false"
-              class="query-item-select"
-              :hasAllSelection="true"
             />
             <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
           </my-query-item>
@@ -79,7 +61,7 @@
           label="序号"
           :index="indexMethod"
         />
-        <el-table-column label="商品" prop="item_display_class">
+        <el-table-column label="商品" prop="item_system_class">
           <template slot-scope="scope">
             <a href="javascript:void(0)"
                class="title"
@@ -93,9 +75,9 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="分类/采购员">
+        <el-table-column label="分类">
           <template slot-scope="scope">
-            {{ scope.row.display_class_title || '' }} / {{ scope.row.buyer && scope.row.buyer.realname }}
+            {{ scope.row.system_class_title || '' }}
           </template>
         </el-table-column>
         <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
@@ -150,7 +132,7 @@
 
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
-  import { QueryItem, TableOperate, SelectBuyer, SelectDisplayClass } from '@/common';
+  import { QueryItem, TableOperate, SelectBuyer, SelectSystemClass } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import viewMixin from '@/view/view.mixin';
 
@@ -170,7 +152,7 @@
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'my-select-buyer': SelectBuyer,
-      'my-select-display-class': SelectDisplayClass
+      'select-system-class': SelectSystemClass
     },
     data() {
       return {
@@ -178,7 +160,7 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_BREADCRUMB + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         pickerValue: [],
         breadcrumb: {},
-        query: { },
+        query: {},
         listItem: {
           num: 0,
           items: []
@@ -221,11 +203,11 @@
         return DataHandle.returnPrice(price);
       },
       initBreadcrumb() {
-        let display_class = this.$route.query.display_class;
+        let system_class = this.$route.query.system_class;
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
-          display_class: display_class,
+          system_class: system_class,
           begin_date: begin_date,
           end_date: end_date
         })
@@ -242,8 +224,8 @@
           begin_date: begin_date,
           end_date: end_date,
           sort: '-item_total_price',
-          buyer_id: '',
-          display_class: this.$route.query.display_class === '全部分类' ? '' : this.$route.query.display_class,
+          system_class: this.$route.query.system_class === '全部分类' ? '' : this.$route.query.system_class,
+          system_class_codes: [],
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -259,6 +241,15 @@
         }
         this.$data.query.page = 1;
         this.saleClassItemQuery();
+      },
+      //选择科学分类
+      selectSystemClass(value, data){
+        if(value.length === 0){
+          this.$data.query.system_class = '';
+        }else{
+          this.$data.query.system_class = data.title;
+        }
+        this.changeQuery();
       },
       changeQuery() {
         this.saleClassItemQuery();
@@ -302,11 +293,11 @@
       },
       handleShowClassDetail(item) {
         this.$router.push({
-            path: '/statistic/market/class/item',
+          path: '/statistic/market/class/item',
           query: {
             item_id: item.id,
             item_title: item.title,
-            display_class: this.$data.query.display_class === '' ? '全部分类' : this.$data.query.display_class,
+            system_class: this.query.system_class === '' ? '全部分类' : this.query.system_class,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date
           }

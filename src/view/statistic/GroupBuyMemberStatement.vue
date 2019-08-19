@@ -289,7 +289,7 @@ export default {
         that.$data.dataItem = res.data;
         // that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
         //   item => item.m_title ? item.m_title : selectArea === 'item' ? that.formatString(item.item_code) + '/' + that.formatString(item.item_title)
-        //     : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.display_class_title)
+        //     : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.system_class_title)
         // )
       }else{
         this.$message({title: '提示', message: res.message, type: 'error'});

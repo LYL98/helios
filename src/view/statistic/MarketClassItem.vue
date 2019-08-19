@@ -8,9 +8,9 @@
           商品销售统计
         </el-breadcrumb-item>
         <el-breadcrumb-item
-          :to="{ path: '/statistic/market/class', query: { display_class: breadcrumb.display_class, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/market/class', query: { system_class: breadcrumb.system_class, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
         >
-          {{ breadcrumb.display_class }}
+          {{ breadcrumb.system_class }}
         </el-breadcrumb-item>
         <el-breadcrumb-item>{{ breadcrumb.item_title }}</el-breadcrumb-item>
       </el-breadcrumb>
@@ -201,12 +201,12 @@
         return DataHandle.returnPercentage(item_num, sun);
       },
       initBreadcrumb() {
-        let display_class = this.$route.query.display_class;
+        let system_class = this.$route.query.system_class;
         let item_title = this.$route.query.item_title;
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
-          display_class: display_class,
+          system_class: system_class,
           item_title: item_title,
           begin_date: begin_date,
           end_date: end_date
