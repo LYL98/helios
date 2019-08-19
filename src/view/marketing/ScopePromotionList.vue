@@ -132,7 +132,7 @@
       },
       //开始
       async itemScopePromotionStart({promotion_id, callback}) {
-        let res = await Http.post(Config.api.itemScopePromotionStart, {promotion_id});
+        let res = await Http.post(Config.api.itemPromotionStart, {promotion_id});
         if (res.code === 0) {
           this.$message({title: '提示', message: '活动已经上架！', type: 'success'});
           callback && callback();
@@ -142,7 +142,7 @@
       },
       //停止
       async itemScopePromotionHalt({promotion_id, callback}) {
-        let res = await Http.post(Config.api.itemScopePromotionHalt, {promotion_id});
+        let res = await Http.post(Config.api.itemPromotionHalt, {promotion_id});
         if (res.code === 0) {
           this.$message({title: '提示', message: '活动已经下架！', type: 'success'});
           callback && callback();
