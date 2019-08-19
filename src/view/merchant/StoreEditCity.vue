@@ -108,7 +108,7 @@
 
           if (valid) {
             that.isSending = true;
-            let res = await Merchant['storeEditCity']({
+            let res = await Http.post(Config.api['storeEditCity'], {
               id: store_id,
               province_code: addEditData.province_code,
               city_code: addEditData.city_code

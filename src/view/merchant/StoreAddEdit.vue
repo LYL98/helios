@@ -215,7 +215,7 @@
 
           if (valid) {
             that.isSending = true;
-            let res = await Merchant[id ? 'storeEdit' : 'storeAdd'](addEditData);
+            let res = await Http.post(Config.api[id ? 'storeEdit' : 'storeAdd'], addEditData);
             that.isSending = false;
             if (res.code === 0) {
               let rd = res.data;

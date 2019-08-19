@@ -222,7 +222,7 @@
       },
       //新增
       async itemCouponAdd({item, success, error}) {
-        let res = await Http.post(Config.api.couponAdd, item);
+        let res = await Http.post(Config.api.itemCouponAdd, item);
         if (res.code === 0) {
           this.$message({title: '提示', message: '优惠券添加成功！', type: 'success'});
           success && success();
@@ -233,7 +233,7 @@
       },
       //发放
       async itemCouponDistribute({item, success, error}) {
-        let res = await Http.post(Config.api.couponDistribute, item);
+        let res = await Http.post(Config.api.itemCouponDistribute, item);
         if (res.code === 0) {
           this.$message({title: '提示', message: '优惠券发放成功！', type: 'success'});
           success && success();
@@ -244,7 +244,7 @@
       },
       //暂停开始
       async itemCouponAutoDis({data, success, error}) {
-        let res = await Http.post(Config.api.couponAutoDis, data);
+        let res = await Http.post(Config.api.itemCouponAutoDis, data);
         let message = data.auto_dis_status == 0 ? '自动发放已暂停！' : '自动发放已开始！';
         if (res.code === 0) {
           this.$message({title: '提示', message: message, type: 'success'});
@@ -474,7 +474,7 @@
       },
       // 根据传递进来的id，显示优惠券的详情！
       async handleShowItem(id) {
-        let res = await Http.get(Config.api.couponDetail, { coupon_id: id });
+        let res = await Http.get(Config.api.itemCouponDetail, { coupon_id: id });
         if (res.code === 0) {
           this.detail = res.data;
           this.$data.dialog.isShowDetail = true;

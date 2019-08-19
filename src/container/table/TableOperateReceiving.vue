@@ -41,14 +41,14 @@
           </template>
         </el-table-column>
       </el-table-column>
-      <el-table-column label="操作" width="150">
+      <el-table-column label="操作" width="80">
         <template slot-scope="scope">
           <!--已审核 checked -->
           <span v-if="scope.row.status === 'checked'" style="font-size: 12px;">已审核</span>
           <!--收货 receiving-->
-          <el-button size="mini" type="primary" v-else-if="(auth.isAdmin || auth.OperateReceivingAdd) &&  scope.row.status === 'receiving'" @click.native="handleShowForm('FormOperateReceivingNumber', scope.row)">收货</el-button>
+          <el-button size="mini" type="primary" v-else-if="(auth.isAdmin || auth.OperateReceivingAdd) &&  scope.row.status === 'receiving'" @click.native="handleShowForm('FormOperateReceivingNumber', {data: scope.row, dataItem: dataItem})">收货</el-button>
           <!--修改 update-->
-          <el-button size="mini" v-else-if="(auth.isAdmin || auth.OperateReceivingEdit) && scope.row.status === 'update'" @click.native="handleShowForm('FormOperateReceivingNumber', scope.row)">修改</el-button>
+          <el-button size="mini" v-else-if="(auth.isAdmin || auth.OperateReceivingEdit) && scope.row.status === 'update'" @click.native="handleShowForm('FormOperateReceivingNumber', {data: scope.row, dataItem: dataItem})">修改</el-button>
           <!--已收货没有修改权限 -->
           <span v-else>已收货</span>
         </template>
@@ -102,7 +102,8 @@
           cities: []
         },
         dataList: [], //列表数据
-        checkData: []
+        checkData: [],
+        receivingDataItem: [], //原始数据
       }
     },
     methods: {
@@ -121,6 +122,7 @@
         let res = await Http.get(Config.api.orderDeliveryItems, query);
         this.$loading({isShow: false});
         if(res.code === 0){
+          this.$data.receivingDataItem = res.data;
           this.refreshData(res.data);
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
@@ -250,8 +252,9 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style lang="scss">
   @import './table.scss';
+
   .operate-receiving {
     .is-group {
       tr {

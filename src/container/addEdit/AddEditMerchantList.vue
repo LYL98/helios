@@ -81,7 +81,7 @@
 <script>
   import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio, RadioGroup, DatePicker} from 'element-ui';
   import {FormArea, SelectProvince, SelectCity, UploadImg} from '@/common';
-  import {DataHandle, Verification} from '@/util';
+  import {Http, Config, DataHandle, Verification} from '@/util';
   import md5 from 'md5';
 
   export default {
@@ -258,7 +258,7 @@
             if (!detail.sign_start_date) {
               detail.sign_start_date = ''
             }
-            let res = await Merchant[id ? 'merchantEdit' : 'merchantAdd'](detail);
+            let res = await Http.post(Config.api[id ? 'merchantEdit' : 'merchantAdd'], detail);
             that.isSending = false;
             if (res.code === 0) {
               let rd = res.data;

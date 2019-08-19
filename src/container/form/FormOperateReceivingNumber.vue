@@ -57,10 +57,11 @@ export default {
   },
   methods: {
     //显示form(重写)
-    showForm(data){
+    showForm(res){
       let d = {};
-      if(data){
-        d = JSON.parse(JSON.stringify(data));
+      if(res && res.data){
+        d = JSON.parse(JSON.stringify(res.data));
+        this.$data.dataItem = res.dataItem;
       }
       this.$data.citiesDataItem = d;
       this.refreshData(d);

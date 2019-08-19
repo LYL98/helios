@@ -56,8 +56,10 @@ export default {
   },
   methods: {
     //显示新增修改(重写mixin)
-    showDetail(data){
-      if(data){
+    showDetail(res){
+      if(res && res.query){
+        this.$data.query = res.query;
+        this.$data.dataItem = res.dataItem;
         this.deliveryPreCheck();
       }
     },
@@ -93,7 +95,7 @@ export default {
         }
 
         funTemp(rd.slice(0, pageSize));
-        this.$data.isShowAudit = true;
+        this.$data.isShow = true;
 
       }else{
         this.$message({title: '提示', message: res.message, type: 'error'});
@@ -123,6 +125,14 @@ export default {
       }else{
         this.$message({message: res.message, type: 'error'});
       }
+    },
+    highlightRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 == 0) {
+        return 'stripe-row';
+      } else if (rowIndex % 2 != 0) {
+        return 'default-row'
+      }
+      return '';
     },
   }
 };

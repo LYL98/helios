@@ -99,7 +99,7 @@
       //重新计算
       refreshData(){
         let pc = this.getPageComponents('TableOperateReceiving');
-        pc.refreshData(this.query);
+        pc.refreshData(pc.receivingDataItem, this.query);
       }
     }
   }

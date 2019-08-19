@@ -30,7 +30,7 @@
 
 <script>
 import formMixin from './form.mixin';
-import { Config, Constant, DataHandle } from '@/util';
+import { Http, Config, Constant, DataHandle } from '@/util';
 import { NumberKey } from '@/common';
 
 export default {
@@ -63,7 +63,7 @@ export default {
       });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$data.dataItem = rd.data;
+        this.$data.dataItem = res.data;
         this.$data.isShow = true;
       }else{
         this.$message({title: '提示', message: res.message, type: 'error'});

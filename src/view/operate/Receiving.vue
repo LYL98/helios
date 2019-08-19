@@ -23,12 +23,11 @@
     },
     mixins: [viewMixin],
     created() {
-      let that = this;
       documentTitle('配送 - 收货');
     }
   };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 </style>
