@@ -245,7 +245,7 @@
       //冻结解冻门店
       async groupStoreFreeze(data, index){
         let str = data.is_freeze_header ? '解冻' : '冻结';
-        MessageBox.confirm(`确认${str}该门店?`, '提示', {
+        this.$messageBox.confirm(`确认${str}该门店?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

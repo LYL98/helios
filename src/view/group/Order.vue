@@ -37,7 +37,7 @@
     },
     methods: {
       async showItemDetail(id) {
-        let res = await Http.get(Config.api.orderDetail, { id: id });
+        let res = await Http.get(Config.api.groupOrderDetail, { id: id });
         if (res.code === 0) {
           this.$data.itemDetail = res.data;
           this.$data.isShowDetail = true;

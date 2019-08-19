@@ -293,7 +293,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Http.post(Config.api.memberFreeze, {gb_member_id: id});
+          let res = await Http.post(Config.api.groupMemberFreeze, {gb_member_id: id, is_freeze: true});
           if (res.code === 0) {
             this.groupMemberQuery();
             this.$message({title: '提示', message: '冻结成功', type: 'success'});
@@ -312,7 +312,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Http.post(Config.api.memberUnFreeze, {gb_member_id: id});
+          let res = await Http.post(Config.api.groupMemberFreeze, {gb_member_id: id, is_freeze: false});
           if (res.code === 0) {
             this.groupMemberQuery();
             this.$message({title: '提示', message: '解冻成功', type: 'success'});

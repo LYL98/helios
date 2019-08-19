@@ -38,17 +38,6 @@
         <div :class="isEllipsis(scope.row)">{{ scope.row.sale_num }}</div>
       </template>
     </el-table-column>
-    <!--<el-table-column label="团购状态" prop="progress_status" min-width="80">-->
-      <!--<template slot-scope="scope">-->
-        <!--<el-tag-->
-          <!--size="small"-->
-          <!--:type="statusTagType[scope.row.progress_status]"-->
-          <!--disable-transitions-->
-        <!--&gt;-->
-          <!--{{ groupBuyProgressStatus(scope.row.progress_status, scope.row.gb_result) }}-->
-        <!--</el-tag>-->
-      <!--</template>-->
-    <!--</el-table-column>-->
   </el-table>
 </template>
 
@@ -69,7 +58,6 @@
       data: { type: Array, required: true},
       page: { type: Number, required: true },
       pageSize: { type: Number, required: true },
-      offsetHeight: { type: Number, required: true},
       showItem: { type: Function, required: true },
     },
     computed: {

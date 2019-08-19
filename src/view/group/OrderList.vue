@@ -344,7 +344,7 @@
         this.orderQuery();
       },
       async orderQuery() {
-        let res = await Http.get(Config.api.orderQuery, this.query);
+        let res = await Http.get(Config.api.groupOrderQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign(this.$data.listItem, {
             num: res.data.num,
@@ -380,7 +380,7 @@
             type: 'warning'
           }).then(async () => {
             let ids = this.$data.multipleSelection.map(item => item.id);
-            let res = await Http.post(Config.api.orderShip, {
+            let res = await Http.post(Config.api.groupOrderShip, {
               ids: ids
             });
             if (res.code === 0) {
@@ -423,7 +423,7 @@
           type: 'warning'
         }).then(async () => {
           let ids = [id];
-          let res = await Http.post(Config.api.orderShip, {
+          let res = await Http.post(Config.api.groupOrderShip, {
             ids: ids
           });
           if (res.code === 0) {
@@ -466,7 +466,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Http.post(Config.api.orderCancel, {id: id});
+          let res = await Http.post(Config.api.groupOrderCancel, {id: id});
           if (res.code === 0) {
             this.$message({title: '提示', message: '订单取消成功', type: 'success'});
             this.orderQuery();
@@ -485,7 +485,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Http.post(Config.api.orderConfirmPickUp, {id: id});
+          let res = await Http.post(Config.api.groupOrderConfirmPickUp, {id: id});
           if (res.code === 0) {
             this.$message({title: '提示', message: '取货成功', type: 'success'});
             this.orderQuery();

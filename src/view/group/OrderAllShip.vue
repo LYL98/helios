@@ -40,7 +40,7 @@
       // 一键发货
       async handleAllShip() {
         this.$loading({ isShow: true,  isWhole: true });
-        let res = await Http.post(Config.api.orderAllShip, this.query);
+        let res = await Http.post(Config.api.groupOrderAllShip, this.query);
         this.$loading({ isShow: false });
         if (res.code === 0) {
           this.$message({title: '提示', message: '发货成功', type: 'success'});
@@ -56,7 +56,7 @@
       //获取数据
       async groupOrderAllShipTotals(){
         this.$loading({ isShow: true,  isWhole: true });
-        let res = await Http.get(Config.api.orderAllShipTotals, this.query);
+        let res = await Http.get(Config.api.groupOrderAllShipTotals, this.query);
         this.$loading({ isShow: false });
         if (res.code === 0) {
           this.$data.detail = res.data;
