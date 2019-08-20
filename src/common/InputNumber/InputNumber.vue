@@ -11,7 +11,6 @@
     mixins: [inputMixin],
     data(){
       return{
-        isFinallyDot: ''
       }
     },
     computed: {

@@ -23,7 +23,9 @@
           if(v !== '' && typeof v !== 'undefined'){
             p = DataHandle.returnPercent(v);
           }
-          return p + this.isFinallyDot;
+          p = p + this.isFinallyDot;
+          this.$data.isFinallyDot = '';
+          return p;
         },
         set(v) {
           if(v === '0.0') return;

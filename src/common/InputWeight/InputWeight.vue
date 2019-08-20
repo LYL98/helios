@@ -23,10 +23,12 @@
           if(v !== '' && typeof v !== 'undefined'){
             p = DataHandle.returnWeight(v);
           }
-          return p + this.isFinallyDot;
+          p = p + this.isFinallyDot;
+          this.$data.isFinallyDot = '';
+          return p;
         },
         set(v) {
-          /*if(v === '0.0') return;
+          if(v === '0.0') return;
 
           if(v.indexOf('.') === v.length - 1 && v.length > 0){
             this.$data.isFinallyDot = '.';
@@ -37,7 +39,7 @@
           }else{
             this.$data.isFinallyDot = '';
             if(!Verification.isPercent(v)) return;
-          }*/
+          }
 
           let p = '';
           if(v === ''){

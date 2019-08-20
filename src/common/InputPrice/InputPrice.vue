@@ -22,7 +22,9 @@
           if(v !== '' && typeof v !== 'undefined'){
             price = DataHandle.returnPrice(v);
           }
-          return price + this.isFinallyDot;
+          price = price + this.isFinallyDot;
+          this.$data.isFinallyDot = '';
+          return price;
         },
         set(v) {
           if(v === '0.00') return;

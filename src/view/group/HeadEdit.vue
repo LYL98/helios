@@ -233,11 +233,7 @@ export default {
         this.$data.storeList = rd;
       } else {
         this.$data.storeList = [];
-        this.$store.dispatch("message", {
-          title: "提示",
-          message: res.message,
-          type: "error"
-        });
+        this.$message({message: res.message, type: 'error'});
       }
     },
 
@@ -256,11 +252,7 @@ export default {
         let rd = this.setMembersStatus(res.data);
         this.$data.detail = rd;
       } else {
-        this.$store.dispatch("message", {
-          title: "提示",
-          message: res.message,
-          type: "error"
-        });
+        this.$message({message: res.message, type: 'error'});
       }
     },
 
@@ -269,14 +261,10 @@ export default {
       this.$refs["ruleForm"].validate(async valid => {
         if (valid) {
           this.$data.loading = true;
-          let res = await Http.post(Config.api.headAdd, this.editItem);
-          if (res.code == 0) {
+          let res = await Http.post(Config.api.groupHeadAdd, this.editItem);
+          if (res.code === 0) {
             this.$data.loading = false;
-            this.$store.dispatch("message", {
-              title: "提示",
-              message: "团长新增成功",
-              type: "success"
-            });
+            this.$message({message: res.message, type: 'success'});
             if(this.showType === 'add'){
               //新增
               let com = this.getPageComponents('HeadList');
@@ -293,11 +281,7 @@ export default {
             this.handleClose(); //关闭
           } else {
             this.$data.loading = false;
-            this.$store.dispatch("message", {
-              title: "提示",
-              message: res.message,
-              type: "error"
-            });
+            this.$message({message: res.message, type: 'error'});
           }
         }
       });

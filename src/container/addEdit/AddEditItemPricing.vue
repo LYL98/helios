@@ -223,6 +223,7 @@ export default {
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.itemPriceFix, {
         ...detail,
+        new_item: detail.new_item_stock,
         price_buy: this.handlePrice(detail.price_buy),
         price_sale: this.handlePrice(detail.price_sale)
       });

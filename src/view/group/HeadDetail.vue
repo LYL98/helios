@@ -62,11 +62,7 @@ export default {
         };
         this.$data.isShow = true;
       }else{
-        this.$store.dispatch("message", {
-          title: "提示",
-          message: res.message,
-          type: "error"
-        });
+        this.$message({message: res.message, type: 'error'});
       }
       this.$loading({ isShow: false });
     },
