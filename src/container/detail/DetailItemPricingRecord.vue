@@ -97,16 +97,16 @@
         fixDateOptions: Constant.FIX_DATE_RANGE,
         initDetail: {},
         initQuery: initQuery,
-        query: Object.assign({}, initQuery),
+        query: this.copyJson(initQuery),
         initDataItem: initDataItem,
-        dataItem: JSON.parse(JSON.stringify(initDataItem)),
+        dataItem: this.copyJson(initDataItem),
       }
     },
     methods: {
       //显示新增修改(重写mixin)
       showDetail(){
-        this.$data.dataItem = JSON.parse(JSON.stringify(this.initDataItem));
-        this.$data.query = Object.assign({}, this.initQuery);
+        this.$data.dataItem = this.copyJson(this.initDataItem);
+        this.$data.query = this.copyJson(this.initQuery);
         
         //获取明细列表
         this.itemPricingRecord();
@@ -159,12 +159,4 @@
 
 <style lang="scss" scoped>
   @import "./detail.scss";
-  .query{
-    >span{
-      margin-right: 20px;
-    }
-    >.label{
-      margin-right: 10px;
-    }
-  }
 </style>

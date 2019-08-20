@@ -40,18 +40,6 @@
     data() {
       return {
         initDetail: {},
-        fields: {
-          title: '商品名称',
-          images: '商品图片',
-          package_spec: '包装规格',
-          item_spec: '商品规格',
-          origin_place: '产地',
-          gross_weight: '毛重',
-          net_weight: '净重',
-          system_class_code: '科学分类',
-          frame_code: '筐',
-          content: '商品详细',
-        },
         categorys: {
           item_edit: '编辑商品',
           item_add: '添加商品',
@@ -117,9 +105,8 @@
       //返回str
       returnAttrStr(list){
         let str = '';
-        let { fields } = this;
         list.forEach(item => {
-          str += fields[item] + '/';
+          str += item + '/';
         });
         str = str.substring(0, str.length - 1);
         return str;

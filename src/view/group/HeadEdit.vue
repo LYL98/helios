@@ -213,7 +213,7 @@ export default {
         return;
       }
       let res = await Http.get(Config.api.baseStoreList, {
-        province_code: this.province.code,
+        province_code: this.$province.code,
         condition: condition
       });
       if (res.code === 0) {

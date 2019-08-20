@@ -91,6 +91,18 @@ export default {
   components: {
   },
   data(){
+    let that = this;
+    //今日售价校验
+    let validPriceSale = function (rules, value, callback) {
+      let { detail } = that;
+      console.log(detail);
+      if (value >= detail.suggest_min && value <= detail.suggest_max) {
+        callback();
+      }else{
+        callback('销售价要在建议价之间')
+      }
+    };
+
     return {
       weightScope: Constant.WEIGHT_SCOPE,//重量浮动范围
       initDetail: {
@@ -103,7 +115,8 @@ export default {
         ],
         price_sale: [
           { required: true, message: '请输入今日销售价', trigger: 'change' },
-          { type: 'number', min: 0.01, message: '请输入今日销售价', trigger: 'change' }
+          { type: 'number', min: 0.01, message: '请输入今日销售价', trigger: 'change' },
+          { validator: validPriceSale, trigger: 'change' },
         ],
         new_item_stock: [
           { required: true, message: '请输入库存', trigger: 'change' }
@@ -121,6 +134,8 @@ export default {
         d.price_buy_last = Number(d.price_buy_last);
         d.price_buy = d.price_buy ? Number(d.price_buy) : '';
         d.price_sale = d.price_sale ? Number(d.price_sale) : '';
+        d.suggest_min = 0;
+        d.suggest_max = 0;
         this.$data.detail = d;
       }else{
         this.$data.detail = JSON.parse( JSON.stringify( this.initDetail ));
@@ -132,12 +147,17 @@ export default {
       let { detail } = this;
       let min = DataHandle.returnSuggestPrice(priceBuy, detail.rise_min);
       let max = DataHandle.returnSuggestPrice(priceBuy, detail.rise_max);
+      if(min === '0' && max === '0') return '-';
+      detail.suggest_min = min;
+      detail.suggest_max = max;
+      this.$data.detail = detail;
+      console.log(detail);
       return `￥${min} - ￥${max}`;
     },
     //返回加价率(询价，销售价)
     returnRate(p1, p2){
       if(!p1 || !p2) return '-';
-      return this.returnMarkup(p2 / p1 - 1) + '%';
+      return this.returnMarkup((p2 / p1 - 1) * 100) + '%';
     },
     //使用昨日询价
     usePriceBuyLast(){
@@ -148,7 +168,7 @@ export default {
       detail.suggest_price = priceSale;
       detail.price_buy = price;
       that.$data.detail = detail;
-      that.$refs['ruleForm'].validate(()=>{return false;});
+      //that.$refs['ruleForm'].validate(()=>{return false;});
     },
     //输入今日询价
     clickPriceBuy(){
@@ -163,7 +183,7 @@ export default {
           detail.suggest_price = priceSale;
           detail.price_buy = price;
           that.$data.detail = detail;
-          that.$refs['ruleForm'].validate(()=>{return false;});
+          //that.$refs['ruleForm'].validate(()=>{return false;});
         }
       });
     },

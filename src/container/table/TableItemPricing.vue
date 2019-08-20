@@ -172,7 +172,7 @@
       //返回加价率(询价，销售价)
       returnRate(p1, p2){
         if(!p1 || !p2) return '-';
-        return this.returnMarkup(p2 / p1 - 1) + '%';
+        return this.returnMarkup((p2 / p1 - 1) * 100) + '%';
       },
       //排序
       onSort({ column, prop, order }) {

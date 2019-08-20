@@ -1,8 +1,8 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="page === 'global' && (auth.isAdmin || auth.ItemListExport || auth.ItemListAuditInnerTag)">
+    <div class="table-top" v-if="(auth.isAdmin || auth.ItemListExport || auth.ItemListAuditInnerTag)">
       <el-button v-if="auth.isAdmin || auth.ItemListExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
-      <el-button v-if="auth.isAdmin || auth.ItemListAuditInnerTag" @click="handleShowDetail('DetailItemListAuditInnerTag')" size="mini" type="primary">审核内标签</el-button>
+      <el-button v-if="(auth.isAdmin || auth.ItemListAuditInnerTag) && query.is_on_sale === 1" @click="handleShowDetail('DetailItemListAuditInnerTag')" size="mini" type="primary">审核内标签</el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -129,9 +129,6 @@
     components: {
     },
     mixins: [tableMixin],
-    props: {
-      page: { type: String, default: 'global' }, //页面global、recover
-    },
     created() {
       if (!this.auth.isAdmin && !this.auth.ItemListExport && !this.auth.ItemListAuditInnerTag) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION

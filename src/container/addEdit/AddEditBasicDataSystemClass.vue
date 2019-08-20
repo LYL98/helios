@@ -11,9 +11,9 @@
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入10位以内字符" :maxlength="10"></el-input>
         </el-form-item>
-        <el-form-item label="排序" prop="rank">
+        <!--<el-form-item label="排序" prop="rank">
           <el-input v-model="detail.rank" :maxlength="3" placeholder="0 - 999"></el-input>
-        </el-form-item>
+        </el-form-item>-->
         <el-form-item label="备注">
           <el-input v-model="detail.remark" type="textarea" :maxlength="200" placeholder="请输入200位以内的字符"></el-input>
         </el-form-item>

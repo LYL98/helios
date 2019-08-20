@@ -1,6 +1,7 @@
 <template>
   <div class="query">
-    <my-collapse-query @expandChange="(isExpand) => onExpandChange(isExpand, 'TableItemList')">
+    <!--已上架-->
+    <my-collapse-query @expandChange="(isExpand) => onExpandChange(isExpand, 'TableItemList')" v-if="query.is_on_sale === 1">
       <template slot="header">
         <el-row>
           <el-col :xl="6" :lg="7" :span="7">
@@ -8,7 +9,7 @@
               <button-group
                 :options="{'已上架': 1, '未上架': 0}"
                 v-model="query.is_on_sale"
-                @change="handleQuery('TableItemList')"
+                @change="changeOnSale"
                 size="small"
               />
             </my-query-item>
@@ -81,6 +82,43 @@
         </el-row>
       </template>
     </my-collapse-query>
+
+    <!--未上架-->
+    <el-row v-else>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="上架状态">
+          <button-group
+            :options="{'已上架': 1, '未上架': 0}"
+            v-model="query.is_on_sale"
+            @change="changeOnSale"
+            size="small"
+          />
+        </my-query-item>
+      </el-col>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="科学分类">
+          <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass" style="width: 225px;"/>
+        </my-query-item>
+      </el-col>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="搜索">
+          <div style="display: flex">
+            <el-input
+              size="small"
+              placeholder="外标签/商品编号/名称"
+              clearable
+              class="query-item-input"
+              v-model="query.condition"
+              @clear="handleQuery('TableItemList')"
+              ref="search_condition"
+              @keyup.enter.native="handleQuery('TableItemList')"
+            />
+            <el-button size="small" style="margin-left: 4px" type="primary" @click="handleQuery('TableItemList')" icon="el-icon-search"></el-button>
+            <el-button v-if="!isExpand" size="small" class="query-item-reset"  type="primary" plain @click="handleClearQuery('TableItemList')">重置</el-button>
+          </div>
+        </my-query-item>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -131,6 +169,14 @@
         console.log(query);
         this.handleQuery('TableItemList');
       },
+      //改变上下架
+      changeOnSale(){
+        let { isExpand, query } = this;
+        if(query.is_on_sale === 0 && isExpand){
+          this.onExpandChange(false, 'TableItemList');
+        }
+        this.handleQuery('TableItemList');
+      }
     }
   }
 </script>

@@ -122,7 +122,7 @@ const dataHandle = {
   },
   //返回建议价(今日询价，加价率)
   returnSuggestPrice(priceBuy, markupRate){
-    let v = priceBuy * (1 + markupRate / 100);
+    let v = priceBuy * (1 + markupRate / 1000);
     let p = v.toFixed(2);
     if(p.substring(p.length - 3, p.length) === '.00'){
       return p.substring(0, p.length - 3);

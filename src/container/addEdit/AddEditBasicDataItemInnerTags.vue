@@ -18,7 +18,7 @@
           </el-col>
         </el-row>
         <el-form-item label="备注">
-          <el-input v-model="detail.remark" type="textarea" :maxlength="200" placeholder="请输入200位以内的字符"></el-input>
+          <el-input v-model="detail.remark" type="textarea" :maxlength="20" placeholder="请输入20位以内的字符"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">

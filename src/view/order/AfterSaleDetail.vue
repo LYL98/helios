@@ -62,40 +62,20 @@
               </ul>
             </template>
           </el-table-column>
-          <el-table-column label="件数/重量" width="200">
-            <!--<template slot-scope="scope">-->
-              <!--<ul>-->
-                <!--<li v-if="scope.row.count_real">{{ scope.row.count_real }}件</li>-->
-                <!--<li v-if="scope.row.weight_real">{{ returnWeight(scope.row.weight_real) }}斤</li>-->
-              <!--</ul>-->
-            <!--</template>-->
+          <el-table-column label="件数" width="200">
             <template slot-scope="scope">
               <ul class="count-weight">
                 <li>
                   <p>{{ scope.row.count_pre }}件</p>
-                  <p>{{ returnWeight(scope.row.weight_pre) }}斤</p>
                 </li>
-                <li class="line" v-if="scope.row.count_real !== scope.row.count_pre || scope.row.weight_real !== scope.row.weight_pre"></li>
-                <li v-if="scope.row.count_real !== scope.row.count_pre || scope.row.weight_real !== scope.row.weight_pre">
-                  <p
-                    v-if="scope.row.count_real !== scope.row.count_pre"
-                    :class="scope.row.count_real > scope.row.count_pre ? 'red' : 'green'"
-                  >
-                    {{ scope.row.count_real }}件
-                  </p>
-                  <p v-else>
-                    {{ scope.row.count_real }}件
-                  </p>
-                  <p
-                    v-if="scope.row.weight_real !== scope.row.weight_pre"
-                    :class="scope.row.weight_real > scope.row.weight_pre ? 'red' : 'green'"
-                  >
-                    {{ returnWeight(scope.row.weight_real) }}斤
-                  </p>
-                  <p v-else>
-                    {{ returnWeight(scope.row.weight_real) }}斤
-                  </p>
-                </li>
+                <template v-if="scope.row.count_real !== scope.row.count_pre">
+                  <li class="line"></li>
+                  <li v-if="scope.row.count_real !== scope.row.count_pre || scope.row.weight_real !== scope.row.weight_pre">
+                    <p :class="scope.row.count_real > scope.row.count_pre ? 'red' : 'green'">
+                      {{ scope.row.count_real }}件
+                    </p>
+                  </li>
+                </template>
               </ul>
             </template>
           </el-table-column>
@@ -107,8 +87,7 @@
               <ul class="count-weight">
                 <li>&yen;{{ returnPrice(scope.row.amount_pre) }}</li>
                 <li class="line" v-if="scope.row.amount_real !== scope.row.amount_pre"></li>
-                <li
-                  v-if="scope.row.amount_real !== scope.row.amount_pre"
+                <li v-if="scope.row.amount_real !== scope.row.amount_pre"
                   :class="scope.row.amount_real > scope.row.amount_pre ? 'red' : 'green'"
                 >&yen;{{ returnPrice(scope.row.amount_real) }}</li>
               </ul>

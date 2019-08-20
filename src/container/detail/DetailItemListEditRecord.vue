@@ -41,37 +41,6 @@
     data() {
       return {
         initDetail: {},
-        fields: {
-          code: '商品编号',
-          title: '商品名称',
-          images: '图片',
-          price_buy: '采购价',
-          price_sale: '销售价',
-          markup_rate: '加价率',
-          sale_unit: '销售单位',
-          package_spec: '包装规格',
-          item_spec: '商品规格',
-          origin_place: '产地',
-          gross_weight: '毛重',
-          net_weight: '净重',
-          system_class_code: '科学分类编号',
-          display_class_code: '展示分类编号',
-          frame_code: '筐',
-          is_weigh: '是否称重',
-          tags: '商品标签',
-          content: '详细信息',
-          price_sale_piece: '商品的件价格',
-          frame: '筐的信息',
-          buyer_id: '业务员',
-          item_stock: '商品库存',
-          is_audited: '是否已审核',
-          is_on_sale: '是否已上架',
-          is_deleted: '是否已删除',
-          order_num_max: '商品的最大订货数',
-          is_presale: '商品是否预售类型',
-          presale_begin: '预售开始日期',
-          presale_end: '预售结束日期',
-        },
         categorys: {
           item_under_ground: '下架',
           item_on_ground: '上架',
@@ -138,9 +107,8 @@
       //返回str
       returnAttrStr(list){
         let str = '';
-        let { fields } = this;
         list.forEach(item => {
-          str += fields[item] + '/';
+          str += item + '/';
         });
         str = str.substring(0, str.length - 1);
         return str;

@@ -1,16 +1,34 @@
 <template>
   <div>
     <el-dialog title="审核内标签" :visible="isShow" width="1200px" :before-close="handleCancel">
+      <div class="query">
+        <span class="label">审核状态</span>
+        <span>
+          <button-group :options="{'待审核': 0, '已审核': 1}" v-model="query.is_audited" @change="itemInnerTagLogQuery" size="small" />
+        </span>
+        <span class="label">搜索</span>
+        <span>
+          <el-input aria-placeholder="商品编号/名称/商品标签" v-model="query.condition" @keyup.enter.native="itemInnerTagLogQuery" style="width: 200px;" size="small"/>
+          <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 2px;" @click="itemInnerTagLogQuery"></el-button>
+          <el-button size="small" type="primary" plain @click="handleClearQuery">重置</el-button>
+        </span>
+      </div>
       <el-table :data="dataItem.items" width="100%" :height="460">
         <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
         <el-table-column label="商品编号/名称">
           <template slot-scope="scope">{{scope.row.item.code}}/{{scope.row.item.title}}</template>
         </el-table-column>
         <el-table-column label="原内标签" width="200">
-          <template slot-scope="scope">{{scope.row.cur_inner_tag.title}}</template>
+          <template slot-scope="scope">
+            <div class="add-dot">{{scope.row.cur_inner_tag.title}}</div>
+            <div>加价率：{{returnPercent(scope.row.cur_inner_tag.rise_min)}}% - {{returnPercent(scope.row.cur_inner_tag.rise_max)}}%</div>
+          </template>
         </el-table-column>
         <el-table-column label="现内标签" width="200">
-          <template slot-scope="scope">{{scope.row.inner_tag.title}}</template>
+          <template slot-scope="scope">
+            <div class="add-dot">{{scope.row.inner_tag.title}}</div>
+            <div>加价率：{{returnPercent(scope.row.inner_tag.rise_min)}}% - {{returnPercent(scope.row.cur_inner_tag.rise_max)}}%</div>
+          </template>
         </el-table-column>
         <el-table-column label="修改人" width="120">
           <template slot-scope="scope">{{scope.row.creater.realname}}</template>
@@ -18,9 +36,9 @@
         <el-table-column label="修改时间" prop="created" width="160"></el-table-column>
         <el-table-column label="审核状态" width="100">
           <template slot-scope="scope">
-            <span v-if="!scope.row.is_declined">审核通过</span>
+            <span v-if="!scope.row.is_audited">待审核</span>
             <span v-else-if="scope.row.is_declined">驳回</span>
-            <span v-else>待审核</span>
+            <span v-else>审核通过</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="60">
@@ -62,24 +80,31 @@
 <script>
   import detailMixin from './detail.mixin';
   import { Http, Config, Constant } from '@/util';
+  import { ButtonGroup } from '@/common';
 
   export default {
     name: "DetailItemListAuditInnerTag",
     mixins: [detailMixin],
     components: {
+      'button-group': ButtonGroup
     },
     data() {
+      let initQuery = {
+        is_audited: 0,
+        condition: '',
+        page: 1,
+        page_size: Constant.PAGE_SIZE,
+      }
+      let initDataItem = {
+        items: [],
+        num: 0
+      }
       return {
         initDetail: {},
-        query: {
-          condition: '',
-          page: 1,
-          page_size: Constant.PAGE_SIZE,
-        },
-        dataItem: {
-          items: [],
-          num: 0
-        },
+        initQuery: initQuery,
+        query: this.copyJson(initQuery),
+        initDataItem: initDataItem,
+        dataItem: this.copyJson(initDataItem),
         isShowAudit: false,
         isDeclined: false,
         auditId: ''
@@ -88,11 +113,8 @@
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        if(data){
-          this.$data.detail = JSON.parse(JSON.stringify(data));
-        }else{
-          this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
-        }
+        this.$data.dataItem = this.copyJson(this.initDataItem);
+        this.$data.query = this.copyJson(this.initQuery);
         this.itemInnerTagLogQuery();
       },
       //获取审核列表
@@ -144,6 +166,11 @@
         }else{
           this.$message({message: res.message, type: 'error'});
         }
+      },
+      //重置搜索
+      handleClearQuery(){
+        this.$data.query = Object.assign({}, this.initQuery);
+        this.itemInnerTagLogQuery();
       }
     }
   }
