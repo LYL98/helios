@@ -92,7 +92,7 @@
 <script>
 import {Row, Col, Button, Dialog, RadioGroup, Radio, Form, FormItem, Input, Table, TableColumn, InputNumber, MessageBox} from 'element-ui';
 import { SelectExpressCompany } from '@/container'
-import { DataHandle, Verification, Constant } from '@/util';
+import { Http, Config, DataHandle, Verification, Constant } from '@/util';
 
 export default {
   name: "ManualDelivery",
@@ -371,7 +371,7 @@ export default {
     //显示隐藏手动发货
     orderShowHideManualDelivery(data){
       if(data){
-        if (this.state.isShow) {
+        if (this.isShow) {
           this.$data.isShow = false;
           this.orderGetDetail(data.id);
         } else {

@@ -96,39 +96,25 @@
               <template slot-scope="scope">
                 <ul>
                   <li>
-                    &yen;{{returnPrice(scope.row.item_price_sale_piece)}} / 件<span v-if="scope.row.frame_code !== ''">(含筐)</span>
+                    &yen;{{returnPrice(scope.row.item_price_sale)}} / 件
                   </li>
                 </ul>
               </template>
             </el-table-column>
-            <el-table-column label="件数/重量" width="200">
+            <el-table-column label="件数" width="200">
               <template slot-scope="scope">
                 <ul class="count-weight">
                   <li>
                     <p>{{ scope.row.count_pre }}件</p>
-                    <p>{{ returnWeight(scope.row.weight_pre) }}斤</p>
                   </li>
-                  <li class="line" v-if="scope.row.count_real !== scope.row.count_pre || scope.row.weight_real !== scope.row.weight_pre"></li>
-                  <li v-if="scope.row.count_real !== scope.row.count_pre || scope.row.weight_real !== scope.row.weight_pre">
-                    <p
-                      v-if="scope.row.count_real !== scope.row.count_pre"
-                      :class="scope.row.count_real > scope.row.count_pre ? 'red' : 'green'"
-                    >
-                      {{ scope.row.count_real }}件
-                    </p>
-                    <p v-else>
-                      {{ scope.row.count_real }}件
-                    </p>
-                    <p
-                      v-if="scope.row.weight_real !== scope.row.weight_pre"
-                      :class="scope.row.weight_real > scope.row.weight_pre ? 'red' : 'green'"
-                    >
-                      {{ returnWeight(scope.row.weight_real) }}斤
-                    </p>
-                    <p v-else>
-                      {{ returnWeight(scope.row.weight_real) }}斤
-                    </p>
-                  </li>
+                  <template v-if="scope.row.count_real !== scope.row.count_pre">
+                    <li class="line"></li>
+                    <li>
+                      <p :class="scope.row.count_real > scope.row.count_pre ? 'red' : 'green'">
+                        {{ scope.row.count_real }}件
+                      </p>
+                    </li>
+                  </template>
                 </ul>
               </template>
             </el-table-column>
@@ -188,7 +174,11 @@
               <span v-else>全场满减</span>
               <span>- &yen;{{ returnPrice(detail.promotion_reduction) }}</span>
             </li>
-            <li>
+            <li v-if="isShowAmountDetail && detail.fram_total_price > 0">
+              筐费用
+              <span>+ &yen;{{returnPrice(detail.fram_total_price)}}</span>
+            </li>
+            <li v-if="isShowAmountDetail">
               运费
               <span>{{ detail.delivery_fee > 0 ? '+ &yen;' : ''}}{{returnPrice(detail.delivery_fee)}}</span>
             </li>
@@ -211,7 +201,7 @@
                 <li style="width: 300px; display: flex; justify-content: space-between;" v-if="detail.item_total_price !== detail.amount_item">
                   <div>
                     <span>价格变动</span>
-                    <span style="margin-left: 20px; font-size: 12px;">因商品数量/重量发生变化</span>
+                    <span style="margin-left: 20px; font-size: 12px;">因商品数量发生变化</span>
                   </div>
                   <span style="color: #ff3724;" v-if="detail.item_total_price < detail.amount_item">
                     + &yen;{{ returnPrice(Math.abs(detail.item_total_price - detail.amount_item)) }}
@@ -354,14 +344,7 @@
         priceChange: Constant.PRICE_CHANGE,
         refundReason: Constant.ORDER_REFUND_RECORD_REASON,
         activeName: 'second',
-
         isShowAmountDetail: false,
-        reasonPrice: {
-          short: "缺货",
-          weight_up: "实重上升",
-          weight_down: "实重下降",
-          update_amount: "手动改价",
-        },
         //订单日志
         actionLogs: {
           order: '订单创建', // 下单

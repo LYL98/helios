@@ -23,7 +23,7 @@
           <div slot-scope="scope" class="my-td-item">
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
-              <div style="height: 42px;">
+              <div style="height: 42px;" class="add-dot2">
                 <span style="font-weight:bold;">{{scope.row.code}}</span>
                 <span>{{scope.row.title}}</span>
               </div>
@@ -33,7 +33,7 @@
             <!--库存-->
             <div v-else-if="item.key === 'item_stock'">{{scope.row.item_stock}}&nbsp;件</div>
             <!--正常情况-->
-            <div v-else>{{scope.row[item.key]}}</div>
+            <div v-else>{{scope.row[item.key] || '-'}}</div>
           </div>
         </el-table-column>
         <el-table-column label="操作" width="76">
@@ -166,6 +166,7 @@
       returnSuggestPrice(item){
         let min = DataHandle.returnSuggestPrice(item.price_buy, item.rise_min);
         let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
+        if(min === '0' && max === '0') return '-';
         return `${min} - ${max}`;
       },
       //返回加价率(询价，销售价)
@@ -224,14 +225,14 @@
           //昨日加价率
           item.yesterday_rise_rate = this.returnRate(item.price_buy_last, item.price_sale_last);
 
+          //今日售价
+          item.price_sale = item.price_sale ? this.returnPrice(item.price_sale) : '';
+
           //今日加价率
-          item.today_rise_rate = this.returnRate(item.today_rise_rate, item.today_rise_rate);
+          item.today_rise_rate = this.returnRate(item.price_buy, item.price_sale);
 
           //建议价
           item.suggest_price = this.returnSuggestPrice(item);
-
-          //今日售价 及 样式
-          item.price_sale = item.price_sale ? this.returnPrice(item.price_sale) : '';
 
           //操作类型
           item.opt_type = '';

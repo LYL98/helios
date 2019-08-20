@@ -102,7 +102,7 @@
 
     <el-tabs v-model="activeTab" class="edit-card" @tab-click="handleTabClick">
       <el-tab-pane label="门店管理" v-if="auth.isAdmin || auth.MerchantStoreEdit || auth.MerchantStoreList" name="store">
-        <merchant-store :storeQuery="storeQuery" :updateCount="updateCount"></merchant-store>
+        <merchant-store :merchant_id="merchant_id" :storeQuery="storeQuery" :updateCount="updateCount"></merchant-store>
       </el-tab-pane>
       <el-tab-pane label="用户管理" :lazy="true" v-if="auth.isAdmin || auth.MerchantMemberList" name="member">
         <merchant-member :merchant_id="merchant_id" :updateCount="updateCount"></merchant-member>

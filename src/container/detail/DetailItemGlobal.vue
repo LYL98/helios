@@ -15,7 +15,7 @@
       </el-row>
       <el-row :gutter="10">
         <el-col :span="8">
-          <el-form-item label="商品名称">{{detail.title}}</el-form-item>
+          <el-form-item label="商品编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="筐">

@@ -10,7 +10,7 @@
         <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="商品名称">{{detail.title}}</el-form-item>
+            <el-form-item label="商品编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="筐">
@@ -337,7 +337,15 @@ export default {
       let res = await Http.get(Config.api.itemDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$data.detail = res.data;
+        let rd = res.data;
+        //如果是上架
+        if(this.type === 'on_sale'){
+          rd.price_buy = '';
+          rd.price_sale = '';
+          rd.price_origin = '';
+          rd.item_stock = '';
+        }
+        this.$data.detail = rd;
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});

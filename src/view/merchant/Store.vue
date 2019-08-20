@@ -178,13 +178,12 @@
       that.storeList();//获取门店列表
     },
     props: {
-      // merchant_id: [String, Number],
+      merchant_id: {type: Number | String, default: ''},
       updateCount: Number,
       storeQuery: Function
     },
     data() {
       return {
-        merchant_id: '',
         tencentPath: Config.tencentPath,
         query: {
           merchant_id: '',
