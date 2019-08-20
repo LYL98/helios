@@ -95,8 +95,7 @@ export default {
     //今日售价校验
     let validPriceSale = function (rules, value, callback) {
       let { detail } = that;
-      console.log(detail);
-      if (value >= detail.suggest_min && value <= detail.suggest_max) {
+      if (Number(value) >= Number(detail.suggest_min) && Number(value) <= Number(detail.suggest_max)) {
         callback();
       }else{
         callback('销售价要在建议价之间')
@@ -134,8 +133,15 @@ export default {
         d.price_buy_last = Number(d.price_buy_last);
         d.price_buy = d.price_buy ? Number(d.price_buy) : '';
         d.price_sale = d.price_sale ? Number(d.price_sale) : '';
-        d.suggest_min = 0;
-        d.suggest_max = 0;
+        if(d.price_buy && d.rise_min && d.rise_max){
+          let min = DataHandle.returnSuggestPrice(d.price_buy, d.rise_min);
+          let max = DataHandle.returnSuggestPrice(d.price_buy, d.rise_max);
+          d.suggest_min = min;
+          d.suggest_max = max;
+        }else{
+          d.suggest_min = 0;
+          d.suggest_max = 0;
+        }
         this.$data.detail = d;
       }else{
         this.$data.detail = JSON.parse( JSON.stringify( this.initDetail ));
@@ -147,11 +153,10 @@ export default {
       let { detail } = this;
       let min = DataHandle.returnSuggestPrice(priceBuy, detail.rise_min);
       let max = DataHandle.returnSuggestPrice(priceBuy, detail.rise_max);
-      if(min === '0' && max === '0') return '-';
       detail.suggest_min = min;
       detail.suggest_max = max;
       this.$data.detail = detail;
-      console.log(detail);
+      if(min === '0' && max === '0') return '-';
       return `￥${min} - ￥${max}`;
     },
     //返回加价率(询价，销售价)

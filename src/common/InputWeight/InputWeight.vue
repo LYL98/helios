@@ -23,9 +23,7 @@
           if(v !== '' && typeof v !== 'undefined'){
             p = DataHandle.returnWeight(v);
           }
-          p = p + this.isFinallyDot;
-          this.$data.isFinallyDot = '';
-          return p;
+          return p + this.isFinallyDot;
         },
         set(v) {
           if(v === '0.0') return;

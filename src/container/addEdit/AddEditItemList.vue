@@ -340,10 +340,10 @@ export default {
         let rd = res.data;
         //如果是上架
         if(this.type === 'on_sale'){
-          rd.price_buy = '';
-          rd.price_sale = '';
-          rd.price_origin = '';
-          rd.item_stock = '';
+          rd.price_buy = rd.price_buy || '';
+          rd.price_sale = rd.price_sale || '';
+          rd.price_origin = rd.price_origin || '';
+          rd.item_stock = rd.item_stock || '';
         }
         this.$data.detail = rd;
         this.$data.isShow = true;
