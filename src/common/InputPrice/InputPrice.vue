@@ -22,6 +22,7 @@
           if(v !== '' && typeof v !== 'undefined'){
             price = DataHandle.returnPrice(v);
           }
+          if(typeof price === 'string' && price.indexOf('.') >= 0) return price;
           return price + this.isFinallyDot;
         },
         set(v) {

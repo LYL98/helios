@@ -23,6 +23,7 @@
           if(v !== '' && typeof v !== 'undefined'){
             p = DataHandle.returnWeight(v);
           }
+          if(typeof p === 'string' && p.indexOf('.') >= 0) return p;
           return p + this.isFinallyDot;
         },
         set(v) {

@@ -23,7 +23,7 @@
         :rules="[{validator: validPickerValue, trigger: 'blur'}]"
       >
         <el-date-picker
-          style="width: 510px;"
+          style="width: 478px;"
           v-model="editItem.pickerValue"
           type="datetimerange"
           range-separator="至"
@@ -382,6 +382,17 @@
           <el-radio :label="1" border size="small">设置</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="发放时间" v-if="editItem.is_auto_dis == 1">
+        <el-date-picker style="width: 478px;"
+          v-model="editItem.pickerDisValue"
+          type="datetimerange"
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          @change="changePickerDis"
+        />
+      </el-form-item>
       <el-form-item
         class="required"
         v-if="editItem.is_auto_dis == 1"
@@ -616,6 +627,17 @@
           this.$data.editItem.pickerValue = null;
           this.$data.editItem.time_start = '';
           this.$data.editItem.time_end = '';
+        }
+      },
+      //发放日期
+      changePickerDis(value) {
+        if (value && value.length === 2) {
+          this.$data.editItem.dis_time_start = value[0];
+          this.$data.editItem.dis_time_end = value[1];
+        } else {
+          this.$data.editItem.pickerDisValue = null;
+          this.$data.editItem.dis_time_start = '';
+          this.$data.editItem.dis_time_end = '';
         }
       },
       // 改变优惠券类型

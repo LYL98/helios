@@ -23,9 +23,8 @@
           if(v !== '' && typeof v !== 'undefined'){
             p = DataHandle.returnPercent(v);
           }
-          p = p + this.isFinallyDot;
-          this.$data.isFinallyDot = '';
-          return p;
+          if(typeof p === 'string' && p.indexOf('.') >= 0) return p;
+          return p + this.isFinallyDot;
         },
         set(v) {
           if(v === '0.0') return;
@@ -45,7 +44,8 @@
           if(v === ''){
             p = '';
           }else{
-            let { max } = this.$props;
+            let { min, max } = this.$props;
+            if(Number(v) < Number(min)) return; //最小值
             if(Number(v) > Number(max)) return; //最大值
             p = DataHandle.handlePercent(v);
           }

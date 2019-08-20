@@ -33,7 +33,7 @@
                   <span>&yen;{{returnPrice(scope.row.price_sale)}}/件</span>
                   <!--销售价 / 毛重-->
                   <span>（单价：{{returnPrice(scope.row.price_sale / (scope.row.gross_weight / 10))}}元/斤）</span>
-                  <span class="is-presale" v-if="scope.row.is_presale">预售</span>
+                  <span class="is-presale" v-if="scope.row.is_presale">预</span>
                 </div>
               </div>
             </template>
@@ -208,9 +208,15 @@
   @import './table.scss';
   .is-presale{
     color: #fff;
-    background: #FF5252;
+    background: #FFA349;
     font-size: 12px;
-    border-radius: 3px;
-    padding: 0 2px;
+    display: inline-block;
+    text-align: center;
+    height: 18px;
+    line-height: 18px;
+    width: 18px;
+    border-radius: 18px 0 18px 18px;
+    position: relative;
+    top: -2px;
   }
 </style>
