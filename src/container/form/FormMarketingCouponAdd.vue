@@ -770,5 +770,6 @@
     display: block;
     padding: 10px 0;
     margin-left: 0px;
+    margin-right: 0 !important;
   }
 </style>

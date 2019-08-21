@@ -29,22 +29,7 @@
           <!--<span style="font-size: 20px">指标分析</span>-->
         <!--</P>-->
         <!--图表-->
-        <div style="display: flex">
-          <div id="main" style="margin-top: 20px; height: 600px; flex: 1" ref="myIndexChart"></div>
-          <div style="flex: initial; width: 200px;">
-            <div style="margin-top: 80px; font-size: 18px; color: black;">指标放大倍数</div>
-            <div style="margin-top: 10px;">
-              <span>订单商品金额: {{zoomRate[0]}}倍</span><br/>
-              <span>优惠金额: {{zoomRate[2]}}倍</span><br/>
-              <span>订单应付金额: {{zoomRate[4]}}倍</span><br/>
-              <span>发货金额: {{zoomRate[5]}}倍</span><br/>
-              <span>下单门店数: {{zoomRate[7]}}倍</span><br/>
-              <span>订单数量: {{zoomRate[8]}}倍</span><br/>
-              <span>下单件数: {{zoomRate[9]}}倍</span><br/>
-              <span>下单商品数: {{zoomRate[10]}}倍</span><br/>
-            </div>
-          </div>
-        </div>
+        <div id="main" style="padding-top: 20px; height: 600px;" ref="myIndexChart"></div>
       </div>
       <!--表格-->
       <div class="statistics-table-list-container">
@@ -152,7 +137,6 @@
         dataItem: [],
         selectArea: 'zone',
         selectItemName: '',
-        zoomRate: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         lineColors: [
           '#D27575',   //1
           '#E2BA6F',   //2
@@ -309,67 +293,29 @@
         //x轴日期：例如 1月1日
         let xDisplayDates = this.dateRange('f2');
 
-        //放大指标
-        that.zoomLines();
-
         let option = {
           tooltip : {
             trigger: 'axis',
-            //show: true,   //default true
-            // showDelay: 0,
-            // hideDelay: 50,
-            // transitionDuration:0,
-            // backgroundColor : 'rgba(255,0,255,0.7)',
-            // borderColor : '#f50',
-            // borderRadius : 8,
-            // borderWidth: 2,
-            // padding: 10,    // [5, 10, 15, 20]
-            // position : function(p) {
-            //   // 位置回调
-            //   // console.log && console.log(p);
-            //   return [p[0] + 10, p[1] - 10];
-            // },
-            // textStyle : {
-            //   color: 'yellow',
-            //   decoration: 'none',
-            //   fontFamily: 'Verdana, sans-serif',
-            //   fontSize: 15,
-            //   fontStyle: 'italic',
-            //   fontWeight: 'bold'
-            // },
             formatter: function (params,ticket,callback) {
-              // console.log(params.length);
               var res = params[0].name;
               for (var i = 0, l = params.length; i < l; i++) {
-                let zoomValue = params[i].value / that.narrowRate(params[i].seriesName);
-                res += '<br/>' + params[i].seriesName + ' : ' + zoomValue;
+                res += '<br/>' + params[i].seriesName + ' : ' + params[i].value;
               }
-              //callback 异步时使用
-              // callback(ticket, res);
               return res
             }
           },
-          // toolbox: {
-          //   show : true,
-          //   feature : {
-          //     mark : {show: true},
-          //     dataView : {show: true, readOnly: false},
-          //     magicType: {show: true, type: ['line', 'bar']},
-          //     restore : {show: true},
-          //     saveAsImage : {show: true}
-          //   }
-          // },
           calculable : true,
           legend: {
             data: indexNames,
+            selectedMode: 'single',
             selected: {
               '订单商品金额': true,
               '优惠金额': false,
               '订单应付金额': false,
               '发货金额': false,
-              '下单门店数': true,
+              '下单门店数': false,
               '订单数量': false,
-              '下单件数': true,
+              '下单件数': false,
               '下单商品数': false,
             },
           },
@@ -389,6 +335,7 @@
             },
           ],
           series : [
+            //订单商品金额
             {
               name:'订单商品金额',
               type:'line',
@@ -397,12 +344,28 @@
               data: this.lineData(0, xDates)
             },
             {
+              name:'订单商品金额',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[2], lineStyle: {color: lineColors[2]}}},
+              data:this.lineData(0, xDates)
+            },
+
+            //优惠金额
+            {
               name:'优惠金额',
               type:'line',
               itemStyle: {normal: {color: lineColors[2], lineStyle: {color: lineColors[2]}}},
               smooth: true,
               data: this.lineData(2, xDates)
             },
+            {
+              name:'优惠金额',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[0], lineStyle: {color: lineColors[0]}}},
+              data:this.lineData(2, xDates)
+            },
+
+            //订单应付金额
             {
               name:'订单应付金额',
               type:'line',
@@ -411,12 +374,28 @@
               data: this.lineData(4, xDates)
             },
             {
+              name:'订单应付金额',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[5], lineStyle: {color: lineColors[5]}}},
+              data:this.lineData(4, xDates)
+            },
+
+            //发货金额
+            {
               name:'发货金额',
               type:'line',
               itemStyle: {normal: {color: lineColors[5], lineStyle: {color: lineColors[5]}}},
               smooth: true,
               data: this.lineData(5, xDates)
             },
+            {
+              name:'发货金额',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
+              data:this.lineData(5, xDates)
+            },
+
+            //下单门店数
             {
               name:'下单门店数',
               type:'line',
@@ -425,12 +404,28 @@
               data: this.lineData(7, xDates)
             },
             {
+              name:'下单门店数',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[8], lineStyle: {color: lineColors[8]}}},
+              data:this.lineData(7, xDates)
+            },
+
+            //订单数量
+            {
               name:'订单数量',
               type:'line',
               itemStyle: {normal: {color: lineColors[8], lineStyle: {color: lineColors[8]}}},
               smooth: true,
               data: this.lineData(8, xDates)
             },
+            {
+              name:'订单数量',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[7], lineStyle: {color: lineColors[7]}}},
+              data:this.lineData(8, xDates)
+            },
+
+            //下单件数
             {
               name:'下单件数',
               type:'line',
@@ -439,108 +434,30 @@
               data: this.lineData(9, xDates)
             },
             {
+              name:'下单件数',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[10], lineStyle: {color: lineColors[10]}}},
+              data:this.lineData(9, xDates)
+            },
+
+            //下单商品数
+            {
               name:'下单商品数',
               type:'line',
               itemStyle: {normal: {color: lineColors[10], lineStyle: {color: lineColors[10]}}},
               smooth: true,
               data: this.lineData(10, xDates)
-            }
+            },
+            {
+              name:'下单商品数',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[9], lineStyle: {color: lineColors[9]}}},
+              data:this.lineData(10, xDates)
+            },
           ]
         };
 
-        // console.log('init chart');
         echarts.init(that.$refs.myIndexChart).setOption(option)
-      },
-      //计算缩放比例
-      zoomLines() {
-        let { dataItem, zoomRate } = this;
-        //恢复比例默认值
-        for (let i = 0; i < zoomRate.length; i++) {
-          zoomRate[i] = 1;
-        }
-        //缩放阈值，相差倍数大于这个值就进行放大
-        let zoomThreshold = 5;
-        //对指标进行分类放大
-        if (dataItem && dataItem.length > 0) {
-          let priceMaxValues = Array();
-          let type1MaxValues = Array();
-          let type2MaxValues = Array();
-          for (let i = 0; i < dataItem.length; i++) {
-            let item = dataItem[i];
-            let length = item.cells.length;
-            let originValues = Array();
-            for (let j = 0; j < length; j++) {
-              let cellValue = item.cells[j].origin_value;
-              originValues.push(Number(this.handleIndexValue(i, cellValue)));
-            }
-            let maxCellValue = Math.max(...originValues);
-            switch (i) {
-              case 0:
-              case 4:
-              case 5:
-                //价格
-                priceMaxValues.push(maxCellValue);
-                break;
-              case 7:
-              case 10:
-                type1MaxValues.push(maxCellValue);
-                break;
-              case 2:
-              case 8:
-              case 9:
-                type2MaxValues.push(maxCellValue);
-                break;
-              default:
-                break;
-            }
-          }
-          let priceMaxValue = Math.max(...priceMaxValues);
-          let type1MaxValue = Math.max(...type1MaxValues);
-          let type2MaxValue = Math.max(...type2MaxValues);
-
-          //销售量放大比例
-          if (priceMaxValue !== 0 && priceMaxValue / type1MaxValue > zoomThreshold) {
-            let zoom = parseInt(priceMaxValue / type1MaxValue - 1);
-            zoomRate[7] = zoom;
-            zoomRate[10] = zoom;
-          }
-
-          //采购价、销售价、优惠价放大比例
-          if (priceMaxValue !== 0 && priceMaxValue / type2MaxValue > zoomThreshold) {
-            let zoom = parseInt(priceMaxValue / type2MaxValue - 1);
-            zoomRate[2] = zoom;
-            zoomRate[8] = zoom;
-            zoomRate[9] = zoom;
-          }
-        }
-      },
-      //根据指标名称查找缩小比例
-      narrowRate(seriesName) {
-        let { zoomRate } = this;
-        switch (seriesName) {
-          case '订单商品金额':
-            return zoomRate[0];
-          case '运费金额':
-            return zoomRate[1];
-          case '优惠金额':
-            return zoomRate[2];
-          case '称重金额':
-            return zoomRate[3];
-          case '订单应付金额':
-            return zoomRate[4];
-          case '发货金额':
-            return zoomRate[5];
-          case '客单价':
-            return zoomRate[6];
-          case '下单门店数':
-            return zoomRate[7];
-          case '订单数量':
-            return zoomRate[8];
-          case '下单件数':  //下单件数
-            return zoomRate[9];
-          case '下单商品数':  //下单商品数
-            return zoomRate[10];
-        }
       },
       /**
        * 每个指标的数据
@@ -549,7 +466,7 @@
        * @returns {any[]}
        */
       lineData(index, xDates) {
-        let { dataItem, zoomRate } = this;
+        let { dataItem } = this;
         let lineData = Array();
         if (dataItem && dataItem.length > 0) {
           //得到特定指标的行数据
@@ -567,7 +484,7 @@
               if (cellDate === colDate) {
                 hasDate = true;
                 //放大相应的比例，方便数据比对
-                lineData.push(Number(this.handleIndexValue(index, cellValue)) * zoomRate[index]);
+                lineData.push(Number(this.handleIndexValue(index, cellValue)));
                 break;
               }
             }

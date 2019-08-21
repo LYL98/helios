@@ -198,16 +198,13 @@
                     - &yen;{{ returnPrice(Math.abs(detail.delivery_fee_chg)) }}
                   </span>
                 </li>
-                <li style="width: 300px; display: flex; justify-content: space-between;" v-if="detail.item_total_price !== detail.amount_item">
+                <li style="width: 300px; display: flex; justify-content: space-between;" v-if="detail.check_chg + detail.fram_total_price_chg !== 0">
                   <div>
                     <span>价格变动</span>
                     <span style="margin-left: 20px; font-size: 12px;">因商品数量发生变化</span>
                   </div>
-                  <span style="color: #ff3724;" v-if="detail.item_total_price < detail.amount_item">
-                    + &yen;{{ returnPrice(Math.abs(detail.item_total_price - detail.amount_item)) }}
-                  </span>
-                  <span style="color: #00d600;" v-if="detail.item_total_price > detail.amount_item">
-                    - &yen;{{ returnPrice(Math.abs(detail.item_total_price - detail.amount_item)) }}
+                  <span style="color: #00d600;">
+                    - &yen;{{ returnPrice(Math.abs(detail.check_chg + detail.fram_total_price_chg)) }}
                   </span>
                 </li>
               </ul>

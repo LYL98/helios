@@ -38,24 +38,7 @@
           <span style="color: blue; font-size: 20px">{{selectItemName ? selectItemName : '-'}}</span>
           <span style="font-size: 20px">指标分析</span>
         </P>
-        <!--图表-->
-        <div style="display: flex">
-          <div id="main" style="margin-top: 20px; height: 600px; flex: 1" ref="myIndexChart"></div>
-          <div style="flex: initial; width: 200px;">
-            <div style="margin-top: 80px; margin-left: 20px;font-size: 18px; color: black;">指标放大倍数</div>
-            <div style="margin-top: 10px; margin-left: 20px">
-              <span>采购价: {{zoomRate[0]}}倍</span><br/>
-              <span>销售价: {{zoomRate[1]}}倍</span><br/>
-              <span>销售量: {{zoomRate[2]}}倍</span><br/>
-              <span>销售金额: {{zoomRate[3]}}倍</span><br/>
-              <span>下单客户数: {{zoomRate[4]}}倍</span><br/>
-              <span>下单率: {{zoomRate[5]}}倍</span><br/>
-              <span>加价率: {{zoomRate[6]}}倍</span><br/>
-              <span>退赔率: {{zoomRate[7]}}倍</span><br/>
-              <span>采购价格偏差: {{zoomRate[8]}}倍</span><br/>
-            </div>
-          </div>
-        </div>
+        <div id="main" style="margin-top: 20px; height: 600px; flex: 1" ref="myIndexChart"></div>
       </div>
       <!--表格-->
       <div class="statistics-table-list-container">
@@ -172,7 +155,6 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS  + Constant.OFFSET_QUERY_CLOSE,
         selectArea: 'zone',
         selectItemName: '',
-        zoomRate: [1, 1, 1, 1, 1, 1, 1, 1, 1],
         lineColors: [
           '#4FF222',  //1
           '#F22222',  //2
@@ -300,17 +282,7 @@
         }
       },
       defaultDateRange(format) {
-        // let today = new Date();
-        // let yesterdayDate = new Date(today.setDate(today.getDate() - 1));
-        // let yesterday;
-        // if (format === 'f1') {
-        //   yesterday = DataHandle.formatDate(yesterdayDate, 'yyyy-MM-dd');
-        // } else if (format === 'f2') {
-        //   yesterday = this.labelDate(yesterdayDate, 'yyyy-MM-dd');
-        // } else {
-        //   yesterday = yesterdayDate;
-        // }
-        return Array()
+        return Array();
       },
       labelDate(date) {
         return DataHandle.formatDateLabel(date)
@@ -318,7 +290,7 @@
       initChart() {
         let that = this;
         if (!that.$refs.myIndexChart) {
-          return
+          return;
         }
 
         let { lineColors } = this;
@@ -328,56 +300,18 @@
         //x轴日期：例如 1月1日
         let xDisplayDates = this.dateRange('f2');
 
-        //放大指标
-        that.zoomLines();
 
         let option = {
           tooltip : {
             trigger: 'axis',
-            //show: true,   //default true
-            // showDelay: 0,
-            // hideDelay: 50,
-            // transitionDuration:0,
-            // backgroundColor : 'rgba(255,0,255,0.7)',
-            // borderColor : '#f50',
-            // borderRadius : 8,
-            // borderWidth: 2,
-            // padding: 10,    // [5, 10, 15, 20]
-            // position : function(p) {
-            //   // 位置回调
-            //   // console.log && console.log(p);
-            //   return [p[0] + 10, p[1] - 10];
-            // },
-            // textStyle : {
-            //   color: 'yellow',
-            //   decoration: 'none',
-            //   fontFamily: 'Verdana, sans-serif',
-            //   fontSize: 15,
-            //   fontStyle: 'italic',
-            //   fontWeight: 'bold'
-            // },
             formatter: function (params,ticket,callback) {
-              // console.log(params.length);
               var res = params[0].name;
               for (var i = 0, l = params.length; i < l; i++) {
-                let zoomValue = params[i].value / that.narrowRate(params[i].seriesName);
-                res += '<br/>' + params[i].seriesName + ' : ' + zoomValue;
+                res += '<br/>' + params[i].seriesName + ' : ' + params[i].value;
               }
-              //callback 异步时使用
-              // callback(ticket, res);
               return res
             }
           },
-          // toolbox: {
-          //   show : true,
-          //   feature : {
-          //     mark : {show: true},
-          //     dataView : {show: true, readOnly: false},
-          //     magicType: {show: true, type: ['line', 'bar']},
-          //     restore : {show: true},
-          //     saveAsImage : {show: true}
-          //   }
-          // },
           calculable : true,
           legend: {
             data: this.indexNames(),
@@ -475,118 +409,7 @@
           ]
         };
 
-        // console.log('init chart');
         echarts.init(that.$refs.myIndexChart).setOption(option)
-      },
-      //计算缩放比例
-      zoomLines() {
-        let { dataItem, zoomRate } = this;
-        //恢复比例默认值
-        for (let i=0; i<zoomRate.length; i++) {
-          zoomRate[i] = 1;
-        }
-        //缩放阈值，相差倍数大于这个值就进行放大
-        let zoomThreshold = 5;
-        if (dataItem && dataItem.length > 0) {
-          let priceMaxValues = Array();
-          let amountMaxValues = Array();
-          let percentMaxValues = Array();
-          let salesMaxValues = Array();
-          let storeMaxValues = Array();
-          for (let i=0; i<dataItem.length; i++) {
-            let item = dataItem[i];
-            let length = item.cells.length;
-            let originValues = Array();
-            for (let j=0; j<length; j++) {
-              let cellValue = item.cells[j].origin_value;
-              originValues.push(Number(this.handleIndexValue(i, cellValue)));
-            }
-            let maxCellValue = Math.max(...originValues);
-            switch (i) {
-              case 5:
-              case 6:
-              case 7:
-              case 8:
-                //百分比
-                percentMaxValues.push(maxCellValue);
-                break;
-              case 0:
-              case 1:
-                //价格
-                priceMaxValues.push(maxCellValue);
-                break;
-              case 3:
-                //销售金额(相对值最大)
-                amountMaxValues.push(maxCellValue);
-                break;
-              case 2:
-                //销售量
-                salesMaxValues.push(maxCellValue);
-                break;
-              case 4:
-                //客户数
-                storeMaxValues.push(maxCellValue);
-                break;
-              default:
-                break;
-            }
-          }
-          let priceMaxValue = Math.max(...priceMaxValues);
-          let amountMaxValue = Math.max(...amountMaxValues);
-          let percentMaxValue = Math.max(...percentMaxValues);
-          let salesMaxValue = Math.max(...salesMaxValues);
-          let storeMaxValue = Math.max(...storeMaxValues);
-
-          //百分比放大比例，下单客户数和下单率曲线可能重合
-          if (percentMaxValue !== 0 && amountMaxValue / percentMaxValue > zoomThreshold) {
-            let zoom = parseInt(amountMaxValue / percentMaxValue / 2);
-            zoomRate[5] = zoom;
-            zoomRate[6] = zoom;
-            zoomRate[7] = zoom;
-            zoomRate[8] = zoom;
-          }
-
-          //销售量放大比例
-          if (salesMaxValue !== 0 && amountMaxValue / salesMaxValue > zoomThreshold) {
-            zoomRate[2] = parseInt(amountMaxValue / salesMaxValue - 1);
-          }
-
-          //客户数放大比例
-          if (storeMaxValue !== 0 && amountMaxValue / storeMaxValue > zoomThreshold) {
-            zoomRate[4] = parseInt(amountMaxValue / storeMaxValue - 1);
-          }
-
-          //采购价和销售价放大比例
-          if (priceMaxValue !== 0 && amountMaxValue / priceMaxValue > zoomThreshold) {
-            let zoom = parseInt(amountMaxValue / priceMaxValue - 1);
-            zoomRate[0] = zoom;
-            zoomRate[1] = zoom;
-          }
-        }
-      },
-      //根据指标名称查找缩小比例
-      narrowRate(seriesName) {
-        let { zoomRate } = this;
-        switch (seriesName) {
-          case '采购价':
-            return zoomRate[0];
-          case '销售价':
-            return zoomRate[1];
-          case '销售量':
-            return zoomRate[2];
-          case '销售金额':
-            return zoomRate[3];
-          case '下单客户数':
-            return zoomRate[4];
-          case '下单率':
-            return zoomRate[5];
-          case '加价率':
-            return zoomRate[6];
-          case '退赔率':
-            return zoomRate[7];
-          case '采购价格偏差':
-            return zoomRate[8];
-        }
       },
       /**
        * 每个指标的数据
@@ -595,7 +418,7 @@
        * @returns {any[]}
        */
       lineData(index, xDates) {
-        let { dataItem, zoomRate } = this;
+        let { dataItem } = this;
         let lineData = Array();
         if (dataItem && dataItem.length > 0) {
           //得到特定指标的行数据
@@ -613,7 +436,7 @@
               if (cellDate === colDate) {
                 hasDate = true;
                 //放大相应的比例，方便数据比对
-                lineData.push(Number(this.handleIndexValue(index, cellValue)) * zoomRate[index]);
+                lineData.push(Number(this.handleIndexValue(index, cellValue)));
                 break;
               }
             }
