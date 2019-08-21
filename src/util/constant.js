@@ -170,8 +170,6 @@ const Constant = {
   //订单价格变动原因
   PRICE_CHANGE: {
     short: '缺货',
-    weight_up: '实重上升',
-    weight_down: '实重下降',
     update_amount: '手动改价'
   },
   //售后单状态

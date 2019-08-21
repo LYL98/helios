@@ -38,7 +38,7 @@
           <span style="color: blue; font-size: 20px">{{selectItemName ? selectItemName : '-'}}</span>
           <span style="font-size: 20px">指标分析</span>
         </P>
-        <div id="main" style="margin-top: 20px; height: 600px; flex: 1" ref="myIndexChart"></div>
+        <div id="main" style="margin-top: 20px; height: 600px;" ref="myIndexChart"></div>
       </div>
       <!--表格-->
       <div class="statistics-table-list-container">
@@ -315,6 +315,7 @@
           calculable : true,
           legend: {
             data: this.indexNames(),
+            selectedMode: 'single',
             selected: {
               '采购价': false,
               '销售价': false,
@@ -343,6 +344,7 @@
             },
           ],
           series : [
+            //采购价
             {
               name:'采购价',
               type:'line',
@@ -351,12 +353,21 @@
               data: this.lineData(0, xDates)
             },
             {
+              name:'采购价',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[1], lineStyle: {color: lineColors[1]}}},
+              data:this.lineData(0, xDates)
+            },
+
+            //销售价
+            {
               name:'销售价',
               type:'line',
               itemStyle: {normal: {color: lineColors[1], lineStyle: {color: lineColors[1]}}},
               smooth: true,
               data: this.lineData(1, xDates)
             },
+            //销售量
             {
               name:'销售量',
               type:'bar',
@@ -364,6 +375,7 @@
               smooth: true,
               data: this.lineData(2, xDates)
             },
+            //销售金额
             {
               name:'销售金额',
               type:'line',
@@ -371,6 +383,7 @@
               smooth: true,
               data: this.lineData(3, xDates)
             },
+            //下单客户数
             {
               name:'下单客户数',
               type:'line',
@@ -378,6 +391,7 @@
               smooth: true,
               data: this.lineData(4, xDates)
             },
+            //下单率
             {
               name:'下单率',
               type:'line',
@@ -385,6 +399,7 @@
               smooth: true,
               data: this.lineData(5, xDates)
             },
+            //加价率
             {
               name:'加价率',
               type:'line',
@@ -392,6 +407,7 @@
               smooth: true,
               data: this.lineData(6, xDates)
             },
+            //退赔率
             {
               name:'退赔率',
               type:'line',
@@ -399,6 +415,7 @@
               smooth: true,
               data: this.lineData(7, xDates)
             },
+            //采购价格偏差
             {
               name:'采购价格偏差',
               type:'line',

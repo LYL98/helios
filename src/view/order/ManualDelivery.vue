@@ -10,7 +10,7 @@
       >
         <div v-if="isShowModify">
           <div style="text-align: center">
-            <span style="font-size: 14px">修改订单件数/重量</span>
+            <span style="font-size: 14px">修改订单件数</span>
           </div>
           <el-table
             :data="manualDetail.items"
@@ -38,25 +38,6 @@
                                    style="width: 80px"></el-input-number>
                   <span>/</span>
                   <span>{{scope.row.count_pre}}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="amount_real"
-              label="实重/应重(斤)"
-              align="right"
-              width="180">
-              <template slot-scope="scope">
-                <div v-if="scope.row.is_weigh">
-                  <el-input-number size="small"
-                                   :precision="1"
-                                    @input="onWeighInputChange(scope.row, scope.row.wgt_with_frm_real_tmp, scope.row.wgt_with_frm_real_t, scope.row.wgt_with_frm_pre)"
-                                    :class="scope.row.weighHasError ? 'custom-input' : ''"
-                                    v-model="scope.row.wgt_with_frm_real_t"
-                                   :controls="false"
-                                   style="width: 80px;"></el-input-number>
-                  <span>/</span>
-                  <span>{{returnWeight(scope.row.wgt_with_frm_pre)}}</span>
                 </div>
               </template>
             </el-table-column>

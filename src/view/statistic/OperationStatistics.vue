@@ -640,11 +640,6 @@
           let cellItem = rowItems[i];
           sum += Number(cellItem.origin_value)
         }
-        // if (index === 2 || index === 3 || index === 4) {
-        //   return that.handleIndexValueToDisplay(index, sum);
-        // } else {
-        //   return '-';
-        // }
         return that.handleIndexValueToDisplay(index, sum);
       },
       average(rowItems, index) {
