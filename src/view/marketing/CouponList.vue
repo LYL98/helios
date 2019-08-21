@@ -135,6 +135,7 @@
 
         <el-form-item label="优惠券自动发放：" v-if="detail.is_auto_dis">
           <ul style="margin-top: 40px; position: relative; left: -80px;">
+            <li v-if="detail.dis_time_start && detail.dis_time_end">发放时间：{{ detail.dis_time_start }} ~ {{ detail.dis_time_end }}</li>
             <li>发放条件：{{ `${detail.auto_dis_item == 0 ? '订单' : '单品'}满 ${returnPrice(detail.auto_dis_full)} 元，系统自动发放1张` }}</li>
             <li v-if="detail.auto_dis_item != 0">发放范围：<span v-if="detail.dis_item">{{ detail.dis_item.code }} / {{ detail.dis_item.title }}</span></li>
           </ul>
@@ -301,6 +302,9 @@
           pickerValue: null, // handle
           time_start: '',
           time_end: '',
+          pickerDisValue: null, // handle
+          dis_time_start: '',
+          dis_time_end: '',
           coupon_type: 'type_reduction',
           rule: { // handle 优惠券使用规则
             amount_full: '',
@@ -352,7 +356,9 @@
           item_id,
           is_auto_dis,
           auto_dis_full,
-          auto_dis_item
+          auto_dis_item,
+          dis_time_start,
+          dis_time_end,
         } = this.$data.item;
         amount_full = DataHandle.handlePrice(this.$data.item.rule.amount_full);
         switch(coupon_type) {
@@ -396,7 +402,7 @@
         };
 
         this.itemCouponAdd({
-          item: { province_code, title, time_start, time_end, coupon_type, amount_full, benefit, gift_item_id, item_id, is_auto_dis, auto_dis_full, auto_dis_item },
+          item: { province_code, title, time_start, time_end, coupon_type, amount_full, benefit, gift_item_id, item_id, is_auto_dis, auto_dis_full, auto_dis_item, dis_time_start, dis_time_end, },
           success: success,
           error: error
         });
