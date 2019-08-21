@@ -43,7 +43,8 @@
           if(v === ''){
             price = '';
           }else{
-            let { max } = this.$props;
+            let { min, max } = this.$props;
+            if(Number(v) < Number(min)) return; //最小值
             if(Number(v) > Number(max)) return; //最大价格
             price = DataHandle.handlePrice(v);
           }

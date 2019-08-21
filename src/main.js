@@ -8,6 +8,7 @@ import { MessageBox, Notification, Loading } from 'element-ui';
 
 import * as Sentry from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';
+import './../element-variables.scss';
 
 // 服务器地址
 let url = window.location.origin;

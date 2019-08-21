@@ -43,6 +43,16 @@ export default {
   created() {
   },
   data(){
+    let that = this;
+    //区间判断
+    let validRiseMax = function (rules, value, callback) {
+      if (value <= that.detail.rise_min) {
+        callback(new Error('不能小于或等于前区间'));
+      } else {
+        callback();
+      }
+    };
+
     return{
       initDetail: {
         title: '',
@@ -56,11 +66,10 @@ export default {
         ],
         rise_min: [
           { required: true, message: '加价率不能为空', trigger: 'change' },
-          { pattern: Verification.testStrs.isPercent, message: '请输入正确的百分比', trigger: 'change' },
         ],
         rise_max: [
           { required: true, message: '加价率不能为空', trigger: 'change' },
-          { pattern: Verification.testStrs.isPercent, message: '请输入正确的百分比', trigger: 'change' },
+          { validator: validRiseMax, trigger: 'blur' },
         ]
       }
     }

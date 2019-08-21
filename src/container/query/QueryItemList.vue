@@ -29,7 +29,7 @@
               <div style="display: flex">
                 <el-input
                   size="small"
-                  placeholder="外标签/商品编号/名称"
+                  placeholder="商品编号/名称"
                   clearable
                   class="query-item-input"
                   v-model="query.condition"
@@ -166,7 +166,6 @@
         }else{
           this.$data.query.system_class_code = value[value.length - 1];
         }
-        console.log(query);
         this.handleQuery('TableItemList');
       },
       //改变上下架

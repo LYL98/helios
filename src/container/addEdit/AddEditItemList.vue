@@ -345,6 +345,10 @@ export default {
           rd.price_origin = rd.price_origin || '';
           rd.item_stock = rd.item_stock || '';
         }
+        //配送时间
+        if(rd.presale_begin && rd.presale_end){
+          rd.presale_date = [rd.presale_begin, rd.presale_end];
+        }
         this.$data.detail = rd;
         this.$data.isShow = true;
       }else{

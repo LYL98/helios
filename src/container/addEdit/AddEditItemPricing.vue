@@ -162,7 +162,8 @@ export default {
     //返回加价率(询价，销售价)
     returnRate(p1, p2){
       if(!p1 || !p2) return '-';
-      return this.returnMarkup((p2 / p1 - 1) * 100) + '%';
+      //传的数值：如10.3 传 103
+      return this.returnMarkup((p2 / p1 - 1) * 1000) + '%';
     },
     //使用昨日询价
     usePriceBuyLast(){

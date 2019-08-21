@@ -73,8 +73,7 @@
     },
     mixins: [tableMixin],
     props: {
-      dataItem: { type: Array, required: true},
-      getPageComponents: { type: Function, require: true }, //获取页面组件
+      dataItem: { type: Array, required: true}
     },
     computed: {
       

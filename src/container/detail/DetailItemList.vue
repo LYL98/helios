@@ -80,7 +80,7 @@
                 <el-form-item label="库存">{{detail.item_stock}}</el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="排序">{{detail.rank}}</el-form-item>
+                <el-form-item label="排序">{{detail.rank || '-'}}</el-form-item>
               </el-col>
               <el-col :span="8" v-if="!detail.frame_code">
                 <el-form-item label="是否赠品">{{detail.is_gift ? '是' : '否'}}</el-form-item>
@@ -91,7 +91,7 @@
                 <el-form-item v-if="!detail.is_gift" label="是否预售">{{detail.is_presale ? '是' : '否'}}</el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item v-if="!detail.is_gift && detail.is_presale" label="配送日期">{{detail.presale_date}}</el-form-item>
+                <el-form-item v-if="!detail.is_gift && detail.is_presale" label="配送日期">{{detail.presale_begin}} - {{detail.presale_end}}</el-form-item>
               </el-col>
             </el-row>
         </template>
@@ -100,7 +100,10 @@
         <!--未上架不用显示-->
         <template v-if="detail.is_on_sale">
           <el-form-item label="内标签">{{detail.inner_tag.title}}（加价率：{{returnPercent(detail.inner_tag.rise_min)}}% - {{returnPercent(detail.inner_tag.rise_max)}}%）</el-form-item>
-          <el-form-item label="外标签"><el-tag v-for="(item, index) in detail.tags" :key="index" type="info" style="margin-right: 10px;">{{item}}</el-tag></el-form-item>
+          <el-form-item label="外标签">
+            <template v-if="detail.tags.length === 0">-</template>
+            <template v-else><el-tag v-for="(item, index) in detail.tags" :key="index" type="info" style="margin-right: 10px;">{{item}}</el-tag></template>
+          </el-form-item>
         </template>
 
         <el-form-item label="商品详情">

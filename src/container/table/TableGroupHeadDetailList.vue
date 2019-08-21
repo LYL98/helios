@@ -53,7 +53,6 @@
     mixins: [tableMixin],
     props: {
       dataItem: { type: Array, required: true},
-      getPageComponents: { type: Function, require: true }, //获取页面组件
     },
     computed: {
     },
@@ -72,7 +71,7 @@
           type: 'warning'
         }).then(async () => {
           let res = await Http.post(Config.api.groupHeadFreeze, {
-            header_id: data.id,
+            header_id: data.header_id,
             is_freeze_header: !data.is_freeze_header
           });
           if(res.code === 0){

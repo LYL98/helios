@@ -1,13 +1,13 @@
 <template>
   <el-dialog :visible.sync="isShow" title="团购门店详情" width="1100px" append-to-body :close-on-click-modal="false">
-    <table-group-head-detail :getPageComponents="viewGetPageComponents" :dataItem="dataItem" v-if="isShow" ref="TableGroupHeadDetail" />
+    <table-group-head-detail :getPageComponents="getPageComponents" :dataItem="dataItem" v-if="isShow" ref="TableGroupHeadDetail" />
     <div class="title">
       <div class="left">团长管理</div>
       <div class="right">
         <el-button size="mini" type="primary" @click.native="handleAddItem" v-if="auth.isAdmin || auth.GroupHeadAdd">新增团长</el-button>
       </div>
     </div>
-    <table-group-head-detail-list :getPageComponents="viewGetPageComponents" :dataItem="groupDetail.members2" v-if="isShow" ref="TableGroupHeadDetailList" />
+    <table-group-head-detail-list :getPageComponents="getPageComponents" :dataItem="groupDetail.members2" v-if="isShow" ref="TableGroupHeadDetailList" />
   </el-dialog>
 </template>
 

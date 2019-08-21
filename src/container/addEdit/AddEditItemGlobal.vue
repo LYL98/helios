@@ -34,14 +34,14 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="毛重" prop="gross_weight">
-            <input-weight size="medium" v-model="detail.gross_weight" placeholder="0 - 100000" unit="斤"/>
+            <input-weight size="medium" v-model="detail.gross_weight" placeholder="0.1 - 100000" unit="斤"/>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="10">
         <el-col :span="8">
           <el-form-item label="净重" prop="net_weight">
-            <input-weight size="medium" v-model="detail.net_weight" placeholder="0 - 100000" unit="斤"/>
+            <input-weight size="medium" v-model="detail.net_weight" placeholder="0.1 - 100000" unit="斤"/>
           </el-form-item>
         </el-col>
         <el-col :span="10">
@@ -78,34 +78,20 @@ export default {
     'select-system-class': SelectSystemClass
   },
   data(){
+    //毛重
     let validGrossWeight = function (rules, value, callback) {
-      let num = Number(value);
-      if (typeof num === 'number') {
-        let numStr = num.toString().split('').reverse();
-        if (num > 1000000) {
-          callback('毛重不能超过100000')
-        } else if (numStr.indexOf('.') > 1) {
-          callback('最多只能输入1位小数')
-        } else {
-          callback()
-        }
-      } else {
-        callback('必须是数值类型')
+      if(value < 1){
+        callback('毛重不能小于0.1斤');
+      }else{
+        callback();
       }
     };
+    //净重
     let validNetWeight = function (rules, value, callback) {
-      let num = Number(value);
-      if (typeof num === 'number') {
-        let numStr = num.toString().split('').reverse();
-        if (num > 1000000) {
-          callback('净重不能超过100000')
-        } else if (numStr.indexOf('.') > 1) {
-          callback('最多只能输入1位小数')
-        } else {
-          callback()
-        }
-      } else {
-        callback('必须是数值类型')
+      if(value < 1){
+        callback('净重不能小于0.1斤');
+      }else{
+        callback();
       }
     };
     let initDetail = {

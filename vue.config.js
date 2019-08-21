@@ -106,7 +106,7 @@ module.exports = {
     extract: false,
     loaderOptions: {
       sass: {
-        data: '@import "./element-variables.scss";'
+        data: '@import "./main.scss";'
       }
     }
   },

@@ -3,7 +3,7 @@
     <el-row>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="科学分类">
-          <select-system-class v-model="query.system_class_codes" @change="selectSystemClass" size="small" style="width: 224px;"/>
+          <select-system-class v-model="query.system_class_codes" @change="selectSystemClass" :clearable="false" size="small" style="width: 224px;"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">

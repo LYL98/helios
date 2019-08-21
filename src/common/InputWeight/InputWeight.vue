@@ -44,7 +44,8 @@
           if(v === ''){
             p = '';
           }else{
-            let { max } = this.$props;
+            let { min, max } = this.$props;
+            if(Number(v) < Number(min)) return; //最小值
             if(Number(v) > Number(max)) return; //最大值
             p = DataHandle.handleWeight(v);
           }

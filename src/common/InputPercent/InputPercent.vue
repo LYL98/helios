@@ -19,6 +19,9 @@
       changeValue: {
         get() {
           let v = this.$props.value;
+          
+          if(v === '-') return '-';
+
           let p = '';
           if(v !== '' && typeof v !== 'undefined'){
             p = DataHandle.returnPercent(v);
@@ -38,6 +41,11 @@
           }else{
             this.$data.isFinallyDot = '';
             if(!Verification.isPercent(v)) return;
+          }
+
+          if(v === '-'){
+            this.$emit('change', v);
+            return;
           }
 
           let p = '';

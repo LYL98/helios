@@ -1,16 +1,15 @@
 <template>
   <el-cascader
     :options="systemClassTree"
-    change-on-select
     :size="size"
     style="width: 100%"
     :clearable="clearable"
     expand-trigger="hover"
     :props="systemClassProps"
     @change="onChang"
-    @visible-change="onVisibleChange"
     placeholder="请选择科学分类"
     :value="value"
+    popper-class="my-cascader"
   ></el-cascader>
 </template>
 
@@ -41,10 +40,10 @@ export default {
       systemClassProps: {
         value: 'code',
         label: 'title',
-        children: 'childs'
+        children: 'childs',
+        checkStrictly: true
       },
-      systemClassTree: [],
-      tempValue: []
+      systemClassTree: []
     };
   },
   methods: {
@@ -71,38 +70,43 @@ export default {
     },
     //选择改变
     onChang(val) {
-      this.$data.tempValue = val;
-      if(val.length === 0){
-        this.$emit('change', val);
-      }
-    },
-    //显示隐藏时
-    onVisibleChange(visible){
-      if(!visible){
-        let data = {};
-        let { systemClassTree, tempValue } = this;
-        if(tempValue.length > 0){
-          let fun = (d) =>{
-            for(let i = 0; i < d.length; i++){
-              if(d[i].code === tempValue[tempValue.length - 1]){
-                data = d[i];
-                break;
-              }
-              if(d[i].childs){
-                fun(d[i].childs);
-              }
+      let data = {};
+      let { systemClassTree } = this;
+      if(val.length > 0){
+        let fun = (d) =>{
+          for(let i = 0; i < d.length; i++){
+            if(d[i].code === val[val.length - 1]){
+              data = d[i];
+              break;
+            }
+            if(d[i].childs){
+              fun(d[i].childs);
             }
           }
-          fun(systemClassTree);
         }
-        this.$emit('change', tempValue, data);
+        fun(systemClassTree);
       }
-    }
+      this.$emit('change', val, data);
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
-
+<style lang="scss">
+  .my-cascader{
+    .el-radio{
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      .el-radio__input{
+        width: 100%;
+        height: 34px;
+        .el-radio__inner{
+          opacity: 0;
+        }
+      }
+    }
+  }
 </style>
