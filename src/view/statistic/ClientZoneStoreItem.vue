@@ -53,7 +53,7 @@
           </my-query-item>
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="展示分类">
+          <my-query-item label="科学分类">
             <my-select-system-class
               v-model="query.system_class_codes"
               :clearable="true"

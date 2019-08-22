@@ -58,25 +58,17 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column
-            min-width="100px"
-            align="left"
-            v-for="(d, index) in dateRange()"
-            :key="index"
-            :label="labelDate(d)">
-            <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.cells, d) }}</span>
-            </template>
+          <el-table-column min-width="100px" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
+            <el-tooltip slot-scope="scope" effect="dark" :content="scope.row.cells[scope.$index].hint" placement="top" v-if="scope.row.cells[scope.$index].hint">
+              <span>{{ cellValue(scope.row.cells, d) }}</span>
+            </el-tooltip>
+            <template slot-scope="scope" v-else>{{ cellValue(scope.row.cells, d) }}</template>
           </el-table-column>
           <el-table-column label="平均值" min-width="100" align="left">
-            <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ average(scope.row.cells, scope.$index) }}</span>
-            </template>
+            <template slot-scope="scope">{{ average(scope.row.cells, scope.$index) }}</template>
           </el-table-column>
           <el-table-column label="合计" min-width="110" align="left">
-            <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ total(scope.row.cells, scope.$index) }}</span>
-            </template>
+            <template slot-scope="scope">{{ total(scope.row.cells, scope.$index) }}</template>
           </el-table-column>
         </el-table>
       </div>
@@ -292,11 +284,12 @@
         let option = {
           tooltip : {
             trigger: 'axis',
-            formatter: function (params,ticket,callback) {
+            formatter: function (params, ticket, callback) {
               var res = params[0].name;
-              for (var i = 0, l = params.length; i < l; i++) {
+              res += '<br/>' + params[0].seriesName + ' : ' + params[0].value;
+              /*for (var i = 0, l = params.length; i < l; i++) {
                 res += '<br/>' + params[i].seriesName + ' : ' + params[i].value;
-              }
+              }*/
               return res
             }
           },
@@ -369,7 +362,7 @@
               data: this.lineData(2, xDates)
             },
             {
-              name:'发货金额',
+              name:'客单价',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(2, xDates)
@@ -668,7 +661,8 @@
                   //用index区分赋值
                   value: this.cellDisplayValue(i, item),
                   origin_value: this.cellOriginValue(i, item),
-                  type: i
+                  type: i,
+                  hint: i === 0 ? `订单商品金额：${that.returnPrice(item.amount_real)}  运费：${that.returnPrice(item.amount_delivery)}` : '' //gmv
                 };
                 indexItem.cells.push(cell)
               }

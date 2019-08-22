@@ -15,7 +15,7 @@
         <div style="height: 0">
           <el-select style="position: absolute; top: 8px; left: 20px; width: 110px; z-index: 100" size="small" v-model="selectArea" @change="onSelectArea">
             <el-option label="编号/商品" value="item"></el-option>
-            <el-option label="展示分类" value="class"></el-option>
+            <!--<el-option label="展示分类" value="class"></el-option>-->
           </el-select>
         </div>
         <el-table :data="dataItem.items"
