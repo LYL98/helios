@@ -2,26 +2,11 @@
   <div>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
-        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }">
+        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { begin_date: query.begin_date, end_date: query.end_date } }">
           商品销售统计
         </el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ name: 'StatisticMarketClass2', query: {
-            begin_date: query.begin_date,
-            end_date: query.end_date,
-            system_class1: query.system_class1,
-            system_class_code1: query.system_class_code1
-        }}">
+        <el-breadcrumb-item :to="{ name: 'StatisticMarketClass2', query: { begin_date: query.begin_date, end_date: query.end_date, system_class1: query.system_class1, system_class_code1: query.system_class_code1 } }">
           {{ query.system_class1 === '' ? '全部分类' : query.system_class1 }}
-        </el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ name: 'StatisticMarketClass3', query: {
-            begin_date: query.begin_date,
-            end_date: query.end_date,
-            system_class1: query.system_class1,
-            system_class_code1: query.system_class_code1,
-            system_class2: query.system_class2,
-            system_class_code2: query.system_class_code2
-        }}">
-          {{ query.system_class2 === '' ? '全部分类' : query.system_class2 }}
         </el-breadcrumb-item>
         <el-breadcrumb-item>{{ query.system_class === '' ? '全部分类' : query.system_class }}</el-breadcrumb-item>
       </el-breadcrumb>
@@ -48,13 +33,13 @@
           </my-query-item>
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="三级分类">
+          <my-query-item label="二级分类">
             <select-system-class-list
               v-model="query.system_class_code"
               @change="changeSystemClass"
               size="small"
               :clearable="false"
-              :topCode="query.system_class_code2"
+              :topCode="query.system_class_code1"
             />
             <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
           </my-query-item>
@@ -66,35 +51,30 @@
         class="list-table"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
-        :data="listItem.items"
+        :data="dataItem"
         :row-class-name="highlightRowClassName"
         :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         @sort-change="onSort"
       >
-        <el-table-column
+       <el-table-column
           type="index"
           :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
           label="序号"
           :index="indexMethod"
         />
-        <el-table-column label="商品" prop="item_system_class">
+        <el-table-column label="三级科学分类" prop="item_system_class">
           <template slot-scope="scope">
             <a href="javascript:void(0)"
-               class="title"
-               @click="handleShowClassDetail(scope.row)"
-               v-if="auth.isAdmin || auth.StatisticMarketClassItem"
+              class="title"
+              @click="handleShowClassDetail(scope.row)"
+              v-if="!!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass )"
             >
-              {{ scope.row.code }} / {{ scope.row.title }}
+              {{ scope.row.item_system_class || '其它' }}
             </a>
             <div v-else>
-              {{ scope.row.code }} / {{ scope.row.title }}
+              {{ scope.row.item_system_class || '其它' }}
             </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="分类">
-          <template slot-scope="scope">
-            {{ scope.row.system_class_title || '' }}
           </template>
         </el-table-column>
         <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
@@ -107,14 +87,19 @@
             ￥{{ returnPrice(scope.row.fram_total_price) }}
           </template>
         </el-table-column>
-        <el-table-column label="件数" sortable="custom" prop="count_real"/>
+        <el-table-column label="件数" sortable="custom" prop="count_real" />
+        <el-table-column label="占比">
+          <template slot-scope="scope">
+            {{ returnPercentage(scope.row.item_total_price, totalItemTotalPrice) }}%
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
             <my-table-operate
               :list="[
                 {
                   title: '查看',
-                  isDisplay: auth.isAdmin || auth.StatisticMarketClassItem,
+                  isDisplay: !!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass ),
                   command: () => handleShowClassDetail(scope.row)
                 }
               ]"
@@ -122,20 +107,6 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
-    <div class="footer">
-      <div class="table-pagination">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="listItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -168,20 +139,18 @@
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_BREADCRUMB + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
+        totalItemTotalPrice: 0,
         pickerValue: [],
         breadcrumb: {},
         query: {},
-        listItem: {
-          num: 0,
-          items: []
-        },
+        dataItem: [],
         currentRow: {}
       }
     },
     created() {
       documentTitle("统计 - 商品销售统计");
       this.initQuery();
-      this.saleClassItemQuery();
+      this.statisticalOrderClassSum();
     },
     methods: {
       cellMouseEnter(row, column, cell, event) {
@@ -211,6 +180,10 @@
       returnPrice(price) {
         return DataHandle.returnPrice(price);
       },
+      //返回百分比
+      returnPercentage(item_num, sun){
+        return DataHandle.returnPercentage(item_num, sun);
+      },
       //初始化参数
       initQuery() {
         let q = this.$route.query;
@@ -222,10 +195,8 @@
           sort: '-item_total_price',
           system_class1: q.system_class1,
           system_class_code1: q.system_class_code1,
-          system_class2: q.system_class2,
-          system_class_code2: q.system_class_code2,
-          system_class: q.system_class3,
-          system_class_code: q.system_class_code3,
+          system_class: q.system_class2,
+          system_class_code: q.system_class_code2,
           page: 1,
           page_size: Constant.PAGE_SIZE
         };
@@ -240,16 +211,16 @@
           this.$data.query.end_date = '';
         }
         this.$data.query.page = 1;
-        this.saleClassItemQuery();
+        this.statisticalOrderClassSum();
       },
       changePage(page) {
         this.$data.query.page = page;
-        this.saleClassItemQuery();
+        this.statisticalOrderClassSum();
       },
       changePageSize(size) {
         this.$data.query.page = 1;
         this.$data.query.page_size = size;
-        this.saleClassItemQuery();
+        this.statisticalOrderClassSum();
       },
       onSort({ column, prop, order }) {
         if (order === 'ascending') {
@@ -260,25 +231,30 @@
           this.query.sort = ''
         }
         // this.$data.query.page = 1;
-        this.saleClassItemQuery();
+        this.statisticalOrderClassSum();
       },
       resetQuery() {
         this.initQuery();
-        this.saleClassItemQuery();
+        this.statisticalOrderClassSum();
       },
       //改变分类
       changeSystemClass(data){
         this.$data.query.system_class = data.title;
-        this.saleClassItemQuery();
+        this.statisticalOrderClassSum();
       },
-      // 获取商品分类列表
-      async saleClassItemQuery() {
-        let that = this;
-        let { query } = that;
+      // 获取列表
+      async statisticalOrderClassSum() {
+        let { query } = this;
         this.$loading({ isShow: true, isWhole: true });
-        let res = await Http.get(Config.api.statisticalOrderItemSum, query);
+        let res = await Http.get(Config.api.statisticalOrderClassSum, query);
         if(res.code === 0){
-          that.$data.listItem = res.data;
+          let rd = res.data, totalItemTotalPrice = 0;
+          for (let i = 0; i < rd.length; i++) {
+            //总数据
+            totalItemTotalPrice += rd[i].item_total_price;
+          }
+          this.$data.totalItemTotalPrice = totalItemTotalPrice;
+          this.$data.dataItem = rd;
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
@@ -286,16 +262,15 @@
       },
       handleShowClassDetail(item) {
         this.$router.push({
-          name: 'StatisticMarketClassItemStore',
+          name: 'StatisticMarketClassItem',
           query: {
             item_id: item.id,
-            item_title: item.code + ' ' + item.title,
             system_class1: this.query.system_class1,
             system_class_code1: this.query.system_class_code1,
-            system_class2: this.query.system_class2,
-            system_class_code2: this.query.system_class_code2,
-            system_class3: this.query.system_class,
-            system_class_code3: this.query.system_class_code,
+            system_class2: this.query.system_class,
+            system_class_code2: this.query.system_class_code,
+            system_class3: item.item_system_class,
+            system_class_code3: item.system_class_code,
             begin_date: this.query.begin_date,
             end_date: this.query.end_date
           }

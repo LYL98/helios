@@ -1,11 +1,6 @@
 <template>
   <el-select v-model="selectId" :size="size" :clearable="clearable" placeholder="请选择分类" style="width: 100%;" @change="handleChange">
-    <el-option
-      v-for="item in dataItem"
-      :key="item.code"
-      :label="item.title"
-      :value="useName?item.title:item.code">
-    </el-option>
+    <el-option v-for="item in dataItem" :key="item.code" :label="item.title" :value="item.code"></el-option>
   </el-select>
 </template>
 
@@ -21,7 +16,7 @@ export default {
   created() {
   },
   props: {
-
+    topCode: { type: String, default: '' }
   },
   data() {
     return {
@@ -32,7 +27,7 @@ export default {
     async getData(){
       let that = this;
       let res = await Http.get(Config.api.baseSystemClassList, {
-        top_code: 10
+        top_code: this.$props.topCode
       });
       if(res.code === 0){
         that.$data.dataItem = res.data;
@@ -42,10 +37,10 @@ export default {
     },
   },
   watch:{
-    value: {
+    topCode: {
       deep: true,
       handler: function (a, b) {
-        this.$data.frameCode = a || '';
+        this.getData();
       }
     }
   }

@@ -25,8 +25,7 @@
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
           <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
-          <!--<li>称重总金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
-          <li>称重后商品总金额: <span>{{ returnPrice(totalAmountReal) }}</span> 元</li>-->
+          <li>订单框总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
           <li>销售总量: <span>{{ totalCount }}</span> 件</li>
         </ul>
       </div>
@@ -47,7 +46,7 @@
           label="序号"
           :index="indexMethod"
         />
-        <el-table-column label="商品分类" prop="item_system_class">
+        <el-table-column label="一级科学分类" prop="item_system_class">
           <template slot-scope="scope">
             <a href="javascript:void(0)"
               class="title"
@@ -71,18 +70,6 @@
             ￥{{ returnPrice(scope.row.fram_total_price) }}
           </template>
         </el-table-column>
-        <!--<el-table-column label="称重金额" prop="check_chg">
-          <template slot-scope="scope">
-            <span v-if="scope.row.check_chg === 0">￥0</span>
-            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
-            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.amount_real) }}
-          </template>
-        </el-table-column>-->
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
@@ -139,8 +126,7 @@
         listItem: [],
         orderClassSumData2: [],
         totalItemTotalPrice: 0,
-        totalCheckChg: 0,
-        totalAmountReal: 0,
+        totalFramPrice: 0,
         totalCount: 0,
         currentRow: {},
         chart: null,
@@ -273,23 +259,12 @@
           return
         }
         let orderClassSumData = that.$data.listItem;
-        /*
-        [initChart
-          { value: 600, name: "芒果" },
-          { value: 310, name: "菠萝" },
-          { value: 234, name: "香蕉" },
-          { value: 135, name: "苹果" },
-          { value: 533, name: "榴莲" },
-          { value: 500, name: "其它" }
-        ]
-        */
         let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {},
-        totalItemTotalPrice = 0, totalCheckChg = 0, totalAmountReal = 0, totalCount = 0;
+        totalItemTotalPrice = 0, totalFramPrice = 0, totalCount = 0;
         for (let i = 0; i < orderClassSumData.length; i++) {
           //总数据
           totalItemTotalPrice += orderClassSumData[i].item_total_price;
-          totalCheckChg += orderClassSumData[i].check_chg;
-          totalAmountReal += orderClassSumData[i].amount_real;
+          totalFramPrice += orderClassSumData[i].fram_total_price;
         }
         for(let i = 0; i < orderClassSumData.length; i++){
           //饼图数据
@@ -298,6 +273,7 @@
             data.push({
               value: that.returnPrice(orderClassSumData[i].item_total_price),
               name: orderClassSumData[i].item_system_class,
+              system_class_code: orderClassSumData[i].system_class_code
             });
           }else{
             dataTemp.value += orderClassSumData[i].item_total_price;
@@ -315,7 +291,8 @@
         if(dataTemp.value) {
           data.push({
             value: that.returnPrice(dataTemp.value),
-            name: dataTemp.name
+            name: dataTemp.name,
+            system_class_code: ''
           });
         }
 
@@ -325,14 +302,13 @@
 
         that.$data.orderClassSumData2 = data2;
         that.$data.totalItemTotalPrice = totalItemTotalPrice;
-        that.$data.totalCheckChg = totalCheckChg;
-        that.$data.totalAmountReal = totalAmountReal;
+        that.$data.totalFramPrice = totalFramPrice;
         that.$data.totalCount = totalCount;
 
         let formatter = "{all|{b}：{c}元}  {per|{d}%}";
         let color = that.color;
         if (data && data.length === 0) {
-          data.push({value: '0', name: '暂无数据'});
+          data.push({value: '0', name: '暂无数据', system_class_code: ''});
           color = ['#a5a5a5'];
           formatter = "{b}";
         }
@@ -382,30 +358,30 @@
         that.chart.off('click');
         // 点击饼图事件处理
         that.chart.on('click', function (params) {
-          // console.log("params", params);
           if (params.componentType === 'series') {
             if (params.name === '其它' || params.name === '暂无数据') {
               return;
             }
             that.$router.push({
-              path: '/statistic/market/class',
+              name: 'StatisticMarketClass2',
               query: {
-                system_class: params.name,
-                begin_date: that.$data.query.begin_date,
-                end_date: that.$data.query.end_date
+                system_class1: params.name,
+                system_class_code1: params.data.system_class_code,
+                begin_date: that.query.begin_date,
+                end_date: that.query.end_date
               }
             });
           }
         });
       },
       handleShowClassDetail(item) {
-        let system_class = item.item_system_class;
         this.$router.push({
-          path: '/statistic/market/class',
+          name: 'StatisticMarketClass2',
           query: {
-            system_class: system_class,
-            begin_date: this.$data.query.begin_date,
-            end_date: this.$data.query.end_date
+            system_class1: item.item_system_class,
+            system_class_code1: item.system_class_code,
+            begin_date: this.query.begin_date,
+            end_date: this.query.end_date
           }
         });
       }

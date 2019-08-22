@@ -130,14 +130,24 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "statistic" */ '@/view/statistic/Market')
     },
     {
-      path: '/statistic/market/class',
-      name: 'StatisticMarketClass',
-      component: () => import(/* webpackChunkName: "statistic" */ '@/view/statistic/MarketClass')
+      path: '/statistic/market/class2',
+      name: 'StatisticMarketClass2',
+      component: () => import(/* webpackChunkName: "statistic" */ '@/view/statistic/MarketClass2')
+    },
+    {
+      path: '/statistic/market/class3',
+      name: 'StatisticMarketClass3',
+      component: () => import(/* webpackChunkName: "statistic" */ '@/view/statistic/MarketClass3')
     },
     {
       path: '/statistic/market/class/item',
       name: 'StatisticMarketClassItem',
       component: () => import(/* webpackChunkName: "statistic" */ '@/view/statistic/MarketClassItem')
+    },
+    {
+      path: '/statistic/market/class/item/store',
+      name: 'StatisticMarketClassItemStore',
+      component: () => import(/* webpackChunkName: "statistic" */ '@/view/statistic/MarketClassItemStore')
     },
     {
       path: '/statistic/client',

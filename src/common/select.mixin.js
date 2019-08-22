@@ -41,7 +41,7 @@ export default {
       this.$emit('ev', v, isInit);
       let data = {};
       for(let i = 0; i < this.dataItem.length; i++){
-        if(this.dataItem[i].id === v){
+        if(this.dataItem[i].id === v || this.dataItem[i].code === v){
           data = this.dataItem[i];
           break;
         }
