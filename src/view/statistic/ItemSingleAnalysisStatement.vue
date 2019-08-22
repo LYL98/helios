@@ -317,11 +317,11 @@
             data: this.indexNames(),
             selectedMode: 'single',
             selected: {
-              '采购价': false,
+              '采购价': true,
               '销售价': false,
-              '销售量': true,
-              '销售金额': true,
-              '下单客户数': true,
+              '销售量': false,
+              '销售金额': false,
+              '下单客户数': false,
               '下单率': false,
               '加价率': false,
               '退赔率': false,
@@ -367,14 +367,28 @@
               smooth: true,
               data: this.lineData(1, xDates)
             },
+            {
+              name:'销售价',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[0], lineStyle: {color: lineColors[0]}}},
+              data:this.lineData(1, xDates)
+            },
+
             //销售量
             {
               name:'销售量',
-              type:'bar',
+              type:'line',
               itemStyle: {normal: {color: lineColors[2], lineStyle: {color: lineColors[2]}}},
               smooth: true,
               data: this.lineData(2, xDates)
             },
+            {
+              name:'销售量',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
+              data: this.lineData(2, xDates)
+            },
+
             //销售金额
             {
               name:'销售金额',
@@ -383,6 +397,13 @@
               smooth: true,
               data: this.lineData(3, xDates)
             },
+            {
+              name:'销售金额',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[2], lineStyle: {color: lineColors[2]}}},
+              data:this.lineData(3, xDates)
+            },
+
             //下单客户数
             {
               name:'下单客户数',
@@ -391,6 +412,13 @@
               smooth: true,
               data: this.lineData(4, xDates)
             },
+            {
+              name:'下单客户数',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[5], lineStyle: {color: lineColors[5]}}},
+              data:this.lineData(4, xDates)
+            },
+
             //下单率
             {
               name:'下单率',
@@ -399,6 +427,13 @@
               smooth: true,
               data: this.lineData(5, xDates)
             },
+            {
+              name:'下单率',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
+              data:this.lineData(5, xDates)
+            },
+
             //加价率
             {
               name:'加价率',
@@ -407,6 +442,13 @@
               smooth: true,
               data: this.lineData(6, xDates)
             },
+            {
+              name:'加价率',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[7], lineStyle: {color: lineColors[7]}}},
+              data:this.lineData(6, xDates)
+            },
+
             //退赔率
             {
               name:'退赔率',
@@ -415,6 +457,13 @@
               smooth: true,
               data: this.lineData(7, xDates)
             },
+            {
+              name:'退赔率',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[6], lineStyle: {color: lineColors[6]}}},
+              data:this.lineData(7, xDates)
+            },
+
             //采购价格偏差
             {
               name:'采购价格偏差',
@@ -422,6 +471,12 @@
               itemStyle: {normal: {color: lineColors[8], lineStyle: {color: lineColors[8]}}},
               smooth: true,
               data: this.lineData(8, xDates)
+            },
+            {
+              name:'采购价格偏差',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[5], lineStyle: {color: lineColors[5]}}},
+              data:this.lineData(8, xDates)
             },
           ]
         };
@@ -666,16 +721,16 @@
       },
 
       async itemSingleAnalysisList(callback){
-        let that = this;
-        let { query } = that;
+        let { query } = this;
         this.$loading({ isShow: true, isWhole: true });
         let res = await Http.get(Config.api.statisticalItemSingleAnalysis, query);
+        this.$loading({ isShow: false });
         if(res.code === 0){
           //将日期维度转化成指标维度
           let dateItems = res.data;
           let indexItems = Array();
           if (dateItems && dateItems.length > 0) {
-            for (let i=0; i<9; i++) {
+            for (let i = 0; i < 9; i++) {
               //初始化行变量
               let indexItem = {
                 name: this.indexName(i),
@@ -683,7 +738,7 @@
               };
 
               //计算列
-              for (let j=0; j<dateItems.length; j++) {
+              for (let j = 0; j < dateItems.length; j++) {
                 let item = dateItems[j];
                 //初始化一行中每列单元格
                 let cell = {
@@ -695,12 +750,12 @@
                 };
                 indexItem.cells.push(cell)
               }
-
               indexItems.push(indexItem)
             }
           }
+          //console.log(indexItems);
           indexItems.map((item, index) => item.id = index);
-          that.$data.dataItem = indexItems;
+          this.$data.dataItem = indexItems;
           typeof callback === 'function' && callback();
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});

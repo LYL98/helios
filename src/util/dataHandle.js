@@ -305,6 +305,7 @@ const dataHandle = {
    * @returns {*}
    */
   keepTwoDecimal(v) {
+    v = Number(v);
     let p = v.toFixed(2);
     if(p.substring(p.length - 3, p.length) === '.00'){
       return p.substring(0, p.length - 3);

@@ -23,7 +23,7 @@
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
               <div class="td-item add-dot">
-                <div class="link-item add-dot" @click="handleShowDetail('DetailItemList', scope.row)" v-if="auth.isAdmin || auth.ItemDetail">
+                <div class="link-item add-dot" @click="handleShowDetail('DetailItemList', scope.row)" v-if="auth.isAdmin || auth.ItemListDetail">
                   {{scope.row.code}}/{{scope.row.title}}
                 </div>
                 <div class="link-item add-dot" v-else>

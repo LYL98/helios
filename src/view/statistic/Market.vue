@@ -25,8 +25,8 @@
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
           <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
-          <li>称重总金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
-          <li>称重后商品总金额: <span>{{ returnPrice(totalAmountReal) }}</span> 元</li>
+          <!--<li>称重总金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
+          <li>称重后商品总金额: <span>{{ returnPrice(totalAmountReal) }}</span> 元</li>-->
           <li>销售总量: <span>{{ totalCount }}</span> 件</li>
         </ul>
       </div>
@@ -66,7 +66,12 @@
             ￥{{ returnPrice(scope.row.item_total_price) }}
           </template>
         </el-table-column>
-        <el-table-column label="称重金额" prop="check_chg">
+        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.fram_total_price) }}
+          </template>
+        </el-table-column>
+        <!--<el-table-column label="称重金额" prop="check_chg">
           <template slot-scope="scope">
             <span v-if="scope.row.check_chg === 0">￥0</span>
             <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
@@ -77,7 +82,7 @@
           <template slot-scope="scope">
             ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
@@ -88,12 +93,12 @@
           <template slot-scope="scope">
             <my-table-operate
               :list="[
-                  {
-                    title: '查看',
-                    isDisplay: !!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass ),
-                    command: () => handleShowClassDetail(scope.row)
-                  }
-                ]"
+                {
+                  title: '查看',
+                  isDisplay: !!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass ),
+                  command: () => handleShowClassDetail(scope.row)
+                }
+              ]"
             />
           </template>
         </el-table-column>

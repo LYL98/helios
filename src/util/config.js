@@ -67,10 +67,7 @@ const Config = (() => {
       pItemExport: apiM + '/p_item/export', //商品导出
 
       // 商品管理
-      //itemAdd: apiM + '/item/add', //商品添加
       itemEdit: apiM + '/item/edit', //商品编辑
-      //itemDelete: apiM + '/item/delete', //商品删除
-      //itemTagsEdit: apiM + '/item/tags/edit', //商品标签编辑
       itemOutEdit: apiM + '/item/out/edit', //商品外边标签，展示分类 修改
       itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品内标签修改
       itemInnerTagAudit: apiM + '/item/inner_tag/audit', //内标签审核审核
@@ -81,12 +78,10 @@ const Config = (() => {
       itemDetail: apiM + '/item/detail',//商品详情
       itemModifyDetail: apiM + '/item/modify_detail', //商品修改明细
       itemExport: apiM + '/item/export', //商品列表导出
-      //itemStatusApprove: apiM + '/item/status/approve',//商品审核
       itemPriceList: apiM + '/item/price/query',//每日定价页面查询
       itemPriceFix: apiM + '/item/price/fix',//商品定价
       itemPriceAudit: apiM + '/item/price/audit', //商品定价审核
       itemPricingRecord: apiM + '/item/price_history/query', //商品定价记录
-      //itemCodeEdit: apiM + '/item/code_edit', //商品编号修改
 
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询

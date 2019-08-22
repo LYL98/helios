@@ -1,4 +1,4 @@
-import {Table, TableColumn, Pagination, DatePicker, Row, Col, Input, Button, RadioGroup, RadioButton, Radio, Dialog, Form, FormItem, Transfer, TabPane, Tabs, Tag, Popover, Select, Option, Tree, Tooltip, InputNumber, Slider, TimePicker} from 'element-ui';
+import {Table, TableColumn, Pagination, DatePicker, Row, Col, Input, Button, RadioGroup, RadioButton, Checkbox, Radio, Dialog, Form, FormItem, Transfer, TabPane, Tabs, Tag, Popover, Select, Option, Tree, Tooltip, InputNumber, Slider, TimePicker} from 'element-ui';
 import { DataHandle, Config } from '@/util';
 
 export default {
@@ -14,6 +14,7 @@ export default {
     'el-input': Input,
     'el-input-number': InputNumber,
     'el-button': Button,
+    'el-checkbox': Checkbox,
     'el-radio': Radio,
     'el-radio-group': RadioGroup,
     'el-radio-button': RadioButton,

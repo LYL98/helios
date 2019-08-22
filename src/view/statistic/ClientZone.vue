@@ -97,13 +97,13 @@
             {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
           </template>
         </el-table-column>
-        <el-table-column label="称重金额" prop="check_chg">
+        <!--<el-table-column label="称重金额" prop="check_chg">
           <template slot-scope="scope">
             <span v-if="scope.row.check_chg === 0">￥0</span>
             <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
             <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="120">
           <template slot-scope="scope">
             ￥{{ returnPrice(scope.row.real_price) }}

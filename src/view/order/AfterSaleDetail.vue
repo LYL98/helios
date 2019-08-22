@@ -116,10 +116,10 @@
             <div v-if="item.operator_class === 'member'" class="member">
               <div class="avatar">
                 <img :src="!item.avatar ? defaultAvatar : (tencentPath + item.avatar + '_min200x200')"/>
-                <font>
+                <span>
                   {{item.realname}}<br/>
                   {{item.phone}}
-                </font>
+                </span>
               </div>
               <div style="margin-left: 50px; padding: 10px; background: #FAFAFB; border-radius: 2px">
                 <p class="content"><font v-if="detail.reason && index === 0">【{{detail.reason}}】</font>{{item.content}}</p>
@@ -524,15 +524,17 @@ export default {
         display: flex;
         align-items: center;
         margin-bottom: 5px;
-        img{
+        width: 100%;
+        >img{
           width: 48px;
           height: 48px;
           margin-right: 10px;
           border-radius: 50%;
-          float: left;
+          display: block;
         }
-        font{
-          float: left;
+        >span{
+          display: block;
+          flex: 1;
         }
       }
       .content{

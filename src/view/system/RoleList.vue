@@ -83,6 +83,7 @@ export default {
     'el-radio-button': RadioButton,
   },
   created(){
+    documentTitle("设置 - 角色列表");
     this.getPermissionTree();
     this.getRoleList();
   },
@@ -466,6 +467,9 @@ export default {
 /*第一级*/
 .role-tree > .el-tree-node{
   margin-bottom: 20px;
+}
+.el-tree-node__content .el-checkbox{
+  margin-right: 8px;
 }
 .role-tree > .el-tree-node > .el-tree-node__content > .el-tree-node__label{
   font-weight: bold;

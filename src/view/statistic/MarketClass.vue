@@ -85,7 +85,12 @@
             ￥{{ returnPrice(scope.row.item_total_price) }}
           </template>
         </el-table-column>
-        <el-table-column label="称重金额" prop="check_chg">
+        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.fram_total_price) }}
+          </template>
+        </el-table-column>
+        <!---<el-table-column label="称重金额" prop="check_chg">
           <template slot-scope="scope">
             <span v-if="scope.row.check_chg === 0">￥0</span>
             <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
@@ -96,7 +101,7 @@
           <template slot-scope="scope">
             ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
-        </el-table-column>
+        </el-table-column>-->
         <el-table-column label="件数" sortable="custom" prop="count_real"/>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
