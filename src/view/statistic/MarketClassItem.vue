@@ -83,7 +83,7 @@
             <a href="javascript:void(0)"
                class="title"
                @click="handleShowClassDetail(scope.row)"
-               v-if="auth.isAdmin || auth.StatisticMarketClassItem"
+               v-if="auth.isAdmin || auth.StatisticMarketClassItemStore"
             >
               {{ scope.row.code }} / {{ scope.row.title }}
             </a>
@@ -114,7 +114,7 @@
               :list="[
                 {
                   title: '查看',
-                  isDisplay: auth.isAdmin || auth.StatisticMarketClassItem,
+                  isDisplay: auth.isAdmin || auth.StatisticMarketClassItemStore,
                   command: () => handleShowClassDetail(scope.row)
                 }
               ]"

@@ -68,7 +68,7 @@
             <a href="javascript:void(0)"
               class="title"
               @click="handleShowClassDetail(scope.row)"
-              v-if="!!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass )"
+              v-if="!!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClassItem )"
             >
               {{ scope.row.item_system_class || '其它' }}
             </a>
@@ -99,7 +99,7 @@
               :list="[
                 {
                   title: '查看',
-                  isDisplay: !!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass ),
+                  isDisplay: !!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClassItem ),
                   command: () => handleShowClassDetail(scope.row)
                 }
               ]"
