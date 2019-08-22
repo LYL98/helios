@@ -662,7 +662,7 @@
                   value: this.cellDisplayValue(i, item),
                   origin_value: this.cellOriginValue(i, item),
                   type: i,
-                  hint: i === 0 ? `订单商品金额：${that.returnPrice(item.amount_real)}  运费：${that.returnPrice(item.amount_delivery)}` : '' //gmv
+                  hint: i === 0 ? `订单商品金额：${this.returnPrice(item.amount_real)}  运费：${this.returnPrice(item.amount_delivery)}` : '' //gmv
                 };
                 indexItem.cells.push(cell)
               }
