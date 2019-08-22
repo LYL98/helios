@@ -59,7 +59,7 @@
             </template>
           </el-table-column>
           <el-table-column min-width="100px" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
-            <el-tooltip slot-scope="scope" effect="dark" :content="scope.row.cells[scope.$index].hint" placement="top" v-if="scope.row.cells[scope.$index].hint">
+            <el-tooltip slot-scope="scope" effect="dark" :content="scope.row.cells[scope.$index].hint" placement="top" v-if="fslse">
               <span>{{ cellValue(scope.row.cells, d) }}</span>
             </el-tooltip>
             <template slot-scope="scope" v-else>{{ cellValue(scope.row.cells, d) }}</template>
