@@ -12,7 +12,7 @@
       <div style="height: 0">
         <el-select style="position: absolute; top: 8px; left: 20px; width: 110px; z-index: 100" size="small" v-model="selectArea" @change="onSelectArea">
           <el-option label="编号/商品" value="item"></el-option>
-          <el-option label="展示分类" value="class"></el-option>
+          <!--<el-option label="展示分类" value="class"></el-option>-->
         </el-select>
       </div>
       <el-table
@@ -57,12 +57,7 @@
           align="left"
           min-width="110">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              <span>{{formatValue(scope.row.count_real)}}</span>
-              <span v-if="scope.row.gross_weight && scope.row.gross_weight !== 0 && scope.row.count_real !== 0"
-                    style="color: blue;">{{'(共' + (returnWeight(scope.row.gross_weight) * formatValue(scope.row.count_real)) + '斤)'}}</span>
-            </div>
-
+            <span :class="isEllipsis(scope.row)">{{formatValue(scope.row.count_real)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -171,9 +166,7 @@ export default {
     'query-item-daily-analysis': QueryItemDailyAnalysis
   },
   created() {
-    // let titles = document.getElementsByClassName('titleScope');
-    // console.log(titles.length);
-    this.loadItemDailyAnalysisListFirstPage()
+    
   },
   data() {
     return {
