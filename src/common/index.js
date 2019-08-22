@@ -54,3 +54,4 @@ export { default as TableOperate } from './TableOperate';
 export { default as ToPrice } from './ToPrice';
 export { default as UploadImg } from './UploadImg';
 export { default as SelectSystemClass } from './SelectSystemClass';
+export { default as SelectSystemClassList } from './SelectSystemClassList';

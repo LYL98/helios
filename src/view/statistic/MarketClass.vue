@@ -32,10 +32,10 @@
           </my-query-item>
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="分类">
-            <select-system-class
-              v-model="query.system_class_codes"
-              @change="selectSystemClass"
+          <my-query-item label="一级分类">
+            <select-system-class-list
+              v-model="query.system_class"
+              @change="saleClassItemQuery"
               size="small"
               :clearable="false"
             />
@@ -137,7 +137,7 @@
 
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
-  import { QueryItem, TableOperate, SelectBuyer, SelectSystemClass } from '@/common';
+  import { QueryItem, TableOperate, SelectBuyer, SelectSystemClassList } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import viewMixin from '@/view/view.mixin';
 
@@ -157,7 +157,7 @@
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'my-select-buyer': SelectBuyer,
-      'select-system-class': SelectSystemClass
+      'select-system-class-list': SelectSystemClassList
     },
     data() {
       return {
@@ -230,7 +230,6 @@
           end_date: end_date,
           sort: '-item_total_price',
           system_class: this.$route.query.system_class === '全部分类' ? '' : this.$route.query.system_class,
-          system_class_codes: [],
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -245,18 +244,6 @@
           this.$data.query.end_date = '';
         }
         this.$data.query.page = 1;
-        this.saleClassItemQuery();
-      },
-      //选择科学分类
-      selectSystemClass(value, data){
-        if(value.length === 0){
-          this.$data.query.system_class = '';
-        }else{
-          this.$data.query.system_class = data.title;
-        }
-        this.changeQuery();
-      },
-      changeQuery() {
         this.saleClassItemQuery();
       },
       changePage(page) {

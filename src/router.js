@@ -300,7 +300,7 @@ const judgeAuth = ()=>{
   for(let a in auth){
     if(a === 'isAdmin'){
       return true;
-    }else if(auth[a] === page){
+    }else if(a === pageName){
       return true;
     }
   }
@@ -309,20 +309,20 @@ const judgeAuth = ()=>{
 
 //获取当前登录用户权限
 const getAuthorityList = ()=>{
-  let data = { permissions: [] };
+  let data = { permission_list: [] };
   if (myInfo) {
-      data = myInfo;
+    data = myInfo;
   }
   let a = {};
   if(data.is_admin){
       a.isAdmin = true;
   }else{
-      let pl = data.permissions;
+      let pl = data.permission_list;
       if (pl && pl.length > 0) {
           for (let i = 0; i < pl.length; i++) {
             let p = pl[i].code;
             let url = pl[i].url;
-            a[p.toLocaleLowerCase()] = url || true;
+            a[p] = url || true;
           }
       }
   }
