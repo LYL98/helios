@@ -6,11 +6,9 @@
           <el-select v-model="editQuery.selectType" @change="changeQuery"
                      size="small" class="query-item-select">
             <el-option label="下单门店数" value="merchant"></el-option>
-            <el-option label="订单商品金额" value="item_total_price"></el-option>
-            <!--<el-option label="运费金额" value="amount_delivery"></el-option>-->
-            <el-option label="优惠金额" value="bonus_promotion"></el-option>
-            <!--<el-option label="称重金额" value="check_chg"></el-option>-->
+            <el-option label="GMV" value="gmv"></el-option>
             <el-option label="订单应付金额" value="real_price"></el-option>
+            <el-option label="优惠金额" value="bonus_promotion"></el-option>
             <el-option label="客单价" value="customer"></el-option>
           </el-select>
         </my-query-item>

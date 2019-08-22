@@ -110,9 +110,9 @@
             {{ scope.row.store_title || '-' }}
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
+            ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
         <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
@@ -120,18 +120,6 @@
             ￥{{ returnPrice(scope.row.fram_total_price) }}
           </template>
         </el-table-column>
-        <!--<el-table-column label="称重金额" prop="check_chg">
-          <template slot-scope="scope">
-            <span v-if="scope.row.check_chg === 0">￥0</span>
-            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
-            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.amount_real) }}
-          </template>
-        </el-table-column>-->
         <el-table-column label="件数" sortable="custom" prop="count_real" />
       </el-table>
     </div>
@@ -235,7 +223,7 @@
           province_code: this.province.code,
           begin_date: q.begin_date,
           end_date: q.end_date,
-          sort: '-item_total_price',
+          sort: '-amount_real',
           item_id: q.item_id,
           item_title: q.item_title,
           system_class1: q.system_class1,

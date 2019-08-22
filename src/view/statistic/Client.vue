@@ -24,11 +24,10 @@
       <div class="echart-container">
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
-          <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
-          <li>运费总金额: <span>{{ returnPrice(totalAmountDelivery) }}</span> 元</li>
-          <li>优惠总金额: <span>-{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
-          <!--<li>称重总金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>-->
+          <li>GMV: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
           <li>订单应付总金额: <span>{{ returnPrice(totalItemRealPrice) }}</span> 元</li>
+          <li>筐总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
+          <li>优惠总金额: <span>-{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
           <li>订单总量: <span>{{ totalOrder }}</span> 单</li>
           <li>总件数: <span>{{ totalPiece }}</span> 件</li>
         </ul>
@@ -68,14 +67,19 @@
               <!--{{ scope.row.zone_title || '其它' }}-->
             </template>
           </el-table-column>
-          <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price" min-width="130">
+          <el-table-column label="GMV" sortable="custom" prop="gmv" min-width="130">
             <template slot-scope="scope">
-              ￥{{ returnPrice(scope.row.item_total_price) }}
+              ￥{{ returnPrice(scope.row.gmv) }}
             </template>
           </el-table-column>
-          <el-table-column label="运费金额" sortable="custom" prop="amount_delivery" min-width="100">
+          <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="130">
             <template slot-scope="scope">
-              ￥{{ returnPrice(scope.row.amount_delivery) }}
+              ￥{{ returnPrice(scope.row.real_price) }}
+            </template>
+          </el-table-column>
+          <el-table-column label="框金额" sortable="custom" prop="fram_total_price" min-width="100">
+            <template slot-scope="scope">
+              ￥{{ returnPrice(scope.row.fram_total_price) }}
             </template>
           </el-table-column>
           <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion" min-width="100">
@@ -83,23 +87,12 @@
               {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
             </template>
           </el-table-column>
-          <!--<el-table-column label="称重金额" prop="check_chg" min-width="100">
-            <template slot-scope="scope">
-              <span v-if="scope.row.check_chg === 0">￥0</span>
-              <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
-              <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
-            </template>
-          </el-table-column>-->
-          <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="130">
-            <template slot-scope="scope">
-              ￥{{ returnPrice(scope.row.real_price) }}
-            </template>
-          </el-table-column>
+          
           <el-table-column label="订单量" sortable="custom" prop="order_count"  min-width="100"/>
           <el-table-column label="件数" sortable="custom" prop="piece_num" min-width="100"></el-table-column>
           <el-table-column label="占比" prop="percent">
             <template slot-scope="scope">
-              {{returnPercentage(scope.row.item_total_price, totalItemTotalPrice)}}%
+              {{returnPercentage(scope.row.gmv, totalItemTotalPrice)}}%
             </template>
           </el-table-column>
           <el-table-column label="操作" width="100">
@@ -154,10 +147,9 @@
         listItem: [],
         orderClassSumData2: [],
         totalItemTotalPrice: 0,
-        totalAmountDelivery: 0,
         totalBonusPromotion: 0,
-        totalCheckChg: 0,
         totalItemRealPrice: 0,
+        totalFramPrice: 0,
         totalOrder: 0,
         totalPiece: 0,
         currentRow: {},
@@ -241,7 +233,7 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-item_total_price',
+          sort: '-gmv',
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -297,29 +289,28 @@
         let orderClassSumData = that.$data.listItem;
 
         let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {},
-        totalItemTotalPrice = 0, totalAmountDelivery = 0, totalBonusPromotion = 0, totalCheckChg = 0, totalItemRealPrice = 0, totalOrder = 0, totalPiece = 0;
+        totalItemTotalPrice = 0, totalBonusPromotion = 0, totalItemRealPrice = 0, totalFramPrice = 0, totalOrder = 0, totalPiece = 0;
 
         for (let i = 0; i < orderClassSumData.length; i++) {
           //总数据
-          totalItemTotalPrice += orderClassSumData[i].item_total_price;
-          totalAmountDelivery += orderClassSumData[i].amount_delivery;
+          totalItemTotalPrice += orderClassSumData[i].gmv;
           totalBonusPromotion += orderClassSumData[i].bonus_promotion;
-          totalCheckChg += orderClassSumData[i].check_chg;
           totalItemRealPrice += orderClassSumData[i].real_price;
+          totalFramPrice += orderClassSumData[i].fram_total_price;
         }
 
         for(let i = 0; i < orderClassSumData.length; i++){
 
           //饼图数据
-          let percent = orderClassSumData[i].item_total_price / totalItemTotalPrice;
+          let percent = orderClassSumData[i].gmv / totalItemTotalPrice;
           if(percent > 0.05 && (areaType === 'zone' ? orderClassSumData[i].zone_title : orderClassSumData[i].city_title) !== '其它'){
             data.push({
-              value: that.returnPrice(orderClassSumData[i].item_total_price),
+              value: that.returnPrice(orderClassSumData[i].gmv),
               name: (areaType === 'zone' ? orderClassSumData[i].zone_title : orderClassSumData[i].city_title),
               code: (areaType === 'zone' ? orderClassSumData[i].zone_code : orderClassSumData[i].city_code)
             });
           }else{
-            dataTemp.value += orderClassSumData[i].item_total_price;
+            dataTemp.value += orderClassSumData[i].gmv;
           }
 
           totalOrder += orderClassSumData[i].order_count;
@@ -333,10 +324,9 @@
           });
         }
         that.$data.totalItemTotalPrice = totalItemTotalPrice;
-        that.$data.totalAmountDelivery = totalAmountDelivery;
         that.$data.totalBonusPromotion = totalBonusPromotion;
-        that.$data.totalCheckChg = totalCheckChg;
         that.$data.totalItemRealPrice = totalItemRealPrice;
+        that.$data.totalFramPrice = totalFramPrice;
         that.$data.totalOrder = totalOrder;
         that.$data.totalPiece = totalPiece;
 
@@ -393,7 +383,6 @@
         that.chart.off('click');
         // 点击饼图事件处理
         that.chart.on('click', function (params) {
-          console.log("params", params);
           if (params.componentType === 'series') {
             if (params.name === '其它' || params.name === '暂无数据') {
               return;

@@ -127,43 +127,12 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="item_total_price"
-          label="订单商品金额"
+          prop="gmv"
+          label="GMV"
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.item_total_price)}}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="amount_delivery"
-          label="运费金额"
-          align="left"
-          min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_delivery)}}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="bonus_promotion"
-          label="优惠金额"
-          align="left"
-          min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{returnPrice(scope.row.bonus_promotion)}}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="check_chg"
-          label="称重金额"
-          align="left"
-          min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              <span v-if="scope.row.check_chg < 0" class="color-green">{{returnPrice(scope.row.check_chg)}}</span>
-              <span v-else-if="scope.row.check_chg > 0" class="color-red">{{returnPrice(scope.row.check_chg)}}</span>
-              <span v-else>{{returnPrice(scope.row.check_chg)}}</span>
-            </div>
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.gmv)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -173,6 +142,24 @@
           min-width="120">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.real_price)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="fram_total_price"
+          label="筐金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.fram_total_price)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="bonus_promotion"
+          label="优惠金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{returnPrice(scope.row.bonus_promotion)}}</div>
           </template>
         </el-table-column>
         <el-table-column

@@ -97,9 +97,9 @@
             {{ scope.row.system_class_title || '' }}
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
+            ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
         <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
@@ -219,7 +219,7 @@
           province_code: this.province.code,
           begin_date: q.begin_date,
           end_date: q.end_date,
-          sort: '-item_total_price',
+          sort: '-amount_real',
           system_class1: q.system_class1,
           system_class_code1: q.system_class_code1,
           system_class2: q.system_class2,

@@ -73,9 +73,9 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
+            ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
         <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
@@ -86,7 +86,7 @@
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
-            {{ returnPercentage(scope.row.item_total_price, totalItemTotalPrice) }}%
+            {{ returnPercentage(scope.row.amount_real, totalItemTotalPrice) }}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
@@ -188,7 +188,7 @@
           province_code: this.province.code,
           begin_date: q.begin_date,
           end_date: q.end_date,
-          sort: '-item_total_price',
+          sort: '-amount_real',
           system_class: q.system_class1,
           system_class_code: q.system_class_code1,
           page: 1,
@@ -245,7 +245,7 @@
           let rd = res.data, totalItemTotalPrice = 0;
           for (let i = 0; i < rd.length; i++) {
             //总数据
-            totalItemTotalPrice += rd[i].item_total_price;
+            totalItemTotalPrice += rd[i].amount_real;
           }
           this.$data.totalItemTotalPrice = totalItemTotalPrice;
           this.$data.dataItem = rd;

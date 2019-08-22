@@ -60,9 +60,9 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
+            ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
         <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
@@ -73,7 +73,7 @@
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
-            {{ returnPercentage(scope.row.item_total_price, totalItemTotalPrice) }}%
+            {{ returnPercentage(scope.row.amount_real, totalItemTotalPrice) }}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
@@ -208,7 +208,7 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-item_total_price',
+          sort: '-amount_real',
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -263,20 +263,20 @@
         totalItemTotalPrice = 0, totalFramPrice = 0, totalCount = 0;
         for (let i = 0; i < orderClassSumData.length; i++) {
           //总数据
-          totalItemTotalPrice += orderClassSumData[i].item_total_price;
+          totalItemTotalPrice += orderClassSumData[i].amount_real;
           totalFramPrice += orderClassSumData[i].fram_total_price;
         }
         for(let i = 0; i < orderClassSumData.length; i++){
           //饼图数据
-          let percent = orderClassSumData[i].item_total_price / totalItemTotalPrice;
+          let percent = orderClassSumData[i].amount_real / totalItemTotalPrice;
           if(percent > 0.05 && orderClassSumData[i].item_system_class !== '其它'){
             data.push({
-              value: that.returnPrice(orderClassSumData[i].item_total_price),
+              value: that.returnPrice(orderClassSumData[i].amount_real),
               name: orderClassSumData[i].item_system_class,
               system_class_code: orderClassSumData[i].system_class_code
             });
           }else{
-            dataTemp.value += orderClassSumData[i].item_total_price;
+            dataTemp.value += orderClassSumData[i].amount_real;
           }
 
           //列表数据

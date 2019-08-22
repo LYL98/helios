@@ -28,33 +28,24 @@
             <span>{{ formatValue(scope.row.store_title) }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="item_total_price" label="订单商品金额" min-width="140" align="left" sortable="custom">
+        <el-table-column prop="gmv" label="GMV" min-width="140" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.item_total_price) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="amount_delivery" label="运费金额" min-width="120" align="left" sortable="custom">
-          <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.amount_delivery) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="bonus_promotion" label="优惠金额" min-width="120" align="left" sortable="custom">
-          <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{ returnPrice(scope.row.bonus_promotion) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="check_chg" label="称重金额" min-width="120" align="left">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              <span v-if="scope.row.check_chg < 0" class="color-green">{{returnPrice(scope.row.check_chg)}}</span>
-              <span v-else-if="scope.row.check_chg > 0" class="color-red">{{returnPrice(scope.row.check_chg)}}</span>
-              <span v-else>{{returnPrice(scope.row.check_chg)}}</span>
-            </div>
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.gmv) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="real_price" label="订单应付金额" min-width="140" align="left" sortable="custom">
           <template slot-scope="scope">
             <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.real_price) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="fram_total_price" label="框金额" min-width="120" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.fram_total_price) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="bonus_promotion" label="优惠金额" min-width="120" align="left" sortable="custom">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{ returnPrice(scope.row.bonus_promotion) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="buy_days" label="购买天数" min-width="130" align="left" sortable="custom">

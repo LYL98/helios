@@ -67,11 +67,20 @@
         </el-table-column>
         <el-table-column
           prop="amount_real"
-          label="销售金额"
+          label="订单商品金额"
           align="left"
           min-width="120">
           <template slot-scope="scope">
             <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_real)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="fram_total_price"
+          label="框金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.fram_total_price)}}</span>
           </template>
         </el-table-column>
         <el-table-column

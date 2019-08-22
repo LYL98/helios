@@ -105,26 +105,9 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price" min-width="120">
+        <el-table-column label="GMV" sortable="custom" prop="gmv" min-width="120">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="运费金额" sortable="custom" prop="amount_delivery">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.amount_delivery) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
-          <template slot-scope="scope">
-            {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="称重金额" prop="check_chg">
-          <template slot-scope="scope">
-            <span v-if="scope.row.check_chg === 0">￥0</span>
-            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
-            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
+            ￥{{ returnPrice(scope.row.gmv) }}
           </template>
         </el-table-column>
         <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="120">
@@ -132,12 +115,22 @@
             ￥{{ returnPrice(scope.row.real_price) }}
           </template>
         </el-table-column>
+        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.fram_total_price) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
+          <template slot-scope="scope">
+            {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
+          </template>
+        </el-table-column>
         <el-table-column label="订单量" sortable="custom" prop="order_count">
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="piece_num"/>
         <el-table-column label="占比" prop="percent">
           <template slot-scope="scope">
-            {{returnPercentage(scope.row.item_total_price, total)}}%
+            {{returnPercentage(scope.row.gmv, total)}}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
@@ -273,7 +266,7 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-item_total_price',
+          sort: '-gmv',
           zone_code: this.$route.query.zone_code,
           zone_title: this.$route.query.zone_title,
           city_code: this.$route.query.city_code,
@@ -350,7 +343,7 @@
         if(res.code === 0){
           this.total = 0
           res.data.items.map(item => {
-            this.total += item.item_total_price
+            this.total += item.gmv
           })
 
           that.$data.orderItemSumData = res.data;

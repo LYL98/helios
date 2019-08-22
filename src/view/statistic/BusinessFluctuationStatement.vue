@@ -31,12 +31,7 @@
               <span>{{formatValue(selectArea === 'zone' ? scope.row.zone_title : scope.row.city_title)}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            min-width="100"
-            align="left"
-            v-for="(d, index) in dateRange()"
-            :key="d"
-            :label="labelDate(d)">
+          <el-table-column min-width="100" align="left" v-for="(d, index) in dateRange()" :key="d" :label="labelDate(d)">
             <template slot-scope="scope">
               <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.items, d) }}</span>
             </template>

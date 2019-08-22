@@ -76,12 +76,7 @@
         :highlight-current-row="true"
         @sort-change="onSort"
       >
-        <el-table-column
-          type="index"
-          :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
-          label="序号"
-          :index="indexMethod"
-        />
+        <el-table-column type="index" width="120" label="序号" :index="indexMethod" />
         <!-- 县域、订单金额、订单量、件数、占比、操作 -->
         <el-table-column label="编号/商品" prop="store_title">
           <template slot-scope="scope">
@@ -93,21 +88,14 @@
             <span :class="isEllipsis(scope.row)">{{scope.row.count_real}}件</span>
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="称重金额" prop="check_chg">
-          <template slot-scope="scope">
-            <span v-if="scope.row.check_chg === 0">￥0</span>
-            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
-            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
             ￥{{ returnPrice(scope.row.amount_real) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="筐金额" sortable="custom" prop="fram_total_price">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.fram_total_price) }}
           </template>
         </el-table-column>
       </el-table>
@@ -230,7 +218,7 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-item_total_price',
+          sort: '-amount_real',
           store_id: this.$route.query.store_id,
           store_title: this.$route.query.store_title,
           zone_code: this.$route.query.zone_code,
