@@ -237,8 +237,8 @@ export default {
           case 'merchant':
             result = cellItem.store_num_ord || cellItem.store_num_ord === 0 ? cellItem.store_num_ord : '-';
             break;
-          case 'item_total_price':
-            result = cellItem.item_total_price || cellItem.item_total_price === 0 ? '¥' + that.returnPrice(cellItem.item_total_price) : '-';
+          case 'gmv':
+            result = cellItem.gmv || cellItem.gmv === 0 ? '¥' + that.returnPrice(cellItem.gmv) : '-';
             break;
           case 'amount_delivery':
             result = cellItem.amount_delivery || cellItem.amount_delivery === 0 ? '¥' + that.returnPrice(cellItem.amount_delivery) : '-';
@@ -273,8 +273,8 @@ export default {
             case 'merchant':
               result = cellItem.store_num_ord ? cellItem.store_num_ord : 0;
               break;
-            case 'item_total_price':
-              result = cellItem.item_total_price ? cellItem.item_total_price : 0;
+            case 'gmv':
+              result = cellItem.gmv ? cellItem.gmv : 0;
               break;
             case 'amount_delivery':
               result = cellItem.amount_delivery ? cellItem.amount_delivery : 0;
@@ -300,7 +300,7 @@ export default {
       switch (selectType) {
         case 'merchant':
           return sum || sum === 0 ? DataHandle.formatCount(sum) : '-';
-        case 'item_total_price':
+        case 'gmv':
         case 'amount_delivery':
         case 'bonus_promotion':
         case 'check_chg':
@@ -331,8 +331,8 @@ export default {
             case 'merchant':
               result = cellItem.store_num_ord ? cellItem.store_num_ord : 0;
               break;
-            case 'item_total_price':
-              result = cellItem.item_total_price ? cellItem.item_total_price : 0;
+            case 'gmv':
+              result = cellItem.gmv ? cellItem.gmv : 0;
               break;
             case 'amount_delivery':
               result = cellItem.amount_delivery ? cellItem.amount_delivery : 0;
@@ -358,7 +358,7 @@ export default {
       switch (selectType) {
         case 'merchant':
           return sum || sum === 0 ? DataHandle.formatCount(sum / rowItems.length) : '-';
-        case 'item_total_price':
+        case 'gmv':
         case 'amount_delivery':
         case 'bonus_promotion':
         case 'check_chg':
