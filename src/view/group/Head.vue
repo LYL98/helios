@@ -1,11 +1,11 @@
 <template>
   <div>
-    <head-list :getPageComponents="getPageComponents" ref="HeadList"></head-list>
+    <head-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="HeadList"></head-list>
     <!--详情-->
-    <head-detail :getPageComponents="getPageComponents" ref="HeadDetail"></head-detail>
+    <head-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="HeadDetail"></head-detail>
     <!--新增-->
-    <head-edit :getPageComponents="getPageComponents" ref="HeadEdit"></head-edit>
-    <detail-head-balance-log :getPageComponents="getPageComponents" ref="DetailHeadBalanceLog"/>
+    <head-edit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="HeadEdit"></head-edit>
+    <detail-head-balance-log :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailHeadBalanceLog"/>
   </div>
 </template>
 
@@ -15,8 +15,11 @@
   import HeadEdit from './HeadEdit';
   import HeadDetail from './HeadDetail';
   import { DetailHeadBalanceLog } from '@/container';
+  import viewMixin from '@/view/view.mixin';
+
   export default {
     name: "Head",
+    mixins: [viewMixin],
     components: {
       'head-list': HeadList,
       'head-edit': HeadEdit,
@@ -30,24 +33,6 @@
     created() {
       documentTitle('团购 - 团长列表');
     },
-    methods: {
-      //获取当前页面的组件
-      getPageComponents(name){
-        let com = null;
-        const fun = (refs)=>{
-          for(let item in refs){
-            if(item === name){
-              com = refs[name];
-            }
-            if(refs[item] && refs[item].$refs){
-              fun(refs[item].$refs);
-            }
-          }
-        }
-        fun(this.$refs);
-        return com;
-      },
-    }
   }
 </script>
 

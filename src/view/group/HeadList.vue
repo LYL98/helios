@@ -57,7 +57,7 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -160,25 +160,13 @@
    * resetQuery
    *
    */
-
-  import { mapGetters } from 'vuex';
-  import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate } from '@/common';
   import { Constant, Http, Config } from '@/util';
-  import { Group } from "@/service";
-  import { tableMixin } from '@/mixins';
+  import tableMixin from '@/container/table/table.mixin';
 
   export default {
     name: "HeadList",
     components: {
-      'el-row': Row,
-      'el-col': Col,
-      'el-input': Input,
-      'el-button': Button,
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-tag': Tag,
-      'el-pagination': Pagination,
       'my-select-city': SelectCity,
       'my-button-group': ButtonGroup,
       'my-query-item': QueryItem,
@@ -187,14 +175,6 @@
     mixins: [tableMixin],
     props: {
       itemAdd: { type: Function, require: true }, //新增
-      getPageComponents: { type: Function, require: true }, //获取页面组件
-    },
-    computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince',
-        windowHeight: 'windowHeight'
-      })
     },
     data() {
       return {
@@ -240,7 +220,7 @@
         this.headQuery();
       },
       async headQuery() {
-        let res = await Group.headQuery(this.$data.query);
+        let res = await Http.get(Config.api.groupHeadQuery, this.query);
         if (res.code === 0) {
           //console.log("当前行", this.$data.currentRow[this.$data.rowIdentifier]);
           this.$data.listItem = Object.assign(this.$data.listItem, {
@@ -248,7 +228,7 @@
             items: res.data.items
           });
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
 
@@ -265,7 +245,7 @@
       //冻结解冻门店
       async groupStoreFreeze(data, index){
         let str = data.is_freeze_header ? '解冻' : '冻结';
-        MessageBox.confirm(`确认${str}该门店?`, '提示', {
+        this.$messageBox.confirm(`确认${str}该门店?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -275,7 +255,7 @@
             is_freeze_header: !data.is_freeze_header
           });
           if(res.code === 0){
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: `已${str}`,
               type: 'success'
@@ -283,7 +263,7 @@
             //更新页面数据
             this.$data.listItem.items[index].is_freeze_header = !data.is_freeze_header;
           }else{
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: res.message,
               type: 'error'

@@ -22,5 +22,5 @@ yarn-error.log*
 *.sw*
 
 *.map
-element-variables.wxss
+*.wxss
 configBase.js

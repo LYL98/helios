@@ -64,7 +64,7 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -196,12 +196,11 @@
    *
    */
 
-  import { mapGetters } from 'vuex';
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
-  import { Group } from "@/service";
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "MemberList",
@@ -220,14 +219,7 @@
       'my-table-operate': TableOperate,
       'my-image-preview': ImagePreview
     },
-    mixins: [tableMixin],
-    computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince',
-        windowHeight: 'windowHeight'
-      })
-    },
+    mixins: [tableMixin, viewMixin],
     data() {
       return {
         tencentPath: Config.tencentPath,
@@ -259,31 +251,31 @@
           page: 1,
           page_size: Constant.PAGE_SIZE
         }
-        this.memberQuery();
+        this.groupMemberQuery();
       },
       changeQuery() {
         this.$data.query = Object.assign(this.$data.query, { page: 1 });
-        this.memberQuery();
+        this.groupMemberQuery();
       },
 
       changePage(page) {
         this.$data.query.page = page;
-        this.memberQuery();
+        this.groupMemberQuery();
       },
       changePageSize(size) {
         this.$data.query.page = 1;
         this.$data.query.page_size = size;
-        this.memberQuery();
+        this.groupMemberQuery();
       },
-      async memberQuery() {
-        let res = await Group.memberQuery(this.$data.query);
+      async groupMemberQuery() {
+        let res = await Http.get(Config.api.groupMemberQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign(this.$data.listItem, {
             num: res.data.num,
             items: res.data.items
           });
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
 
@@ -301,12 +293,12 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Group.memberFreeze({gb_member_id: id});
+          let res = await Http.post(Config.api.groupMemberFreeze, {gb_member_id: id, is_freeze: true});
           if (res.code === 0) {
-            this.memberQuery();
-            this.$store.dispatch('message', {title: '提示', message: '冻结成功', type: 'success'});
+            this.groupMemberQuery();
+            this.$message({title: '提示', message: '冻结成功', type: 'success'});
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');
@@ -320,12 +312,12 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Group.memberUnFreeze({gb_member_id: id});
+          let res = await Http.post(Config.api.groupMemberFreeze, {gb_member_id: id, is_freeze: false});
           if (res.code === 0) {
-            this.memberQuery();
-            this.$store.dispatch('message', {title: '提示', message: '解冻成功', type: 'success'});
+            this.groupMemberQuery();
+            this.$message({title: '提示', message: '解冻成功', type: 'success'});
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');
@@ -339,7 +331,7 @@
         let { city_code, is_freeze, condition } = this.query;
         let query = { city_code, is_freeze, condition };
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           ...query
@@ -351,9 +343,9 @@
           }
           window.open(queryStr);
         }else{
-          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+          this.$message({ title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       }
     }
   }

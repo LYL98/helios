@@ -129,12 +129,10 @@
 
 <script>
 
-  import { mapGetters } from 'vuex';
   import { Button, Input, Select, Option, DatePicker, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { QueryItem } from '@/common';
-  import { Constant, Config, DataHandle } from '@/util';
-  import { Item } from "@/service";
-  import { tableMixin } from "@/mixins";
+  import { Http, Constant, Config, DataHandle } from '@/util';
+  import tableMixin from '@/container/table/table.mixin';
 
   export default {
     name: "BuyLogList",
@@ -151,11 +149,6 @@
       'my-query-item': QueryItem,
     },
     mixins: [tableMixin],
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince',
-      })
-    },
     data() {
       return {
         pickerValue: null,
@@ -164,7 +157,7 @@
           action_create: '创建',
           action_active: '上架',
           action_deactive: '下架',
-          action_edit: '编辑',
+          action_edit: '修改',
           action_close: '结算'
         },
         query: {},
@@ -220,14 +213,14 @@
         this.logQuery();
       },
       async logQuery() {
-        let res = await Item.groupBuyLogQuery(this.$data.query);
+        let res = await Http.get(Config.api.groupBuyLogQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign(this.$data.listItem, {
             num: res.data.num,
             items: res.data.items
           });
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
 

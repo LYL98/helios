@@ -2,26 +2,15 @@
   <div>
     <query-group-buy v-model="query" @change="changeQuery" :reset="resetQuery"></query-group-buy>
     <div class="operate" v-if="auth.isAdmin || auth.GroupBuyAdd">
-      <el-button
-        v-if="auth.isAdmin || auth.GroupBuyLogQuery"
-        plain
-        type="primary"
-        size="mini"
-        @click="handleShowLogList"
-      >
+      <el-button v-if="auth.isAdmin || auth.GroupBuyLogQuery" plain type="primary" size="mini" @click="handleShowLogList">
         操作记录
       </el-button>
-      <el-button
-        v-if="auth.isAdmin || auth.GroupBuyAdd"
-        type="primary"
-        size="mini"
-        @click="handleAdd"
-      >
+      <el-button v-if="auth.isAdmin || auth.GroupBuyAdd" type="primary" size="mini" @click="handleAdd">
         新增
       </el-button>
     </div>
     <table-group-buy
-      :data="groupBuyList.items"
+      :data="dataItem.items"
       :page="query.page"
       :pageSize="query.page_size"
       :offsetHeight="offsetHeight"
@@ -31,8 +20,8 @@
       :delete="handleDelete"
       :cancel="handleCancel"
       :edit="handleEdit"
-    >
-    </table-group-buy>
+      :windowHeight="viewWindowHeight"
+    />
     <div class="footer">
       <div class="table-pagination">
         <el-pagination
@@ -41,7 +30,7 @@
           :page-sizes="[10, 20, 30, 40, 50]"
           @size-change="changePageSize"
           @current-change="changePage"
-          :total="groupBuyList.num"
+          :total="dataItem.num"
           :page-size="query.page_size"
           :current-page="query.page"
         />
@@ -275,13 +264,14 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex';
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox, Col, Row} from 'element-ui';
-  import {Constant, DataHandle} from '@/util';
+  import { Http, Config, Constant, DataHandle } from '@/util';
   import {QueryGroupBuy, TableGroupBuy, FormGroupBuy, TableGroupBuyDetail, TableGroupBuyMerchantDetail} from '@/container';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "BuyList",
+    mixins: [viewMixin],
     components: {
       'el-button': Button,
       'el-pagination': Pagination,
@@ -308,17 +298,14 @@
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
       }
     },
-    computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince',
-        groupBuyList: 'groupBuyListData',
-        detailStoreList: 'groupBuyStoreListData',
-        merchantMemberList: 'groupBuyMemberListData'
-      })
-    },
     data() {
       return {
+        dataItem: {
+          items: [],
+          num: 0
+        },
+        detailStoreList: [],
+        merchantMemberList: [],
         query: {},
         detailQuery: {},
         detailMerchantQuery: {},
@@ -338,19 +325,130 @@
       }
     },
     methods: {
-      ...mapActions([
-        'groupBuyQuery',
-        'groupBuyItemList',
-        'groupBuyActive',
-        'groupBuyCancel',
-        'groupBuyDelete',
-        'groupBuyAdd',
-        'groupBuyEdit',
-        'groupBuyDetail',
-        'groupBuyStoreDetail',
-        'groupBuyStoreList',
-        'groupBuyStoreMemberList'
-      ]),
+      // 团购列表
+      async groupBuyQuery() {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.get(Config.api.groupBuyQuery, this.query);
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          this.$data.dataItem = res.data;
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //生效团购活动
+      async groupBuyActive({data, callback}){
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.post(Config.api.groupBuyActive, data);
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$message({title: '提示', message: '团购上架成功', type: 'success'});
+          typeof callback === 'function' && callback(res.data);
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //结束团购活动
+      async groupBuyCancel({data, callback}){
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.post(Config.api.groupBuyCancel, data);
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$message({title: '提示', message: '团购下架成功', type: 'success'});
+          typeof callback === 'function' && callback(res.data);
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //删除团购活动
+      async groupBuyDelete({data, callback}){
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.post(Config.api.groupBuyDelete, data);
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$message({title: '提示', message: '团购已删除', type: 'success'});
+          typeof callback === 'function' && callback(res.data);
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //新增团购活动
+      async groupBuyAdd({item, success, error}) {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.post(Config.api.groupBuyAdd, item);
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          this.$message({title: '提示', message: '新增团购活动成功', type: 'success'});
+          typeof success === 'function' && success()
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          typeof error === 'function' && error()
+        }
+      },
+
+      //编辑团购活动
+      async groupBuyEdit({item, success, error}) {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.post(Config.api.groupBuyEdit, item);
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          this.$message({title: '提示', message: '编辑团购活动成功', type: 'success'});
+          typeof success === 'function' && success()
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          typeof error === 'function' && error()
+        }
+      },
+      //详情
+      async groupBuyDetail({query, success, error}) {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.get(Config.api.groupBuyDetail, query);
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          typeof success === 'function' && success(res.data)
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          typeof error === 'function' && error()
+        }
+      },
+      //门店详情
+      async groupBuyStoreDetail({query, success, error}) {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.get(Config.api.groupBuyStoreDetail, query);
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          typeof success === 'function' && success(res.data)
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          typeof error === 'function' && error()
+        }
+      },
+      // 团购门店列表
+      async groupBuyStoreList({query, success, error}) {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.get(Config.api.groupBuyStoreList, query);
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          this.$data.detailStoreList = res.data;
+          typeof success === 'function' && success(res.data)
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          typeof error === 'function' && error()
+        }
+      },
+      //用户列表
+      async groupBuyStoreMemberList({query, success, error}) {
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.get(Config.api.groupBuyStoreMemberList, query);
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          this.$data.merchantMemberList = res.data;
+          typeof success === 'function' && success(res.data)
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+          typeof error === 'function' && error()
+        }
+      },
 
       returnPrice(price) {
         return DataHandle.returnPrice(price)
@@ -394,7 +492,7 @@
       },
       changePage(page) {
         this.$data.query.page = page;
-        this.groupBuyQuery({query: this.$data.query});
+        this.groupBuyQuery();
       },
       changePageSize(size) {
         this.$data.query.page_size = size;
@@ -428,7 +526,7 @@
       loadListDataFirstPage() {
         let { query } = this;
         query.page = 1;
-        this.groupBuyQuery({query: query})
+        this.groupBuyQuery()
       },
 
       groupBuyStatus(status) {
@@ -492,7 +590,7 @@
         };
 
         let success = () => {
-          this.groupBuyQuery({ query: this.$data.query });
+          this.groupBuyQuery();
           this.$data.formSending = false;
           this.$data.dialog.isShowAddEdit = false;
         };
@@ -536,7 +634,7 @@
         };
 
         let success = () => {
-          this.groupBuyQuery({ query: this.$data.query });
+          this.groupBuyQuery();
           this.$data.formSending = false;
           this.$data.dialog.isShowAddEdit = false;
         };
@@ -684,7 +782,7 @@
               id: row.id
             },
             callback: function (data) {
-              that.groupBuyQuery({query: query})
+              that.groupBuyQuery()
             }
           });
         }).catch(() => {
@@ -706,7 +804,7 @@
               id: row.id
             },
             callback: function (data) {
-              that.groupBuyQuery({query: query})
+              that.groupBuyQuery()
             }
           });
         }).catch((e) => {
@@ -728,7 +826,7 @@
               id: row.id
             },
             callback: function (data) {
-              that.groupBuyQuery({query: query})
+              that.groupBuyQuery()
             }
           });
         }).catch((e) => {

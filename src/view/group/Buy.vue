@@ -1,40 +1,25 @@
 <template>
   <div>
-    <buy-list :show-log-list="handleShowLogList"></buy-list>
-    <el-dialog
-      :visible.sync="dialog.isShowLogList"
-      title="操作记录"
-      width="1100px"
-      append-to-body
-    >
-      <buy-log-list v-if="dialog.isShowLogList" />
-    </el-dialog>
+    <query-group-buy :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryGroupBuy" page="buy"/>
+    <table-group-buy :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableGroupBuy" page="buy"/>
+    <detail-group-buy :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailGroupBuy" page="buy"/>
   </div>
 </template>
 
 <script>
-  import BuyList from './BuyList';
-  import BuyLogList from './BuyLogList';
-  import { Dialog } from "element-ui";
+  import { TableGroupBuy, QueryGroupBuy, DetailGroupBuy } from '@/container';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "Buy",
+    mixins: [viewMixin],
     components: {
-      'el-dialog': Dialog,
-      'buy-list': BuyList,
-      'buy-log-list': BuyLogList
+      'query-group-buy': QueryGroupBuy,
+      'table-group-buy': TableGroupBuy,
+      'detail-group-buy': DetailGroupBuy
     },
-    data() {
-      return {
-        dialog: {
-          isShowLogList: false
-        }
-      }
-    },
-    methods: {
-      handleShowLogList() {
-        this.$data.dialog.isShowLogList = true;
-      }
+    created() {
+      documentTitle('团购 - 商品列表');
     }
   }
 </script>

@@ -4,7 +4,8 @@ import VueResource from 'vue-resource';
 import App from './App';
 import store from './store';
 import router from './router';
-import { DataHandle } from '@/util';
+import { DataHandle, Method, Http, Config } from '@/util';
+import { MessageBox, Notification, Loading } from 'element-ui';
 
 import * as Sentry from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';
@@ -26,6 +27,57 @@ if(isPro){
 
 Vue.use(VueResource);
 Vue.config.productionTip = false;
+
+let LoadingInstance; //全局loading
+
+//全局注册方法
+Vue.use({
+  install(Vue){
+    //全局提示
+    Vue.prototype.$message = ({title = '提示', message = '成功', type = 'success', })=>{
+      if(type === 'error'){
+        MessageBox.alert(message, title, {
+          type: 'error'
+        });
+      }else{
+        Notification[type]({
+          title: title,
+          message: message,
+          offset: 50
+        });
+      } 
+    }
+    //全局loading
+    Vue.prototype.$loading = ({ isShow = true, isWhole = true }) =>{
+      if(isShow && isWhole){
+        LoadingInstance = Loading.service({
+          background: 'rgba(255, 255, 255, 0.2)'
+        });
+      }else{
+        LoadingInstance && LoadingInstance.close();
+      }
+    }
+    //全局MessageBox
+    Vue.prototype.$messageBox = MessageBox;
+
+    //全局省份
+    let province = Method.getLocalStorage('appleGlobalProvince');
+    Vue.prototype.$province = province;
+
+    //全局品牌 refresh (true,false)
+    Vue.prototype.$getBrand = async (refresh)=>{
+      if(globalBrand && globalBrand.brand_name && !refresh){
+        return globalBrand;
+      }
+      let res = await Http.get(Config.api.getBrand, {});
+      if(res.code === 0){
+        globalBrand = res.data;
+        return globalBrand;
+      }
+      return { brand_name: '', brand_icon: ''};
+    }
+  }
+});
 
 DataHandle.initArrayRemove();//初始化数组删除
 

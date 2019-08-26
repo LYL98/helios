@@ -13,9 +13,8 @@
 </template>
 
 <script>
-  import {Row, Col, Button, Form, FormItem} from "element-ui";
-  import {Config, DataHandle, Constant} from '@/util';
-  import { Group } from '@/service';
+  import {Row, Col, Button, Form, FormItem} from 'element-ui';
+  import {Http, Config, DataHandle, Constant} from '@/util';
 
   export default {
     name: "OrderDetail",
@@ -40,14 +39,14 @@
     methods: {
       // 一键发货
       async handleAllShip() {
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
-        let res = await Group.orderAllShip(this.query);
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: true,  isWhole: true });
+        let res = await Http.post(Config.api.groupOrderAllShip, this.query);
+        this.$loading({ isShow: false });
         if (res.code === 0) {
-          this.$store.dispatch('message', {title: '提示', message: '发货成功', type: 'success'});
+          this.$message({title: '提示', message: '发货成功', type: 'success'});
           this.$emit('callback', 'success');
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
       //取消一键发货
@@ -56,13 +55,13 @@
       },
       //获取数据
       async groupOrderAllShipTotals(){
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
-        let res = await Group.orderAllShipTotals(this.query);
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: true,  isWhole: true });
+        let res = await Http.get(Config.api.groupOrderAllShipTotals, this.query);
+        this.$loading({ isShow: false });
         if (res.code === 0) {
           this.$data.detail = res.data;
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       }
     },

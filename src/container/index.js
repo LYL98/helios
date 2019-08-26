@@ -84,5 +84,6 @@ export {
 } from './form';
 
 export {
-  DetailHeadBalanceLog
+  DetailHeadBalanceLog,
+  DetailGroupBuy
 } from './detail';

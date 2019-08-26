@@ -112,7 +112,7 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -245,29 +245,14 @@
    *
    */
 
-  import { mapGetters } from 'vuex';
-  import { Dialog, Row, Col, Button, Input, Select, Option, Table, TableColumn, Tag, DatePicker, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
-  import { Group } from "@/service";
-  import { tableMixin } from "@/mixins";
+  import tableMixin from '@/container/table/table.mixin';
   import OrderAllShip from './OrderAllShip';
 
   export default {
     name: "OrderList",
     components: {
-      'el-dialog': Dialog,
-      'el-row': Row,
-      'el-col': Col,
-      'el-input': Input,
-      'el-button': Button,
-      'el-select': Select,
-      'el-option': Option,
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-tag': Tag,
-      'el-date-picker': DatePicker,
-      'el-pagination': Pagination,
       'my-select-city': SelectCity,
       'my-button-group': ButtonGroup,
       'my-query-item': QueryItem,
@@ -278,13 +263,6 @@
     mixins: [tableMixin],
     props: {
       showDetail: { type: Function, required: true }
-    },
-    computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince',
-        windowHeight: 'windowHeight'
-      })
     },
     data() {
       return {
@@ -366,14 +344,14 @@
         this.orderQuery();
       },
       async orderQuery() {
-        let res = await Group.orderQuery(this.$data.query);
+        let res = await Http.get(Config.api.groupOrderQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign(this.$data.listItem, {
             num: res.data.num,
             items: res.data.items
           });
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
 
@@ -396,20 +374,20 @@
         if (this.$data.multipleSelection.length === 0) {
           return;
         } else {
-          MessageBox.confirm('确认发货?', '提示', {
+          this.$messageBox.confirm('确认发货?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(async () => {
             let ids = this.$data.multipleSelection.map(item => item.id);
-            let res = await Group.orderShip({
+            let res = await Http.post(Config.api.groupOrderShip, {
               ids: ids
             });
             if (res.code === 0) {
-              this.$store.dispatch('message', {title: '提示', message: '发货成功', type: 'success'});
+              this.$message({title: '提示', message: '发货成功', type: 'success'});
               this.orderQuery();
             } else {
-              this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+              this.$message({title: '提示', message: res.message, type: 'error'});
             }
           }).catch(() => {
             // console.log('取消');
@@ -423,9 +401,9 @@
           this.$data.isShowAllShip = false;
         }else{
           if(this.query.status !== 'wait_delivery_customer'){
-            this.$store.dispatch('message', {title: '提示', message: '请筛选待发货的订单再进行一键发货', type: 'error'});
+            this.$message({title: '提示', message: '请筛选待发货的订单再进行一键发货', type: 'error'});
           }else if(this.listItem.num === 0){
-            this.$store.dispatch('message', {title: '提示', message: '暂无待发货的订单', type: 'error'});
+            this.$message({title: '提示', message: '暂无待发货的订单', type: 'error'});
           }else{
             this.$data.isShowAllShip = true;
           }
@@ -439,20 +417,20 @@
       },
 
       handleOrderShip(id) {
-        MessageBox.confirm('确认发货?', '提示', {
+        this.$messageBox.confirm('确认发货?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
           let ids = [id];
-          let res = await Group.orderShip({
+          let res = await Http.post(Config.api.groupOrderShip, {
             ids: ids
           });
           if (res.code === 0) {
-            this.$store.dispatch('message', {title: '提示', message: '发货成功', type: 'success'});
+            this.$message({title: '提示', message: '发货成功', type: 'success'});
             this.orderQuery();
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');
@@ -465,7 +443,7 @@
         let query = { status, condition, begin_date, end_date };
 
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           ...query
@@ -477,23 +455,23 @@
           }
           window.open(queryStr);
         }else{
-          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+          this.$message({ title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       },
 
       handleOrderCancel(id) {
-        MessageBox.confirm('确认取消订单?', '提示', {
+        this.$messageBox.confirm('确认取消订单?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Group.orderCancel({id: id});
+          let res = await Http.post(Config.api.groupOrderCancel, {id: id});
           if (res.code === 0) {
-            this.$store.dispatch('message', {title: '提示', message: '订单取消成功', type: 'success'});
+            this.$message({title: '提示', message: '订单取消成功', type: 'success'});
             this.orderQuery();
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');
@@ -502,17 +480,17 @@
 
       //确认取货
       handleOrderConfirmPickUp(id) {
-        MessageBox.confirm('确认取货?', '提示', {
+        this.$messageBox.confirm('确认取货?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Group.orderConfirmPickUp({id: id});
+          let res = await Http.post(Config.api.groupOrderConfirmPickUp, {id: id});
           if (res.code === 0) {
-            this.$store.dispatch('message', {title: '提示', message: '取货成功', type: 'success'});
+            this.$message({title: '提示', message: '取货成功', type: 'success'});
             this.orderQuery();
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');

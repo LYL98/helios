@@ -70,9 +70,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { Form, FormItem, Row, Col, Button, Input, Autocomplete, Select, Option, Dialog } from "element-ui";
-import { Base, Group } from "@/service";
+import { Form, FormItem, Row, Col, Button, Input, Autocomplete, Select, Option, Dialog } from 'element-ui';
+import { Http, Config } from '@/util';
 
 export default {
   name: "HeadEdit",
@@ -91,13 +90,9 @@ export default {
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件
   },
-  computed: {
-    ...mapGetters({
-      province: "globalProvince"
-    })
-  },
   data() {
     return {
+      province: this.$province,
       showType: 'add',
       isShow: false,
       storeList: [],
@@ -217,8 +212,8 @@ export default {
         this.$data.storeList = [];
         return;
       }
-      let res = await Base.baseStoreList({
-        province_code: this.province.code,
+      let res = await Http.get(Config.api.baseStoreList, {
+        province_code: this.$province.code,
         condition: condition
       });
       if (res.code === 0) {
@@ -238,11 +233,7 @@ export default {
         this.$data.storeList = rd;
       } else {
         this.$data.storeList = [];
-        this.$store.dispatch("message", {
-          title: "提示",
-          message: res.message,
-          type: "error"
-        });
+        this.$message({message: res.message, type: 'error'});
       }
     },
 
@@ -255,17 +246,13 @@ export default {
       if (!id) {
         return;
       }
-      let res = await Group.headStoreDetail({ mall_store_id: id }); //商城门店id
+      let res = await Http.get(Config.api.groupHeadStoreBindDetail, { mall_store_id: id });
       if (res.code === 0) {
         this.$data.editItem.mall_store_id = id;
         let rd = this.setMembersStatus(res.data);
         this.$data.detail = rd;
       } else {
-        this.$store.dispatch("message", {
-          title: "提示",
-          message: res.message,
-          type: "error"
-        });
+        this.$message({message: res.message, type: 'error'});
       }
     },
 
@@ -274,14 +261,10 @@ export default {
       this.$refs["ruleForm"].validate(async valid => {
         if (valid) {
           this.$data.loading = true;
-          let res = await Group.headAdd(this.$data.editItem);
-          if (res.code == 0) {
+          let res = await Http.post(Config.api.groupHeadAdd, this.editItem);
+          if (res.code === 0) {
             this.$data.loading = false;
-            this.$store.dispatch("message", {
-              title: "提示",
-              message: "团长新增成功",
-              type: "success"
-            });
+            this.$message({message: res.message, type: 'success'});
             if(this.showType === 'add'){
               //新增
               let com = this.getPageComponents('HeadList');
@@ -298,11 +281,7 @@ export default {
             this.handleClose(); //关闭
           } else {
             this.$data.loading = false;
-            this.$store.dispatch("message", {
-              title: "提示",
-              message: res.message,
-              type: "error"
-            });
+            this.$message({message: res.message, type: 'error'});
           }
         }
       });

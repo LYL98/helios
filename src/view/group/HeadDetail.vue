@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { Dialog, Button} from "element-ui";
-import { Base, Group } from "@/service";
+import { Dialog, Button} from 'element-ui';
 import { TableGroupHeadDetail, TableGroupHeadDetailList } from '@/container';
 import { Http, Config } from '@/util';
+import detailMixin from '@/container/detail/detail.mixin';
 
 export default {
   name: "HeadDetail",
+  mixins: [detailMixin],
   components: {
     'el-button': Button,
     'table-group-head-detail': TableGroupHeadDetail,
@@ -28,12 +28,6 @@ export default {
   },
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件
-  },
-  computed: {
-    ...mapGetters({
-      auth: 'globalAuth',
-      province: "globalProvince"
-    })
   },
   data() {
     return {
@@ -55,7 +49,7 @@ export default {
     //获取团购门店详情
     async groupHeadStoreBindDetail() {
       let { dataItem } = this;
-      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(Config.api.groupHeadStoreBindDetail, {
         gb_store_id: dataItem[0].id, //团购门店id
       });
@@ -68,13 +62,9 @@ export default {
         };
         this.$data.isShow = true;
       }else{
-        this.$store.dispatch("message", {
-          title: "提示",
-          message: res.message,
-          type: "error"
-        });
+        this.$message({message: res.message, type: 'error'});
       }
-      this.$store.dispatch('loading', {isShow: false});
+      this.$loading({ isShow: false });
     },
     //新增
     handleAddItem() {
