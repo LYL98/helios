@@ -59,7 +59,7 @@
             </template>
           </el-table-column>
           <el-table-column min-width="100px" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
-            <el-tooltip slot-scope="scope" effect="dark" :content="scope.row.cells[scope.$index].hint" placement="top" v-if="fslse">
+            <el-tooltip slot-scope="scope" effect="dark" :content="scope.row.hints[index]" placement="top" v-if="false">
               <span>{{ cellValue(scope.row.cells, d) }}</span>
             </el-tooltip>
             <template slot-scope="scope" v-else>{{ cellValue(scope.row.cells, d) }}</template>
@@ -649,7 +649,8 @@
               //初始化行变量
               let indexItem = {
                 name: indexNames[i],
-                cells: Array()
+                cells: Array(),
+                hints: Array(),
               };
 
               //计算列
@@ -662,9 +663,11 @@
                   value: this.cellDisplayValue(i, item),
                   origin_value: this.cellOriginValue(i, item),
                   type: i,
-                  hint: i === 0 ? `订单商品金额：${this.returnPrice(item.amount_real)}  运费：${this.returnPrice(item.amount_delivery)}` : '' //gmv
                 };
-                indexItem.cells.push(cell)
+                if(i === 0){
+                  indexItem.hints.push(`订单商品金额：${this.returnPrice(item.amount_real)}  运费：${this.returnPrice(item.amount_delivery)}`);//gmv提示
+                }
+                indexItem.cells.push(cell);
               }
 
               indexItems.push(indexItem)
