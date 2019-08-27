@@ -12,6 +12,7 @@ export { default as TableFinanceBalanceLog } from './TableFinanceBalanceLog';
 export { default as TableFinanceBalanceMerchantLog } from './TableFinanceBalanceMerchantLog';
 export { default as TableFinanceApprove } from './TableFinanceApprove';
 export { default as TableGroupItem } from './TableGroupItem';
+export { default as TableGroupActivity } from './TableGroupActivity';
 export { default as TableGroupBuyDetail } from './TableGroupBuyDetail';
 export { default as TableGroupBuyMerchantDetail } from './TableGroupBuyMerchantDetail';
 export { default as TableGroupHeadDetail } from './TableGroupHeadDetail';

@@ -139,6 +139,14 @@ const Constant = {
     canceled: '已取消'
   },
 
+  //团购活动状态
+  GROUP_ACTIVITY_STATUS: {
+    xxx1: '待付款',
+    xxx2: '团购中',
+    xxx3: '待发货',
+    xxx4: '已发货',
+  },
+
   //订单状态
   ORDER_STATUS: {
     wait_confirm: '待确认',

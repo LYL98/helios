@@ -1,8 +1,8 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="(auth.isAdmin || auth.GroupItemEditLog || auth.GroupItemAdd) && page === 'item'">
-      <el-button v-if="auth.isAdmin || auth.GroupItemEditLog" @click.native="handleShowDetail('DetailGroupItemEditLog')" size="mini" type="primary" plain>操作记录</el-button>
-      <el-button v-if="auth.isAdmin || auth.GroupItemAdd" @click="handleShowAddEdit('AddEditGroupItem')" size="mini" type="primary">新增</el-button>
+    <div class="table-top" v-if="(auth.isAdmin || auth.GroupActivityEditLog || auth.GroupActivityAdd) && page === 'item'">
+      <el-button v-if="auth.isAdmin || auth.GroupActivityEditLog" @click.native="handleShowDetail('DetailGroupActivityEditLog')" size="mini" type="primary" plain>操作记录</el-button>
+      <el-button v-if="auth.isAdmin || auth.GroupActivityAdd" @click="handleShowAddEdit('AddEditGroupActivity')" size="mini" type="primary">新增</el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -15,9 +15,7 @@
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="30" v-if="auth.isAdmin || auth.GroupItemDelete || auth.GroupItemRecover"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
@@ -25,7 +23,7 @@
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
               <div class="td-item add-dot2">
-                <div class="link-item add-dot" @click="handleShowDetail('DetailGroupItem', scope.row)" v-if="((auth.isAdmin || auth.GroupItemDetail) && page === 'item') || ((auth.isAdmin || auth.GroupItemRecoverDetail) && page === 'recover')">
+                <div class="link-item add-dot" @click="handleShowDetail('DetailGroupActivity', scope.row)" v-if="auth.isAdmin || auth.GroupActivityDetail">
                   {{scope.row.code}}/{{scope.row.title}}
                 </div>
                 <div class="add-dot" v-else>
@@ -33,8 +31,14 @@
                 </div>
               </div>
             </template>
-            <!--原价、建议团长价、建议团购价-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'price_origin' || item.key === 'advice_header_price' || item.key === 'advice_price_sale'">&yen;{{returnPrice(scope.row[item.key])}}</div>
+            <!--团购状态-->
+            <div class="td-item add-dot2" v-else-if="item.key === 'status'">
+              12
+            </div>
+            <!--上架状态-->
+            <div class="td-item add-dot2" v-else-if="item.key === 'status'">
+              12
+            </div>
             <!--正常情况-->
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
@@ -49,17 +53,22 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: (auth.isAdmin || auth.GroupItemEdit) && page === 'item',
-                  command: () => handleShowAddEdit('AddEditGroupItem', scope.row)
+                  isDisplay: (auth.isAdmin || auth.GroupActivityEdit) && page === 'item',
+                  command: () => handleShowAddEdit('AddEditGroupActivity', scope.row)
                 },
                 {
-                  title: '删除',
-                  isDisplay: (auth.isAdmin || auth.GroupItemDelete) && page === 'item',
+                  title: '上架',
+                  isDisplay: (auth.isAdmin || auth.GroupActivityDelete) && page === 'item',
                   command: () => handleDelete({ids: [scope.row.id]})
                 },
                 {
-                  title: '恢复',
-                  isDisplay: (auth.isAdmin || auth.GroupItemRecover) && page === 'recover',
+                  title: '作废',
+                  isDisplay: (auth.isAdmin || auth.GroupActivityRecover) && page === 'recover',
+                  command: () => handleRecover({ids: [scope.row.id]})
+                },
+                {
+                  title: '复制',
+                  isDisplay: (auth.isAdmin || auth.GroupActivityRecover) && page === 'recover',
                   command: () => handleRecover({ids: [scope.row.id]})
                 }
               ]"
@@ -69,10 +78,7 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left">
-        <el-button type="danger" size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelete('multi')" v-if="(auth.isAdmin || auth.GroupItemDelete) && page === 'item'">批量删除</el-button>
-        <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleRecover('multi')" v-if="(auth.isAdmin || auth.GroupItemRecover) && page === 'recover'">批量恢复</el-button>
-      </div>
+      <div class="left"></div>
       <div class="right">
         <el-pagination
           background
@@ -96,32 +102,33 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableGroupItem',
+    name: 'TableGroupActivity',
     components: {
     },
     mixins: [tableMixin],
-    props: {
-      page: { type: String, default: 'item' }, //页面item、recover
-    },
     created() {
-      if ((!this.auth.isAdmin && !this.auth.GroupItemEditLog && !this.auth.GroupItemAdd) || this.page === 'recover') {
+      if ((!this.auth.isAdmin && !this.auth.GroupActivityEditLog && !this.auth.GroupActivityAdd) || this.page === 'recover') {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
       }
-      let pc = this.getPageComponents('QueryGroupItem');
+      let pc = this.getPageComponents('QueryGroupActivity');
       this.getData(pc.query);
     },
     data() {
       return {
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
-        tableName: 'TableGroupItem',
+        tableName: 'TableGroupActivity',
         tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '原价', key: 'price_origin', width: '160', isShow: true },
-          { label: '建议团长价', key: 'advice_header_price', width: '160', isShow: true },
-          { label: '建议团购价', key: 'advice_price_sale', width: '160', isShow: true },
+          { label: '团购编号/名称', key: 'code_title', width: '360', isShow: true },
+          { label: '开始时间', key: 'begin_date', width: '160', isShow: true },
+          { label: '结束时间', key: 'end_time', width: '160', isShow: true },
+          { label: '商品数量', key: 'num', width: '120', isShow: true },
+          { label: '团购状态', key: 'status', width: '160', isShow: true },
+          { label: '上架状态', key: 'status', width: '160', isShow: true },
+          { label: '发货时间', key: 'status', width: '160', isShow: true },
           { label: '创建时间', key: 'created', width: '160', isShow: true },
           { label: '更新时间', key: 'updated', width: '160', isShow: false },
-        ]
+        ],
+        groupActivityStatus: Constant.GROUP_ACTIVITY_STATUS,
       }
     },
     methods: {

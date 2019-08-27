@@ -1,5 +1,6 @@
 export {
-  AddEditGroupItem
+  AddEditGroupItem,
+  AddEditGroupActivity
 } from './addEdit';
 
 // 下拉选择组件
@@ -41,6 +42,7 @@ export {
   QueryFinanceBalance,
   QueryFinanceApprove,
   QueryGroupItem,
+  QueryGroupActivity,
   QueryGroupBuyItemStatistics,
   QueryGroupBuyCaptainStatistics,
   QueryGroupBuyMemberStatistics
@@ -62,6 +64,7 @@ export {
   TableFinanceBalanceMerchantLog,
   TableFinanceApprove,
   TableGroupItem,
+  TableGroupActivity,
   TableGroupBuyDetail,
   TableGroupBuyMerchantDetail,
   TableGroupHeadDetail,
@@ -89,5 +92,7 @@ export {
 export {
   DetailHeadBalanceLog,
   DetailGroupItem,
-  DetailGroupItemEditLog
+  DetailGroupItemEditLog,
+  DetailGroupActivity,
+  DetailGroupActivityEditLog,
 } from './detail';

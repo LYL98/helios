@@ -1,40 +1,29 @@
 <template>
   <div>
-    <buy-list :show-log-list="handleShowLogList"></buy-list>
-    <el-dialog
-      :visible.sync="dialog.isShowLogList"
-      title="操作记录"
-      width="1100px"
-      append-to-body
-    >
-      <buy-log-list v-if="dialog.isShowLogList" />
-    </el-dialog>
+    <add-edit-group-activity :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditGroupActivity"/>
+    <query-group-activity :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryGroupActivity"/>
+    <table-group-activity :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableGroupActivity"/>
+    <detail-group-activity :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailGroupActivity"/>
+    <detail-group-activity-edit-log :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailGroupActivityEditLog"/>
   </div>
 </template>
 
 <script>
-  import BuyList from './BuyList';
-  import BuyLogList from './BuyLogList';
-  import { Dialog } from 'element-ui';
+  import { AddEditGroupActivity, TableGroupActivity, QueryGroupActivity, DetailGroupActivity, DetailGroupActivityEditLog } from '@/container';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: "Buy",
+    name: "Item",
+    mixins: [viewMixin],
     components: {
-      'el-dialog': Dialog,
-      'buy-list': BuyList,
-      'buy-log-list': BuyLogList
+      'add-edit-group-activity': AddEditGroupActivity,
+      'query-group-activity': QueryGroupActivity,
+      'table-group-activity': TableGroupActivity,
+      'detail-group-activity': DetailGroupActivity,
+      'detail-group-activity-edit-log': DetailGroupActivityEditLog,
     },
-    data() {
-      return {
-        dialog: {
-          isShowLogList: false
-        }
-      }
-    },
-    methods: {
-      handleShowLogList() {
-        this.$data.dialog.isShowLogList = true;
-      }
+    created() {
+      documentTitle('团购 - 团购活动');
     }
   }
 </script>
