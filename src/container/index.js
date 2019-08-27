@@ -81,7 +81,6 @@ export {
   FormFinanceBalanceEdit,
   FormFinanceBalanceMerchantLogExport,
   FormFinanceApproveEdit,
-  FormGroupBuy,
   FormSystemSettingAd,
   FormSystemSettingOperating,
   FormSystemSettingItemCommonDes

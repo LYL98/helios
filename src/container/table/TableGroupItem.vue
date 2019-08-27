@@ -25,7 +25,7 @@
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
               <div class="td-item add-dot2">
-                <div class="link-item add-dot" @click="handleShowDetail('DetailGroupItem', scope.row)" v-if="auth.isAdmin || auth.GroupItemDetail">
+                <div class="link-item add-dot" @click="handleShowDetail('DetailGroupItem', scope.row)" v-if="((auth.isAdmin || auth.GroupItemDetail) && page === 'item') || ((auth.isAdmin || auth.GroupItemRecoverDetail) && page === 'recover')">
                   {{scope.row.code}}/{{scope.row.title}}
                 </div>
                 <div class="add-dot" v-else>
@@ -104,7 +104,7 @@
       page: { type: String, default: 'item' }, //页面item、recover
     },
     created() {
-      if (!this.auth.isAdmin && !this.auth.GroupItemEditLog && !this.auth.GroupItemAdd) {
+      if ((!this.auth.isAdmin && !this.auth.GroupItemEditLog && !this.auth.GroupItemAdd) || this.page === 'recover') {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
       }
       let pc = this.getPageComponents('QueryGroupItem');

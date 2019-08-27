@@ -9,7 +9,6 @@ export { default as FormPurchaseSupplier } from './FormPurchaseSupplier';
 export { default as FormFinanceBalanceEdit } from './FormFinanceBalanceEdit';
 export { default as FormFinanceBalanceMerchantLogExport } from './FormFinanceBalanceMerchantLogExport';
 export { default as FormFinanceApproveEdit } from './FormFinanceApproveEdit';
-export { default as FormGroupBuy } from './FormGroupBuy';
 export { default as FormSystemSettingAd } from './FormSystemSettingAd';
 export { default as FormSystemSettingOperating } from './FormSystemSettingOperating';
 export { default as FormSystemSettingItemCommonDes } from './FormSystemSettingItemCommonDes';

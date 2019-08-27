@@ -100,7 +100,7 @@
                 <el-menu-item index="GroupItem" :route="{name: 'GroupItem'}"
                               v-if="auth.isAdmin || auth.GroupItem"><span>商品列表</span></el-menu-item>
                 <el-menu-item index="GroupItemRecover" :route="{name: 'GroupItemRecover'}"
-                              v-if="auth.isAdmin || auth.GroupItemRecover"><span>回收站</span></el-menu-item>
+                              v-if="auth.isAdmin || auth.GroupItemRecoverList"><span>回收站</span></el-menu-item>
                 <el-menu-item index="GroupHeadQuery" :route="{name: 'GroupHeadQuery'}"
                               v-if="auth.isAdmin || auth.GroupHeadQuery"><span>团购门店</span></el-menu-item>
                 <el-menu-item index="GroupMemberQuery" :route="{name: 'GroupMemberQuery'}"
