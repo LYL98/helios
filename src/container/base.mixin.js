@@ -109,5 +109,19 @@ export default {
     returnTime(dateStr) {
       return DataHandle.returnDateFormat(dateStr, 'HH:mm:ss')
     },
+
+    //处理基本数据类型转array
+    handleToArray(data){
+      if(data) return [data];
+      return [];
+    },
+
+    //返回数组第几位，如空则返''
+    returnArrayIndex(data, index){
+      if(data && data.length > index){
+        return data[index];
+      }
+      return '';
+    }
   }
 }

@@ -1,3 +1,7 @@
+export {
+  AddEditGroupItem
+} from './addEdit';
+
 // 下拉选择组件
 export {
   SelectCity,
@@ -36,7 +40,7 @@ export {
   QueryItemFluctuationAnalysis,
   QueryFinanceBalance,
   QueryFinanceApprove,
-  QueryGroupBuy,
+  QueryGroupItem,
   QueryGroupBuyItemStatistics,
   QueryGroupBuyCaptainStatistics,
   QueryGroupBuyMemberStatistics
@@ -57,7 +61,7 @@ export {
   TableFinanceBalanceLog,
   TableFinanceBalanceMerchantLog,
   TableFinanceApprove,
-  TableGroupBuy,
+  TableGroupItem,
   TableGroupBuyDetail,
   TableGroupBuyMerchantDetail,
   TableGroupHeadDetail,
@@ -85,5 +89,6 @@ export {
 
 export {
   DetailHeadBalanceLog,
-  DetailGroupBuy
+  DetailGroupItem,
+  DetailGroupItemEditLog
 } from './detail';

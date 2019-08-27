@@ -9,7 +9,7 @@
                   <dt class="label">商品封面</dt>
                   <dd class="content">
                     <image-preview>
-                      <img style="width: 64px; height: 64px;" :src="tencentPath + '123' + '_min200x200'" alt=""/>
+                      <img style="width: 64px; height: 64px;" :src="tencentPath + detail.cover_image + '_min200x200'" alt=""/>
                     </image-preview>
                   </dd>
                 </dl>
@@ -19,7 +19,7 @@
                   <dt class="label">商品轮播图</dt>
                   <dd class="content">
                     <image-preview>
-                      <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in [1,2,3,4,5]" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
+                      <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
                     </image-preview>
                   </dd>
                 </dl>
@@ -29,13 +29,13 @@
               <el-col :span="6">
                 <dl class="detail-item">
                   <dt class="label">商品编号</dt>
-                  <dd class="content">{{detail.item_code}}123456</dd>
+                  <dd class="content">{{detail.code}}</dd>
                 </dl>
               </el-col>
               <el-col :span="18">
                 <dl class="detail-item">
                   <dt class="label">商品名称</dt>
-                  <dd class="content">{{detail.item_title}}</dd>
+                  <dd class="content">{{detail.title}}</dd>
                 </dl>
               </el-col>
             </el-row>
@@ -55,19 +55,19 @@
               <el-col :span="8">
                 <dl class="detail-item">
                   <dt class="label">原价</dt>
-                  <dd class="content">{{ detail.price_sale ? '￥' : '-' }}{{returnPrice(detail.price_sale)}}</dd>
+                  <dd class="content">{{ detail.price_origin ? '￥' : '' }}{{returnPrice(detail.price_origin)}}</dd>
                 </dl>
               </el-col>
               <el-col :span="8">
                 <dl class="detail-item">
                   <dt class="label">建议团长价</dt>
-                  <dd class="content">{{ detail.price_sale ? '￥' : '-' }}{{returnPrice(detail.price_sale)}}</dd>
+                  <dd class="content">{{ detail.advice_header_price ? '￥' : '' }}{{returnPrice(detail.advice_header_price)}}</dd>
                 </dl>
               </el-col>
               <el-col :span="8">
                 <dl class="detail-item">
                   <dt class="label">建议团购价</dt>
-                  <dd class="content">{{ detail.price ? '￥' : '-' }}{{returnPrice(detail.price)}}</dd>
+                  <dd class="content">{{ detail.advice_price_sale ? '￥' : '' }}{{returnPrice(detail.advice_price_sale)}}</dd>
                 </dl>
               </el-col>
             </el-row>
@@ -77,7 +77,7 @@
               <el-col :span="24">
                 <dl class="detail-item">
                   <dt class="label">分享文案</dt>
-                  <dd class="content">{{'国；咖啡店几个有朝一日；两地分居过；黑中介艺术硕士 炒你及时反馈杨万里；国'}}</dd>
+                  <dd class="content">{{detail.share_content}}</dd>
                 </dl>
               </el-col>
             </el-row>
@@ -87,7 +87,7 @@
                   <dt class="label">分享图片</dt>
                   <dd class="content">
                     <image-preview>
-                      <img style="width: 64px; height: 64px;" :src="tencentPath + '123' + '_min200x200'" alt=""/>
+                      <img style="width: 64px; height: 64px;" :src="tencentPath + detail.share_image + '_min200x200'" alt=""/>
                     </image-preview>
                   </dd>
                 </dl>
@@ -113,22 +113,7 @@ export default {
   },
   data(){
     let initDetail = {
-      images: [],
-      is_weigh: true,
-      price_origin: '',
-      inner_tag_id: '',
-      inner_tag: {},
-      tags: [],
-      content: '',
-      is_presale: false,
-      is_gift: false,
-      order_num_max: 999,
-      display_class: {},
-      frame: {},
-      system_class: {},
-      first_grounder: {},
-      last_updater: {},
-      system_classes: []
+      images: []
     }
     return {
       initDetail: initDetail,
@@ -137,23 +122,18 @@ export default {
   },
   methods: {
     //显示新增修改(重写mixin)
-    /*showDetail(data){
+    showDetail(data){
       if(data){
-        this.groupBuyDetail(data.id);
+        this.GroupItemDetail(data.id);
       }else{
         this.$data.detail = this.copyJson(this.initDetail);
         this.$data.isShow = true;
       }
-    },*/
-    //显示修改明细
-    handleShowEditRecord(){
-      let pc = this.getPageComponents('DetailItemListEditRecord');
-      pc.showDetail(this.detail);
     },
     //获取详情
-    async groupBuyDetail(id){
+    async GroupItemDetail(id){
       this.$loading({isShow: true});
-      let res = await Http.get(Config.api.groupBuyDetail, { id: id });
+      let res = await Http.get(Config.api.groupItemDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$data.detail = res.data;
@@ -162,15 +142,6 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
-    //返回科技分类
-    returnSystemClass(data){
-      let str = '';
-      data.forEach(item => {
-        str += item.title + ' / ';
-      });
-      str = str.substring(0, str.length - 1);
-      return str;
-    }
   }
 };
 </script>

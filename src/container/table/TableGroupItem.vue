@@ -1,8 +1,8 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="(auth.isAdmin || auth.GroupBuyExport || auth.GroupBuyAuditInnerTag)">
-      <el-button v-if="auth.isAdmin || auth.GroupBuyExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>操作日志</el-button>
-      <el-button v-if="auth.isAdmin || auth.GroupBuyAuditInnerTag" @click="handleShowDetail('DetailGroupBuyAuditInnerTag')" size="mini" type="primary">新增</el-button>
+    <div class="table-top" v-if="(auth.isAdmin || auth.GroupItemEditLog || auth.GroupItemAdd) && page === 'item'">
+      <el-button v-if="auth.isAdmin || auth.GroupItemEditLog" @click.native="handleShowDetail('DetailGroupItemEditLog')" size="mini" type="primary" plain>操作日志</el-button>
+      <el-button v-if="auth.isAdmin || auth.GroupItemAdd" @click="handleShowAddEdit('AddEditGroupItem')" size="mini" type="primary">新增</el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -15,7 +15,9 @@
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
+        @selection-change="handleSelectionChange"
       >
+        <el-table-column type="selection" width="30" v-if="auth.isAdmin || auth.GroupItemDelete || auth.GroupItemRecover"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
@@ -23,7 +25,7 @@
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
               <div class="td-item add-dot2">
-                <div class="link-item add-dot" @click="handleShowDetail('DetailGroupBuy', scope.row)" v-if="auth.isAdmin || auth.GroupBuyDetail">
+                <div class="link-item add-dot" @click="handleShowDetail('DetailGroupItem', scope.row)" v-if="auth.isAdmin || auth.GroupItemDetail">
                   {{scope.row.code}}/{{scope.row.title}}
                 </div>
                 <div class="add-dot" v-else>
@@ -31,8 +33,8 @@
                 </div>
               </div>
             </template>
-            <!--原价-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'price'">&yen;{{returnPrice(scope.row.price)}}</div>
+            <!--原价、建议团长价、建议团购价-->
+            <div class="td-item add-dot2" v-else-if="item.key === 'price_origin' || item.key === 'advice_header_price' || item.key === 'advice_price_sale'">&yen;{{returnPrice(scope.row[item.key])}}</div>
             <!--正常情况-->
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
@@ -47,18 +49,18 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: (auth.isAdmin || auth.GroupBuyEdit) && page === 'buy',
-                  command: () => handleShowAddEdit('AddEditGroupBuy', scope.row)
+                  isDisplay: (auth.isAdmin || auth.GroupItemEdit) && page === 'item',
+                  command: () => handleShowAddEdit('AddEditGroupItem', scope.row)
                 },
                 {
                   title: '删除',
-                  isDisplay: (auth.isAdmin || auth.GroupBuyOnGround) && page === 'buy',
-                  command: () => handleDelete(scope.row)
+                  isDisplay: (auth.isAdmin || auth.GroupItemDelete) && page === 'item',
+                  command: () => handleDelete({ids: [scope.row.id]})
                 },
                 {
                   title: '恢复',
-                  isDisplay: (auth.isAdmin || auth.GroupBuyOnGround) && page === 'buyRecover',
-                  command: () => handleRecover(scope.row)
+                  isDisplay: (auth.isAdmin || auth.GroupItemRecover) && page === 'recover',
+                  command: () => handleRecover({ids: [scope.row.id]})
                 }
               ]"
             />
@@ -68,8 +70,8 @@
     </div>
     <div class="table-bottom">
       <div class="left">
-        <el-button type="danger" size="mini" disabled v-if="page === 'buy'">批量删除</el-button>
-        <el-button size="mini" disabled v-if="page === 'buyRecover'">批量恢复</el-button>
+        <el-button type="danger" size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelete('multi')" v-if="(auth.isAdmin || auth.GroupItemDelete) && page === 'item'">批量删除</el-button>
+        <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleRecover('multi')" v-if="(auth.isAdmin || auth.GroupItemRecover) && page === 'recover'">批量恢复</el-button>
       </div>
       <div class="right">
         <el-pagination
@@ -81,6 +83,7 @@
           :total="dataItem.num"
           :page-size="query.page_size"
           :current-page="query.page"
+          @selection-change="handleSelectionChange"
         />
       </div>
     </div>
@@ -93,27 +96,29 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableGroupBuy',
+    name: 'TableGroupItem',
     components: {
     },
     mixins: [tableMixin],
     props: {
-      page: { type: String, default: 'buy' }, //页面buy、buyRecover
+      page: { type: String, default: 'item' }, //页面item、recover
     },
     created() {
-      if (!this.auth.isAdmin && !this.auth.GroupBuyExport && !this.auth.GroupBuyAuditInnerTag) {
+      if (!this.auth.isAdmin && !this.auth.GroupItemEditLog && !this.auth.GroupItemAdd) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
       }
-      let pc = this.getPageComponents('QueryGroupBuy');
+      let pc = this.getPageComponents('QueryGroupItem');
       this.getData(pc.query);
     },
     data() {
       return {
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
-        tableName: 'TableGroupBuy',
+        tableName: 'TableGroupItem',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '原价', key: 'price', width: '240', isShow: true },
+          { label: '原价', key: 'price_origin', width: '160', isShow: true },
+          { label: '建议团长价', key: 'advice_header_price', width: '160', isShow: true },
+          { label: '建议团购价', key: 'advice_price_sale', width: '160', isShow: true },
           { label: '创建时间', key: 'created', width: '160', isShow: true },
           { label: '更新时间', key: 'updated', width: '160', isShow: false },
         ]
@@ -124,7 +129,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.groupBuyQuery, query);
+        let res = await Http.get(Config.api.groupItemQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -134,10 +139,16 @@
       },
       //删除数据
       async deleteData(data){
+        //批量
+        if(data === 'multi'){
+          let { multipleSelection } = this;
+          data = { ids: [] };
+          multipleSelection.map((item)=>{
+            data.ids.push(item.id);
+          });
+        }
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.groupBuyDelete, {
-          id: data.id
-        });
+        let res = await Http.post(Config.api.groupItemDelete, data);
         this.$loading({ isShow: false });
         if(res.code === 0){
           this.getData(this.query);
@@ -148,6 +159,14 @@
       },
       //恢复
       handleRecover(data){
+        //批量
+        if(data === 'multi'){
+          let { multipleSelection } = this;
+          data = { ids: [] };
+          multipleSelection.map((item)=>{
+            data.ids.push(item.id);
+          });
+        }
         this.$messageBox.confirm(`您确认要恢复？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -155,9 +174,7 @@
         }).then(() => {
           (async ()=>{
             this.$loading({ isShow: true });
-            let res = await Http.post(Config.api.groupBuyRecover, {
-              id: data.id
-            });
+            let res = await Http.post(Config.api.groupItemRecover, data);
             this.$loading({ isShow: false });
             if(res.code === 0){
               this.getData(this.query);

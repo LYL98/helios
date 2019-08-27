@@ -77,10 +77,10 @@ export default {
       let { detail, dataItem } = this;
       if(index === ''){
         detail.is_super_admin = false;
-        detail.permission_ids = [];
+        detail.permission_codes = [];
       }else{
         detail.is_super_admin = dataItem[index].is_super_admin;
-        detail.permission_ids = dataItem[index].permission_ids;
+        detail.permission_codes = dataItem[index].permission_codes;
       }
       this.$data.detail = detail;
     },

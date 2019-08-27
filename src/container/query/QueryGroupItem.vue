@@ -24,8 +24,12 @@
     components: {
       'button-group': ButtonGroup,
     },
+    props: {
+      page: { type: String, default: 'item' }, //页面item、recover
+    },
     data(){
       let initQuery = {
+        is_deleted: this.page === 'item' ? 0 : 1,
         condition: ''
       }
       return {

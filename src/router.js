@@ -72,19 +72,19 @@ const router = new Router({
     },
     /*团购*/
     {
-      path: '/group/buy/activity',
+      path: '/group/activity',
       name: 'GroupActivity',
       component: () => import('@/view/group/Activity')
     },
     {
-      path: '/group/buy/query',
-      name: 'GroupBuyQuery',
-      component: () => import('@/view/group/Buy')
+      path: '/group/item',
+      name: 'GroupItem',
+      component: () => import('@/view/group/Item')
     },
     {
-      path: '/group/buy/recover',
-      name: 'GroupBuyRecover',
-      component: () => import('@/view/group/BuyRecover')
+      path: '/group/item/recover',
+      name: 'GroupItemRecover',
+      component: () => import('@/view/group/ItemRecover')
     },
     {
       path: '/group/head/query',

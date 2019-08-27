@@ -91,11 +91,16 @@ const Config = (() => {
       itemCouponListExport: apiM + '/coupon/distribute/log/export', //优惠券导出
 
       // 团购商品
-      groupBuyQuery: apiM + '/gb_activity/query',  //团购列表
-      groupBuyDetail: apiM + '/gb_activity/detail', //团购详情
+      groupItemQuery: apiM + '/gb_item/query',  //团购商品列表
+      groupItemDetail: apiM + '/gb_item/detail', //团购商品详情
+      groupItemModifyLogQuery: apiM + '/gb_item/modify_log/query', //团购商品修改记录
+      groupItemRecover: apiM + '/gb_item/recover', //恢复团购商品
+      groupItemDelete: apiM + '/gb_item/delete', //删除团购商品
+      groupItemAdd: apiM + '/gb_item/add', //新增团购商品
+      groupItemEdit: apiM + '/gb_item/edit', //编辑团购商品
+
       groupBuyLogQuery: apiM + '/gb_activity/log/query',  //团购列表
       groupBuyItemList: apiM + '/gb_item/list',  //团购商品查询, 未使用
-      groupBuyDetail: apiM + '/gb_activity/detail',  //团购详情
       groupBuyDelete: apiM + '/gb_activity/delete',  //删除团购活动
       groupBuyCancel: apiM + '/gb_activity/deactive',  //结束团购活动
       groupBuyAdd: apiM + '/gb_activity/add',  //新增团购活动

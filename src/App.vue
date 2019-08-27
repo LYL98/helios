@@ -97,10 +97,10 @@
                 </template>
                 <el-menu-item index="GroupActivity" :route="{name: 'GroupActivity'}"
                               v-if="auth.isAdmin || auth.GroupActivity"><span>团购活动</span></el-menu-item>
-                <el-menu-item index="GroupBuyQuery" :route="{name: 'GroupBuyQuery'}"
-                              v-if="auth.isAdmin || auth.GroupBuyQuery"><span>商品列表</span></el-menu-item>
-                <el-menu-item index="GroupBuyRecover" :route="{name: 'GroupBuyRecover'}"
-                              v-if="auth.isAdmin || auth.GroupBuyRecover"><span>回收站</span></el-menu-item>
+                <el-menu-item index="GroupItem" :route="{name: 'GroupItem'}"
+                              v-if="auth.isAdmin || auth.GroupItem"><span>商品列表</span></el-menu-item>
+                <el-menu-item index="GroupItemRecover" :route="{name: 'GroupItemRecover'}"
+                              v-if="auth.isAdmin || auth.GroupItemRecover"><span>回收站</span></el-menu-item>
                 <el-menu-item index="GroupHeadQuery" :route="{name: 'GroupHeadQuery'}"
                               v-if="auth.isAdmin || auth.GroupHeadQuery"><span>团购门店</span></el-menu-item>
                 <el-menu-item index="GroupMemberQuery" :route="{name: 'GroupMemberQuery'}"
