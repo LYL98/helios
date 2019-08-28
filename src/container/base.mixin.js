@@ -122,6 +122,18 @@ export default {
         return data[index];
       }
       return '';
+    },
+
+    //判断and s,
+    judgeAnds(data, ands){
+      //let con = ands.filter( item => item === data);
+      //return con.length > 0 ? true : false;
+    },
+
+    //判断or s,
+    judgeOrs(data, ors){
+      let con = ors.filter( item => item === data);
+      return con.length > 0 ? true : false;
     }
   }
 }

@@ -95,4 +95,5 @@ export {
   DetailGroupItemEditLog,
   DetailGroupActivity,
   DetailGroupActivityEditLog,
+  DetailGroupActivityItem
 } from './detail';

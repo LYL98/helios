@@ -21,23 +21,27 @@
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
           <div slot-scope="scope" class="my-td-item">
             <!--编号名称-->
-            <template v-if="item.key === 'code_title'">
+            <template v-if="item.key === 'tid_title'">
               <div class="td-item add-dot2">
                 <div class="link-item add-dot" @click="handleShowDetail('DetailGroupActivity', scope.row)" v-if="auth.isAdmin || auth.GroupActivityDetail">
-                  {{scope.row.code}}/{{scope.row.title}}
+                  {{scope.row.tid}}/{{scope.row.title}}
                 </div>
                 <div class="add-dot" v-else>
-                  {{scope.row.code}}/{{scope.row.title}}
+                  {{scope.row.tid}}/{{scope.row.title}}
                 </div>
               </div>
             </template>
             <!--团购状态-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'status'">
-              12
+            <div class="td-item add-dot2" v-else-if="item.key === 'progress_status'">
+              <el-tag size="small" :type="statusTagType[scope.row.progress_status]" disable-transitions>
+                {{ progressStatus[scope.row.progress_status] }}
+              </el-tag>
             </div>
             <!--上架状态-->
             <div class="td-item add-dot2" v-else-if="item.key === 'status'">
-              12
+              <el-tag size="small" :type="scope.row.status === 'activated' ? 'success' : 'danger'" disable-transitions>
+                {{ activityStatus[scope.row.status] }}
+              </el-tag>
             </div>
             <!--正常情况-->
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
@@ -54,16 +58,21 @@
                 {
                   title: '修改',
                   isDisplay: auth.isAdmin || auth.GroupActivityEdit,
-                  command: () => handleShowAddEdit('AddEditGroupActivity', {...scope.row, type: 'edit'})
+                  command: () => handleShowAddEdit('AddEditGroupActivity', {...scope.row, type: 'edit'}) && judgeOrs(scope.row.progress_status, ['pre', 'ing'])
                 },
                 {
                   title: '上架',
-                  isDisplay: auth.isAdmin || auth.GroupActivityPutaway,
-                  command: () => handlePutaway(scope.row)
+                  isDisplay: (auth.isAdmin || auth.GroupActivityActive) && scope.row.status === 'deactivated' && judgeOrs(scope.row.progress_status, ['pre', 'ing']),
+                  command: () => handleActive(scope.row)
+                },
+                {
+                  title: '下架',
+                  isDisplay: (auth.isAdmin || auth.GroupActivityDeactive) && scope.row.status === 'activated' && judgeOrs(scope.row.progress_status, ['pre', 'ing']),
+                  command: () => handleDeactive(scope.row)
                 },
                 {
                   title: '作废',
-                  isDisplay: auth.isAdmin || auth.GroupActivityNullify,
+                  isDisplay: (auth.isAdmin || auth.GroupActivityNullify) && scope.row.progress_status === 'pre',
                   command: () => handleNullify(scope.row)
                 },
                 {
@@ -118,17 +127,19 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableGroupActivity',
         tableColumn: [
-          { label: '团购编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '开始时间', key: 'begin_date', width: '160', isShow: true },
+          { label: '团购编号/名称', key: 'tid_title', width: '360', isShow: true },
+          { label: '开始时间', key: 'start_time', width: '160', isShow: true },
           { label: '结束时间', key: 'end_time', width: '160', isShow: true },
-          { label: '商品数量', key: 'num', width: '120', isShow: true },
-          { label: '团购状态', key: 'status', width: '160', isShow: true },
+          { label: '商品数量', key: 'sku_num', width: '120', isShow: true },
+          { label: '团购状态', key: 'progress_status', width: '160', isShow: true },
           { label: '上架状态', key: 'status', width: '160', isShow: true },
-          { label: '发货时间', key: 'status', width: '160', isShow: true },
+          { label: '发货时间', key: 'delivery_date', width: '160', isShow: true },
           { label: '创建时间', key: 'created', width: '160', isShow: true },
           { label: '更新时间', key: 'updated', width: '160', isShow: false },
         ],
-        groupActivityStatus: Constant.GROUP_ACTIVITY_STATUS,
+        activityStatus: Constant.GROUP_ACTIVITY_STATUS,
+        progressStatus: Constant.GROUP_ACTIVITY_PROGRESS_STATUS,
+        statusTagType: Constant.GROUP_ACTIVITY_PROGRESS_STATUS_TYPE,
       }
     },
     methods: {
@@ -145,7 +156,7 @@
         }
       },
       //上架
-      handlePutaway(data){
+      handleActive(data){
         this.$messageBox.confirm(`您确认上架？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -153,7 +164,29 @@
         }).then(() => {
           (async ()=>{
             this.$loading({ isShow: true });
-            let res = await Http.post(Config.api.groupActivityPutaway, data);
+            let res = await Http.post(Config.api.groupActivityActive,  { id: data.id });
+            this.$loading({ isShow: false });
+            if(res.code === 0){
+              this.getData(this.query);
+              this.$message({message: '已上架', type: 'success'});
+            }else{
+              this.$message({message: res.message, type: 'error'});
+            }
+          })();
+        }).catch(() => {
+          //console.log('取消');
+        });
+      },
+      //下架
+      handleDeactive(data){
+        this.$messageBox.confirm(`您确认下架？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          (async ()=>{
+            this.$loading({ isShow: true });
+            let res = await Http.post(Config.api.groupActivityDeactive, { id: data.id });
             this.$loading({ isShow: false });
             if(res.code === 0){
               this.getData(this.query);
@@ -175,7 +208,7 @@
         }).then(() => {
           (async ()=>{
             this.$loading({ isShow: true });
-            let res = await Http.post(Config.api.groupActivityNullify, data);
+            let res = await Http.post(Config.api.groupActivityNullify, { id: data.id });
             this.$loading({ isShow: false });
             if(res.code === 0){
               this.getData(this.query);

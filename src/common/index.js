@@ -27,6 +27,7 @@ export { default as QueryItem } from './QueryItem';
 export { default as QuillEditor } from './QuillEditor';
 export { default as Search } from './Search';
 export { default as SearchItem } from './SearchItem';
+export { default as SearchGroupItem } from './SearchGroupItem';
 export { default as SelectBuyer } from './SelectBuyer';
 export { default as SelectCity } from './SelectCity';
 export { default as SelectCityMulti } from './SelectCityMulti';

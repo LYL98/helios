@@ -45,11 +45,34 @@
       </el-row>
     </el-form>
     <!--搜索-->
-    <div>
-
+    <div class="search-div">
+      <search-group-item style="width: 400px;margin-right: 10px;"/>
+      <el-button type="primary">增加商品</el-button>
     </div>
     <!--表格-->
-    
+    <el-table :data="dataItem.items" width="100%" :height="460" style="border-top: 1px solid #eee;">
+      <el-table-column label="商品编号/名称">
+        <template slot-scope="scope">{{scope.row.item.code}}/{{scope.row.item.title}}</template>
+      </el-table-column>
+      <el-table-column label="团长价" width="120">
+        <template slot-scope="scope">
+          123
+        </template>
+      </el-table-column>
+      <el-table-column label="团长价" width="120">
+        <template slot-scope="scope">
+          123
+        </template>
+      </el-table-column>
+      <el-table-column label="单人最大购买数" width="120">
+        <template slot-scope="scope">
+          123件
+        </template>
+      </el-table-column>
+      <el-table-column label="库存" prop="created" width="120"></el-table-column>
+      <el-table-column label="销量" prop="created" width="120"></el-table-column>
+      <el-table-column label="排序" prop="created" width="120"></el-table-column>
+    </el-table>
     <span slot="footer" class="dialog-footer">
       <el-button @click.native="handleCancel">取 消</el-button>
       <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
@@ -60,13 +83,13 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Verification } from '@/util';
-import { QuillEditor, UploadImg } from '@/common';
+import { SearchGroupItem } from '@/common';
 
 export default {
   name: "AddEditGroupActivity",
   mixins: [addEditMixin],
   components: {
-    
+    'search-group-item': SearchGroupItem
   },
   data(){
     //价格
@@ -91,6 +114,9 @@ export default {
     return{
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
+      dataItem: {
+        items: []
+      },
       rules: {
         title: [
           { required: true, message: '商品名称不能为空', trigger: 'change' },
@@ -177,5 +203,10 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
+  .search-div{
+    margin-bottom: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+  }
 </style>

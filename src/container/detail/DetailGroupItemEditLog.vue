@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="操作日志" :visible="isShow" width="1200px" :before-close="handleCancel">
+    <el-dialog title="操作记录" :visible="isShow" width="1200px" :before-close="handleCancel">
       <div class="query">
         <span class="label">类型</span>
         <span>

@@ -139,14 +139,25 @@ const Constant = {
     canceled: '已取消'
   },
 
-  //团购活动状态
+  //团购活动上下架状态
   GROUP_ACTIVITY_STATUS: {
-    xxx1: '待付款',
-    xxx2: '团购中',
-    xxx3: '待发货',
-    xxx4: '已发货',
+    activated: '已上架',
+    deactivated: '已下架',
   },
-
+  //团购活动状态
+  GROUP_ACTIVITY_PROGRESS_STATUS: {
+    pre: '未开展',
+    ing: '团购中',
+    post: '已结束',
+    is_deleted: '已作废'
+  },
+  //团购活动状态(tag type)
+  GROUP_ACTIVITY_PROGRESS_STATUS_TYPE: {
+    pre: 'warning',
+    ing: 'regular',
+    post: 'info',
+    is_deleted: 'info'
+  },
   //订单状态
   ORDER_STATUS: {
     wait_confirm: '待确认',

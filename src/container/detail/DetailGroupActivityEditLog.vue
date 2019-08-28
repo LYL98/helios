@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="操作日志" :visible="isShow" width="1200px" :before-close="handleCancel">
+    <el-dialog title="操作记录" :visible="isShow" width="1200px" :before-close="handleCancel">
       <div class="query">
         <span class="label">类型</span>
         <span>
@@ -31,8 +31,8 @@
       </div>
       <el-table :data="dataItem.items" width="100%" :height="460">
         <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
-        <el-table-column label="商品编号/名称">
-          <template slot-scope="scope">{{scope.row.item.code}}/{{scope.row.item.title}}</template>
+        <el-table-column label="团购编号/名称">
+          <template slot-scope="scope">{{scope.row.activity.tid}}/{{scope.row.activity.title}}</template>
         </el-table-column>
         <el-table-column label="类型" width="100">
           <template slot-scope="scope">
@@ -100,9 +100,9 @@
         categorys: {
           add: '添加团购',
           edit: '修改团购',
+          active: '上架团购',
+          deactive: '下架团购',
           delete: '作废团购',
-          recover: '上架团购',
-          copy: '复制团购'
         },
       }
     },
