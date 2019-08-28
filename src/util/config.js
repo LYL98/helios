@@ -99,6 +99,13 @@ const Config = (() => {
       groupItemAdd: apiM + '/gb_item/add', //新增团购商品
       groupItemEdit: apiM + '/gb_item/edit', //编辑团购商品
 
+      // 团购活动
+      groupActivityPutaway: apiM + '', //上架
+      groupActivityNullify: apiM + '', //作废
+      groupActivityQuery: apiM + '/gb_item/query', //查询
+      groupActivityDetail: apiM + '/gb_item/detail', //详情
+      groupActivityModifyLogQuery: apiM + '', //操作记录
+
       groupBuyLogQuery: apiM + '/gb_activity/log/query',  //团购列表
       groupBuyItemList: apiM + '/gb_item/list',  //团购商品查询, 未使用
       groupBuyDelete: apiM + '/gb_activity/delete',  //删除团购活动

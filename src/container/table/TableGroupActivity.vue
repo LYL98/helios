@@ -1,6 +1,6 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="(auth.isAdmin || auth.GroupActivityEditLog || auth.GroupActivityAdd) && page === 'item'">
+    <div class="table-top" v-if="auth.isAdmin || auth.GroupActivityEditLog || auth.GroupActivityAdd">
       <el-button v-if="auth.isAdmin || auth.GroupActivityEditLog" @click.native="handleShowDetail('DetailGroupActivityEditLog')" size="mini" type="primary" plain>操作记录</el-button>
       <el-button v-if="auth.isAdmin || auth.GroupActivityAdd" @click="handleShowAddEdit('AddEditGroupActivity')" size="mini" type="primary">新增</el-button>
     </div>
@@ -53,23 +53,23 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: (auth.isAdmin || auth.GroupActivityEdit) && page === 'item',
-                  command: () => handleShowAddEdit('AddEditGroupActivity', scope.row)
+                  isDisplay: auth.isAdmin || auth.GroupActivityEdit,
+                  command: () => handleShowAddEdit('AddEditGroupActivity', {...scope.row, type: 'edit'})
                 },
                 {
                   title: '上架',
-                  isDisplay: (auth.isAdmin || auth.GroupActivityDelete) && page === 'item',
-                  command: () => handleDelete({ids: [scope.row.id]})
+                  isDisplay: auth.isAdmin || auth.GroupActivityPutaway,
+                  command: () => handlePutaway(scope.row)
                 },
                 {
                   title: '作废',
-                  isDisplay: (auth.isAdmin || auth.GroupActivityRecover) && page === 'recover',
-                  command: () => handleRecover({ids: [scope.row.id]})
+                  isDisplay: auth.isAdmin || auth.GroupActivityNullify,
+                  command: () => handleNullify(scope.row)
                 },
                 {
                   title: '复制',
-                  isDisplay: (auth.isAdmin || auth.GroupActivityRecover) && page === 'recover',
-                  command: () => handleRecover({ids: [scope.row.id]})
+                  isDisplay: auth.isAdmin || auth.GroupActivityCopy,
+                  command: () => handleShowAddEdit('AddEditGroupActivity', {...scope.row, type: 'copy'})
                 }
               ]"
             />
@@ -107,7 +107,7 @@
     },
     mixins: [tableMixin],
     created() {
-      if ((!this.auth.isAdmin && !this.auth.GroupActivityEditLog && !this.auth.GroupActivityAdd) || this.page === 'recover') {
+      if (!this.auth.isAdmin && !this.auth.GroupActivityEditLog && !this.auth.GroupActivityAdd) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
       }
       let pc = this.getPageComponents('QueryGroupActivity');
@@ -136,7 +136,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.groupItemQuery, query);
+        let res = await Http.get(Config.api.groupActivityQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -144,48 +144,42 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
-      //删除数据
-      async deleteData(data){
-        //批量
-        if(data === 'multi'){
-          let { multipleSelection } = this;
-          data = { ids: [] };
-          multipleSelection.map((item)=>{
-            data.ids.push(item.id);
-          });
-        }
-        this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.groupItemDelete, data);
-        this.$loading({ isShow: false });
-        if(res.code === 0){
-          this.getData(this.query);
-          this.$message({message: '已删除', type: 'success'});
-        }else{
-          this.$message({message: res.message, type: 'error'});
-        }
-      },
-      //恢复
-      handleRecover(data){
-        //批量
-        if(data === 'multi'){
-          let { multipleSelection } = this;
-          data = { ids: [] };
-          multipleSelection.map((item)=>{
-            data.ids.push(item.id);
-          });
-        }
-        this.$messageBox.confirm(`您确认要恢复？`, '提示', {
+      //上架
+      handlePutaway(data){
+        this.$messageBox.confirm(`您确认上架？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           (async ()=>{
             this.$loading({ isShow: true });
-            let res = await Http.post(Config.api.groupItemRecover, data);
+            let res = await Http.post(Config.api.groupActivityPutaway, data);
             this.$loading({ isShow: false });
             if(res.code === 0){
               this.getData(this.query);
-              this.$message({message: '已恢复', type: 'success'});
+              this.$message({message: '已上架', type: 'success'});
+            }else{
+              this.$message({message: res.message, type: 'error'});
+            }
+          })();
+        }).catch(() => {
+          //console.log('取消');
+        });
+      },
+      //作废
+      handleNullify(data){
+        this.$messageBox.confirm(`您确认作废？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          (async ()=>{
+            this.$loading({ isShow: true });
+            let res = await Http.post(Config.api.groupActivityNullify, data);
+            this.$loading({ isShow: false });
+            if(res.code === 0){
+              this.getData(this.query);
+              this.$message({message: '已作废', type: 'success'});
             }else{
               this.$message({message: res.message, type: 'error'});
             }

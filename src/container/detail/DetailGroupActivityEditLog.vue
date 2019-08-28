@@ -98,10 +98,11 @@
         initDataItem: initDataItem,
         dataItem: this.copyJson(initDataItem),
         categorys: {
-          add: '添加商品',
-          edit: '编辑商品',
-          delete: '删除商品',
-          recover: '恢复商品'
+          add: '添加团购',
+          edit: '修改团购',
+          delete: '作废团购',
+          recover: '上架团购',
+          copy: '复制团购'
         },
       }
     },
@@ -110,13 +111,13 @@
       showDetail(data){
         this.$data.dataItem = this.copyJson(this.initDataItem);
         this.$data.query = this.copyJson(this.initQuery);
-        this.groupItemModifyLogQuery();
+        this.groupActivityModifyLogQuery();
       },
       //获取记录列表
-      async groupItemModifyLogQuery(){
+      async groupActivityModifyLogQuery(){
         this.$loading({isShow: true, isWhole: true});
         let { query } = this;
-        let res = await Http.get(Config.api.groupItemModifyLogQuery, query);
+        let res = await Http.get(Config.api.groupActivityModifyLogQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.isShow = true;
@@ -142,23 +143,23 @@
       changePageSize(pageSize) {
         this.$data.query.page_size = pageSize;
         this.$data.query.page = 1;
-        this.groupItemModifyLogQuery();
+        this.groupActivityModifyLogQuery();
       },
 
       //翻页
       changePage(page) {
         this.$data.query.page = page;
-        this.groupItemModifyLogQuery();
+        this.groupActivityModifyLogQuery();
       },
       //第一页重新搜索
       handleAnewQuery(){
         this.$data.query.page = 1;
-        this.groupItemModifyLogQuery();
+        this.groupActivityModifyLogQuery();
       },
       //重置搜索
       handleClearQuery(){
         this.$data.query = Object.assign({}, this.initQuery);
-        this.groupItemModifyLogQuery();
+        this.groupActivityModifyLogQuery();
       },
       //返回str
       returnAttrStr(list){

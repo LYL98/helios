@@ -1,56 +1,55 @@
 <template>
-  <el-dialog :title="`${detail.id?'修改':'新增'}商品`" :visible="isShow" width="1200px" top="5vh" append-to-body :before-close="handleCancel" :close-on-click-modal="false">
-    <el-form class="custom-form" label-position="right" label-width="110px" style="width: 95%" :model="detail" :rules="rules" ref="ruleForm">
-      <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
+  <el-dialog :title="`${detail.id?'修改':'新增'}团购`" :visible="isShow" width="1200px" top="5vh" append-to-body :before-close="handleCancel" :close-on-click-modal="false">
+    <el-form class="custom-form" label-position="right" label-width="90px" :model="detail" :rules="rules" ref="ruleForm">
       <el-row :gutter="10">
         <el-col :span="8">
-          <el-form-item label="商品封面" prop="cover_image">
-            <upload-img v-model="detail.cover_images" module="groupBuy" :limit="1"/>
-            <div style="color: #999; font-size: 12px;">建议上传图片尺寸 2 : 1</div>
+          <el-form-item label="团购名称" prop="title">
+            <el-input size="small" v-model="detail.title" :maxLength="20" placeholder="请输入团购名称"/>
           </el-form-item>
         </el-col>
-        <el-col :span="16">
-          <el-form-item label="商品轮播图" prop="images">
-            <upload-img v-model="detail.images" module="item" :limit="5"></upload-img>
+        <el-col :span="8">
+          <el-form-item label="团购时间" prop="date">
+             <el-date-picker
+              size="small"
+              style="width: 100%;"
+              :disabled="false"
+              v-model="detail.picker_value"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              @change="changePicker"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item label="发货时间" prop="date">
+            <el-date-picker
+               size="small"
+              :clearable="false"
+              style="width: 100%;"
+              placeholder="发货日期"
+              :disabled="false"
+              v-model="detail.delivery_date"
+              type="date"
+              value-format="yyyy-MM-dd"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item label="立即上架">
+            <el-checkbox v-model="detail.checked" size="small"></el-checkbox>
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="商品编号" v-if="detail.code">{{detail.code}}</el-form-item>
-      <el-form-item label="商品名称" prop="title">
-        <el-input size="medium" v-model="detail.title" :maxLength="25" placeholder="请输入25位以内的字符"></el-input>
-      </el-form-item>
-      <el-form-item label="商品详情">
-        <quill-editor v-model="detail.content" module="item"></quill-editor>
-      </el-form-item>
-
-      <h6 class="subtitle" style="padding-bottom: 16px">价格信息</h6>
-      <el-row :gutter="10">
-        <el-col :span="8">
-          <el-form-item label="原价" prop="price_origin">
-            <el-input size="medium" v-model="detail.price_origin" placeholder="0 - 1000000"><template slot="append">元</template></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="建议团长价" prop="advice_header_price">
-            <el-input size="medium" v-model="detail.advice_header_price" placeholder="0 - 1000000"><template slot="append">元</template></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="建议团购价" prop="advice_price_sale">
-            <el-input size="medium" v-model="detail.advice_price_sale" placeholder="0 - 1000000"><template slot="append">元</template></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-
-      <h6 class="subtitle" style="padding-bottom: 16px">分享信息</h6>
-      <el-form-item label="分享文案" prop="share_content">
-        <el-input size="medium" v-model="detail.share_content" :maxlength="30" placeholder="请输入团购商品分享文案"></el-input>
-      </el-form-item>
-      <el-form-item label="分享图片" prop="share_content">
-        <upload-img v-model="detail.share_images" module="share_images" :limit="5"></upload-img>
-        <div style="color: #999; font-size: 12px;">上传图片尺寸为 5 : 4</div>
-      </el-form-item>
     </el-form>
+    <!--搜索-->
+    <div>
+
+    </div>
+    <!--表格-->
+    
     <span slot="footer" class="dialog-footer">
       <el-button @click.native="handleCancel">取 消</el-button>
       <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
@@ -67,8 +66,7 @@ export default {
   name: "AddEditGroupActivity",
   mixins: [addEditMixin],
   components: {
-    'upload-img': UploadImg,
-    'quill-editor': QuillEditor
+    
   },
   data(){
     //价格
@@ -88,28 +86,12 @@ export default {
       }
     };
     let initDetail = {
-      cover_images: [],
-      cover_image: '', //封面图片
-      images: [], //轮播图片
-      title: '', //参加团购活动的商品名称
-      content: '', //商品详情
-      price_origin: '', //原价
-      advice_header_price: '', //建议团长价
-      advice_price_sale: '', //建议团购价
-      share_content: '', //分享文案
-      share_images: [],
-      share_image: '', //分享图片
+      picker_value: null
     }
     return{
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       rules: {
-        cover_images: [
-          { type: 'array', required: true, message: '请上传图片', trigger: 'change' }
-        ],
-        images: [
-          { type: 'array', required: true, message: '至少要上传一张图片', trigger: 'change' }
-        ],
         title: [
           { required: true, message: '商品名称不能为空', trigger: 'change' },
         ],
@@ -136,16 +118,16 @@ export default {
     //显示新增修改(重写)
     showAddEdit(data){
       if(data){
-        this.groupItemDetail(data.id);
+        this.groupActivityDetail(data.id);
       }else{
         this.$data.detail = this.copyJson(this.initDetail);
         this.$data.isShow = true;
       }
     },
     //获取详情
-    async groupItemDetail(id){
+    async groupActivityDetail(id){
       this.$loading({isShow: true});
-      let res = await Http.get(Config.api.groupItemDetail, { id: id });
+      let res = await Http.get(Config.api.groupActivityDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
@@ -162,24 +144,29 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
+    //改变日期
+    changePicker(value){
+      if(value && value.length === 2){
+        this.$data.error.items = '';
+        this.$data.editItem.start_time = value[0];
+        this.$data.editItem.end_time = value[1];
+      }else{
+        this.$data.editItem.pickerValue = null;
+        this.$data.editItem.start_time = '';
+        this.$data.editItem.end_time = '';
+      }
+    },
     //提交数据
     async addEditData(){
       let { detail } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[detail.id ? 'groupItemEdit' : 'groupItemAdd'], {
-        ...detail,
-        cover_image: this.returnArrayIndex(detail.cover_images, 0),
-        share_image: this.returnArrayIndex(detail.share_images, 0),
-        price_origin: this.handlePrice(detail.price_origin),
-        advice_header_price: this.handlePrice(detail.advice_header_price),
-        advice_price_sale: this.handlePrice(detail.advice_price_sale),
-      });
+      let res = await Http.post(Config.api[detail.id ? 'groupActivityEdit' : 'groupActivityAdd'], detail);
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableGroupItem');
+        let pc = this.getPageComponents('TableGroupActivity');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});
