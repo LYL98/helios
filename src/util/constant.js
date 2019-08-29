@@ -142,7 +142,7 @@ const Constant = {
   //团购活动上下架状态
   GROUP_ACTIVITY_STATUS: {
     activated: '已上架',
-    deactivated: '已下架',
+    deactivated: '未上架',
   },
   //团购活动状态
   GROUP_ACTIVITY_PROGRESS_STATUS: {

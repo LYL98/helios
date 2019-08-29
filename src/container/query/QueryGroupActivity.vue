@@ -3,15 +3,15 @@
     <el-row>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="团购状态">
-          <el-select v-model="query.status" size="small" clearable placeholder="请选择状态" @change="handleQuery('TableGroupActivity')">
+          <el-select v-model="query.progress_status" size="small" clearable placeholder="请选择状态" @change="handleQuery('TableGroupActivity')">
             <el-option label="全部" value=""></el-option>
-            <el-option v-for="(item, key) in groupActivityStatus" :key="key" :label="item" :value="key"></el-option>
+            <el-option v-for="(item, key) in progressStatus" :key="key" :label="item" :value="key"></el-option>
           </el-select>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="上架状态">
-          <button-group size="small" v-model="query.is_deleted" :options="{'全部': '', '已上架': 1, '未上架': 0}" @change="handleQuery('TableGroupActivity')"/>
+          <button-group size="small" v-model="query.status" :options="{'全部': '', '已上架': 'activated', '未上架': 'deactivated'}" @change="handleQuery('TableGroupActivity')"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
@@ -38,14 +38,19 @@
     components: {
       'button-group': ButtonGroup,
     },
+    created() {
+      this.$data.initQuery.province_code = this.province.code;
+      this.$data.query.province_code = this.province.code;
+    },
     data(){
       let initQuery = {
+        province_code: '',
+        progress_status: '',
         status: '',
-        is_deleted: '',
         condition: ''
       }
       return {
-        groupActivityStatus: Constant.GROUP_ACTIVITY_STATUS,
+        progressStatus: Constant.GROUP_ACTIVITY_PROGRESS_STATUS,
         initQuery: initQuery,
         query: this.copyJson(initQuery),
       }

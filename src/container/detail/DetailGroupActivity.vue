@@ -196,4 +196,8 @@ export default {
       }
     }
   }
+  .link-item{
+    text-decoration: underline;
+    cursor: pointer;
+  }
 </style>

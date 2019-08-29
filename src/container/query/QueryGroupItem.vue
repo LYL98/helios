@@ -25,8 +25,13 @@
     props: {
       page: { type: String, default: 'item' }, //页面item、recover
     },
+    created() {
+      this.$data.initQuery.province_code = this.province.code;
+      this.$data.query.province_code = this.province.code;
+    },
     data(){
       let initQuery = {
+        province_code: '',
         is_deleted: this.page === 'item' ? 0 : 1,
         condition: ''
       }

@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     querySearchAsync(queryString, cb) {
-      this.baseItemList({query: queryString}, items => cb(items));
+      this.groupItemList({query: queryString}, items => cb(items));
     },
     handleSelect(item) {
       // console.log('item', item);
@@ -43,13 +43,13 @@ export default {
     clear() {
       this.inputValue = '';
     },
-    async baseItemList({query, id}, callback) {
-      let res = await Http.get(Config.api.baseItemList, {
+    async groupItemList({query, id}, callback) {
+      let res = await Http.get(Config.api.groupItemList, {
         condition: query
       });
       if (res.code === 0) {
         let rd = res.data;
-        rd.map(item => item.value = item.title);
+        rd.map(item => item.value = `${item.code} ${item.title}`);
         callback(rd)
       }
 

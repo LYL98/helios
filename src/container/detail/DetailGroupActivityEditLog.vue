@@ -24,7 +24,7 @@
         </span>
         <span class="label">搜索</span>
         <span>
-          <el-input placeholder="商品编号/名称" v-model="query.condition" @keyup.enter.native="handleAnewQuery" style="width: 200px;" size="small"/>
+          <el-input placeholder="团购编号/名称" v-model="query.condition" @keyup.enter.native="handleAnewQuery" style="width: 200px;" size="small"/>
           <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 2px;" @click="handleAnewQuery"></el-button>
           <el-button size="small" type="primary" plain @click="handleClearQuery">重置</el-button>
         </span>

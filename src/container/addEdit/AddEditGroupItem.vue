@@ -167,6 +167,7 @@ export default {
       let { detail } = this;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api[detail.id ? 'groupItemEdit' : 'groupItemAdd'], {
+        province_code: this.province.code,
         ...detail,
         cover_image: this.returnArrayIndex(detail.cover_images, 0),
         share_image: this.returnArrayIndex(detail.share_images, 0),

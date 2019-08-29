@@ -91,6 +91,7 @@ const Config = (() => {
       itemCouponListExport: apiM + '/coupon/distribute/log/export', //优惠券导出
 
       // 团购商品
+      groupItemList: apiM + '/gb_item/list', //团购商品列表(组件共用)
       groupItemQuery: apiM + '/gb_item/query',  //团购商品列表
       groupItemDetail: apiM + '/gb_item/detail', //团购商品详情
       groupItemModifyLogQuery: apiM + '/gb_item/modify_log/query', //团购商品修改记录
@@ -105,9 +106,11 @@ const Config = (() => {
       groupActivityNullify: apiM + '/gb_activity/delete', //作废
       groupActivityQuery: apiM + '/gb_activity/query', //查询
       groupActivityDetail: apiM + '/gb_activity/detail', //详情
+      groupActivityActItemSale: apiM + '/gb_activity/act_item/sale', //团购详情的商品详情
       groupActivityModifyLogQuery: apiM + '/gb_activity/modify_log/query', //操作记录
       groupActivityAdd: apiM + '/gb_activity/add', //添加
       groupActivityEdit: apiM + '/gb_activity/edit', //修改
+      groupActivityActItemEdit: apiM + '/gb_activity/act_item/edit', //编辑商品
 
       groupBuyLogQuery: apiM + '/gb_activity/log/query',  //团购列表
       groupBuyItemList: apiM + '/gb_item/list',  //团购商品查询, 未使用
