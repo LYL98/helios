@@ -112,7 +112,7 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="viewWindowHeight - offsetHeight"
+        :height="windowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
