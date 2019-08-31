@@ -101,6 +101,11 @@ const router = new Router({
       name: 'GroupOrderQuery',
       component: () => import('@/view/group/Order')
     },
+    {
+      path: '/group/store/order',
+      name: 'GroupStoreOrder',
+      component: () => import('@/view/group/StoreOrder')
+    },
     /*订单*/
     {
       path: '/order/list',

@@ -1,8 +1,11 @@
 <template>
   <div class="table-body">
     <div class="table-top" v-if="auth.isAdmin || auth.GroupActivityEditLog || auth.GroupActivityAdd">
-      <el-button v-if="auth.isAdmin || auth.GroupActivityEditLog" @click.native="handleShowDetail('DetailGroupActivityEditLog')" size="mini" type="primary" plain>操作记录</el-button>
-      <el-button v-if="auth.isAdmin || auth.GroupActivityAdd" @click="handleShowAddEdit('AddEditGroupActivity')" size="mini" type="primary">新增</el-button>
+      <div class="left"></div>
+      <div class="right">
+        <el-button v-if="auth.isAdmin || auth.GroupActivityEditLog" @click.native="handleShowDetail('DetailGroupActivityEditLog')" size="mini" type="primary" plain>操作记录</el-button>
+        <el-button v-if="auth.isAdmin || auth.GroupActivityAdd" @click="handleShowAddEdit('AddEditGroupActivity')" size="mini" type="primary">新增</el-button>
+      </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -57,8 +60,8 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: auth.isAdmin || auth.GroupActivityEdit,
-                  command: () => handleShowAddEdit('AddEditGroupActivity', {...scope.row, type: 'edit'}) && judgeOrs(scope.row.progress_status, ['pre', 'ing'])
+                  isDisplay: (auth.isAdmin || auth.GroupActivityEdit) && judgeOrs(scope.row.progress_status, ['pre', 'ing']),
+                  command: () => handleShowAddEdit('AddEditGroupActivity', {...scope.row, type: 'edit'})
                 },
                 {
                   title: '上架',

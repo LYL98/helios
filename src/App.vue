@@ -107,6 +107,8 @@
                               v-if="auth.isAdmin || auth.GroupMemberQuery"><span>团员列表</span></el-menu-item>
                 <el-menu-item index="GroupOrderQuery" :route="{name: 'GroupOrderQuery'}"
                               v-if="auth.isAdmin || auth.GroupOrderQuery"><span>订单列表</span></el-menu-item>
+                <el-menu-item index="GroupStoreOrder" :route="{name: 'GroupStoreOrder'}"
+                              v-if="auth.isAdmin || auth.GroupStoreOrder"><span>门店订单</span></el-menu-item>
                 <el-menu-item index="GroupBuyStatement" :route="{name: 'GroupBuyStatement'}"
                               v-if="auth.isAdmin || auth.GroupBuyStatement"><span>团购统计</span></el-menu-item>
               </el-submenu>

@@ -43,6 +43,7 @@ export {
   QueryFinanceApprove,
   QueryGroupItem,
   QueryGroupActivity,
+  QueryGroupStoreOrder,
   QueryGroupBuyItemStatistics,
   QueryGroupBuyCaptainStatistics,
   QueryGroupBuyMemberStatistics
@@ -64,6 +65,7 @@ export {
   TableFinanceBalanceMerchantLog,
   TableFinanceApprove,
   TableGroupItem,
+  TableGroupStoreOrder,
   TableGroupActivity,
   TableGroupBuyDetail,
   TableGroupBuyMerchantDetail,
@@ -95,5 +97,6 @@ export {
   DetailGroupItemEditLog,
   DetailGroupActivity,
   DetailGroupActivityEditLog,
-  DetailGroupActivityItem
+  DetailGroupActivityItem,
+  DetailGroupStoreOrder
 } from './detail';
