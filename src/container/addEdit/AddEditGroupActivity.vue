@@ -319,9 +319,9 @@ export default {
         item_code: selectItem.code,
         item_title: selectItem.title,
         price_origin: this.returnPrice(selectItem.price_origin),
-        header_price: '',
-        price_sale: '',
-        max_num_pp: '',
+        header_price: this.returnPrice(selectItem.advice_header_price),
+        price_sale: this.returnPrice(selectItem.advice_price_sale),
+        max_num_pp: '99',
         stock_num: '',
         rank: '0'
       });

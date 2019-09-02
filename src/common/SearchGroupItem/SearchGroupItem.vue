@@ -45,7 +45,7 @@ export default {
     },
     async groupItemList({query, id}, callback) {
       let res = await Http.get(Config.api.groupItemList, {
-        condition: query
+        condition: query || ''
       });
       if (res.code === 0) {
         let rd = res.data;
