@@ -7,3 +7,11 @@
   text-align: right;
   margin-top: 20px;
 }
+
+.query > span {
+  margin-right: 20px;
+}
+
+.query > .label {
+  margin-right: 10px;
+}
