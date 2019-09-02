@@ -374,22 +374,19 @@ export default {
         }else if(!Verification.isPrice(item.header_price)){
           item.header_price_error = '金额不正确';
           isPass = false;
-        }else if(Number(item.header_price) < Number(item.price_origin)){
-          item.header_price_error = '不能小于原价';
-          isPass = false;
         }else{
           item.header_price_error = '';
         }
 
         //判断团购价
         if(!item.price_sale){
-          item.price_sale_error = '团长价不能空';
+          item.price_sale_error = '团购价不能空';
           isPass = false;
         }else if(!Verification.isPrice(item.price_sale)){
           item.price_sale_error = '金额不正确';
           isPass = false;
         }else if(Number(item.price_sale) < Number(item.header_price)){
-          item.price_sale_error = '不能小于团购价';
+          item.price_sale_error = '不能小于团长价';
           isPass = false;
         }else{
           item.price_sale_error = '';
