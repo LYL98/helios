@@ -1,13 +1,12 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="auth.isAdmin || auth.GroupStoreOrderEditLog || auth.GroupStoreOrderAdd || auth.GroupStoreOrderDelete || auth.GroupStoreOrderRecover">
+    <div class="table-top" v-if="auth.isAdmin || auth.GroupStoreOrderDelivery || auth.GroupStoreOrderDeliveryAll || auth.GroupStoreOrderExport">
       <div class="left">
-        <el-button type="danger" size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelete('multi')" v-if="(auth.isAdmin || auth.GroupStoreOrderDelete) && page === 'item'">批量删除</el-button>
-        <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleRecover('multi')" v-if="(auth.isAdmin || auth.GroupStoreOrderRecover) && page === 'recover'">批量恢复</el-button>
+        <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelivery('multi')" plain v-if="auth.isAdmin || auth.GroupStoreOrderDelivery">批量发货</el-button>
+        <el-button size="mini" @click.native="handleDeliveryAll" type="primary" v-if="auth.isAdmin || auth.GroupStoreOrderDeliveryAll">一键发货</el-button>
       </div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.GroupStoreOrderEditLog" @click.native="handleShowDetail('DetailGroupStoreOrderEditLog')" size="mini" type="primary" plain>操作记录</el-button>
-        <el-button v-if="auth.isAdmin || auth.GroupStoreOrderAdd" @click="handleShowAddEdit('AddEditGroupStoreOrder')" size="mini" type="primary">新增</el-button>
+        <el-button v-if="auth.isAdmin || auth.GroupStoreOrderExport" @click.native="handleExport('groupStoreOrderExport', query)" size="mini" type="primary" plain>导出订单</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -23,24 +22,29 @@
         :current-row-key="clickedRow[rowIdentifier]"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="30" v-if="auth.isAdmin || auth.GroupStoreOrderDelete || auth.GroupStoreOrderRecover"></el-table-column>
+        <el-table-column type="selection" width="30" :selectable="selectable" v-if="auth.isAdmin || auth.GroupStoreOrderDelivery"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
           <div slot-scope="scope" class="my-td-item">
-            <!--编号名称-->
-            <template v-if="item.key === 'code_title'">
-              <div class="td-item add-dot2">
-                <div class="link-item add-dot" @click="handleShowDetail('DetailGroupStoreOrder', scope.row)" v-if="((auth.isAdmin || auth.GroupStoreOrderDetail) && page === 'item') || ((auth.isAdmin || auth.GroupStoreOrderRecoverDetail) && page === 'recover')">
-                  {{scope.row.code}}/{{scope.row.title}}
-                </div>
-                <div class="add-dot" v-else>
-                  {{scope.row.code}}/{{scope.row.title}}
-                </div>
-              </div>
-            </template>
+            <!--门店名称-->
+            <div class="td-item add-dot2" v-if="item.key === 'store_title'">{{scope.row.store.title}}</div>
+            <!--门店地址-->
+            <div class="td-item add-dot2" v-else-if="item.key === 'store_address'">{{scope.row.store.address}}</div>
+            <!--联系方式-->
+            <div class="td-item add-dot2" v-else-if="item.key === 'linkman'">
+              <div>{{scope.row.store.linkman}}</div>
+              <div>{{scope.row.store.phone}}</div>
+            </div>
+            <!--所在仓-->
+            <div class="td-item add-dot2" v-else-if="item.key === 'city_title'">{{scope.row.city.title}}</div>
             <!--原价、建议团长价、建议团购价-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'price_origin' || item.key === 'advice_header_price' || item.key === 'advice_price_sale'">&yen;{{returnPrice(scope.row[item.key])}}</div>
+            <div class="td-item add-dot2" v-else-if="item.key === 'amoun'">&yen;{{returnPrice(scope.row.amoun)}}</div>
+            <template v-else-if="item.key === 'status'">
+              <el-tag size="small" :type="groupStoreOrderStatusType[scope.row.status]" disable-transitions>
+                {{ groupStoreOrderStatus[scope.row.status] }}
+              </el-tag>
+            </template>
             <!--正常情况-->
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
@@ -54,19 +58,14 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '修改',
-                  isDisplay: (auth.isAdmin || auth.GroupStoreOrderEdit) && page === 'item',
-                  command: () => handleShowAddEdit('AddEditGroupStoreOrder', scope.row)
+                  title: '查看',
+                  isDisplay: auth.isAdmin || auth.GroupStoreOrderDetail,
+                  command: () => handleShowDetail('DetailGroupStoreOrder', scope.row)
                 },
                 {
-                  title: '删除',
-                  isDisplay: (auth.isAdmin || auth.GroupStoreOrderDelete) && page === 'item',
-                  command: () => handleDelete({ids: [scope.row.id]})
-                },
-                {
-                  title: '恢复',
-                  isDisplay: (auth.isAdmin || auth.GroupStoreOrderRecover) && page === 'recover',
-                  command: () => handleRecover({ids: [scope.row.id]})
+                  title: '发货',
+                  isDisplay: (auth.isAdmin || auth.GroupStoreOrderDelivery) && scope.row.status === 'init',
+                  command: () => handleDelivery({ids: [scope.row.id]})
                 }
               ]"
             />
@@ -103,11 +102,8 @@
     components: {
     },
     mixins: [tableMixin],
-    props: {
-      page: { type: String, default: 'item' }, //页面item、recover
-    },
     created() {
-      if (!this.auth.isAdmin && !this.auth.GroupStoreOrderEditLog && !this.auth.GroupStoreOrderAdd && !this.auth.GroupStoreOrderDelete && this.auth.GroupStoreOrderRecover) {
+      if (!this.auth.isAdmin && !this.auth.GroupStoreOrderDelivery && !this.auth.GroupStoreOrderDeliveryAll && !this.auth.GroupStoreOrderExport) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION;
       }
       let pc = this.getPageComponents('QueryGroupStoreOrder');
@@ -118,13 +114,18 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableGroupStoreOrder',
         tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '原价', key: 'price_origin', width: '160', isShow: true },
-          { label: '建议团长价', key: 'advice_header_price', width: '160', isShow: true },
-          { label: '建议团购价', key: 'advice_price_sale', width: '160', isShow: true },
-          { label: '创建时间', key: 'created', width: '160', isShow: true },
+          { label: '门店名称', key: 'store_title', width: '160', isShow: true },
+          { label: '门店地址', key: 'store_address', width: '160', isShow: true },
+          { label: '联系方式', key: 'linkman', width: '160', isShow: true },
+          { label: '所在仓', key: 'city_title', width: '100', isShow: true },
+          { label: '实付金额', key: 'amoun', width: '100', isShow: true },
+          { label: '状态', key: 'status', width: '80', isShow: true },
+          { label: '发货日期', key: 'delivery_time', width: '160', isShow: true },
+          { label: '创建时间', key: 'created', width: '160', isShow: false },
           { label: '更新时间', key: 'updated', width: '160', isShow: false },
-        ]
+        ],
+        groupStoreOrderStatus: Constant.GROUP_STORE_ORDER_STATUS,
+        groupStoreOrderStatusType: Constant.GROUP_STORE_ORDER_STATUS_TYPE,
       }
     },
     methods: {
@@ -132,7 +133,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.groupItemQuery, query);
+        let res = await Http.get(Config.api.groupStoreOrderQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -140,28 +141,12 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
-      //删除数据
-      async deleteData(data){
-        //批量
-        if(data === 'multi'){
-          let { multipleSelection } = this;
-          data = { ids: [] };
-          multipleSelection.map((item)=>{
-            data.ids.push(item.id);
-          });
-        }
-        this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.groupItemDelete, data);
-        this.$loading({ isShow: false });
-        if(res.code === 0){
-          this.getData(this.query);
-          this.$message({message: '已删除', type: 'success'});
-        }else{
-          this.$message({message: res.message, type: 'error'});
-        }
+      // 判断当前行是否可以被选中
+      selectable(row) {
+        return row.status === 'init';
       },
-      //恢复
-      handleRecover(data){
+      //发货
+      handleDelivery(data){
         //批量
         if(data === 'multi'){
           let { multipleSelection } = this;
@@ -170,18 +155,40 @@
             data.ids.push(item.id);
           });
         }
-        this.$messageBox.confirm(`您确认要恢复？`, '提示', {
+        this.$messageBox.confirm(`您确认要发货？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           (async ()=>{
             this.$loading({ isShow: true });
-            let res = await Http.post(Config.api.groupItemRecover, data);
+            let res = await Http.post(Config.api.groupStoreOrderDelivery, data);
             this.$loading({ isShow: false });
             if(res.code === 0){
               this.getData(this.query);
-              this.$message({message: '已恢复', type: 'success'});
+              this.$message({message: '已发货', type: 'success'});
+            }else{
+              this.$message({message: res.message, type: 'error'});
+            }
+          })();
+        }).catch(() => {
+          //console.log('取消');
+        });
+      },
+      //一键发货
+      handleDeliveryAll(){
+        this.$messageBox.confirm(`您确认将待发货订单全部发货？`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          (async ()=>{
+            this.$loading({ isShow: true });
+            let res = await Http.post(Config.api.groupStoreOrderDeliveryAll, {});
+            this.$loading({ isShow: false });
+            if(res.code === 0){
+              this.getData(this.query);
+              this.$message({message: '已发货', type: 'success'});
             }else{
               this.$message({message: res.message, type: 'error'});
             }

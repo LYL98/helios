@@ -139,6 +139,18 @@ const Constant = {
     canceled: '已取消'
   },
 
+  //团购门店订单状态
+  GROUP_STORE_ORDER_STATUS: {
+    init: '待发货',
+    wait_pick: '已发货',
+    picked: '已完成'
+  },
+  GROUP_STORE_ORDER_STATUS_TYPE: {
+    init: 'danger',
+    wait_pick: 'success',
+    picked: 'info'
+  },
+
   //团购活动上下架状态
   GROUP_ACTIVITY_STATUS: {
     activated: '已上架',

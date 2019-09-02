@@ -4,7 +4,7 @@
       <el-row :gutter="10">
         <el-col :span="8">
           <el-form-item label="团购名称" prop="title">
-            <el-input size="small" v-model="detail.detail.title" :disabled="judgeIsAllEdit() ? false : true" :maxLength="20" placeholder="请输入团购名称"/>
+            <el-input size="small" v-model="detail.detail.title" @blur="editData" :disabled="judgeIsAllEdit() ? false : true" :maxLength="20" placeholder="请输入团购名称"/>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -19,6 +19,7 @@
               end-placeholder="结束时间"
               value-format="yyyy-MM-dd HH:mm:ss"
               @change="changePicker"
+              @blur="editData"
               :disabled="judgeIsAllEdit() ? false : true"
             />
           </el-form-item>
@@ -33,6 +34,7 @@
               v-model="detail.detail.delivery_date"
               type="date"
               value-format="yyyy-MM-dd"
+              @blur="editData"
               :disabled="judgeIsAllEdit() ? false : true"
             />
           </el-form-item>
@@ -88,7 +90,9 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" width="60">
-        <a slot-scope="scope" href="javascript:void(0);" @click="deleteItem(scope.$index)" v-if="judgeIsAllEdit() && detail.items.length > 1">移除</a>
+        <a slot-scope="scope" href="javascript:void(0);"
+          @click="deleteItem(scope.$index)"
+          v-if="judgeIsAllEdit() && detail.items.length > 1 && (auth.isAdmin || auth.GroupActivityItemDelete)">移除</a>
         <span v-else>-</span>
       </el-table-column>
     </el-table>
@@ -252,6 +256,18 @@ export default {
       }
       return false;
     },
+    //修改提交数据
+    editData(){
+      if(this.detail.detail.id){
+        this.$refs['ruleForm'].validate((valid) => {
+          if (valid) {
+            this.addEditData();
+          } else {
+            return false;
+          }
+        });
+      }
+    },
     //提交数据
     async addEditData(){
       let { detail } = this;
@@ -273,7 +289,7 @@ export default {
       });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.$message({message: `${detail.detail.id ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableGroupActivity');
@@ -314,8 +330,36 @@ export default {
     //移除商品
     deleteItem(index){
       let { detail } = this;
-      detail.items.remove(index);
-      this.$data.detail = this.copyJson(detail);
+      if(detail.detail.id){
+        this.groupActivityActItemDelete(index);
+      }else{
+        detail.items.remove(index);
+        this.$data.detail = this.copyJson(detail);
+      }
+    },
+    //移除商品
+    groupActivityActItemDelete(index){
+      this.$messageBox.confirm(`您确认移除商品？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        (async ()=>{
+          let { detail } = this;
+          this.$loading({ isShow: true });
+          let res = await Http.post(Config.api.groupActivityActItemDelete, { id: detail.items[index].id });
+          this.$loading({ isShow: false });
+          if(res.code === 0){
+            detail.items.remove(index);
+            this.$data.detail = this.copyJson(detail);
+            this.$message({message: '已移除', type: 'success'});
+          }else{
+            this.$message({message: res.message, type: 'error'});
+          }
+        })();
+      }).catch(() => {
+        //console.log('取消');
+      });
     },
     //校验商品
     judgeItems(index){

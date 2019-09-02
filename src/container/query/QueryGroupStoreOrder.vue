@@ -4,15 +4,13 @@
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="状态">
           <el-select class="query-item-select" v-model="query.status" @change="handleQuery('TableGroupStoreOrder')" placeholder="全部" size="small" clearable>
-            <el-option v-for="(item, key) in groupOrderStatus" :key="key" :label="item" :value="key"></el-option>
+            <el-option v-for="(item, key) in groupStoreOrderStatus" :key="key" :label="item" :value="key"></el-option>
           </el-select>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="所在仓">
-          <el-select class="query-item-select" v-model="query.status" @change="handleQuery('TableGroupStoreOrder')" placeholder="全部" size="small" clearable>
-            <el-option v-for="(item, key) in groupOrderStatus" :key="key" :label="item" :value="key"></el-option>
-          </el-select>
+          <select-city :provinceCode="query.province_code" v-model="query.city_code" style="width: 242px;" @change="handleQuery('TableGroupStoreOrder')"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
@@ -30,11 +28,14 @@
 
 <script>
   import queryMixin from './query.mixin2';
+  import { Constant } from '@/util';
+  import { SelectCity } from '@/common';
 
   export default {
     name: "QueryGroupStoreOrder",
     mixins: [queryMixin],
     components: {
+      'select-city': SelectCity
     },
     created() {
       this.$data.initQuery.province_code = this.province.code;
@@ -43,13 +44,14 @@
     data(){
       let initQuery = {
         province_code: '',
+        city_code: '',
         condition: '',
         status: ''
       }
       return {
         initQuery: initQuery,
         query: this.copyJson(initQuery),
-        groupOrderStatus: Constant.GROUP_ORDER_STATUS,
+        groupStoreOrderStatus: Constant.GROUP_STORE_ORDER_STATUS
       }
     }
   }

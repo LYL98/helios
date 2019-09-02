@@ -138,6 +138,14 @@ const Config = (() => {
       groupMemberFreeze: apiM + '/gb_activity/gb_member/freeze', // 冻结 解冻团长
       groupMemberExport: apiM + '/gb_activity/gb_member/export', // 冻结 解冻团长
 
+      //门店订单
+      groupStoreOrderQuery: apiM + '/gb_store_order/query', //门店订单查询
+      groupStoreOrderDelivery: apiM + '/gb_store_order/delivery', //门店订单发货
+      groupStoreOrderDeliveryAll: apiM + '/gb_store_order/delivery_all', //门店订单一键发货
+      groupStoreOrderDetail: apiM + '/gb_store_order/detail', //门店订单详情
+      groupStoreOrderExportCheck: apiM + '/gb_store_order/export_check', //门店订单导出确认
+      groupStoreOrderExport: apiM + '/gb_store_order/export', //门店订单导出
+
       // 订单列表
       groupOrderQuery: apiM + '/gb_activity/gb_order/query', // 团员列表
       groupOrderExport: apiM + '/gb_activity/gb_order/export', // 导出
