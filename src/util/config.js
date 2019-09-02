@@ -149,12 +149,9 @@ const Config = (() => {
       // 订单列表
       groupOrderQuery: apiM + '/gb_activity/gb_order/query', // 团员列表
       groupOrderExport: apiM + '/gb_activity/gb_order/export', // 导出
-      groupOrderShip: apiM + '/gb_activity/order/ship', // 发货
-      groupOrderAllShip: apiM + '/gb_activity/gb_order/send_by_query', //全部发货
-      groupOrderAllShipTotals: apiM + '/gb_activity/gb_order/st_query', //获取待全部发货的数量
+      groupOrderDetailExport: apiM + '/gb_activity/gb_order/export', // 导出明细
       groupOrderDetail: apiM + '/gb_activity/order/detail', // 详情
       groupOrderCancel: apiM + '/gb_activity/order/cancel', // 取消
-      groupOrderConfirmPickUp: apiM + '/gb_order/confirm/pick_up', //取货
 
       baseProvinceListMy: apiM + '/common/my_province', //省列表(我的省列表)（全局省份）
       baseProvinceList: apiM + '/common/province/list', //省列表 (组件共用）

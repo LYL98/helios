@@ -96,7 +96,7 @@
         initDataItem: initDataItem,
         dataItem: this.copyJson(initDataItem),
         categorys: {
-          add: '添加商品',
+          add: '新增商品',
           edit: '修改商品',
           delete: '删除商品',
           recover: '恢复商品'

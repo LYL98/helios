@@ -27,51 +27,17 @@
 
     <!--订单商品start-->
     <div class="order-item-div">
-      <el-table :data="orderItems" :row-class-name="highlightRowClassName" :highlight-current-row="true">
-        <el-table-column label="商品" width="60">
-          <template slot-scope="scope">
-            <my-image-preview style="width: 58px;">
-              <img
-                :src="tencentPath + scope.row.cover_image + '_min200x200'"
-                width="48"
-                height="48"
-              />
-            </my-image-preview>
-          </template>
+      <el-table :data="detail.order_items" :row-class-name="highlightRowClassName" :highlight-current-row="true">
+        <el-table-column label="商品编号/名称">
+          <template slot-scope="scope">{{scope.row.item_code}}/{{scope.row.item_title}}</template>
         </el-table-column>
-        <el-table-column prop="title" width="200">
+        <el-table-column prop="item_price_sale" label="团购价" width="140">
+          <template slot-scope="scope">￥{{returnPrice(scope.row.item_price_sale)}}</template>
         </el-table-column>
-        <el-table-column prop="price_at_created" label="单价">
-          <template slot-scope="scope">
-            {{ scope.row.price_at_created ? '￥' : '' }}{{ scope.row.price_at_created || '-' }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="buy_num" label="购买件数">
-        </el-table-column>
-        <el-table-column prop="amount_at_created" label="成团价">
-          <template slot-scope="scope">
-            <span v-if="['wait_delivery_customer', 'wait_pick', 'picked'].includes(scope.row.status)">
-              {{ scope.row.price ? '￥' : '' }}{{ scope.row.price || '-' }}
-            </span>
-            <span v-else>-</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="pay_amount" label="实付金额">
-          <template slot-scope="scope">
-            {{ scope.row.pay_amount ? '￥' : '' }}{{ scope.row.pay_amount || '-' }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="refund_amount" label="退款金额">
-          <template slot-scope="scope">
-            {{ scope.row.refund_amount ? '￥' : '' }}{{ scope.row.refund_amount || '-' }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="pay_amount" label="订单价格">
-          <template slot-scope="scope">
-            <!-- 无成团价时，订单价格 等于 实付金额 -->
-            <span v-if="scope.row.price">{{ scope.row.amount ? '￥' : '' }}{{ scope.row.amount || '-' }}</span>
-            <span v-else>{{ scope.row.pay_amount_at_created ? '￥' : '' }}{{ scope.row.pay_amount_at_created || '-' }}</span>
-          </template>
+        <el-table-column prop="num" label="购买件数" width="140">
+        </el-table-column>        
+        <el-table-column label="小计" width="140">
+          <template slot-scope="scope">￥{{returnPrice(scope.row.item_price_sale * scope.row.num)}}</template>
         </el-table-column>
       </el-table>
     </div>
@@ -148,7 +114,6 @@
 
 <script>
   import {Row, Col, Button, Dialog, Tag, Table, TableColumn} from 'element-ui';
-  import {ImagePreview} from '@/common';
   import {Config, DataHandle, Constant} from '@/util';
 
   export default {
@@ -161,39 +126,11 @@
       'el-tag': Tag,
       'el-table': Table,
       'el-table-column': TableColumn,
-      'my-image-preview': ImagePreview
     },
     props: {
       detail: { type: Object, required: true }
     },
     computed: {
-      orderItems: {
-        get() {
-
-          /**
-           * 商品名 item_title
-           * 商品图 item_image
-           * 单价 price_at_created
-           * 成团价 amount_at_created
-           * 购买件数 num
-           * 实付金额 pay_amount_at_created
-           * 退款金额
-           * 订单价格
-           */
-          let detail = this.$props.detail;
-          return [{
-            title: detail.item_title,
-            cover_image: detail.cover_image,
-            price_at_created: DataHandle.returnPrice(detail.price_at_created), // 单价
-            price: DataHandle.returnPrice(detail.price), // 成团价
-            buy_num: detail.num,
-            pay_amount: DataHandle.returnPrice(detail.pay_amount), // 实付金额
-            refund_amount: DataHandle.returnPrice(detail.pay_amount_at_created - detail.pay_amount), // 退款金额
-            amount: DataHandle.returnPrice(detail.amount), // 订单价格
-            status: detail.status
-          }]
-        }
-      },
       actionLog: {
         get() {
           let log = {};
