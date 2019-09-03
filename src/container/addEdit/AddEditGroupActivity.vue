@@ -48,7 +48,7 @@
     </el-form>
     <!--搜索-->
     <div class="search-div" v-if="!detail.detail.id">
-      <search-group-item @onSelectItem="onSelectItem" style="width: 400px;margin-right: 10px;"/>
+      <search-group-item @onSelectItem="onSelectItem" :provinceCode="province.code" style="width: 400px;margin-right: 10px;"/>
       <el-button type="primary" @click.native="addItem">增加商品</el-button>
     </div>
     <!--表格-->

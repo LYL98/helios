@@ -19,7 +19,11 @@ export default {
   components: {
     'el-autocomplete': Autocomplete
   },
-  props: ['value', 'size'],
+  props: {
+    value: { type: Number | String, default: '' },
+    provinceCode: { type: Number | String, default: '' },
+    size: { type: String, default: '' },
+  },
   // watch: {
   //   inputValue: function (after, before) {
   //     // 把变化后的值发送到父组件
@@ -45,6 +49,7 @@ export default {
     },
     async groupItemList({query, id}, callback) {
       let res = await Http.get(Config.api.groupItemList, {
+        province_code: this.provinceCode || '',
         condition: query || ''
       });
       if (res.code === 0) {
