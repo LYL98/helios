@@ -30,7 +30,7 @@
           </dl>
         </el-col>
       </el-row>
-      <el-row :gutter="10" v-if="detail.detail.progress_status !== 'pre'">
+      <el-row :gutter="10" v-if="detail.detail.progress_status !== 'pre' && detail.detail.progress_status !== 'is_deleted'">
         <el-col :span="8">
           <dl class="detail-item">
             <dt class="label">总销量</dt>

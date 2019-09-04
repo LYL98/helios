@@ -137,7 +137,7 @@
           { label: '团购状态', key: 'progress_status', width: '160', isShow: true },
           { label: '上架状态', key: 'status', width: '160', isShow: true },
           { label: '发货时间', key: 'delivery_date', width: '160', isShow: true },
-          { label: '创建时间', key: 'created', width: '160', isShow: true },
+          { label: '创建时间', key: 'created', width: '160', isShow: false },
           { label: '更新时间', key: 'updated', width: '160', isShow: false },
         ],
         activityStatus: Constant.GROUP_ACTIVITY_STATUS,

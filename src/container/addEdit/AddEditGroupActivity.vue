@@ -47,7 +47,7 @@
       </el-row>
     </el-form>
     <!--搜索-->
-    <div class="search-div" v-if="!detail.detail.id">
+    <div class="search-div">
       <search-group-item @onSelectItem="onSelectItem" :provinceCode="province.code" style="width: 400px;margin-right: 10px;"/>
       <el-button type="primary" @click.native="addItem">增加商品</el-button>
     </div>
@@ -92,7 +92,7 @@
       <el-table-column label="操作" width="60">
         <a slot-scope="scope" href="javascript:void(0);"
           @click="deleteItem(scope.$index)"
-          v-if="judgeIsAllEdit() && detail.items.length > 1 && (auth.isAdmin || auth.GroupActivityItemDelete)">移除</a>
+          v-if="judgeIsAllEdit() && (auth.isAdmin || auth.GroupActivityItemDelete)">移除</a>
         <span v-else>-</span>
       </el-table-column>
     </el-table>
@@ -164,10 +164,10 @@ export default {
           { required: true, message: '商品名称不能为空', trigger: 'change' },
         ],
         picker_value: [
-          { validator: validPickerValue, trigger: 'blur' },
+          { required: true, validator: validPickerValue, trigger: 'blur' },
         ],
         delivery_date: [
-          { validator: validDeliveryDate, trigger: 'change' }
+          { required: true, validator: validDeliveryDate, trigger: 'change' }
         ],
       },
     }
@@ -374,6 +374,9 @@ export default {
         }else if(!Verification.isPrice(item.header_price)){
           item.header_price_error = '金额不正确';
           isPass = false;
+        }else if(Number(item.header_price) === 0){
+          item.header_price_error = '金额不能为0';
+          isPass = false;
         }else{
           item.header_price_error = '';
         }
@@ -384,6 +387,9 @@ export default {
           isPass = false;
         }else if(!Verification.isPrice(item.price_sale)){
           item.price_sale_error = '金额不正确';
+          isPass = false;
+        }else if(Number(item.price_sale_error) === '0'){
+          item.price_sale_error = '金额不能为0';
           isPass = false;
         }else if(Number(item.price_sale) < Number(item.header_price)){
           item.price_sale_error = '不能小于团长价';
@@ -466,6 +472,10 @@ export default {
       //如果是新增、复制
       if(!detail.detail.id) return;
 
+      if(!this.judgeItems(index)){
+        return;
+      }
+
       let item = detail.items[index];
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.groupActivityActItemEdit, {
@@ -501,6 +511,7 @@ export default {
     left: 10px;
     right: 10px;
     text-align: center;
+    z-index: 1;
   }
 </style>
 <style>

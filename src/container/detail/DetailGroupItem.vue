@@ -77,7 +77,7 @@
               <el-col :span="24">
                 <dl class="detail-item">
                   <dt class="label">分享文案</dt>
-                  <dd class="content">{{detail.share_content}}</dd>
+                  <dd class="content">{{detail.share_content || '-'}}</dd>
                 </dl>
               </el-col>
             </el-row>
@@ -188,6 +188,7 @@ export default {
   }
 
   .content-div{
+    width: 948px;
     height: 360px;
     border: 1px solid #ececec;
     overflow-y: auto;

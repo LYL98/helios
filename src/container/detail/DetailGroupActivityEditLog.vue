@@ -98,7 +98,7 @@
         initDataItem: initDataItem,
         dataItem: this.copyJson(initDataItem),
         categorys: {
-          add: '添加团购',
+          add: '新增团购',
           edit: '修改团购',
           active: '上架团购',
           deactive: '下架团购',

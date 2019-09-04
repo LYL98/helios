@@ -47,7 +47,7 @@
         <el-input size="medium" v-model="detail.share_content" :maxlength="30" placeholder="请输入团购商品分享文案"></el-input>
       </el-form-item>
       <el-form-item label="分享图片" prop="share_content">
-        <upload-img v-model="detail.share_images" module="share_images" :limit="5"></upload-img>
+        <upload-img v-model="detail.share_images" module="share_images" :limit="1"></upload-img>
         <div style="color: #999; font-size: 12px;">上传图片尺寸为 5 : 4</div>
       </el-form-item>
     </el-form>
