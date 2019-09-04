@@ -39,7 +39,7 @@
             <!--所在仓-->
             <div class="td-item add-dot2" v-else-if="item.key === 'city_title'">{{scope.row.city.title}}</div>
             <!--原价、建议团长价、建议团购价-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'amoun'">&yen;{{returnPrice(scope.row.amoun)}}</div>
+            <div class="td-item add-dot2" v-else-if="item.key === 'amount'">&yen;{{returnPrice(scope.row.amount)}}</div>
             <template v-else-if="item.key === 'status'">
               <el-tag size="small" :type="groupStoreOrderStatusType[scope.row.status]" disable-transitions>
                 {{ groupStoreOrderStatus[scope.row.status] }}
@@ -118,7 +118,7 @@
           { label: '门店地址', key: 'store_address', width: '160', isShow: true },
           { label: '联系方式', key: 'linkman', width: '160', isShow: true },
           { label: '所在仓', key: 'city_title', width: '100', isShow: true },
-          { label: '实付金额', key: 'amoun', width: '100', isShow: true },
+          { label: '实付金额', key: 'amount', width: '100', isShow: true },
           { label: '状态', key: 'status', width: '80', isShow: true },
           { label: '发货日期', key: 'delivery_time', width: '160', isShow: true },
           { label: '创建时间', key: 'created', width: '160', isShow: false },
