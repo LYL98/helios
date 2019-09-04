@@ -110,6 +110,7 @@ const Config = (() => {
       groupActivityModifyLogQuery: apiM + '/gb_activity/modify_log/query', //操作记录
       groupActivityAdd: apiM + '/gb_activity/add', //添加
       groupActivityEdit: apiM + '/gb_activity/edit', //修改
+      groupActivityActItemAdd: apiM + '/gb_activity/act_item/add', //新增商品
       groupActivityActItemEdit: apiM + '/gb_activity/act_item/edit', //编辑商品
       groupActivityActItemDelete: apiM + '/gb_activity/act_item/delete', //团购活动具体商品删除
       groupActivityActCheckDup: apiM + '/gb_activity/check_dup', //活动时间判断

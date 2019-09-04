@@ -15,6 +15,5 @@ export { default as TableGroupItem } from './TableGroupItem';
 export { default as TableGroupStoreOrder } from './TableGroupStoreOrder';
 export { default as TableGroupActivity } from './TableGroupActivity';
 export { default as TableGroupBuyDetail } from './TableGroupBuyDetail';
-export { default as TableGroupBuyMerchantDetail } from './TableGroupBuyMerchantDetail';
 export { default as TableGroupHeadDetail } from './TableGroupHeadDetail';
 export { default as TableGroupHeadDetailList } from './TableGroupHeadDetailList';

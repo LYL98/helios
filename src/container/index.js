@@ -68,7 +68,6 @@ export {
   TableGroupStoreOrder,
   TableGroupActivity,
   TableGroupBuyDetail,
-  TableGroupBuyMerchantDetail,
   TableGroupHeadDetail,
   TableGroupHeadDetailList
 } from './table';

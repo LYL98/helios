@@ -141,10 +141,10 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="实付金额" prop="pay_amount_at_created" min-width="90">
+        <el-table-column label="实付金额" prop="pay_amount" min-width="90">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
-              {{ scope.row.pay_amount_at_created ? '￥' : '' }}{{ returnPrice(scope.row.pay_amount_at_created) }}
+              {{ scope.row.pay_amount ? '￥' : '' }}{{ returnPrice(scope.row.pay_amount) }}
             </div>
           </template>
         </el-table-column>
