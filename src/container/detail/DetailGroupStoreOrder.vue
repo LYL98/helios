@@ -12,7 +12,7 @@
               <el-col :span="14">
                 <dl class="detail-item">
                   <dt class="label">发货日期</dt>
-                  <dd class="content">{{detail.delivery_time}}</dd>
+                  <dd class="content">{{detail.activity.delivery_date}}</dd>
                 </dl>
               </el-col>
               <el-col :span="2">

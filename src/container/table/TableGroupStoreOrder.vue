@@ -45,6 +45,8 @@
                 {{ groupStoreOrderStatus[scope.row.status] }}
               </el-tag>
             </template>
+            <!--发货日期-->
+            <div class="td-item add-dot2" v-else-if="item.key === 'delivery_date'">{{scope.row.activity.delivery_date}}</div>
             <!--正常情况-->
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
@@ -120,7 +122,7 @@
           { label: '所在仓', key: 'city_title', width: '100', isShow: true },
           { label: '实付金额', key: 'amount', width: '100', isShow: true },
           { label: '状态', key: 'status', width: '80', isShow: true },
-          { label: '发货日期', key: 'delivery_time', width: '160', isShow: true },
+          { label: '发货日期', key: 'delivery_date', width: '160', isShow: true },
           { label: '创建时间', key: 'created', width: '160', isShow: false },
           { label: '更新时间', key: 'updated', width: '160', isShow: false },
         ],
