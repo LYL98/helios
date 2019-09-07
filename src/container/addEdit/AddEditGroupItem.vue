@@ -64,7 +64,7 @@ import { Http, Config, Verification } from '@/util';
 import { QuillEditor, UploadImg } from '@/common';
 
 export default {
-  name: "AddEditItemGlobal",
+  name: "AddEditGroupItem",
   mixins: [addEditMixin],
   components: {
     'upload-img': UploadImg,

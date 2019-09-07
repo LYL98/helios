@@ -97,6 +97,8 @@
                 </template>
                 <el-menu-item index="GroupActivity" :route="{name: 'GroupActivity'}"
                               v-if="auth.isAdmin || auth.GroupActivity"><span>团购活动</span></el-menu-item>
+                <el-menu-item index="GroupItemClass" :route="{name: 'GroupItemClass'}"
+                              v-if="auth.isAdmin || auth.GroupItemClass"><span>商品分类</span></el-menu-item>
                 <el-menu-item index="GroupItem" :route="{name: 'GroupItem'}"
                               v-if="auth.isAdmin || auth.GroupItem"><span>商品列表</span></el-menu-item>
                 <el-menu-item index="GroupItemRecover" :route="{name: 'GroupItemRecover'}"

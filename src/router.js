@@ -77,6 +77,11 @@ const router = new Router({
       component: () => import('@/view/group/Activity')
     },
     {
+      path: '/group/item/class',
+      name: 'GroupItemClass',
+      component: () => import('@/view/group/ItemClass')
+    },
+    {
       path: '/group/item',
       name: 'GroupItem',
       component: () => import('@/view/group/Item')

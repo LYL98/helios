@@ -1,6 +1,7 @@
 export {
   AddEditGroupItem,
-  AddEditGroupActivity
+  AddEditGroupActivity,
+  AddEditGroupItemClass
 } from './addEdit';
 
 // 下拉选择组件
@@ -65,6 +66,7 @@ export {
   TableFinanceBalanceMerchantLog,
   TableFinanceApprove,
   TableGroupItem,
+  TableGroupItemClass,
   TableGroupStoreOrder,
   TableGroupActivity,
   TableGroupBuyDetail,
