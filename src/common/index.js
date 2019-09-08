@@ -34,6 +34,7 @@ export { default as SelectCityMulti } from './SelectCityMulti';
 export { default as SelectDisplayClass } from './SelectDisplayClass';
 export { default as SelectDistributorMulti } from './SelectDistributorMulti';
 export { default as SelectFrame } from './SelectFrame';
+export { default as SelectGroupItemClass } from './SelectGroupItemClass';
 export { default as SelectLineMulti } from './SelectLineMulti';
 export { default as SelectLineOperate } from './SelectLineOperate';
 export { default as SelectLineQuery } from './SelectLineQuery';

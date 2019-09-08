@@ -5,6 +5,7 @@
     placeholder="搜索商品名称、编号"
     @select="handleSelect"
     clearable
+    @clear="clear"
     :size="size"
     style="width: 360px"
   ></el-autocomplete>
@@ -24,16 +25,23 @@ export default {
     provinceCode: { type: Number | String, default: '' },
     size: { type: String, default: '' },
   },
-  // watch: {
-  //   inputValue: function (after, before) {
-  //     // 把变化后的值发送到父组件
-  //     this.$emit('input', after)
-  //   }
-  // },
+  model: {
+    prop: 'value',
+    event: 'ev'
+  },
+  computed: {
+    inputValue: {
+      get() {
+        return this.$props.value;
+      },
+      set(v) {
+        this.$emit('ev', v);
+      }
+    }
+  },
   data() {
     return {
-      itemList: [],
-      inputValue: this.value
+      itemList: []
     }
   },
   methods: {
@@ -42,10 +50,11 @@ export default {
     },
     handleSelect(item) {
       // console.log('item', item);
-      this.$emit('onSelectItem', item)
+      this.$emit('onSelectItem', item);
     },
-    clear() {
-      this.inputValue = '';
+    //清除
+    clear(v) {
+      this.$emit('onSelectItem', {});
     },
     async groupItemList({query, id}, callback) {
       let res = await Http.get(Config.api.groupItemList, {

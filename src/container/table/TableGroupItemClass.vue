@@ -89,10 +89,9 @@
     mixins: [tableMixin],
     created() {
       if(!this.auth.isAdmin && !this.auth.GroupItemClassAdd){
-          this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION;
-        }
-      let pc = this.getPageComponents('QueryGroupItemClass');
-      this.getData(pc.query);
+        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION;
+      }
+      this.getData();
     },
     data() {
       return {
@@ -109,10 +108,9 @@
     },
     methods: {
       //获取数据
-      async getData(query){
-        this.$data.query = query; //赋值，minxin用
+      async getData(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.groupItemClassQuery, query);
+        let res = await Http.get(Config.api.groupItemClassQuery, {});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

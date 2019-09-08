@@ -3,13 +3,13 @@
       <div class="item-detail">
           <el-form class="custom-form-detail" label-position="right" label-width="100px" style="width: 1140px;">
             <el-row :gutter="10">
-              <el-col :span="8">
+              <el-col :span="16">
                 <dl class="detail-item">
-                  <dt class="label">团购期号</dt>
-                  <dd class="content">第{{detail.activity.tid}}期</dd>
+                  <dt class="label">团购编号/名称</dt>
+                  <dd class="content">{{detail.activity.tid}}/{{detail.activity.title}}</dd>
                 </dl>
               </el-col>
-              <el-col :span="14">
+              <el-col :span="6">
                 <dl class="detail-item">
                   <dt class="label">发货日期</dt>
                   <dd class="content">{{detail.activity.delivery_date}}</dd>

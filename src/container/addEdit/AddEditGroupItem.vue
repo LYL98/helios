@@ -16,9 +16,18 @@
         </el-col>
       </el-row>
       <el-form-item label="商品编号" v-if="detail.code">{{detail.code}}</el-form-item>
-      <el-form-item label="商品名称" prop="title">
-        <el-input size="medium" v-model="detail.title" :maxLength="25" placeholder="请输入25位以内的字符"></el-input>
-      </el-form-item>
+      <el-row :gutter="10">
+        <el-col :span="16">
+          <el-form-item label="商品名称" prop="title">
+            <el-input size="medium" v-model="detail.title" :maxLength="25" placeholder="请输入25位以内的字符"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="商品分类" prop="item_class_code">
+            <select-group-item-class v-model="detail.item_class_code"/>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-form-item label="商品详情">
         <quill-editor v-model="detail.content" module="item"></quill-editor>
       </el-form-item>
@@ -61,14 +70,15 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Verification } from '@/util';
-import { QuillEditor, UploadImg } from '@/common';
+import { QuillEditor, UploadImg, SelectGroupItemClass } from '@/common';
 
 export default {
   name: "AddEditGroupItem",
   mixins: [addEditMixin],
   components: {
     'upload-img': UploadImg,
-    'quill-editor': QuillEditor
+    'quill-editor': QuillEditor,
+    'select-group-item-class': SelectGroupItemClass
   },
   data(){
     //价格
@@ -112,6 +122,9 @@ export default {
         ],
         title: [
           { required: true, message: '商品名称不能为空', trigger: 'change' },
+        ],
+        item_class_code: [
+          { required: true, message: '请选择商品分类', trigger: 'change' },
         ],
         price_origin: [
           { required: true, message: '请输入原价', trigger: 'change' },

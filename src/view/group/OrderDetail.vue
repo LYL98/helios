@@ -40,6 +40,7 @@
           <template slot-scope="scope">￥{{returnPrice(scope.row.item_price_sale * scope.row.num)}}</template>
         </el-table-column>
       </el-table>
+      <div class="orderr-price">订单价格：&yen;{{returnPrice(detail.price)}}</div>
     </div>
 
     <!--订单总计等信息end-->
@@ -182,6 +183,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+
+//订单商品列表、商品价格
+.order-item-div{
+  >.orderr-price{
+    margin: 10px 0 0 10px;
+  }
+}
+  
 
   .detail-title {
     padding: 0 10px 10px;

@@ -40,6 +40,8 @@
                 </div>
               </div>
             </template>
+            <!--商品分类-->
+            <div class="td-item add-dot2" v-else-if="item.key === 'item_class'">商品分类</div>
             <!--原价、建议团长价、建议团购价-->
             <div class="td-item add-dot2" v-else-if="item.key === 'price_origin' || item.key === 'advice_header_price' || item.key === 'advice_price_sale'">&yen;{{returnPrice(scope.row[item.key])}}</div>
             <!--正常情况-->
@@ -121,6 +123,7 @@
         tableName: 'TableGroupItem',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
+          { label: '商品分类', key: 'item_class', width: '240', isShow: true },
           { label: '原价', key: 'price_origin', width: '160', isShow: true },
           { label: '建议团长价', key: 'advice_header_price', width: '160', isShow: true },
           { label: '建议团购价', key: 'advice_price_sale', width: '160', isShow: true },

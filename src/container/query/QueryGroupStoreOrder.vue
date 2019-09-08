@@ -10,7 +10,7 @@
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="所在仓">
-          <select-city :provinceCode="query.province_code" v-model="query.city_code" style="width: 242px;" @change="handleQuery('TableGroupStoreOrder')"/>
+          <select-city :provinceCode="query.province_code" v-model="query.city_code" style="width: 242px;" size="small" @change="handleQuery('TableGroupStoreOrder')"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">

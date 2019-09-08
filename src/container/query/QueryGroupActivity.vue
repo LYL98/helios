@@ -3,8 +3,7 @@
     <el-row>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="团购状态">
-          <el-select v-model="query.progress_status" size="small" clearable placeholder="请选择状态" @change="handleQuery('TableGroupActivity')">
-            <el-option label="全部" value=""></el-option>
+          <el-select v-model="query.progress_status" size="small" clearable placeholder="全部" @change="handleQuery('TableGroupActivity')">
             <el-option v-for="(item, key) in progressStatus" :key="key" :label="item" :value="key"></el-option>
           </el-select>
         </my-query-item>

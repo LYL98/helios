@@ -32,9 +32,15 @@
                   <dd class="content">{{detail.code}}</dd>
                 </dl>
               </el-col>
-              <el-col :span="18">
+              <el-col :span="12">
                 <dl class="detail-item">
                   <dt class="label">商品名称</dt>
+                  <dd class="content">{{detail.title}}</dd>
+                </dl>
+              </el-col>
+              <el-col :span="6">
+                <dl class="detail-item">
+                  <dt class="label">商品分类</dt>
                   <dd class="content">{{detail.title}}</dd>
                 </dl>
               </el-col>
@@ -85,11 +91,12 @@
               <el-col :span="24">
                 <dl class="detail-item">
                   <dt class="label">分享图片</dt>
-                  <dd class="content">
+                  <dd class="content" v-if="detail.share_image">
                     <image-preview>
                       <img style="width: 64px; height: 64px;" :src="tencentPath + detail.share_image + '_min200x200'" alt=""/>
                     </image-preview>
                   </dd>
+                  <dd class="content" v-else>-</dd>
                 </dl>
               </el-col>
             </el-row>
