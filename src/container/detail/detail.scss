@@ -38,6 +38,19 @@
             line-height: 20px;
         }
     }
+    .img-div{
+        overflow: hidden;
+        background: #fff;
+    >img{
+        width: 64px;
+        height: 64px;
+        margin-right: 10px;
+    }
+    }
+    .my-quill-editor-detail img {
+        width: 480px;
+        height: auto;
+    }
 }
 .link-item{
     text-decoration: underline;
