@@ -5,7 +5,7 @@ import * as Types from '@/store/mutationTypes';
 const initState = {
   dataItem: [],
   detail: {
-    permission_ids: [],
+    permission_codes: [],
     is_super_admin: false
   },
   isShowAddEdit: false,

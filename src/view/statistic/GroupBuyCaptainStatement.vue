@@ -87,13 +87,13 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="sale_amount"
+          prop="profit"
           label="收入总计"
           sortable="custom"
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.sale_amount)}}</span>
+            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.profit)}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -139,7 +139,7 @@ export default {
 end_date: 结束日期
 city_code: 县code(所在仓code) 来源于 县列表
 condition:
-sort: 排序字段指定 参团人数(member_num)/销售件数(sale_num)/下单金额(pay_amount)/收入金额(sale_amount)
+sort: 排序字段指定 参团人数(member_num)/销售件数(sale_num)/下单金额(pay_amount)/收入金额(profit)
 page:
 page_size:*/
       query: {

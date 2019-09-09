@@ -1,3 +1,9 @@
+export {
+  AddEditGroupItem,
+  AddEditGroupActivity,
+  AddEditGroupItemClass
+} from './addEdit';
+
 // 下拉选择组件
 export {
   SelectCity,
@@ -36,7 +42,9 @@ export {
   QueryItemFluctuationAnalysis,
   QueryFinanceBalance,
   QueryFinanceApprove,
-  QueryGroupBuy,
+  QueryGroupItem,
+  QueryGroupActivity,
+  QueryGroupStoreOrder,
   QueryGroupBuyItemStatistics,
   QueryGroupBuyCaptainStatistics,
   QueryGroupBuyMemberStatistics
@@ -57,9 +65,11 @@ export {
   TableFinanceBalanceLog,
   TableFinanceBalanceMerchantLog,
   TableFinanceApprove,
-  TableGroupBuy,
+  TableGroupItem,
+  TableGroupItemClass,
+  TableGroupStoreOrder,
+  TableGroupActivity,
   TableGroupBuyDetail,
-  TableGroupBuyMerchantDetail,
   TableGroupHeadDetail,
   TableGroupHeadDetailList
 } from './table';
@@ -77,12 +87,17 @@ export {
   FormFinanceBalanceEdit,
   FormFinanceBalanceMerchantLogExport,
   FormFinanceApproveEdit,
-  FormGroupBuy,
   FormSystemSettingAd,
   FormSystemSettingOperating,
   FormSystemSettingItemCommonDes
 } from './form';
 
 export {
-  DetailHeadBalanceLog
+  DetailHeadBalanceLog,
+  DetailGroupItem,
+  DetailGroupItemEditLog,
+  DetailGroupActivity,
+  DetailGroupActivityEditLog,
+  DetailGroupActivityItem,
+  DetailGroupStoreOrder
 } from './detail';

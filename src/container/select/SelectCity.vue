@@ -79,6 +79,10 @@
         deep: true,
         immediate: true,
         handler: function (next, pre) {
+          // 如果区域code 为 空 或者 零，则返回.
+          if (typeof next === 'undefined') {
+            return;
+          }
           this.baseCityList();
         }
       },

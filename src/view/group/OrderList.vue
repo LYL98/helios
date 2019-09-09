@@ -60,7 +60,7 @@
                 class="query-item-input"
                 clearable
                 v-model="query.condition"
-                placeholder="订单编号、商品名称"
+                placeholder="订单编号、收货人姓名"
                 @keyup.enter.native="changeQuery"
                 @clear="changeQuery"
                 ref="condition"
@@ -76,32 +76,23 @@
 
     <div class="operate space-between">
       <el-button
-        v-if="auth.isAdmin || auth.GroupOrderShip"
-        :disabled="multipleSelection.length <= 0"
-        size="mini"
-        type="primary"
-        @click="handleMultipleShip"
-      >
-        批量发货
-      </el-button>
-      <el-button
-        v-if="auth.isAdmin || auth.GroupOrderAllShip"
-        size="mini"
-        type="primary"
-        @click="showHideAllShip"
-      >
-        一键发货
-      </el-button>
-
-      <el-button
         v-if="auth.isAdmin || auth.GroupOrderExport"
         plain
         size="mini"
         type="primary"
-        @click="handleOrderExport"
+        @click.native="handleExport('groupOrderExport', query)"
         style="margin-left: auto;"
       >
-        导出订单列表
+        导出订单
+      </el-button>
+      <el-button
+        v-if="auth.isAdmin || auth.GroupOrderDetailExport"
+        plain
+        size="mini"
+        type="primary"
+        @click.native="handleExport('groupOrderDetailExport', query)"
+      >
+        导出用户明细单
       </el-button>
     </div>
 
@@ -116,14 +107,7 @@
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column
-          v-if="auth.isAdmin || auth.GroupOrderShip"
-          type="selection"
-          :selectable="selectable"
-          width="30">
-        </el-table-column>
         <el-table-column
           type="index"
           :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
@@ -143,35 +127,28 @@
             <span v-else :class="isEllipsis(scope.row)">{{scope.row.code}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="团购商品" prop="item_title" min-width="180">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.item_title }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="收货人" prop="linkman" min-width="100">
+        <el-table-column label="收货人" prop="linkman" min-width="120">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.linkman || '-' }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="单价" prop="price_at_created" min-width="90">
+        <el-table-column label="商品数量" prop="price_at_created" min-width="90">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
-              {{ scope.row.price_at_created ? '￥' : '' }}{{ returnPrice(scope.row.price_at_created) }}
+              {{scope.row.item_num}}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="实付金额" prop="pay_amount_at_created" min-width="90">
+        <el-table-column label="实付金额" prop="pay_amount" min-width="90">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
-              {{ scope.row.pay_amount_at_created ? '￥' : '' }}{{ returnPrice(scope.row.pay_amount_at_created) }}
+              {{ scope.row.pay_amount ? '￥' : '' }}{{ returnPrice(scope.row.pay_amount) }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="状态" prop="status" min-width="80">
+        <el-table-column label="状态" prop="status" min-width="100">
           <template slot-scope="scope">
             <el-tag disable-transitions size="small" :type="statusTagType[scope.row.status]"
             >{{ groupOrderStatus[scope.row.status] }}</el-tag>
@@ -191,19 +168,9 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '发货',
-                  isDisplay: (auth.isAdmin || auth.GroupOrderShip) && scope.row.status === 'wait_delivery_customer',
-                  command: () => handleOrderShip(scope.row.id)
-                },
-                {
                   title: '取消',
                   isDisplay: (auth.isAdmin || auth.GroupOrderCancel) && (scope.row.status === 'init' || scope.row.status === 'paid'),
                   command: () => handleOrderCancel(scope.row.id)
-                },
-                {
-                  title: '确认取货',
-                  isDisplay: (auth.isAdmin || auth.GroupOrderConfirmPickUp) && scope.row.status === 'wait_pick',
-                  command: () => handleOrderConfirmPickUp(scope.row.id)
                 }
               ]"
             />
@@ -227,11 +194,6 @@
       </div>
     </div>
 
-    <!--一键发货-->
-    <el-dialog title="一键发货" width="320px" :visible.sync="isShowAllShip" :before-close="showHideAllShip">
-      <order-all-ship v-if="isShowAllShip" :query="query" @callback="allShipCallBack"></order-all-ship>
-    </el-dialog>
-
   </div>
 </template>
 
@@ -244,59 +206,27 @@
    * resetQuery
    *
    */
-
-  import { mapGetters } from 'vuex';
-  import { Dialog, Row, Col, Button, Input, Select, Option, Table, TableColumn, Tag, DatePicker, Pagination, MessageBox } from 'element-ui';
   import { ButtonGroup, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
-  import { Group } from "@/service";
-  import { tableMixin } from "@/mixins";
-  import OrderAllShip from './OrderAllShip';
+  import tableMixin from '@/container/table/table.mixin';
 
   export default {
     name: "OrderList",
     components: {
-      'el-dialog': Dialog,
-      'el-row': Row,
-      'el-col': Col,
-      'el-input': Input,
-      'el-button': Button,
-      'el-select': Select,
-      'el-option': Option,
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-tag': Tag,
-      'el-date-picker': DatePicker,
-      'el-pagination': Pagination,
       'my-select-city': SelectCity,
       'my-button-group': ButtonGroup,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'my-image-preview': ImagePreview,
-      'order-all-ship': OrderAllShip
     },
     mixins: [tableMixin],
     props: {
       showDetail: { type: Function, required: true }
     },
-    computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince',
-        windowHeight: 'windowHeight'
-      })
-    },
     data() {
       return {
         groupOrderStatus: Constant.GROUP_ORDER_STATUS,
-        statusTagType: {
-          init: 'warning',
-          paid: 'primary',
-          wait_delivery_customer: 'primary',
-          wait_pick: 'success',
-          picked: 'regular',
-          canceled: 'info'
-        },
+        statusTagType: Constant.GROUP_ORDER_STATUS_TYPE,
         /*最近30天（以当天作为结尾，往前30天）
          本周
          上周
@@ -311,14 +241,12 @@
           num: 0,
           items: []
         },
-        multipleSelection: [],
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
-        isShowAllShip: false
       }
     },
     created() {
       this.initQuery();
-      if (this.auth.isAdmin || this.auth.GroupOrderExport || this.auth.GroupOrderShip) {
+      if (this.auth.isAdmin || this.auth.GroupOrderExport) {
         this.$data.offsetHeight = this.$data.offsetHeight + Constant.OFFSET_OPERATE;
       }
     },
@@ -366,14 +294,14 @@
         this.orderQuery();
       },
       async orderQuery() {
-        let res = await Group.orderQuery(this.$data.query);
+        let res = await Http.get(Config.api.groupOrderQuery, this.query);
         if (res.code === 0) {
           this.$data.listItem = Object.assign(this.$data.listItem, {
             num: res.data.num,
             items: res.data.items
           });
         } else {
-          this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
 
@@ -386,133 +314,19 @@
         return row.status === 'wait_delivery_customer';
       },
 
-      handleSelectionChange(items) {
-        this.$data.multipleSelection = items;
-      },
-
-      // 批量发货
-      handleMultipleShip() {
-        // 开始批量审核, 判断是否已经多选？
-        if (this.$data.multipleSelection.length === 0) {
-          return;
-        } else {
-          MessageBox.confirm('确认发货?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(async () => {
-            let ids = this.$data.multipleSelection.map(item => item.id);
-            let res = await Group.orderShip({
-              ids: ids
-            });
-            if (res.code === 0) {
-              this.$store.dispatch('message', {title: '提示', message: '发货成功', type: 'success'});
-              this.orderQuery();
-            } else {
-              this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
-            }
-          }).catch(() => {
-            // console.log('取消');
-          });
-        }
-      },
-
-      //显示隐藏一键发货
-      showHideAllShip(){
-        if(this.isShowAllShip){
-          this.$data.isShowAllShip = false;
-        }else{
-          if(this.query.status !== 'wait_delivery_customer'){
-            this.$store.dispatch('message', {title: '提示', message: '请筛选待发货的订单再进行一键发货', type: 'error'});
-          }else if(this.listItem.num === 0){
-            this.$store.dispatch('message', {title: '提示', message: '暂无待发货的订单', type: 'error'});
-          }else{
-            this.$data.isShowAllShip = true;
-          }
-        }
-      },
-
-      //一键发货回调
-      allShipCallBack(res){
-        this.showHideAllShip();
-        if(res === 'success') this.orderQuery();
-      },
-
-      handleOrderShip(id) {
-        MessageBox.confirm('确认发货?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          let ids = [id];
-          let res = await Group.orderShip({
-            ids: ids
-          });
-          if (res.code === 0) {
-            this.$store.dispatch('message', {title: '提示', message: '发货成功', type: 'success'});
-            this.orderQuery();
-          } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
-          }
-        }).catch(() => {
-          // console.log('取消');
-        });
-      },
-
-      async handleOrderExport() {
-        let api = Config.api.groupOrderExport;
-        let { status, condition, begin_date, end_date } = this.query;
-        let query = { status, condition, begin_date, end_date };
-
-        //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
-        let res = await Http.get(`${api}_check`, {
-          province_code: this.province.code,
-          ...query
-        });
-        if(res.code === 0){
-          let queryStr = `${api}?province_code=${this.province.code}`;
-          for (let item in query) {
-            queryStr += `&${item}=${query[item]}`
-          }
-          window.open(queryStr);
-        }else{
-          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
-        }
-        this.$store.dispatch('loading', {isShow: false});
-      },
-
+      //取消
       handleOrderCancel(id) {
-        MessageBox.confirm('确认取消订单?', '提示', {
+        this.$messageBox.confirm('确认取消订单?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Group.orderCancel({id: id});
+          let res = await Http.post(Config.api.groupOrderCancel, {id: id});
           if (res.code === 0) {
-            this.$store.dispatch('message', {title: '提示', message: '订单取消成功', type: 'success'});
+            this.$message({title: '提示', message: '订单取消成功', type: 'success'});
             this.orderQuery();
           } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
-          }
-        }).catch(() => {
-          // console.log('取消');
-        });
-      },
-
-      //确认取货
-      handleOrderConfirmPickUp(id) {
-        MessageBox.confirm('确认取货?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          let res = await Group.orderConfirmPickUp({id: id});
-          if (res.code === 0) {
-            this.$store.dispatch('message', {title: '提示', message: '取货成功', type: 'success'});
-            this.orderQuery();
-          } else {
-            this.$store.dispatch('message', {title: '提示', message: res.message, type: 'error'});
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');

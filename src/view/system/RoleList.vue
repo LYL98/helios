@@ -45,9 +45,9 @@
             show-checkbox
             check-strictly
             class="role-tree"
-            node-key="id"
+            node-key="code"
             ref="tree"
-            :default-checked-keys="detail.permission_ids"
+            :default-checked-keys="detail.permission_codes"
             @check="treeChange"
             @node-expand="onNodeExpand"
             :props="defaultProps">
@@ -95,7 +95,7 @@ export default {
   beforeDestroy(){
     //清detail
     this.systemRoleListChangeDetail({
-      permission_ids: [],
+      permission_codes: [],
       is_super_admin: false
     });
   },
@@ -110,7 +110,7 @@ export default {
     return {
       isChange: false,
       detail: {
-        permission_ids: []
+        permission_codes: []
       },
       isShowTree: true,
       defaultExpandAll: true,
@@ -203,7 +203,9 @@ export default {
     save() {
       this.systemRoleListAddEdit({
         data: this.detail,
-        callback: this.systemRoleListQuery
+        callback: () => {
+          this.systemRoleListQuery();
+        }
       });
     },
     //显示新增
@@ -212,7 +214,7 @@ export default {
       that.$data.detailTemp = that.detail;
       //清detail
       that.systemRoleListChangeDetail({
-        permission_ids: [],
+        permission_codes: [],
         is_super_admin: false
       });
       that.systemRoleShowHideAddEidt(true);
@@ -232,7 +234,7 @@ export default {
           callback: ()=>{
             //清detail
             that.systemRoleListChangeDetail({
-              permission_ids: [],
+              permission_codes: [],
               is_super_admin: false
             });
             that.systemRoleListQuery();
@@ -276,18 +278,18 @@ export default {
       let that = this, isCheck = false;
       let { permissionList, detail } = that;
       //判断是否选中
-      let ccf = ck.checkedKeys.filter(item => item === data.id );
+      let ccf = ck.checkedKeys.filter(item => item === data.code );
       isCheck = ccf.length > 0 ? true : false;
 
       //获取当前节点与子节id
       let m = (d) => {
         //如果选中
         if(isCheck){
-          detail.permission_ids.push(d.id);
+          detail.permission_codes.push(d.code);
         }else{
-          for(let i = 0; i < detail.permission_ids.length; i++){
-            if(detail.permission_ids[i] === d.id){
-              detail.permission_ids.remove(i);
+          for(let i = 0; i < detail.permission_codes.length; i++){
+            if(detail.permission_codes[i] === d.code){
+              detail.permission_codes.remove(i);
               i--;
             }
           }
@@ -301,14 +303,14 @@ export default {
 
       //选中, 找父节点
       if(isCheck){
-        detail.permission_ids.push(...data.ancestor_node);
+        detail.permission_codes.push(...data.ancestor_node);
       }
 
-      detail.permission_ids = DataHandle.arrayUnique(detail.permission_ids); //去重
+      detail.permission_codes = DataHandle.arrayUnique(detail.permission_codes); //去重
 
       that.$data.detail = detail;
       that.$data.isChange = true;
-      that.$refs.tree.setCheckedKeys(detail.permission_ids);
+      that.$refs.tree.setCheckedKeys(detail.permission_codes);
     },
   },
   watch:{
@@ -316,7 +318,7 @@ export default {
     roleDetail(a, b) {
       let res = JSON.parse( JSON.stringify(a) );
       this.$data.detail =  res;
-      this.$refs.tree.setCheckedKeys(res.permission_ids); // 树型重新选择
+      this.$refs.tree.setCheckedKeys(res.permission_codes); // 树型重新选择
     }
   }
 };

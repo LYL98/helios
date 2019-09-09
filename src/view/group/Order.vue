@@ -1,6 +1,6 @@
 <template>
   <div>
-    <order-list ref="orderList" :show-detail="showItemDetail"></order-list>
+    <order-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="orderList" :show-detail="showItemDetail"></order-list>
     <el-dialog title="订单详情" width="1200px" :visible.sync="isShowDetail" :before-close="closeItemDetail">
       <order-detail :detail="itemDetail" v-if="isShowDetail"></order-detail>
       <span slot="footer">
@@ -14,10 +14,12 @@
   import { Dialog, Button } from 'element-ui';
   import OrderList from './OrderList';
   import OrderDetail from './OrderDetail';
+  import { Http, Config } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
-  import { Group } from '@/service';
   export default {
     name: "Order",
+    mixins: [viewMixin],
     components: {
       'el-dialog': Dialog,
       'el-button': Button,
@@ -27,7 +29,9 @@
     data() {
       return {
         isShowDetail: false,
-        itemDetail: {}
+        itemDetail: {
+          order_items: []
+        }
       }
     },
     created() {
@@ -35,7 +39,7 @@
     },
     methods: {
       async showItemDetail(id) {
-        let res = await Group.orderDetail({ id: id });
+        let res = await Http.get(Config.api.groupOrderDetail, { id: id });
         if (res.code === 0) {
           this.$data.itemDetail = res.data;
           this.$data.isShowDetail = true;
