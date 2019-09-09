@@ -25,7 +25,7 @@
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
               <div class="td-item add-dot2">
-                {{scope.row.code}}/{{scope.row.title}}
+                {{scope.row.id}}/{{scope.row.title}}
               </div>
             </template>
             <!--原价、建议团长价、建议团购价-->

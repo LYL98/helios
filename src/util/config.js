@@ -91,11 +91,11 @@ const Config = (() => {
       itemCouponListExport: apiM + '/coupon/distribute/log/export', //优惠券导出
 
       //团购商品分类
-      groupItemClassList: apiM + '/gb_item/class/list', //团购商品分类列表(组件共用)
-      groupItemClassQuery: apiM + '/gb_item/class/query',  //团购商品分类
-      groupItemClassDelete: apiM + '/gb_item/class/delete', //删除团购商品分类
-      groupItemClassAdd: apiM + '/gb_item/class/add', //新增团购商品分类
-      groupItemClassEdit: apiM + '/gb_item/class/edit', //编辑团购商品分类
+      groupItemClassList: apiM + '/gb_item/category/list', //团购商品分类列表(组件共用)
+      groupItemClassQuery: apiM + '/gb_item/category/query',  //团购商品分类
+      groupItemClassDelete: apiM + '/gb_item/category/delete', //删除团购商品分类
+      groupItemClassAdd: apiM + '/gb_item/category/add', //新增团购商品分类
+      groupItemClassEdit: apiM + '/gb_item/category/edit', //编辑团购商品分类
 
       // 团购商品
       groupItemList: apiM + '/gb_item/list', //团购商品列表(组件共用)

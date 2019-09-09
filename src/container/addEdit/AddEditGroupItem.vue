@@ -23,8 +23,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="商品分类" prop="item_class_code">
-            <select-group-item-class v-model="detail.item_class_code"/>
+          <el-form-item label="商品分类" prop="category_id">
+            <select-group-item-class v-model="detail.category_id"/>
           </el-form-item>
         </el-col>
       </el-row>
@@ -123,7 +123,7 @@ export default {
         title: [
           { required: true, message: '商品名称不能为空', trigger: 'change' },
         ],
-        item_class_code: [
+        category_id: [
           { required: true, message: '请选择商品分类', trigger: 'change' },
         ],
         price_origin: [

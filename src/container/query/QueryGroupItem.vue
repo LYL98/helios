@@ -3,7 +3,7 @@
     <el-row>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="商品分类">
-          <select-group-item-class size="small" v-model="query.item_class_code" @change="handleQuery('TableGroupItem')" />
+          <select-group-item-class size="small" v-model="query.category_id" @change="handleQuery('TableGroupItem')" style="width: 242px;"/>
         </my-query-item>
       </el-col>
       <el-col :xl="8" :lg="10" :span="10">
@@ -39,7 +39,7 @@
     data(){
       let initQuery = {
         province_code: '',
-        item_class_code: '',
+        category_id: '',
         is_deleted: this.page === 'item' ? 0 : 1,
         condition: ''
       }

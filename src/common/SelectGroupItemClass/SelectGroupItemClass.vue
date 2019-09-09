@@ -6,20 +6,20 @@
     style="width:100%;"
     :size="size"
     :disabled="disabled"
-    @change="changeFrame"
+    @change="handleChange"
   >
     <el-option
       v-for="item in dataItem"
-      :key="item.code"
+      :key="item.id"
       :label="item.title"
-      :value="item.code">
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
 
 <script>
 import selectMixin from './../select.mixin';
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectGroupItemClass",
@@ -42,7 +42,7 @@ export default {
     //获取所有框
     async getData(){
       let that = this;
-      let res = await Base.baseFrameList();
+      let res = await Http.get(Config.api.groupItemClassList, {});
       if(res.code === 0){
         let rd = res.data;
         that.$data.dataItem = rd;
