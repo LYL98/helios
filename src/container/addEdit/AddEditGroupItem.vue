@@ -28,11 +28,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="商品详情">
-        <quill-editor v-model="detail.content" module="item"></quill-editor>
-      </el-form-item>
-
-      <h6 class="subtitle" style="padding-bottom: 16px">价格信息</h6>
       <el-row :gutter="10">
         <el-col :span="8">
           <el-form-item label="原价" prop="price_origin">
@@ -50,6 +45,9 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="商品详情">
+        <quill-editor v-model="detail.content" module="item"></quill-editor>
+      </el-form-item>
 
       <h6 class="subtitle" style="padding-bottom: 16px">分享信息</h6>
       <el-form-item label="分享文案" prop="share_content">

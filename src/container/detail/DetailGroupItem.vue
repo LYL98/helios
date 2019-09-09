@@ -46,34 +46,32 @@
               </el-col>
             </el-row>
             <el-row :gutter="10">
+              <el-col :span="6">
+                <dl class="detail-item">
+                  <dt class="label">原价</dt>
+                  <dd class="content">{{ detail.price_origin ? '￥' : '' }}{{returnPrice(detail.price_origin)}}</dd>
+                </dl>
+              </el-col>
+              <el-col :span="12">
+                <dl class="detail-item">
+                  <dt class="label">建议团长价</dt>
+                  <dd class="content">{{ detail.advice_header_price ? '￥' : '' }}{{returnPrice(detail.advice_header_price)}}</dd>
+                </dl>
+              </el-col>
+              <el-col :span="6">
+                <dl class="detail-item">
+                  <dt class="label">建议团购价</dt>
+                  <dd class="content">{{ detail.advice_price_sale ? '￥' : '' }}{{returnPrice(detail.advice_price_sale)}}</dd>
+                </dl>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10">
               <el-col :span="24">
                 <dl class="detail-item">
                   <dt class="label">商品详情</dt>
                   <dd class="content">
                     <div class="content-div" v-html="detail.content"></div>
                   </dd>
-                </dl>
-              </el-col>
-            </el-row>
-
-            <h6 class="subtitle" style="padding-bottom: 16px">价格信息</h6>
-            <el-row :gutter="10">
-              <el-col :span="8">
-                <dl class="detail-item">
-                  <dt class="label">原价</dt>
-                  <dd class="content">{{ detail.price_origin ? '￥' : '' }}{{returnPrice(detail.price_origin)}}</dd>
-                </dl>
-              </el-col>
-              <el-col :span="8">
-                <dl class="detail-item">
-                  <dt class="label">建议团长价</dt>
-                  <dd class="content">{{ detail.advice_header_price ? '￥' : '' }}{{returnPrice(detail.advice_header_price)}}</dd>
-                </dl>
-              </el-col>
-              <el-col :span="8">
-                <dl class="detail-item">
-                  <dt class="label">建议团购价</dt>
-                  <dd class="content">{{ detail.advice_price_sale ? '￥' : '' }}{{returnPrice(detail.advice_price_sale)}}</dd>
                 </dl>
               </el-col>
             </el-row>
@@ -156,45 +154,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .item-detail {
-    padding-left: 10px;
-    .subtitle{
-      color: #5A5D64;
-      font-size: 14px;
-    }
-    .detail-item {
-      display: flex;
-      >.label {
-        color: #606266;
-        width: 100px;
-        line-height: 20px;
-        text-align: right;
-        margin-right: 10px;
-        height: 50px
-      }
-      >.content {
-        padding-right: 20px;
-        flex: 1;
-        word-break: break-all;
-        line-height: 20px;
-      }
-    }
-
-    .img-div{
-      overflow: hidden;
-      background: #fff;
-      >img{
-        width: 64px;
-        height: 64px;
-        margin-right: 10px;
-      }
-    }
-    .my-quill-editor-detail img {
-      width: 480px;
-      height: auto;
-    }
-  }
-
+  @import "./detail.scss";
   .content-div{
     width: 948px;
     height: 360px;

@@ -63,7 +63,7 @@
               </el-col>
             </el-row>
 
-            <el-table :data="detail.order_items" width="100%" style="margin-bottom: 20px;">
+            <el-table :data="detail.order_items" width="100%" style="margin-bottom: 20px;" :row-class-name="highlightRowClassName">
               <el-table-column type="index" width="80" label="序号"></el-table-column>
               <el-table-column label="商品编号/名称">
                 <template slot-scope="scope">{{scope.row.item_code}}/{{scope.row.item_title}}</template>
@@ -157,45 +157,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .item-detail {
-    padding-left: 10px;
-    .subtitle{
-      color: #5A5D64;
-      font-size: 14px;
-    }
-    .detail-item {
-      display: flex;
-      >.label {
-        color: #606266;
-        width: 100px;
-        line-height: 20px;
-        text-align: right;
-        margin-right: 10px;
-        height: 50px
-      }
-      >.content {
-        padding-right: 20px;
-        flex: 1;
-        word-break: break-all;
-        line-height: 20px;
-      }
-    }
-
-    .img-div{
-      overflow: hidden;
-      background: #fff;
-      >img{
-        width: 64px;
-        height: 64px;
-        margin-right: 10px;
-      }
-    }
-    .my-quill-editor-detail img {
-      width: 480px;
-      height: auto;
-    }
-  }
-
+  @import "./detail.scss";
+  
   .action-log {
     padding: 10px;
     display: flex;

@@ -29,7 +29,7 @@
           <el-button size="small" type="primary" plain @click="handleClearQuery">重置</el-button>
         </span>
       </div>
-      <el-table :data="dataItem.items" width="100%" :height="460">
+      <el-table :data="dataItem.items" width="100%" :height="460" :row-class-name="highlightRowClassName">
         <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
         <el-table-column label="团购编号/名称">
           <template slot-scope="scope">{{scope.row.activity.tid}}/{{scope.row.activity.title}}</template>

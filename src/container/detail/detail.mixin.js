@@ -35,5 +35,16 @@ export default {
       this.$data.isShow = false;
       this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
     },
+    /**
+     * 斑马线的背景颜色样式
+     */
+    highlightRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 == 0) {
+        return 'stripe-row';
+      } else if (rowIndex % 2 != 0) {
+        return 'default-row'
+      }
+      return '';
+    },
   }
 }

@@ -50,7 +50,7 @@
           </dl>
         </el-col>
       </el-row>
-      <el-table :data="detail.items" width="100%" :height="460" style="border-top: 1px solid #eee;">
+      <el-table :data="detail.items" width="100%" :height="460" style="border-top: 1px solid #eee;" :row-class-name="highlightRowClassName">
         <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
         <el-table-column label="商品编号/名称">
           <template slot-scope="scope">
@@ -173,31 +173,4 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import "./detail.scss";
-  .item-detail {
-    .subtitle{
-      color: #5A5D64;
-      font-size: 14px;
-    }
-    .detail-item {
-      display: flex;
-      >.label {
-        color: #606266;
-        width: 100px;
-        line-height: 20px;
-        text-align: right;
-        margin-right: 10px;
-        height: 50px;
-      }
-      >.content {
-        padding-right: 20px;
-        flex: 1;
-        word-break: break-all;
-        line-height: 20px;
-      }
-    }
-  }
-  .link-item{
-    text-decoration: underline;
-    cursor: pointer;
-  }
 </style>
