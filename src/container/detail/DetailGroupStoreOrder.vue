@@ -57,8 +57,8 @@
               </el-col>
               <el-col :span="8">
                 <dl class="detail-item">
-                  <dt class="label">实际金额</dt>
-                  <dd class="content">&yen;{{returnPrice(detail.amoun)}}</dd>
+                  <dt class="label">实付金额</dt>
+                  <dd class="content">&yen;{{returnPrice(detail.amount)}}</dd>
                 </dl>
               </el-col>
             </el-row>
