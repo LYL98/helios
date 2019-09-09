@@ -88,7 +88,7 @@ const router = new Router({
     },
     {
       path: '/group/item/recover',
-      name: 'GroupItemRecover',
+      name: 'GroupItemRecoverList',
       component: () => import('@/view/group/ItemRecover')
     },
     {

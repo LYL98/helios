@@ -111,7 +111,7 @@
                               v-if="auth.isAdmin || auth.GroupBuyStatement"><span>团购统计</span></el-menu-item>
                 <el-menu-item index="GroupItemClass" :route="{name: 'GroupItemClass'}"
                               v-if="auth.isAdmin || auth.GroupItemClass"><span>商品分类</span></el-menu-item>
-                <el-menu-item index="GroupItemRecover" :route="{name: 'GroupItemRecover'}"
+                <el-menu-item index="GroupItemRecoverList" :route="{name: 'GroupItemRecoverList'}"
                               v-if="auth.isAdmin || auth.GroupItemRecoverList"><span>回收站</span></el-menu-item>
               </el-submenu>
 
