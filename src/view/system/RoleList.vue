@@ -203,7 +203,9 @@ export default {
     save() {
       this.systemRoleListAddEdit({
         data: this.detail,
-        callback: this.systemRoleListQuery
+        callback: () => {
+          this.systemRoleListQuery();
+        }
       });
     },
     //显示新增
