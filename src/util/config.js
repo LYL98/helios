@@ -157,7 +157,7 @@ const Config = (() => {
       // 订单列表
       groupOrderQuery: apiM + '/gb_activity/gb_order/query', // 团员列表
       groupOrderExport: apiM + '/gb_activity/gb_order/export', // 导出
-      groupOrderDetailExport: apiM + '/gb_activity/gb_order/export', // 导出明细
+      groupOrderDetailExport: apiM + '/gb_activity/gb_order/items_export', // 导出明细
       groupOrderDetail: apiM + '/gb_activity/order/detail', // 详情
       groupOrderCancel: apiM + '/gb_activity/order/cancel', // 取消
 

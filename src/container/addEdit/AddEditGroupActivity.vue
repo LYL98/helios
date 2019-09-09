@@ -4,7 +4,7 @@
       <el-row :gutter="10">
         <el-col :span="8">
           <el-form-item label="团购名称" prop="title">
-            <el-input size="small" v-model="detail.detail.title" :disabled="judgeIsAllEdit() ? false : true" :maxLength="20" placeholder="请输入团购名称"/>
+            <el-input size="small" v-model="detail.detail.title" :disabled="isDisabledEdit" :maxLength="20" placeholder="请输入团购名称"/>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -19,7 +19,7 @@
               end-placeholder="结束时间"
               value-format="yyyy-MM-dd HH:mm:ss"
               @change="changePicker"
-              :disabled="judgeIsAllEdit() ? false : true"
+              :disabled="isDisabledEdit"
             />
           </el-form-item>
         </el-col>
@@ -33,7 +33,7 @@
               v-model="detail.detail.delivery_date"
               type="date"
               value-format="yyyy-MM-dd"
-              :disabled="judgeIsAllEdit() ? false : true"
+              :disabled="isDisabledEdit"
             />
           </el-form-item>
         </el-col>
@@ -46,8 +46,8 @@
     </el-form>
     <!--搜索-->
     <div class="search-div">
-      <search-group-item @onSelectItem="onSelectItem" v-model="selectItemId" :provinceCode="province.code" style="width: 400px;margin-right: 10px;"/>
-      <el-button type="primary" @click.native="addItem">增加商品</el-button>
+      <search-group-item @onSelectItem="onSelectItem" v-model="selectItemId" :provinceCode="province.code" :disabled="isDisabledEdit" style="width: 400px;margin-right: 10px;"/>
+      <el-button type="primary" @click.native="addItem" :disabled="isDisabledEdit">增加商品</el-button>
     </div>
     <!--表格-->
     <el-table :data="detail.items" width="100%" :height="460" style="border-top: 1px solid #eee;">
@@ -59,19 +59,19 @@
       </el-table-column>
       <el-table-column label="团长价" width="120">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.header_price" size="small" class="my-input" :disabled="judgeIsAllEdit() ? false : true"><template slot="append">元</template></el-input>
+          <el-input v-model="scope.row.header_price" size="small" class="my-input" :disabled="isDisabledEdit"><template slot="append">元</template></el-input>
           <div class="error" v-if="scope.row.header_price_error">{{scope.row.header_price_error}}</div>
         </template>
       </el-table-column>
       <el-table-column label="团购价" width="120">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.price_sale" size="small" class="my-input" :disabled="judgeIsAllEdit() ? false : true"><template slot="append">元</template></el-input>
+          <el-input v-model="scope.row.price_sale" size="small" class="my-input" :disabled="isDisabledEdit"><template slot="append">元</template></el-input>
           <div class="error" v-if="scope.row.price_sale_error">{{scope.row.price_sale_error}}</div>
         </template>
       </el-table-column>
       <el-table-column label="单人最大购买数" width="120">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.max_num_pp" size="small" class="my-input" :disabled="judgeIsAllEdit() ? false : true"><template slot="append">件</template></el-input>
+          <el-input v-model="scope.row.max_num_pp" size="small" class="my-input" :disabled="isDisabledEdit"><template slot="append">件</template></el-input>
           <div class="error" v-if="scope.row.max_num_pp_error">{{scope.row.max_num_pp_error}}</div>
         </template>
       </el-table-column>
@@ -90,7 +90,7 @@
       <el-table-column label="操作" width="60">
         <a slot-scope="scope" href="javascript:void(0);"
           @click="deleteItem(scope.$index)"
-          v-if="judgeIsAllEdit() && (auth.isAdmin || auth.GroupActivityItemDelete)">移除</a>
+          v-if="!isDisabledEdit && (auth.isAdmin || auth.GroupActivityItemDelete)">移除</a>
         <span v-else>-</span>
       </el-table-column>
     </el-table>
@@ -154,6 +154,7 @@ export default {
       items: []
     }
     return{
+      isDisabledEdit: false, //是否禁止编辑
       selectItemId: '',
       selectItem: {},
       initDetail: initDetail,
@@ -182,6 +183,7 @@ export default {
       }else{
         this.$data.detail = this.copyJson(this.initDetail);
         this.$data.isShow = true;
+        this.judgeIsAllEdit();
       }
     },
     //获取详情
@@ -218,6 +220,7 @@ export default {
         }
         this.$data.detail = this.copyJson(rd);
         this.$data.isShow = true;
+        this.judgeIsAllEdit();
       }else{
         this.$message({message: res.message, type: 'error'});
       }
@@ -255,9 +258,10 @@ export default {
     judgeIsAllEdit(){
       let { detail } = this;
       if(!detail.detail.id || detail.detail.progress_status === 'pre'){
-        return true;
+        this.$data.isDisabledEdit = false;
+      }else{
+        this.$data.isDisabledEdit = true;
       }
-      return false;
     },
     //修改提交数据
     editData(){

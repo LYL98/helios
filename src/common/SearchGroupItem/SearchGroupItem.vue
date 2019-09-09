@@ -4,6 +4,7 @@
     :fetch-suggestions="querySearchAsync"
     placeholder="搜索商品名称、编号"
     @select="handleSelect"
+    :disabled="disabled"
     clearable
     @clear="clear"
     :size="size"
@@ -24,6 +25,7 @@ export default {
     value: { type: Number | String, default: '' },
     provinceCode: { type: Number | String, default: '' },
     size: { type: String, default: '' },
+    disabled: { type: Boolean, default: false },
   },
   model: {
     prop: 'value',
