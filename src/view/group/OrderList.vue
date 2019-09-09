@@ -226,14 +226,7 @@
     data() {
       return {
         groupOrderStatus: Constant.GROUP_ORDER_STATUS,
-        statusTagType: {
-          init: 'warning',
-          paid: 'primary',
-          wait_delivery_customer: 'primary',
-          wait_pick: 'success',
-          picked: 'regular',
-          canceled: 'info'
-        },
+        statusTagType: Constant.GROUP_ORDER_STATUS_TYPE,
         /*最近30天（以当天作为结尾，往前30天）
          本周
          上周

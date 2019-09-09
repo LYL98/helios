@@ -7,7 +7,7 @@
         <span style="margin-left: 120px;">发货时间：{{detail.delivery_date}}</span>
       </div>
       <div style="padding-right: 30px;">
-        <el-tag size="small" :disable-transitions="true" :type="detail.status === 'canceled' ? 'info' : 'danger'">
+        <el-tag size="small" :disable-transitions="true" :type="statusTagType[detail.status]">
           {{orderStatus[detail.status]}}
         </el-tag>
       </div>
@@ -145,6 +145,7 @@
       return {
         tencentPath: Config.tencentPath,
         orderStatus: Constant.GROUP_ORDER_STATUS,
+        statusTagType: Constant.GROUP_ORDER_STATUS_TYPE,
         orderActionLog: {
           create: '订单创建',
           pay: '订单付款',

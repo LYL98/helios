@@ -138,6 +138,14 @@ const Constant = {
     picked: '已完成',
     canceled: '已取消'
   },
+  GROUP_ORDER_STATUS_TYPE: {
+    init: 'warning',
+    paid: 'primary',
+    wait_delivery_customer: 'primary',
+    wait_pick: 'success',
+    picked: 'regular',
+    canceled: 'info'
+  },
 
   //团购门店订单状态
   GROUP_STORE_ORDER_STATUS: {
