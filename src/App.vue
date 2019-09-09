@@ -97,22 +97,22 @@
                 </template>
                 <el-menu-item index="GroupActivity" :route="{name: 'GroupActivity'}"
                               v-if="auth.isAdmin || auth.GroupActivity"><span>团购活动</span></el-menu-item>
-                <el-menu-item index="GroupItemClass" :route="{name: 'GroupItemClass'}"
-                              v-if="auth.isAdmin || auth.GroupItemClass"><span>商品分类</span></el-menu-item>
                 <el-menu-item index="GroupItem" :route="{name: 'GroupItem'}"
-                              v-if="auth.isAdmin || auth.GroupItem"><span>商品列表</span></el-menu-item>
-                <el-menu-item index="GroupItemRecover" :route="{name: 'GroupItemRecover'}"
-                              v-if="auth.isAdmin || auth.GroupItemRecoverList"><span>回收站</span></el-menu-item>
-                <el-menu-item index="GroupHeadQuery" :route="{name: 'GroupHeadQuery'}"
-                              v-if="auth.isAdmin || auth.GroupHeadQuery"><span>团购门店</span></el-menu-item>
-                <el-menu-item index="GroupMemberQuery" :route="{name: 'GroupMemberQuery'}"
-                              v-if="auth.isAdmin || auth.GroupMemberQuery"><span>团员列表</span></el-menu-item>
+                              v-if="auth.isAdmin || auth.GroupItem"><span>商品列表</span></el-menu-item>                
                 <el-menu-item index="GroupOrderQuery" :route="{name: 'GroupOrderQuery'}"
                               v-if="auth.isAdmin || auth.GroupOrderQuery"><span>用户订单</span></el-menu-item>
                 <el-menu-item index="GroupStoreOrder" :route="{name: 'GroupStoreOrder'}"
                               v-if="auth.isAdmin || auth.GroupStoreOrder"><span>门店订单</span></el-menu-item>
+                <el-menu-item index="GroupHeadQuery" :route="{name: 'GroupHeadQuery'}"
+                              v-if="auth.isAdmin || auth.GroupHeadQuery"><span>团购门店</span></el-menu-item>
+                <el-menu-item index="GroupMemberQuery" :route="{name: 'GroupMemberQuery'}"
+                              v-if="auth.isAdmin || auth.GroupMemberQuery"><span>团员列表</span></el-menu-item>
                 <el-menu-item index="GroupBuyStatement" :route="{name: 'GroupBuyStatement'}"
                               v-if="auth.isAdmin || auth.GroupBuyStatement"><span>团购统计</span></el-menu-item>
+                <el-menu-item index="GroupItemClass" :route="{name: 'GroupItemClass'}"
+                              v-if="auth.isAdmin || auth.GroupItemClass"><span>商品分类</span></el-menu-item>
+                <el-menu-item index="GroupItemRecover" :route="{name: 'GroupItemRecover'}"
+                              v-if="auth.isAdmin || auth.GroupItemRecoverList"><span>回收站</span></el-menu-item>
               </el-submenu>
 
               <el-submenu index="Order" v-if="auth.isAdmin || auth.Order">

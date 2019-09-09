@@ -134,7 +134,7 @@ const Constant = {
     init: '待付款',
     paid: '团购中',
     wait_delivery_customer: '待发货',
-    wait_pick: '已发货',
+    wait_pick: '已到货',
     picked: '已完成',
     canceled: '已取消'
   },
