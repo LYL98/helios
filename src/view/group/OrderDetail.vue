@@ -149,6 +149,7 @@
           create: '订单创建',
           pay: '订单付款',
           delivery: '订单发货',
+          store_order_pick: '订单已到货',
           pick: '订单完成（用户取货）',
           platform_cofirm_pick: '订单完成（平台确认取货）',
           cancel: '订单取消',
