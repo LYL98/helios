@@ -4,7 +4,7 @@
       <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
       <el-row :gutter="10">
         <el-col :span="8">
-          <el-form-item label="商品封面" prop="cover_image">
+          <el-form-item label="商品封面" prop="cover_images">
             <upload-img v-model="detail.cover_images" module="groupBuy" :limit="1"/>
             <div style="color: #999; font-size: 12px;">建议上传图片尺寸 2 : 1</div>
           </el-form-item>
