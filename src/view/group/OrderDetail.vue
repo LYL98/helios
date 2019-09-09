@@ -98,10 +98,9 @@
       <div class="list-title">订单日志</div>
       <div class="action-log" v-if="detail.action_logs && detail.action_logs.length > 0">
         <ul v-for="(item, index) in detail.action_logs" :key="index">
-          <li>
-            <span>{{orderActionLog[item.action]}}</span>
+          <li class="remark-line">
+            <span class="remark">{{orderActionLog[item.action]}}<template v-if="item.remark">({{ item.remark }})</template></span>
             <span class="line" v-if="index < detail.action_logs.length - 1"></span>
-            <span class="remark" v-if="item.remark">({{ item.remark }})</span>
           </li>
           <li class="timestamp">{{item.created}}</li>
         </ul>
@@ -389,14 +388,17 @@
         color: #909399;
       }
 
-      span.line {
-        display: inline-block;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAACCAYAAAAw9X6zAAAAAXNSR0IArs4c6QAAACNJREFUGBljfPr06X8GGgApKSmwqc+ePUMxnZA4E4rqQcABAJDQCgDpcontAAAAAElFTkSuQmCC);
-        background-repeat: repeat-x;
-        width: 136px;
-        height: 1px;
-        margin-left: 25px;
-        margin-bottom: 4px;
+      >.remark-line{
+        display: flex;
+        align-items: center;
+        >.line {
+          display: inline-block;
+          background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAACCAYAAAAw9X6zAAAAAXNSR0IArs4c6QAAACNJREFUGBljfPr06X8GGgApKSmwqc+ePUMxnZA4E4rqQcABAJDQCgDpcontAAAAAElFTkSuQmCC);
+          background-repeat: repeat-x;
+          flex: 1;
+          height: 1px;
+          margin: 0 25px;
+        }
       }
     }
   }

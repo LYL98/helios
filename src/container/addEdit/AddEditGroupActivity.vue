@@ -213,7 +213,7 @@ export default {
             price_sale: this.returnPrice(rd.items[i].price_sale),
             max_num_pp: (rd.items[i].max_num_pp).toString(),
             stock_num: (rd.items[i].stock_num).toString(),
-            rank: (rd.items[i].rank).toString()
+            rank: rd.items[i].rank === null ? '' : (rd.items[i].rank).toString()
           }
         }
         this.$data.detail = this.copyJson(rd);
@@ -326,7 +326,7 @@ export default {
         price_sale: this.returnPrice(selectItem.advice_price_sale),
         max_num_pp: '99',
         stock_num: '',
-        rank: '0'
+        rank: ''
       });
       this.$data.detail = detail;
       this.$data.selectItemId = '';
@@ -444,7 +444,7 @@ export default {
             price_sale: this.handlePrice(item.price_sale),
             max_num_pp: Number(item.max_num_pp),
             stock_num: Number(item.stock_num),
-            rank: item.rank === '' ? 0 : Number(item.rank)
+            rank: item.rank === '' ? null : Number(item.rank)
           });
         }
       }
