@@ -42,7 +42,7 @@
             </div>
             <!--上架状态-->
             <div class="td-item add-dot2" v-else-if="item.key === 'status'">
-              <el-tag size="small" :type="scope.row.status === 'activated' ? 'success' : 'danger'" disable-transitions>
+              <el-tag size="small" :type="scope.row.status === 'activated' ? 'regular' : 'info'" disable-transitions>
                 {{ activityStatus[scope.row.status] }}
               </el-tag>
             </div>

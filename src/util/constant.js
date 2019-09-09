@@ -166,8 +166,8 @@ const Constant = {
   //团购活动状态(tag type)
   GROUP_ACTIVITY_PROGRESS_STATUS_TYPE: {
     pre: 'warning',
-    ing: 'regular',
-    post: 'info',
+    ing: '',
+    post: 'regular',
     is_deleted: 'info'
   },
   //订单状态

@@ -40,7 +40,7 @@
           <template slot-scope="scope">￥{{returnPrice(scope.row.item_price_sale * scope.row.num)}}</template>
         </el-table-column>
       </el-table>
-      <div class="orderr-price">订单价格：&yen;{{returnPrice(detail.price)}}</div>
+      <div class="orderr-price">订单价格：<span>&yen;{{returnPrice(detail.price)}}</span></div>
     </div>
 
     <!--订单总计等信息end-->
@@ -188,6 +188,10 @@
 .order-item-div{
   >.orderr-price{
     margin: 10px 0 0 10px;
+    >span{
+      font-weight: bold;
+      color: #ff5252;
+    }
   }
 }
   
