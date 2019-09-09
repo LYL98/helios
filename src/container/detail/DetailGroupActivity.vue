@@ -68,7 +68,7 @@
         <el-table-column label="团购价" width="120">
           <template slot-scope="scope">&yen;{{returnPrice(scope.row.price_sale)}}</template>
         </el-table-column>
-        <el-table-column label="单人最大购买数" width="120">
+        <el-table-column label="单人最大购买数" width="130">
           <template slot-scope="scope">{{scope.row.max_num_pp}}件</template>
         </el-table-column>
         <el-table-column label="库存" prop="stock_num" width="120"></el-table-column>

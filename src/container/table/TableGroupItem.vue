@@ -123,10 +123,10 @@
         tableName: 'TableGroupItem',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '商品分类', key: 'category', width: '240', isShow: true },
-          { label: '原价', key: 'price_origin', width: '160', isShow: true },
-          { label: '建议团长价', key: 'advice_header_price', width: '160', isShow: true },
-          { label: '建议团购价', key: 'advice_price_sale', width: '160', isShow: true },
+          { label: '商品分类', key: 'category', width: '180', isShow: true },
+          { label: '原价', key: 'price_origin', width: '100', isShow: true },
+          { label: '建议团长价', key: 'advice_header_price', width: '100', isShow: true },
+          { label: '建议团购价', key: 'advice_price_sale', width: '100', isShow: true },
           { label: '创建时间', key: 'created', width: '160', isShow: true },
           { label: '更新时间', key: 'updated', width: '160', isShow: false },
         ]

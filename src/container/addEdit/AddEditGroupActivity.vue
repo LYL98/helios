@@ -69,7 +69,7 @@
           <div class="error" v-if="scope.row.price_sale_error">{{scope.row.price_sale_error}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="单人最大购买数" width="120">
+      <el-table-column label="单人最大购买数" width="130">
         <template slot-scope="scope">
           <el-input v-model="scope.row.max_num_pp" size="small" class="my-input" :disabled="isDisabledEdit"><template slot="append">件</template></el-input>
           <div class="error" v-if="scope.row.max_num_pp_error">{{scope.row.max_num_pp_error}}</div>
