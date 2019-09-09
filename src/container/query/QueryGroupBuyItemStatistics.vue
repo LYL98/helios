@@ -13,7 +13,7 @@
             end-placeholder="结束日期"
             :picker-options="fixDateOptions"
             :clearable="false"
-            class="query-item-date"
+            style="width: 242px;"
             @change="changePicker">
           </el-date-picker>
         </my-query-item>
