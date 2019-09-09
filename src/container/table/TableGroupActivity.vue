@@ -26,10 +26,10 @@
             <!--编号名称-->
             <template v-if="item.key === 'tid_title'">
               <div class="td-item add-dot2">
-                <div class="link-item add-dot" @click="handleShowDetail('DetailGroupActivity', scope.row)" v-if="auth.isAdmin || auth.GroupActivityDetail">
+                <div class="link-item" @click="handleShowDetail('DetailGroupActivity', scope.row)" v-if="auth.isAdmin || auth.GroupActivityDetail">
                   {{scope.row.tid}}/{{scope.row.title}}
                 </div>
-                <div class="add-dot" v-else>
+                <div v-else>
                   {{scope.row.tid}}/{{scope.row.title}}
                 </div>
               </div>

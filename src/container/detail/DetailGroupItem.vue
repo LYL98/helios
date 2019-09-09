@@ -41,7 +41,7 @@
               <el-col :span="6">
                 <dl class="detail-item">
                   <dt class="label">商品分类</dt>
-                  <dd class="content">{{detail.title}}</dd>
+                  <dd class="content">{{detail.category.title || '-'}}</dd>
                 </dl>
               </el-col>
             </el-row>
@@ -120,7 +120,8 @@ export default {
   },
   data(){
     let initDetail = {
-      images: []
+      images: [],
+      category: {}
     }
     return {
       initDetail: initDetail,

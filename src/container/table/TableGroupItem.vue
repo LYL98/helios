@@ -32,16 +32,16 @@
             <!--编号名称-->
             <template v-if="item.key === 'code_title'">
               <div class="td-item add-dot2">
-                <div class="link-item add-dot" @click="handleShowDetail('DetailGroupItem', scope.row)" v-if="((auth.isAdmin || auth.GroupItemDetail) && page === 'item') || ((auth.isAdmin || auth.GroupItemRecoverDetail) && page === 'recover')">
+                <div class="link-item" @click="handleShowDetail('DetailGroupItem', scope.row)" v-if="((auth.isAdmin || auth.GroupItemDetail) && page === 'item') || ((auth.isAdmin || auth.GroupItemRecoverDetail) && page === 'recover')">
                   {{scope.row.code}}/{{scope.row.title}}
                 </div>
-                <div class="add-dot" v-else>
+                <div v-else>
                   {{scope.row.code}}/{{scope.row.title}}
                 </div>
               </div>
             </template>
             <!--商品分类-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'item_class'">商品分类</div>
+            <div class="td-item add-dot2" v-else-if="item.key === 'category'">{{scope.row.category.title || '-'}}</div>
             <!--原价、建议团长价、建议团购价-->
             <div class="td-item add-dot2" v-else-if="item.key === 'price_origin' || item.key === 'advice_header_price' || item.key === 'advice_price_sale'">&yen;{{returnPrice(scope.row[item.key])}}</div>
             <!--正常情况-->
@@ -123,7 +123,7 @@
         tableName: 'TableGroupItem',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '商品分类', key: 'item_class', width: '240', isShow: true },
+          { label: '商品分类', key: 'category', width: '240', isShow: true },
           { label: '原价', key: 'price_origin', width: '160', isShow: true },
           { label: '建议团长价', key: 'advice_header_price', width: '160', isShow: true },
           { label: '建议团购价', key: 'advice_price_sale', width: '160', isShow: true },

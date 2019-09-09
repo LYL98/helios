@@ -31,6 +31,14 @@
             <span id="titleScope" :class="isEllipsis(scope.row)">{{ formatValue(scope.row.item_code) + '/' + formatValue(scope.row.item_title) }}</span>
           </template>
         </el-table-column>
+
+        <el-table-column
+          min-width="100"
+          label="商品分类">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.item_category) }}</span>
+          </template>
+        </el-table-column>
         
         <el-table-column
           prop="user_num"
@@ -134,6 +142,7 @@ page_size:*/
         page: 1,
         page_size: 20,
         province_code: '',
+        category_id: '',
         sort: '',
         condition: '',
         begin_date: '',
