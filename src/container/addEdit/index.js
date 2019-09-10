@@ -22,3 +22,7 @@ export { default as AddEditSystemBanner } from './AddEditSystemBanner';
 
 export { default as AddEditMerchantList } from './AddEditMerchantList';
 export { default as AddEditMerchantRefund } from './AddEditMerchantRefund';
+
+export { default as AddEditGroupItem } from './AddEditGroupItem';
+export { default as AddEditGroupActivity } from './AddEditGroupActivity';
+export { default as AddEditGroupItemClass } from './AddEditGroupItemClass';

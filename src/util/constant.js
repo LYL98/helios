@@ -134,11 +134,50 @@ const Constant = {
     init: '待付款',
     paid: '团购中',
     wait_delivery_customer: '待发货',
-    wait_pick: '已发货',
+    wait_pick: '已到货',
     picked: '已完成',
     canceled: '已取消'
   },
+  GROUP_ORDER_STATUS_TYPE: {
+    init: 'warning',
+    paid: 'primary',
+    wait_delivery_customer: 'primary',
+    wait_pick: 'success',
+    picked: 'regular',
+    canceled: 'info'
+  },
 
+  //团购门店订单状态
+  GROUP_STORE_ORDER_STATUS: {
+    init: '待发货',
+    wait_pick: '已发货',
+    picked: '已完成'
+  },
+  GROUP_STORE_ORDER_STATUS_TYPE: {
+    init: 'danger',
+    wait_pick: 'success',
+    picked: 'info'
+  },
+
+  //团购活动上下架状态
+  GROUP_ACTIVITY_STATUS: {
+    activated: '已上架',
+    deactivated: '未上架',
+  },
+  //团购活动状态
+  GROUP_ACTIVITY_PROGRESS_STATUS: {
+    pre: '未开展',
+    ing: '团购中',
+    post: '已结束',
+    is_deleted: '已作废'
+  },
+  //团购活动状态(tag type)
+  GROUP_ACTIVITY_PROGRESS_STATUS_TYPE: {
+    pre: 'warning',
+    ing: '',
+    post: 'regular',
+    is_deleted: 'info'
+  },
   //订单状态
   ORDER_STATUS: {
     wait_confirm: '待确认',

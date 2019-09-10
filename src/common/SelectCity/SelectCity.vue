@@ -1,15 +1,16 @@
 <template>
   <el-select
     filterable
-    @clear="onClear"
     :clearable="clearable"
-    v-model="cityCode"
+    v-model="selectedCityCode"
     :disabled="disabled"
-    :placeholder="placeholder || '请选择县域'"
-    style="width:100%;"
+    :placeholder="placeholder || '请选择所在仓'"
     :size="size"
-    @change="changeCity"
+    @change="onChange"
+    :class="isUseToQuery ? 'query-item-select' : 'default'"
   >
+    <el-option v-if="typeof showAll !== 'undefined'" key="" label="全部" value="">
+    </el-option>
     <el-option
       v-for="item in dataItem"
       :key="item.code"
@@ -20,85 +21,89 @@
 </template>
 
 <script>
-import { Select, Option, MessageBox } from 'element-ui';
-import { Http, Config } from '@/util';
+  import { Select, Option } from 'element-ui';
+  import { Http, Config } from '@/util';
 
-export default {
-  name: "SelectCity",
-  components: {
-    'el-select': Select,
-    'el-option': Option
-  },
-  created(){
-    this.baseCityList();
-  },
-  props: ['value', 'provinceCode', 'showAll', 'clearable', 'placeholder', 'disabled', 'size'],
-  model: {
-    prop: 'value',
-    event: 'ev'
-  },
-  data() {
-    return {
-      pCode: this.provinceCode || '',
-      cityCode: this.value || '',
-      dataItem: []
-    };
-  },
-  methods: {
-    //县市改变
-    changeCity(v, isInit){
-      this.$emit('ev', v);
-      this.$emit('change', v, isInit);
+  export default {
+    name: "SelectCityRefactor",
+    components: {
+      'el-select': Select,
+      'el-option': Option
     },
-    onClear(v) {
-      this.$emit('clear', v)
+    props: ['value', 'provinceCode', 'zoneCode' ,'showAll', 'clearable', 'placeholder', 'disabled', 'size','isUseToQuery'],
+    model: {
+      prop: 'value',
+      event: 'change'
     },
-    //获取所有县市
-    async baseCityList(){
-      let that = this;
-      let { pCode } = that;
-      if(!pCode){
-        that.$data.dataItem = [];
-        return false;
+    data() {
+      return {
+        dataItem: []
       }
-      let res = await Http.get(Config.api.baseCityList, {
-        province_code: pCode
-      });
-      if(res.code === 0){
-        let rd = res.data;
-        that.$data.dataItem = rd;
-        //如果只有一个县市，默认选择，页面不显示
-        if(rd.length === 1 && typeof this.showAll === 'undefined'){
-          that.changeCity(rd[0].code, true);
-        }else{
-          //如果当前选择的县市不存在这列表
-          let judge = rd.filter(item => item.code === that.value);
-          if(judge.length === 0) that.changeCity('', true);
+    },
+    computed: {
+      //县市改变
+      selectedCityCode: {
+        get() {
+          return this.$props.value;
+        },
+        set(v) {
+          this.$emit('change', v);
         }
-      }else{
-        MessageBox.alert(res.message, '提示');
       }
     },
-  },
-  watch:{
-    provinceCode: {
-      deep: true,
-      handler: function (a, b) {
-        this.$data.pCode = a || '';
-        this.baseCityList();
-      }
+    watch: {
+      provinceCode: {
+        deep: true,
+        immediate: true,
+        handler: function (next, pre) {
+          // 如果省份code 为 空 或者 零，则返回.
+          if (!next) {
+            return;
+          }
+          this.baseCityList();
+        }
+      },
+      zoneCode: {
+        deep: true,
+        immediate: true,
+        handler: function (next, pre) {
+          this.baseCityList();
+        }
+      },
     },
-    value: {
-      deep: true,
-      handler: function (a, b) {
-        this.$data.cityCode = a || '';
-      }
+    methods: {
+      onChange(cityCode) {
+        let cityName = '';
+        for (let i = 0; i < this.dataItem.length; i++) {
+          let item = this.dataItem[i];
+          if (item.code === cityCode) {
+            cityName = item.title;
+            break;
+          }
+        }
+        // console.log('cityCode: ', cityCode, ', ', cityName);
+        this.$emit('changeCityName', cityName);
+      },
+      //根据传进来的省份code 获取城市列表
+      async baseCityList(){
+        let res = await Http.get(Config.api.baseCityList, {
+          province_code: this.$props.provinceCode || '',
+          zone_code: this.$props.zoneCode || ''
+        });
+        if(res.code === 0){
+          let rd = res.data;
+          this.$data.dataItem = rd;
+        }else{
+          this.$messageBox.alert(res.message, '提示');
+        }
+      },
     }
   }
-};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style scoped>
+  .default{
+    width: 100%;
+  }
 
 </style>

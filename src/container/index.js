@@ -22,7 +22,11 @@ export {
   AddEditSystemBanner,
 
   AddEditMerchantList,
-  AddEditMerchantRefund
+  AddEditMerchantRefund,
+
+  AddEditGroupItem,
+  AddEditGroupActivity,
+  AddEditGroupItemClass
 } from './addEdit';
 
 // 下拉选择组件
@@ -60,7 +64,9 @@ export {
   QueryItemFluctuationAnalysis,
   QueryFinanceBalance,
   QueryFinanceApprove,
-  QueryGroupBuy,
+  QueryGroupItem,
+  QueryGroupActivity,
+  QueryGroupStoreOrder,
   QueryGroupBuyItemStatistics,
   QueryGroupBuyCaptainStatistics,
   QueryGroupBuyMemberStatistics,
@@ -97,9 +103,11 @@ export {
   TableFinanceBalanceLog,
   TableFinanceBalanceMerchantLog,
   TableFinanceApprove,
-  TableGroupBuy,
+  TableGroupItem,
+  TableGroupItemClass,
+  TableGroupStoreOrder,
+  TableGroupActivity,
   TableGroupBuyDetail,
-  TableGroupBuyMerchantDetail,
   TableGroupHeadDetail,
   TableGroupHeadDetailList,
 
@@ -137,7 +145,6 @@ export {
   FormFinanceBalanceEdit,
   FormFinanceBalanceMerchantLogExport,
   FormFinanceApproveEdit,
-  FormGroupBuy,
   FormSystemSettingAd,
   FormSystemSettingOperating,
   FormSystemSettingItemCommonDes,
@@ -165,5 +172,12 @@ export {
   DetailOperateReceivingAudit,
 
   DetailMerchantList,
-  DetailMerchantRefundLog
+  DetailMerchantRefundLog,
+  
+  DetailGroupItem,
+  DetailGroupItemEditLog,
+  DetailGroupActivity,
+  DetailGroupActivityEditLog,
+  DetailGroupActivityItem,
+  DetailGroupStoreOrder
 } from './detail';

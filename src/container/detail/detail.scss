@@ -15,3 +15,44 @@
         margin-right: 10px;
     }
 }
+
+.item-detail {
+    .subtitle{
+        color: #5A5D64;
+        font-size: 14px;
+    }
+    .detail-item {
+        display: flex;
+        >.label {
+            color: #909399;
+            width: 100px;
+            line-height: 20px;
+            text-align: right;
+            margin-right: 12px;
+            height: 40px;
+        }
+        >.content {
+            padding-right: 20px;
+            flex: 1;
+            word-break: break-all;
+            line-height: 20px;
+        }
+    }
+    .img-div{
+        overflow: hidden;
+        background: #fff;
+    >img{
+        width: 64px;
+        height: 64px;
+        margin-right: 10px;
+    }
+    }
+    .my-quill-editor-detail img {
+        width: 480px;
+        height: auto;
+    }
+}
+.link-item{
+    text-decoration: underline;
+    cursor: pointer;
+}

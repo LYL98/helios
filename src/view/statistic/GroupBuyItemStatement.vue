@@ -28,37 +28,37 @@
           :min-width="maxLabelWidth < 200 ? 200 : maxLabelWidth"
           label="商品名称">
           <template slot-scope="scope">
-            <span id="titleScope" :class="isEllipsis(scope.row)">{{ formatValue(scope.row.activity_code) + '/' + formatValue(scope.row.item_title) }}</span>
+            <span id="titleScope" :class="isEllipsis(scope.row)">{{ formatValue(scope.row.item_code) + '/' + formatValue(scope.row.item_title) }}</span>
           </template>
         </el-table-column>
+
         <el-table-column
-          prop="price_buy"
-          label="团购时间"
-          align="left"
-          min-width="200">
+          min-width="100"
+          label="商品分类">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{scope.row.start_time + ' ～ ' + scope.row.end_time}}</span>
+            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.item_category) }}</span>
           </template>
         </el-table-column>
+        
         <el-table-column
-          prop="member_num"
+          prop="user_num"
           label="参团人数"
           sortable="custom"
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.member_num) }}</span>
+            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.user_num) }}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="sale_num"
+          prop="item_sale_num"
           label="销售件数"
           sortable="custom"
           align="left"
           min-width="80">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
-              <span>{{formatValue(scope.row.sale_num)}}</span>
+              <span>{{formatValue(scope.row.item_sale_num)}}</span>
             </div>
           </template>
         </el-table-column>
@@ -75,23 +75,23 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="pay_amount"
+          prop="total_price_sale"
           label="下单金额"
           sortable="custom"
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.pay_amount)}}</span>
+            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.total_price_sale)}}</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="sale_amount"
+          prop="header_profit"
           label="收入总计"
           sortable="custom"
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.sale_amount)}}</span>
+            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.header_profit)}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -134,14 +134,15 @@ export default {
       offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
       /*
       * groupbuy_time: (YYYY-mm-dd HH:MM:ss)团购时间
-      condition:
-      sort: 排序字段指定 参团次数(member_num)/销售件数(sale_num)/下单金额(pay_amount)/收入金额(sale_amount)
-      page:
-      page_size:*/
+        condition:
+        sort: 排序字段指定 参团人数(user_num)/销售件数(item_sale_num)/下单金额(total_price_sale)/收入金额(header_profit)
+        page:
+        page_size:*/
       query: {
         page: 1,
         page_size: 20,
         province_code: '',
+        category_id: '',
         sort: '',
         condition: '',
         begin_date: '',

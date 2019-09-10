@@ -17,7 +17,8 @@ export default {
     disabled: {type: Boolean, default: false},
     value: {type: Number | String, default: ''},
     size: {type: String, default: ''},
-    hasAllSelection: { type: Boolean, default: false }
+    hasAllSelection: { type: Boolean, default: false },
+    filterable: { type: Boolean, default: false }
   },
   model: {
     prop: 'value',
@@ -72,10 +73,13 @@ export default {
       deep: true,
       handler: function (a, b) {
         this.$data.selectId = a || '';
-        this.$data.query.id = a || '';
-        this.$data.query.condition = '';
-        this.$data.query.title = '';
-        this.searchMethod('');
+        //如果可搜索
+        if(this.filterable){
+          this.$data.query.id = a || '';
+          this.$data.query.condition = '';
+          this.$data.query.title = '';
+          this.searchMethod('');
+        }
       }
     }
   }

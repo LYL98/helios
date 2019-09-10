@@ -13,12 +13,16 @@
             end-placeholder="结束日期"
             :picker-options="fixDateOptions"
             :clearable="false"
-            class="query-item-date"
+            style="width: 242px;"
             @change="changePicker">
           </el-date-picker>
         </my-query-item>
       </el-col>
-
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="商品分类">
+          <select-group-item-class size="small" v-model="editQuery.category_id" @change="changeQuery" style="width: 242px;" clearable/>
+        </my-query-item>
+      </el-col>
       <el-col :xl="8" :lg="10" :span="10">
         <my-query-item label="搜索">
           <div style="display: flex">
@@ -42,7 +46,7 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { QueryItem, ButtonGroup, CollapseQuery, SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
+  import { QueryItem, ButtonGroup, CollapseQuery, SelectBuyer, SelectDisplayClass, SearchItem, SelectGroupItemClass } from '@/common';
   import { DataHandle, Constant } from '@/util';
   import queryMixin from './query.mixin';
 
@@ -59,7 +63,8 @@
       'my-search-item': SearchItem,
       'my-button-group': ButtonGroup,
       'my-query-item': QueryItem,
-      'my-collapse-query': CollapseQuery
+      'my-collapse-query': CollapseQuery,
+      'select-group-item-class': SelectGroupItemClass
     },
     mixins: [queryMixin],
     created() {
@@ -163,6 +168,7 @@
           page_size: 20,
           province_code: this.province.code,
           sort: this.backupSort,
+          category_id: '',
           condition: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,

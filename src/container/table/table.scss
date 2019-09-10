@@ -15,8 +15,17 @@
 
 .table-top{
     text-align: right;
-    padding: 0 16px;
+    //padding: 0 16px;
     margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    >.left{
+        text-align: left;
+        flex: 1;
+    }
+    >.right{
+        text-align: right;
+    }
 }
 
 .table-conter{
@@ -42,7 +51,7 @@
 .table-bottom{
     display: flex;
     align-items: center;
-    padding-bottom: 12px;
+    padding: 12px 10px;
     >.left{
         flex: 1;
     }

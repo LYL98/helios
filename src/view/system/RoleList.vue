@@ -45,9 +45,9 @@
             show-checkbox
             check-strictly
             class="role-tree"
-            node-key="id"
+            node-key="code"
             ref="tree"
-            :default-checked-keys="detail.permission_ids"
+            :default-checked-keys="detail.permission_codes"
             @check="treeChange"
             @node-expand="onNodeExpand"
             :props="defaultProps">
@@ -91,7 +91,7 @@ export default {
   beforeDestroy(){
     //清detail
     this.getRoleDetail({
-      permission_ids: [],
+      permission_codes: [],
       is_super_admin: false
     });
   },
@@ -102,7 +102,7 @@ export default {
       isChange: false,
       dataItem: [],
       detail: {
-        permission_ids: []
+        permission_codes: []
       },
       isShowTree: true,
       defaultExpandAll: true,
@@ -208,6 +208,7 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.getRoleList();
       }else{
         this.$message({message: res.message, type: 'error'});
       }
@@ -217,7 +218,7 @@ export default {
       this.$data.detailTemp = this.detail;
       //清detail
       this.getRoleDetail({
-        permission_ids: [],
+        permission_codes: [],
         is_super_admin: false
       });
       let pc = this.getPageComponents('AddEditSystemRole');
@@ -237,7 +238,7 @@ export default {
           if(res.code === 0){
             //清detail
             this.getRoleDetail({
-              permission_ids: [],
+              permission_codes: [],
               is_super_admin: false
             });
             this.getRoleList();
@@ -294,18 +295,18 @@ export default {
       let that = this, isCheck = false;
       let { permissionList, detail } = that;
       //判断是否选中
-      let ccf = ck.checkedKeys.filter(item => item === data.id );
+      let ccf = ck.checkedKeys.filter(item => item === data.code );
       isCheck = ccf.length > 0 ? true : false;
 
       //获取当前节点与子节id
       let m = (d) => {
         //如果选中
         if(isCheck){
-          detail.permission_ids.push(d.id);
+          detail.permission_codes.push(d.code);
         }else{
-          for(let i = 0; i < detail.permission_ids.length; i++){
-            if(detail.permission_ids[i] === d.id){
-              detail.permission_ids.remove(i);
+          for(let i = 0; i < detail.permission_codes.length; i++){
+            if(detail.permission_codes[i] === d.code){
+              detail.permission_codes.remove(i);
               i--;
             }
           }
@@ -319,14 +320,14 @@ export default {
 
       //选中, 找父节点
       if(isCheck){
-        detail.permission_ids.push(...data.ancestor_node);
+        detail.permission_codes.push(...data.ancestor_node);
       }
 
-      detail.permission_ids = DataHandle.arrayUnique(detail.permission_ids); //去重
+      detail.permission_codes = DataHandle.arrayUnique(detail.permission_codes); //去重
 
       that.$data.detail = detail;
       that.$data.isChange = true;
-      that.$refs.tree.setCheckedKeys(detail.permission_ids);
+      that.$refs.tree.setCheckedKeys(detail.permission_codes);
     },
   },
 };

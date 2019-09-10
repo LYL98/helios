@@ -104,5 +104,31 @@ export default {
     returnTime(dateStr) {
       return DataHandle.returnDateFormat(dateStr, 'HH:mm:ss')
     },
+
+    //处理基本数据类型转array
+    handleToArray(data){
+      if(data) return [data];
+      return [];
+    },
+
+    //返回数组第几位，如空则返''
+    returnArrayIndex(data, index){
+      if(data && data.length > index){
+        return data[index];
+      }
+      return '';
+    },
+
+    //判断and s,
+    judgeAnds(data, ands){
+      //let con = ands.filter( item => item === data);
+      //return con.length > 0 ? true : false;
+    },
+
+    //判断or s,
+    judgeOrs(data, ors){
+      let con = ors.filter( item => item === data);
+      return con.length > 0 ? true : false;
+    }
   }
 }

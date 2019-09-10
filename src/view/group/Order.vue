@@ -29,7 +29,9 @@
     data() {
       return {
         isShowDetail: false,
-        itemDetail: {}
+        itemDetail: {
+          order_items: []
+        }
       }
     },
     created() {

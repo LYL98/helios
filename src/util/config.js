@@ -98,8 +98,38 @@ const Config = (() => {
       itemCouponDistributeStatistic: apiM + '/coupon/distribute/merchants/query', // 优惠券发放记录
       itemCouponListExport: apiM + '/coupon/distribute/log/export', //优惠券导出
 
+      //团购商品分类
+      groupItemClassList: apiM + '/gb_item/category/list', //团购商品分类列表(组件共用)
+      groupItemClassQuery: apiM + '/gb_item/category/query',  //团购商品分类
+      groupItemClassDelete: apiM + '/gb_item/category/delete', //删除团购商品分类
+      groupItemClassAdd: apiM + '/gb_item/category/add', //新增团购商品分类
+      groupItemClassEdit: apiM + '/gb_item/category/edit', //编辑团购商品分类
+
       // 团购商品
-      groupBuyQuery: apiM + '/gb_activity/query',  //团购列表
+      groupItemList: apiM + '/gb_item/list', //团购商品列表(组件共用)
+      groupItemQuery: apiM + '/gb_item/query',  //团购商品列表
+      groupItemDetail: apiM + '/gb_item/detail', //团购商品详情
+      groupItemModifyLogQuery: apiM + '/gb_item/modify_log/query', //团购商品修改记录
+      groupItemRecover: apiM + '/gb_item/recover', //恢复团购商品
+      groupItemDelete: apiM + '/gb_item/delete', //删除团购商品
+      groupItemAdd: apiM + '/gb_item/add', //新增团购商品
+      groupItemEdit: apiM + '/gb_item/edit', //编辑团购商品
+
+      // 团购活动
+      groupActivityActive: apiM + '/gb_activity/active', //上架
+      groupActivityDeactive: apiM + '/gb_activity/deactive', //下架
+      groupActivityNullify: apiM + '/gb_activity/delete', //作废
+      groupActivityQuery: apiM + '/gb_activity/query', //查询
+      groupActivityDetail: apiM + '/gb_activity/detail', //详情
+      groupActivityActItemSale: apiM + '/gb_activity/act_item/sale', //团购详情的商品详情
+      groupActivityModifyLogQuery: apiM + '/gb_activity/modify_log/query', //操作记录
+      groupActivityAdd: apiM + '/gb_activity/add', //添加
+      groupActivityEdit: apiM + '/gb_activity/edit', //修改
+      //groupActivityActItemAdd: apiM + '/gb_activity/act_item/add', //新增商品
+      //groupActivityActItemEdit: apiM + '/gb_activity/act_item/edit', //编辑商品
+      //groupActivityActItemDelete: apiM + '/gb_activity/act_item/delete', //团购活动具体商品删除
+      groupActivityActCheckDup: apiM + '/gb_activity/check_dup', //活动时间判断
+
       groupBuyLogQuery: apiM + '/gb_activity/log/query',  //团购列表
       groupBuyDetail: apiM + '/gb_activity/detail',  //团购详情
       groupBuyDelete: apiM + '/gb_activity/delete',  //删除团购活动
@@ -124,15 +154,20 @@ const Config = (() => {
       groupMemberFreeze: apiM + '/gb_activity/gb_member/freeze', // 冻结 解冻团长
       groupMemberExport: apiM + '/gb_activity/gb_member/export', // 冻结 解冻团长
 
+      //门店订单
+      groupStoreOrderQuery: apiM + '/gb_store_order/query', //门店订单查询
+      groupStoreOrderDelivery: apiM + '/gb_store_order/delivery', //门店订单发货
+      groupStoreOrderDeliveryAll: apiM + '/gb_store_order/delivery_all', //门店订单一键发货
+      groupStoreOrderDetail: apiM + '/gb_store_order/detail', //门店订单详情
+      groupStoreOrderExportCheck: apiM + '/gb_store_order/export_check', //门店订单导出确认
+      groupStoreOrderExport: apiM + '/gb_store_order/export', //门店订单导出
+
       // 订单列表
       groupOrderQuery: apiM + '/gb_activity/gb_order/query', // 团员列表
       groupOrderExport: apiM + '/gb_activity/gb_order/export', // 导出
-      groupOrderShip: apiM + '/gb_activity/order/ship', // 发货
-      groupOrderAllShip: apiM + '/gb_activity/gb_order/send_by_query', //全部发货
-      groupOrderAllShipTotals: apiM + '/gb_activity/gb_order/st_query', //获取待全部发货的数量
+      groupOrderDetailExport: apiM + '/gb_activity/gb_order/items_export', // 导出明细
       groupOrderDetail: apiM + '/gb_activity/order/detail', // 详情
       groupOrderCancel: apiM + '/gb_activity/order/cancel', // 取消
-      groupOrderConfirmPickUp: apiM + '/gb_order/confirm/pick_up', //取货
 
       baseProvinceListMy: apiM + '/common/my_province', //省列表(我的省列表)（全局省份）
       baseProvinceList: apiM + '/common/province/list', //省列表 (组件共用）

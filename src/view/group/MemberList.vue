@@ -3,19 +3,6 @@
     <div class="query">
       <el-row>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="所在仓">
-            <my-select-city
-              size="small"
-              :isUseToQuery="true"
-              :provinceCode="province.code"
-              v-model="query.city_code"
-              clearable
-              placeholder="所在仓"
-              @change="changeQuery"
-            ></my-select-city>
-          </my-query-item>
-        </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="团员状态">
             <my-button-group
               :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
@@ -32,7 +19,7 @@
                 class="query-item-input"
                 clearable
                 v-model="query.condition"
-                placeholder="微信昵称、门店、团员名称"
+                placeholder="微信昵称、团员名称"
                 @keyup.enter.native="changeQuery"
                 @clear="changeQuery"
                 ref="condition"
@@ -64,7 +51,7 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -97,20 +84,6 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="所属门店" prop="store_title" min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.store_title || '-' }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="所在仓" prop="phone" min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.city_title || '-' }}
-            </div>
-          </template>
-        </el-table-column>
         <el-table-column label="团员名" prop="realname" min-width="100">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
@@ -125,20 +98,6 @@
             </div>
           </template>
         </el-table-column>
-        <!--<el-table-column label="参团次数" prop="buy_time" min-width="80">-->
-          <!--<template slot-scope="scope">-->
-            <!--<div :class="isEllipsis(scope.row)">-->
-              <!--{{ scope.row.buy_time || '-' }}-->
-            <!--</div>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
-        <!--<el-table-column label="已消费" prop="total_pay" min-width="80">-->
-          <!--<template slot-scope="scope">-->
-            <!--<div :class="isEllipsis(scope.row)">-->
-              <!--{{ scope.row.total_pay ? '￥' : '' }}{{ returnPrice(scope.row.total_pay) || '-' }}-->
-            <!--</div>-->
-          <!--</template>-->
-        <!--</el-table-column>-->
         <el-table-column label="状态" prop="is_freeze_header" min-width="80">
           <template slot-scope="scope">
             <el-tag disable-transitions size="small" :type="scope.row.is_freeze ? 'regular' : 'info'" style="width: 66px; text-align: center;"
@@ -197,7 +156,7 @@
    */
 
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
-  import { ButtonGroup, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
+  import { ButtonGroup, QueryItem, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
   import viewMixin from '@/view/view.mixin';
@@ -213,7 +172,6 @@
       'el-table-column': TableColumn,
       'el-tag': Tag,
       'el-pagination': Pagination,
-      'my-select-city': SelectCity,
       'my-button-group': ButtonGroup,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
@@ -245,7 +203,6 @@
       initQuery() {
         this.$data.query = {
           province_code: this.province.code,
-          city_code: '',
           is_freeze: '',
           condition: '',
           page: 1,
@@ -328,8 +285,8 @@
       //导出
       async handleMemberExport() {
         let api = Config.api.groupMemberExport;
-        let { city_code, is_freeze, condition } = this.query;
-        let query = { city_code, is_freeze, condition };
+        let { is_freeze, condition } = this.query;
+        let query = { is_freeze, condition };
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {

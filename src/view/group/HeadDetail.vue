@@ -15,9 +15,11 @@
 import { Dialog, Button} from 'element-ui';
 import { TableGroupHeadDetail, TableGroupHeadDetailList } from '@/container';
 import { Http, Config } from '@/util';
+import detailMixin from '@/container/detail/detail.mixin';
 
 export default {
   name: "HeadDetail",
+  mixins: [detailMixin],
   components: {
     'el-button': Button,
     'table-group-head-detail': TableGroupHeadDetail,

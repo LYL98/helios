@@ -43,6 +43,10 @@ export default {
       let { query } = this;
       return (query.page - 1) * query.page_size + index + 1;
     },
+    //选择
+    handleSelectionChange(val) {
+      this.$data.multipleSelection = val;
+    },
     //显示新增修改(新增组件，数据)
     handleShowAddEdit(pageComponents, data){
       let pc = this.getPageComponents(pageComponents);
