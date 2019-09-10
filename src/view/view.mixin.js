@@ -1,5 +1,3 @@
-import { mapGetters } from 'vuex';
-
 export default {
   data() {
     return {
@@ -18,11 +16,6 @@ export default {
       fun();
     };
   },
-  computed: mapGetters({
-    auth: 'globalAuth',
-    province: 'globalProvince',
-    viewWindowHeight: 'windowHeight'
-  }),
   methods: {
     //获取当前页面的组件
     viewGetPageComponents(name){
