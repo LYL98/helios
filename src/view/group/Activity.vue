@@ -6,11 +6,12 @@
     <add-edit-group-activity :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditGroupActivity"/>
     <detail-group-activity-edit-log :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailGroupActivityEditLog"/>
     <detail-group-activity-item :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailGroupActivityItem"/>
+    <add-edit-group-item :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditGroupItem" page="activity"/>
   </div>
 </template>
 
 <script>
-  import { AddEditGroupActivity, TableGroupActivity, QueryGroupActivity, DetailGroupActivity, DetailGroupActivityEditLog, DetailGroupActivityItem } from '@/container';
+  import { AddEditGroupActivity, TableGroupActivity, QueryGroupActivity, DetailGroupActivity, DetailGroupActivityEditLog, DetailGroupActivityItem, AddEditGroupItem } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -22,7 +23,8 @@
       'table-group-activity': TableGroupActivity,
       'detail-group-activity': DetailGroupActivity,
       'detail-group-activity-edit-log': DetailGroupActivityEditLog,
-      'detail-group-activity-item': DetailGroupActivityItem
+      'detail-group-activity-item': DetailGroupActivityItem,
+      'add-edit-group-item': AddEditGroupItem,
     },
     created() {
       documentTitle('团购 - 团购活动');
