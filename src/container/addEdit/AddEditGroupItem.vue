@@ -30,7 +30,7 @@
       </el-row>
       <el-row :gutter="10">
         <el-col :span="8">
-          <el-form-item label="原价" prop="price_origin">
+          <el-form-item label="市场价" prop="price_origin">
             <el-input size="medium" v-model="detail.price_origin" placeholder="0 - 1000000" :disabled="isDisabledEditPrice"><template slot="append">元</template></el-input>
           </el-form-item>
         </el-col>
@@ -104,7 +104,7 @@ export default {
       images: [], //轮播图片
       title: '', //参加团购活动的商品名称
       content: '', //商品详情
-      price_origin: '', //原价
+      price_origin: '', //市场价
       advice_header_price: '', //建议团长价
       advice_price_sale: '', //建议团购价
       share_content: '', //分享文案
@@ -129,7 +129,7 @@ export default {
           { required: true, message: '请选择商品分类', trigger: 'change' },
         ],
         price_origin: [
-          { required: true, message: '请输入原价', trigger: 'change' },
+          { required: true, message: '请输入市场价', trigger: 'change' },
           { pattern: Verification.testStrs.isPrice, message: '请输入正确的价格', trigger: 'change' },
           { validator: validPriceSale, trigger: 'change' },
         ],
