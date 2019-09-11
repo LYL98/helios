@@ -13,7 +13,7 @@
 
     <!--上传图片-->
     <el-upload
-      :style="'display:' + fileList.length < limit ? 'block' : 'none'"
+      v-if="fileList.length < limit"
       :multiple="multiple"
       :limit="limit"
       :action="tencentUpPath"
