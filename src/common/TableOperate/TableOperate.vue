@@ -3,14 +3,14 @@
   <div>
     <a
       class="single-item"
-      v-if="list.length <= 1 && list[0].isDisplay"
+      v-if="displayItemList.length === 1"
       href="javascript:void(0);"
-      @click.prevent="handleCommand(list[0].command)"
-    >{{ list[0].title }}</a>
+      @click.prevent="handleCommand(displayItemList[0].command)"
+    >{{ displayItemList[0].title }}</a>
 
     <!-- 如果有多项操作，则下拉显示操作菜单 -->
     <el-dropdown
-      v-if="list.length > 1 && hasDisplayItem"
+      v-if="displayItemList.length > 1"
       class="my-table-operate"
       :trigger="trigger"
       :placement="placement"
@@ -25,9 +25,8 @@
       />
       <el-dropdown-menu slot="dropdown" style="margin-top: 0px; margin-left: -5px;">
         <el-dropdown-item
-          v-for="(item, index) in list"
+          v-for="(item, index) in displayItemList"
           :key="index"
-          v-show="item.isDisplay"
           :command="item.command"
         >{{item.title}}</el-dropdown-item>
       </el-dropdown-menu>
@@ -51,10 +50,11 @@
       list: { type: Array, required: true }
     },
     computed: {
-      hasDisplayItem: {
+      //显示的列
+      displayItemList: {
         get() {
           // 判断操作队列中是否有需要显示的项
-          return this.$props.list.some(item => item.isDisplay);
+          return this.$props.list.filter(item => item.isDisplay);
         }
       }
     },
