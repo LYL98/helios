@@ -48,7 +48,7 @@
             <el-row :gutter="10">
               <el-col :span="6">
                 <dl class="detail-item">
-                  <dt class="label">原价</dt>
+                  <dt class="label">市场价</dt>
                   <dd class="content">{{ detail.price_origin ? '￥' : '' }}{{returnPrice(detail.price_origin)}}</dd>
                 </dl>
               </el-col>

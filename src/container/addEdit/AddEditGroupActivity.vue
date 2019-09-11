@@ -46,32 +46,32 @@
     </el-form>
     <!--搜索-->
     <div class="search-div">
-      <search-group-item @onSelectItem="onSelectItem" v-model="selectItemId" :provinceCode="province.code" :disabled="isDisabledEdit" style="width: 400px;margin-right: 10px;"/>
-      <el-button type="primary" @click.native="addItem" :disabled="isDisabledEdit">增加商品</el-button>
+      <search-group-item @onSelectItem="onSelectItem" v-model="selectItemId" :provinceCode="province.code" :disabled="isDisabledAddItem" style="width: 400px;margin-right: 10px;"/>
+      <el-button type="primary" @click.native="addItem" :disabled="isDisabledAddItem">增加商品</el-button>
     </div>
     <!--表格-->
     <el-table :data="detail.items" width="100%" :height="460" style="border-top: 1px solid #eee;">
       <el-table-column label="商品编号/名称">
         <div slot-scope="scope" class="add-dot">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
       </el-table-column>
-      <el-table-column label="原价" width="100">
+      <el-table-column label="市场价" width="100">
         <template slot-scope="scope">&yen;{{scope.row.price_origin}}</template>
       </el-table-column>
       <el-table-column label="团长价" width="120">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.header_price" size="small" class="my-input" :disabled="isDisabledEdit"><template slot="append">元</template></el-input>
+          <el-input v-model="scope.row.header_price" size="small" class="my-input" :disabled="isDisabledEdit && !scope.row.is_new_add ? true : false"><template slot="append">元</template></el-input>
           <div class="error" v-if="scope.row.header_price_error">{{scope.row.header_price_error}}</div>
         </template>
       </el-table-column>
       <el-table-column label="团购价" width="120">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.price_sale" size="small" class="my-input" :disabled="isDisabledEdit"><template slot="append">元</template></el-input>
+          <el-input v-model="scope.row.price_sale" size="small" class="my-input" :disabled="isDisabledEdit && !scope.row.is_new_add ? true : false"><template slot="append">元</template></el-input>
           <div class="error" v-if="scope.row.price_sale_error">{{scope.row.price_sale_error}}</div>
         </template>
       </el-table-column>
       <el-table-column label="单人最大购买数" width="130">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.max_num_pp" size="small" class="my-input" :disabled="isDisabledEdit"><template slot="append">件</template></el-input>
+          <el-input v-model="scope.row.max_num_pp" size="small" class="my-input" :disabled="isDisabledEdit && !scope.row.is_new_add ? true : false"><template slot="append">件</template></el-input>
           <div class="error" v-if="scope.row.max_num_pp_error">{{scope.row.max_num_pp_error}}</div>
         </template>
       </el-table-column>
@@ -88,10 +88,22 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" width="60">
-        <a slot-scope="scope" href="javascript:void(0);"
-          @click="deleteItem(scope.$index)"
-          v-if="!isDisabledEdit && (auth.isAdmin || auth.GroupActivityItemDelete)">移除</a>
-        <span v-else>-</span>
+        <template slot-scope="scope">
+          <my-table-operate
+            :list="[
+              {
+                title: '修改商品',
+                isDisplay: false && auth.isAdmin || auth.GroupActivityItemEdit, //暂不显示
+                command: () => handleShowAddEdit('AddEditGroupItem', { ...scope.row, is_disabled_edit_price: (isDisabledEdit && !scope.row.is_new_add ? true : false)})
+              },
+              {
+                title: '移除',
+                isDisplay: (!isDisabledEdit || scope.row.is_new_add) && (auth.isAdmin || auth.GroupActivityItemDelete),
+                command: () => deleteItem(scope.$index)
+              },
+            ]"
+          />
+        </template>
       </el-table-column>
     </el-table>
     <span slot="footer" class="dialog-footer">
@@ -104,12 +116,13 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Verification, DataHandle } from '@/util';
-import { SearchGroupItem } from '@/common';
+import { SearchGroupItem, TableOperate } from '@/common';
 
 export default {
   name: "AddEditGroupActivity",
   mixins: [addEditMixin],
   components: {
+    'my-table-operate': TableOperate,
     'search-group-item': SearchGroupItem
   },
   data(){
@@ -155,6 +168,7 @@ export default {
     }
     return{
       isDisabledEdit: false, //是否禁止编辑
+      isDisabledAddItem: false, //是否禁止新增商品
       selectItemId: '',
       selectItem: {},
       initDetail: initDetail,
@@ -173,6 +187,28 @@ export default {
     }
   },
   methods: {
+    //显示新增修改商品
+    handleShowAddEdit(pageComponents, data){
+      let pc = this.getPageComponents(pageComponents);
+      pc.showAddEdit({
+        id: data.item_id,
+        is_disabled_edit_price: data.is_disabled_edit_price
+      });
+    },
+    //修改商品后刷新（供商品页面用）
+    editItemCallBack(data){
+      let { detail } = this;
+      for(let i = 0; i < detail.items.length; i++){
+        if(detail.items[i].item_id === data.id){
+          detail.items[i].item_title = data.title;
+          detail.items[i].price_origin = this.returnPrice(data.price_origin);
+          detail.items[i].header_price = this.returnPrice(data.advice_header_price);
+          detail.items[i].price_sale = this.returnPrice(data.advice_price_sale);
+          break;
+        }
+      }
+      this.$data.detail = detail;
+    },
     //显示新增修改(重写)
     showAddEdit(data){
       this.$data.selectItemId = '';
@@ -257,10 +293,17 @@ export default {
     //判断是否可全部修改
     judgeIsAllEdit(){
       let { detail } = this;
+      //判断是否禁用修改商品价格
       if(!detail.detail.id || detail.detail.progress_status === 'pre'){
         this.$data.isDisabledEdit = false;
       }else{
         this.$data.isDisabledEdit = true;
+      }
+      //判断是否禁用添加修改商品
+      if(!detail.detail.id || detail.detail.progress_status === 'pre' || detail.detail.progress_status === 'ing'){
+        this.$data.isDisabledAddItem = false;
+      }else{
+        this.$data.isDisabledAddItem = true;
       }
     },
     //修改提交数据
@@ -330,7 +373,8 @@ export default {
         price_sale: this.returnPrice(selectItem.advice_price_sale),
         max_num_pp: '99',
         stock_num: '',
-        rank: ''
+        rank: '',
+        is_new_add: true, //新加入
       });
       this.$data.detail = detail;
       this.$data.selectItemId = '';
