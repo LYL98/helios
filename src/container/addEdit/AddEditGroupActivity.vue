@@ -59,37 +59,43 @@
       </el-table-column>
       <el-table-column label="团长价" width="120">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.header_price" size="small" class="my-input" :disabled="isDisabledEdit && !scope.row.is_new_add ? true : false"><template slot="append">元</template></el-input>
+          <el-input v-model="scope.row.header_price" size="small" class="my-input" :disabled="isDisabledEdit && !scope.row.is_new_add ? true : false" @input.native="inputChange(scope.$index)"><template slot="append">元</template></el-input>
           <div class="error" v-if="scope.row.header_price_error">{{scope.row.header_price_error}}</div>
         </template>
       </el-table-column>
       <el-table-column label="团购价" width="120">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.price_sale" size="small" class="my-input" :disabled="isDisabledEdit && !scope.row.is_new_add ? true : false"><template slot="append">元</template></el-input>
+          <el-input v-model="scope.row.price_sale" size="small" class="my-input" :disabled="isDisabledEdit && !scope.row.is_new_add ? true : false" @input.native="inputChange(scope.$index)"><template slot="append">元</template></el-input>
           <div class="error" v-if="scope.row.price_sale_error">{{scope.row.price_sale_error}}</div>
         </template>
       </el-table-column>
       <el-table-column label="单人最大购买数" width="130">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.max_num_pp" size="small" class="my-input" :disabled="isDisabledEdit && !scope.row.is_new_add ? true : false"><template slot="append">件</template></el-input>
+          <el-input v-model="scope.row.max_num_pp" size="small" class="my-input" :disabled="isDisabledEdit && !scope.row.is_new_add ? true : false" @input.native="inputChange(scope.$index)"><template slot="append">件</template></el-input>
           <div class="error" v-if="scope.row.max_num_pp_error">{{scope.row.max_num_pp_error}}</div>
         </template>
       </el-table-column>
       <el-table-column label="库存" width="120">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.stock_num" size="small" class="my-input"><template slot="append">件</template></el-input>
+          <el-input v-model="scope.row.stock_num" size="small" class="my-input" @input.native="inputChange(scope.$index)"><template slot="append">件</template></el-input>
           <div class="error" v-if="scope.row.stock_num_error">{{scope.row.stock_num_error}}</div>
         </template>
       </el-table-column>
       <el-table-column label="排序" width="100">
         <template slot-scope="scope">
-          <el-input v-model="scope.row.rank" size="small"/>
+          <el-input v-model="scope.row.rank" size="small" @input.native="inputChange(scope.$index)"/>
           <div class="error" v-if="scope.row.rank_error">{{scope.row.rank_error}}</div>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="60">
         <template slot-scope="scope">
+          <template v-if="scope.row.is_edit && detail.detail.id">
+            <a href="javascript:void(0);" class="confirm" @click="confirmEditItem(scope.$index)">确定</a>
+            <a href="javascript:void(0);" class="cancel" v-if="scope.row.id" @click="cancelEditItem(scope.$index)">取消</a>
+            <a href="javascript:void(0);" class="confirm" v-else @click="cancelEditItem(scope.$index)">移除</a>
+          </template>
           <my-table-operate
+            v-else
             :list="[
               {
                 title: '修改商品',
@@ -173,6 +179,7 @@ export default {
       selectItem: {},
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
+      detailTemp: this.copyJson(initDetail),
       rules: {
         title: [
           { required: true, message: '商品名称不能为空', trigger: 'change' },
@@ -255,6 +262,7 @@ export default {
           }
         }
         this.$data.detail = this.copyJson(rd);
+        this.$data.detailTemp = this.copyJson(rd); //保存有用
         this.$data.isShow = true;
         this.judgeIsAllEdit();
       }else{
@@ -326,7 +334,8 @@ export default {
         this.$message({message: '商品不能为空', type: 'error'});
         return;
       }
-      if(!this.judgeItems()){
+      //如果是新增，商品列表校验不通过
+      if(!detail.detail.id && !this.judgeItems()){
         return;
       }
 
@@ -375,6 +384,7 @@ export default {
         stock_num: '',
         rank: '',
         is_new_add: true, //新加入
+        is_edit: true, //编辑
       });
       this.$data.detail = detail;
       this.$data.selectItemId = '';
@@ -387,9 +397,22 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let { detail } = this;
-        detail.items.remove(index);
-        this.$data.detail = this.copyJson(detail);
+        (async ()=>{
+          let { detail } = this;
+          this.$loading({isShow: true});
+          let res = await Http.post(Config.api.groupActivityActItemDelete, {
+            id: detail.items[index].id
+          });
+          this.$loading({isShow: false});
+          if(res.code === 0){
+            this.$message({message: '商品已移除', type: 'success'});
+            detail.items.remove(index);
+            this.$data.detail = this.copyJson(detail);
+            this.$data.detailTemp = this.copyJson(detail);
+          }else{
+            this.$message({message: res.message, type: 'error'});
+          }
+        })();
       }).catch(() => {
         //console.log('取消');
       });
@@ -499,6 +522,49 @@ export default {
       this.$data.detail = this.copyJson(detail);
       return isPass;
     },
+    //表格输入
+    inputChange(index){
+      let { detail } = this;
+      detail.items[index].is_edit = true;
+      this.$data.detail = this.copyJson(detail);
+    },
+    //确认商品(新增、修改)
+    async confirmEditItem(index){
+      if(!this.judgeItems(index)) return;
+
+      let { detail } = this;
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api[detail.items[index].id ? 'groupActivityActItemEdit' : 'groupActivityActItemAdd'], {
+        activity_id: detail.detail.id || '',
+        ...detail.items[index],
+        header_price: this.handlePrice(detail.items[index].header_price),
+        price_sale: this.handlePrice(detail.items[index].price_sale),
+        max_num_pp: Number(detail.items[index].max_num_pp),
+        stock_num: Number(detail.items[index].stock_num),
+        rank: detail.items[index].rank === '' ? null : Number(detail.items[index].rank)
+      });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({message: `商品${detail.items[index].id ? '修改' : '新增'}成功`, type: 'success'});
+        detail.items[index].id = res.data.id;
+        detail.items[index].is_edit = false;
+        this.$data.detail = detail;
+        this.$data.detailTemp = this.copyJson(detail);
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
+    },
+    //取消商品(取消、移除)
+    cancelEditItem(index){
+      let { detail, detailTemp } = this;
+      if(detail.items[index].id){
+        detail.items[index] = this.copyJson(detailTemp.items[index]);
+        detail.items[index].is_edit = false;
+      }else{
+        detail.items.remove(index);
+      }
+      this.$data.detail = this.copyJson(detail);
+    }
   },
 };
 </script>
@@ -518,6 +584,17 @@ export default {
     right: 10px;
     text-align: center;
     z-index: 1;
+  }
+  .confirm, .cancel{
+    font-size: 12px;
+    display: block;
+    text-decoration: underline;
+    &.cancel{
+      color: #999;
+    }
+    &:hover{
+      font-weight: bold;
+    }
   }
 </style>
 <style>
