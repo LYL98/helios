@@ -392,13 +392,19 @@ export default {
     },
     //移除商品
     deleteItem(index){
+      let { detail } = this;
+      if(!detail.detail.id){
+        detail.items.remove(index);
+        this.$data.detail = this.copyJson(detail);
+        this.$data.detailTemp = this.copyJson(detail);
+        return;
+      }
       this.$messageBox.confirm(`您确认移除商品？`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         (async ()=>{
-          let { detail } = this;
           this.$loading({isShow: true});
           let res = await Http.post(Config.api.groupActivityActItemDelete, {
             id: detail.items[index].id
