@@ -104,7 +104,7 @@
               },
               {
                 title: '移除',
-                isDisplay: (!isDisabledEdit || scope.row.is_new_add) && (auth.isAdmin || auth.GroupActivityItemDelete),
+                isDisplay: !isDisabledEdit || scope.row.is_new_add,
                 command: () => deleteItem(scope.$index)
               },
             ]"
@@ -112,7 +112,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <span slot="footer" class="dialog-footer">
+    <span slot="footer" class="dialog-footer" v-if="!isDisabledEdit">
       <el-button @click.native="handleCancel">取 消</el-button>
       <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
     </span>
@@ -530,9 +530,11 @@ export default {
     },
     //表格输入
     inputChange(index){
-      let { detail } = this;
-      detail.items[index].is_edit = true;
-      this.$data.detail = this.copyJson(detail);
+      let { detail, auth } = this;
+      if(!detail.items[index].is_edit && (auth.isAdmin || auth.GroupActivityEdit)){
+        detail.items[index].is_edit = true;
+        this.$data.detail = this.copyJson(detail);
+      }
     },
     //确认商品(新增、修改)
     async confirmEditItem(index){
@@ -554,6 +556,7 @@ export default {
         this.$message({message: `商品${detail.items[index].id ? '修改' : '新增'}成功`, type: 'success'});
         detail.items[index].id = res.data.id;
         detail.items[index].is_edit = false;
+        detail.items[index].is_new_add = false;
         this.$data.detail = detail;
         this.$data.detailTemp = this.copyJson(detail);
       }else{
