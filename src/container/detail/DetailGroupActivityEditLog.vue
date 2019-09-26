@@ -41,7 +41,7 @@
         </el-table-column>
         <el-table-column label="内容" width="360">
           <template slot-scope="scope">
-            <span v-if="scope.row.category === 'add' || scope.row.category === 'edit'">{{returnAttrStr(scope.row.modified_attrs)}}</span>
+            <span v-if="judgeOrs(scope.row.category, ['add', 'edit', 'add_item', 'edit_item'])">{{returnAttrStr(scope.row.modified_attrs)}}</span>
             <span v-else>-</span>
           </template>
         </el-table-column>
@@ -103,6 +103,9 @@
           active: '上架团购',
           deactive: '下架团购',
           delete: '作废团购',
+          add_item: '添加商品',
+          delete_item: '删除商品',
+          edit_item: '修改商品'
         },
       }
     },
