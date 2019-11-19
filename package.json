@@ -15,7 +15,7 @@
     "@sentry/browser": "^5.5.0",
     "@sentry/integrations": "^5.5.0",
     "echarts": "4.1.0",
-    "element-ui": "2.11.0",
+    "element-ui": "^2.12.0",
     "md5": "^2.2.1",
     "vue": "^2.5.21",
     "vue-quill-editor": "^3.0.6",

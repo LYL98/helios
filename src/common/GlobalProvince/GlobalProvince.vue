@@ -55,7 +55,7 @@ export default {
     },
     //省改变
     changeProvince(data){
-      Method.setLocalStorage('appleGlobalProvince', data);//缓存
+      Method.setLocalStorage('fenghuangGlobalProvince', data);//缓存
       window.location.reload();
     },
     //获取所有省

@@ -29,10 +29,10 @@
               :default-active="pageName"
               :collapse="isHideMenu"
               menu-trigger="click"
-              background-color="#20232C"
+              background-color="#333"
               :mode="isHideMenu ? 'horizontal':'vertical'"
               style="border-right: 0"
-              text-color="#fff"
+              text-color="#bbb"
               active-text-color="#00ADE7"
             >
               <el-menu-item class="home" index="Home" :route="{name: 'Home'}" v-if="auth.isAdmin || auth.Home">
@@ -217,15 +217,14 @@
     <div v-else>
       <router-view/>
     </div>
+    <el-backtop>滚到顶部</el-backtop>
   </div>
 </template>
 
 <script>
-  import { Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Loading, Notification, MessageBox } from 'element-ui';
+  import { Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Notification, MessageBox, Backtop} from 'element-ui';
   import {Http, Config, Method, DataHandle} from '@/util';
   import {GlobalProvince, PwdModify} from '@/common';
-
-  let LoadingInstance;
 
   export default {
     name: 'app',
@@ -261,7 +260,8 @@
       'el-dropdown': Dropdown,
       'el-dropdown-menu': DropdownMenu,
       'el-dropdown-item': DropdownItem,
-      'my-global-province': GlobalProvince
+      'el-backtop': Backtop,
+      'my-global-province': GlobalProvince,
     },
     created() {
       this.$getBrand().then(res => {
@@ -533,6 +533,7 @@
       line-height: 42px;
       cursor: pointer;
       margin-right: 60px;
+      color: #fff;
     }
   }
 
@@ -544,7 +545,7 @@
     #nav-menu-div {
       flex: initial;
       width: 180px;
-      background-color: #20232C;
+      background-color: #333;
       position: relative;      
       #menu-div{
         overflow-y: auto;
@@ -557,7 +558,7 @@
         }
       }
       i {
-        color: #fff;
+        color: #bbb;
       }
 
       li.el-submenu {
@@ -591,7 +592,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        background-color: #2B2F39 !important;
+        background-color: #262626 !important;
         width: 180px;
         span {
           margin-left: 4px;

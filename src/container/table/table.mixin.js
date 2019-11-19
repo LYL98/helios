@@ -55,7 +55,12 @@ export default {
     //显示详情
     handleShowDetail(pageComponents, data){
       let pc = this.getPageComponents(pageComponents);
-      pc.showDetail(data);
+      //暂时
+      if(pc.showAddEdit){
+        pc.showAddEdit(data, 'detail');
+      }else{
+        pc.showDetail(data);
+      }
     },
     //显示form
     handleShowForm(pageComponents, data){

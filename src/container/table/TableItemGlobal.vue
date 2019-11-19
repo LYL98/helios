@@ -23,7 +23,7 @@
               <!--编号名称-->
               <template v-if="item.key === 'code_title'">
                 <div v-if="(page === 'global' && (auth.isAdmin || auth.ItemGlobalDetail)) || (page === 'recover' && (auth.isAdmin || auth.ItemRecoverDetail))"
-                  class="td-item link-item add-dot2" @click="handleShowDetail('DetailItemGlobal', scope.row)">
+                  class="td-item link-item add-dot2" @click="handleShowDetail('AddEditItemGlobal', scope.row)">
                   {{scope.row.code}}/{{scope.row.title}}
                 </div>
                 <div class="td-item add-dot2" v-else>

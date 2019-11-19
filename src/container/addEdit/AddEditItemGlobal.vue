@@ -1,65 +1,92 @@
 <template>
-  <el-dialog :title="`${detail.id?'修改':'新增'}商品`" :visible="isShow" width="1200px" top="5vh" append-to-body :before-close="handleCancel" :close-on-click-modal="false">
+  <el-drawer :title="pageTitle" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-drawer">
     <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail" :rules="rules" ref="ruleForm">
-      <el-form-item label="商品图片" prop="images">
-        <upload-img v-model="detail.images" module="item" :limit="5"></upload-img>
-      </el-form-item>
-      <el-row :gutter="10">
-        <el-col :span="8">
-          <el-form-item label="商品名称" prop="title">
-            <el-input size="medium" v-model="detail.title" :maxLength="20" placeholder="请输入20位以内的字符"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="筐">
-            <select-frame v-model="detail.frame_code" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="产地" prop="origin_place">
-            <el-input size="medium" v-model="detail.origin_place" :maxLength="30" placeholder="请输入30位以内的字符"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="8">
-          <el-form-item label="包装规格" prop="package_spec">
-            <el-input size="medium" v-model="detail.package_spec" :maxLength="6" placeholder="请输入6位以内的字符"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="规格" prop="item_spec">
-            <el-input size="medium" v-model="detail.item_spec" :maxLength="20" placeholder="请输入20位以内的字符"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="毛重" prop="gross_weight">
-            <input-weight size="medium" v-model="detail.gross_weight" placeholder="0.1 - 100000" unit="斤"/>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="8">
-          <el-form-item label="净重" prop="net_weight">
-            <input-weight size="medium" v-model="detail.net_weight" placeholder="0.1 - 100000" unit="斤"/>
-          </el-form-item>
-        </el-col>
-        <el-col :span="10">
-          <el-form-item label="科学分类" prop="system_class_code">
-            <select-system-class v-model="detail.system_class_codes" @change="selectSystemClass"/>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      
-      <el-form-item label="商品详情">
-        <quill-editor v-model="detail.content" module="item"></quill-editor>
-      </el-form-item>
-    </el-form>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click.native="handleCancel">取 消</el-button>
-      <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
-    </span>
-  </el-dialog>
+        <el-row :gutter="10">
+          <el-col :span="16">
+            <el-form-item label="商品图片" prop="images">
+              <upload-img v-model="detail.images" module="item" :limit="5"></upload-img>
+            </el-form-item>
+            <el-row :gutter="10">
+              <el-col :span="12">
+                <el-form-item label="商品名称" prop="title">
+                  <el-input size="medium" v-model="detail.title" :maxLength="20" placeholder="请输入20位以内的字符"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="筐">
+                  <select-frame v-model="detail.frame_code" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10">
+              <el-col :span="12">
+                <el-form-item label="包装规格" prop="package_spec">
+                  <el-input size="medium" v-model="detail.package_spec" :maxLength="6" placeholder="请输入6位以内的字符"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="规格" prop="item_spec">
+                  <el-input size="medium" v-model="detail.item_spec" :maxLength="20" placeholder="请输入20位以内的字符"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10">
+              <el-col :span="12">
+                <el-form-item label="毛重" prop="gross_weight">
+                  <input-weight size="medium" v-model="detail.gross_weight" placeholder="0.1 - 100000" unit="斤" style="width: 180px;"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="产地" prop="origin_place">
+                  <el-input size="medium" v-model="detail.origin_place" :maxLength="30" placeholder="请输入30位以内的字符"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10">
+              <el-col :span="12">
+                <el-form-item label="净重" prop="net_weight">
+                  <input-weight size="medium" v-model="detail.net_weight" placeholder="0.1 - 100000" unit="斤" style="width: 180px;"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="科学分类" prop="system_class_code">
+                  <select-system-class v-model="detail.system_class_codes" @change="selectSystemClass"/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10">
+              <el-col :span="8">
+                <el-form-item label="创建人">{{detail.creater.realname}}</el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item label="创建时间">{{detail.created}}</el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="10" v-if="detail.updated && detail.last_updater.realname">
+              <el-col :span="8">
+                <el-form-item label="最后更新人">{{detail.last_updater.realname}}</el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item label="最后更新时间">{{detail.updated}}</el-form-item>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="" v-if="page === 'global' && (auth.isAdmin || auth.ItemGlobalEditRecord)">
+              <el-button @click.native="handleShowEditRecord" class="f-r">修改明细</el-button>
+            </el-form-item>
+            <div style="margin-left: 110px;">
+              <div style="color: #909399; font-size: 14px; margin-bottom: 8px;">商品详情</div>
+              <quill-editor v-model="detail.content" module="item"></quill-editor>
+            </div>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div class="drawer-bottom">
+        <el-button @click.native="handleCancel">取 消</el-button>
+        <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
+      </div>
+  </el-drawer>
 </template>
 
 <script>
@@ -76,6 +103,9 @@ export default {
     'input-weight': InputWeight,
     'select-frame': SelectFrame,
     'select-system-class': SelectSystemClass
+  },
+  props: {
+    page: { type: String, default: 'global' }, //页面global、recover
   },
   data(){
     //毛重
@@ -106,6 +136,8 @@ export default {
       system_class_codes: [], //科学分类编号s
       frame_code: '', //筐code
       content: '', //详细信息
+      creater: {},
+      last_updater: {},
     }
     return{
       initDetail: initDetail,
@@ -136,16 +168,27 @@ export default {
           { len: 8, message: '请选择至第三级分类', trigger: 'blur' }
         ],
       },
+      pageTitle: '新增商品',
+      pageType: 'add',
     }
   },
   methods: {
-    //显示新增修改(重写)
-    showAddEdit(data){
+    //显示新增修改(重写) (数据，类型)
+    showAddEdit(data, type){
       if(data){
         this.pItemDetail(data.id);
+        if(type === 'detail'){
+          this.$data.pageTitle = '商品详情';
+          this.$data.pageType = 'detail';
+        }else{
+          this.$data.pageTitle = '修改商品';
+          this.$data.pageType = 'edit';
+        }
       }else{
         this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
         this.$data.isShow = true;
+        this.$data.pageTitle = '新增商品';
+        this.$data.pageType = 'add';
       }
     },
     //获取详情
@@ -191,11 +234,35 @@ export default {
       }else{
         this.$message({message: res.message, type: 'error'});
       }
-    }
+    },
+    //显示修改明细
+    handleShowEditRecord(){
+      let pc = this.getPageComponents('DetailItemGlobalEditRecord');
+      pc.showDetail(this.detail);
+    },
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss">
+  .my-drawer{
+    left: 180px !important;
+    top: 42px !important;
+    width: calc(100% - 180px) !important;
+    height: calc(100% - 42px) !important;
+    >.el-drawer__header{
+      font-size: 18px;
+      border-bottom: 1px solid #ececec;
+      margin: 0 !important;
+      padding: 20px !important;
+    }
+    >.el-drawer__body{
+      overflow-y: auto;
+      padding: 15px 0;
+    }
+  }
+  .drawer-bottom{
+    margin: 50px 110px 0;
+  }
 </style>

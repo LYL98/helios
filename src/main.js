@@ -64,7 +64,7 @@ Vue.use({
     Vue.prototype.$messageBox = MessageBox;
 
     //全局省份
-    let province = Method.getLocalStorage('appleGlobalProvince');
+    let province = Method.getLocalStorage('fenghuangGlobalProvince');
     Vue.prototype.$province = province;
 
     //全局品牌 refresh (true,false)

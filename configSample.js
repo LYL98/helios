@@ -11,26 +11,15 @@ module.exports = {
      */
     RequestHttp: 'https://xxxdev.xxx.xxx',
 
-    /**
-     * 七牛上传地址
-     * 华东地址：up.qiniu.com、up-z0.qiniu.com、upload.qiniu.com
-     * 华南地址：up.qiniup.com
-     */
-    QiniuUpPath: 'https://up.qiniup.com',
+    //腾讯Bucket上传地址
+    TencentUpPath: 'https://xxx.xxx.xxx',
 
     /**
-     * 资源上传地址
-     * 华东地址：up.qiniu.com、up-z0.qiniu.com、upload.qiniu.com
-     * 华南地址：up.qiniup.com
-     */
-    TencentUpPath = 'https://up.qiniup.com',
-
-    /**
-     * 资源下载地址
+     * 腾讯Bucket下载地址
      * 测试：https://cdn-xxx-dev.xxx.xxx/
      * 生产：https://cdn-xxx-pro.xxx.xxx/
      */
-    TencentPath = 'https://cdn-xxx-dev.xxx.xxx/',
+    TencentPath: 'https://cdn-xxx-dev.xxx.xxx/',
 
     //构建后文件目录
     BuildOutputDir: '../dist'
