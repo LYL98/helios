@@ -19,14 +19,18 @@ module.exports = {
     QiniuUpPath: 'https://up.qiniup.com',
 
     /**
-     * 七牛下载地址
-     * 测试：https://static-dev.xxx.xxx/
-     * 生产：https://static-pro.xxx.xxx/
+     * 资源上传地址
+     * 华东地址：up.qiniu.com、up-z0.qiniu.com、upload.qiniu.com
+     * 华南地址：up.qiniup.com
      */
-    QiniuPath: 'https://static-dev.xxx.xxx/',
+    TencentUpPath = 'https://up.qiniup.com',
 
-    //是否打印网络请求日志
-    IsPrintRequestLog: false,
+    /**
+     * 资源下载地址
+     * 测试：https://cdn-xxx-dev.xxx.xxx/
+     * 生产：https://cdn-xxx-pro.xxx.xxx/
+     */
+    TencentPath = 'https://cdn-xxx-dev.xxx.xxx/',
 
     //构建后文件目录
     BuildOutputDir: '../dist'

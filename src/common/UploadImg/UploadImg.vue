@@ -1,38 +1,38 @@
 <template>
   <div :id="key" class="my-upload">
-    <draggable class="draggable" v-model="fileList" :options="{group:'people'}">
-      <div
-        class="avatar"
-        v-for="element in fileList"
-        :key="element.uid"
-        @mouseleave="handleMouseleave"
-        @mouseover="handleMouseover(element.url)"
-      >
-        <span class="float-layer" v-if="mouseoverItem === element.url">
-          <i class="el-icon-delete" @click="handleRemove(element.url)"></i>
-          <i class="el-icon-search" @click="handlePreview(element.url)"></i>
+    <!--图片列表-->
+    <draggable class="draggable" v-model="fileList" @end="onEndDraggable" :options="{group: 'people'}">
+      <div class="avatar" v-for="item in fileList" :key="item.uid">
+        <span class="float-layer">
+          <i class="el-icon-delete" @click="handleRemove(item.url)"></i>
+          <i class="el-icon-search" @click="handlePreview(item.url)"></i>
         </span>
-        <img :src="element.url + '_min200x200'">
+        <img :src="item.url + '_min200x200'">
       </div>
     </draggable>
+
+    <!--上传图片-->
     <el-upload
       v-if="fileList.length < limit"
-      multiple
+      :multiple="multiple"
       :limit="limit"
       :action="tencentUpPath"
       :http-request="httpRequestUpload"
       :data="uploadData"
       :show-file-list="false"
       list-type="picture-card"
-      ref="upload"
+      ref="myUpload"
       accept="image/gif, image/jpg, image/jpeg, image/png"
+      :file-list="upFileList"
       :on-exceed="onFileExceed"
-      :before-upload="beforeUpload"
-      :on-success="upScuccess"
-      :on-error="upError"
+      :before-upload="onBeforeUpload"
+      :on-success="onSuccess"
+      :on-error="onError"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
+
+    <!--查看图片-->
     <el-dialog :visible.sync="isShow" append-to-body fullscreen :before-close="handleCloseDialog" style="background: #23241f;">
       <div class="control">
         <i class="el-icon-minus" @click="handleMinus"></i>
@@ -61,7 +61,8 @@
 <script>
   /**
    * 参数说明：
-   * images: 为数组类型，表示上传图片的队列。默认为[]
+   * multiple: 多个
+   * images: 为数组类型，表示上传图片的队列。默认为'', 如果为list,多个，如果为string,单个
    * module: 指定需要上传至哪个模块，默认为item
    * limit：指定上传文件的数量限制，默认为1
    */
@@ -81,16 +82,17 @@
       event: 'change',
     },
     props: {
-      avatar: { type: Boolean },
-      images: { type: Array, default: [] },
-      module: {type: String, default: 'item'},
-      limit: {type: Number, default: 1}
+      multiple: { type: Boolean, default: true },
+      images: { type: Array | String, default: '' },
+      module: { type: String, default: 'item' },
+      limit: { type: Number, default: 1 }
     },
     data() {
       // 获取传递进来的默认值
-      let fileList = this.images ? this.images.map(item => {
+      let fs = this.images ? this.images.map(item => {
         return {url: Config.tencentPath + item}
       }) : [];
+
       // 生成组件的id值，便于更新图片列表后，调用
       let key = `upload-${Math.random().toString(16).substring(2)}`;
       return {
@@ -98,8 +100,8 @@
         tencentPath: Config.tencentPath,
         tencentUpPath: Config.tencentUpPath,
         uploadData: {},
-        fileList: fileList, // 默认的图片列表
-        mouseoverItem: '',
+        upFileList: this.copyJson(fs), //上传的列表
+        fileList: this.copyJson(fs), // 默认的图片列表
         isShow: false,
         currentPreviewImage: '',
         size: 10,
@@ -135,33 +137,29 @@
         deep: true,
         handler: function (next, pre) {
           if (pre.length === 0) {
-            this.fileList = next.map(item => {
+            let fs = next.map(item => {
               return {url: Config.tencentPath + item}
             });
+            //数据列表
+            this.fileList = this.copyJson(fs);
+            //上传组件列表
+            this.upFileList = this.copyJson(fs);
           }
         }
       },
-      // fileList: {
-      //   handler: function (next, pre) {
-      //     if (next.length === pre.length && next !== pre) {
-      //       let images = this.fileList.map(item => item.url.substring(Config.tencentPath.length));
-      //       this.$emit('change', images);
-      //     }
-      //   }
-      // },
-      imageUrl(a, b) {
-        return a;
-      }
     },
     methods: {
+      //深拷贝json
+      copyJson(json){
+        return JSON.parse(JSON.stringify(json));
+      },
       // 在开始上传之前的钩子函数，该函数返回结果为true 则开始进行上传
-      beforeUpload(file) {
+      onBeforeUpload(file) {
         return this.tencentPresignedUrl(file);
       },
 
       //获取腾讯Bucketpresigned_url
       tencentPresignedUrl(file) {
-
         let {module} = this;
         return Http.get(Config.api.tencentPresignedUrl, {module: module}).then(res => {
           this.uploadData = {
@@ -195,64 +193,69 @@
       },
       
       //上传成功
-      upScuccess(res, file, fileList) {
-
+      onSuccess(res, file, fileList) {
         let fileRecord = {}
-
         this.imgRecord.forEach(function (value) {
           // console.log(value)
           if (value.uid === file.uid) {
             fileRecord = value
           }
-        })
+        });
 
         this.fileList.push({url: Config.tencentPath + fileRecord.key});
         // 将缓存起来的图片地址进行截取 只保留key值，存放在images列表中
         let images = this.fileList.map(item => item.url.substring(Config.tencentPath.length));
-        this.$emit('change', images);
+
+        //判断是否全部上传完成
+        let undones = fileList.filter(item => item.status !== 'success' && item.status !== 'error');
+        if(undones.length === 0){
+          this.$emit('change', images);
+        }
       },
 
-      parentHandleclick(e) {
-        this.imageUrl = ''
-      },
-      upError(err, file, fileList) {
-        Message.error('图片上传失败！请重新尝试...');
+      //上传失败
+      onError(err, file, fileList) {
+        //判断是否全部上传完成
+        let undones = fileList.filter(item => item.status !== 'success' && item.status !== 'error');
+        if(undones.length === 0){
+          this.$emit('change', images);
+        }
       },
 
+      //上传超数
       onFileExceed(file, fileList) {
         Message.error(`最多只能上传 ${this.$props.limit} 张图片`);
       },
 
-      handleMouseover(url) {
-        if (this.mouseoverItem !== url) {
-          this.mouseoverItem = url;
-        }
-      },
-
-      handleMouseleave() {
-        this.mouseoverItem = '';
-      },
-
+      //删除
       handleRemove(url) {
-        // console.log('handleRemove: ', url, this.fileList);
-
-        let before = this.fileList;
-        this.fileList = this.fileList.filter(item => item.url !== url);
+        //let ufs = this.$refs['myUpload'].uploadFiles;
+        let fs = this.fileList.filter(item => item.url !== url);
+        this.fileList = this.copyJson(fs);
+        this.upFileList = this.copyJson(fs);
         // 将缓存起来的图片地址进行截取 只保留key值，存放在images列表中
         let images = this.fileList.map(item => item.url.substring(Config.tencentPath.length));
         this.$emit('change', images);
       },
 
+      //拖动排序图片
+      onEndDraggable(){
+        // 将缓存起来的图片地址进行截取 只保留key值，存放在images列表中
+        let images = this.fileList.map(item => item.url.substring(Config.tencentPath.length));
+        this.$emit('change', images);
+      },
+
+      //查看图片
       handlePreview(url) {
         this.currentPreviewImage = url;
         this.isShow = true;
       },
-
+      //缩小
       handleMinus() {
         if (this.$data.size <= 4) return;
         this.$data.size -= 2;
       },
-
+      //放大
       handlePlus() {
         if (this.$data.size >= 20) return;
         this.$data.size += 2;
@@ -286,6 +289,7 @@
         return false;
       },
 
+      //查看图片 上一张
       handleToLeft() {
         this.fileList.some((item, index) => {
           if (item.url === this.currentPreviewImage) {
@@ -301,6 +305,7 @@
         });
       },
 
+      //查看图片 下一张
       handleToRight() {
         this.fileList.some((item, index) => {
           if (item.url === this.currentPreviewImage) {
@@ -342,66 +347,77 @@
 </script>
 
 <style lang="scss">
-  .my-upload {
+  .my-upload{
     display: flex;
     align-items: center;
     height: 64px;
-  }
-  .my-upload .draggable {
-    height: inherit;
-  }
-  .my-upload .avatar {
-    display: inline-block;
-    margin-right: 10px;
-    box-sizing: border-box;
-    width: 64px;
-    height: inherit;
-    border: 1px solid #c0ccda;
-    border-radius: 3px;
-    cursor: pointer;
-    position: relative;
-    .float-layer {
+    >.draggable {
+      height: inherit;
+      >.avatar{
+        display: inline-block;
+        margin-right: 10px;
+        box-sizing: border-box;
+        width: 64px;
+        height: inherit;
+        border: 1px solid #c0ccda;
+        border-radius: 3px;
+        cursor: pointer;
+        position: relative;
+        &:hover > .float-layer{
+          display: flex;
+        }
+        &:active > .float-layer{
+          opacity: 0.5;
+        }
+        >.float-layer {
+          display: none;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+          border-radius: inherit;
+          background: rgba($color: #000000, $alpha: 0.8);
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 9;
+          i {
+            font-size: 18px;
+            color: #fff;
+          }
+          i:hover {
+            font-weight: 600;
+            font-size: 20px;
+          }
+          i + i {
+            margin-left: 5px;
+          }
+        }
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: inherit;
+        }
+        img+img {
+          margin-left: 5px;
+        }
+      }
+    }
+    .el-upload--picture-card {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-      background-color: #000000;
-      opacity: .8;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 9;
-      i {
-        font-size: 18px;
-      }
-      i:hover {
-        font-weight: 600;
-        font-size: 20px;
-      }
-      i + i {
-        margin-left: 5px;
-      }
+      width: 64px;
+      height: 64px;
     }
-    img {
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-    }
-    img+img {
-      margin-left: 5px;
+    .el-upload-list__item{
+      width: 64px;
+      height: 64px;
     }
   }
-  .my-upload .el-upload--picture-card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 64px;
-    height: 64px;
-  }
+  
   .fade-enter-active, .fade-leave-active {
     transition: opacity 2s;
   }

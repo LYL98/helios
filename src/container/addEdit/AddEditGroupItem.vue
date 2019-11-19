@@ -30,18 +30,18 @@
       </el-row>
       <el-row :gutter="10">
         <el-col :span="8">
-          <el-form-item label="原价" prop="price_origin">
-            <el-input size="medium" v-model="detail.price_origin" placeholder="0 - 1000000"><template slot="append">元</template></el-input>
+          <el-form-item label="市场价" prop="price_origin">
+            <el-input size="medium" v-model="detail.price_origin" placeholder="0 - 1000000" :disabled="isDisabledEditPrice"><template slot="append">元</template></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="建议团长价" prop="advice_header_price">
-            <el-input size="medium" v-model="detail.advice_header_price" placeholder="0 - 1000000"><template slot="append">元</template></el-input>
+            <el-input size="medium" v-model="detail.advice_header_price" placeholder="0 - 1000000" :disabled="isDisabledEditPrice"><template slot="append">元</template></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="建议团购价" prop="advice_price_sale">
-            <el-input size="medium" v-model="detail.advice_price_sale" placeholder="0 - 1000000"><template slot="append">元</template></el-input>
+            <el-input size="medium" v-model="detail.advice_price_sale" placeholder="0 - 1000000" :disabled="isDisabledEditPrice"><template slot="append">元</template></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -78,6 +78,9 @@ export default {
     'quill-editor': QuillEditor,
     'select-group-item-class': SelectGroupItemClass
   },
+  props: {
+    page: { type: String, default: 'item' }, //页面item、activity
+  },
   data(){
     //价格
     let validPriceSale = (rules, value, callback) => {
@@ -101,7 +104,7 @@ export default {
       images: [], //轮播图片
       title: '', //参加团购活动的商品名称
       content: '', //商品详情
-      price_origin: '', //原价
+      price_origin: '', //市场价
       advice_header_price: '', //建议团长价
       advice_price_sale: '', //建议团购价
       share_content: '', //分享文案
@@ -109,6 +112,7 @@ export default {
       share_image: '', //分享图片
     }
     return{
+      isDisabledEditPrice: false,
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       rules: {
@@ -125,7 +129,7 @@ export default {
           { required: true, message: '请选择商品分类', trigger: 'change' },
         ],
         price_origin: [
-          { required: true, message: '请输入原价', trigger: 'change' },
+          { required: true, message: '请输入市场价', trigger: 'change' },
           { pattern: Verification.testStrs.isPrice, message: '请输入正确的价格', trigger: 'change' },
           { validator: validPriceSale, trigger: 'change' },
         ],
@@ -147,8 +151,16 @@ export default {
     //显示新增修改(重写)
     showAddEdit(data){
       if(data){
+        //判断是否禁用编辑价格
+        if(data.is_disabled_edit_price === true){
+          this.$data.isDisabledEditPrice = true;
+        }else{
+          this.$data.isDisabledEditPrice = false;
+        }
+
         this.groupItemDetail(data.id);
       }else{
+        this.$data.isDisabledEditPrice = false;
         this.$data.detail = this.copyJson(this.initDetail);
         this.$data.isShow = true;
       }
@@ -175,9 +187,9 @@ export default {
     },
     //提交数据
     async addEditData(){
-      let { detail } = this;
+      let { detail, page } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[detail.id ? 'groupItemEdit' : 'groupItemAdd'], {
+      let data = {
         province_code: this.province.code,
         ...detail,
         cover_image: this.returnArrayIndex(detail.cover_images, 0),
@@ -185,14 +197,22 @@ export default {
         price_origin: this.handlePrice(detail.price_origin),
         advice_header_price: this.handlePrice(detail.advice_header_price),
         advice_price_sale: this.handlePrice(detail.advice_price_sale),
-      });
+      }
+      let res = await Http.post(Config.api[detail.id ? 'groupItemEdit' : 'groupItemAdd'], data);
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableGroupItem');
-        pc.getData(pc.query);
+        if(page === 'item'){
+          let pc = this.getPageComponents('TableGroupItem');
+          pc.getData(pc.query);
+        }
+        //新增修改活动页面
+        else if(page === 'activity'){
+          let pc = this.getPageComponents('AddEditGroupActivity');
+          pc.editItemCallBack(data);
+        }
       }else{
         this.$message({message: res.message, type: 'error'});
       }
