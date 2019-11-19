@@ -10,7 +10,6 @@
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%"
-        :height="windowHeight - offsetHeight"
         class="list-table"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
@@ -18,37 +17,39 @@
       >
         <el-table-column type="index" width="80" label="序号" align="center"></el-table-column>
         <!--table-column start-->
-        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-          <div slot-scope="scope" class="my-td-item">
-            <!--编号名称-->
-            <template v-if="item.key === 'code_title'">
-              <div v-if="(page === 'global' && (auth.isAdmin || auth.ItemGlobalDetail)) || (page === 'recover' && (auth.isAdmin || auth.ItemRecoverDetail))"
-                class="td-item link-item add-dot2" @click="handleShowDetail('DetailItemGlobal', scope.row)">
-                {{scope.row.code}}/{{scope.row.title}}
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
+            <div slot-scope="scope" class="my-td-item">
+              <!--编号名称-->
+              <template v-if="item.key === 'code_title'">
+                <div v-if="(page === 'global' && (auth.isAdmin || auth.ItemGlobalDetail)) || (page === 'recover' && (auth.isAdmin || auth.ItemRecoverDetail))"
+                  class="td-item link-item add-dot2" @click="handleShowDetail('DetailItemGlobal', scope.row)">
+                  {{scope.row.code}}/{{scope.row.title}}
+                </div>
+                <div class="td-item add-dot2" v-else>
+                  {{scope.row.code}}/{{scope.row.title}}
+                </div>
+              </template>
+              <!--商品参数-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'parameter'">
+                <span>{{scope.row.origin_place}}、</span>
+                <span v-if="scope.row.item_spec">{{scope.row.item_spec}}、</span>
+                <span>{{returnWeight(scope.row.gross_weight)}}斤</span>
               </div>
-              <div class="td-item add-dot2" v-else>
-                {{scope.row.code}}/{{scope.row.title}}
+              <!--筐-->
+              <div class="td-item" v-else-if="item.key === 'frame'">
+                <span v-if="scope.row.frame_code">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
+                <span v-else>-</span>
               </div>
-            </template>
-            <!--商品参数-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'parameter'">
-              <span>{{scope.row.origin_place}}、</span>
-              <span v-if="scope.row.item_spec">{{scope.row.item_spec}}、</span>
-              <span>{{returnWeight(scope.row.gross_weight)}}斤</span>
+              <!--净重-->
+              <div class="td-item" v-else-if="item.key === 'net_weight'">{{returnWeight(scope.row.net_weight)}}斤</div>
+              <!--科学分类-->
+              <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
+              <!--正常情况-->
+              <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
-            <!--筐-->
-            <div class="td-item" v-else-if="item.key === 'frame'">
-              <span v-if="scope.row.frame_code">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
-              <span v-else>-</span>
-            </div>
-            <!--净重-->
-            <div class="td-item" v-else-if="item.key === 'net_weight'">{{returnWeight(scope.row.net_weight)}}斤</div>
-            <!--科学分类-->
-            <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
-            <!--正常情况-->
-            <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
-          </div>
-        </el-table-column>
+          </el-table-column>
+        </template>
         <!--table-column end 操作占位-->
         <el-table-column label min-width="1"/>
         <el-table-column label="操作" width="100" fixed="right" align="center">

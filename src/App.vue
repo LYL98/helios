@@ -506,9 +506,9 @@
   }
 
   #head-div {
-    background-color: #fff;
+    background-color: #262626;
     height: 42px;
-    color: #5A5D64;
+    color: #bbb;
 
     #logo-div {
       height: 42px;
@@ -629,6 +629,7 @@
       padding: 16px;
       min-width: 1120px;
       box-sizing: border-box;
+      overflow-y: auto;
       .breadcrumb {
         padding: 0px 16px;
         /*background-color: #fff;*/
