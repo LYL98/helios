@@ -241,10 +241,11 @@ export default {
         let d = JSON.parse( JSON.stringify( a ) );
         this.linkName(d.url, type => this.bannerType = type);
         if (d.id && d.image && d.image !== '') {
-          detail.images = [d.image];
+          d.images = [d.image];
         }else{
-          detail.images = [];
+          d.images = [];
         }
+        this.$data.detail = d;
       }
     }
   }
