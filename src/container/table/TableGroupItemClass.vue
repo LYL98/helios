@@ -1,5 +1,5 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.GroupItemClassAdd">
       <div class="left"></div>
       <div class="right">

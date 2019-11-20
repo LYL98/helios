@@ -1,5 +1,5 @@
 <template>
-  <el-drawer :title="pageTitle" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-drawer">
+  <el-drawer :title="pageTitles[pageType]" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-drawer">
     <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail" :rules="rules" ref="ruleForm">
         <el-row :gutter="10">
           <el-col :span="16">
@@ -54,25 +54,34 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="10">
-              <el-col :span="8">
-                <el-form-item label="创建人">{{detail.creater.realname}}</el-form-item>
-              </el-col>
-              <el-col :span="10">
-                <el-form-item label="创建时间">{{detail.created}}</el-form-item>
-              </el-col>
-            </el-row>
-            <el-row :gutter="10" v-if="detail.updated && detail.last_updater.realname">
-              <el-col :span="8">
-                <el-form-item label="最后更新人">{{detail.last_updater.realname}}</el-form-item>
-              </el-col>
-              <el-col :span="10">
-                <el-form-item label="最后更新时间">{{detail.updated}}</el-form-item>
-              </el-col>
-            </el-row>
+            <template v-if="pageType !== 'add'">
+              <el-row :gutter="10">
+                <el-col :span="12">
+                  <el-form-item label="创建人">{{detail.creater.realname}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="创建时间">{{detail.created}}</el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="10" v-if="detail.updated && detail.last_updater.realname">
+                <el-col :span="12">
+                  <el-form-item label="最后更新人">{{detail.last_updater.realname}}</el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="最后更新时间">{{detail.updated}}</el-form-item>
+                </el-col>
+              </el-row>
+            </template>
+            <div class="drawer-bottom">
+              <template v-if="judgeOrs(pageType, ['add', 'edit'])">
+                <el-button @click.native="handleCancel">取 消</el-button>
+                <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
+              </template>
+              <el-button v-else @click.native="handleCancel">关 闭</el-button>
+            </div>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="" v-if="page === 'global' && (auth.isAdmin || auth.ItemGlobalEditRecord)">
+            <el-form-item label="" v-if="page === 'global' && pageType !== 'add' && (auth.isAdmin || auth.ItemGlobalEditRecord)">
               <el-button @click.native="handleShowEditRecord" class="f-r">修改明细</el-button>
             </el-form-item>
             <div style="margin-left: 110px;">
@@ -82,10 +91,6 @@
           </el-col>
         </el-row>
       </el-form>
-      <div class="drawer-bottom">
-        <el-button @click.native="handleCancel">取 消</el-button>
-        <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
-      </div>
   </el-drawer>
 </template>
 
@@ -168,8 +173,12 @@ export default {
           { len: 8, message: '请选择至第三级分类', trigger: 'blur' }
         ],
       },
-      pageTitle: '新增商品',
-      pageType: 'add',
+      pageTitles: {
+        add: '新增商品',
+        edit: '修改商品',
+        detail: '商品详情'
+      },
+      pageType: 'add', //add, edit, detail
     }
   },
   methods: {
@@ -178,16 +187,13 @@ export default {
       if(data){
         this.pItemDetail(data.id);
         if(type === 'detail'){
-          this.$data.pageTitle = '商品详情';
           this.$data.pageType = 'detail';
         }else{
-          this.$data.pageTitle = '修改商品';
           this.$data.pageType = 'edit';
         }
       }else{
         this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
         this.$data.isShow = true;
-        this.$data.pageTitle = '新增商品';
         this.$data.pageType = 'add';
       }
     },
@@ -245,24 +251,9 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" scoped>
+  @import './add.edit.scss';
+</style>
 <style lang="scss">
-  .my-drawer{
-    left: 180px !important;
-    top: 42px !important;
-    width: calc(100% - 180px) !important;
-    height: calc(100% - 42px) !important;
-    >.el-drawer__header{
-      font-size: 18px;
-      border-bottom: 1px solid #ececec;
-      margin: 0 !important;
-      padding: 20px !important;
-    }
-    >.el-drawer__body{
-      overflow-y: auto;
-      padding: 15px 0;
-    }
-  }
-  .drawer-bottom{
-    margin: 50px 110px 0;
-  }
+  @import './add.edit.global.scss';
 </style>

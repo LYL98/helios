@@ -47,20 +47,15 @@ export default {
     handleSelectionChange(val) {
       this.$data.multipleSelection = val;
     },
-    //显示新增修改(新增组件，数据)
-    handleShowAddEdit(pageComponents, data){
+    //显示新增修改(新增组件，数据, add,edit,detail)
+    handleShowAddEdit(pageComponents, data, type){
       let pc = this.getPageComponents(pageComponents);
-      pc.showAddEdit(data);
+      pc.showAddEdit(data, type);
     },
     //显示详情
     handleShowDetail(pageComponents, data){
       let pc = this.getPageComponents(pageComponents);
-      //暂时
-      if(pc.showAddEdit){
-        pc.showAddEdit(data, 'detail');
-      }else{
-        pc.showDetail(data);
-      }
+      pc.showDetail(data);
     },
     //显示form
     handleShowForm(pageComponents, data){
@@ -89,6 +84,7 @@ export default {
     changePage(page) {
       this.$data.query.page = page;
       this.getData(this.query);
+      window.scrollTo(0, 0);
     },
     /**
      * 当鼠标在表格中移动时，解除当前行的锁定状态。 如果仅仅是在操作按钮上移动，则不做响应

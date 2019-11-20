@@ -1,5 +1,5 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="(page === 'item' && (auth.isAdmin || auth.GroupItemEditLog || auth.GroupItemAdd || auth.GroupItemDelete)) ||
       (page === 'recover' && (auth.isAdmin || auth.GroupItemRecover))">
       <div class="left">

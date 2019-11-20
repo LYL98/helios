@@ -158,10 +158,8 @@ export {
 } from './form';
 
 export {
-  DetailItemGlobal,
   DetailItemGlobalEditRecord,
   DetailItemListEditRecord,
-  DetailItemList,
   DetailItemListAuditInnerTag,
   DetailItemPricingRecord,
 

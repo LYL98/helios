@@ -1,5 +1,5 @@
 <template>
-  <div class="query">
+  <div class="container-query">
     <el-row>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="科学分类">

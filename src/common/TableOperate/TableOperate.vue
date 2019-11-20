@@ -3,14 +3,20 @@
   <div>
     <a
       class="single-item"
-      v-if="displayItemList.length === 1"
+      v-if="displayItemList.length >= 1"
       href="javascript:void(0);"
       @click.prevent="handleCommand(displayItemList[0].command)"
     >{{ displayItemList[0].title }}</a>
+    <a
+      class="single-item"
+      v-if="displayItemList.length >= 2"
+      href="javascript:void(0);"
+      @click.prevent="handleCommand(displayItemList[1].command)"
+    >{{ displayItemList[1].title }}</a>
 
     <!-- 如果有多项操作，则下拉显示操作菜单 -->
     <el-dropdown
-      v-if="displayItemList.length > 1"
+      v-if="displayItemList.length > 2"
       class="my-table-operate"
       :trigger="trigger"
       :placement="placement"
@@ -24,11 +30,9 @@
         alt="operate-icon"
       />
       <el-dropdown-menu slot="dropdown" style="margin-top: 0px; margin-left: -5px;">
-        <el-dropdown-item
-          v-for="(item, index) in displayItemList"
-          :key="index"
-          :command="item.command"
-        >{{item.title}}</el-dropdown-item>
+        <template v-for="(item, index) in displayItemList">
+          <el-dropdown-item :key="index" :command="item.command" v-if="index > 1">{{item.title}}</el-dropdown-item>
+        </template>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -87,10 +91,10 @@
 <style scoped>
   .single-item {
     font-size: 12px;
-    text-decoration: underline;
+    margin-right: 10px;
   }
   .single-item:hover {
-    font-weight: 900;
+    font-weight: bold;
   }
   .my-table-operate {
     cursor: pointer;
@@ -98,7 +102,7 @@
 
   .my-table-operate img {
     padding: 10px;
-    margin-left: -10px;
-    margin-bottom: -10px;
+    margin-bottom: -8px;
+    width: 16px;
   }
 </style>

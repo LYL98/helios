@@ -16,7 +16,7 @@ const Constant = {
   //筛选区一行的高度值，如果筛选区有两行隐藏，则需要乘以2，以此类推
   QUERY_OFFSET_LINE_HEIGHT: 48,
   //表格高度计算参数, 16为模块之间的间距
-  OFFSET_BASE_HEIGHT: 74,   //基础偏置高度42+16+16
+  OFFSET_BASE_HEIGHT: 78,   //基础偏置高度46+16+16
   OFFSET_OPERATE: 44,   //操作区行高28+16
   OFFSET_TABS: 40,   //tab切换器高度
   OFFSET_BREADCRUMB: 30, // 面包屑的高度

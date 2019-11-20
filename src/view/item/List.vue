@@ -3,7 +3,6 @@
     <query-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemList"/>
     <table-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemList"/>
     <add-edit-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemList"/>
-    <detail-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemList"/>
     <detail-item-list-edit-record :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemListEditRecord"/>
     <form-item-list-edit-class-tag :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemListEditClassTag"/>
     <form-item-list-edit-inner-tag :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemListEditInnerTag"/>
@@ -21,7 +20,6 @@
       'query-item-list': QueryItemList,
       'table-item-list': TableItemList,
       'add-edit-item-list': AddEditItemList,
-      'detail-item-list': DetailItemList,
       'detail-item-list-edit-record': DetailItemListEditRecord,
       'form-item-list-edit-class-tag': FormItemListEditClassTag,
       'form-item-list-edit-inner-tag': FormItemListEditInnerTag,

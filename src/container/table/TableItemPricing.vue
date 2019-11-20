@@ -1,5 +1,5 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.ItemPriceRecord">
       <el-button v-if="auth.isAdmin || auth.ItemPriceRecord" @click.native="handleShowDetail('DetailItemPricingRecord')" size="mini" type="primary" plain>报价记录</el-button>
     </div>
@@ -19,23 +19,25 @@
       >
         <el-table-column type="selection" :selectable="returnIsPricing" width="30" v-if="(auth.isAdmin || auth.ItemPriceAudit)"></el-table-column>
         <!--table-column start-->
-        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :width="item.width" v-if="item.isShow" :prop="item.key" :sortable="item.key === 'sale_num_last' || item.key === 'item_stock' ? 'custom' : false">
-          <div slot-scope="scope" class="my-td-item">
-            <!--编号名称-->
-            <template v-if="item.key === 'code_title'">
-              <div style="height: 42px;" class="add-dot2">
-                <span style="font-weight:bold;">{{scope.row.code}}</span>
-                <span>{{scope.row.title}}</span>
-              </div>
-            </template>
-            <!--昨日销量-->
-            <div v-else-if="item.key === 'sale_num_last'">{{scope.row.sale_num_last}}&nbsp;件</div>
-            <!--库存-->
-            <div v-else-if="item.key === 'item_stock'">{{scope.row.item_stock}}&nbsp;件</div>
-            <!--正常情况-->
-            <div v-else>{{scope.row[item.key] || '-'}}</div>
-          </div>
-        </el-table-column>
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :width="item.width" v-if="item.isShow" :prop="item.key" :sortable="item.key === 'sale_num_last' || item.key === 'item_stock' ? 'custom' : false">
+            <div slot-scope="scope" class="my-td-item">
+              <!--编号名称-->
+              <template v-if="item.key === 'code_title'">
+                <div style="height: 42px;" class="add-dot2">
+                  <span style="font-weight:bold;">{{scope.row.code}}</span>
+                  <span>{{scope.row.title}}</span>
+                </div>
+              </template>
+              <!--昨日销量-->
+              <div v-else-if="item.key === 'sale_num_last'">{{scope.row.sale_num_last}}&nbsp;件</div>
+              <!--库存-->
+              <div v-else-if="item.key === 'item_stock'">{{scope.row.item_stock}}&nbsp;件</div>
+              <!--正常情况-->
+              <div v-else>{{scope.row[item.key] || '-'}}</div>
+            </div>
+          </el-table-column>
+        </template>
         <el-table-column label="操作" width="76">
           <template slot-scope="scope">
             <div>
@@ -48,8 +50,7 @@
             </div>
           </template>
         </el-table-column>
-        <!--table-column end 操作占位-->
-        <el-table-column label="" min-width="1"/>
+        <!--table-column end-->
       </el-table>
     </div>
 

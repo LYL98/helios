@@ -1,4 +1,4 @@
-.table-body{
+.container-table{
     position: relative;
     .table-option-btn{
         position: absolute;
@@ -40,10 +40,12 @@
 
 .td-item{
     &.link-item, .link-item{
-        text-decoration: underline;
+        //text-decoration: underline;
+        color: #999;
         &:hover{
             cursor: pointer;
-            font-weight: bold;
+            //font-weight: bold;
+            opacity: .7;
         }
     }
 }

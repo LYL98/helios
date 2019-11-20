@@ -1,11 +1,13 @@
 <template>
   <div>
-    <el-dialog :title="type === 'edit' ? '修改商品' : '上架商品'" :visible="isShow" width="1200px" top="5vh" append-to-body :before-close="handleCancel" :close-on-click-modal="false">
+    <el-drawer :title="pageTitles[pageType]" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-drawer">
       <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="商品图片">
           <image-preview>
             <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
           </image-preview>
+          <!--未上架不用显示-->
+          <el-button @click.native="handleShowEditRecord" v-if="(auth.isAdmin || auth.ItemListEditRecord) && detail.is_on_sale">修改明细</el-button>
         </el-form-item>
         <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
         <el-row :gutter="10">
@@ -121,13 +123,29 @@
         <el-row :gutter="10">
           <el-col :span="8">
             <el-form-item label="内标签" prop="inner_tag_id">
-              <select-inner-tag clearable v-model="detail.inner_tag_id" :disabled="type === 'edit' ? true : false"/>
+              <select-inner-tag clearable v-model="detail.inner_tag_id" :disabled="pageType === 'edit' ? true : false"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="商品详情">
           <div class="content-div" v-html="detail.content"></div>
         </el-form-item>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <el-form-item label="第一次上架人">{{detail.first_grounder.realname}}</el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="创建时间">{{detail.created}}</el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10" v-if="detail.updated && detail.last_updater.realname">
+          <el-col :span="8">
+            <el-form-item label="最后更新人">{{detail.last_updater.realname}}</el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="最后更新时间">{{detail.updated}}</el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item>
           <div style="float: right">
             <el-button @click.native="handleCancel">取 消</el-button>
@@ -135,7 +153,7 @@
           </div>
         </el-form-item>
       </el-form>
-    </el-dialog>
+    </el-drawer>
   </div>
 </template>
 
@@ -243,12 +261,13 @@ export default {
       order_num_max: 999,
       display_class: {},
       frame: {},
-      system_class: {}
+      system_class: {},
+      first_grounder: {},
+      last_updater: {}
     }
     return {
       initDetail: initDetail,
       detail: JSON.parse(JSON.stringify(initDetail)),
-      type: 'edit',
       systemClassProps: {
         value: 'code',
       },
@@ -318,28 +337,35 @@ export default {
           { required: true, message: '请选择商品内标签', trigger: 'change' }
         ],
       },
+      pageTitles: {
+        on_sale: '上架商品',
+        edit: '修改商品',
+        detail: '商品详情'
+      },
+      pageType: 'edit', //on_sale, edit, detail
     }
   },
   methods: {
-    //显示新增修改(重写)
-    showAddEdit(data){
-      this.$data.type = data.type; //edit、on_sale 修改、上架
+    //显示新增修改(重写) (数据，类型)
+    showAddEdit(data, type){
       if(data){
-        this.itemDetail(data.id);
+        this.itemDetail(data.id, type);
+        this.$data.pageType = type;
       }else{
         this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
         this.$data.isShow = true;
+        this.$data.pageType = 'add';
       }
     },
     //获取详情
-    async itemDetail(id){
+    async itemDetail(id, type){
       this.$loading({isShow: true});
       let res = await Http.get(Config.api.itemDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
         //如果是上架
-        if(this.type === 'on_sale'){
+        if(type === 'on_sale'){
           rd.price_buy = rd.price_buy || '';
           rd.price_sale = rd.price_sale || '';
           rd.price_origin = rd.price_origin || '';
@@ -357,7 +383,7 @@ export default {
     },
     //提交数据
     async addEditData(){
-      let { detail, type } = this;
+      let { detail, pageType } = this;
       //判断是否预售商品
       if (detail.is_presale) {
         if (detail.presale_date) {
@@ -367,10 +393,10 @@ export default {
         delete detail.presale_date;
       }
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[type === 'edit' ? 'itemEdit' : 'itemOnGround'], detail);
+      let res = await Http.post(Config.api[pageType === 'edit' ? 'itemEdit' : 'itemOnGround'], detail);
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `商品${type === 'edit' ? '修改成功' : '已上架'}`, type: 'success'});
+        this.$message({message: `商品${pageType === 'edit' ? '修改成功' : '已上架'}`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableItemList');
@@ -378,6 +404,11 @@ export default {
       }else{
         this.$message({message: res.message, type: 'error'});
       }
+    },
+    //显示修改明细
+    handleShowEditRecord(){
+      let pc = this.getPageComponents('DetailItemListEditRecord');
+      pc.showDetail(this.detail);
     },
   },
 };

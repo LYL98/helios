@@ -1,5 +1,5 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.GroupStoreOrderDelivery || auth.GroupStoreOrderDeliveryAll || auth.GroupStoreOrderExport">
       <div class="left">
         <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelivery('multi')" plain v-if="auth.isAdmin || auth.GroupStoreOrderDelivery">批量发货</el-button>

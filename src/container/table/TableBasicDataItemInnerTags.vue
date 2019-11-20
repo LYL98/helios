@@ -1,5 +1,5 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.BasicDataItemInnerTagsAdd">
       <el-button @click="handleShowAddEdit('AddEditBasicDataItemInnerTags')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataItemInnerTagsAdd">新增
       </el-button>

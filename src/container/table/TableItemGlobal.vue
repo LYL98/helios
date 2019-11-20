@@ -1,8 +1,8 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="page === 'global' && (auth.isAdmin || auth.ItemGlobalAdd || auth.ItemGlobalExport)">
       <el-button @click="handleExport('pItemExport', query)" size="mini" v-if="auth.isAdmin || auth.ItemGlobalExport">导出商品池</el-button>
-      <el-button @click="handleShowAddEdit('AddEditItemGlobal')" size="mini" type="primary" v-if="auth.isAdmin || auth.ItemGlobalAdd">新增</el-button>
+      <el-button @click="handleShowAddEdit('AddEditItemGlobal', null, 'add')" size="mini" type="primary" v-if="auth.isAdmin || auth.ItemGlobalAdd">新增</el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -10,7 +10,7 @@
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%"
-        class="list-table"
+        class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -23,11 +23,11 @@
               <!--编号名称-->
               <template v-if="item.key === 'code_title'">
                 <div v-if="(page === 'global' && (auth.isAdmin || auth.ItemGlobalDetail)) || (page === 'recover' && (auth.isAdmin || auth.ItemRecoverDetail))"
-                  class="td-item link-item add-dot2" @click="handleShowDetail('AddEditItemGlobal', scope.row)">
-                  {{scope.row.code}}/{{scope.row.title}}
+                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditItemGlobal', scope.row, 'detail')">
+                  {{scope.row.code}}<br/>{{scope.row.title}}
                 </div>
                 <div class="td-item add-dot2" v-else>
-                  {{scope.row.code}}/{{scope.row.title}}
+                  {{scope.row.code}}<br/>{{scope.row.title}}
                 </div>
               </template>
               <!--商品参数-->
@@ -50,9 +50,7 @@
             </div>
           </el-table-column>
         </template>
-        <!--table-column end 操作占位-->
-        <el-table-column label min-width="1"/>
-        <el-table-column label="操作" width="100" fixed="right" align="center">
+        <el-table-column label="操作" width="120">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -61,7 +59,7 @@
                 {
                   title: '修改',
                   isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalEdit),
-                  command: () => handleShowAddEdit('AddEditItemGlobal', scope.row)
+                  command: () => handleShowAddEdit('AddEditItemGlobal', scope.row, 'edit')
                 },
                 {
                   title: '删除',
@@ -124,14 +122,14 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         tableName: 'TableItemGlobal',
         tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '商品参数', key: 'parameter', width: '240', isShow: true },
-          { label: '筐', key: 'frame', width: '160', isShow: true },
-          { label: '包装规格', key: 'package_spec', width: '160', isShow: false },
-          { label: '净重', key: 'net_weight', width: '120', isShow: false },
-          { label: '科学分类', key: 'system_class', width: '200', isShow: true },
-          { label: '创建时间', key: 'created', width: '160', isShow: true },
-          { label: '更新时间', key: 'updated', width: '160', isShow: false },
+          { label: '商品编号/名称', key: 'code_title', width: '2', isShow: true },
+          { label: '商品参数', key: 'parameter', width: '2', isShow: true },
+          { label: '筐', key: 'frame', width: '1', isShow: true },
+          { label: '包装规格', key: 'package_spec', width: '1', isShow: false },
+          { label: '净重', key: 'net_weight', width: '1', isShow: false },
+          { label: '科学分类', key: 'system_class', width: '1', isShow: true },
+          { label: '创建时间', key: 'created', width: '1', isShow: true },
+          { label: '更新时间', key: 'updated', width: '1', isShow: false },
         ]
       }
     },
@@ -193,4 +191,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './table.scss';
+</style>
+<style lang="scss">
+  @import './table.global.scss';
 </style>

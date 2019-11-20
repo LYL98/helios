@@ -2,12 +2,12 @@
   <div>
     <query-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemGlobal" page="recover"/>
     <table-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemGlobal" page="recover"/>
-    <detail-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemGlobal" page="recover"/>
+    <addEdit-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemGlobal" page="recover"/>
   </div>
 </template>
 
 <script>
-  import { QueryItemGlobal, TableItemGlobal, DetailItemGlobal } from '@/container';
+  import { QueryItemGlobal, TableItemGlobal, AddEditItemGlobal } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -15,7 +15,7 @@
     components: {
       'query-item-global': QueryItemGlobal,
       'table-item-global': TableItemGlobal,
-      'detail-item-global': DetailItemGlobal
+      'addEdit-item-global': AddEditItemGlobal
     },
     mixins: [viewMixin],
     created() {

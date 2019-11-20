@@ -1,5 +1,5 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="(auth.isAdmin || auth.ItemListExport || auth.ItemListAuditInnerTag)">
       <el-button v-if="auth.isAdmin || auth.ItemListExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
       <el-button v-if="(auth.isAdmin || auth.ItemListAuditInnerTag) && query.is_on_sale === 1" @click="handleShowDetail('DetailItemListAuditInnerTag')" size="mini" type="primary">审核内标签</el-button>
@@ -10,59 +10,58 @@
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
+        class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
-        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-          <div slot-scope="scope" class="my-td-item">
-            <!--编号名称-->
-            <template v-if="item.key === 'code_title'">
-              <div class="td-item add-dot">
-                <div class="link-item add-dot" @click="handleShowDetail('DetailItemList', scope.row)" v-if="auth.isAdmin || auth.ItemListDetail">
-                  {{scope.row.code}}/{{scope.row.title}}
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
+            <div slot-scope="scope" class="my-td-item">
+              <!--编号名称-->
+              <template v-if="item.key === 'code_title'">
+                <div class="td-item add-dot">
+                  <div class="link-item add-dot" @click="handleShowAddEdit('AddEditItemList', scope.row, 'detail')" v-if="auth.isAdmin || auth.ItemListDetail">
+                    {{scope.row.code}}/{{scope.row.title}}
+                  </div>
+                  <div class="link-item add-dot" v-else>
+                    {{scope.row.code}}/{{scope.row.title}}
+                  </div>
+                  <div class="add-dot" v-if="query.is_on_sale">
+                    <span>&yen;{{returnPrice(scope.row.price_sale)}}/件</span>
+                    <!--销售价 / 毛重-->
+                    <span>（单价：{{returnPrice(scope.row.price_sale / (scope.row.gross_weight / 10))}}元/斤）</span>
+                    <span class="is-presale" v-if="scope.row.is_presale">预</span>
+                  </div>
                 </div>
-                <div class="link-item add-dot" v-else>
-                  {{scope.row.code}}/{{scope.row.title}}
-                </div>
-                <div class="add-dot" v-if="query.is_on_sale">
-                  <span>&yen;{{returnPrice(scope.row.price_sale)}}/件</span>
-                  <!--销售价 / 毛重-->
-                  <span>（单价：{{returnPrice(scope.row.price_sale / (scope.row.gross_weight / 10))}}元/斤）</span>
-                  <span class="is-presale" v-if="scope.row.is_presale">预</span>
-                </div>
+              </template>
+              <!--商品参数-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'parameter'">
+                <span>{{scope.row.origin_place}}、</span>
+                <span v-if="scope.row.item_spec">{{scope.row.item_spec}}、</span>
+                <span>{{returnWeight(scope.row.gross_weight)}}斤</span>
               </div>
-            </template>
-            <!--商品参数-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'parameter'">
-              <span>{{scope.row.origin_place}}、</span>
-              <span v-if="scope.row.item_spec">{{scope.row.item_spec}}、</span>
-              <span>{{returnWeight(scope.row.gross_weight)}}斤</span>
+              <!--筐-->
+              <div class="td-item" v-else-if="item.key === 'frame'">
+                <span v-if="scope.row.frame_code">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
+                <span v-else>-</span>
+              </div>
+              <!--毛重、净重-->
+              <div class="td-item" v-else-if="item.key === 'gross_weight' || item.key === 'net_weight'">{{returnWeight(scope.row[item.key])}}斤</div>
+              <!--科学分类-->
+              <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
+              <!--展示分类-->
+              <div class="td-item" v-else-if="item.key === 'display_class'">{{scope.row.display_class.title || '-'}}</div>
+              <!--库存-->
+              <div class="td-item" v-else-if="item.key === 'item_stock'">{{query.is_on_sale ? scope.row.item_stock + '件' : '-'}}</div>
+              <!--正常情况-->
+              <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
-            <!--筐-->
-            <div class="td-item" v-else-if="item.key === 'frame'">
-              <span v-if="scope.row.frame_code">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
-              <span v-else>-</span>
-            </div>
-            <!--毛重、净重-->
-            <div class="td-item" v-else-if="item.key === 'gross_weight' || item.key === 'net_weight'">{{returnWeight(scope.row[item.key])}}斤</div>
-            <!--科学分类-->
-            <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
-            <!--展示分类-->
-            <div class="td-item" v-else-if="item.key === 'display_class'">{{scope.row.display_class.title || '-'}}</div>
-            <!--库存-->
-            <div class="td-item" v-else-if="item.key === 'item_stock'">{{query.is_on_sale ? scope.row.item_stock + '件' : '-'}}</div>
-            <!--正常情况-->
-            <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
-          </div>
-        </el-table-column>
-        <!--table-column end 操作占位-->
-        <el-table-column label min-width="1"/>
-        <el-table-column label="操作" width="100" fixed="right" align="center">
+          </el-table-column>
+        </template>
+        <el-table-column label="操作" width="130">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -71,12 +70,12 @@
                 {
                   title: '修改',
                   isDisplay: (auth.isAdmin || auth.ItemListEdit) && scope.row.is_on_sale,
-                  command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'edit' })
+                  command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'edit' }, 'edit')
                 },
                 {
                   title: '上架',
                   isDisplay: (auth.isAdmin || auth.ItemListOnGround) &&  !scope.row.is_on_sale,
-                  command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'on_sale' })
+                  command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'on_sale' }, 'on_sale')
                 },
                 {
                   title: '下架',
@@ -141,16 +140,16 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableItemList',
         tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '商品参数', key: 'parameter', width: '240', isShow: true },
-          { label: '筐', key: 'frame', width: '160', isShow: true },
-          { label: '科学分类', key: 'system_class', width: '200', isShow: true },
-          { label: '展示分类', key: 'display_class', width: '200', isShow: true },
-          { label: '库存', key: 'item_stock', width: '100', isShow: true },
-          { label: '净重', key: 'net_weight', width: '120', isShow: false },
-          { label: '包装规格', key: 'package_spec', width: '160', isShow: false },
-          { label: '创建时间', key: 'created', width: '160', isShow: true },
-          { label: '更新时间', key: 'updated', width: '160', isShow: false },
+          { label: '商品编号/名称', key: 'code_title', width: '1', isShow: true },
+          { label: '商品参数', key: 'parameter', width: '1', isShow: true },
+          { label: '筐', key: 'frame', width: '1', isShow: true },
+          { label: '科学分类', key: 'system_class', width: '1', isShow: true },
+          { label: '展示分类', key: 'display_class', width: '1', isShow: true },
+          { label: '库存', key: 'item_stock', width: '1', isShow: true },
+          { label: '净重', key: 'net_weight', width: '1', isShow: false },
+          { label: '包装规格', key: 'package_spec', width: '1', isShow: false },
+          { label: '创建时间', key: 'created', width: '1', isShow: true },
+          { label: '更新时间', key: 'updated', width: '1', isShow: false },
         ]
       }
     },
@@ -219,4 +218,7 @@
     position: relative;
     top: -2px;
   }
+</style>
+<style lang="scss">
+  @import './table.global.scss';
 </style>
