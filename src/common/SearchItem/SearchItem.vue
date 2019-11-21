@@ -20,7 +20,7 @@ export default {
     'el-autocomplete': Autocomplete,
     'el-button': Button
   },
-  props: ['value', 'size'],
+  props: ['value', 'size', 'provinceCode'],
   // watch: {
   //   inputValue: function (after, before) {
   //     // 把变化后的值发送到父组件
@@ -46,7 +46,8 @@ export default {
     },
     async baseItemList({query, id}, callback) {
       let res = await Base.baseItemList({
-        condition: query
+        condition: query,
+        province_code: this.$props.provinceCode || '',
       });
       if (res.code === 0) {
         let rd = res.data;
