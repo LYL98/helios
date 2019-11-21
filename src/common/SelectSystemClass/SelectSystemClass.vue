@@ -29,7 +29,7 @@ export default {
     value: {type: Array, default: []},
     size: {type: String, default: ''},
     hasAllSelection: { type: Boolean, default: false },
-    clearable: { type: Boolean, default: true }
+    clearable: { type: Boolean, default: false }
   },
   model: {
     prop: 'value',

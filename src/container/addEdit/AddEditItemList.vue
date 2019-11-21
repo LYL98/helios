@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-drawer :title="pageTitles[pageType]" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-drawer">
+    <el-drawer :title="pageTitles[pageType]" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-add-edit-drawer">
       <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="商品图片">
           <image-preview>
@@ -122,7 +122,12 @@
         <h6 class="subtitle" style="padding-bottom: 16px">其他信息</h6>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="内标签" prop="inner_tag_id">
+            <el-form-item label="价格标签" prop="inner_tag_id">
+              <select-inner-tag clearable v-model="detail.inner_tag_id" :disabled="pageType === 'edit' ? true : false"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="商品标签" prop="inner_tag_id">
               <select-inner-tag clearable v-model="detail.inner_tag_id" :disabled="pageType === 'edit' ? true : false"/>
             </el-form-item>
           </el-col>

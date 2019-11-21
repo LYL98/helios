@@ -98,13 +98,18 @@
         editorOption: {
           placeholder: '请输入内容...',
           modules: {
-            toolbar: [
+            /*toolbar: [
               [{'font': []}, {'size': ['small', false, 'large', 'huge']}, {'header': [false, 1, 2, 3, 4, 5, 6]}],
               [{'color': []}, {'background': []}, 'bold', 'italic', 'underline', 'strike'],
               [{'list': 'ordered'}, {'list': 'bullet'}, 'blockquote', {'script': 'sub'}, {'script': 'super'}],
               [{'indent': '-1'}, {'indent': '+1'}, {'align': ''}, {'align': 'center'}, {'align': 'right'}, {'align': 'justify'}],
               ['image', 'video'],
               ['clean']
+            ]*/
+            toolbar: [
+              [{'size': ['small', false, 'large', 'huge']}],
+              [{'color': []}, {'background': []}, 'bold', 'italic', 'underline', 'strike'],
+              ['image']
             ]
           },
         },

@@ -1,7 +1,7 @@
 <template>
-  <el-drawer :title="pageTitles[pageType]" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-drawer">
+  <el-drawer :title="pageTitles[pageType]" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-add-edit-drawer">
     <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail" :rules="rules" ref="ruleForm">
-        <el-row :gutter="10">
+        <el-row>
           <el-col :span="16">
             <el-form-item label="商品图片" prop="images">
               <upload-img v-model="detail.images" module="item" :limit="5"></upload-img>
@@ -54,6 +54,11 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <el-form-item label="商品详情">
+              <div style="width: 360px;">
+                <quill-editor v-model="detail.content" module="item"></quill-editor>
+              </div>
+            </el-form-item>
             <template v-if="pageType !== 'add'">
               <el-row :gutter="10">
                 <el-col :span="12">
@@ -82,12 +87,8 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="" v-if="page === 'global' && pageType !== 'add' && (auth.isAdmin || auth.ItemGlobalEditRecord)">
-              <el-button @click.native="handleShowEditRecord" class="f-r">修改日志</el-button>
+              <el-button @click.native="handleShowEditRecord" class="f-r" style="margin-right: 16px;">修改日志</el-button>
             </el-form-item>
-            <div style="margin-left: 110px;">
-              <div style="color: #909399; font-size: 14px; margin-bottom: 8px;">商品详情</div>
-              <quill-editor v-model="detail.content" module="item"></quill-editor>
-            </div>
           </el-col>
         </el-row>
       </el-form>

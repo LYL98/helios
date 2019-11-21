@@ -1,6 +1,6 @@
 <template>
   <div id="app-body">
-    <div id="app" v-if="pageName !== 'Login'" @click="openCloseFullScreen(true)" :style="`min-width: ${needAdaptIpad ? 950 : 1300}px;`">
+    <div id="app" v-if="pageName !== 'Login'" @click="openCloseFullScreen(true)" :style="`min-width: ${needAdaptIpad ? 950 : 1000}px;`">
       <div id="head-div">
         <div id="logo-div" class="ellipsis" :style="`transition: width .2s; ${isHideMenu && 'width: 54px;'}`">
           {{ !isHideMenu ? brand.brand_name + '运营中心' : '' }}
@@ -209,7 +209,7 @@
           <img v-else src="@/assets/img/menu-close.png">
         </div>
       </div>
-      <div id="router-view-div" :style="`min-width: ${needAdaptIpad ? 770 : 1100}px; margin-left: ${isHideMenu ? '54px;' : '182px;'}`">
+      <div id="router-view-div" :style="`min-width: ${needAdaptIpad ? 770 : 1000}px; margin-left: ${isHideMenu ? '54px;' : '182px;'}`">
         <router-view/>
       </div>
     </div>
@@ -496,7 +496,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
-    min-width: 1300px;
+    min-width: 1000px;
     box-sizing: border-box;
   }
   
@@ -632,7 +632,7 @@
   /*页面容器*/
   #router-view-div {
     padding: 16px;
-    min-width: 1120px;
+    min-width: 1000px;
     box-sizing: border-box;
     background-color: #f7f7f8;
     margin: 42px 0 0 182px;
