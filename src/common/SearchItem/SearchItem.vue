@@ -45,14 +45,9 @@ export default {
       this.inputValue = '';
     },
     async baseItemList({query, id}, callback) {
-<<<<<<< HEAD
-      let res = await Http.get(Config.api.baseItemList, {
-        condition: query
-=======
       let res = await Base.baseItemList({
         condition: query,
         province_code: this.$props.provinceCode || '',
->>>>>>> xxp
       });
       if (res.code === 0) {
         let rd = res.data;
