@@ -85,6 +85,7 @@ export {
 
   QueryItemGlobal,
   QueryItemList,
+  QueryItemAuditInnerTag,
   QueryItemPricing,
 
   QueryOperateLine,
@@ -114,6 +115,7 @@ export {
 
   TableItemGlobal,
   TableItemList,
+  TableItemAuditInnerTag,
   TableItemPricing,
 
   TableOperateLine,
@@ -161,7 +163,6 @@ export {
 export {
   DetailItemGlobalEditRecord,
   DetailItemListEditRecord,
-  DetailItemListAuditInnerTag,
 
   DetailHeadBalanceLog,
 

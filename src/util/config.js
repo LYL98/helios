@@ -58,7 +58,7 @@ const Config = (() => {
       pItemDetail: apiM + '/p_item/detail', //商品资料详情
       pItemDelete: apiM + '/p_item/delete', //商品删除
       pItemRecover: apiM + '/p_item/recover', //已删除商品恢复
-      pItemModifyDetail: apiM + '/p_item/modify_detail', //商品资料修改明细
+      pItemModifyDetail: apiM + '/p_item/modify_detail', //商品资料修改日志
       pItemExportCheck: apiM + '/p_item/export_check', //商品导出之前进行校验
       pItemExport: apiM + '/p_item/export', //商品导出
 
@@ -72,7 +72,7 @@ const Config = (() => {
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
       itemDetail: apiM + '/item/detail',//商品详情
-      itemModifyDetail: apiM + '/item/modify_detail', //商品修改明细
+      itemModifyDetail: apiM + '/item/modify_detail', //商品修改日志
       itemExport: apiM + '/item/export', //商品列表导出
       itemPriceList: apiM + '/item/price/query',//每日定价页面查询
       itemPriceFix: apiM + '/item/price/fix',//商品定价

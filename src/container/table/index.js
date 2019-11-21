@@ -29,6 +29,7 @@ export { default as TableBasicDataZone } from './TableBasicDataZone';
 
 export { default as TableItemGlobal } from './TableItemGlobal';
 export { default as TableItemList } from './TableItemList';
+export { default as TableItemAuditInnerTag } from './TableItemAuditInnerTag';
 export { default as TableItemPricing } from './TableItemPricing';
 
 export { default as TableOperateLine } from './TableOperateLine';

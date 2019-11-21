@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="修改明细" :visible="isShow" width="1200px" :before-close="handleCancel">
+  <el-dialog title="修改日志" :visible="isShow" width="1200px" :before-close="handleCancel">
     <el-table :data="dataItem.items" width="100%" :height="460">
       <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
       <el-table-column label="操作时间" prop="created" width="260"/>

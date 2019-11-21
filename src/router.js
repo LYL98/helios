@@ -46,6 +46,11 @@ const router = new Router({
       component: () => import('@/view/item/List')
     },
     {
+      path: '/item/audit/inner/tag',
+      name: 'ItemAuditInnerTag',
+      component: () => import('@/view/item/AuditInnerTag')
+    },
+    {
       path: '/item/pricing',
       name: 'ItemPricing',
       component: () => import('@/view/item/Pricing')

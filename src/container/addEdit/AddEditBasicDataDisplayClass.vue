@@ -39,7 +39,7 @@ export default {
     let validCode = function (rules, value, callback) {
       let asyncValid = () => {
         Http.get(Config.api.baseDisplayClassList, {
-          province_code: that.$province.code,
+          province_code: detail.id ? that.$province.code : '', //如果新增不传省code
           code: value
         }).then(res => {
           if (res.data && res.data.length > 0) {

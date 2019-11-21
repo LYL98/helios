@@ -1,8 +1,7 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="(auth.isAdmin || auth.ItemListExport || auth.ItemListAuditInnerTag)">
+    <div class="table-top" v-if="(auth.isAdmin || auth.ItemListExport)">
       <el-button v-if="auth.isAdmin || auth.ItemListExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
-      <el-button v-if="(auth.isAdmin || auth.ItemListAuditInnerTag) && query.is_on_sale === 1" @click="handleShowDetail('DetailItemListAuditInnerTag')" size="mini" type="primary">审核内标签</el-button>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -68,14 +67,14 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '修改',
+                  title: '修改销售信息',
                   isDisplay: (auth.isAdmin || auth.ItemListEdit) && scope.row.is_on_sale,
-                  command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'edit' }, 'edit')
+                  command: () => handleShowAddEdit('AddEditItemList', scope.row, 'edit')
                 },
                 {
                   title: '上架',
                   isDisplay: (auth.isAdmin || auth.ItemListOnGround) &&  !scope.row.is_on_sale,
-                  command: () => handleShowAddEdit('AddEditItemList', { ...scope.row, type: 'on_sale' }, 'on_sale')
+                  command: () => handleShowAddEdit('AddEditItemList', scope.row, 'on_sale')
                 },
                 {
                   title: '下架',
@@ -129,15 +128,11 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.ItemListExport && !this.auth.ItemListAuditInnerTag) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
-      }
       let pc = this.getPageComponents('QueryItemList');
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableItemList',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '1', isShow: true },
@@ -154,14 +149,6 @@
       }
     },
     methods: {
-      //展开隐藏搜索(重写)
-      onExpandChange(isExpand){
-        if (isExpand) {
-          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
-        } else {
-          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
-        }
-      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用

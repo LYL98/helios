@@ -7,7 +7,7 @@
             <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
           </image-preview>
           <!--未上架不用显示-->
-          <el-button @click.native="handleShowEditRecord" v-if="(auth.isAdmin || auth.ItemListEditRecord) && detail.is_on_sale">修改明细</el-button>
+          <el-button @click.native="handleShowEditRecord" v-if="(auth.isAdmin || auth.ItemListEditRecord) && detail.is_on_sale">修改日志</el-button>
         </el-form-item>
         <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
         <el-row :gutter="10">
@@ -129,6 +129,70 @@
         </el-row>
         <el-form-item label="商品详情">
           <div class="content-div" v-html="detail.content"></div>
+        </el-form-item>
+        <el-form-item label="区域定价">
+          <ul>
+            <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center; justify-content: space-between;  margin-bottom: 20px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <el-form-item
+                  :prop="'city_prices_temp.' + index + '.city_code'"
+                  :rules="[{ required: true, message: '请选择所在仓', trigger: 'change' }]"
+                >
+                  <el-select v-model="item.city_code" placeholder="请选择所在仓">
+                    <el-option
+                      v-for="city in cityList"
+                      :key="city.code"
+                      :label="city.title"
+                      :value="city.code"
+                      :disabled="detail.city_prices_temp.some(item => item.city_code === city.code)"
+                    >
+                    </el-option>
+                  </el-select>
+
+                </el-form-item>
+
+                <el-form-item
+                  :prop="'city_prices_temp.' + index + '.percent'"
+                  :rules="[
+                    { required: true, message: '请输入浮动比例', trigger: 'change' },
+                    { validator: validCityPercent, trigger: 'blur' },
+                  ]"
+                  style="margin-left: 10px;"
+                >
+                  <el-input
+                    style="width: 230px;"
+                    v-model="item.percent"
+                    @input="changeCityPercent(index)"
+                    placeholder="浮动(-100% ~ 1000%)"
+                  >
+                    <template slot="append">%</template>
+                  </el-input>
+                </el-form-item>
+
+                <el-form-item
+                  style="margin-left: 10px;"
+                  :prop="'city_prices_temp.' + index + '.price'"
+                  :rules="[
+                      { validator: validCityPrice, trigger: 'change' },
+                    ]"
+                >
+                  <el-input
+                    disabled
+                    v-model="item.price"
+                    placeholder="0 - 1000000"
+                    style="width: 180px;"
+                  >
+                    <template slot="append">元</template>
+                  </el-input>
+                </el-form-item>
+
+              </div>
+
+              <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="handleRemoveCityPrice(index)"></i>
+            </li>
+          </ul>
+          <!-- 新增区域定价按钮 -->
+          <el-button plain size="medium" type="primary" @click="handleAddCityPrice">增加区域定价</el-button>
         </el-form-item>
         <el-row :gutter="10">
           <el-col :span="8">
@@ -263,7 +327,8 @@ export default {
       frame: {},
       system_class: {},
       first_grounder: {},
-      last_updater: {}
+      last_updater: {},
+      city_prices_temp: []
     }
     return {
       initDetail: initDetail,
@@ -339,15 +404,29 @@ export default {
       },
       pageTitles: {
         on_sale: '上架商品',
-        edit: '修改商品',
+        edit: '修改销售信息',
         detail: '商品详情'
       },
       pageType: 'edit', //on_sale, edit, detail
     }
   },
   methods: {
+    //根据传进来的省份code 获取城市列表
+    async baseCityList(){
+      let res = await Http.get(Config.api.baseCityList, {
+        province_code: this.$province.code || '',
+        zone_code: ''
+      });
+      if(res.code === 0){
+        let rd = res.data;
+        this.$data.cityList = rd;
+      }else{
+        MessageBox.alert(res.message, '提示');
+      }
+    },
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
+      this.baseCityList(); //获取城市列表
       if(data){
         this.itemDetail(data.id, type);
         this.$data.pageType = type;
@@ -375,10 +454,97 @@ export default {
         if(rd.presale_begin && rd.presale_end){
           rd.presale_date = [rd.presale_begin, rd.presale_end];
         }
+        //区域价格
+        rd.city_prices_temp = rd.city_prices.map(item => {
+          item.percent = this.returnMarkup(item.percent);
+          item.price = this.returnPrice(item.price_sale);
+          return item;
+        });
         this.$data.detail = rd;
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
+      }
+    },
+    //新增区域价格
+    handleAddCityPrice() {
+      let city_prices_temp = this.$data.detail.city_prices_temp;
+      city_prices_temp.push({ city_code: '', percent: '', price: '' });
+      this.$data.detail.city_prices_temp = city_prices_temp;
+    },
+    //删除区域价格
+    handleRemoveCityPrice(i) {
+      let city_prices_temp = this.$data.detail.city_prices_temp.filter((item, index) => index !== i);
+      this.$data.detail.city_prices_temp = city_prices_temp;
+    },
+    //修改价格
+    changePriceSale() {
+      let detail = this.$data.detail;
+      if (!detail.price_sale / 100 || isNaN(detail.price_sale / 100)) return;
+      let city_prices_temp = this.$data.detail.city_prices_temp;
+      city_prices_temp = city_prices_temp.map(item => {
+        if (item.percent && !isNaN(item.percent)) {
+          item.price = (Number(detail.price_sale / 100) + Number(this.returnMarkup(this.returnPrice((this.handlePrice(detail.price_sale / 100) * this.handleMarkup(item.percent) / 100))))).toFixed(2)
+        }
+        return item;
+      });
+    },
+    //修改区域价格
+    changeCityPercent(index) {
+      let detail = this.$data.detail;
+      let item = this.$data.detail.city_prices_temp[index];
+      item.price = detail.price_sale / 100 && item.percent && !isNaN(detail.price_sale / 100) && !isNaN(item.percent)
+        ? (Number(detail.price_sale / 100) + Number(this.returnMarkup(this.returnPrice((this.handlePrice(detail.price_sale / 100) * this.handleMarkup(item.percent) / 100))))).toFixed(2)
+        : ''
+      let city_prices_temp = this.$data.detail.city_prices_temp;
+      city_prices_temp[index] = item;
+      this.$data.detail.city_prices_temp = city_prices_temp;
+    },
+    //请选择所在仓
+    onSystemClassChange(val) {
+      this.nodeList(val.length - 1, val)
+    },
+    //获取要查询的节点
+    nodeList(n, val) {
+      // console.log('n = ', n, val)
+      if (n < 0) {
+        return;
+      }
+      if (n === 0) {
+        let index = -1;
+        for (let i = 0; i < this.scientificTypeList.length; i++) {
+          if (this.scientificTypeList[i].code === val[n]) {
+            index = i;
+            break;
+          }
+        }
+        if (!this.scientificTypeList[index].children || this.scientificTypeList[index].children.length === 0) {
+          if (index >= 0) {
+            this.baseSystemClassList(val[0], list => {
+              this.scientificTypeList[index].children = list;
+            });
+          }
+          return;
+        } else {
+          return this.scientificTypeList[index].children
+        }
+      }
+
+      let parentNodeList = this.nodeList(n - 1, val);
+      let currentIndex = -1;
+      for (let i = 0; i < parentNodeList.length; i ++) {
+        if (parentNodeList[i].code === val[n]) {
+          currentIndex = i;
+        }
+      }
+      if (!parentNodeList[currentIndex].children || parentNodeList[currentIndex].children.length === 0) {
+        if (currentIndex >= 0) {
+          this.baseSystemClassList(val[n], list => {
+            parentNodeList[currentIndex].children = list;
+          })
+        }
+      } else {
+        return parentNodeList[currentIndex].children
       }
     },
     //提交数据
@@ -393,10 +559,17 @@ export default {
         delete detail.presale_date;
       }
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[pageType === 'edit' ? 'itemEdit' : 'itemOnGround'], detail);
+      let res = await Http.post(Config.api[pageType === 'edit' ? 'itemEdit' : 'itemOnGround'], {
+        ...detail,
+        city_prices: detail.city_prices_temp.map(item => {
+          let city = {...item};
+          city.percent = this.handleMarkup(city.percent);
+          return { city_code: city.city_code, percent: city.percent };
+        }),
+      });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `商品${pageType === 'edit' ? '修改成功' : '已上架'}`, type: 'success'});
+        this.$message({message: `商品${pageType === 'edit' ? '信息修改成功' : '已上架'}`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableItemList');
@@ -405,7 +578,7 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
-    //显示修改明细
+    //显示修改日志
     handleShowEditRecord(){
       let pc = this.getPageComponents('DetailItemListEditRecord');
       pc.showDetail(this.detail);

@@ -58,7 +58,8 @@ export default {
         title: '',
         rise_min: '',
         rise_max: '',
-        remark: ''
+        remark: '',
+        province_code: this.$province.code
       },
       rules: {
         title: [

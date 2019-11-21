@@ -50,14 +50,14 @@ export default {
 
       if(scrollTop >= topHeight){
         let dom2 = document.querySelector('.my-table-float > .el-table__header-wrapper');
-        dom2.classList.add('my-table-float__header-wrapper');
+        if(dom2) dom2.classList.add('my-table-float__header-wrapper');
         let dom3 = document.querySelector('.my-table-float > .el-table__body-wrapper');
-        dom3.style.marginTop = `${dom2.clientHeight}px`;
+        if(dom2 && dom3) dom3.style.marginTop = `${dom2.clientHeight}px`;
       }else{
         let dom2 = document.querySelector('.my-table-float > .el-table__header-wrapper');
-        dom2.classList.remove('my-table-float__header-wrapper');
+        if(dom2) dom2.classList.remove('my-table-float__header-wrapper');
         let dom3 = document.querySelector('.my-table-float > .el-table__body-wrapper');
-        dom3.style.marginTop = '0px';
+        if(dom3) dom3.style.marginTop = '0px';
       }
     }
   }

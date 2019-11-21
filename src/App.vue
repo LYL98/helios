@@ -58,6 +58,7 @@
               <el-menu-item index="ItemGlobal" :route="{name: 'ItemGlobal'}" v-if="auth.isAdmin || auth.ItemGlobal"><span>商品池</span></el-menu-item>
               <el-menu-item index="ItemRecover" :route="{name: 'ItemRecover'}" v-if="auth.isAdmin || auth.ItemRecover"><span>回收站</span></el-menu-item>
               <el-menu-item index="ItemList" :route="{name: 'ItemList'}" v-if="auth.isAdmin || auth.ItemList"><span>商品列表</span></el-menu-item>
+              <el-menu-item index="ItemAuditInnerTag" :route="{name: 'ItemAuditInnerTag'}" v-if="auth.isAdmin || auth.ItemAuditInnerTag"><span>商品价格标签审核</span></el-menu-item>
               <el-menu-item index="ItemPricing" :route="{name: 'ItemPricing'}" v-if="auth.isAdmin || auth.ItemPricing"><span>每日报价</span></el-menu-item>
             </el-submenu>
 

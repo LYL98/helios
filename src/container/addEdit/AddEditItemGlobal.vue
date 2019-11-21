@@ -82,7 +82,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="" v-if="page === 'global' && pageType !== 'add' && (auth.isAdmin || auth.ItemGlobalEditRecord)">
-              <el-button @click.native="handleShowEditRecord" class="f-r">修改明细</el-button>
+              <el-button @click.native="handleShowEditRecord" class="f-r">修改日志</el-button>
             </el-form-item>
             <div style="margin-left: 110px;">
               <div style="color: #909399; font-size: 14px; margin-bottom: 8px;">商品详情</div>
@@ -241,7 +241,7 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
-    //显示修改明细
+    //显示修改日志
     handleShowEditRecord(){
       let pc = this.getPageComponents('DetailItemGlobalEditRecord');
       pc.showDetail(this.detail);
