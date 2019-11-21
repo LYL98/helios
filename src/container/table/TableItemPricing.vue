@@ -1,16 +1,12 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.ItemPriceRecord">
-      <el-button v-if="auth.isAdmin || auth.ItemPriceRecord" @click.native="handleShowDetail('DetailItemPricingRecord')" size="mini" type="primary" plain>报价记录</el-button>
-    </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="priceDataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%; margin-top: 16px;"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
+        class="list-table my-table-float"
         @sort-change="onSort"
         :highlight-current-row="true"
         :row-key="returnTableKey"
@@ -328,4 +324,7 @@
       }
     }
   }
+</style>
+<style lang="scss">
+  @import './table.global.scss';
 </style>

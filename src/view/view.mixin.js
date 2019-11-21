@@ -45,8 +45,8 @@ export default {
       let domQuery = document.querySelector('.container-query');
       let domTableTop = document.querySelector('.container-table > .table-top');
       let topHeight = 16;
-      if(domQuery.clientHeight) topHeight += domQuery.clientHeight + 16;
-      if(domTableTop.clientHeight) topHeight += domTableTop.clientHeight + 16;
+      if(domQuery && domQuery.clientHeight) topHeight += domQuery.clientHeight + 16;
+      if(domTableTop && domTableTop.clientHeight) topHeight += domTableTop.clientHeight + 16;
 
       if(scrollTop >= topHeight){
         let dom2 = document.querySelector('.my-table-float > .el-table__header-wrapper');

@@ -334,7 +334,7 @@ export default {
           { required: true, message: '请选择展示分类', trigger: 'change' }
         ],
         inner_tag_id: [
-          { required: true, message: '请选择商品内标签', trigger: 'change' }
+          { required: true, message: '请选择商品加价标签', trigger: 'change' }
         ],
       },
       pageTitles: {

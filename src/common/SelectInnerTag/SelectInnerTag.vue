@@ -1,7 +1,7 @@
 <template>
   <el-select v-model="selectId"
   :clearable="clearable"
-  placeholder="请选择商品内标签"
+  placeholder="请选择商品加价标签"
   @change="handleChange"
   style="width: 100%;" :size="size"
   :disabled="disabled">
@@ -35,7 +35,9 @@ export default {
     //获取商品标签列表
     async getData(){
       let that = this;
-      let res = await Http.get(Config.api.baseItemInnerTagsList, {});
+      let res = await Http.get(Config.api.baseItemInnerTagsList, {
+        province_code: this.$province.code || ''
+      });
       if(res.code === 0){
         that.$data.dataItem = res.data;
       }else{

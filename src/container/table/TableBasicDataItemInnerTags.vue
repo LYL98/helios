@@ -20,18 +20,20 @@
       >
         <el-table-column type="index" width="100" label="序号"></el-table-column>
         <!--table-column start-->
-        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-          <template slot-scope="scope">
-            <!--门店个数-->
-            <div v-if="item.key === 'percent'" >
-              <span>{{returnPercent(scope.row.rise_min)}}%</span>
-              <span style="padding: 0 5px;">-</span>
-              <span>{{returnPercent(scope.row.rise_max)}}%</span>
-            </div>
-            <!--正常情况-->
-            <div v-else>{{scope.row[item.key]}}</div>
-          </template>
-        </el-table-column>
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
+            <template slot-scope="scope">
+              <!--门店个数-->
+              <div v-if="item.key === 'percent'" >
+                <span>{{returnPercent(scope.row.rise_min)}}%</span>
+                <span style="padding: 0 5px;">-</span>
+                <span>{{returnPercent(scope.row.rise_max)}}%</span>
+              </div>
+              <!--正常情况-->
+              <div v-else>{{scope.row[item.key]}}</div>
+            </template>
+          </el-table-column>
+        </template>
         <!--table-column end 操作占位-->
         <el-table-column label min-width="1"/>
         <el-table-column label="操作" width="100" align="center">
@@ -73,7 +75,8 @@
       if (!this.auth.isAdmin && !this.auth.BasicDataItemInnerTagsListAdd) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
       }
-      this.getData();
+      let pc = this.getPageComponents('QueryBasicDataItemInnerTags'); //获取query组件
+      this.getData(pc.query);
     },
     data() {
       return {
@@ -91,9 +94,10 @@
     },
     methods: {
       //获取数据
-      async getData(){
+      async getData(query){
+        this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.basicdataItemInnerTagsList, {});
+        let res = await Http.get(Config.api.basicdataItemInnerTagsList, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

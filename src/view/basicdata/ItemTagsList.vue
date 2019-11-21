@@ -19,7 +19,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("信息 - 商品外标签");
+      documentTitle("信息 - 商品标签");
     },
   };
 </script>

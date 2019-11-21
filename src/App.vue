@@ -163,9 +163,9 @@
               <el-menu-item index="BasicDataFrameList" :route="{name: 'BasicDataFrameList'}"
                             v-if="auth.isAdmin || auth.BasicDataFrameList"><span>筐信息列表</span></el-menu-item>
               <el-menu-item index="BasicDataItemTagsList" :route="{name: 'BasicDataItemTagsList'}"
-                            v-if="auth.isAdmin || auth.BasicDataItemTagsList"><span>商品外标签</span></el-menu-item>
+                            v-if="auth.isAdmin || auth.BasicDataItemTagsList"><span>商品标签</span></el-menu-item>
               <el-menu-item index="BasicDataItemInnerTagsList" :route="{name: 'BasicDataItemInnerTagsList'}"
-                            v-if="auth.isAdmin || auth.BasicDataItemInnerTagsList"><span>商品内标签</span></el-menu-item>
+                            v-if="auth.isAdmin || auth.BasicDataItemInnerTagsList"><span>商品加价标签</span></el-menu-item>
               <el-menu-item index="BasicDataProvinceList" :route="{name: 'BasicDataProvinceList'}"
                             v-if="auth.isAdmin || auth.BasicDataProvinceList"><span>省列表</span></el-menu-item>
               <el-menu-item index="BasicDataZoneList" :route="{name: 'BasicDataZoneList'}"

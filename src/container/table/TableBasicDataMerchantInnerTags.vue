@@ -81,7 +81,8 @@
       if (!this.auth.isAdmin && !this.auth.BasicDataMerchantInnerTagsListAdd) {
         this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
       }
-      this.getData();
+      let pc = this.getPageComponents('QueryBasicDataMerchantInnerTags'); //获取query组件
+      this.getData(pc.query);
     },
     data() {
       return {
@@ -92,9 +93,10 @@
     },
     methods: {
       //获取数据
-      async getData(){
+      async getData(query){
+        this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.basicdataMerchantInnerTagsList, {});
+        let res = await Http.get(Config.api.basicdataMerchantInnerTagsList, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

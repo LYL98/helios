@@ -24,6 +24,7 @@ export { default as QueryBasicDataDisplayClass } from './QueryBasicDataDisplayCl
 export { default as QueryBasicDataFrame } from './QueryBasicDataFrame';
 export { default as QueryBasicDataGrade } from './QueryBasicDataGrade';
 export { default as QueryBasicDataItemTags } from './QueryBasicDataItemTags';
+export { default as QueryBasicDataItemInnerTags } from './QueryBasicDataItemInnerTags';
 export { default as QueryBasicDataMerchantInnerTags } from './QueryBasicDataMerchantInnerTags';
 export { default as QueryBasicDataMerchantOuterTags } from './QueryBasicDataMerchantOuterTags';
 export { default as QueryBasicDataProvince } from './QueryBasicDataProvince';

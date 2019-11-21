@@ -39,6 +39,7 @@ export default {
     let validCode = function (rules, value, callback) {
       let asyncValid = () => {
         Http.get(Config.api.baseDisplayClassList, {
+          province_code: that.$province.code,
           code: value
         }).then(res => {
           if (res.data && res.data.length > 0) {

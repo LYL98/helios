@@ -65,9 +65,9 @@ const Config = (() => {
       // 商品管理
       itemEdit: apiM + '/item/edit', //商品编辑
       itemOutEdit: apiM + '/item/out/edit', //商品外边标签，展示分类 修改
-      itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品内标签修改
+      itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品加价标签修改
       itemInnerTagAudit: apiM + '/item/inner_tag/audit', //内标签审核审核
-      itemInnerTagLogQuery: apiM + '/item/inner_tag/log_query', //商品内标签修改申请查询
+      itemInnerTagLogQuery: apiM + '/item/inner_tag/log_query', //商品加价标签修改申请查询
       itemQuery: apiM + '/item/query',//商品列表
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
@@ -77,7 +77,6 @@ const Config = (() => {
       itemPriceList: apiM + '/item/price/query',//每日定价页面查询
       itemPriceFix: apiM + '/item/price/fix',//商品定价
       itemPriceAudit: apiM + '/item/price/audit', //商品定价审核
-      itemPricingRecord: apiM + '/item/price_history/query', //商品定价记录
 
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询
@@ -181,7 +180,7 @@ const Config = (() => {
       baseSystemClassList: apiM + '/common/system_class/list', //科学分类列表（组件共用）
       baseDisplayClassList: apiM + '/common/display_class/list', //展示分类列表（组件共用）
       baseItemTagsList: apiM + '/common/item_tags/list', //商品标签接口（组件共用）
-      baseItemInnerTagsList: apiM + '/common/item_inner_tags/list', //商品内标签接口（组件共用）
+      baseItemInnerTagsList: apiM + '/common/item_inner_tags/list', //商品加价标签接口（组件共用）
       baseMerchantGradeList: apiM + '/common/grade/list', //商户级别列表（组件共用）
       baseMerchantInnerTagsList: apiM + '/common/merchant_inner_tags/list', //商户内标签列表（组件共用）
       baseMerchantOuterTagsList: apiM + '/common/merchant_outer_tags/list', //商户外标签列表（组件共用）
@@ -231,10 +230,10 @@ const Config = (() => {
       basicdataItemTagsIcons: apiM + '/common/tag_images/list', //商品icon默认标签
       basicdataItemTagsDetail: apiM + '/basicdata/item_tags/detail', //icon标签详情
 
-      basicdataItemInnerTagsAdd: apiM + '/basicdata/item_inner_tags/add',//商品内标签新增
-      basicdataItemInnerTagsEdit: apiM + '/basicdata/item_inner_tags/edit',//商品内标签修改
-      basicdataItemInnerTagsList: apiM + '/basicdata/item_inner_tags/list',//商品内标签列表
-      basicdataItemInnerTagsDelete: apiM + '/basicdata/item_inner_tags/delete',//商品内标签删除
+      basicdataItemInnerTagsAdd: apiM + '/basicdata/item_inner_tags/add',//商品加价标签新增
+      basicdataItemInnerTagsEdit: apiM + '/basicdata/item_inner_tags/edit',//商品加价标签修改
+      basicdataItemInnerTagsList: apiM + '/basicdata/item_inner_tags/list',//商品加价标签列表
+      basicdataItemInnerTagsDelete: apiM + '/basicdata/item_inner_tags/delete',//商品加价标签删除
 
       basicdataMerchantInnerTagsList: apiM + '/basicdata/merchant_inner_tags/list', //商户内标签
       basicdataMerchantInnerTagsAdd: apiM + '/basicdata/merchant_inner_tags/add', //商户内标签添加

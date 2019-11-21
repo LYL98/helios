@@ -76,6 +76,7 @@ export {
   QueryBasicDataFrame,
   QueryBasicDataGrade,
   QueryBasicDataItemTags,
+  QueryBasicDataItemInnerTags,
   QueryBasicDataMerchantInnerTags,
   QueryBasicDataMerchantOuterTags,
   QueryBasicDataProvince,
@@ -161,7 +162,6 @@ export {
   DetailItemGlobalEditRecord,
   DetailItemListEditRecord,
   DetailItemListAuditInnerTag,
-  DetailItemPricingRecord,
 
   DetailHeadBalanceLog,
 

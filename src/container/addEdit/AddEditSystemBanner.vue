@@ -173,7 +173,10 @@ export default {
       }
     },
     async baseDisplayClassList(code, callback) {
-      let res = await Http.get(Config.api.baseDisplayClassList, { code: code });
+      let res = await Http.get(Config.api.baseDisplayClassList, {
+        province_code: this.$province.code,
+        code: code
+      });
       if (res.code === 0) {
         let rd = res.data;
         callback(rd)
