@@ -23,7 +23,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="选择商品" v-if="bannerType === 'commdity'">
-          <my-search-item v-model="itemName" @onSelectItem="selectItem"></my-search-item>
+          <my-search-item v-model="itemName" @onSelectItem="selectItem" :provinceCode="province.code"></my-search-item>
         </el-form-item>
         <el-form-item label="商品类型" v-if="bannerType === 'category'">
           <my-select-tag :tag="tagName" @change="selectTag"></my-select-tag>
