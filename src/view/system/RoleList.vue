@@ -277,7 +277,7 @@ export default {
     //获取角色详情(直接保存详情)
     getRoleDetail(data){
       this.$data.detail = data;
-      this.$refs.tree.setCheckedKeys(data.permission_ids); // 树型重新选择
+      this.$refs.tree.setCheckedKeys(data.permission_codes); // 树型重新选择
     },
     //全部展开收起
     changeExpandAll(v){
