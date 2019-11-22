@@ -25,7 +25,7 @@
                   <div class="link-item add-dot" @click="handleShowAddEdit('AddEditItemList', scope.row, 'detail')" v-if="auth.isAdmin || auth.ItemListDetail">
                     {{scope.row.code}}/{{scope.row.title}}
                   </div>
-                  <div class="link-item add-dot" v-else>
+                  <div class="add-dot" v-else>
                     {{scope.row.code}}/{{scope.row.title}}
                   </div>
                   <div class="add-dot" v-if="query.is_on_sale">
