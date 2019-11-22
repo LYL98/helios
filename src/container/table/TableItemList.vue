@@ -88,7 +88,7 @@
                 },
                 {
                   title: '修改日志',
-                  isDisplay: (auth.isAdmin || auth.ItemListEditRecord) && scope.row.is_on_sale,
+                  isDisplay: (auth.isAdmin || auth.ItemListEditRecord),
                   command: () => handleShowDetail('DetailItemListEditRecord', scope.row)
                 }
               ]"
