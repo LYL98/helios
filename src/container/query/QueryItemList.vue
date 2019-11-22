@@ -73,7 +73,6 @@
               @change="handleQuery('TableItemList')"
               size="small"
             />
-            <el-button size="small" type="primary" class="query-item-reset" plain @click="handleClearQuery('TableItemList')">重置</el-button>
           </my-query-item>
         </el-col>
       </el-row>

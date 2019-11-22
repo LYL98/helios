@@ -27,12 +27,12 @@
               <!--原商品价格标签-->
               <div class="td-item add-dot2" v-else-if="item.key === 'cur_inner_tag'">
                 <div class="add-dot">{{scope.row.cur_inner_tag.title}}</div>
-                <div>加价率：{{returnPercent(scope.row.cur_inner_tag.rise_min)}}% - {{returnPercent(scope.row.cur_inner_tag.rise_max)}}%</div>
+                <div class="add-dot">加价率：{{returnPercent(scope.row.cur_inner_tag.rise_min)}}% - {{returnPercent(scope.row.cur_inner_tag.rise_max)}}%</div>
               </div>
               <!--现商品价格标签-->
               <div class="td-item add-dot2" v-else-if="item.key === 'inner_tag'">
                 <div class="add-dot">{{scope.row.inner_tag.title}}</div>
-                <div>加价率：{{returnPercent(scope.row.inner_tag.rise_min)}}% - {{returnPercent(scope.row.cur_inner_tag.rise_max)}}%</div>
+                <div class="add-dot">加价率：{{returnPercent(scope.row.inner_tag.rise_min)}}% - {{returnPercent(scope.row.cur_inner_tag.rise_max)}}%</div>
               </div>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'status'">
@@ -45,7 +45,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="80">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -113,12 +113,12 @@
       return {
         tableName: 'TableItemAuditInnerTag',
         tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '1', isShow: true },
-          { label: '原商品价格标签', key: 'cur_inner_tag', width: '1', isShow: true },
-          { label: '现商品价格标签', key: 'inner_tag', width: '1', isShow: true },
-          { label: '修改人', key: 'realname', width: '1', isShow: true },
-          { label: '修改时间', key: 'created', width: '1', isShow: true },
-          { label: '审核状态', key: 'status', width: '1', isShow: true }
+          { label: '商品编号/名称', key: 'code_title', width: '3', isShow: true },
+          { label: '原商品价格标签', key: 'cur_inner_tag', width: '3', isShow: true },
+          { label: '现商品价格标签', key: 'inner_tag', width: '3', isShow: true },
+          { label: '修改人', key: 'realname', width: '2', isShow: true },
+          { label: '修改时间', key: 'created', width: '2', isShow: true },
+          { label: '审核状态', key: 'status', width: '2', isShow: true }
         ],
         isShowAudit: false,
         isDeclined: false,
