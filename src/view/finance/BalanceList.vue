@@ -225,7 +225,7 @@
           balance: item.balance,
           change_type: 1,
           amount: '',
-          reason: '',
+          opt_type: '',
           remark: ''
         })
         this.$data.dialog.isShowBalanceEdit = true;
@@ -235,7 +235,7 @@
         item = {
           id: item.id,
           amount: item.change_type == 1 ? DataHandle.handlePrice(item.amount) : -(DataHandle.handlePrice(item.amount)),
-          reason: item.change_type == 1 ? item.reason : 'manual_deduct',
+          opt_type: item.change_type == 1 ? item.opt_type : 'manual_deduct',
           remark: item.remark
         }
         let success = () => {

@@ -17,7 +17,7 @@
           size="small"
           buttonWidth="60"
           :options="{'全部': '', '充值': 'manual_topup', '扣款': 'manual_deduct'}"
-          v-model="query.reason"
+          v-model="query.opt_type"
           @change="changeQuery"
         />
       </my-query-item>
@@ -44,10 +44,10 @@
           clearable
           style="width: 180px; margin-left: 20px;"
           placeholder="输入提交人名称"
-          v-model="query.operator_name"
+          v-model="query.creater_name"
           @clear="changeQuery"
           @keyup.enter.native="changeQuery"
-          ref="operator_name"
+          ref="creater_name"
         ></el-input>
         <el-button size="small" type="primary" icon="el-icon-search" @click="changeQuery" style="margin-left: 4px;"></el-button>
         <el-button size="small" type="primary" plain style="margin-left: 10px;" @click="resetQuery">重置</el-button>
@@ -74,10 +74,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="充值/扣款类型" prop="reason" width="180">
+      <el-table-column label="充值/扣款类型" prop="opt_type" width="180">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ reason[scope.row.reason] }}
+            {{ opt_type[scope.row.opt_type] }}
           </div>
         </template>
       </el-table-column>
@@ -89,10 +89,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="提交人" prop="operator_name" width="120">
+      <el-table-column label="提交人" prop="creater_name" width="120">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ scope.row.operator_name }}
+            {{ scope.row.creater_name }}
           </div>
         </template>
       </el-table-column>
@@ -186,12 +186,14 @@
         province: this.$province,
         auth: this.$auth,
         pickerValue: null,
-        query: { },
+        query: {
+          creater_name: ''
+        },
         listItem: {
           items: [],
           num: 0
         },
-        reason: Constant.MERCHANT_BALANCE_REASON,
+        opt_type: Constant.MERCHANT_BALANCE_REASON,
         status: {
           wait_check: '待审核',
           checked: '审核通过',
@@ -241,8 +243,8 @@
           province_code: this.province.code,
           merchant_id: this.$props.merchant_id,
           status: '',
-          reason: '',
-          operator_name: '',
+          opt_type: '',
+          creater_name: '',
           begin_date: '',
           end_date: '',
           page: 1,
@@ -269,7 +271,7 @@
         this.initQuery();
         this.$data.pickerValue = null;
         this.ApproveQuery();
-        this.$refs['operator_name'].currentValue = '';
+        this.$refs['creater_name'].currentValue = '';
       },
       changePage(page) {
         this.$data.query.page = page;

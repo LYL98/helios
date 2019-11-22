@@ -19,10 +19,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="充值/扣款类型" prop="reason" min-width="140">
+      <el-table-column label="充值/扣款类型" prop="opt_type" min-width="140">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ reason[scope.row.reason] }}
+            {{ opt_type[scope.row.opt_type] }}
           </div>
         </template>
       </el-table-column>
@@ -33,10 +33,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="提交人" prop="operator_name" min-width="100">
+      <el-table-column label="提交人" prop="creater_name" min-width="100">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ scope.row.operator_name }}
+            {{ scope.row.creater_name }}
           </div>
         </template>
       </el-table-column>
@@ -130,7 +130,7 @@
     },
     data() {
       return {
-        reason: Constant.MERCHANT_BALANCE_REASON,
+        opt_type: Constant.MERCHANT_BALANCE_REASON,
         status: {
           wait_check: '待审核',
           checked: '审核通过',

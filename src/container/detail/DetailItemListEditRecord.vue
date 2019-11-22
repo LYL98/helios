@@ -5,8 +5,8 @@
       <el-table-column label="操作时间" prop="created" width="260"/>
       <el-table-column label="操作内容" width="600">
         <template slot-scope="scope">
-          <span v-if="scope.row.category === 'item_edit'">{{returnAttrStr(scope.row.modified_attrs)}}</span>
-          <span v-else-if="scope.row.category === 'item_on_ground'">上架：{{returnAttrStr(scope.row.modified_attrs)}}</span>
+          <span v-if="scope.row.category === 'item_edit'" v-html="returnAttrStr(scope.row.modified_detail)"></span>
+          <span v-else-if="scope.row.category === 'item_on_ground'" v-html="'上架：' + returnAttrStr(scope.row.modified_detail)"></span>
           <span v-else>{{categorys[scope.row.category]}}</span>
         </template>
       </el-table-column>
@@ -108,9 +108,9 @@
       returnAttrStr(list){
         let str = '';
         list.forEach(item => {
-          str += item + '/';
+          str += `${item.attr}：${item.before} 【改成】 ${item.after}<br/>`;
         });
-        str = str.substring(0, str.length - 1);
+        //str = str.substring(0, str.length - 1);
         return str;
       }
     }
