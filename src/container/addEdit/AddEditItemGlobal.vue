@@ -84,7 +84,7 @@
       </template>
       <template v-else>
         <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-        <el-button size="medium" type="primary" @click.native="pageType = 'edit'">修 改</el-button>
+        <el-button size="medium" type="primary" @click.native="pageType = 'edit'" v-if="page !== 'recover'">修 改</el-button>
       </template>
     </div>
   </add-edit-layout>
