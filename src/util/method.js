@@ -97,17 +97,17 @@ export default {
   //页面设置
   setPageSetting(key, value) {
     let storageData = {};
-    let apsd = localStorage.getItem("fenghuangPageSettingData");
+    let apsd = localStorage.getItem("heliosPageSettingData");
     if (apsd != null && typeof apsd != "undefined") {
       storageData = JSON.parse(apsd);
     }
     storageData[key] = value;
-    localStorage.setItem("fenghuangPageSettingData", JSON.stringify(storageData));
+    localStorage.setItem("heliosPageSettingData", JSON.stringify(storageData));
   },
 
   //获取页面设置
   getPageSetting(key) {
-    let apsd = localStorage.getItem("fenghuangPageSettingData");
+    let apsd = localStorage.getItem("heliosPageSettingData");
     if (apsd != null && typeof apsd != "undefined") {
       let storageData = JSON.parse(apsd);
       if (key) {
