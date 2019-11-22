@@ -214,13 +214,14 @@
         </el-row>
       </el-form>
       <div style="margin-left: 110px;">
-        <template v-if="judgeOrs(pageType, ['add', 'edit'])">
+        <template v-if="judgeOrs(pageType, ['on_sale', 'edit'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
         <template v-else>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-          <el-button size="medium" type="primary" @click.native="pageType = 'edit'">修 改</el-button>
+          <el-button size="medium" type="primary" @click.native="pageType = 'edit'" v-if="(auth.isAdmin || auth.ItemGlobalEdit) && detail.is_on_sale">修改销售信息</el-button>
+          <el-button size="medium" type="primary" @click.native="pageType = 'on_sale'" v-else-if="(auth.isAdmin || auth.ItemListOnGround) && !detail.is_on_sale">上 架</el-button>
         </template>
       </div>
     </add-edit-layout>
