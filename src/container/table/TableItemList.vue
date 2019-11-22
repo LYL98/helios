@@ -82,11 +82,6 @@
                   command: () => itemUnderGround(scope.row)
                 },
                 {
-                  title: '修改分类/外标签',
-                  isDisplay: (auth.isAdmin || auth.ItemListTagsClassEdit) && scope.row.is_on_sale,
-                  command: () => handleShowForm('FormItemListEditClassTag', scope.row)
-                },
-                {
                   title: '修改商品价格标签',
                   isDisplay: (auth.isAdmin || auth.ItemListInnerTagsEdit) && scope.row.is_on_sale,
                   command: () => handleShowForm('FormItemListEditInnerTag', scope.row)

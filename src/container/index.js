@@ -153,7 +153,6 @@ export {
   FormSystemSettingItemCommonDes,
   FormSystemOperatorResetPwd,
 
-  FormItemListEditClassTag,
   FormItemListEditInnerTag,
 
   FormOperateReceivingAllot,

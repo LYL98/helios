@@ -48,6 +48,7 @@ export { default as SelectProvinceMulti } from './SelectProvinceMulti';
 export { default as SelectProvinceQuery } from './SelectProvinceQuery';
 export { default as SelectTag } from './SelectTag';
 export { default as SelectInnerTag } from './SelectInnerTag';
+export { default as SelecItemTags } from './SelecItemTags';
 export { default as SelectZone } from './SelectZone';
 export { default as SelectZoneMulti } from './SelectZoneMulti';
 export { default as SelectZoneQuery } from './SelectZoneQuery';

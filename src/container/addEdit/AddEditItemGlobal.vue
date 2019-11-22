@@ -1,5 +1,5 @@
 <template>
-  <el-drawer :title="pageTitles[pageType]" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-add-edit-drawer">
+  <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail" :rules="rules" ref="ruleForm">
         <el-row>
           <el-col :span="16">
@@ -92,11 +92,12 @@
           </el-col>
         </el-row>
       </el-form>
-  </el-drawer>
+  </add-edit-layout>
 </template>
 
 <script>
 import addEditMixin from './add.edit.mixin';
+import Layout from './Layout';
 import { Http, Config, Verification } from '@/util';
 import { QuillEditor, UploadImg, InputWeight, SelectFrame, SelectSystemClass } from '@/common';
 
@@ -104,6 +105,7 @@ export default {
   name: "AddEditItemGlobal",
   mixins: [addEditMixin],
   components: {
+    'add-edit-layout': Layout,
     'upload-img': UploadImg,
     'quill-editor': QuillEditor,
     'input-weight': InputWeight,
@@ -254,7 +256,4 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './add.edit.scss';
-</style>
-<style lang="scss">
-  @import './add.edit.global.scss';
 </style>

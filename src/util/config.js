@@ -64,7 +64,6 @@ const Config = (() => {
 
       // 商品管理
       itemEdit: apiM + '/item/edit', //商品编辑
-      itemOutEdit: apiM + '/item/out/edit', //商品外边标签，展示分类 修改
       itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品加价标签修改
       itemInnerTagAudit: apiM + '/item/inner_tag/audit', //内标签审核审核
       itemInnerTagLogQuery: apiM + '/item/inner_tag/log_query', //商品加价标签修改申请查询

@@ -127,8 +127,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="商品标签" prop="inner_tag_id">
-              <select-inner-tag clearable v-model="detail.inner_tag_id" :disabled="pageType === 'edit' ? true : false"/>
+            <el-form-item label="商品标签" prop="tags">
+              <select-item-tags v-model="detail.tags"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -228,8 +228,9 @@
 
 <script>
 import addEditMixin from './add.edit.mixin';
+import Layout from './Layout';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
-import { SelectDisplayClass, ImagePreview, InputNumber, InputPrice, SelectInnerTag } from '@/common';
+import { SelectDisplayClass, ImagePreview, InputNumber, InputPrice, SelectInnerTag, SelecItemTags } from '@/common';
 
 export default {
   name: "AddEditItemList",
@@ -238,6 +239,7 @@ export default {
     'input-price': InputPrice,
     'input-number': InputNumber,
     'select-inner-tag': SelectInnerTag,
+    'select-item-tags': SelecItemTags,
     'my-select-display-class': SelectDisplayClass,
     'image-preview': ImagePreview
   },
