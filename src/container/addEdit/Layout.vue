@@ -53,6 +53,7 @@ export default {
           overflow: auto !important;
           padding: 15px 0;
           min-width: 1000px;
+          max-width: 1920px;
       }
   }
 </style>

@@ -85,6 +85,11 @@
                   title: '修改商品价格标签',
                   isDisplay: (auth.isAdmin || auth.ItemListInnerTagsEdit) && scope.row.is_on_sale,
                   command: () => handleShowForm('FormItemListEditInnerTag', scope.row)
+                },
+                {
+                  title: '修改日志',
+                  isDisplay: (auth.isAdmin || auth.ItemListEditRecord) && scope.row.is_on_sale,
+                  command: () => handleShowDetail('DetailItemListEditRecord', scope.row)
                 }
               ]"
             />
@@ -130,8 +135,8 @@
       return {
         tableName: 'TableItemList',
         tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '1', isShow: true },
-          { label: '商品参数', key: 'parameter', width: '1', isShow: true },
+          { label: '商品编号/名称', key: 'code_title', width: '2', isShow: true },
+          { label: '商品参数', key: 'parameter', width: '2', isShow: true },
           { label: '筐', key: 'frame', width: '1', isShow: true },
           { label: '科学分类', key: 'system_class', width: '1', isShow: true },
           { label: '展示分类', key: 'display_class', width: '1', isShow: true },

@@ -1,9 +1,11 @@
 import baseMixin from '@/container/base.mixin';
+import Layout from './Layout';
 import { DataHandle, Constant } from '@/util';
 
 export default {
   mixins: [baseMixin],
   components: {
+    'add-edit-layout': Layout,
   },
   data() {
     //今天

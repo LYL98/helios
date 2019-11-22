@@ -50,7 +50,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="120">
+        <el-table-column label="操作" width="140">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -70,6 +70,11 @@
                   title: '恢复',
                   isDisplay: page === 'recover' && (auth.isAdmin || auth.ItemRecoverRecover),
                   command: () => handleRecover(scope.row)
+                },
+                {
+                  title: '修改日志',
+                  isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalEditRecord),
+                  command: () => handleShowDetail('DetailItemGlobalEditRecord', scope.row)
                 }
               ]"
             />

@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="frameCode" filterable clearable placeholder="请选择筐" style="width:100%;" @change="changeFrame">
+  <el-select v-model="frameCode" filterable clearable placeholder="请选择筐" style="width:100%;" @change="changeFrame" :size="size">
     <el-option
       v-for="item in dataItem"
       :key="item.code"
@@ -22,7 +22,10 @@ export default {
   created(){
     this.baseFrameList();
   },
-  props: ['value'],
+  props: {
+    value: { type: String | Number },
+    size: { type: String, default: 'medium' }, //medium/small/mini
+  },
   model: {
     prop: 'value',
     event: 'ev'

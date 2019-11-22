@@ -1,18 +1,16 @@
 <template>
   <div>
-    <el-drawer :title="pageTitles[pageType]" :visible.sync="isShow" direction="ttb" :before-close="handleCancel" size="100%" custom-class="my-add-edit-drawer">
-      <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%" :model="detail" :rules="rules" ref="ruleForm">
+    <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+      <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="110px" style="width: 98%; max-width: 1400px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="商品图片">
           <image-preview>
             <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
           </image-preview>
-          <!--未上架不用显示-->
-          <el-button @click.native="handleShowEditRecord" v-if="(auth.isAdmin || auth.ItemListEditRecord) && detail.is_on_sale">修改日志</el-button>
         </el-form-item>
         <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="商品编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
+            <el-form-item label="编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="筐">
@@ -44,6 +42,13 @@
           </el-col>
         </el-row>
         <h6 class="subtitle" style="padding-bottom: 16px">销售信息</h6>
+        <el-row :gutter="10">
+          <el-col :span="16">
+            <el-form-item label="价格标签" prop="inner_tag_id">
+              <select-inner-tag clearable v-model="detail.inner_tag_id" :disabled="pageType === 'edit' ? true : false" size="medium"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
             <el-form-item label="采购价" prop="price_buy">
@@ -118,12 +123,72 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
-        </el-row>
-        <h6 class="subtitle" style="padding-bottom: 16px">其他信息</h6>
+        </el-row>        
         <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="价格标签" prop="inner_tag_id">
-              <select-inner-tag clearable v-model="detail.inner_tag_id" :disabled="pageType === 'edit' ? true : false"/>
+          <el-col :span="16">
+            <el-form-item label="区域定价">
+              <ul>
+                <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center; justify-content: space-between;">
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <el-form-item
+                      :prop="'city_prices_temp.' + index + '.city_code'"
+                      :rules="[{ required: true, message: '请选择所在仓', trigger: 'change' }]"
+                    >
+                      <el-select v-model="item.city_code" placeholder="请选择所在仓" size="medium">
+                        <el-option
+                          v-for="city in cityList"
+                          :key="city.code"
+                          :label="city.title"
+                          :value="city.code"
+                          :disabled="detail.city_prices_temp.some(item => item.city_code === city.code)"
+                        >
+                        </el-option>
+                      </el-select>
+
+                    </el-form-item>
+
+                    <el-form-item
+                      :prop="'city_prices_temp.' + index + '.percent'"
+                      :rules="[
+                        { required: true, message: '请输入浮动比例', trigger: 'change' },
+                        { validator: validCityPercent, trigger: 'blur' },
+                      ]"
+                      style="margin-left: 10px;"
+                    >
+                      <el-input
+                        style="width: 230px;"
+                        v-model="item.percent"
+                        @input="changeCityPercent(index)"
+                        placeholder="浮动(-100% ~ 1000%)"
+                        size="medium"
+                      >
+                        <template slot="append">%</template>
+                      </el-input>
+                    </el-form-item>
+
+                    <el-form-item
+                      style="margin-left: 10px;"
+                      :prop="'city_prices_temp.' + index + '.price'"
+                      :rules="[
+                          { validator: validCityPrice, trigger: 'change' },
+                        ]"
+                    >
+                      <el-input
+                        disabled
+                        v-model="item.price"
+                        placeholder="0 - 1000000"
+                        style="width: 180px;"
+                        size="medium"
+                      >
+                        <template slot="append">元</template>
+                      </el-input>
+                    </el-form-item>
+                  </div>
+                  <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="handleRemoveCityPrice(index)"></i>
+                </li>
+              </ul>
+              <!-- 新增区域定价按钮 -->
+              <el-button plain size="medium" type="primary" @click="handleAddCityPrice">增加区域定价</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -132,97 +197,33 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="商品详情">
-          <div class="content-div" v-html="detail.content"></div>
-        </el-form-item>
-        <el-form-item label="区域定价">
-          <ul>
-            <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center; justify-content: space-between;  margin-bottom: 20px;">
-              <div style="display: flex; align-items: center; justify-content: space-between;">
-                <el-form-item
-                  :prop="'city_prices_temp.' + index + '.city_code'"
-                  :rules="[{ required: true, message: '请选择所在仓', trigger: 'change' }]"
-                >
-                  <el-select v-model="item.city_code" placeholder="请选择所在仓">
-                    <el-option
-                      v-for="city in cityList"
-                      :key="city.code"
-                      :label="city.title"
-                      :value="city.code"
-                      :disabled="detail.city_prices_temp.some(item => item.city_code === city.code)"
-                    >
-                    </el-option>
-                  </el-select>
-
-                </el-form-item>
-
-                <el-form-item
-                  :prop="'city_prices_temp.' + index + '.percent'"
-                  :rules="[
-                    { required: true, message: '请输入浮动比例', trigger: 'change' },
-                    { validator: validCityPercent, trigger: 'blur' },
-                  ]"
-                  style="margin-left: 10px;"
-                >
-                  <el-input
-                    style="width: 230px;"
-                    v-model="item.percent"
-                    @input="changeCityPercent(index)"
-                    placeholder="浮动(-100% ~ 1000%)"
-                  >
-                    <template slot="append">%</template>
-                  </el-input>
-                </el-form-item>
-
-                <el-form-item
-                  style="margin-left: 10px;"
-                  :prop="'city_prices_temp.' + index + '.price'"
-                  :rules="[
-                      { validator: validCityPrice, trigger: 'change' },
-                    ]"
-                >
-                  <el-input
-                    disabled
-                    v-model="item.price"
-                    placeholder="0 - 1000000"
-                    style="width: 180px;"
-                  >
-                    <template slot="append">元</template>
-                  </el-input>
-                </el-form-item>
-
-              </div>
-
-              <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="handleRemoveCityPrice(index)"></i>
-            </li>
-          </ul>
-          <!-- 新增区域定价按钮 -->
-          <el-button plain size="medium" type="primary" @click="handleAddCityPrice">增加区域定价</el-button>
-        </el-form-item>
         <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="第一次上架人">{{detail.first_grounder.realname}}</el-form-item>
+          <el-col :span="16">
+            <el-form-item label="商品详情">
+              <div class="my-content-div" v-html="detail.content"></div>
+            </el-form-item>
           </el-col>
-          <el-col :span="10">
-            <el-form-item label="创建时间">{{detail.created}}</el-form-item>
+          <el-col :span="8">
+            <el-form-item label="第一次上架人">
+              <div style="line-height: 24px;">{{detail.first_grounder.realname}}<br/>{{detail.created}}</div>
+            </el-form-item>
+            <el-form-item label="最后更新人">
+              <div style="line-height: 24px;">{{detail.last_updater.realname}}<br/>{{detail.updated}}</div>
+            </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10" v-if="detail.updated && detail.last_updater.realname">
-          <el-col :span="8">
-            <el-form-item label="最后更新人">{{detail.last_updater.realname}}</el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="最后更新时间">{{detail.updated}}</el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item>
-          <div style="float: right">
-            <el-button @click.native="handleCancel">取 消</el-button>
-            <el-button type="primary" @click.native="handleAddEdit">确 认</el-button>
-          </div>
-        </el-form-item>
       </el-form>
-    </el-drawer>
+      <div style="margin-left: 110px;">
+        <template v-if="judgeOrs(pageType, ['add', 'edit'])">
+          <el-button size="medium" @click.native="handleCancel">取 消</el-button>
+          <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
+        </template>
+        <template v-else>
+          <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
+          <el-button size="medium" type="primary" @click.native="pageType = 'edit'">修 改</el-button>
+        </template>
+      </div>
+    </add-edit-layout>
   </div>
 </template>
 
@@ -585,11 +586,6 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
-    //显示修改日志
-    handleShowEditRecord(){
-      let pc = this.getPageComponents('DetailItemListEditRecord');
-      pc.showDetail(this.detail);
-    },
   },
 };
 </script>
@@ -646,11 +642,17 @@ export default {
       opacity: 0;
     }
   }
-
-  .content-div{
-    height: 200px;
+</style>
+<style lang="scss">
+  .my-content-div{
+    width: 360px;
+    min-height: 200px;
     border: 1px solid #ececec;
-    overflow-y: auto;
     padding: 0 10px;
+    background: #F5F7FA;
+    overflow: hidden;
+    img{
+      width: 100% !important;
+    }
   }
 </style>
