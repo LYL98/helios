@@ -137,7 +137,7 @@
         this.$data.items = items;
         this.$data.dialog.isShowApprove = true;
       },
-      handleSubmit(type, remark) {
+      handleSubmit(d) {
         this.$data.formSending = true;
         let success = () => {
           this.pruchaseFinanceQuery({query: this.$data.query});
@@ -151,10 +151,10 @@
         this.items.forEach(item => {
           data.push({
             id: item.id,
-            remark: remark
+            remark: d.remark
           });
         });
-        if (type === 'declined') {
+        if (d.type === 'declined') {
           this.pruchaseFinanceDecline({data, success, error});
         } else {
           this.pruchaseFinanceApprove({data, success, error});
