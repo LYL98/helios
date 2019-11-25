@@ -8,7 +8,8 @@ export default {
       rowIdentifier: 'id',
       currentRow: {},
       currentRowLocked: false,
-      clickedRow: {}
+      clickedRow: {},
+      multipleSelection: [],
     }
   },
   methods: {
@@ -75,6 +76,10 @@ export default {
         return 'default-row'
       }
       return '';
+    },
+    //选择
+    handleSelectionChange(val) {
+      this.$data.multipleSelection = val;
     },
 
 

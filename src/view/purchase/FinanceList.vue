@@ -41,7 +41,6 @@
       :close-on-click-modal="false"
     >
       <form-purchase-item-approve
-        v-model="item"
         v-if="dialog.isShowApprove"
         :submit="handleSubmit"
         :close="handleClose"
@@ -78,7 +77,7 @@
     data() {
       return {
         query: {},
-        item: {}, // 需要审核的项目
+        items: [], // 需要审核的项目集合
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
         formSending: false,
         dialog: {
@@ -134,17 +133,12 @@
           this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
         }
       },
-      handleApproveItem(item) {
-        this.$data.item = Object.assign({}, this.$data.item, {
-          id: item.id,
-          type: 'checked',
-          remark: ''
-        });
+      handleApproveItem(items) {
+        this.$data.items = items;
         this.$data.dialog.isShowApprove = true;
       },
-      handleSubmit() {
+      handleSubmit(type, remark) {
         this.$data.formSending = true;
-        let { id, remark, type } = this.$data.item;
         let success = () => {
           this.pruchaseFinanceQuery({query: this.$data.query});
           this.$data.formSending = false;
@@ -153,10 +147,17 @@
         let error = () => {
           this.$data.formSending = false;
         }
+        let data = [];
+        this.items.forEach(item => {
+          data.push({
+            id: item.id,
+            remark: remark
+          });
+        });
         if (type === 'declined') {
-          this.pruchaseFinanceDecline({id, remark, success, error});
+          this.pruchaseFinanceDecline({data, success, error});
         } else {
-          this.pruchaseFinanceApprove({id, remark, success, error});
+          this.pruchaseFinanceApprove({data, success, error});
         }
 
       },

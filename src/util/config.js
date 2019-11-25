@@ -293,8 +293,8 @@ const Config = (() => {
       purchaseItemAdd: apiM + '/purchase_records/add', // 批量增加采购商品
       purchaseItemModify: apiM + '/purchase_record/edit', // 修改采购商品
       purchaseItemFirstCheck: apiM + '/purchase_record/first_check', // 一审
-      purchaseItemSecondCheck: apiM + '/purchase_record/second_check', // 二审
-      purchaseItemDecline: apiM + '/purchase_record/decline', // 驳回
+      purchaseItemBatchSecondCheck: apiM + '/purchase_record/batch_second_check', // 二审
+      purchaseItemBatchDecline: apiM + '/purchase_record/batch_decline', // 批量驳回
       purchaseItemApproveLog: apiM + '/purchase_record/log', //审核日志
       purchaseItemExport: apiM + '/purchase_record/export', //导出
       purchaseItemHighAuthor: apiM + '/purchase_record/edit/high_author', //越权修改

@@ -1,14 +1,14 @@
 <template>
-  <el-form :model="editApprove" style="width: 500px;" label-position="right" label-width="100px" ref="ruleForm" :rules="rules">
+  <el-form :model="detail" style="width: 500px;" label-position="right" label-width="100px" ref="ruleForm" :rules="rules">
     <el-form-item label="类型">
-      <el-radio-group size="small" v-model="editApprove.type">
+      <el-radio-group size="small" v-model="detail.type">
         <el-radio border label="checked">审核通过</el-radio>
         <el-radio border label="declined">驳回</el-radio>
       </el-radio-group>
     </el-form-item>
     <el-form-item label="备注" prop="remark">
       <el-input
-        v-model="editApprove.remark"
+        v-model="detail.remark"
         type="textarea"
         :rows="3"
         resize="none"
@@ -35,19 +35,16 @@
       'el-button': Button
     },
     props: {
-      approve: { type: Object, required: true },
       submit: { type: Function, required: true },
       close: { type: Function, required: true },
       sending: {type:Boolean, required: true}
     },
-    model: {
-      prop: 'approve',
-      event: 'change'
-    },
     data() {
-      let approve = Object.assign({}, this.$props.approve);
       return {
-        editApprove: approve,
+        detail: {
+          type: 'checked',
+          remark: ''
+        },
         rules: {
           remark: [
             { max: 200, message: '不能超过200个字符，请重新编辑', trigger: 'change' }
@@ -59,8 +56,7 @@
       handleSubmit() {
         this.$refs['ruleForm'].validate(valid => {
           if (valid) {
-            this.$emit('change', this.$data.editApprove);
-            this.$props.submit();
+            this.$props.submit(this.detail);
           }
         });
       },
