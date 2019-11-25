@@ -241,7 +241,7 @@
 
       // 修改采购商品
       handleModifyItem(item) {
-        let { id, item_id, item_code, item_name, supplier_id, total_price, unit_price, number, weight } = item;
+        let { id, item_id, item_code, item_name, supplier_id, purchase_date, total_price, unit_price, number, weight } = item;
         this.$data.item = {
           id: id, // 采购记录ID
           item_id: item_id, // 采购商品id
@@ -251,6 +251,7 @@
           frame_code: item.item.frame_code,
           sale_unit: item.item.sale_unit,
           supplier_id: supplier_id,
+          purchase_date: purchase_date,
           total_price: DataHandle.returnPrice(total_price),
           number: number,
           weight: DataHandle.returnWeight(weight),
@@ -259,7 +260,7 @@
       },
 
       handleHighAuthor(item) {
-        let { id, item_id, item_code, item_name, supplier_id, total_price, unit_price, number, weight, status } = item;
+        let { id, item_id, item_code, item_name, supplier_id, purchase_date, total_price, unit_price, number, weight, status } = item;
         // 兼容历史数据，如果状态为 create 则调整为 init
         if (status === 'create') { status = 'init' }
         this.$data.item = {
@@ -271,6 +272,7 @@
           frame_code: item.item.frame_code,
           sale_unit: item.item.sale_unit,
           supplier_id: supplier_id,
+          purchase_date: purchase_date,
           total_price: DataHandle.returnPrice(total_price),
           number: number,
           weight: DataHandle.returnWeight(weight),
@@ -287,6 +289,7 @@
           id: item.id,
           item_id: item.item_id,
           supplier_id: item.supplier_id,
+          purchase_date: item.purchase_date,
           total_price: DataHandle.handlePrice(item.total_price),
           number: Number(item.number),
           weight: DataHandle.handleWeight(item.weight)
@@ -310,6 +313,7 @@
           id: item.id,
           item_id: item.item_id,
           supplier_id: item.supplier_id,
+          purchase_date: item.purchase_date,
           total_price: DataHandle.handlePrice(item.total_price),
           number: Number(item.number),
           weight: DataHandle.handleWeight(item.weight),

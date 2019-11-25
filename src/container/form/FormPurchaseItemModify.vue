@@ -4,6 +4,9 @@
     <el-form-item label="选择供应商" prop="supplier_id" class="required">
       <my-select-supplier :provinceCode="province.code" style="width: 100%" v-model="editItem.supplier_id" :clearable="false"></my-select-supplier>
     </el-form-item>
+    <el-form-item label="采购日期" prop="purchase_date" class="required">
+      <el-date-picker type="date" value-format="yyyy-MM-dd" style="width: 100%" v-model="editItem.purchase_date" placeholder="请选择采购日期"></el-date-picker>
+    </el-form-item>
     <el-form-item label="采购总额" prop="total_price" class="required">
       <el-input v-model.trim="editItem.total_price" placeholder="输入采购总额">
         <template slot="append">元</template>
@@ -166,6 +169,9 @@
       let rules = {
         supplier_id: [
           { validator: validSupplier, trigger: 'change' }
+        ],
+        purchase_date: [
+          { required: true, message: '请选择采购日期', trigger: 'change' }
         ],
         total_price: [
           { validator: validTotalPrice, trigger: 'change' }

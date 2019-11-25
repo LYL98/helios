@@ -38,6 +38,13 @@
             </div>
           </template>
         </el-table-column>
+        <el-table-column label="采购日期" prop="purchase_date" min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              {{ scope.row.purchase_date || '-' }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column label="采购总额" prop="total_price" min-width="100">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
@@ -162,6 +169,7 @@
       <el-form label-position="left" label-width="100px" style="padding: 0 20px; margin-top: -10px;">
         <el-form-item label="商品名称：">{{ itemDetail.detail.item_name }}</el-form-item>
         <el-form-item label="供应商：">{{ itemDetail.detail.supplier && itemDetail.detail.supplier.name }}</el-form-item>
+        <el-form-item label="采购日期：">{{itemDetail.detail.purchase_date || '-'}}</el-form-item>
         <el-form-item label="创建人：">{{ itemDetail.detail.operator && itemDetail.detail.operator.realname }}</el-form-item>
         <el-form-item label="采购员：">{{ itemDetail.detail.buyer && itemDetail.detail.buyer.realname }}</el-form-item>
         <el-form-item label="采购总额：">{{ returnPrice(itemDetail.detail.total_price) }} 元</el-form-item>

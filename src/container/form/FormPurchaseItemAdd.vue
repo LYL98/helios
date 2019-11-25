@@ -57,7 +57,7 @@
             <li style="margin-top: 40px;">
               <el-checkbox-group v-model="multipleSelection" @change="handleCheckedItemsChange">
                 <ul style="padding: 0 10px;">
-                  <li v-for="item in showList">
+                  <li v-for="item in showList" :key="item.code">
                     <el-checkbox :label="item" :key="item.code">{{item.title}}</el-checkbox>
                   </li>
                 </ul>
@@ -104,7 +104,7 @@
       </el-form-item>
     </el-form>
 
-    <el-form :model="submitData" style="width: 1150px;" v-if="isShowEdit" :rules="rules" ref="ruleForm">
+    <el-form :model="submitData" style="width: 1200px;" v-if="isShowEdit" :rules="rules" ref="ruleForm">
       <el-form-item>
         <ul class="edit-list">
           <li class="header">
@@ -113,6 +113,7 @@
               <li class="sale-num-last">昨日销量</li>
               <li class="price-sale-last">昨日销售价</li>
               <li class="supplier">供应商</li>
+              <li class="purchase-date">采购日期</li>
               <li class="total-price">采购总额(元)</li>
               <li class="number">采购件数(件)</li>
               <li class="weight">重量总计(斤)</li>
@@ -147,9 +148,17 @@
                     :provinceCode="province.code"
                     placeholder="供应商"
                     v-model="item.input.supplier_id"
-                    style="width: 160px;"
+                    style="width: 140px;"
                     :clearable="false"
                   />
+                </el-form-item>
+              </li>
+              <li class="purchase-date">
+                <el-form-item
+                  :prop="'editList.' + index + '.input.purchase_date'"
+                  :rules="[{ required: true, message: '请选择采购日期', trigger: 'change' }]"
+                >
+                  <el-date-picker size="mini" type="date" style="width: 140px;" value-format="yyyy-MM-dd" v-model="item.input.purchase_date"></el-date-picker>
                 </el-form-item>
               </li>
               <li class="total-price">
@@ -157,7 +166,7 @@
                   :prop="'editList.' + index + '.input.total_price'"
                   :rules="[{ required: true, message: '不能为空', trigger: 'change' }, { validator: validTotalPrice, trigger: 'blur' }]"
                 >
-                  <el-input size="mini" style="width: 100px;" v-model="item.input.total_price"></el-input>
+                  <el-input size="mini" style="width: 80px;" v-model="item.input.total_price"></el-input>
                 </el-form-item>
               </li>
               <li class="number">
@@ -165,7 +174,7 @@
                   :prop="'editList.' + index + '.input.number'"
                   :rules="[{ required: true, message: '不能为空', trigger: 'change' }, { validator: validNumber, trigger: 'blur' }]"
                 >
-                  <el-input size="mini" style="width: 100px;" v-model="item.input.number" @input="changeUnitPrice(item, index)"></el-input>
+                  <el-input size="mini" style="width: 80px;" v-model="item.input.number" @input="changeUnitPrice(item, index)"></el-input>
                 </el-form-item>
               </li>
               <li class="weight">
@@ -173,7 +182,7 @@
                   :prop="'editList.' + index + '.input.weight'"
                   :rules="item.sale_unit === '件' ? [{}] : [{ required: true, message: '不能为空', trigger: 'change' }, {validator: validWeight, trigger: 'blur'}]"
                 >
-                  <el-input size="mini" style="width: 100px;" v-model="item.input.weight" :disabled="item.sale_unit === '件'" @input="changeUnitPrice(item, index)">
+                  <el-input size="mini" style="width: 80px;" v-model="item.input.weight" :disabled="item.sale_unit === '件'" @input="changeUnitPrice(item, index)">
                   </el-input>
                 </el-form-item>
               </li>
@@ -182,7 +191,7 @@
                   :prop="'editList.' + index + '.input.unit_price'"
                   :rules="[{ validator: validUnitPrice, trigger: ['change', 'blur'] }]"
                 >
-                  <el-input size="mini" style="width: 100px;" disabled :value="calculateUnitPrice(item)">
+                  <el-input size="mini" style="width: 80px;" disabled :value="calculateUnitPrice(item)">
                   </el-input>
                 </el-form-item>
               </li>
@@ -205,7 +214,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
-  import {Row, Col, Input, Checkbox, CheckboxGroup, Table, Dialog, TableColumn, Form, FormItem, Button, Message} from 'element-ui';
+  import {Row, Col, Input, Checkbox, CheckboxGroup, Table, Dialog, TableColumn, Form, FormItem, Button, Message, DatePicker} from 'element-ui';
   import {ButtonGroup, ToPrice, QueryItem, SelectBuyer, SelectDisplayClass} from '@/common';
   import {SelectSupplier} from '@/container';
   import {Purchase} from '@/service';
@@ -217,6 +226,7 @@
       'el-row': Row,
       'el-col': Col,
       'el-input': Input,
+      'el-date-picker': DatePicker,
       'el-checkbox': Checkbox,
       'el-checkbox-group': CheckboxGroup,
       'el-table': Table,
@@ -484,6 +494,7 @@
           return Object.assign({}, item, {
             input: {
               supplier_id: '',
+              purchase_date: '',
               total_price: '',
               unit_price: '',
               number: '',
@@ -541,6 +552,7 @@
               {
                 item_id: item.id,
                 supplier_id: item.input.supplier_id,
+                purchase_date: item.input.purchase_date,
                 total_price: DataHandle.handlePrice(item.input.total_price),
                 number: Number(item.input.number),
                 weight: DataHandle.handleWeight(item.input.weight),
@@ -612,7 +624,7 @@
     }
 
     .edit-list .sale-num-last {
-      width: 80px;
+      width: 70px;
     }
 
     .edit-list .price-sale-last {
@@ -620,23 +632,27 @@
     }
 
     .edit-list .supplier {
-      width: 180px;
+      width: 160px;
+    }
+
+    .edit-list .purchase-date {
+      width: 160px;
     }
 
     .edit-list .total-price {
-      width: 120px;
+      width: 90px;
     }
 
     .edit-list .number {
-      width: 120px;
+      width: 90px;
     }
 
     .edit-list .weight {
-      width: 120px;
+      width: 90px;
     }
 
     .edit-list .unit-price {
-      width: 120px;
+      width: 90px;
     }
 
     .edit-list .operate {
