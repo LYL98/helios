@@ -1,6 +1,6 @@
 <template>
   <div class="table-body">
-    <div class="table-top">
+    <div class="table-top" v-if="auth.isAdmin || auth.PurchaseFinanceApprove">
       <div class="left">
         <el-button size="mini" type="primary" @click.native="handleApproveItem(multipleSelection)" :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
       </div>
@@ -19,7 +19,7 @@
         :current-row-key="clickedRow[rowIdentifier]"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="30" v-if="auth.isAdmin || auth.PurchaseFinanceApprove"></el-table-column>
+        <el-table-column type="selection" width="30" :selectable="selectable" v-if="auth.isAdmin || auth.PurchaseFinanceApprove"></el-table-column>
         <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize < 999950 ? 68 : 88" label="序号" :index="indexMethod"></el-table-column>
         <el-table-column label="编号/商品名" min-width="170">
           <template slot-scope="scope" >
@@ -278,7 +278,10 @@
       })
     },
     methods: {
-
+      // 判断当前行是否可以被选中
+      selectable(row) {
+        return row.status === 'first_checked';
+      },
       logCellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.logCurrentRow.id) {
           this.$data.logCurrentRow = row;

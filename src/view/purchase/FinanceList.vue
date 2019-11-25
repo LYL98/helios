@@ -78,7 +78,7 @@
       return {
         query: {},
         items: [], // 需要审核的项目集合
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
+        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         formSending: false,
         dialog: {
           isShowApprove: false
@@ -89,6 +89,9 @@
       documentTitle('采购 - 采购财务审核');
       this.initQuery();
       this.pruchaseFinanceQuery({ query: this.$data.query });
+      if(!this.auth.isAdmin && !this.auth.PurchaseFinanceApprove){
+        this.$data.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
+      }
     },
     methods: {
       ...mapActions(['pruchaseFinanceQuery', 'pruchaseFinanceApprove', 'pruchaseFinanceDecline']),

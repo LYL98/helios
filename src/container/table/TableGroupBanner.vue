@@ -1,14 +1,9 @@
 <template>
   <div class="table-body">
-    <div class="table-top" v-if="(page === 'item' && (auth.isAdmin || auth.GroupItemEditLog || auth.GroupItemAdd || auth.GroupItemDelete)) ||
-      (page === 'recover' && (auth.isAdmin || auth.GroupItemRecover))">
-      <div class="left">
-        <el-button type="primary" size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelete('multi')" v-if="(auth.isAdmin || auth.GroupItemDelete) && page === 'item'">批量删除</el-button>
-        <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleRecover('multi')" v-if="(auth.isAdmin || auth.GroupItemRecover) && page === 'recover'">批量恢复</el-button>
-      </div>
+    <div class="table-top" v-if="auth.isAdmin || auth.GroupBannerAdd">
+      <div class="left"></div>
       <div class="right" v-if="page === 'item'">
-        <el-button v-if="auth.isAdmin || auth.GroupItemEditLog" @click.native="handleShowDetail('DetailGroupItemEditLog')" size="mini" type="primary" plain>操作记录</el-button>
-        <el-button v-if="auth.isAdmin || auth.GroupItemAdd" @click="handleShowAddEdit('AddEditGroupItem')" size="mini" type="primary">新增</el-button>
+        <el-button v-if="auth.isAdmin || auth.GroupBannerAdd" @click="handleShowAddEdit('AddEditGroupBanner')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -24,7 +19,7 @@
         :current-row-key="clickedRow[rowIdentifier]"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="30" v-if="auth.isAdmin || auth.GroupItemDelete || auth.GroupItemRecover"></el-table-column>
+        <el-table-column type="selection" width="30" v-if="auth.isAdmin || auth.GroupBannerDelete || auth.GroupBannerRecover"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
@@ -33,7 +28,7 @@
               <!--编号名称-->
               <template v-if="item.key === 'code_title'">
                 <div class="td-item add-dot2">
-                  <div class="link-item" @click="handleShowDetail('DetailGroupItem', scope.row)" v-if="((auth.isAdmin || auth.GroupItemDetail) && page === 'item') || ((auth.isAdmin || auth.GroupItemRecoverDetail) && page === 'recover')">
+                  <div class="link-item" @click="handleShowDetail('DetailGroupBanner', scope.row)" v-if="((auth.isAdmin || auth.GroupBannerDetail) && page === 'item') || ((auth.isAdmin || auth.GroupBannerRecoverDetail) && page === 'recover')">
                     {{scope.row.code}}/{{scope.row.title}}
                   </div>
                   <div v-else>
@@ -60,19 +55,14 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: (auth.isAdmin || auth.GroupItemEdit) && page === 'item',
-                  command: () => handleShowAddEdit('AddEditGroupItem', scope.row)
+                  isDisplay: (auth.isAdmin || auth.GroupBannerEdit) && page === 'item',
+                  command: () => handleShowAddEdit('AddEditGroupBanner', scope.row)
                 },
                 {
                   title: '删除',
-                  isDisplay: (auth.isAdmin || auth.GroupItemDelete) && page === 'item',
+                  isDisplay: (auth.isAdmin || auth.GroupBannerDelete) && page === 'item',
                   command: () => handleDelete({ids: [scope.row.id]})
                 },
-                {
-                  title: '恢复',
-                  isDisplay: (auth.isAdmin || auth.GroupItemRecover) && page === 'recover',
-                  command: () => handleRecover({ids: [scope.row.id]})
-                }
               ]"
             />
           </template>
@@ -112,17 +102,16 @@
       page: { type: String, default: 'item' }, //页面item、recover
     },
     created() {
-      if((this.page === 'item' && !this.auth.isAdmin && !this.auth.GroupItemEditLog && !this.auth.GroupItemAdd && !this.auth.GroupItemDelete) ||
-        (this.page === 'recover' && !this.auth.isAdmin && !this.auth.GroupItemRecover)){
+      if(!this.auth.isAdmin && !this.auth.GroupBannerAdd){
           this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION;
         }
-      let pc = this.getPageComponents('QueryGroupItem');
+      let pc = this.getPageComponents('QueryGroupBanner');
       this.getData(pc.query);
     },
     data() {
       return {
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
-        tableName: 'TableGroupItem',
+        tableName: 'TableGroupBanner',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
           { label: '商品分类', key: 'category', width: '180', isShow: true },
