@@ -161,6 +161,13 @@ const Config = (() => {
       groupOrderDetail: apiM + '/gb_activity/order/detail', // 详情
       groupOrderCancel: apiM + '/gb_activity/order/cancel', // 取消
 
+      //banner管理
+      groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
+      groupBannerEdit: apiM + '/gb_basicdata/banner/edit', //banner修改
+      groupBannerDelete: apiM + '/gb_basicdata/banner/delete', //banner删除
+      groupBannerDetail: apiM + '/gb_basicdata/banner/detail', //banner详情
+      groupBannerList: apiM + '/gb_basicdata/banner/list', //banner列表
+
       baseProvinceListMy: apiM + '/common/my_province', //省列表(我的省列表)（全局省份）
       baseProvinceList: apiM + '/common/province/list', //省列表 (组件共用）
       baseStoreList: apiM + '/common/store/list', // 门店列表(组件共用)
