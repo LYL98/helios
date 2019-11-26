@@ -86,7 +86,7 @@
         tableName: 'TableGroupBanner',
         tableColumn: [
           { label: '图片', key: 'image', width: '100', isShow: true },
-          { label: 'url', key: 'url', width: '150', isShow: true },
+          //{ label: 'url', key: 'url', width: '150', isShow: true },
           { label: '排序', key: 'rank', width: '100', isShow: true },
           { label: '状态', key: 'status', width: '100', isShow: true },
           { label: '创建时间', key: 'created', width: '160', isShow: true },

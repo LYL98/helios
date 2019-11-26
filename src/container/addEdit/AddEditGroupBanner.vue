@@ -5,9 +5,9 @@
         <upload-img v-model="detail.images" module="group-banner" :limit="1"></upload-img>
         <span style="font-size: 12px; color: #999;">建议上传尺寸为690x280的图片</span>
       </el-form-item>
-      <el-form-item label="url">
+      <!--<el-form-item label="url">
         <el-input v-model="detail.url" placeholder="请输入绑定公众号发布的文章url"></el-input>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="是否可用">
           <el-radio-group v-model="detail.is_usable">
           <el-radio :label="true">可用</el-radio>
