@@ -146,9 +146,12 @@
                 <p class="content"><font v-if="detail.reason && index === 0">【{{detail.reason}}】</font>{{item.content}}</p>
                 <p class="images">
                   <my-image-preview v-if="item.images.length > 0">
-                    <img v-for="img in item.images" onerror="this.style.display='none'" :src="tencentPath + img + '_min200x200'"/>
+                    <img v-for="img in item.images" :key="img" onerror="this.style.display='none'" :src="tencentPath + img + '_min200x200'"/>
                   </my-image-preview>
                 </p>
+                <div v-if="item.media_url">
+                  <video :src="tencentPath + item.media_url" style="width: 200px;" controls></video>
+                </div>
                 <span>{{item.created}}</span>
               </div>
             </div>
