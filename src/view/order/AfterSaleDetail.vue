@@ -41,7 +41,7 @@
           </el-table-column>
           <el-table-column label="商品名称">
             <template slot-scope="scope">
-              <div>{{scope.row.item_code}} / {{scope.row.item_title}}</div>
+              <div style="cursor: pointer; text-decoration: underline;" @click="showItemDetail(scope.row)">{{scope.row.item_code}} / {{scope.row.item_title}}</div>
             </template>
           </el-table-column>
           <el-table-column label="商品参数" width="200">
@@ -197,6 +197,8 @@
       </span>
     </el-dialog>
     <after-sale-close :callback="myCallBack" />
+    <!--商品详情-->
+    <item-detail />
   </div>
 </template>
 
@@ -206,6 +208,7 @@ import { Form, FormItem, Table, TableColumn, Tag, Button, Select, Option, Input,
 import { ImagePreview } from '@/common';
 import { Config, DataHandle, Constant } from '@/util';
 import AfterSaleClose from './AfterSaleClose';
+import ItemDetail from './../item/Detail';
 
 export default {
   name: "AfterSaleDetail",
@@ -222,7 +225,8 @@ export default {
     'el-dialog': Dialog,
     'el-popover': Popover,
     'my-image-preview': ImagePreview,
-    'after-sale-close': AfterSaleClose
+    'after-sale-close': AfterSaleClose,
+    'item-detail': ItemDetail
   },
   computed: {
     ...mapGetters({
@@ -314,12 +318,22 @@ export default {
         }
       });
     },
+    //查看商品详情
+    showItemDetail(item) {
+      this.itemItemShowHideDetail({
+        isShow: true,
+        data: {
+          ...item,
+          id: item.item_id
+        }
+      })
+    },
     //组件回调
     myCallBack(res){
       let { detail } = this;
       this.orderAfterSaleDetail(detail.id);
     },
-    ...mapActions(['orderShowHideAfterSaleDetail', 'orderAfterSaleDetail', 'orderAftersaleAppend', 'orderShowHideAfterSaleClose', 'orderShowHideDetail'])
+    ...mapActions(['orderShowHideAfterSaleDetail', 'orderAfterSaleDetail', 'orderAftersaleAppend', 'orderShowHideAfterSaleClose', 'orderShowHideDetail', 'itemItemShowHideDetail'])
   }
 };
 </script>
