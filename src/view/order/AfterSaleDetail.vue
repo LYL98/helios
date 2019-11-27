@@ -149,8 +149,8 @@
                     <img v-for="img in item.images" :key="img" onerror="this.style.display='none'" :src="tencentPath + img + '_min200x200'"/>
                   </my-image-preview>
                 </p>
-                <div v-if="item.media_url">
-                  <video :src="tencentPath + item.media_url" style="width: 200px;" controls></video>
+                <div v-if="item.media_urls.length > 0">
+                  <video v-for="v in item.media_urls" :key="v" :src="tencentPath + v" style="width: 200px; margin-right: 10px;" controls></video>
                 </div>
                 <span>{{item.created}}</span>
               </div>
