@@ -42,7 +42,7 @@ const actions = {
   },
 
   async pruchaseWarehouseDecline({commit, dispatch, state}, {id, remark, success, error}) {
-    let res = await Purchase.itemDecline({id, remark});
+    let res = await Purchase.itemDecline([{id, remark}]);
     if (res.code === 0) {
       dispatch('message', {title: '提示', message: '采购仓管审核驳回！', type: 'success'});
       success && success();

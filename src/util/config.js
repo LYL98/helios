@@ -161,6 +161,13 @@ const Config = (() => {
       groupOrderDetail: apiM + '/gb_activity/order/detail', // 详情
       groupOrderCancel: apiM + '/gb_activity/order/cancel', // 取消
 
+      //banner管理
+      groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
+      groupBannerEdit: apiM + '/gb_basicdata/banner/edit', //banner修改
+      groupBannerDelete: apiM + '/gb_basicdata/banner/delete', //banner删除
+      groupBannerDetail: apiM + '/gb_basicdata/banner/detail', //banner详情
+      groupBannerList: apiM + '/gb_basicdata/banner/list', //banner列表
+
       baseProvinceListMy: apiM + '/common/my_province', //省列表(我的省列表)（全局省份）
       baseProvinceList: apiM + '/common/province/list', //省列表 (组件共用）
       baseStoreList: apiM + '/common/store/list', // 门店列表(组件共用)
@@ -293,8 +300,8 @@ const Config = (() => {
       purchaseItemAdd: apiM + '/purchase_records/add', // 批量增加采购商品
       purchaseItemModify: apiM + '/purchase_record/edit', // 修改采购商品
       purchaseItemFirstCheck: apiM + '/purchase_record/first_check', // 一审
-      purchaseItemSecondCheck: apiM + '/purchase_record/second_check', // 二审
-      purchaseItemDecline: apiM + '/purchase_record/decline', // 驳回
+      purchaseItemBatchSecondCheck: apiM + '/purchase_record/batch_second_check', // 二审
+      purchaseItemBatchDecline: apiM + '/purchase_record/batch_decline', // 批量驳回
       purchaseItemApproveLog: apiM + '/purchase_record/log', //审核日志
       purchaseItemExport: apiM + '/purchase_record/export', //导出
       purchaseItemHighAuthor: apiM + '/purchase_record/edit/high_author', //越权修改

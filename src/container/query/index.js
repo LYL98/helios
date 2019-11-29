@@ -15,6 +15,7 @@ export { default as QueryItemDailyAnalysis } from './QueryItemDailyAnalysis';
 export { default as QueryItemFluctuationAnalysis } from './QueryItemFluctuationAnalysis';
 export { default as QueryFinanceBalance } from './QueryFinanceBalance';
 export { default as QueryFinanceApprove } from './QueryFinanceApprove';
+export { default as QueryGroupBanner } from './QueryGroupBanner';
 export { default as QueryGroupItem } from './QueryGroupItem';
 export { default as QueryGroupActivity } from './QueryGroupActivity';
 export { default as QueryGroupStoreOrder } from './QueryGroupStoreOrder';

@@ -50,10 +50,10 @@ export default {
     return Http.post(Config.api.purchaseItemFirstCheck, data);
   },
   itemSecondCheck(data) {
-    return Http.post(Config.api.purchaseItemSecondCheck, data);
+    return Http.post(Config.api.purchaseItemBatchSecondCheck, data);
   },
   itemDecline(data) {
-    return Http.post(Config.api.purchaseItemDecline, data);
+    return Http.post(Config.api.purchaseItemBatchDecline, data);
   },
   itemApproveLog(data) {
     return Http.get(Config.api.purchaseItemApproveLog, data);

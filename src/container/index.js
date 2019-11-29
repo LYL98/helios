@@ -1,4 +1,5 @@
 export {
+  AddEditGroupBanner,
   AddEditGroupItem,
   AddEditGroupActivity,
   AddEditGroupItemClass
@@ -42,6 +43,7 @@ export {
   QueryItemFluctuationAnalysis,
   QueryFinanceBalance,
   QueryFinanceApprove,
+  QueryGroupBanner,
   QueryGroupItem,
   QueryGroupActivity,
   QueryGroupStoreOrder,
@@ -65,6 +67,7 @@ export {
   TableFinanceBalanceLog,
   TableFinanceBalanceMerchantLog,
   TableFinanceApprove,
+  TableGroupBanner,
   TableGroupItem,
   TableGroupItemClass,
   TableGroupStoreOrder,

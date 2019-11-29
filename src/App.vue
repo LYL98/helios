@@ -113,6 +113,8 @@
                               v-if="auth.isAdmin || auth.GroupItemClass"><span>商品分类</span></el-menu-item>
                 <el-menu-item index="GroupItemRecoverList" :route="{name: 'GroupItemRecoverList'}"
                               v-if="auth.isAdmin || auth.GroupItemRecoverList"><span>回收站</span></el-menu-item>
+                <el-menu-item index="GroupBanner" :route="{name: 'GroupBanner'}"
+                              v-if="auth.isAdmin || auth.GroupBanner"><span>Banner管理</span></el-menu-item>
               </el-submenu>
 
               <el-submenu index="Order" v-if="auth.isAdmin || auth.Order">

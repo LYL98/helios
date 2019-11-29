@@ -41,7 +41,6 @@
       :close-on-click-modal="false"
     >
       <form-purchase-item-approve
-        v-model="item"
         v-if="dialog.isShowApprove"
         :submit="handleSubmit"
         :close="handleClose"
@@ -135,16 +134,12 @@
         }
       },
       handleApproveItem(item) {
-        this.$data.item = Object.assign({}, this.$data.item, {
-          id: item.id,
-          type: 'checked',
-          remark: ''
-        });
+        this.$data.item = item;
         this.$data.dialog.isShowApprove = true;
       },
-      handleSubmit() {
+      handleSubmit(d) {
         this.$data.formSending = true;
-        let { id, remark, type } = this.$data.item;
+        let { id } = this.$data.item;
         let success = () => {
           this.pruchaseWarehouseQuery({query: this.$data.query});
           this.$data.formSending = false;
@@ -153,10 +148,10 @@
         let error = () => {
           this.$data.formSending = false;
         }
-        if (type === 'declined') {
-          this.pruchaseWarehouseDecline({id, remark, success, error});
+        if (d.type === 'declined') {
+          this.pruchaseWarehouseDecline({id, remark: d.remark, success, error});
         } else {
-          this.pruchaseWarehouseApprove({id, remark, success, error});
+          this.pruchaseWarehouseApprove({id, remark: d.remark, success, error});
         }
 
       },

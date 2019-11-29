@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div class="table-body">
+    <div class="table-top" v-if="auth.isAdmin || auth.PurchaseFinanceApprove">
+      <div class="left">
+        <el-button size="mini" type="primary" @click.native="handleApproveItem(multipleSelection)" :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
+      </div>
+      <div class="right"></div>
+    </div>
     <div @mousemove="handleTableMouseMove">
       <el-table
         class="list-table"
@@ -11,7 +17,9 @@
         highlight-current-row="highlight-current-row"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
+        @selection-change="handleSelectionChange"
       >
+        <el-table-column type="selection" width="30" :selectable="selectable" v-if="auth.isAdmin || auth.PurchaseFinanceApprove"></el-table-column>
         <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize < 999950 ? 68 : 88" label="序号" :index="indexMethod"></el-table-column>
         <el-table-column label="编号/商品名" min-width="170">
           <template slot-scope="scope" >
@@ -47,6 +55,13 @@
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.supplier && scope.row.supplier.name }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="采购日期" prop="purchase_date" min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              {{ scope.row.purchase_date || '-' }}
             </div>
           </template>
         </el-table-column>
@@ -100,7 +115,7 @@
               {
                 title: '审核',
                 isDisplay: (auth.isAdmin || auth.PurchaseFinanceApprove) && scope.row.status === 'first_checked',
-                command: () => handleApproveItem(scope.row)
+                command: () => handleApproveItem([scope.row])
               },
               {
                 title: '操作日志',
@@ -176,6 +191,7 @@
       <el-form label-position="left" label-width="100px" style="padding: 0 20px; margin-top: -10px;">
         <el-form-item label="商品名称：">{{ itemDetail.detail.item_name }}</el-form-item>
         <el-form-item label="供应商：">{{ itemDetail.detail.supplier && itemDetail.detail.supplier.name }}</el-form-item>
+        <el-form-item label="采购日期：">{{itemDetail.detail.purchase_date || '-'}}</el-form-item>
         <el-form-item label="创建人：">{{ itemDetail.detail.operator && itemDetail.detail.operator.realname }}</el-form-item>
         <el-form-item label="采购员：">{{ itemDetail.detail.buyer && itemDetail.detail.buyer.realname }}</el-form-item>
         <el-form-item label="采购总额：">{{ returnPrice(itemDetail.detail.total_price) }} 元</el-form-item>
@@ -196,7 +212,7 @@
 
 <script>
   import { mapGetters, mapActions} from 'vuex';
-  import { Table, TableColumn, Form, FormItem, Popover, Dialog, Message, Tag } from 'element-ui';
+  import { Table, TableColumn, Form, FormItem, Button, Popover, Dialog, Message, Tag } from 'element-ui';
   import {TableOperate, ToPrice, ImagePreview} from '@/common';
   import { Purchase } from '@/service';
   import { DataHandle, Constant, Config } from '@/util';
@@ -209,6 +225,7 @@
       'el-table-column': TableColumn,
       'el-form': Form,
       'el-form-item': FormItem,
+      'el-button': Button,
       'el-popover': Popover,
       'el-dialog': Dialog,
       'el-tag': Tag,
@@ -261,7 +278,10 @@
       })
     },
     methods: {
-
+      // 判断当前行是否可以被选中
+      selectable(row) {
+        return row.status === 'first_checked';
+      },
       logCellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.logCurrentRow.id) {
           this.$data.logCurrentRow = row;
@@ -309,14 +329,15 @@
         this.$data.approveLog.isShow = false;
       },
 
-      handleApproveItem(item) {
-        this.$props.approveItem(item);
+      handleApproveItem(items) {
+        this.$props.approveItem(items);
       },
     }
   }
 </script>
 
 <style lang="scss" scoped>
+  @import './table.scss';
   .title {
     color: inherit;
     padding: 5px 10px 5px 0;
