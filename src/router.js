@@ -107,6 +107,11 @@ const router = new Router({
       name: 'GroupStoreOrder',
       component: () => import('@/view/group/StoreOrder')
     },
+    {
+      path: '/group/banner',
+      name: 'GroupBanner',
+      component: () => import('@/view/group/Banner')
+    },
     /*订单*/
     {
       path: '/order/list',

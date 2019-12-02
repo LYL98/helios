@@ -41,7 +41,7 @@
           </el-table-column>
           <el-table-column label="商品名称">
             <template slot-scope="scope">
-              <div>{{scope.row.item_code}} / {{scope.row.item_title}}</div>
+              <div style="cursor: pointer; text-decoration: underline;" @click="showItemDetail(scope.row)">{{scope.row.item_code}} / {{scope.row.item_title}}</div>
             </template>
           </el-table-column>
           <el-table-column label="商品参数" width="200">
@@ -125,9 +125,12 @@
                 <p class="content"><font v-if="detail.reason && index === 0">【{{detail.reason}}】</font>{{item.content}}</p>
                 <p class="images">
                   <my-image-preview v-if="item.images.length > 0">
-                    <img v-for="img in item.images" onerror="this.style.display='none'" :src="tencentPath + img + '_min200x200'"/>
+                    <img v-for="img in item.images" :key="img" onerror="this.style.display='none'" :src="tencentPath + img + '_min200x200'"/>
                   </my-image-preview>
                 </p>
+                <div v-if="item.media_urls.length > 0">
+                  <video v-for="v in item.media_urls" :key="v" :src="tencentPath + v" style="width: 200px; margin-right: 10px;" controls></video>
+                </div>
                 <span>{{item.created}}</span>
               </div>
             </div>
@@ -170,11 +173,14 @@
       </span>
     </el-dialog>
     <after-sale-close :callback="myCallBack" :getPageComponents="getPageComponents" ref="AfterSaleClose" />
+    <!--商品详情-->
+    <item-detail :getPageComponents="getPageComponents" ref="AddEditItemList"/>
   </div>
 </template>
 
 <script>
 import { ImagePreview } from '@/common';
+import { AddEditItemList } from '@/container';
 import { Http, Config, DataHandle, Constant } from '@/util';
 import AfterSaleClose from './AfterSaleClose';
 import detailMixin from '@/container/detail/detail.mixin';
@@ -184,7 +190,8 @@ export default {
   mixins: [detailMixin],
   components: {
     'my-image-preview': ImagePreview,
-    'after-sale-close': AfterSaleClose
+    'after-sale-close': AfterSaleClose,
+    'item-detail': AddEditItemList
   },
   computed: {
     stepActive() {
@@ -268,6 +275,11 @@ export default {
       }else{
         this.$message({title: '提示', message: res.message, type: 'error'});
       }
+    },
+    //查看商品详情
+    showItemDetail(item) {
+      let pc = this.getPageComponents('AddEditItemList');
+      pc.showAddEdit(item, 'detail');
     },
     //组件回调
     myCallBack(res){

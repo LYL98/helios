@@ -7,6 +7,7 @@ export { default as TableFinanceBalanceApproveLog } from './TableFinanceBalanceA
 export { default as TableFinanceBalanceLog } from './TableFinanceBalanceLog';
 export { default as TableFinanceBalanceMerchantLog } from './TableFinanceBalanceMerchantLog';
 export { default as TableFinanceApprove } from './TableFinanceApprove';
+export { default as TableGroupBanner } from './TableGroupBanner';
 export { default as TableGroupItem } from './TableGroupItem';
 export { default as TableGroupItemClass } from './TableGroupItemClass';
 export { default as TableGroupStoreOrder } from './TableGroupStoreOrder';
