@@ -81,7 +81,7 @@
         <!--商品价格分类-->
         <h6 class="subtitle" style="padding-bottom: 8px; padding-top: 8px">商品价格</h6>
         <el-row :gutter="10">
-          <el-col :span="8">
+          <el-col :span="8" v-if="page !== 'after-sale-detail'">
             <el-form-item label="采购价">
               <span class="price">&yen;{{detail.price_buy_temp}}</span>
             </el-form-item>
@@ -91,7 +91,7 @@
               <span class="price">&yen;{{detail.price_sale_temp}}</span>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" v-if="page !== 'after-sale-detail'">
             <el-form-item label="计划加价率">
               <span class="detail">{{detail.markup_rate_temp}}%</span>
             </el-form-item>
@@ -227,6 +227,9 @@ export default {
     'el-tag': Tag,
     'my-image-preview': ImagePreview,
     'my-label': Label
+  },
+  props: {
+    page: { type: String, default: '' }, //after-sale-detail售后页面，不显示
   },
   created() {
 

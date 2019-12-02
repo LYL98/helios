@@ -198,7 +198,7 @@
     </el-dialog>
     <after-sale-close :callback="myCallBack" />
     <!--商品详情-->
-    <item-detail />
+    <item-detail page="after-sale-detail" />
   </div>
 </template>
 
