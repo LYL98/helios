@@ -1,4 +1,33 @@
-import { Table, TableColumn, Pagination, DatePicker, Row, Col, Input, Button, RadioGroup, RadioButton, Checkbox, Radio, Dialog, Form, FormItem, Transfer, TabPane, Tabs, Tag, Popover, Select, Option, Tree, Tooltip, InputNumber, Slider, TimePicker, Drawer } from 'element-ui';
+import {
+  Table,
+  TableColumn,
+  Pagination,
+  DatePicker,
+  Row,
+  Col,
+  Input,
+  Button,
+  RadioGroup,
+  RadioButton,
+  Checkbox,
+  Radio,
+  Dialog,
+  Form,
+  FormItem,
+  Transfer,
+  TabPane,
+  Tabs,
+  Tag,
+  Popover,
+  Select,
+  Option,
+  Tree,
+  Tooltip,
+  InputNumber,
+  Slider,
+  TimePicker,
+  Drawer
+} from 'element-ui';
 import { DataHandle, Config } from '@/util';
 
 export default {
