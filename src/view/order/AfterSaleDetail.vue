@@ -174,7 +174,7 @@
     </el-dialog>
     <after-sale-close :callback="myCallBack" :getPageComponents="getPageComponents" ref="AfterSaleClose" />
     <!--商品详情-->
-    <item-detail :getPageComponents="getPageComponents" ref="AddEditItemList"/>
+    <item-detail :getPageComponents="getPageComponents" ref="AddEditItemList" page="after-sale-detail"/>
   </div>
 </template>
 

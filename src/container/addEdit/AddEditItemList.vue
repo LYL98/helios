@@ -50,7 +50,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="10">
-          <el-col :span="8">
+          <el-col :span="8" v-if="page !== 'after-sale-detail'">
             <el-form-item label="采购价" prop="price_buy">
               <input-price  placeholder="0 - 1000000" size="medium" v-model="detail.price_buy"/>
             </el-form-item>
@@ -60,7 +60,7 @@
               <input-price  placeholder="0 - 1000000" size="medium" v-model="detail.price_sale"/>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" v-if="page !== 'after-sale-detail'">
             <el-form-item label="单价" prop="markup_rate">
               <!--销售价 / 毛重-->
               <input-price size="medium" disabled :value="detail.price_sale / (detail.gross_weight / 10)"/>
@@ -244,6 +244,9 @@ export default {
     'select-item-tags': SelecItemTags,
     'my-select-display-class': SelectDisplayClass,
     'image-preview': ImagePreview
+  },
+  poros: {
+    page: { type: String, default: '' }, //after-sale-detail售后页面，不显示
   },
   created() {
     this.$data.detail.province_code = this.province.code;
