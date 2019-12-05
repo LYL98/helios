@@ -1,6 +1,6 @@
 <template>
   <div id="app-body">
-    <div id="app" v-if="pageName !== 'Login'" @click="openCloseFullScreen(true)" :style="`min-width: ${needAdaptIpad ? 950 : 1000}px;`">
+    <div id="app" v-if="pageName !== 'Login'" style="min-width: 1000px;">
       <div id="head-div">
         <div id="logo-div" class="ellipsis" :style="`transition: width .2s; ${isHideMenu && 'width: 54px;'}`">
           {{ !isHideMenu ? brand.brand_name + '运营中心' : '' }}
@@ -39,168 +39,19 @@
               <span>首页</span>
             </el-menu-item>
 
-            <el-submenu index="Merchant" v-if="auth.isAdmin || auth.Merchant">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe736;</i>
-                <span>客户</span>
-              </template>
-              <el-menu-item index="MerchantStoreQuery" :route="{name: 'MerchantStoreQuery'}"
-                            v-if="auth.isAdmin || auth.MerchantStoreQuery"><span>门店列表</span></el-menu-item>
-              <el-menu-item index="MerchantRefundQuery" :route="{name: 'MerchantRefundQuery'}"
-                            v-if="auth.isAdmin || auth.MerchantRefundQuery"><span>门店筐信息</span></el-menu-item>
-            </el-submenu>
+            <!--动态菜单-->
+            <template v-for="(item, index) in menus">
+              <el-submenu :index="item.name" :key="index" v-if="auth.isAdmin || auth[item.name]">
+                <template slot="title">
+                  <i class="iconfont menu-icon" v-html="item.icon"></i>
+                  <span>{{item.title}}</span>
+                </template>
+                <template v-for="(m, i) in item.children">
+                  <el-menu-item :index="m.name" :key="i" :route="{name: m.name}" v-if="auth.isAdmin || auth[m.name]"><span>{{m.title}}</span></el-menu-item>
+                </template>
+              </el-submenu>
+            </template>
 
-            <el-submenu index="Item" v-if="auth.isAdmin || auth.Item">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe73e;</i>
-                <span>商品</span>
-              </template>
-              <el-menu-item index="ItemGlobal" :route="{name: 'ItemGlobal'}" v-if="auth.isAdmin || auth.ItemGlobal"><span>商品池</span></el-menu-item>
-              <el-menu-item index="ItemRecover" :route="{name: 'ItemRecover'}" v-if="auth.isAdmin || auth.ItemRecover"><span>回收站</span></el-menu-item>
-              <el-menu-item index="ItemList" :route="{name: 'ItemList'}" v-if="auth.isAdmin || auth.ItemList"><span>商品列表</span></el-menu-item>
-              <el-menu-item index="ItemAuditInnerTag" :route="{name: 'ItemAuditInnerTag'}" v-if="auth.isAdmin || auth.ItemAuditInnerTag"><span>商品价格标签审核</span></el-menu-item>
-              <el-menu-item index="ItemPricing" :route="{name: 'ItemPricing'}" v-if="auth.isAdmin || auth.ItemPricing"><span>每日报价</span></el-menu-item>
-            </el-submenu>
-
-            <el-submenu index="Marketing" v-if="auth.isAdmin || auth.Marketing">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe64c;</i>
-                <span>营销</span>
-              </template>
-              <el-menu-item index="MarketingScopePromotionQuery" :route="{name: 'MarketingScopePromotionQuery'}"
-                            v-if="auth.isAdmin || auth.MarketingScopePromotionQuery"><span>全场营销</span></el-menu-item>
-              <el-menu-item index="MarketingCouponQuery" :route="{name: 'MarketingCouponQuery'}"
-                            v-if="auth.isAdmin || auth.MarketingCouponQuery"><span>优惠券</span></el-menu-item>
-            </el-submenu>
-
-            <el-submenu index="Group" v-if="auth.isAdmin || auth.Group">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe652;</i>
-                <span>团购</span>
-              </template>
-              <el-menu-item index="GroupActivity" :route="{name: 'GroupActivity'}"
-                            v-if="auth.isAdmin || auth.GroupActivity"><span>团购活动</span></el-menu-item>
-              <el-menu-item index="GroupItem" :route="{name: 'GroupItem'}"
-                            v-if="auth.isAdmin || auth.GroupItem"><span>商品列表</span></el-menu-item>                
-              <el-menu-item index="GroupOrderQuery" :route="{name: 'GroupOrderQuery'}"
-                            v-if="auth.isAdmin || auth.GroupOrderQuery"><span>用户订单</span></el-menu-item>
-              <el-menu-item index="GroupStoreOrder" :route="{name: 'GroupStoreOrder'}"
-                            v-if="auth.isAdmin || auth.GroupStoreOrder"><span>门店订单</span></el-menu-item>
-              <el-menu-item index="GroupHeadQuery" :route="{name: 'GroupHeadQuery'}"
-                            v-if="auth.isAdmin || auth.GroupHeadQuery"><span>团购门店</span></el-menu-item>
-              <el-menu-item index="GroupMemberQuery" :route="{name: 'GroupMemberQuery'}"
-                            v-if="auth.isAdmin || auth.GroupMemberQuery"><span>团员列表</span></el-menu-item>
-              <el-menu-item index="GroupBuyStatement" :route="{name: 'GroupBuyStatement'}"
-                            v-if="auth.isAdmin || auth.GroupBuyStatement"><span>团购统计</span></el-menu-item>
-              <el-menu-item index="GroupItemClass" :route="{name: 'GroupItemClass'}"
-                            v-if="auth.isAdmin || auth.GroupItemClass"><span>商品分类</span></el-menu-item>
-              <el-menu-item index="GroupItemRecoverList" :route="{name: 'GroupItemRecoverList'}"
-                            v-if="auth.isAdmin || auth.GroupItemRecoverList"><span>回收站</span></el-menu-item>
-              <el-menu-item index="GroupBanner" :route="{name: 'GroupBanner'}"
-                              v-if="auth.isAdmin || auth.GroupBanner"><span>Banner管理</span></el-menu-item>
-            </el-submenu>
-
-            <el-submenu index="Order" v-if="auth.isAdmin || auth.Order">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe737;</i>
-                <span>订单</span>
-              </template>
-              <el-menu-item index="OrderList" :route="{name: 'OrderList'}" v-if="auth.isAdmin || auth.OrderList">
-                <span>订单列表</span></el-menu-item>
-              <el-menu-item index="OrderAfterSale" :route="{name: 'OrderAfterSale'}"
-                            v-if="auth.isAdmin || auth.OrderAfterSale"><span>售后列表</span></el-menu-item>
-            </el-submenu>
-
-            <el-submenu index="Operate" v-if="auth.isAdmin || auth.Operate">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe75f;</i>
-                <span>配送</span>
-              </template>
-              <el-menu-item index="OperateReceiving" :route="{name: 'OperateReceiving'}"
-                            v-if="auth.isAdmin || auth.OperateReceiving"><span>收货</span></el-menu-item>
-              <el-menu-item index="OperateLineList" :route="{name: 'OperateLineList'}"
-                            v-if="auth.isAdmin || auth.OperateLineList"><span>线路规划</span></el-menu-item>
-              <el-menu-item index="OperateRefundFrame" :route="{name: 'OperateRefundFrame'}"
-                            v-if="auth.isAdmin || auth.OperateRefundFrame"><span>退筐</span></el-menu-item>
-            </el-submenu>
-
-            <el-submenu index="Finance" v-if="auth.isAdmin || auth.Finance">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe64e;</i>
-                <span>财务</span>
-              </template>
-              <el-menu-item index="FinanceBalanceQuery" :route="{name: 'FinanceBalanceQuery'}"
-                            v-if="auth.isAdmin || auth.FinanceBalanceQuery"><span>客户财务管理</span></el-menu-item>
-              <el-menu-item index="FinanceApproveQuery" :route="{name: 'FinanceApproveQuery'}"
-                            v-if="auth.isAdmin || auth.FinanceApproveQuery"><span>财务审核</span></el-menu-item>
-            </el-submenu>
-
-            <el-submenu index="Statistic" v-if="auth.isAdmin || auth.Statistic">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe7ab;</i>
-                <span>统计</span>
-              </template>
-              <el-menu-item index="StatisticMarket" :route="{name: 'StatisticMarket'}"
-                            v-if="auth.isAdmin || auth.StatisticMarket"><span>商品销售统计</span></el-menu-item>
-              <el-menu-item index="StatisticClient" :route="{name: 'StatisticClient'}"
-                            v-if="auth.isAdmin || auth.StatisticClient"><span>客户订单统计</span></el-menu-item>
-              <el-menu-item index="StatisticOperation" :route="{name: 'StatisticOperation'}"
-                            v-if="auth.isAdmin || auth.StatisticOperation"><span>运营统计</span></el-menu-item>
-              <el-menu-item index="StatisticExportPrint" :route="{name: 'StatisticExportPrint'}"
-                            v-if="auth.isAdmin || auth.StatisticExportPrint"><span>导出、打印</span></el-menu-item>
-              <el-menu-item index="BusinessOperationStatement" :route="{name: 'BusinessOperationStatement'}"
-                            v-if="auth.isAdmin || auth.BusinessOperationStatement"><span>业务运营报表</span></el-menu-item>
-              <el-menu-item index="ItemOperationStatement" :route="{name: 'ItemOperationStatement'}"
-                            v-if="auth.isAdmin || auth.ItemOperationStatement"><span>商品运营报表</span></el-menu-item>
-            </el-submenu>
-
-            <el-submenu index="BasicData" v-if="auth.isAdmin || auth.BasicData">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe73b;</i>
-                <span>信息</span>
-              </template>
-              <el-menu-item index="BasicDataSystemClassList" :route="{name: 'BasicDataSystemClassList'}"
-                            v-if="auth.isAdmin || auth.BasicDataSystemClassList"><span>科学分类列表</span></el-menu-item>
-              <el-menu-item index="BasicDataDisplayClassList" :route="{name: 'BasicDataDisplayClassList'}"
-                            v-if="auth.isAdmin || auth.BasicDataDisplayClassList"><span>展示分类列表</span></el-menu-item>
-              <el-menu-item index="BasicDataFrameList" :route="{name: 'BasicDataFrameList'}"
-                            v-if="auth.isAdmin || auth.BasicDataFrameList"><span>筐信息列表</span></el-menu-item>
-              <el-menu-item index="BasicDataItemTagsList" :route="{name: 'BasicDataItemTagsList'}"
-                            v-if="auth.isAdmin || auth.BasicDataItemTagsList"><span>商品标签</span></el-menu-item>
-              <el-menu-item index="BasicDataItemInnerTagsList" :route="{name: 'BasicDataItemInnerTagsList'}"
-                            v-if="auth.isAdmin || auth.BasicDataItemInnerTagsList"><span>商品价格标签</span></el-menu-item>
-              <el-menu-item index="BasicDataProvinceList" :route="{name: 'BasicDataProvinceList'}"
-                            v-if="auth.isAdmin || auth.BasicDataProvinceList"><span>省列表</span></el-menu-item>
-              <el-menu-item index="BasicDataZoneList" :route="{name: 'BasicDataZoneList'}"
-                            v-if="auth.isAdmin || auth.BasicDataZoneList"><span>片区列表</span></el-menu-item>
-              <el-menu-item index="BasicDataCityList" :route="{name: 'BasicDataCityList'}"
-                            v-if="auth.isAdmin || auth.BasicDataCityList"><span>县域列表</span></el-menu-item>
-              <el-menu-item index="BasicDataGradeList" :route="{name: 'BasicDataGradeList'}"
-                            v-if="auth.isAdmin || auth.BasicDataGradeList"><span>商户等级列表</span></el-menu-item>
-              <el-menu-item index="BasicDataMerchantInnerTagsList" :route="{name: 'BasicDataMerchantInnerTagsList'}"
-                            v-if="auth.isAdmin || auth.BasicDataMerchantInnerTagsList"><span>商户内标签列表</span>
-              </el-menu-item>
-              <el-menu-item index="BasicDataMerchantOuterTagsList" :route="{name: 'BasicDataMerchantOuterTagsList'}"
-                            v-if="auth.isAdmin || auth.BasicDataMerchantOuterTagsList"><span>商户外标签列表</span>
-              </el-menu-item>
-            </el-submenu>
-
-            <el-submenu index="System" v-if="auth.isAdmin || auth.System">
-              <template slot="title">
-                <i class="iconfont menu-icon">&#xe74c;</i>
-                <span>设置</span>
-              </template>
-              <el-menu-item index="SystemRoleList" :route="{name: 'SystemRoleList'}"
-                            v-if="auth.isAdmin || auth.SystemRoleList"><span>角色列表</span></el-menu-item>
-              <el-menu-item index="SystemOperatorList" :route="{name: 'SystemOperatorList'}"
-                            v-if="auth.isAdmin || auth.SystemOperatorList"><span>运营人员列表</span></el-menu-item>
-              <el-menu-item index="SystemSetting" :route="{name: 'SystemSetting'}"
-                            v-if="auth.isAdmin || auth.SystemSetting"><span>运营配置</span></el-menu-item>
-              <el-menu-item index="SystemSettingCustom" :route="{name: 'SystemSettingCustom'}"
-                            v-if="auth.isAdmin || auth.SystemSettingCustom"><span>个性化设置</span></el-menu-item>
-              <el-menu-item index="SystemBannerList" :route="{name: 'SystemBannerList'}"
-                            v-if="auth.isAdmin || auth.SystemBannerList"><span>Banner管理</span></el-menu-item>
-            </el-submenu>
           </el-menu>
         </div>
         <div
@@ -211,7 +62,7 @@
           <img v-else src="@/assets/img/menu-close.png">
         </div>
       </div>
-      <div id="router-view-div" :style="`min-width: ${needAdaptIpad ? 770 : 1000}px; margin-left: ${isHideMenu ? '54px;' : '182px;'}`">
+      <div id="router-view-div" :style="`min-width: 1000px; margin-left: ${isHideMenu ? '54px;' : '182px;'}`">
         <router-view/>
       </div>
     </div>
@@ -233,11 +84,6 @@
     data() {
       let appSetting = Method.getPageSetting('App'); //获取页面设置
 
-      let isPad = false; //判断是否安卓
-      let ua = navigator.userAgent;
-      if (ua.indexOf('Android') > 0 || ua.indexOf('iPad') > 0) {
-        isPad = true;
-      }
       let name = this.$router.history.current.name;
       return {
         brand: {
@@ -246,12 +92,212 @@
         },
         tencentPath: Config.tencentPath,
         isHideMenu: appSetting.isHideMenu ? true : false,
-        menuIndex: 1,
-        menuSubIndex: 0,
+        menus:[{
+          title: '供应商',
+          icon: '&#xe736;',
+          name: 'Supplier',
+          children: [{
+            title: '供应商列表',
+            name: 'SupplierList'
+          }]
+        },{
+          title: '客户',
+          icon: '&#xe736;',
+          name: 'Merchant',
+          children: [{
+            title: '门店列表',
+            name: 'MerchantStoreQuery'
+          },{
+            title: '门店筐信息',
+            name: 'MerchantRefundQuery'
+          }]
+        },{
+          title: '商品',
+          icon: '&#xe73e;',
+          name: 'Item',
+          children: [{
+            title: '商品池',
+            name: 'ItemGlobal'
+          },{
+            title: '回收站',
+            name: 'ItemRecover'
+          },{
+            title: '商品列表',
+            name: 'ItemList'
+          },{
+            title: '商品价格标签审核',
+            name: 'ItemAuditInnerTag'
+          },{
+            title: '每日报价',
+            name: 'ItemPricing'
+          }]
+        },{
+          title: '营销',
+          icon: '&#xe64c;',
+          name: 'Marketing',
+          children: [{
+            title: '全场营销',
+            name: 'MarketingScopePromotionQuery'
+          },{
+            title: '优惠券',
+            name: 'MarketingCouponQuery'
+          }]
+        },{
+          title: '团购',
+          icon: '&#xe652;',
+          name: 'Group',
+          children: [{
+            title: '团购活动',
+            name: 'GroupActivity'
+          },{
+            title: '商品列表',
+            name: 'GroupItem'
+          },{
+            title: '用户订单',
+            name: 'GroupOrderQuery'
+          },{
+            title: '门店订单',
+            name: 'GroupStoreOrder'
+          },{
+            title: '团购门店',
+            name: 'GroupHeadQuery'
+          },{
+            title: '团员列表',
+            name: 'GroupMemberQuery'
+          },{
+            title: '团购统计',
+            name: 'GroupBuyStatement'
+          },{
+            title: '商品分类',
+            name: 'GroupItemClass'
+          },{
+            title: '回收站',
+            name: 'GroupItemRecoverList'
+          },{
+            title: 'Banner管理',
+            name: 'GroupBanner'
+          }]
+        },{
+          title: '订单',
+          icon: '&#xe737;',
+          name: 'Order',
+          children: [{
+            title: '订单列表',
+            name: 'OrderList'
+          },{
+            title: '售后列表',
+            name: 'OrderAfterSale'
+          }]
+        },{
+          title: '配送',
+          icon: '&#xe75f;',
+          name: 'Operate',
+          children: [{
+            title: '收货',
+            name: 'OperateReceiving'
+          },{
+            title: '线路规划',
+            name: 'OperateLineList'
+          },{
+            title: '退筐',
+            name: 'OperateRefundFrame'
+          }]
+        },{
+          title: '财务',
+          icon: '&#xe64e;',
+          name: 'Finance',
+          children: [{
+            title: '客户财务管理',
+            name: 'FinanceBalanceQuery'
+          },{
+            title: '财务审核',
+            name: 'FinanceApproveQuery'
+          }]
+        },{
+          title: '统计',
+          icon: '&#xe7ab;',
+          name: 'Statistic',
+          children: [{
+            title: '商品销售统计',
+            name: 'StatisticMarket'
+          },{
+            title: '客户订单统计',
+            name: 'StatisticClient'
+          },{
+            title: '运营统计',
+            name: 'StatisticOperation'
+          },{
+            title: '导出、打印',
+            name: 'StatisticExportPrint'
+          },{
+            title: '业务运营报表',
+            name: 'BusinessOperationStatement'
+          },{
+            title: '商品运营报表',
+            name: 'ItemOperationStatement'
+          }]
+        },{
+          title: '信息',
+          icon: '&#xe73b;',
+          name: 'BasicData',
+          children: [{
+            title: '科学分类列表',
+            name: 'BasicDataSystemClassList'
+          },{
+            title: '展示分类列表',
+            name: 'BasicDataDisplayClassList'
+          },{
+            title: '筐信息列表',
+            name: 'BasicDataFrameList'
+          },{
+            title: '商品标签',
+            name: 'BasicDataItemTagsList'
+          },{
+            title: '商品价格标签',
+            name: 'BasicDataItemInnerTagsList'
+          },{
+            title: '省列表',
+            name: 'BasicDataProvinceList'
+          },{
+            title: '片区列表',
+            name: 'BasicDataZoneList'
+          },{
+            title: '县域列表',
+            name: 'BasicDataCityList'
+          },{
+            title: '商户等级列表',
+            name: 'BasicDataGradeList'
+          },{
+            title: '商户内标签列表',
+            name: 'BasicDataMerchantInnerTagsList'
+          },{
+            title: '商户外标签列表',
+            name: 'BasicDataMerchantOuterTagsList'
+          }]
+        },{
+          title: '设置',
+          icon: '&#xe74c;',
+          name: 'System',
+          children: [{
+            title: '角色列表',
+            name: 'SystemRoleList'
+          },{
+            title: '运营人员列表',
+            name: 'SystemOperatorList'
+          },{
+            title: '运营配置',
+            name: 'SystemSetting'
+          },{
+            title: '个性化设置',
+            name: 'SystemSettingCustom'
+          },{
+            title: 'Banner管理',
+            name: 'SystemBannerList'
+          }]
+        }],
         pageName: 'Login',
         auth: {}, //用户权限,
         myInfo: {}, //当前登录信息
-        isPad: isPad
       }
     },
     components: {
@@ -269,13 +315,6 @@
       this.$getBrand().then(res => {
         this.$data.brand = res;
       });
-    },
-    computed: {
-      needAdaptIpad: {
-        get() {
-          return this.isPad && ['ItemPricing', 'OperateReceiving'].some(item => item === this.$data.pageName);
-        }
-      }
     },
     methods: {
       //下拉菜单
@@ -306,14 +345,6 @@
           //window.location.replace('/');
         }else{
           this.$message({ message: res.message, type: 'error' });
-        }
-      },
-      //全屏
-      openCloseFullScreen(isFull) {
-        let that = this;
-        let {isPad} = that;
-        if (isPad) {
-          isFull ? Method.openFullScreen() : Method.closeFullScreen();
         }
       },
       //显示或隐藏菜单
@@ -352,7 +383,7 @@
   /*body*/
   body {
     font: 14px "Microsoft YaHei", 微软雅黑, "Arail"; /* letter-spacing: 1px; */
-    background: #fff;
+    background: #f7f7f8;
     height: 100%;
     //overflow-y: scroll;
   }
@@ -539,7 +570,7 @@
       height: 42px;
       line-height: 42px;
       cursor: pointer;
-      margin-right: 60px;
+      margin-right: 15px;
       color: #fff;
     }
   }

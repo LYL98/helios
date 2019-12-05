@@ -47,7 +47,7 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message, Select, Option} from 'element-ui';
-  import {QueryItem, ButtonGroup, SelectZone} from '@/common';
+  import {QueryItem, SelectZone} from '@/common';
   import { DataHandle, Constant } from '@/util';
 
   export default {
@@ -61,8 +61,7 @@
       'el-select': Select,
       'el-option': Option,
       'my-select-zone': SelectZone,
-      'my-query-item': QueryItem,
-      'my-button-group': ButtonGroup,
+      'my-query-item': QueryItem
     },
     created() {
       //设置默认日期范围

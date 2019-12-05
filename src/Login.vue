@@ -28,7 +28,7 @@
 
 <script>
 import { Form, FormItem, Button, Input, Checkbox } from 'element-ui';
-import { Method, Config, Http } from '@/util';
+import { Config, Http } from '@/util';
 import md5 from 'md5';
 
 export default {
@@ -47,12 +47,6 @@ export default {
     });
   },
   data(){
-    let isPad = false; //判断是否安卓
-    let ua = navigator.userAgent;
-    if(ua.indexOf('Android') > 0 || ua.indexOf('iPad') > 0){
-      isPad = true;
-    }
-
     return{
       loading: false,
       brand: {
@@ -60,7 +54,6 @@ export default {
         brand_icon: ''
       },
       tencentPath: Config.tencentPath,
-      isPad: isPad,
       loginData: {
         login_name: '',
         password: '',
@@ -81,7 +74,7 @@ export default {
       this.$refs['ruleForm'].validate((valid, vs) => {
         if (valid) {
           (async ()=>{
-            let { loginData, isPad, loading } = this;
+            let { loginData, loading } = this;
             let isSuccess = false, si = null;
             //防止错误时回车穿透
             let dom = document.getElementById('btn-submit');
@@ -101,17 +94,6 @@ export default {
               this.$message({message: res.message, type: 'error'});
             }
             this.$data.loading = false;
-
-            
-            if(isPad){
-              clearInterval(si);
-              si = setInterval(()=>{
-                if(isSuccess){
-                  Method.openFullScreen(); //如果为pad，打开全屏
-                  clearInterval(si);
-                }
-              }, 500);
-            }
           })();
         }else{
           if(vs.login_name){

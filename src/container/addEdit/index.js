@@ -16,10 +16,6 @@ export { default as AddEditItemPricing } from './AddEditItemPricing';
 
 export { default as AddEditOperateLine } from './AddEditOperateLine';
 
-export { default as AddEditSystemRole } from './AddEditSystemRole';
-export { default as AddEditSystemOperator } from './AddEditSystemOperator';
-export { default as AddEditSystemBanner } from './AddEditSystemBanner';
-
 export { default as AddEditMerchantList } from './AddEditMerchantList';
 export { default as AddEditMerchantRefund } from './AddEditMerchantRefund';
 
@@ -27,3 +23,10 @@ export { default as AddEditGroupBanner } from './AddEditGroupBanner';
 export { default as AddEditGroupItem } from './AddEditGroupItem';
 export { default as AddEditGroupActivity } from './AddEditGroupActivity';
 export { default as AddEditGroupItemClass } from './AddEditGroupItemClass';
+
+export { default as AddEditSupplierList } from './AddEditSupplierList';
+
+export { default as AddEditSystemRole } from './AddEditSystemRole';
+export { default as AddEditSystemOperator } from './AddEditSystemOperator';
+export { default as AddEditSystemBanner } from './AddEditSystemBanner';
+

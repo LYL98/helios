@@ -305,6 +305,47 @@ const Constant = {
       }
     }]
   },
+  //供应商类型
+  SUPPLIER_TYPE: (type) => {
+    let data = [
+      { key: 'global_pur', value: '统采' },
+      { key: 'local_pur', value: '地采' }
+    ];
+    let d = {};
+    //value_key
+    if(type === 'value_key'){
+      data.map(item => { 
+        d[item.value] = item.key;
+      });
+      return d;
+    }
+    //key_value
+    data.map(item => { 
+      d[item.key] = item.value;
+    });
+    return d;
+  },
+  //供应商账期
+  SUPPLIER_BILL_TERM: (type) => {
+    let data = [
+      { key: 0, value: '现结' },
+      { key: 7, value: '周结' },
+      { key: 14, value: '双周结' }
+    ];
+    let d = {};
+    //value_key
+    if(type === 'value_key'){
+      data.map(item => { 
+        d[item.value] = item.key;
+      });
+      return d;
+    }
+    //key_value
+    data.map(item => { 
+      d[item.key] = item.value;
+    });
+    return d;
+  }
 };
 
 export default Constant;

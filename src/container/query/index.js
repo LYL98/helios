@@ -41,3 +41,5 @@ export { default as QueryOperateLine } from './QueryOperateLine';
 export { default as QueryOperateReceiving } from './QueryOperateReceiving';
 
 export { default as QuerySystemOperator } from './QuerySystemOperator';
+
+export { default as QuerySupplierList } from './QuerySupplierList';

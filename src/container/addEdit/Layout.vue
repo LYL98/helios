@@ -43,17 +43,20 @@ export default {
       top: 42px !important;
       width: calc(100% - 180px) !important;
       height: calc(100% - 42px) !important;
+      outline: none;
       >.el-drawer__header{
           font-size: 18px;
           border-bottom: 1px solid #ececec;
           margin: 0 !important;
           padding: 8px 16px !important;
+          >span{
+            outline: none;
+          }
       }
       >.el-drawer__body{
           overflow: auto !important;
           padding: 15px 0;
           min-width: 1000px;
-          max-width: 1920px;
       }
   }
 </style>

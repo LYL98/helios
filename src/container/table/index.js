@@ -41,3 +41,5 @@ export { default as TableSystemOperator } from './TableSystemOperator';
 
 export { default as TableMerchantList } from './TableMerchantList';
 export { default as TableMerchantRefund } from './TableMerchantRefund';
+
+export { default as TableSupplierList } from './TableSupplierList';

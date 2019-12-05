@@ -51,6 +51,15 @@ const Config = (() => {
       afterSaleUpdate: apiM + '/aftersale/update', //售后处理
       aftersaleAppend: apiM + '/aftersale/append', //售后单回复
 
+      //供应商
+      supplierDetail: apiM + '/supplier/detail', //供应商详情
+      supplierAdd: apiM + '/supplier/add', //供应商新增
+      supplierEdit: apiM + '/supplier/edit', //供应商修改
+      supplierAudit: apiM + '/supplier/audit', //供应商审核
+      supplierFreeze: apiM + '/supplier/freeze', //供应商冻结
+      supplierUnFreeze: apiM + '/supplier/unfreeze', //供应商解冻
+      supplierQuery: apiM + '/supplier/query', //供应商列表
+
       //商品池
       pItemAdd: apiM + '/p_item/add', //新商品资料添加
       pItemEdit: apiM + '/p_item/edit', //商品信息资料修改

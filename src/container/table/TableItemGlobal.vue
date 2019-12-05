@@ -82,7 +82,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="table-bottom">
+    <div class="table-bottom" v-if="dataItem.num > 0">
       <div class="left">
         <!--<el-button type="danger" size="mini" disabled>批量删除</el-button>-->
       </div>

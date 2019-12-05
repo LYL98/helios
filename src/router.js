@@ -18,6 +18,13 @@ const router = new Router({
       component: () => import('@/Login')
     },
 
+    /*供应商*/
+    {
+      path: '/supplier/list',
+      name: 'SupplierList',
+      component: () => import('@/view/supplier/List')
+    },
+
     /*客户*/
     {
       path: '/merchant/store/query',

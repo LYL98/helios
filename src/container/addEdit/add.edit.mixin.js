@@ -22,7 +22,7 @@ export default {
       defaultAvatar: Constant.IMGS.defaultAvatar,
       isShow: false,
       detail: {},
-      rules: {}
+      rules: {},
     }
   },
   created() {

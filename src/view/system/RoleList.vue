@@ -221,7 +221,7 @@ export default {
         permission_codes: [],
         is_super_admin: false
       });
-      let pc = this.getPageComponents('AddEditSystemRole');
+      let pc = this.viewGetPageComponents('AddEditSystemRole');
       pc.showAddEdit(this.dataItem, this.detail);
     },
     //删除数据
