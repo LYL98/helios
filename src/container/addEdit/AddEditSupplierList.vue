@@ -1,13 +1,19 @@
 <template>
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-      <el-form class="custom-form" label-position="right" :disabled="pageType === 'detail'" label-width="110px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
+      <el-form class="custom-form" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
 
         <h6 class="subtitle" v-if="pageType === 'detail'">基本信息</h6>
         <el-form-item label="名称" prop="title">
           <el-input placeholder="20个字符以内" size="medium" v-model="detail.title" style="width: 520px;"/>
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
+        <el-form-item label="联系人姓名" prop="linkman">
+          <el-input placeholder="请输入姓名" size="medium" :maxlength="10" v-model="detail.linkman" style="width: 320px;"/>
+        </el-form-item>
+        <el-form-item label="联系人手机号" prop="contact_phone">
+          <el-input placeholder="" size="medium" v-model="detail.contact_phone" style="width: 240px;"/>
+        </el-form-item>
+        <el-form-item label="登录手机号" prop="phone">
           <el-input placeholder="" size="medium" v-model="detail.phone" style="width: 240px;"/>
         </el-form-item>
         <el-form-item label="类型" prop="supplier_type">
@@ -76,8 +82,16 @@ export default {
           { required: true, message: '供应商名称不能为空', trigger: 'change' },
           { max: 20, message: '供应商名称不能超过20个字符', trigger: 'blur' }
         ],
+        linkman: [
+          {required: true, message: '联系人姓名不能为空', trigger: 'change'},
+          {max: 10, message: '请输入10个以内的字符', trigger: 'blur'}
+        ],
+        contact_phone: [
+          { required: true, message: '联系人手机号不能为空', trigger: 'change' },
+          { pattern: Verification.testStrs.checkMobile, message: '请输入11位的手机号', trigger: 'blur' }
+        ],
         phone: [
-          { required: true, message: '手机号不能为空', trigger: 'change' },
+          { required: true, message: '登录手机号不能为空', trigger: 'change' },
           { pattern: Verification.testStrs.checkMobile, message: '请输入11位的手机号', trigger: 'blur' }
         ],
       },
