@@ -15,7 +15,9 @@
       v-for="item in dataItem"
       :key="item.id"
       :label="item.title"
-      :value="item.id">
+      :value="item.id"
+      :disabled="item.disabled"
+    >
     </el-option>
   </el-select>
 </template>
@@ -31,7 +33,8 @@
       provinceCode: { type: String | Number, default: '' },
       supplierType: { type: String, default: '' }, //global_pur 统采；local_pur 地采
       billTerm: { type: String | Number, default: '' }, //账期
-      placeholder: { type: String, default: '请选择供应商' }
+      placeholder: { type: String, default: '请选择供应商' },
+      supplierIds: { type: Array, default: [] }, //当前选择了的id
     },
     methods: {
       //获取数据
@@ -47,10 +50,28 @@
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
+          this.judgeDisabled();
         }else{
           this.$messageBox.alert(res.message, '提示');
         }
       },
+      //判断选项是否可用
+      judgeDisabled(){
+        let { supplierIds, dataItem } = this;
+        let ds = [];
+        dataItem.forEach(item => {
+          ds = supplierIds.filter(id => id === item.id);
+        });
+        console.log(ds);
+      }
+    },
+    watch:{
+      supplierIds: {
+        deep: true,
+        handler: function (a, b) {
+          this.judgeDisabled();
+        }
+      }
     }
   }
 </script>

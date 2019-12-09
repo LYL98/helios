@@ -4,7 +4,7 @@
       <el-form-item label="供应商类型">{{supplierType[detail.sup_type]}}</el-form-item>
       <el-form-item label="选择供应商" v-if="detail.sup_type === 'local_pur'">
         <div v-for="(item, index) in detail.supplier_binds" :key="index">
-          <select-supplier v-model="item.supplier_id" supplierType="local_pur" :provinceCode="detail.province_code" supplierIds="supplierIds" @change="selectSupplier" style="width: 240px;"/>
+          <select-supplier v-model="item.supplier_id" supplierType="local_pur" :provinceCode="detail.province_code" :supplierIds="supplierIds" @change="selectSupplier" style="width: 240px;"/>
           <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="detail.supplier_binds.length > 1"></i>
         </div>
         <a href="javascript: void(0);" @click="addSupplier" style="font-size: 12px;">增加供应商</a>
