@@ -70,6 +70,7 @@ const Config = (() => {
       pItemModifyDetail: apiM + '/p_item/modify_detail', //商品资料修改日志
       pItemExportCheck: apiM + '/p_item/export_check', //商品导出之前进行校验
       pItemExport: apiM + '/p_item/export', //商品导出
+      pItemChgSupAttr: apiM + '/p_item/chg_sup_attr', //修改商品的供应属性:统采/地采, 如果是统采商品则支持修改商品的供应商
 
       // 商品管理
       itemEdit: apiM + '/item/edit', //商品编辑
@@ -85,6 +86,7 @@ const Config = (() => {
       itemPriceList: apiM + '/item/price/query',//每日定价页面查询
       itemPriceFix: apiM + '/item/price/fix',//商品定价
       itemPriceAudit: apiM + '/item/price/audit', //商品定价审核
+      itemChgSupplier: apiM + '/item/chg_supplier', //修改地采商品的供应商
 
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询
@@ -203,8 +205,7 @@ const Config = (() => {
       baseDistributorList: apiM + '/common/distributor/list', //配送人员列表（组件共用）
       baseItemList: apiM + '/common/item/list', //商品列表（组件共用）
       baseMerchantList: apiM + '/common/merchant/list', //商品列表（组件共用）
-      baseSupplierList: apiM + '/common/supplier/list', // 供应商列表(组件共用，查询选择)
-      baseSupplierListSelect: apiM + '/supplier/list', // 供应商列表(组件公用，下拉选择)
+      baseSupplierList: apiM + '/common/supplier/list', // 供应商列表(组件共用)
       baseItemDetail: apiM + '/common/item/detail', //商品列表（组件共用）
       baseOrderShipList: apiM + '/common/shipper/list', //快递公司列表 （订单手动发货时用）
 

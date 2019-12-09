@@ -43,7 +43,7 @@
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
         <template v-else>
-          <el-button size="medium" type="text" @click.native="pageType = 'edit'" v-if="(auth.isAdmin || auth.SupplierListEdit) && pageType === 'detail'" style="margin-right: 20px;">修改</el-button>
+          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="(auth.isAdmin || auth.SupplierListEdit) && pageType === 'detail'">修改</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>

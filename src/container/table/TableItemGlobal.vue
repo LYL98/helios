@@ -45,6 +45,8 @@
               <div class="td-item" v-else-if="item.key === 'net_weight'">{{returnWeight(scope.row.net_weight)}}斤</div>
               <!--科学分类-->
               <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
+              <!--供应商类型-->
+              <div class="td-item" v-else-if="item.key === 'sup_type'">{{supplierType[scope.row.sup_type]}}</div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
@@ -70,6 +72,11 @@
                   title: '恢复',
                   isDisplay: page === 'recover' && (auth.isAdmin || auth.ItemRecoverRecover),
                   command: () => handleRecover(scope.row)
+                },
+                {
+                  title: '切换供应商类型',
+                  isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalCheckSupplierType),
+                  command: () => handleShowForm('FormItemGlobalCheckSupplierType', scope.row)
                 },
                 {
                   title: '修改日志',
@@ -116,15 +123,12 @@
       page: { type: String, default: 'global' }, //页面global、recover
     },
     created() {
-      if ((!this.auth.isAdmin && !this.auth.ItemGlobalAdd && !this.auth.ItemGlobalExport) || this.page === 'recover') {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-      }
       let pc = this.getPageComponents('QueryItemGlobal');
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
+        supplierType: Constant.SUPPLIER_TYPE(),
         tableName: 'TableItemGlobal',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '2', isShow: true },
@@ -133,6 +137,7 @@
           { label: '包装规格', key: 'package_spec', width: '1', isShow: false },
           { label: '净重', key: 'net_weight', width: '1', isShow: false },
           { label: '科学分类', key: 'system_class', width: '1', isShow: true },
+          { label: '供应商类型', key: 'sup_type', width: '1', isShow: true },
           { label: '创建时间', key: 'created', width: '1', isShow: true },
           { label: '更新时间', key: 'updated', width: '1', isShow: false },
         ]

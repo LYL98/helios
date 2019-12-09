@@ -55,6 +55,8 @@
               <div class="td-item" v-else-if="item.key === 'display_class'">{{scope.row.display_class.title || '-'}}</div>
               <!--库存-->
               <div class="td-item" v-else-if="item.key === 'item_stock'">{{query.is_on_sale ? scope.row.item_stock + '件' : '-'}}</div>
+              <!--供应商类型-->
+              <div class="td-item" v-else-if="item.key === 'sup_type'">{{supplierType[scope.row.sup_type]}}</div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
@@ -85,6 +87,11 @@
                   title: '修改商品价格标签',
                   isDisplay: (auth.isAdmin || auth.ItemListInnerTagsEdit) && scope.row.is_on_sale,
                   command: () => handleShowForm('FormItemListEditInnerTag', scope.row)
+                },
+                {
+                  title: '修改供应商',
+                  isDisplay: scope.row.sup_type === 'local_pur' && (auth.isAdmin || auth.ItemListEditSupplier),
+                  command: () => handleShowForm('FormItemListEditSupplier', scope.row)
                 },
                 {
                   title: '修改日志',
@@ -133,6 +140,7 @@
     },
     data() {
       return {
+        supplierType: Constant.SUPPLIER_TYPE(),
         tableName: 'TableItemList',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '2', isShow: true },
@@ -143,6 +151,7 @@
           { label: '库存', key: 'item_stock', width: '1', isShow: true },
           { label: '净重', key: 'net_weight', width: '1', isShow: false },
           { label: '包装规格', key: 'package_spec', width: '1', isShow: false },
+          { label: '供应商类型', key: 'sup_type', width: '1', isShow: true },
           { label: '创建时间', key: 'created', width: '1', isShow: true },
           { label: '更新时间', key: 'updated', width: '1', isShow: false },
         ]

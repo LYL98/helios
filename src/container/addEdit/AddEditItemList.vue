@@ -197,6 +197,12 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <h6 class="subtitle" style="padding-bottom: 16px">供应商信息</h6>
+        <el-form-item label="供应商类型">{{supplierType[detail.sup_type]}}</el-form-item>
+        <el-form-item label="供应商">
+          <other-item-supplier :supplierType="detail.sup_type" :supplierBinds="detail.supplier_binds"/>
+        </el-form-item>
+        <h6 class="subtitle" style="padding-bottom: 16px">其它信息</h6>
         <el-row :gutter="10">
           <el-col :span="16">
             <el-form-item label="商品详情">
@@ -219,9 +225,9 @@
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
         <template v-else>
+          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="(auth.isAdmin || auth.ItemListEdit) && detail.is_on_sale">修改销售信息</el-button>
+          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'on_sale'" v-if="(auth.isAdmin || auth.ItemListOnGround) && !detail.is_on_sale">上 架</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-          <el-button size="medium" type="primary" @click.native="pageType = 'edit'" v-if="(auth.isAdmin || auth.ItemListEdit) && detail.is_on_sale">修改销售信息</el-button>
-          <el-button size="medium" type="primary" @click.native="pageType = 'on_sale'" v-if="(auth.isAdmin || auth.ItemListOnGround) && !detail.is_on_sale">上 架</el-button>
         </template>
       </div>
     </add-edit-layout>
@@ -233,6 +239,7 @@ import addEditMixin from './add.edit.mixin';
 import Layout from './Layout';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
 import { SelectDisplayClass, ImagePreview, InputNumber, InputPrice, SelectInnerTag, SelecItemTags } from '@/common';
+import { OtherItemSupplier } from '@/component';
 
 export default {
   name: "AddEditItemList",
@@ -243,7 +250,8 @@ export default {
     'select-inner-tag': SelectInnerTag,
     'select-item-tags': SelecItemTags,
     'my-select-display-class': SelectDisplayClass,
-    'image-preview': ImagePreview
+    'image-preview': ImagePreview,
+    'other-item-supplier': OtherItemSupplier
   },
   poros: {
     page: { type: String, default: '' }, //after-sale-detail售后页面，不显示
@@ -340,9 +348,12 @@ export default {
       system_class: {},
       first_grounder: {},
       last_updater: {},
-      city_prices_temp: []
+      city_prices_temp: [],
+      sup_type: 'global_pur', //供应商类型（默认统采）
+      supplier_binds: []
     }
     return {
+      supplierType: Constant.SUPPLIER_TYPE(),
       initDetail: initDetail,
       detail: JSON.parse(JSON.stringify(initDetail)),
       systemClassProps: {

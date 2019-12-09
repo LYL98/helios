@@ -1,82 +1,54 @@
 <template>
   <el-select
-    v-model="selectedSupplierId"
+    v-model="selectId"
     :size="size"
     :filterable="filterable"
     :clearable="clearable"
     :disabled="disabled"
     :placeholder="placeholder"
     style="width:100%;"
+    @change="handleChange"
   >
     <el-option v-if="showAll" key="" label="全部" value="">
     </el-option>
     <el-option
       v-for="item in dataItem"
       :key="item.id"
-      :label="item.name"
+      :label="item.title"
       :value="item.id">
     </el-option>
   </el-select>
 </template>
 
 <script>
-  import { Select, Option, MessageBox } from 'element-ui';
   import { Http, Config } from '@/util';
+  import selectMixin from './select.mixin';
 
   export default {
     name: "SelectSupplier",
-    components: {
-      'el-select': Select,
-      'el-option': Option
-    },
-    // props: ['value', 'size', 'provinceCode', 'zoneCode' , 'filterable', 'clearable', 'placeholder', 'disabled'],
+    mixins: [selectMixin],
     props: {
-      showAll: { type: Boolean, default: false },
-      value: { type: String | Number },
-      provinceCode: { type: String | Number },
-      size: { type: String, default: '' },
-      filterable: { type: Boolean, default: true },
-      clearable: { type: Boolean, default: true},
-      placeholder: { type: String, default: '请选择供应商' },
-      disabled: { type: Boolean, default: false }
-    },
-    model: {
-      prop: 'value',
-      event: 'change'
-    },
-    data() {
-      return {
-        dataItem: []
-      }
-    },
-    computed: {
-      //县市改变
-      selectedSupplierId: {
-        get() {
-          return this.$props.value;
-        },
-        set(v) {
-          this.$emit('change', v);
-        }
-      }
-    },
-    created() {
-      this.baseSupplierListSelect();
+      provinceCode: { type: String | Number, default: '' },
+      supplierType: { type: String, default: '' }, //global_pur 统采；local_pur 地采
+      billTerm: { type: String | Number, default: '' }, //账期
+      placeholder: { type: String, default: '请选择供应商' }
     },
     methods: {
-      //根据传进来的省份code 获取城市列表
-      async baseSupplierListSelect(){
-        let res = await Http.get(Config.api.baseSupplierListSelect, {
-          province_code: this.$props.provinceCode || '',
-          condition: '',
-          is_check: 1, // 是否审核通过？ 0 否 1 是 null 全部
+      //获取数据
+      async getData(){
+        let res = await Http.get(Config.api.baseSupplierList, {
+          province_code: this.$props.provinceCode,
+          condition: this.query.condition,
+          supplier_type: this.$props.supplierType,
+          bill_term: this.$props.billTerm,
+          is_audited: 1, // 是否审核通过？ 0 否 1 是 null 全部
           is_freeze: 0 // 是否赠品？ 0 否 1 是 null 全部
         });
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
         }else{
-          MessageBox.alert(res.message, '提示');
+          this.$messageBox.alert(res.message, '提示');
         }
       },
     }

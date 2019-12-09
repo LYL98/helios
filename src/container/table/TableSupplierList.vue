@@ -32,10 +32,10 @@
                 </div>
               </template>
               <!--联系人-->
-              <template v-else-if="item.key === 'contact_phone_linkman'">
+              <template v-else-if="item.key === 'linkman_contact_phone'">
                 <div class="td-item add-dot2">
-                  {{scope.row.contact_phone}}<br/>
-                  {{scope.row.linkman}}
+                  {{scope.row.linkman}}<br/>
+                  {{scope.row.contact_phone}}
                 </div>
               </template>
               <!--类型-->
@@ -131,7 +131,7 @@
         tableName: 'TableSupplierList',
         tableColumn: [
           { label: '名称', key: 'title', width: '3', isShow: true },
-          { label: '联系人', key: 'contact_phone_linkman', width: '3', isShow: true },
+          { label: '联系人', key: 'linkman_contact_phone', width: '3', isShow: true },
           { label: '登录手机号', key: 'phone', width: '3', isShow: true },
           { label: '类型', key: 'supplier_type', width: '2', isShow: true },
           { label: '账期', key: 'bill_term', width: '2', isShow: true },
