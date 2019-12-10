@@ -94,11 +94,13 @@ export default {
     async submitData(){
       let { detail } = this;
       let con = true;
-      detail.supplier_binds.forEach(item => {
-        if(!item.supplier_id){
-          con = false;
-        }
-      });
+      if(detail.sup_type === 'global_pur'){
+        detail.supplier_binds.forEach(item => {
+          if(!item.supplier_id){
+            con = false;
+          }
+        });
+      }
       if(!con){
         this.$message({message: '请选择供应商', type: 'error'});
         return;
