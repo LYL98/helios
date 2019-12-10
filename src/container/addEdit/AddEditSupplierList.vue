@@ -17,10 +17,10 @@
           <el-input placeholder="" size="medium" v-model="detail.phone" style="width: 240px;"/>
         </el-form-item>
         <el-form-item label="类型" prop="supplier_type">
-          <el-radio v-model="detail.supplier_type" :label="key" :key="key" border size="mini" v-for="(value, key) in supplierType">{{value}}</el-radio>
+          <el-radio v-model="detail.supplier_type" :label="key" :key="key" border size="mini" v-for="(value, key) in supplierType" @change="detail.bill_term = 0">{{value}}</el-radio>
         </el-form-item>
         <el-form-item label="账期" prop="bill_term">
-          <el-radio v-model="detail.bill_term" :label="Number(key)" :key="key" border size="mini" v-for="(value, key) in supplierBillTerm">{{value}}</el-radio>
+          <el-radio v-model="detail.bill_term" :disabled="detail.supplier_type === 'global_pur' ? true : false" :label="Number(key)" :key="key" border size="mini" v-for="(value, key) in supplierBillTerm">{{value}}</el-radio>
         </el-form-item>
       </el-form>
 
