@@ -59,10 +59,15 @@
       judgeDisabled(){
         let { supplierIds, dataItem } = this;
         let ds = [];
-        dataItem.forEach(item => {
-          ds = supplierIds.filter(id => id === item.id);
+        dataItem.forEach((item, index) => {
+          let ds = supplierIds.filter(id => id === item.id);
+          if(ds.length > 0){
+            dataItem[index].disabled = true;
+          }else{
+            dataItem[index].disabled = false;
+          }
         });
-        console.log(ds);
+        this.$data.dataItem = JSON.parse(JSON.stringify(dataItem));
       }
     },
     watch:{

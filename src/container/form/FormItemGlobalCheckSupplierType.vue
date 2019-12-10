@@ -5,7 +5,7 @@
         <el-radio v-model="detail.sup_type" :label="key" :key="key" border size="mini" v-for="(value, key) in supplierType">{{value}}</el-radio>
       </el-form-item>
       <el-form-item label="选择供应商" v-if="detail.sup_type === 'global_pur'">
-        <div v-for="(item, index) in detail.supplier_binds" :key="index">
+        <div v-for="(item, index) in detail.supplier_binds" :key="index" style="margin-bottom: 10px;">
           <select-supplier v-model="item.supplier_id" supplierType="global_pur" :supplierIds="supplierIds" @change="selectSupplier" style="width: 240px;"/>
           <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="detail.supplier_binds.length > 1"></i>
         </div>
@@ -93,6 +93,16 @@ export default {
     //提交
     async submitData(){
       let { detail } = this;
+      let con = true;
+      detail.supplier_binds.forEach(item => {
+        if(!item.supplier_id){
+          con = false;
+        }
+      });
+      if(!con){
+        this.$message({message: '请选择供应商', type: 'error'});
+        return;
+      }
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.pItemChgSupAttr, {
         id: detail.id,
