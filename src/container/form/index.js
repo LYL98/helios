@@ -13,3 +13,4 @@ export { default as FormSystemOperatorResetPwd } from './FormSystemOperatorReset
 export { default as FormItemListEditInnerTag } from './FormItemListEditInnerTag';
 export { default as FormOperateReceivingAllot } from './FormOperateReceivingAllot';
 export { default as FormOperateReceivingNumber } from './FormOperateReceivingNumber';
+export { default as FormSupplierGPurchaseAudit } from './FormSupplierGPurchaseAudit';

@@ -43,3 +43,4 @@ export { default as TableMerchantList } from './TableMerchantList';
 export { default as TableMerchantRefund } from './TableMerchantRefund';
 
 export { default as TableSupplierList } from './TableSupplierList';
+export { default as TableSupplierGPurchase } from './TableSupplierGPurchase';

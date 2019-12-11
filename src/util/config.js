@@ -60,6 +60,13 @@ const Config = (() => {
       supplierUnFreeze: apiM + '/supplier/unfreeze', //供应商解冻
       supplierQuery: apiM + '/supplier/query', //供应商列表
 
+      //统采
+      supplierGPurchaseQuery: apiM + '/supplier/g_purchase/query', //统采订单
+      supplierDistribute: apiM + '/supplier/distribute', //划拨统采商品到各个省份, 同时会生成采购单
+      supplierGPurchaseAudit: apiM + '/supplier/g_purchase/audit', //统采采购单审核
+      supplierGPurchaseDetail: apiM + '/supplier/g_purchase/detail', //统采采购单详情
+      
+
       //商品池
       pItemAdd: apiM + '/p_item/add', //新商品资料添加
       pItemEdit: apiM + '/p_item/edit', //商品信息资料修改

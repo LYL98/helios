@@ -43,3 +43,4 @@ export { default as QueryOperateReceiving } from './QueryOperateReceiving';
 export { default as QuerySystemOperator } from './QuerySystemOperator';
 
 export { default as QuerySupplierList } from './QuerySupplierList';
+export { default as QuerySupplierGPurchase } from './QuerySupplierGPurchase';

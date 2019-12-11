@@ -311,19 +311,7 @@ const Constant = {
       { key: 'global_pur', value: '统采' },
       { key: 'local_pur', value: '地采' }
     ];
-    let d = {};
-    //value_key
-    if(type === 'value_key'){
-      data.map(item => { 
-        d[item.value] = item.key;
-      });
-      return d;
-    }
-    //key_value
-    data.map(item => { 
-      d[item.key] = item.value;
-    });
-    return d;
+    return handleKeyValue(type, data);
   },
   //供应商账期
   SUPPLIER_BILL_TERM: (type) => {
@@ -332,20 +320,34 @@ const Constant = {
       { key: 7, value: '周结' },
       { key: 14, value: '双周结' }
     ];
-    let d = {};
-    //value_key
-    if(type === 'value_key'){
-      data.map(item => { 
-        d[item.value] = item.key;
-      });
-      return d;
-    }
-    //key_value
+    return handleKeyValue(type, data);
+  },
+  //统采订单审核状态
+  G_PURCHASE_AUDIT_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待审核' },
+      { key: 'success', value: '审核通过' },
+      { key: 'fail', value: '作废' }
+    ];
+    return handleKeyValue(type, data);
+  }
+};
+
+//处理key value
+const handleKeyValue = (type, data) => {
+  let d = {};
+  //value_key
+  if(type === 'value_key'){
     data.map(item => { 
-      d[item.key] = item.value;
+      d[item.value] = item.key;
     });
     return d;
   }
-};
+  //key_value
+  data.map(item => { 
+    d[item.key] = item.value;
+  });
+  return d;
+}
 
 export default Constant;

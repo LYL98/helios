@@ -99,6 +99,9 @@
           children: [{
             title: '供应商列表',
             name: 'SupplierList'
+          },{
+            title: '统采订单',
+            name: 'SupplierGPurchase'
           }]
         },{
           title: '客户',

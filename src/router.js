@@ -24,6 +24,11 @@ const router = new Router({
       name: 'SupplierList',
       component: () => import('@/view/supplier/List')
     },
+    {
+      path: '/supplier/gpurchase',
+      name: 'SupplierGPurchase',
+      component: () => import('@/view/supplier/GPurchase')
+    },
 
     /*客户*/
     {
