@@ -17,7 +17,7 @@ import { Autocomplete, Button } from 'element-ui'
 import { Http, Config } from '@/util';
 
 export default {
-  name: "SearchItem",
+  name: "SearchRole",
   components: {
     'el-autocomplete': Autocomplete,
     'el-button': Button

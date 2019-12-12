@@ -80,7 +80,7 @@
 <script>
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message, Tooltip } from 'element-ui';
   import { Http, Config, DataHandle, Constant } from '@/util';
-  import { QueryItem, SearchItem } from '@/common';
+  import { QueryItem } from '@/common';
   import viewMixin from '@/view/view.mixin';
 
   import echarts from "echarts/lib/echarts";
@@ -105,7 +105,6 @@
       'el-select': Select,
       'el-option': Option,
       'el-input': Input,
-      'my-search-item': SearchItem,
       'my-query-item': QueryItem,
       'el-tooltip': Tooltip,
     },

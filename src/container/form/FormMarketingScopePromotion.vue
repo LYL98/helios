@@ -74,7 +74,6 @@
 
 <script>
   import {Form, FormItem, Table, TableColumn, DatePicker, Radio, RadioGroup, Input, Button, Message} from 'element-ui';
-  import {SearchItem} from '@/container/search';
   import { Http, Config } from '@/util';
 
   export default {
@@ -89,7 +88,6 @@
       'el-radio-group': RadioGroup,
       'el-input': Input,
       'el-button': Button,
-      'my-search-item': SearchItem
     },
     props: {
       item: {type: Object, required: true}, // 需要编辑的项

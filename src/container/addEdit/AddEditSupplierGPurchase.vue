@@ -2,40 +2,23 @@
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
-
-        <h6 class="subtitle" v-if="pageType === 'detail'">基本信息</h6>
-        <el-form-item label="名称" prop="title">
-          <el-input placeholder="20个字符以内" size="medium" v-model="detail.title" style="width: 520px;"/>
+        <el-form-item label="采购日期" prop="purchase_date">
+          <el-date-picker size="medium" v-model="detail.purchase_date" value-format="yyyy-MM-dd" placeholder="采购日期"/>
         </el-form-item>
-        <el-form-item label="联系人姓名" prop="linkman">
-          <el-input placeholder="请输入姓名" size="medium" :maxlength="10" v-model="detail.linkman" style="width: 320px;"/>
+        <el-form-item label="供应商" prop="supplier_id">
+          <select-supplier supplierType="global_pur" size="medium" v-model="detail.supplier_id" style="width: 360px;" :disabled="detail.id ? true : false"/>
         </el-form-item>
-        <el-form-item label="联系人手机号" prop="contact_phone">
-          <el-input placeholder="" size="medium" v-model="detail.contact_phone" style="width: 240px;"/>
+        <el-form-item label="商品" prop="item_id">
+          <select-g-item v-model="detail.item_id" size="medium" :supplierId="detail.supplier_id" style="width: 360px;" :disabled="detail.id ? true : false"></select-g-item>
         </el-form-item>
-        <el-form-item label="登录手机号" prop="phone">
-          <el-input placeholder="" size="medium" v-model="detail.phone" style="width: 240px;"/>
+        <el-form-item label="件数" prop="num">
+          <input-number size="medium" v-model="detail.num" style="width: 240px;" unit="件" />
         </el-form-item>
-        <el-form-item label="类型" prop="supplier_type">
-          <el-radio v-model="detail.supplier_type" :label="key" :key="key" border size="mini" v-for="(value, key) in supplierType" @change="detail.bill_term = 0">{{value}}</el-radio>
+        <el-form-item label="单价" prop="price">
+          <input-price size="medium" v-model="detail.price" style="width: 240px;"/>
         </el-form-item>
-        <el-form-item label="账期" prop="bill_term">
-          <el-radio v-model="detail.bill_term" :disabled="detail.supplier_type === 'global_pur' ? true : false" :label="Number(key)" :key="key" border size="mini" v-for="(value, key) in supplierBillTerm">{{value}}</el-radio>
-        </el-form-item>
+        <el-form-item label="总价">&yen;&nbsp;{{returnPrice(detail.num * detail.price)}}</el-form-item>
       </el-form>
-
-      <template v-if="pageType === 'detail'">
-        <h6 class="subtitle">商品信息</h6>
-        <el-table :data="detail.bind_items" :highlight-current-row="true" style="margin: 0 50px; width: 1000px; border-top: 1px solid #ececec;">
-          <el-table-column prop="title" label="编号/名称" width="180">
-            <template slot-scope="scope">
-              {{ scope.row.code }}<br/>
-              {{ scope.row.title }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="price" label="价格"></el-table-column>
-        </el-table>
-      </template>
 
       <div style="margin-left: 110px; margin-top: 80px;">
         <template v-if="judgeOrs(pageType, ['add', 'edit'])">
@@ -54,50 +37,52 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import Layout from './Layout';
-import { Http, Config, Constant, Verification } from '@/util';
+import { Http, Config } from '@/util';
+import { InputNumber, InputPrice } from '@/common';
+import { SelectSupplier, SelectGItem } from '@/component';
 
 export default {
   name: "AddEditSupplierGPurchase",
   mixins: [addEditMixin],
   components: {
+    'select-supplier': SelectSupplier,
+    'select-g-item': SelectGItem,
+    'input-number': InputNumber,
+    'input-price': InputPrice
   },
   created() {
   },
   data(){
     let initDetail = {
-      province_code: this.$province.code,
-      title: '',
-      phone: '',
-      supplier_type: 'global_pur',
-      bill_term: 0,
-      bind_items: []
+      purchase_date: '',
+      supplier_id: '',
+      item_id: '',
+      num: '',
+      price: '',
     }
     return {
       initDetail: initDetail,
       detail: JSON.parse(JSON.stringify(initDetail)),
-      supplierType: Constant.SUPPLIER_TYPE(),
-      supplierBillTerm: Constant.SUPPLIER_BILL_TERM(),
       rules: {
-        title: [
-          { required: true, message: '供应商名称不能为空', trigger: 'change' },
-          { max: 20, message: '供应商名称不能超过20个字符', trigger: 'blur' }
+        purchase_date: [
+          { required: true, message: '请选择采购日期', trigger: 'change' }
         ],
-        linkman: [
-          {required: true, message: '联系人姓名不能为空', trigger: 'change'},
-          {max: 10, message: '请输入10个以内的字符', trigger: 'blur'}
+        supplier_id: [
+          { required: true, message: '请选择供应商', trigger: 'change' }
         ],
-        contact_phone: [
-          { required: true, message: '联系人手机号不能为空', trigger: 'change' },
-          { pattern: Verification.testStrs.checkMobile, message: '请输入11位的手机号', trigger: 'blur' }
+        item_id: [
+          {required: true, message: '请选择商品', trigger: 'change'},
         ],
-        phone: [
-          { required: true, message: '登录手机号不能为空', trigger: 'change' },
-          { pattern: Verification.testStrs.checkMobile, message: '请输入11位的手机号', trigger: 'blur' }
+        num: [
+          { required: true, message: '请输入件数', trigger: 'change' },
+        ],
+        price: [
+          { required: true, message: '请输入金额', trigger: 'change' },
         ],
       },
       pageTitles: {
-        add: '新增划拨单',
-        edit: '修改划拨单',
+        add: '新增统采订单',
+        edit: '修改统采订单',
         detail: '统采订单详情'
       },
       pageType: 'add', //add, edit, detail
@@ -107,7 +92,7 @@ export default {
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
       if(data){
-        this.supplierDetail(data.id);
+        this.supplierGPurchaseDetail(data.id);
         this.$data.pageType = type;
       }else{
         this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
@@ -116,9 +101,9 @@ export default {
       }
     },
     //获取详情
-    async supplierDetail(id){
+    async supplierGPurchaseDetail(id){
       this.$loading({isShow: true});
-      let res = await Http.get(Config.api.supplierDetail, { id: id });
+      let res = await Http.get(Config.api.supplierGPurchaseDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
@@ -132,10 +117,10 @@ export default {
     async addEditData(){
       let { detail, pageType } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[pageType === 'edit' ? 'supplierEdit' : 'supplierAdd'], detail);
+      let res = await Http.post(Config.api[pageType === 'edit' ? 'supplierGPurchaseEdit' : 'supplierGPurchaseAdd'], detail);
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `供应商${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
+        this.$message({message: `统采订单${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableSupplierGPurchase');

@@ -48,6 +48,9 @@ export default {
         this.$message({message: '已审核', type: 'success'});
         this.$data.auditStatus = 'success';
         this.handleCancel(); //隐藏
+        //刷新数据(列表)
+        let pc = this.getPageComponents('TableSupplierGPurchase');
+        pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});
       }

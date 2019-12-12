@@ -113,7 +113,7 @@
 
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
-  import { QueryItem, TableOperate, SelectBuyer, SelectSystemClassList } from '@/common';
+  import { QueryItem, TableOperate, SelectSystemClassList } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import viewMixin from '@/view/view.mixin';
 
@@ -132,7 +132,6 @@
       'el-pagination': Pagination,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
-      'my-select-buyer': SelectBuyer,
       'select-system-class-list': SelectSystemClassList
     },
     data() {

@@ -16,7 +16,7 @@
           <div style="display: flex">
             <el-input
               size="small"
-              placeholder="订单编号/供应商名称/商品名称"
+              placeholder="供应商名称/商品名称"
               clearable
               class="query-item-input"
               v-model="query.condition"

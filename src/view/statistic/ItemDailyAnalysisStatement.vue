@@ -144,7 +144,6 @@
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-import { SearchItem } from '@/common';
 import { Http, Config, DataHandle } from '@/util';
 import { QueryItemDailyAnalysis } from '@/container'
 import Constant from "@/util/constant";
@@ -162,7 +161,6 @@ export default {
     'el-select': Select,
     'el-option': Option,
     'el-input': Input,
-    'my-search-item': SearchItem,
     'query-item-daily-analysis': QueryItemDailyAnalysis
   },
   created() {

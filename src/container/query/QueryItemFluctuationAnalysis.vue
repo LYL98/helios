@@ -71,7 +71,7 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message, Select, Option} from 'element-ui';
-  import { QueryItem, CollapseQuery, SelectSystemClass, SearchItem } from '@/common';
+  import { QueryItem, CollapseQuery, SelectSystemClass } from '@/common';
   import { DataHandle } from '@/util';
   import queryMixin from './query.mixin';
   import Constant from "../../util/constant";
@@ -87,7 +87,6 @@
       'el-select': Select,
       'el-option': Option,
       'select-system-class': SelectSystemClass,
-      'my-search-item': SearchItem,
       'my-query-item': QueryItem,
       'my-collapse-query': CollapseQuery
     },

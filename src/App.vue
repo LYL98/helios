@@ -102,6 +102,9 @@
           },{
             title: '统采订单',
             name: 'SupplierGPurchase'
+          },{
+            title: '统采调拨单',
+            name: 'SupplierGPurchaseAllot'
           }]
         },{
           title: '客户',

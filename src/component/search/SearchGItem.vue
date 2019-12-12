@@ -15,12 +15,15 @@ import { Autocomplete, Button } from 'element-ui'
 import { Http, Config } from '@/util';
 
 export default {
-  name: "SearchItem",
+  name: "SearchGItem",
   components: {
-    'el-autocomplete': Autocomplete,
-    'el-button': Button
+    'el-autocomplete': Autocomplete
   },
-  props: ['value', 'size', 'provinceCode'],
+  props: {
+    supplierId: { type: Number | String, default: '' },
+    value: { type: Number | String, default: '' },
+    size: { type: String, default: 'medium' }
+  },
   // watch: {
   //   inputValue: function (after, before) {
   //     // 把变化后的值发送到父组件
@@ -35,19 +38,18 @@ export default {
   },
   methods: {
     querySearchAsync(queryString, cb) {
-      this.baseItemList({query: queryString}, items => cb(items));
+      this.baseGItemList({query: queryString}, items => cb(items));
     },
     handleSelect(item) {
-      // console.log('item', item);
       this.$emit('onSelectItem', item)
     },
     clear() {
       this.inputValue = '';
     },
-    async baseItemList({query, id}, callback) {
-      let res = await Http.get(Config.api.baseItemList, {
-        condition: query,
-        province_code: this.$props.provinceCode || '',
+    async baseGItemList({query, id}, callback) {
+      let res = await Http.get(Config.api.baseGItemList, {
+        supplier_id: this.supplierId,
+        condition: query
       });
       if (res.code === 0) {
         let rd = res.data;

@@ -62,9 +62,13 @@ const Config = (() => {
 
       //统采
       supplierGPurchaseQuery: apiM + '/supplier/g_purchase/query', //统采订单
-      supplierDistribute: apiM + '/supplier/distribute', //划拨统采商品到各个省份, 同时会生成采购单
+      supplierGPurchaseAdd: apiM + '/supplier/g_purchase/add', //新增统采订单， 同时会附带生成入库单
+      supplierGPurchaseEdit: apiM + '/supplier/g_purchase/edit', //新增统采订单， 同时会附带生成入库单
       supplierGPurchaseAudit: apiM + '/supplier/g_purchase/audit', //统采采购单审核
       supplierGPurchaseDetail: apiM + '/supplier/g_purchase/detail', //统采采购单详情
+
+      //统采调拨单
+      dd: apiM + '/supplier/in_stock/list', //入库单列表(暂时，供统采调拨单用)
       
 
       //商品池
@@ -211,6 +215,7 @@ const Config = (() => {
       baseCommonBuyerList: apiM + '/common/buyer/list', //采购员列表（组件共用）
       baseDistributorList: apiM + '/common/distributor/list', //配送人员列表（组件共用）
       baseItemList: apiM + '/common/item/list', //商品列表（组件共用）
+      baseGItemList: apiM + '/common/p_item/list', //商品池列表（组件共用）
       baseMerchantList: apiM + '/common/merchant/list', //商品列表（组件共用）
       baseSupplierList: apiM + '/common/supplier/list', // 供应商列表(组件共用)
       baseItemDetail: apiM + '/common/item/detail', //商品列表（组件共用）

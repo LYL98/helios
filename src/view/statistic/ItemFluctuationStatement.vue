@@ -89,7 +89,6 @@
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
-import { SelectBuyer, SearchItem } from '@/common';
 import { Http, Config, DataHandle, Constant } from '@/util';
 import ItemFluctuationChart from "./ItemFluctuationChart";
 import { QueryItemFluctuationAnalysis } from '@/container'
@@ -109,7 +108,6 @@ export default {
     'el-radio-group': RadioGroup,
     'el-radio': Radio,
     'my-item-fluctuation-chart': ItemFluctuationChart,
-    'my-search-item': SearchItem,
     'query-item-fluctuation-analysis': QueryItemFluctuationAnalysis
   },
   data() {

@@ -3,7 +3,7 @@
     <div class="table-top" v-if="auth.isAdmin || auth.SupplierGPurchaseAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAdd" @click="handleShowAddEdit('AddEditSupplierGPurchase')" size="mini" type="primary">新增划拨单</el-button>
+        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAdd" @click="handleShowAddEdit('AddEditSupplierGPurchase')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -22,24 +22,19 @@
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
-              <!--编号-->
-              <template v-if="item.key === 'code'">
-                <div class="td-item">
-                  <div class="link-item link-item add-dot2" @click="handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'detail')" v-if="auth.isAdmin || auth.SupplierGPurchaseDetail">
-                    {{scope.row.title}}
-                  </div>
-                  <div class="add-dot2" v-else>{{scope.row.code}}</div>
-                </div>
+              <!--供应商-->
+              <template v-if="item.key === 'supplier'">
+                <div class="td-item add-dot2">{{scope.row.supplier.title}}</div>
               </template>
               <!--商品名称-->
               <template v-else-if="item.key === 'item'">
-                <div class="td-item add-dot2"><!--{{scope.row.item.code}}/{{scope.row.item.title}}--></div>
+                <div class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
               </template>
               <!--采购人-->
               <template v-else-if="item.key === 'purchaser'">
                 <div class="td-item add-dot2">
-                  <!--{{scope.row.purchaser.linkman}}<br/>
-                  {{scope.row.purchaser.contact_phone}}-->
+                  {{scope.row.creater.realname}}<br/>
+                  {{scope.row.creater.phone}}
                 </div>
               </template>
               <!--状态-->
@@ -60,13 +55,18 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
+                  title: '详情',
+                  isDisplay: auth.isAdmin || auth.SupplierGPurchaseDetail,
+                  command: () => handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'detail')
+                },
+                {
                   title: '修改',
                   isDisplay: auth.isAdmin || auth.SupplierGPurchaseEdit,
                   command: () => handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'edit')
                 },
                 {
                   title: '审核',
-                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseAudit) && !scope.row.is_audited,
+                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseAudit) && scope.row.audit_status === 'init',
                   command: () => handleShowForm('FormSupplierGPurchaseAudit', scope.row)
                 }
               ]"
@@ -113,7 +113,6 @@
       return {
         tableName: 'TableSupplierGPurchase',
         tableColumn: [
-          { label: '订单编号', key: 'code', width: '3', isShow: true },
           { label: '商品', key: 'item', width: '3', isShow: true },
           { label: '供货商', key: 'supplier', width: '3', isShow: true },
           { label: '件数', key: 'num', width: '2', isShow: true },
@@ -127,8 +126,8 @@
         gPurchaseAuditStatus: Constant.G_PURCHASE_AUDIT_STATUS(),
         gPurchaseAuditStatusType: {
           init: 'warning',
-          success: 'warning',
-          fail: 'info'
+          success: 'info',
+          fail: 'danger'
         }
       }
     },
