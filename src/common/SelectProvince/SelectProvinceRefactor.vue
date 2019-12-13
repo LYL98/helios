@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="editValue" filterable placeholder="请选择" :disabled="disabled" style="width:100%;">
+  <el-select v-model="editValue" filterable placeholder="请选择" :disabled="disabled" :size="size" style="width:100%;">
     <el-option
       v-for="item in dataItem"
       :key="item.code"
@@ -21,7 +21,8 @@
     },
     props: {
       value: { type: [String, Number], default: '' },
-      disabled: { type: Boolean, default: false }
+      disabled: { type: Boolean, default: false },
+      size: { type: String, default: '' }
     },
     model: {
       prop: 'value',

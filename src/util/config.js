@@ -68,7 +68,13 @@ const Config = (() => {
       supplierGPurchaseDetail: apiM + '/supplier/g_purchase/detail', //统采采购单详情
 
       //统采调拨单
-      dd: apiM + '/supplier/in_stock/list', //入库单列表(暂时，供统采调拨单用)
+      supplierInStockList: apiM + '/supplier/in_stock/list', //入库单列表(暂时，供统采调拨单用)
+      supplierInStockDetail: apiM + '/supplier/in_stock/detail', //入库单详情(暂时，供统采调拨单用)
+      supplierGPurchaseDistributeQuery: apiM + '/supplier/distribute/query', //调拨单查询
+      supplierGPurchaseDistributeAdd: apiM + '/supplier/distribute/add', //调拨单新增
+      supplierGPurchaseDistributeEdit: apiM + '/supplier/distribute/edit', //调拨单修改
+      supplierGPurchaseDistributeAudit: apiM + '/supplier/distribute/audit', //调拨单审核
+      supplierGPurchaseDistributeDetail: apiM + '/supplier/distribute/detail', //调拨单详情
       
 
       //商品池

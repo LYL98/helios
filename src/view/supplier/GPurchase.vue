@@ -12,7 +12,7 @@
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'SupplierGPurchase',
+    name: 'GPurchase',
     components: {
       'query-supplier-g-purchase': QuerySupplierGPurchase,
       'table-supplier-g-purchase': TableSupplierGPurchase,

@@ -44,3 +44,4 @@ export { default as QuerySystemOperator } from './QuerySystemOperator';
 
 export { default as QuerySupplierList } from './QuerySupplierList';
 export { default as QuerySupplierGPurchase } from './QuerySupplierGPurchase';
+export { default as QuerySupplierGPurchaseDistribute } from './QuerySupplierGPurchaseDistribute';

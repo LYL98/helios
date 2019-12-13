@@ -104,7 +104,7 @@
             name: 'SupplierGPurchase'
           },{
             title: '统采调拨单',
-            name: 'SupplierGPurchaseAllot'
+            name: 'SupplierGPurchaseDistribute'
           }]
         },{
           title: '客户',

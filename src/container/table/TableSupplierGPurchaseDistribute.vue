@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.SupplierGPurchaseAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.SupplierGPurchaseDistributeAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAdd" @click="handleShowAddEdit('AddEditSupplierGPurchase')" size="mini" type="primary">新增</el-button>
+        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseDistributeAdd" @click="handleShowAddEdit('AddEditSupplierGPurchaseDistribute')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -30,15 +30,10 @@
               <template v-else-if="item.key === 'item'">
                 <div class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
               </template>
-              <!--价格-->
-              <template v-else-if="item.key === 'price'">
-                <div class="td-item add-dot2">&yen;{{returnPrice(scope.row.price)}}</div>
-              </template>
               <!--采购人-->
               <template v-else-if="item.key === 'purchaser'">
                 <div class="td-item add-dot2">
-                  {{scope.row.creater.realname}}<br/>
-                  {{scope.row.creater.phone}}
+                  
                 </div>
               </template>
               <!--状态-->
@@ -60,18 +55,18 @@
               :list="[
                 {
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.SupplierGPurchaseDetail,
-                  command: () => handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'detail')
+                  isDisplay: auth.isAdmin || auth.SupplierGPurchaseDistributeDetail,
+                  command: () => handleShowAddEdit('AddEditSupplierGPurchaseDistribute', scope.row, 'detail')
                 },
                 {
                   title: '修改',
-                  isDisplay: auth.isAdmin || auth.SupplierGPurchaseEdit,
-                  command: () => handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'edit')
+                  isDisplay: auth.isAdmin || auth.SupplierGPurchaseDistributeEdit,
+                  command: () => handleShowAddEdit('AddEditSupplierGPurchaseDistribute', scope.row, 'edit')
                 },
                 {
                   title: '审核',
-                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseAudit) && scope.row.audit_status === 'init',
-                  command: () => handleShowForm('FormSupplierGPurchaseAudit', scope.row)
+                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseDistributeAudit) && scope.row.audit_status === 'init',
+                  command: () => handleShowForm('FormSupplierGPurchaseDistributeAudit', scope.row)
                 }
               ]"
             />
@@ -105,24 +100,22 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableSupplierGPurchase',
+    name: 'TableSupplierGPurchaseDistribute',
     components: {
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QuerySupplierGPurchase');
+      let pc = this.getPageComponents('QuerySupplierGPurchaseDistribute');
       this.getData(pc.query);
     },
     data() {
       return {
-        tableName: 'TableSupplierGPurchase',
+        tableName: 'TableSupplierGPurchaseDistribute',
         tableColumn: [
           { label: '商品', key: 'item', width: '3', isShow: true },
           { label: '供货商', key: 'supplier', width: '3', isShow: true },
           { label: '件数', key: 'num', width: '2', isShow: true },
-          { label: '单价', key: 'price', width: '2', isShow: true },
-          { label: '采购人', key: 'purchaser', width: '2', isShow: true },
-          { label: '采购日期', key: 'purchase_date', width: '3', isShow: true },
+          { label: '销售日期', key: 'available_date', width: '3', isShow: true },
           { label: '审核状态', key: 'audit_status', width: '3', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: true },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
@@ -140,7 +133,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supplierGPurchaseQuery, query);
+        let res = await Http.get(Config.api.supplierGPurchaseDistributeQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

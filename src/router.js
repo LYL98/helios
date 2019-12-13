@@ -29,6 +29,11 @@ const router = new Router({
       name: 'SupplierGPurchase',
       component: () => import('@/view/supplier/GPurchase')
     },
+    {
+      path: '/supplier/gpurchase/distribute',
+      name: 'SupplierGPurchaseDistribute',
+      component: () => import('@/view/supplier/GPurchaseDistribute')
+    },
 
     /*客户*/
     {

@@ -14,3 +14,4 @@ export { default as FormItemListEditInnerTag } from './FormItemListEditInnerTag'
 export { default as FormOperateReceivingAllot } from './FormOperateReceivingAllot';
 export { default as FormOperateReceivingNumber } from './FormOperateReceivingNumber';
 export { default as FormSupplierGPurchaseAudit } from './FormSupplierGPurchaseAudit';
+export { default as FormSupplierGPurchaseDistributeAudit } from './FormSupplierGPurchaseDistributeAudit';

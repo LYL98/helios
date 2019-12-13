@@ -330,6 +330,15 @@ const Constant = {
       { key: 'fail', value: '作废' }
     ];
     return handleKeyValue(type, data);
+  },
+  //统采调拨单审核状态
+  DISTRIBUTE_AUDIT_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待审核' },
+      { key: 'success', value: '审核通过' },
+      { key: 'fail', value: '作废' }
+    ];
+    return handleKeyValue(type, data);
   }
 };
 

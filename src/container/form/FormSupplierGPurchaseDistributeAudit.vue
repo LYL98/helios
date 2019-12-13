@@ -1,9 +1,9 @@
 <template>
-  <el-dialog :close-on-click-modal="false" title="统采订单审核" :visible="isShow" width="600px" :before-close="handleCancel">
+  <el-dialog :close-on-click-modal="false" title="统采调拨单审核" :visible="isShow" width="600px" :before-close="handleCancel">
     <el-form label-position="right" label-width="120px" :model="detail" ref="ruleForm" :rules="rules">
       <el-form-item label="类型">
         <el-radio-group size="small" v-model="auditStatus">
-          <template v-for="(value, key) in gPurchaseAuditStatus">
+          <template v-for="(value, key) in distributeAuditStatus">
             <el-radio v-if="key !== 'init'" border :label="key" :key="key">{{value}}</el-radio>
           </template>
         </el-radio-group>
@@ -21,7 +21,7 @@ import formMixin from './form.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
 
 export default {
-  name: "FormSupplierGPurchaseAudit",
+  name: "FormSupplierGPurchaseDistributeAudit",
   mixins: [formMixin],
   created() {
   },
@@ -29,7 +29,7 @@ export default {
     let initDetail = {}
     return{
       auditStatus: 'success',
-      gPurchaseAuditStatus: Constant.G_PURCHASE_AUDIT_STATUS(),
+      distributeAuditStatus: Constant.DISTRIBUTE_AUDIT_STATUS(),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
     }
@@ -39,7 +39,7 @@ export default {
     async submitData(){
       let { detail, auditStatus } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supplierGPurchaseAudit, {
+      let res = await Http.post(Config.api.supplierGPurchaseDistributeAudit, {
         id: detail.id,
         audit_status: auditStatus
       });
@@ -49,7 +49,7 @@ export default {
         this.$data.auditStatus = 'success';
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableSupplierGPurchase');
+        let pc = this.getPageComponents('TableSupplierGPurchaseDistribute');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});
