@@ -105,6 +105,9 @@
           },{
             title: '统采调拨单',
             name: 'SupplierGPurchaseDistribute'
+          },{
+            title: '地采订单',
+            name: 'SupplierLocalPurchase'
           }]
         },{
           title: '客户',

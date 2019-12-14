@@ -76,6 +76,9 @@ const Config = (() => {
       supplierGPurchaseDistributeAudit: apiM + '/supplier/distribute/audit', //调拨单审核
       supplierGPurchaseDistributeDetail: apiM + '/supplier/distribute/detail', //调拨单详情
       
+      //地采
+      supplierLocalPurchaseQuery: apiM + '/supplier/local_purchase/query', //地采订单
+      supplierLocalPurchaseDetail: apiM + '/supplier/local_purchase/detail', //统采采购单详情
 
       //商品池
       pItemAdd: apiM + '/p_item/add', //新商品资料添加
