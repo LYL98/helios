@@ -53,7 +53,6 @@
 
 <script>
 import addEditMixin from './add.edit.mixin';
-import Layout from './Layout';
 import { Http, Config, Constant, Verification } from '@/util';
 
 export default {

@@ -16,7 +16,7 @@
         <el-table-column type="selection" :selectable="returnIsPricing" width="30" v-if="(auth.isAdmin || auth.ItemPriceAudit)"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
-          <el-table-column :key="key" :label="item.label" :width="item.width" v-if="item.isShow" :prop="item.key" :sortable="item.key === 'sale_num_last' || item.key === 'item_stock' ? 'custom' : false">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow" :prop="item.key" :sortable="item.key === 'sale_num_last' || item.key === 'item_stock' ? 'custom' : false">
             <div slot-scope="scope" class="my-td-item">
               <!--编号名称-->
               <template v-if="item.key === 'code_title'">
@@ -96,10 +96,6 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.ItemPriceRecord) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION + 60
-      }
-
       let pc = this.getPageComponents('QueryItemPricing');
       this.getData(pc.query);
     },
@@ -109,12 +105,26 @@
         salePriceScope: Constant.SALE_PRICE_SCOPE,
         total1: 0,
         total2: 0,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION + 60,
         tableName: 'TableItemPricing',
+        /**
+         * available_num: 0
+            code: "10003002000"
+            is_approve: false
+            is_quoted: false
+            item_id: 121
+            price_buy: 0
+            price_buy_last: 0
+            price_sale: 0
+            price_sale_last: 1
+            rise_max: 150
+            rise_min: 25
+            sale_num_day: 1
+            sale_num_last: 1
+            title: " 鑫金鹭凤梨"
+         */
         tableColumn: [
           { label: '商品', key: 'code_title', width: '140', isShow: true },
-          { label: '昨日询价', key: 'price_buy_last', width: '76', isShow: true },
-          { label: '今日询价', key: 'price_buy', width: '76', isShow: true },
+          { label: '今日供货价', key: 'price_buy', width: '100', isShow: true },
           { label: '昨日销售价', key: 'price_sale_last', width: '90', isShow: true },
           { label: '建议价', key: 'suggest_price', width: '120', isShow: true },
           { label: '昨日加价率', key: 'yesterday_rise_rate', width: '100', isShow: true },
@@ -130,14 +140,6 @@
       }
     },
     methods: {
-      //展开隐藏搜索(重写)
-      onExpandChange(isExpand){
-        if (isExpand) {
-          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-        } else {
-          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-        }
-      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用

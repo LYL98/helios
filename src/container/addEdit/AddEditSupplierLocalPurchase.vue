@@ -36,7 +36,6 @@
 
 <script>
 import addEditMixin from './add.edit.mixin';
-import Layout from './Layout';
 import { Http, Config } from '@/util';
 import { InputNumber, InputPrice } from '@/common';
 import { SelectSupplier, SelectGItem } from '@/component';

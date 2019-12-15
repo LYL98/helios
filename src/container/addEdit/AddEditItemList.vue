@@ -7,7 +7,7 @@
             <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
           </image-preview>
         </el-form-item>
-        <h6 class="subtitle" style="padding-bottom: 16px">基本信息</h6>
+        <h6 class="subtitle">基本信息</h6>
         <el-row :gutter="10">
           <el-col :span="8">
             <el-form-item label="编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
@@ -41,7 +41,7 @@
             <el-form-item label="科学分类">{{detail.system_class.title}}</el-form-item>
           </el-col>
         </el-row>
-        <h6 class="subtitle" style="padding-bottom: 16px">销售信息</h6>
+        <h6 class="subtitle">销售信息</h6>
         <el-row :gutter="10">
           <el-col :span="16">
             <el-form-item label="价格标签" prop="inner_tag_id">
@@ -197,12 +197,12 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <h6 class="subtitle" style="padding-bottom: 16px">供应商信息</h6>
+        <h6 class="subtitle">供应商信息</h6>
         <el-form-item label="供应商类型">{{supplierType[detail.sup_type]}}</el-form-item>
         <el-form-item label="供应商">
           <other-item-supplier :supplierType="detail.sup_type" :supplierBinds="detail.supplier_binds"/>
         </el-form-item>
-        <h6 class="subtitle" style="padding-bottom: 16px">其它信息</h6>
+        <h6 class="subtitle">其它信息</h6>
         <el-row :gutter="10">
           <el-col :span="16">
             <el-form-item label="商品详情">
@@ -607,11 +607,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .subtitle{
-    color: #5A5D64;
-    margin-left: 20px;
-    font-size: 14px;
-  }
+  @import "./add.edit.scss";
   .img-div{
     overflow: hidden;
     .img-item{

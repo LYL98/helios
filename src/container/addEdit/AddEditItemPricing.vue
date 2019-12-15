@@ -1,94 +1,100 @@
 <template>
-  <div class="receiving-allot">
-    <el-dialog :title="`报价：${detail.code} ${detail.title}`" :visible="isShow" width="680px" :before-close="handleCancel" :close-on-click-modal="false">
-      <el-form label-position="right" label-width="100px" style="width: 620px;" :model="detail" :rules="rules" ref="ruleForm">
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="昨日询价">
-              <span class="show-span">
-                &yen;{{detail.price_buy_last}}
-              </span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="16">
-            <el-form-item label="今日询价" prop="price_buy">
-              <span class="input-span" @click="clickPriceBuy">
-                {{detail.price_buy}}
-              </span>
-              <span class="input-behind-span">元</span>
-              <el-button size="mini" style="margin-left: 10px;" @click.native="usePriceBuyLast">使用昨日询价</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="昨日加价率">
-              <span class="show-span">
-                {{returnRate(detail.price_buy_last, detail.price_sale_last)}}
-              </span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="16">
-            <el-form-item label="建议价" prop="net_weight_temp">
-              <span class="show-span">
-                {{detail.suggest_price}}
-              </span>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="昨日销售价">
-              <span class="show-span">
-                &yen;{{detail.price_sale_last}}
-              </span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="16">
-            <el-form-item label="今日销售价" prop="price_sale">
-              <span class="input-span" @click="clickPriceSale">
-                {{detail.price_sale}}
-              </span>
-              <span class="input-behind-span">元</span>
-              <span style="margin-left: 10px;">今日加价率：{{returnRate(detail.price_buy, detail.price_sale)}}</span>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="库存">
-              <span class="show-span">
-                {{detail.item_stock}}&nbsp;件
-              </span>
-            </el-form-item>
-          </el-col>
-          <el-col :span="16">
-            <el-form-item label="新库存" prop="new_item_stock">
-              <span class="input-span" @click="clickNewItemStock">
-                {{detail.new_item_stock}}
-              </span>
-              <span class="input-behind-span">件</span>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click.native="handleCancel">取 消</el-button>
-        <el-button type="primary" @click.native="handleAddEdit">确定报价</el-button>
-      </div>
-    </el-dialog>
-  </div>
+  <add-edit-layout :title="`报价：${detail.code} ${detail.title}`" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%; max-width: 1400px;" :model="detail" :rules="rules" ref="ruleForm">
+      <el-row>
+        <el-col :span="14">
+          <h6 class="subtitle">报价信息</h6>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="">
+                
+              </el-form-item>
+            </el-col>
+            <el-col :span="16">
+              <el-form-item label="今日供货价">
+                <span class="show-span">
+                  {{detail.price_buy}}
+                </span>
+                <span class="input-behind-span">元</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="昨日加价率">
+                <span class="show-span">
+                  {{returnRate(detail.price_buy_last, detail.price_sale_last)}}
+                </span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="16">
+              <el-form-item label="建议价" prop="net_weight_temp">
+                <span class="show-span">
+                  {{detail.suggest_price}}
+                </span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="昨日销售价">
+                <span class="show-span">
+                  &yen;{{detail.price_sale_last}}
+                </span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="16">
+              <el-form-item label="今日销售价" prop="price_sale">
+                <input-price size="medium" v-model="detail.price_sale" style="width: 140px;"/>
+                <span style="margin-left: 10px;">今日加价率：{{returnRate(detail.price_buy, detail.price_sale)}}</span>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label="库存">
+                <span class="show-span">
+                  {{detail.item_stock}}&nbsp;件
+                </span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="16">
+              <el-form-item label="新库存" prop="new_item_stock">
+                <input-number size="medium" v-model="detail.new_item_stock" unit="件" style="width: 140px;"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-col>
+        <el-col :span="10">
+          <h6 class="subtitle">供应商今日供货信息</h6>
+          <div style="margin-left: 20px;">
+            <el-row v-for="(item,index) in 6" :key="index" style="margin-bottom: 10px; ">
+              <el-col :span="14">供应商{{index}}<span v-if="index === 0" class="main-tag">主供应商</span></el-col>
+              <el-col :span="5">200件</el-col>
+              <el-col :span="5">30元/件</el-col>
+            </el-row>
+          </div>
+        </el-col>
+      </el-row>
+    </el-form>
+    <div style="margin-left: 110px; margin-top: 50px;">
+      <el-button @click.native="handleCancel">取 消</el-button>
+      <el-button type="primary" @click.native="handleAddEdit">确定报价</el-button>
+    </div>
+  </add-edit-layout>
 </template>
 
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant, DataHandle } from '@/util';
-import { NumberKey } from '@/common';
+import { NumberKey, InputNumber, InputPrice } from '@/common';
 
 export default {
   name: "AddEditItemPricing",
   mixins: [addEditMixin],
   components: {
+    'input-number': InputNumber,
+    'input-price': InputPrice
   },
   data(){
     let that = this;
@@ -108,10 +114,6 @@ export default {
         province_code: this.$province.code
       },
       rules: {
-        price_buy: [
-          { required: true, message: '请输入今日询价', trigger: 'change' },
-          { type: 'number', min: 0.01, message: '请输入今日询价', trigger: 'change' }
-        ],
         price_sale: [
           { required: true, message: '请输入今日销售价', trigger: 'change' },
           { type: 'number', min: 0.01, message: '请输入今日销售价', trigger: 'change' },
@@ -164,17 +166,6 @@ export default {
       if(!p1 || !p2) return '-';
       //传的数值：如10.3 传 103
       return this.returnMarkup((p2 / p1 - 1) * 1000) + '%';
-    },
-    //使用昨日询价
-    usePriceBuyLast(){
-      let that = this;
-      let { detail } = that;
-      let price = detail.price_buy_last; //昨日采购价
-      let priceSale = that.returnSuggestPrice(price); //今日售价(从建议价读取)
-      detail.suggest_price = priceSale;
-      detail.price_buy = price;
-      that.$data.detail = detail;
-      //that.$refs['ruleForm'].validate(()=>{return false;});
     },
     //输入今日询价
     clickPriceBuy(){
@@ -251,24 +242,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .show-span{
-    font-size: 18px;
-  }
-  .input-span{
-    font-size: 18px;
-    border: 1px solid #999;
-    width: 106px;
-    height: 32px;
-    line-height: 32px;
-    border-radius: 3px;
-    float: left;
-    text-align: center;
-  }
+  @import "./add.edit.scss";
   .input-behind-span{
     height: 34px;
     line-height: 34px;
     float: left;
     font-size: 18px;
+    margin-left: 5px;
+  }
+  .main-tag{
+    font-size: 12px;
+    color: #fff;
+    background: #ff5252;
+    border-radius: 3px;
+    padding: 0 5px;
     margin-left: 5px;
   }
 </style>

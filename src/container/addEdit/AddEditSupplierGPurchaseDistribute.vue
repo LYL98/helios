@@ -46,7 +46,6 @@
 
 <script>
 import addEditMixin from './add.edit.mixin';
-import Layout from './Layout';
 import { Http, Config } from '@/util';
 import { InputNumber, SelectProvince } from '@/common';
 import { SelectInStock } from '@/component';
