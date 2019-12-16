@@ -122,7 +122,6 @@ export default {
     return {
       weightScope: Constant.WEIGHT_SCOPE,//重量浮动范围
       initDetail: {
-        province_code: this.$province.code
       },
       rules: {
         price_sale: [
@@ -143,7 +142,6 @@ export default {
     showAddEdit(data){
       if(data){
         let d = JSON.parse( JSON.stringify(data));
-        d.province_code = this.$province.code;
         d.item_stock = d.available_num;
         d.price_buy_last = Number(d.price_buy_last);
         d.price_buy = d.price_buy ? Number(d.price_buy) : '';
@@ -199,8 +197,9 @@ export default {
       let { detail } = this;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.itemPriceFix, {
+        province_code: this.$province.code,
         item_id: detail.item_id,
-        item_stock: detail.item_stock,
+        item_stock: Number(detail.item_stock),
         price_sale: this.handlePrice(detail.price_sale)
       });
       this.$loading({isShow: false});
