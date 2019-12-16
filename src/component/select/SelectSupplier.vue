@@ -34,7 +34,7 @@
       supplierType: { type: String, default: '' }, //global_pur 统采；local_pur 地采
       billTerm: { type: String | Number, default: '' }, //账期
       placeholder: { type: String, default: '请选择供应商' },
-      supplierIds: { type: Array, default: [] }, //当前选择了的id
+      supplierIds: { type: Array }, //当前选择了的id
     },
     methods: {
       //获取数据
@@ -58,6 +58,9 @@
       //判断选项是否可用
       judgeDisabled(){
         let { supplierIds, dataItem } = this;
+
+        if(!supplierIds || supplierIds.length === 0) return;
+
         let ds = [];
         dataItem.forEach((item, index) => {
           let ds = supplierIds.filter(id => id === item.id);

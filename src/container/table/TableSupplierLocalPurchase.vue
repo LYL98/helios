@@ -24,21 +24,14 @@
               <template v-else-if="item.key === 'item'">
                 <div class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
               </template>
-              <!--价格-->
-              <template v-else-if="item.key === 'price'">
-                <div class="td-item add-dot2">&yen;{{returnPrice(scope.row.price)}}</div>
-              </template>
-              <!--采购人-->
-              <template v-else-if="item.key === 'purchaser'">
-                <div class="td-item add-dot2">
-                  {{scope.row.creater.realname}}<br/>
-                  {{scope.row.creater.phone}}
-                </div>
+              <!--采购单价-->
+              <template v-else-if="item.key === 'price_buy'">
+                <div class="td-item add-dot2">&yen;{{returnPrice(scope.row.price_buy)}}</div>
               </template>
               <!--状态-->
-              <div class="td-item" v-else-if="item.key === 'audit_status'">
-                <el-tag size="small" :type="gPurchaseAuditStatusType[scope.row.audit_status]" disable-transitions>
-                  {{gPurchaseAuditStatus[scope.row.audit_status]}}
+              <div class="td-item" v-else-if="item.key === 'status'">
+                <el-tag size="small" :type="localPurchaseStatusType[scope.row.status]" disable-transitions>
+                  {{localPurchaseStatus[scope.row.status]}}
                 </el-tag>
               </div>
               <!--正常情况-->
@@ -101,21 +94,21 @@
       return {
         tableName: 'TableSupplierLocalPurchase',
         tableColumn: [
-          { label: '商品', key: 'item', width: '3', isShow: true },
+          { label: '地采单号', key: 'item', width: '3', isShow: true },
+          { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
           { label: '供货商', key: 'supplier', width: '3', isShow: true },
-          { label: '件数', key: 'num', width: '2', isShow: true },
-          { label: '单价', key: 'price', width: '2', isShow: true },
-          { label: '采购人', key: 'purchaser', width: '2', isShow: true },
-          { label: '采购日期', key: 'purchase_date', width: '3', isShow: true },
-          { label: '审核状态', key: 'audit_status', width: '3', isShow: true },
-          { label: '创建时间', key: 'created', width: '3', isShow: true },
+          { label: '采购价', key: 'price_buy', width: '2', isShow: true },
+          { label: '采购数量', key: 'num', width: '2', isShow: true },
+          { label: '状态', key: 'status', width: '3', isShow: true },
+          { label: '采购日期', key: 'order_date', width: '3', isShow: true },
+          { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
-        gPurchaseAuditStatus: Constant.G_PURCHASE_AUDIT_STATUS(),
-        gPurchaseAuditStatusType: {
+        localPurchaseStatus: Constant.LOCAL_PURCHASE_STATUS(),
+        localPurchaseStatusType: {
           init: 'warning',
-          success: 'info',
-          fail: 'danger'
+          part: 'danger',
+          all: 'info'
         }
       }
     },

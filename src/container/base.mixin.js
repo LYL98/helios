@@ -66,11 +66,15 @@ export default {
     windowHeight: { type: Number, default: 0 }
   },
   data() {
+    //今天日期
+    let nowDate = DataHandle.returnDateStr();
+    nowDate = DataHandle.returnDateFormat(nowDate, 'yyyy-MM-dd');
     return {
       tencentPathUp: Config.tencentUpPath,
       tencentPath: Config.tencentPath,
       province: this.$province,
       auth: this.$auth,
+      nowDate: nowDate
     }
   },
   created() {

@@ -339,6 +339,15 @@ const Constant = {
       { key: 'fail', value: '作废' }
     ];
     return handleKeyValue(type, data);
+  },
+  //地采订单状态
+  LOCAL_PURCHASE_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待采购' },
+      { key: 'part', value: '部分入库' },
+      { key: 'all', value: '全部入库' }
+    ];
+    return handleKeyValue(type, data);
   }
 };
 
