@@ -38,8 +38,8 @@
           <template slot-scope="scope">
             <div>
               <span v-if="scope.row.opt_type === 'is_approve'">已审核</span>
-              <el-button v-else-if="scope.row.opt_type === 'edit'" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', scope.row)">修改</el-button>
-              <el-button v-else-if="scope.row.opt_type === 'pricing'" type="primary" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', scope.row)">报价</el-button>
+              <el-button v-else-if="scope.row.opt_type === 'edit'" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date })">修改</el-button>
+              <el-button v-else-if="scope.row.opt_type === 'pricing'" type="primary" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date })">报价</el-button>
             </div>
             <div>
               <el-button v-if="scope.row.is_pricing" type="primary" size="mini" @click.native="audit([scope.row.item_id])">审核</el-button>
@@ -106,24 +106,9 @@
         total1: 0,
         total2: 0,
         tableName: 'TableItemPricing',
-        /**
-         * available_num: 0
-            code: "10003002000"
-            is_approve: false
-            is_quoted: false
-            item_id: 121
-            price_buy: 0
-            price_buy_last: 0
-            price_sale: 0
-            price_sale_last: 1
-            rise_max: 150
-            rise_min: 25
-            sale_num_day: 1
-            sale_num_last: 1
-            title: " 鑫金鹭凤梨"
-         */
         tableColumn: [
           { label: '商品', key: 'code_title', width: '140', isShow: true },
+          { label: '昨日供货价', key: 'price_buy_last', width: '100', isShow: true },
           { label: '今日供货价', key: 'price_buy', width: '100', isShow: true },
           { label: '昨日销售价', key: 'price_sale_last', width: '90', isShow: true },
           { label: '建议价', key: 'suggest_price', width: '120', isShow: true },
@@ -213,10 +198,10 @@
 
         data.items.map((item, index)=>{
 
-          //昨日询价
+          //昨日供货价
           item.price_buy_last = this.returnPrice(item.price_buy_last);
 
-          //今日询价
+          //今日供货价
           item.price_buy = item.price_buy ? this.returnPrice(item.price_buy) : '';
 
           //昨日销售价

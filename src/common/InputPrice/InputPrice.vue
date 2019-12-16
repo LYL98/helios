@@ -9,6 +9,9 @@
 
   export default {
     mixins: [inputMixin],
+    props: {
+      valueType: { valueType: String, default: 'handle' }, //输入是否处理数据， original：输出原值，handle：处理后的值(/100)
+    },
     data(){
       return{
         isFinallyDot: ''
@@ -20,7 +23,11 @@
           let v = this.$props.value;
           let price = '';
           if(v !== '' && typeof v !== 'undefined'){
-            price = DataHandle.returnPrice(v);
+            if(this.valueType === 'handle'){
+              price = DataHandle.returnPrice(v);
+            }else{
+              price = v.toString();
+            }
           }
           if(typeof price === 'string' && price.indexOf('.') >= 0) return price;
           return price + this.isFinallyDot;
@@ -46,7 +53,11 @@
             let { min, max } = this.$props;
             if(Number(v) < Number(min)) return; //最小值
             if(Number(v) > Number(max)) return; //最大价格
-            price = DataHandle.handlePrice(v);
+            if(this.valueType === 'handle'){
+              price = DataHandle.handlePrice(v);
+            }else{
+              price = Number(v);
+            }
           }
           this.$emit('change', price);
         }

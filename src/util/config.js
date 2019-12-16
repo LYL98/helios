@@ -107,6 +107,7 @@ const Config = (() => {
       itemPriceFix: apiM + '/item/price/fix',//商品定价
       itemPriceAudit: apiM + '/item/price/audit', //商品定价审核
       itemChgSupplier: apiM + '/item/chg_supplier', //修改地采商品的供应商
+      itemPriceDetail: apiM + '/item/price/detail', //商品供应商报价列表
 
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询
