@@ -80,13 +80,30 @@
             placeholder="选择日期" style="width: 320px;"/>
             <div style="color: #7f1305;">注：选择配送日期</div>
         </el-form-item>
-        <el-form-item label="选择县域" v-if="titleStrs[selectIndex].key === '2' || titleStrs[selectIndex].key === 'print'">
+        <el-form-item label="选择县域" v-if="titleStrs[selectIndex].key === '2'">
           <my-select-city :provinceCode="province.code"
                           v-model="query.city_code"
                           :clearable="titleStrs[selectIndex].key === '2'"
                           style="width: 320px;"
                           @changeCityName="onChangeCityName"/>
         </el-form-item>
+        <!--打印(暂时)-->
+        <template v-if="titleStrs[selectIndex].key === 'print'">
+          <el-form-item label="">
+            <el-radio label="city" v-model="printType" >以县域维度打印</el-radio>
+            <el-radio label="item" v-model="printType">以商品维度打印</el-radio>
+          </el-form-item>
+          <el-form-item label="选择县域" v-if="printType === 'city'">
+            <my-select-city :provinceCode="province.code"
+                            v-model="query.city_code"
+                            clearable
+                            style="width: 320px;"
+                            @changeCityName="onChangeCityName"/>
+          </el-form-item>
+          <el-form-item label="选择商品" v-else>
+            <search-item v-model="itemData" style="width: 320px;"/>
+          </el-form-item>
+        </template>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click.native="preview" style="float: left" v-if="!isPreview">预 览</el-button>
@@ -107,12 +124,14 @@ import {
   Dialog,
   DatePicker,
   Select,
-  Option
+  Option,
+  Radio
 } from "element-ui";
 import { Config, DataHandle, Request } from "@/util";
 import { Operate } from "@/service";
 import { SelectCity, SelectCityMulti } from "@/common";
 import Constant from "@/util/constant";
+import { SearchItem } from '@/container';
 
 const apis = {
   "1": Config.api.orderCityExport,
@@ -138,7 +157,9 @@ export default {
     "el-date-picker": DatePicker,
     "el-select": Select,
     "el-option": Option,
-    "my-select-city": SelectCity
+    "my-select-city": SelectCity,
+    'search-item': SearchItem,
+    'el-radio': Radio
   },
   created() {
     let that = this;
@@ -203,6 +224,8 @@ export default {
       ],
       pickerValue: [nowDate, nowDate],
       cityName: '',
+      printType: 'city', //city 县域；item 商品
+      itemData: {},
       query: {
         city_code: "",
         date: nowDate,
@@ -319,14 +342,18 @@ export default {
     //打印
     async printOrderTags() {
       let that = this;
-      let { query ,province} = this;
+      let { query ,province, itemData, printType} = this;
       query.province_code = province.code;
       if (!province.code) {
         that.message({ title: "提示", message: "省份信息读取失败", type: "error" });
         return false;
       }
 
-      let res = await Operate.orderLabelPrint(query);
+      let res = await Operate.orderLabelPrint({
+        ...query,
+        sort_by: printType,
+        item_id: itemData.id || ''
+      });
       if (res.code === 0) {
         that.cancel(); //先隐藏弹层，不然打印会模糊
         setTimeout(()=>{
