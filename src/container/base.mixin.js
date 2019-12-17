@@ -163,6 +163,14 @@ export default {
     judgeOrs(data, ors) {
       let con = ors.filter(item => item === data);
       return con.length > 0 ? true : false;
+    },
+    //返回List里的某个key的list (key, list)
+    returnListKeyList(key, list){
+      let data = [];
+      list.forEach(item => {
+        data.push(item[key]);
+      });
+      return data;
     }
   }
 }

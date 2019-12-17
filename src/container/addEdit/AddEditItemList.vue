@@ -236,7 +236,6 @@
 
 <script>
 import addEditMixin from './add.edit.mixin';
-import Layout from './Layout';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
 import { SelectDisplayClass, ImagePreview, InputNumber, InputPrice, SelectInnerTag, SelecItemTags } from '@/common';
 import { OtherItemSupplier } from '@/component';
@@ -355,7 +354,7 @@ export default {
     return {
       supplierType: Constant.SUPPLIER_TYPE(),
       initDetail: initDetail,
-      detail: JSON.parse(JSON.stringify(initDetail)),
+      detail: this.copyJson(initDetail),
       systemClassProps: {
         value: 'code',
       },
@@ -454,7 +453,7 @@ export default {
         this.itemDetail(data.id, type);
         this.$data.pageType = type;
       }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.detail = this.copyJson(this.initDetail);
         this.$data.isShow = true;
         this.$data.pageType = 'add';
       }

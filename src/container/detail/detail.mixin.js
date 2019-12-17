@@ -1,9 +1,11 @@
-import { DataHandle, Constant } from '@/util';
+import { Constant } from '@/util';
+import Layout from './../layout/Layout';
 import baseMixin from '@/container/base.mixin';
 
 export default {
   mixins: [baseMixin],
   components: {
+    'detail-layout': Layout,
   },
   data() {
     return {
@@ -24,16 +26,16 @@ export default {
     //显示新增修改(供外部也调用)
     showDetail(data){
       if(data){
-        this.$data.detail = JSON.parse(JSON.stringify(data));
+        this.$data.detail = this.copyJson(data);
       }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.detail = this.copyJson(this.initDetail);
       }
       this.$data.isShow = true;
     },
     //取消
     handleCancel(){
       this.$data.isShow = false;
-      this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+      this.$data.detail = this.copyJson(this.initDetail);
     },
     /**
      * 斑马线的背景颜色样式

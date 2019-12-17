@@ -14,6 +14,7 @@
 
 <script>
 import { Drawer, Dialog } from 'element-ui';
+import { Method } from '@/util';
 
 export default {
   name: "Layout",
@@ -28,8 +29,8 @@ export default {
     beforeClose: { type: Function }, //关闭前
   },
   data(){
-    return{
-      
+    return {
+
     }
   },
 };
@@ -59,4 +60,5 @@ export default {
           min-width: 1000px;
       }
   }
+
 </style>

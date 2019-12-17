@@ -221,6 +221,12 @@
           },{
             title: '财务审核',
             name: 'FinanceApproveQuery'
+          },{
+            title: '供应商流水',
+            name: 'FinanceSList'
+          },{
+            title: '供应商对账表',
+            name: 'FinanceSStatement'
           }]
         },{
           title: '统计',

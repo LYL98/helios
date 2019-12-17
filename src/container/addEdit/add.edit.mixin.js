@@ -1,5 +1,5 @@
 import baseMixin from '@/container/base.mixin';
-import Layout from './Layout';
+import Layout from './../layout/Layout';
 import { DataHandle, Constant } from '@/util';
 
 export default {
@@ -32,9 +32,9 @@ export default {
     //显示新增修改(供外部也调用)
     showAddEdit(data){
       if(data){
-        this.$data.detail = JSON.parse(JSON.stringify(data));
+        this.$data.detail = this.copyJson(data);
       }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.detail = this.copyJson(this.initDetail);
       }
       this.$data.isShow = true;
     },
@@ -50,7 +50,7 @@ export default {
     },
     //取消新增修改
     handleCancel(){
-      this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+      this.$data.detail = this.copyJson(this.initDetail);
       if(this.$refs['ruleForm']) this.$refs['ruleForm'].resetFields();
       this.$data.isShow = false;
     },

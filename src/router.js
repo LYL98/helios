@@ -174,6 +174,16 @@ const router = new Router({
       name: 'FinanceApproveQuery',
       component: () => import('@/view/finance/ApproveList')
     },
+    {
+      path: '/finance/supplier/list',
+      name: 'FinanceSupplierList',
+      component: () => import('@/view/finance/SupplierList')
+    },
+    {
+      path: '/finance/s/statement',
+      name: 'FinanceSStatement',
+      component: () => import('@/view/finance/SStatement')
+    },
 
     /*统计*/
     {

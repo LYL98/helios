@@ -16,6 +16,7 @@ export default {
       },
       isShowFiltrate: false, //显示高级筛选
       isExpand: false,
+      fixDateOptions: Constant.FIX_DATE_RANGE,
     }
   },
   created() {
@@ -29,7 +30,7 @@ export default {
           this.query[key] = this.initQuery[key]
         }
         this.query.page = 1;
-        this.$data.query = JSON.parse(JSON.stringify(this.query));
+        this.$data.query = this.copyJson(this.query);
       }
     },
     //搜索方法(页面组件)

@@ -388,6 +388,10 @@ const Config = (() => {
       financeApproveEdit: apiM + '/balance/check/edit', // 审核
       financeApproveDetail: apiM + '/balance/check/detail', // 审核详情
 
+      financeSupBillQuery: apiM + '/sup_bill/query', //对账单查询
+      financeSupBillDetail: apiM + '/sup_bill/detail', //对账单详情
+      financeSupBillPay: apiM + '/sup_bill/pay', //批量结款
+
 
       //统计
       statisticalOrderClassSum: apiM + '/statistical/order/class_sum', //统计分析 - 商品销售统计 - 分类别统计

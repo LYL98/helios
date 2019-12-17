@@ -348,7 +348,15 @@ const Constant = {
       { key: 'all', value: '全部入库' }
     ];
     return handleKeyValue(type, data);
-  }
+  },
+  //财务对财表状态
+  S_STATEMENT_PAID_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待结款' },
+      { key: 'paid', value: '已结款' }
+    ];
+    return handleKeyValue(type, data);
+  },
 };
 
 //处理key value
