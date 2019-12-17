@@ -54,7 +54,7 @@
                 },
                 {
                   title: '查看',
-                  isDisplay: auth.isAdmin || auth.FinanceSStatementAudit,
+                  isDisplay: auth.isAdmin || auth.FinanceSStatementDetail,
                   command: () => handleShowDetail('DetailFinanceSStatement', scope.row)
                 },
               ]"
