@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="table-option-btn" @click="isShow = true"><i class="el-icon-caret-bottom"></i></div>
-    <el-dialog title="设置表头显示" :visible="isShow" width="640px" :before-close="() => isShow = false">
+    <el-dialog title="设置表头显示" :visible="isShow" width="540px" :before-close="() => isShow = false">
       <div>
         <el-transfer v-model="showColumn" :data="columnList" :titles="['隐藏的列','显示的列']" @change="changeSelect"></el-transfer>
       </div>

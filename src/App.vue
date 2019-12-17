@@ -1103,14 +1103,14 @@
     width: auto !important;
   }
 
-  /*.el-transfer__button {
+  .el-transfer__button {
       display: block !important;
-      margin: 0 auto !important;
+      margin: 0 auto 10px !important;
       padding: 10px !important;
       border-radius: 50% !important;
       color: #fff !important;
       font-size: 0 !important;
-    }*/
+  }
 
   /*我的弹层*/
   .my-dialog {
