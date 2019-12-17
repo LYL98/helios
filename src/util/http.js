@@ -37,7 +37,9 @@ function get(api, data) {
     let url = api + '?time=' + new Date().getTime();
 
     for (let item in data) {
-        url = url + "&" + item + "=" + encodeURIComponent(data[item]);
+        let d = data[item];
+        if(d === null || typeof d === 'undefined') d = '';
+        url = url + "&" + item + "=" + encodeURIComponent(d);
     }
 
     beforesendHandling(url, data);//处理发送前事件
