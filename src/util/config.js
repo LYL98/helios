@@ -395,7 +395,7 @@ const Config = (() => {
       financeSupBDetailQuery: apiM + '/sup_bdetail/query', //账单明细详情查询
       financeSupBDetailDetail: apiM + '/sup_bdetail/detail', //账单明细详情
       financeSupBDetailAdd: apiM + '/sup_bdetail/add', //财务人员手动添加账单变更明细
-
+      financeSupBDetailAudit: apiM + '/sup_bdetail/audit', //供应流水审核
 
       //统计
       statisticalOrderClassSum: apiM + '/statistical/order/class_sum', //统计分析 - 商品销售统计 - 分类别统计

@@ -331,8 +331,8 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
-  //统采订单审核状态
-  G_PURCHASE_AUDIT_STATUS: (type)=>{
+  //审核状态(共用)
+  AUDIT_STATUS: (type)=>{
     let data = [
       { key: 'init', value: '待审核' },
       { key: 'success', value: '审核通过' },
@@ -340,14 +340,11 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
-  //统采调拨单审核状态
-  DISTRIBUTE_AUDIT_STATUS: (type)=>{
-    let data = [
-      { key: 'init', value: '待审核' },
-      { key: 'success', value: '审核通过' },
-      { key: 'fail', value: '作废' }
-    ];
-    return handleKeyValue(type, data);
+  //审核状态(颜色)
+  AUDIT_STATUS_TYPE: {
+    init: 'warning',
+    success: 'info',
+    fail: 'danger'
   },
   //地采订单状态
   LOCAL_PURCHASE_STATUS: (type)=>{

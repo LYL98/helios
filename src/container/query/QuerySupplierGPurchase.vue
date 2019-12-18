@@ -4,7 +4,7 @@
       <el-col :xl="8" :lg="9" :span="9">
         <my-query-item label="审核状态">
           <button-group
-            :options="{'全部': '', ...gPurchaseAuditStatus}"
+            :options="{'全部': '', ...auditStatus}"
             v-model="query.audit_status"
             @change="handleQuery('TableSupplierGPurchase')"
             size="small"
@@ -50,7 +50,7 @@
         condition: '',
       }
       return {
-        gPurchaseAuditStatus: Constant.G_PURCHASE_AUDIT_STATUS('value_key'),
+        auditStatus: Constant.AUDIT_STATUS('value_key'),
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }

@@ -213,6 +213,9 @@
             title: '供应商流水',
             name: 'FinanceSBDetail'
           },{
+            title: '供应商流水审核',
+            name: 'FinanceSBDetailAudit'
+          },{
             title: '供应商对账表',
             name: 'FinanceSStatement'
           }]

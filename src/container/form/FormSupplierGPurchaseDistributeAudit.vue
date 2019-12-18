@@ -2,8 +2,8 @@
   <el-dialog :close-on-click-modal="false" title="统采调拨单审核" :visible="isShow" width="600px" :before-close="handleCancel">
     <el-form label-position="right" label-width="120px" :model="detail" ref="ruleForm" :rules="rules">
       <el-form-item label="类型">
-        <el-radio-group size="small" v-model="auditStatus">
-          <template v-for="(value, key) in distributeAuditStatus">
+        <el-radio-group size="small" v-model="selectAuditStatus">
+          <template v-for="(value, key) in auditStatus">
             <el-radio v-if="key !== 'init'" border :label="key" :key="key">{{value}}</el-radio>
           </template>
         </el-radio-group>
@@ -28,8 +28,8 @@ export default {
   data(){
     let initDetail = {}
     return{
-      auditStatus: 'success',
-      distributeAuditStatus: Constant.DISTRIBUTE_AUDIT_STATUS(),
+      selectAuditStatus: 'success',
+      auditStatus: Constant.AUDIT_STATUS(),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
     }
@@ -37,16 +37,16 @@ export default {
   methods: {
     //提交
     async submitData(){
-      let { detail, auditStatus } = this;
+      let { detail, selectAuditStatus } = this;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.supplierGPurchaseDistributeAudit, {
         id: detail.id,
-        audit_status: auditStatus
+        audit_status: selectAuditStatus
       });
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '已审核', type: 'success'});
-        this.$data.auditStatus = 'success';
+        this.$data.selectAuditStatus = 'success';
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableSupplierGPurchaseDistribute');

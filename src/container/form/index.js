@@ -6,6 +6,7 @@ export { default as FormFinanceBalanceMerchantLogExport } from './FormFinanceBal
 export { default as FormItemGlobalCheckSupplierType } from './FormItemGlobalCheckSupplierType';
 export { default as FormItemListEditSupplier } from './FormItemListEditSupplier';
 export { default as FormFinanceApproveEdit } from './FormFinanceApproveEdit';
+export { default as FormFinanceSBDetailAudit } from './FormFinanceSBDetailAudit';
 export { default as FormSystemSettingAd } from './FormSystemSettingAd';
 export { default as FormSystemSettingOperating } from './FormSystemSettingOperating';
 export { default as FormSystemSettingItemCommonDes } from './FormSystemSettingItemCommonDes';

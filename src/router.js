@@ -180,6 +180,11 @@ const router = new Router({
       component: () => import('@/view/finance/SBDetail')
     },
     {
+      path: '/finance/s/b/detail/audit',
+      name: 'FinanceSBDetailAudit',
+      component: () => import('@/view/finance/SBDetailAudit')
+    },
+    {
       path: '/finance/s/statement',
       name: 'FinanceSStatement',
       component: () => import('@/view/finance/SStatement')

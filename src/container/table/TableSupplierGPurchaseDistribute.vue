@@ -38,8 +38,8 @@
               </template>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'audit_status'">
-                <el-tag size="small" :type="gPurchaseAuditStatusType[scope.row.audit_status]" disable-transitions>
-                  {{gPurchaseAuditStatus[scope.row.audit_status]}}
+                <el-tag size="small" :type="auditStatusType[scope.row.audit_status]" disable-transitions>
+                  {{auditStatus[scope.row.audit_status]}}
                 </el-tag>
               </div>
               <!--正常情况-->
@@ -120,12 +120,8 @@
           { label: '创建时间', key: 'created', width: '3', isShow: true },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
-        gPurchaseAuditStatus: Constant.G_PURCHASE_AUDIT_STATUS(),
-        gPurchaseAuditStatusType: {
-          init: 'warning',
-          success: 'info',
-          fail: 'danger'
-        }
+        auditStatus: Constant.AUDIT_STATUS(),
+        auditStatusType: Constant.AUDIT_STATUS_TYPE,
       }
     },
     methods: {

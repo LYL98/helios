@@ -1,24 +1,51 @@
 <template>
   <div class="container-query">
     <el-row style="margin-bottom: 16px;">
-      <el-col :xl="6" :lg="7" :span="7">
-        <my-query-item label="流水类型">
-          <el-select v-model="query.bill_reason" size="small" class="query-item-select" clearable @change="handleQuery('TableFinanceSBDetail')">
-            <el-option label="全部" value=""></el-option>
-            <el-option :label="key" :value="value" v-for="(value, key) in billReason" :key="key"></el-option>
-          </el-select>
-        </my-query-item>
-      </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
-        <my-query-item label="结款类型">
-          <button-group
-            :options="{'全部': '', ...billTerm}"
-            v-model="query.bill_term"
-            @change="handleQuery('TableFinanceSBDetail')"
-            size="small"
-          />
-        </my-query-item>
-      </el-col>
+      <!--流水页面-->
+      <template v-if="page === 'sBDetail'">
+        <el-col :xl="6" :lg="7" :span="7">
+          <my-query-item label="流水类型">
+            <el-select v-model="query.bill_reason" size="small" class="query-item-select" clearable @change="handleQuery('TableFinanceSBDetail')">
+              <el-option label="全部" value=""></el-option>
+              <template v-for="(key, value) in billReason">
+                <el-option :label="value" :value="key" :key="key"></el-option>
+              </template>
+            </el-select>
+          </my-query-item>
+        </el-col>
+        <el-col :xl="6" :lg="7" :span="7">
+          <my-query-item label="结款类型">
+            <button-group
+              :options="{'全部': '', ...billTerm}"
+              v-model="query.bill_term"
+              @change="handleQuery('TableFinanceSBDetail')"
+              size="small"
+            />
+          </my-query-item>
+        </el-col>
+      </template>
+      <!--流水审核页面-->
+      <template v-else-if="page === 'sBDetailAudit'">
+        <el-col :xl="6" :lg="7" :span="7">
+          <my-query-item label="流水类型">
+            <el-select v-model="query.bill_reason" size="small" class="query-item-select" clearable @change="handleQuery('TableFinanceSBDetail')">
+              <el-option label="全部" value=""></el-option>
+              <template v-for="(key, value) in billReason">
+                <el-option :label="value" :value="key" :key="key" v-if="key === 'distribution' || key === 'other'"></el-option>
+              </template>
+            </el-select>
+          </my-query-item>
+        </el-col>
+        <el-col :xl="6" :lg="7" :span="7">
+          <my-query-item label="审核状态">
+            <el-select v-model="query.audit_status" size="small" class="query-item-select" clearable @change="handleQuery('TableFinanceSBDetail')">
+              <el-option label="全部" value=""></el-option>
+              <el-option :label="key" :value="value" v-for="(value, key) in auditStatus" :key="key"></el-option>
+            </el-select>
+          </my-query-item>
+        </el-col>
+      </template>
+
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="搜索">
           <div style="display: flex">
@@ -72,10 +99,13 @@
       'button-group': ButtonGroup
     },
     mixins: [queryMixin],
+    props: {
+      page: { type: String, default: '' }, //审核页面：sBDetailAudit, 流水页面：sBDetail
+    },
     data() {
       let initQuery = {
         picker_value: null,
-        audit_status: 'success', //审核通过才会出现
+        audit_status: this.page === 'sBDetail' ? 'success' : '',
         begin_date: '',
         end_date: '',
         bill_reason: '',
@@ -87,6 +117,7 @@
         query: this.copyJson(initQuery), //只有一层，可以用Object.assign深拷贝
         billReason: Constant.SUPPLIER_BILL_REASON('value_key'),
         billTerm: Constant.SUPPLIER_BILL_TERM2('value_key'),
+        auditStatus: Constant.AUDIT_STATUS('value_key'),
       }
     },
     methods: {

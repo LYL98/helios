@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :close-on-click-modal="false" title="统采订单审核" :visible="isShow" width="600px" :before-close="handleCancel">
+  <el-dialog :close-on-click-modal="false" title="供应商流水审核" :visible="isShow" width="600px" :before-close="handleCancel">
     <el-form label-position="right" label-width="120px" :model="detail" ref="ruleForm" :rules="rules">
       <el-form-item label="类型">
         <el-radio-group size="small" v-model="selectAuditStatus">
@@ -32,15 +32,21 @@ export default {
       auditStatus: Constant.AUDIT_STATUS(),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
+      auditIds: []
     }
   },
   methods: {
+    //显示form(供外部也调用)
+    showForm(data){
+      this.$data.auditIds = data;
+      this.$data.isShow = true;
+    },
     //提交
     async submitData(){
-      let { detail, selectAuditStatus } = this;
+      let { auditIds, selectAuditStatus } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supplierGPurchaseAudit, {
-        id: detail.id,
+      let res = await Http.post(Config.api.financeSupBDetailAudit, {
+        ids: auditIds,
         audit_status: selectAuditStatus
       });
       this.$loading({isShow: false});
@@ -49,7 +55,7 @@ export default {
         this.$data.selectAuditStatus = 'success';
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableSupplierGPurchase');
+        let pc = this.getPageComponents('TableFinanceSBDetail');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});
