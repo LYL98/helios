@@ -371,7 +371,7 @@ const Constant = {
     let data = [
       { key: 'local_buy', value: '货款' }, //地采采购
       { key: 'distribution', value: '货款' }, //统采采购
-      { key: 'paid', value: '其它' }, //其它（手动充值、扣款）
+      { key: 'other', value: '其它' }, //其它（手动充值、扣款）
       { key: 'item_damage', value: '货损' } //货损
     ];
     return handleKeyValue(type, data);

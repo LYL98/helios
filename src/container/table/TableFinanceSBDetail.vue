@@ -39,7 +39,7 @@
                 </div>
               </div>
               <!--创建人-->
-              <div v-else-if="item.key === 'creater'" class="td-item">{{scope.row.creater.realname}}</div>
+              <div v-else-if="item.key === 'creater'" class="td-item">{{scope.row.creater.realname || '系统'}}</div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
@@ -54,7 +54,7 @@
                 {
                   title: '查看',
                   isDisplay: auth.isAdmin || auth.FinanceSBDetailDetail,
-                  command: () => handleShowDetail('DetailFinanceSBDetail', scope.row)
+                  command: () => handleShowAddEdit('AddEditFinanceSBDetail', scope.row, 'detail')
                 },
               ]"
             />
