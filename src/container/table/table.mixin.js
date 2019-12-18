@@ -136,7 +136,7 @@ export default {
      * 判断单元格是否缩略显示文本
      */
     isEllipsis(row) {
-      return row[this.$data.rowIdentifier] != this.$data.currentRow[this.$data.rowIdentifier] ? 'ellipsis' : ''
+      return row[this.$data.rowIdentifier] != this.$data.currentRow[this.$data.rowIdentifier] ? 'add-dot' : ''
     },
 
     /**

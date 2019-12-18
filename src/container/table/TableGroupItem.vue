@@ -24,7 +24,7 @@
         :current-row-key="clickedRow[rowIdentifier]"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="30" v-if="auth.isAdmin || auth.GroupItemDelete || auth.GroupItemRecover"></el-table-column>
+        <el-table-column type="selection" width="42" v-if="auth.isAdmin || auth.GroupItemDelete || auth.GroupItemRecover"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">

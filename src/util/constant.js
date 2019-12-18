@@ -322,6 +322,15 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
+  //供应商账期2
+  SUPPLIER_BILL_TERM2: (type) => {
+    let data = [
+      { key: 0, value: '现结' },
+      { key: 7, value: '账期' },
+      { key: 14, value: '账期' }
+    ];
+    return handleKeyValue(type, data);
+  },
   //统采订单审核状态
   G_PURCHASE_AUDIT_STATUS: (type)=>{
     let data = [
@@ -354,6 +363,16 @@ const Constant = {
     let data = [
       { key: 'init', value: '待结款' },
       { key: 'paid', value: '已结款' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //供应商流水类型
+  SUPPLIER_BILL_REASON: (type)=>{
+    let data = [
+      { key: 'local_buy', value: '货款' }, //地采采购
+      { key: 'distribution', value: '货款' }, //统采采购
+      { key: 'paid', value: '其它' }, //其它（手动充值、扣款）
+      { key: 'item_damage', value: '货损' } //货损
     ];
     return handleKeyValue(type, data);
   },

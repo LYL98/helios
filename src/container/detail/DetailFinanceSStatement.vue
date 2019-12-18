@@ -10,7 +10,8 @@
         <el-table-column label="金额" min-width="200">
           <template slot-scope="scope">
             <div class="amount">
-              <div class="up" v-if="scope.row.bill_amount > 0">&yen;{{returnPrice(scope.row.bill_amount)}}</div>
+              <div v-if="scope.row.bill_amount === 0">&yen;{{returnPrice(scope.row.bill_amount)}}</div>
+              <div class="up" v-else-if="scope.row.bill_amount > 0">&yen;{{returnPrice(scope.row.bill_amount)}}</div>
               <div class="down" v-else>&yen;{{returnPrice(Math.abs(scope.row.bill_amount))}}</div>
             </div>
           </template>
@@ -43,12 +44,7 @@
       return {
         detail: this.copyJson(initDetail),
         initDetail: initDetail,
-        billReason: {
-          'local_buy': '货款', //地采采购
-          'manual_chg': '其它', //财务人员手动修改
-          'after_sale': '售后', //售后处理
-          'distribution': '货款' //统采划拨单
-        }
+        billReason: Constant.SUPPLIER_BILL_REASON()
       }
     },
     methods: {
@@ -75,18 +71,4 @@
 
 <style lang="scss" scoped>
   @import "./detail.scss";
-  .amount{
-    >.up{
-      color: #F8931D;
-      &::before{
-        content: '+';
-      }
-    }
-    >.down{
-        color: #76C627;
-        &::before{
-          content: '-';
-        }
-    }
-  }
 </style>

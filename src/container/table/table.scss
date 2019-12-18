@@ -40,8 +40,8 @@
 
 .td-item{
     &.link-item, .link-item{
-        //text-decoration: underline;
-        font-weight: bold;
+        text-decoration: underline;
+        //font-weight: bold;
         &:hover{
             cursor: pointer;
             //font-weight: bold;

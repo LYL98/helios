@@ -252,7 +252,7 @@ export default {
     'image-preview': ImagePreview,
     'other-item-supplier': OtherItemSupplier
   },
-  poros: {
+  props: {
     page: { type: String, default: '' }, //after-sale-detail售后页面，不显示
   },
   created() {

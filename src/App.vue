@@ -2,8 +2,8 @@
   <div id="app-body">
     <div id="app" v-if="pageName !== 'Login'" style="min-width: 1000px;">
       <div id="head-div">
-        <div id="logo-div" class="ellipsis" :style="`transition: width .2s; ${isHideMenu && 'width: 54px;'}`">
-          {{ !isHideMenu ? brand.brand_name + '运营中心' : '' }}
+        <div id="logo-div" class="ellipsis">
+          {{brand.brand_name + '运营中心'}}
         </div>
         <div class="global-province" v-if="pageName !== 'Login'">
           <my-global-province/>
@@ -20,16 +20,14 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-      <div id="nav-menu-div" :style="`transition: width .2s; ${isHideMenu && 'width: 54px;'}`">
+      <div id="nav-menu-div">
         <div id="menu-div">
           <el-menu
             router
             unique-opened
             :default-active="pageName"
-            :collapse="isHideMenu"
             menu-trigger="click"
-            background-color="#333"
-            :mode="isHideMenu ? 'horizontal':'vertical'"
+            background-color="#262626"
             style="border-right: 0"
             text-color="#bbb"
             active-text-color="#00ADE7"
@@ -54,15 +52,8 @@
 
           </el-menu>
         </div>
-        <div
-          id="show-hide-menu"
-          @click="toggerShowHideMenu"
-          :style="`transition: width .2s; ${isHideMenu && 'left: 52px;'}`">
-          <img v-if="isHideMenu" src="@/assets/img/menu-open.png">
-          <img v-else src="@/assets/img/menu-close.png">
-        </div>
       </div>
-      <div id="router-view-div" :style="`min-width: 1000px; margin-left: ${isHideMenu ? '54px;' : '182px;'}`">
+      <div id="router-view-div" style="min-width: 1000px;">
         <router-view/>
       </div>
     </div>
@@ -82,8 +73,6 @@
   export default {
     name: 'app',
     data() {
-      let appSetting = Method.getPageSetting('App'); //获取页面设置
-
       let name = this.$router.history.current.name;
       return {
         brand: {
@@ -91,7 +80,6 @@
           brand_icon: ''
         },
         tencentPath: Config.tencentPath,
-        isHideMenu: appSetting.isHideMenu ? true : false,
         menus:[{
           title: '供应商',
           icon: '&#xe736;',
@@ -223,7 +211,7 @@
             name: 'FinanceApproveQuery'
           },{
             title: '供应商流水',
-            name: 'FinanceSList'
+            name: 'FinanceSBDetail'
           },{
             title: '供应商对账表',
             name: 'FinanceSStatement'
@@ -362,11 +350,6 @@
           this.$message({ message: res.message, type: 'error' });
         }
       },
-      //显示或隐藏菜单
-      toggerShowHideMenu() {
-        this.$data.isHideMenu = !this.$data.isHideMenu;
-        Method.setPageSetting('App', {isHideMenu: this.$data.isHideMenu});
-      },
     },
     watch: {
       //监听路由变化
@@ -462,20 +445,9 @@
     }
   }
 
-  /* 定义省略文本的全局样式 */
-  .ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
   /*链接样式*/
   .link-active:active {
     background: #f3f4f6;
-  }
-
-  .main-padding {
-    padding: 0 15px;
   }
 
   .f-l { float: left; }
@@ -555,14 +527,15 @@
   }
 
   #head-div {
-    background-color: #262626;
-    height: 42px;
-    color: #bbb;
+    background-color: #fff;
+    height: 41px;
+    color: #5A5D64;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 2;
+    z-index: 6;
+    border-bottom: 1px solid #ececec;
     #logo-div {
       height: 42px;
       line-height: 42px;
@@ -586,14 +559,14 @@
       line-height: 42px;
       cursor: pointer;
       margin-right: 15px;
-      color: #fff;
+      color: #5A5D64;
     }
   }
 
   /*菜单*/
   #nav-menu-div {
     width: 180px;
-    background-color: #333;
+    background-color: #262626;
     position: fixed;
     z-index: 2;
     top: 42px;
@@ -652,24 +625,11 @@
     }
 
     li.el-menu-item.home {
-      background-color: #20232C !important;
+      background-color: #262626 !important;
     }
 
     li.el-menu-item:hover {
       background-color: #050507 !important;
-    }
-
-    #show-hide-menu {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      width: 12px;
-      height: 76px;
-      background-color: #20232C;
-      border-radius: 0 20px 20px 0;
-      position: absolute;
-      top: 44vh;
-      left: 178px;
     }
 
     .el-menu--horizontal {
@@ -980,14 +940,6 @@
     color: #ff5252;
   }
 
-  .color-red {
-    color: #ff3724;
-  }
-
-  .color-green {
-    color: #00d600;
-  }
-
   /*提示*/
   .span-help-tooltip{
     display: inline-block;
@@ -999,89 +951,6 @@
     color: #999;
     border: 1px solid #999;
     font-size: 12px;
-  }
-
-  //共用右边选择菜单
-  .right-select-item-body {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-    background: rgba(0, 0, 0, .3);
-
-    .right-select-item {
-      position: fixed;
-      top: 0;
-      right: 0px;
-      bottom: 0;
-      background: #fff;
-      width: 260px;
-      animation: right-select-menu .3s;
-      -webkit-animation: right-select-menu .3s;
-
-      .title {
-        border-bottom: 1px solid #f3f4f6;
-        color: #999;
-        padding: 0 10px;
-        height: 40px;
-        line-height: 40px;
-      }
-
-      .content {
-        position: absolute;
-        overflow-y: auto;
-        top: 41px;
-        bottom: 47px;
-        width: 260px;
-      }
-
-      .bottom {
-        position: absolute;
-        bottom: 0;
-        width: 240px;
-        display: flex;
-        align-items: center;
-        border-top: 1px solid #f3f4f6;
-        padding: 0 10px;
-        height: 46px;
-        line-height: 46px;
-
-        div {
-          flex: 1;
-          text-align: center;
-
-          button {
-            width: 100%;
-          }
-        }
-
-        .interval {
-          flex: initial !important;
-          width: 10px;
-        }
-      }
-    }
-  }
-
-
-  @keyframes right-select-menu {
-    from {
-      right: -260px;
-    }
-    to {
-      right: 0px;
-    }
-  }
-
-  @-webkit-keyframes right-select-menu {
-    from {
-      right: -260px;
-    }
-    to {
-      right: 0px;
-    }
   }
 
   /*背景平铺及居中*/
@@ -1264,6 +1133,24 @@
       font-weight: normal !important;
       text-decoration: none !important;
       color: #606266 !important;
+    }
+  }
+
+  //金额正负
+  .amount{
+    >.up{
+      color: #F8931D;
+      &::before{
+        content: '+';
+        margin-right: 2px;
+      }
+    }
+    >.down{
+        color: #76C627;
+        &::before{
+          content: '-';
+          margin-right: 2px;
+        }
     }
   }
 

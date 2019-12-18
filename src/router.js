@@ -175,9 +175,9 @@ const router = new Router({
       component: () => import('@/view/finance/ApproveList')
     },
     {
-      path: '/finance/supplier/list',
-      name: 'FinanceSupplierList',
-      component: () => import('@/view/finance/SupplierList')
+      path: '/finance/s/b/detail',
+      name: 'FinanceSBDetail',
+      component: () => import('@/view/finance/SBDetail')
     },
     {
       path: '/finance/s/statement',

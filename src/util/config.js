@@ -392,6 +392,10 @@ const Config = (() => {
       financeSupBillDetail: apiM + '/sup_bill/detail', //对账单详情
       financeSupBillPay: apiM + '/sup_bill/pay', //批量结款
 
+      financeSupBDetailQuery: apiM + '/sup_bdetail/query', //账单明细详情查询
+      financeSupBDetailDetail: apiM + '/sup_bdetail/detail', //账单明细详情
+      financeSupBDetailAdd: apiM + '/sup_bdetail/add', //财务人员手动添加账单变更明细
+
 
       //统计
       statisticalOrderClassSum: apiM + '/statistical/order/class_sum', //统计分析 - 商品销售统计 - 分类别统计

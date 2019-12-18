@@ -23,7 +23,7 @@
               :row-class-name="highlightRowClassName"
               @selection-change="handleSelectionChange"
               :height="windowHeight - offsetHeight">
-      <el-table-column type="selection" width="55"/>
+      <el-table-column type="selection" width="42"/>
       <el-table-column label="图片">
         <template slot-scope="scope">
           <a href="javascript:void(0);">

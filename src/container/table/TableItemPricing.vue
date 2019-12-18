@@ -13,7 +13,7 @@
         @selection-change="handleSelectionChange"
         :default-sort = "{prop: 'date', order: 'descending'}"
       >
-        <el-table-column type="selection" :selectable="returnIsPricing" width="30" v-if="(auth.isAdmin || auth.ItemPriceAudit)"></el-table-column>
+        <el-table-column type="selection" :selectable="returnIsPricing" width="42" v-if="(auth.isAdmin || auth.ItemPriceAudit)"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow" :prop="item.key" :sortable="item.key === 'sale_num_last' || item.key === 'item_stock' ? 'custom' : false">
