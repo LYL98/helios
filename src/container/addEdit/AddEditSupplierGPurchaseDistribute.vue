@@ -11,12 +11,12 @@
           <div class="distribute">
             <div class="item" v-for="(item, index) in detail.distribute_items" :key="index">
               <div class="province">
-                <select-province size="medium" v-model="item.province_code" style="width: 180px;" :disabled="item.audit_status !== 'init'"/>
+                <select-province size="medium" v-model="item.province_code" style="width: 180px;" :disabled="judgeOrs(item.audit_status, ['success','fail']) ? true : false"/>
               </div>
               <div class="available-date">
-                <el-date-picker size="medium" v-model="item.available_date" value-format="yyyy-MM-dd" placeholder="销售日期" style="width: 140px;" :disabled="item.audit_status !== 'init'"/>
+                <el-date-picker size="medium" v-model="item.available_date" value-format="yyyy-MM-dd" placeholder="销售日期" style="width: 140px;" :disabled="judgeOrs(item.audit_status, ['success','fail']) ? true : false"/>
               </div>
-              <div class="num"><input-number size="medium" v-model="item.num" style="width: 180px;" unit="件" :disabled="item.audit_status !== 'init'"/></div>
+              <div class="num"><input-number size="medium" v-model="item.num" style="width: 180px;" unit="件" :disabled="judgeOrs(item.audit_status, ['success','fail']) ? true : false"/></div>
               <div class="delete" v-if="pageType === 'add'">
                 <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteDistribute(index)"
                   v-if="detail.distribute_items.length > 1"></i>
