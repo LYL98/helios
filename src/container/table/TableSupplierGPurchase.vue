@@ -65,7 +65,7 @@
                 },
                 {
                   title: '修改',
-                  isDisplay: auth.isAdmin || auth.SupplierGPurchaseEdit,
+                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseEdit) && scope.row.audit_status === 'init',
                   command: () => handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'edit')
                 },
                 {

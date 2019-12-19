@@ -20,6 +20,7 @@ export default {
     size: { type: String, default: '' },
     hasAllSelection: { type: Boolean, default: false },
     filterable: { type: Boolean, default: false },
+    placeholder: { type: String, default: '' },
   },
   model: {
     prop: 'value',
