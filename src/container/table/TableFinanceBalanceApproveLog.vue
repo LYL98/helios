@@ -155,7 +155,7 @@
 
 <script>
   import { Input, Button, Table, TableColumn, Pagination, Message, DatePicker, Select, Option, Dialog, Form, FormItem } from 'element-ui';
-  import { ButtonGroup, QueryItem, ToPrice, OmissionText, TableOperate } from '@/common';
+  import { ButtonGroup, QueryItem, OmissionText, TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
   
   export default {
@@ -174,7 +174,6 @@
       'el-form-item': FormItem,
       'my-button-group': ButtonGroup,
       'my-query-item': QueryItem,
-      'my-to-price': ToPrice,
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate
     },

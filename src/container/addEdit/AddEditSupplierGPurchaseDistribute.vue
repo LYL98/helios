@@ -36,7 +36,7 @@
           <el-button size="medium" type="primary" @click.native="handleAddEdit" v-if="pageType === 'add'">确 定</el-button>
         </template>
         <template v-else>
-          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="(auth.isAdmin || auth.SupplierGPurchaseDistributeEdit) && pageType === 'detail'">修改</el-button>
+          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="(auth.isAdmin || auth.SupplierGPurchaseDistributeEdit) && pageType === 'detail' && detail.audit_status === 'init'">修改</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>

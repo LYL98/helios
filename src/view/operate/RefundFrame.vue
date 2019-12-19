@@ -252,7 +252,7 @@
 
 <script>
   import {Row, Col, Table, TableColumn, Popover, Pagination, Button, Input, Select, Option, DatePicker, Dialog, Tag, MessageBox, Message} from 'element-ui';
-  import {ButtonGroup, QueryItem, TableOperate, CollapseQuery, OmissionText, ToPrice} from '@/common';
+  import {ButtonGroup, QueryItem, TableOperate, CollapseQuery, OmissionText} from '@/common';
   import {SelectLine, SelectCity} from '@/container';
   import {Config, Constant, DataHandle, Http} from '@/util';
   import tableMixin from '@/container/table/table.mixin';
@@ -280,7 +280,6 @@
       'my-button-group': ButtonGroup,
       'my-query-item': QueryItem,
       'my-omission-text': OmissionText,
-      'my-to-price': ToPrice,
       'refund-add-store': RefundAddStore,
       'my-table-operate': TableOperate,
       'my-collapse-query': CollapseQuery

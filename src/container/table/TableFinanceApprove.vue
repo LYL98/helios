@@ -105,7 +105,7 @@
 </template>
 
 <script>
-  import { ToPrice, OmissionText, TableOperate } from '@/common';
+  import { OmissionText, TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import tableMixin from './table.mixin';
   
@@ -113,7 +113,6 @@
     name: "TableFinanceApprove",
     mixins: [tableMixin],
     components: {
-      'my-to-price': ToPrice,
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate
     },

@@ -57,15 +57,14 @@
 </template>
 
 <script>
-  import {TableOperate, ToPrice} from '@/common';
+  import {TableOperate} from '@/common';
   import {Constant, DataHandle} from '@/util';
   import tableMixin from './table.mixin';
 
   export default {
     name: "TableFinanceBalance",
     components: {
-      'my-table-operate': TableOperate,
-      'my-to-price': ToPrice
+      'my-table-operate': TableOperate
     },
     mixins: [tableMixin],
     computed: {
