@@ -127,7 +127,7 @@ export default {
         price_sale: [
           { required: true, message: '请输入今日销售价', trigger: 'change' },
           { type: 'number', min: 0.01, message: '请输入今日销售价', trigger: 'change' },
-          { validator: validPriceSale, trigger: 'change' },
+          //{ validator: validPriceSale, trigger: 'change' },
         ],
         item_stock: [
           { required: true, message: '请输入库存', trigger: 'change' },
