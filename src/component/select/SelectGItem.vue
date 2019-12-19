@@ -42,6 +42,11 @@
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
+          //判断当前选择的id是否在列表里
+          let con = rd.filter(item => item.id === this.selectId);
+          if(con.length === 0){
+            this.handleChange('');
+          }
         }else{
           this.$messageBox.alert(res.message, '提示');
         }
@@ -51,7 +56,6 @@
       supplierId: {
         deep: true,
         handler: function (a, b) {
-          this.handleChange('');
           if(a){
             this.getData();
           }else{
