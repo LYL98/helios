@@ -70,7 +70,7 @@
           <h6 class="subtitle">供应商今日供货信息</h6>
           <div style="margin-left: 20px;">
             <el-row v-for="(item,index) in supplierList" :key="index" style="margin-bottom: 10px; ">
-              <el-col :span="14">{{item.supplier.title}}<span v-if="item.supplier.is_main" class="main-tag">主供应商</span></el-col>
+              <el-col :span="14">{{item.supplier.title}}<span v-if="item.is_main" class="main-tag no-pre">主供应商</span></el-col>
               <el-col :span="5">{{item.num}}件</el-col>
               <el-col :span="5">{{returnPrice(item.price)}}元/件</el-col>
             </el-row>
