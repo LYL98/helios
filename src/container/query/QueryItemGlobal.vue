@@ -7,6 +7,16 @@
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="供应商类型">
+          <button-group
+            :options="{'全部': '', ...supplierType}"
+            v-model="query.sup_type"
+            @change="handleQuery('TableItemGlobal')"
+            size="small"
+          />
+        </my-query-item>
+      </el-col>
+      <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="搜索">
           <div style="display: flex">
             <el-input v-model="query.condition" size="small" placeholder="请输入商品编号、名称" @keyup.enter.native="handleQuery('TableItemGlobal')" class="query-item-input"/>
@@ -21,13 +31,15 @@
 
 <script>
   import queryMixin from './query.mixin2';
-  import { SelectSystemClass } from '@/common';
+  import { ButtonGroup, SelectSystemClass } from '@/common';
+  import { Constant } from '@/util';
 
   export default {
     name: "QueryItemGlobal",
     mixins: [queryMixin],
     components: {
-      'select-system-class': SelectSystemClass
+      'select-system-class': SelectSystemClass,
+      'button-group': ButtonGroup
     },
     props: {
       page: { type: String, default: 'global' }, //页面global、recover
@@ -42,6 +54,7 @@
       let initQuery = {
         system_class_code: '',
         system_class_codes: [],
+        sup_type: '',
         condition: '',
         province_code: '',
         is_deleted: '0'
@@ -49,6 +62,7 @@
       return {
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
+        supplierType: Constant.SUPPLIER_TYPE('value_key'),
       }
     },
     methods: {

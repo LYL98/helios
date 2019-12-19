@@ -83,7 +83,7 @@ export default {
     async operatorPwdModify(){
       let that = this;
       let { editData } = that;
-      let res = await Http.get(Config.api.operatorPwdModify, {
+      let res = await Http.post(Config.api.operatorPwdModify, {
         password_ori: md5(editData.password_ori),
         password: md5(editData.password)
       });

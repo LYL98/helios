@@ -68,7 +68,7 @@
 <script>
   import { Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Notification, MessageBox, Backtop} from 'element-ui';
   import {Http, Config, Method, DataHandle} from '@/util';
-  import {GlobalProvince, PwdModify} from '@/common';
+  import {GlobalProvince, PwdModify} from '@/component';
 
   export default {
     name: 'app',

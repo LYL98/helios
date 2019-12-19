@@ -75,6 +75,16 @@
             />
           </my-query-item>
         </el-col>
+        <el-col :xl="6" :lg="7" :span="7">
+          <my-query-item label="供应商类型">
+            <button-group
+              :options="{'全部': '', ...supplierType}"
+              v-model="query.sup_type"
+              @change="handleQuery('TableItemList')"
+              size="small"
+            />
+          </my-query-item>
+        </el-col>
       </el-row>
     </template>
 
@@ -121,6 +131,7 @@
   import { Collapse, CollapseItem } from 'element-ui';
   import { ButtonGroup, SelectDisplayClass, SelectInnerTag, SelectSystemClass } from '@/common';
   import queryMixin from './query.mixin2';
+  import { Constant } from '@/util';
 
   export default {
     name: "QueryItem",
@@ -142,6 +153,7 @@
         is_on_sale: 1,
         display_class_code: '',
         condition: '',
+        sup_type: '',
         inner_tag_id: '',
         is_presale: '',
         is_gift: '',
@@ -151,6 +163,7 @@
       return {
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
+        supplierType: Constant.SUPPLIER_TYPE('value_key'),
       }
     },
     methods: {
