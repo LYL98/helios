@@ -59,6 +59,7 @@ export default {
       if(res.code === 0){
         this.$message({message: '已审核', type: 'success'});
         this.$data.selectAuditStatus = 'success';
+        this.$data.remark = '';
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableSupplierGPurchase');

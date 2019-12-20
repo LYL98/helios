@@ -50,6 +50,7 @@ export default {
     //显示form(供外部也调用)
     showForm(data){
       this.$data.auditIds = data;
+      this.$data.remark = '';
       this.$data.isShow = true;
     },
     //提交
