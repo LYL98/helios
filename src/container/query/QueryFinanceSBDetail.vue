@@ -106,6 +106,7 @@
       let initQuery = {
         picker_value: null,
         audit_status: this.page === 'sBDetail' ? 'success' : '',
+        created_by: this.page === 'sBDetailAudit' ? 'manual' : '',
         begin_date: '',
         end_date: '',
         bill_reason: '',
