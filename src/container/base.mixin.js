@@ -67,14 +67,21 @@ export default {
   },
   data() {
     //今天日期
-    let nowDate = DataHandle.returnDateStr();
-    nowDate = DataHandle.returnDateFormat(nowDate, 'yyyy-MM-dd');
+    let today = DataHandle.returnDateStr();
+    today = DataHandle.returnDateFormat(today, 'yyyy-MM-dd');
+
+    //明天
+    let tomorrow = DataHandle.returnDateCalc(today, 1);
+    tomorrow = DataHandle.returnDateFormat(tomorrow, 'yyyy-MM-dd');
+
     return {
       tencentPathUp: Config.tencentUpPath,
       tencentPath: Config.tencentPath,
       province: this.$province,
       auth: this.$auth,
-      nowDate: nowDate
+      today: today,
+      nowDate: today,
+      tomorrow: tomorrow
     }
   },
   created() {

@@ -8,17 +8,7 @@ export default {
     'add-edit-layout': Layout,
   },
   data() {
-    //今天
-    let today = DataHandle.returnDateStr(); //返回今日日期时间字符串
-    today = DataHandle.returnDateFormat(today, 'yyyy-MM-dd');
-
-    //明天
-    let tomorrow = DataHandle.returnDateCalc(today, 1);
-    tomorrow = DataHandle.returnDateFormat(tomorrow, 'yyyy-MM-dd');
-
     return {
-      today: today, //今天
-      tomorrow: tomorrow, //明天
       defaultAvatar: Constant.IMGS.defaultAvatar,
       isShow: false,
       detail: {},
