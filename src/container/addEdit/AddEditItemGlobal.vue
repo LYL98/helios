@@ -60,6 +60,12 @@
             <other-item-supplier :supplierType="detail.sup_type" :supplierBinds="detail.supplier_binds"/>
           </el-form-item>
         </el-col>
+        <el-col :span="8">
+          <el-form-item label="发票">
+            <el-radio v-model="detail.has_ticket" :label="true" border size="mini">有</el-radio>
+            <el-radio v-model="detail.has_ticket" :label="false" border size="mini">无</el-radio>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row :gutter="10">
         <el-col :span="16">
@@ -147,6 +153,7 @@ export default {
       content: '', //详细信息
       creater: {},
       last_updater: {},
+      has_ticket: false,
     }
     return{
       supplierType: Constant.SUPPLIER_TYPE(),
