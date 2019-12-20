@@ -17,8 +17,7 @@
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
+        class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -80,17 +79,7 @@
     <div class="table-bottom">
       <div class="left"></div>
       <div class="right">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-          @selection-change="handleSelectionChange"
-        />
+        <pagination :pageComponent='this'/>
       </div>
     </div>
     <!-- 表格end -->
@@ -110,16 +99,11 @@
       page: { type: String, default: 'item' }, //页面item、recover
     },
     created() {
-      if((this.page === 'item' && !this.auth.isAdmin && !this.auth.GroupItemEditLog && !this.auth.GroupItemAdd && !this.auth.GroupItemDelete) ||
-        (this.page === 'recover' && !this.auth.isAdmin && !this.auth.GroupItemRecover)){
-          this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION;
-        }
       let pc = this.getPageComponents('QueryGroupItem');
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableGroupItem',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },

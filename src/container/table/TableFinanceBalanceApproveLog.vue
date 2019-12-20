@@ -54,7 +54,7 @@
       </my-query-item>
     </div>
     <el-table
-      :data="listItem.items"
+      :data="dataItem.items"
       :row-class-name="highlightRowClassName"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
@@ -131,7 +131,7 @@
         :page-sizes="[10, 20, 30, 40, 50]"
         @size-change="changePageSize"
         @current-change="changePage"
-        :total="listItem.num"
+        :total="dataItem.num"
         :page-size="query.page_size"
         :current-page="query.page"
       />
@@ -188,7 +188,7 @@
         query: {
           creater_name: ''
         },
-        listItem: {
+        dataItem: {
           items: [],
           num: 0
         },
@@ -283,7 +283,7 @@
       async ApproveQuery() {
         let res = await Http.get(Config.api.financeApproveQuery, this.query);
         if (res.code === 0) {
-          this.$data.listItem = Object.assign({}, this.$data.listItem, res.data);
+          this.$data.dataItem = Object.assign({}, this.$data.dataItem, res.data);
         } else {
           Message.warning(res.message);
         }

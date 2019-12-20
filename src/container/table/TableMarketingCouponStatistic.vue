@@ -34,7 +34,7 @@
       </div>
     </div>
     <el-table
-      :data="listItem.items"
+      :data="dataItem.items"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
       :row-class-name="highlightRowClassName"
@@ -93,7 +93,7 @@
         :page-sizes="[10, 20, 30, 40, 50]"
         @size-change="changePageSize"
         @current-change="changePage"
-        :total="listItem.num"
+        :total="dataItem.num"
         :page-size="query.page_size"
         :current-page="query.page"
       />
@@ -122,7 +122,7 @@
       return {
         province: this.$province,
         query: {},
-        listItem: {
+        dataItem: {
           items: [],
           num: 0
         },
@@ -189,7 +189,7 @@
       async queryLog() {
         let res = await Http.get(Config.api.itemCouponDistributeStatistic, this.query);
         if (res.code === 0) {
-          this.$data.listItem = Object.assign({}, this.$data.listItem, res.data);
+          this.$data.dataItem = Object.assign({}, this.$data.dataItem, res.data);
         } else {
           Message.warning(res.message);
         }

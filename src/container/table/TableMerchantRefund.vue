@@ -1,17 +1,19 @@
 <template>
   <div>
-    <div class="operate" v-if="auth.isAdmin || auth.MerchantRefundLogQuery">
-      <el-button size="mini" v-if="auth.isAdmin || auth.MerchantRefundLogQuery" type="primary" @click="handleShowDetail('DetailMerchantRefundLog')">退筐变更记录</el-button>
+    <div class="table-top" v-if="auth.isAdmin || auth.MerchantRefundLogQuery">
+      <div class="left"></div>
+      <div class="right">
+        <el-button size="mini" type="primary" @click="handleShowDetail('DetailMerchantRefundLog')">退筐变更记录</el-button>
+      </div>
     </div>
 
-    <div @mousemove="handleTableMouseMove">
+    <div @mousemove="handleTableMouseMove" class="table-conter">
       <el-table
-        class="list-table"
+        class="list-table my-table-float"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
         :data="dataItem.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -77,20 +79,11 @@
         </el-table-column>
       </el-table>
     </div>
-
     <!-- 分页标签 -->
-    <div class="footer">
-      <div class="table-pagination" v-if="dataItem.num > 0">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-        />
+    <div class="table-bottom">
+      <div class="left"></div>
+      <div class="right">
+        <pagination :pageComponent="this" />
       </div>
     </div>
   </div>
@@ -105,15 +98,11 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.MerchantRefundLogQuery) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-      }
       let pc = this.getPageComponents('QueryMerchantRefund');
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
       }
     },
     methods: {

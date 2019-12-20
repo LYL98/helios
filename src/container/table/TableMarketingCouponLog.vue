@@ -8,7 +8,7 @@
 
     <el-table
       style="margin-top: -15px;"
-      :data="listItem.items"
+      :data="dataItem.items"
       :row-class-name="highlightRowClassName"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
@@ -55,7 +55,7 @@
         :page-sizes="[10, 20, 30, 40, 50]"
         @size-change="changePageSize"
         @current-change="changePage"
-        :total="listItem.num"
+        :total="dataItem.num"
         :page-size="query.page_size"
         :current-page="query.page"
       />
@@ -87,7 +87,7 @@
         province: this.$province,
         auth: this.$auth,
         query: { },
-        listItem: {
+        dataItem: {
           items: [],
           num: 0
         },
@@ -175,7 +175,7 @@
             item.dis_scope_str = this.showDisLog(item);
             return item;
           });
-          this.$data.listItem = Object.assign({}, this.$data.listItem, { num: res.data.num, items: items });
+          this.$data.dataItem = Object.assign({}, this.$data.dataItem, { num: res.data.num, items: items });
         } else {
           Message.warning(res.message);
         }

@@ -1,19 +1,18 @@
 <template>
-  <div>
+  <div class="container-table">
     <div class="operate" v-if="auth.isAdmin || auth.BasicDataCityListAdd">
       <el-button @click="handleShowAddEdit('AddEditBasicDataCity')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataCityListAdd">新增
       </el-button>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove">
+    <div @mousemove="handleTableMouseMove" class="table-conter">
       <el-table
-        class="list-table"
+        class="list-table my-table-float"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
-        :data="pageList"
+        :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%;"
-        :height="windowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -90,21 +89,13 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- 表格end -->
-    <div class="footer">
-      <div class="table-pagination">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.length"
-          :page-size="page_size"
-          :current-page="page"
-        />
+    <div class="table-bottom">
+      <div class="left"></div>
+      <div class="right">
+        <pagination :pageComponent='this'/>
       </div>
     </div>
+    <!-- 表格end -->
   </div>
 </template>
 
@@ -120,43 +111,44 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.BasicDataCityListAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
-      }
       let pc = this.getPageComponents('QueryBasicDataCity'); //获取query组件
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         rowIdentifier: 'code',
-        page: 1,
-        page_size: Constant.PAGE_SIZE,
-        dataItem: []
+        dataList: [],
       }
     },
     computed: {
-      pageList: {
+      /*dataItem: {
         get() {
-          return this.dataItem.slice((this.page - 1) * this.page_size, this.page * this.page_size);
+          let { dataList, query } = this;
+          let d = {
+            items: dataList.slice((query.page - 1) * query.page_size, query.page * query.page_size),
+            num: dataList.length
+          }
+          return d;
         }
-      }
+      }*/
     },
     methods: {
       indexMethod(index) {
-        return (this.page - 1) * this.page_size + index + 1;
+        return (this.query.page - 1) * this.query.page_size + index + 1;
       },
       // 设置每页显示数量
       changePageSize(pageSize) {
         window.scrollTo(0, 0);
-        this.page_size = pageSize;
-        this.page = 1;
+        this.query.page_size = pageSize;
+        this.query.page = 1;
+        this.handleDataItem(); //处理dataItem
       },
 
       //翻页
       changePage(page) {
         window.scrollTo(0, 0);
-        this.page = page;
+        this.query.page = page;
+        this.handleDataItem(); //处理dataItem
       },
       //获取数据
       async getData(query){
@@ -165,7 +157,8 @@
         let res = await Http.get(Config.api.basicdataCityList, query);
         this.$loading({isShow: false});
         if(res.code === 0){
-          this.$data.dataItem = res.data;
+          this.$data.dataList = res.data;
+          this.handleDataItem(); //处理dataItem
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
@@ -184,6 +177,15 @@
           this.$message({message: res.message, type: 'error'});
         }
       },
+      //处理dataItem
+      handleDataItem(){
+        let { dataList, query } = this;
+        let d = {
+          items: dataList.slice((query.page - 1) * query.page_size, query.page * query.page_size),
+          num: dataList.length
+        }
+        this.$data.dataItem = d;
+      }
     }
   };
 </script>

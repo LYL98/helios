@@ -7,7 +7,7 @@
           角色列表
           <el-button class="btn" icon="el-icon-plus" size="mini" @click.native="showAddEdit" v-if="auth.isAdmin || auth.SystemRoleAdd" >新增</el-button>
         </div>
-        <div class="content" :style="`height:${viewWindowHeight - 116}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
+        <div class="content" :style="`height:${viewWindowHeight - 118}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
           <div v-for="(item,index) in dataItem" :class="`role-item ${detail.id === item.id && 'active'}`" @click="selectRoleItem(item, detail.id === item.id)" :key="index">
             <div class="add-dot" :title="item.title">
               {{item.title}}

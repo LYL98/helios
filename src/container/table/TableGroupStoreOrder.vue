@@ -15,8 +15,7 @@
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
+        class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -78,17 +77,7 @@
     <div class="table-bottom">
       <div class="left"></div>
       <div class="right">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-          @selection-change="handleSelectionChange"
-        />
+        <pagination :pageComponent='this'/>
       </div>
     </div>
     <!-- 表格end -->
@@ -105,15 +94,11 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.GroupStoreOrderDelivery && !this.auth.GroupStoreOrderDeliveryAll && !this.auth.GroupStoreOrderExport) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION;
-      }
       let pc = this.getPageComponents('QueryGroupStoreOrder');
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableGroupStoreOrder',
         tableColumn: [
           { label: '门店名称', key: 'store_title', width: '160', isShow: true },

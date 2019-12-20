@@ -2,6 +2,7 @@ import baseMixin from '@/container/base.mixin';
 import { Constant, Method, Config, Http } from '@/util';
 import { TableOperate } from '@/common';
 import SettingColumnTitle from './SettingColumnTitle';
+import Pagination from './Pagination';
 
 // 表格宽度： 860 / 830（带全选）
 
@@ -9,7 +10,8 @@ export default {
   mixins: [baseMixin],
   components: {
     'my-table-operate': TableOperate,
-    'setting-column-title': SettingColumnTitle
+    'setting-column-title': SettingColumnTitle,
+    'pagination': Pagination
   },
   data() {
     return {

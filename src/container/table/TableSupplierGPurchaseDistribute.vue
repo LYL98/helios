@@ -3,7 +3,7 @@
     <div class="table-top" v-if="auth.isAdmin || auth.SupplierGPurchaseDistributeAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseDistributeAdd" @click="handleShowAddEdit('AddEditSupplierGPurchaseDistribute')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEditSupplierGPurchaseDistribute')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -74,21 +74,12 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="table-bottom" v-if="dataItem.num > 0">
+    <div class="table-bottom">
       <div class="left">
         <!--<el-button type="danger" size="mini" disabled>批量删除</el-button>-->
       </div>
       <div class="right">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-        />
+        <pagination :pageComponent='this'/>
       </div>
     </div>
     <!-- 表格end -->
