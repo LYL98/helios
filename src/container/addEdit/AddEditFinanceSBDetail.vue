@@ -32,7 +32,7 @@
               <el-form-item label="供应商">{{detail.supplier.title}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="流水类型">{{detail.bill_reason === 'other' ? '其它' : '货损'}}</el-form-item>
+              <el-form-item label="流水类型">{{billReason[detail.bill_reason]}}</el-form-item>
             </el-col>
           </el-row>
           <el-row>
@@ -81,7 +81,7 @@
 
 <script>
 import addEditMixin from './add.edit.mixin';
-import { Http, Config } from '@/util';
+import { Http, Config, Constant } from '@/util';
 import { InputPrice } from '@/common';
 import { SelectSupplier } from '@/component';
 
@@ -106,6 +106,7 @@ export default {
       remark: ''
     }
     return {
+      billReason: Constant.SUPPLIER_BILL_REASON(),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       rules: {

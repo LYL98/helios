@@ -8,7 +8,7 @@
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="供应商">
-          <select-supplier size="small" v-model="query.supplier_id" @change="handleQuery('TableSupplierLocalPurchase')"/>
+          <select-supplier size="small" v-model="query.supplier_id" :provinceCode="query.province_code" @change="handleQuery('TableSupplierLocalPurchase')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -64,6 +64,7 @@
     },
     data() {
       let initQuery = {
+        province_code: this.$province.code,
         order_date: '',
         supplier_id: '',
         status: '',
