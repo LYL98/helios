@@ -9,7 +9,7 @@
           <select-supplier supplierType="global_pur" size="medium" v-model="detail.supplier_id" style="width: 360px;" :disabled="detail.id ? true : false"/>
         </el-form-item>
         <el-form-item label="商品" prop="item_id">
-          <select-g-item v-model="detail.item_id" size="medium" :supplierId="detail.supplier_id" style="width: 360px;" :disabled="detail.id ? true : false"></select-g-item>
+          <select-g-item v-model="detail.item_id" size="medium" :supplierId="detail.supplier_id" @change="selectGItem" style="width: 360px;" :disabled="detail.id ? true : false"></select-g-item>
         </el-form-item>
         <el-form-item label="件数" prop="num">
           <input-number size="medium" v-model="detail.num" style="width: 240px;" unit="件" />
@@ -17,7 +17,12 @@
         <el-form-item label="单价" prop="price">
           <input-price size="medium" v-model="detail.price" style="width: 240px;"/>
         </el-form-item>
-        <el-form-item label="总价">&yen;&nbsp;{{returnPrice(detail.num * detail.price)}}</el-form-item>
+        <!--含筐-->
+        <template v-if="detail.frame_code">
+          <el-form-item label="筐" v-if="detail.frame_code">&yen;&nbsp;{{returnPrice(detail.num * detail.frame_price)}}</el-form-item>
+          <el-form-item label="总价">&yen;&nbsp;{{returnPrice(detail.num * detail.price + detail.num * detail.frame_price)}}（含筐&yen;{{returnPrice(detail.num * detail.frame_price)}}）</el-form-item>
+        </template>
+        <el-form-item v-else label="总价">&yen;&nbsp;{{returnPrice(detail.num * detail.price)}}</el-form-item>
       </el-form>
 
       <div style="margin-left: 110px; margin-top: 80px;">
@@ -111,6 +116,16 @@ export default {
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
+      }
+    },
+    //选择商品时
+    selectGItem(data){
+      //如果有筐
+      if(data.frame_code){
+        let { detail } = this;
+        detail.frame_code = data.frame_code;
+        detail.frame_price = data.frame.price;
+        this.$data.detail = detail;
       }
     },
     //提交数据
