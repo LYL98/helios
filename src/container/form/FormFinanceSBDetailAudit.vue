@@ -8,6 +8,16 @@
           </template>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="备注">
+        <el-input
+          v-model="remark"
+          type="textarea"
+          :rows="4"
+          resize="none"
+          :maxlength="200" placeholder="请输入200位以内的字符"
+          style="width: 360px;"
+        ></el-input>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click.native="handleCancel">取 消</el-button>
@@ -29,6 +39,7 @@ export default {
     let initDetail = {}
     return{
       selectAuditStatus: 'success',
+      remark: '',
       auditStatus: Constant.AUDIT_STATUS(),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -43,10 +54,11 @@ export default {
     },
     //提交
     async submitData(){
-      let { auditIds, selectAuditStatus } = this;
+      let { auditIds, selectAuditStatus, remark } = this;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.financeSupBDetailAudit, {
         ids: auditIds,
+        remark: remark,
         audit_status: selectAuditStatus
       });
       this.$loading({isShow: false});
