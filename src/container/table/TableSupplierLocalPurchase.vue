@@ -30,16 +30,19 @@
               </template>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'status'">
+                <el-tag size="small" type="info" disable-transitions>全部入库</el-tag>
+                <!--
                 <el-tag size="small" :type="localPurchaseStatusType[scope.row.status]" disable-transitions>
                   {{localPurchaseStatus[scope.row.status]}}
                 </el-tag>
+                -->
               </div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="120">
+        <el-table-column label="操作" width="70">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -85,22 +88,18 @@
       return {
         tableName: 'TableSupplierLocalPurchase',
         tableColumn: [
-          { label: '地采单号', key: 'code', width: '3', isShow: true },
+          { label: '地采单号', key: 'code', width: '2', isShow: true },
           { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
           { label: '供货商', key: 'supplier', width: '3', isShow: true },
           { label: '采购价', key: 'price_buy', width: '2', isShow: true },
           { label: '采购数量', key: 'num', width: '2', isShow: true },
-          { label: '状态', key: 'status', width: '3', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '采购日期', key: 'order_date', width: '3', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
         localPurchaseStatus: Constant.LOCAL_PURCHASE_STATUS(),
-        localPurchaseStatusType: {
-          init: 'warning',
-          part: 'danger',
-          all: 'info'
-        }
+        localPurchaseStatusType: Constant.LOCAL_PURCHASE_STATUS_TYPE,
       }
     },
     methods: {

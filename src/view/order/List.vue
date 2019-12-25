@@ -322,7 +322,7 @@
       //取消订单
       handleOrderCancel(id) {
         let {orderCancel, getOrderGetList, query} = this;
-        MessageBox.confirm('取消该订单?', '提示', {
+        this.$messageBox.confirm('取消该订单?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -341,7 +341,7 @@
       //确认订单
       handleOrderConfirm(id) {
         let {orderConfirm, getOrderGetList, query} = this;
-        MessageBox.confirm('确认该订单?', '提示', {
+        this.$messageBox.confirm('确认该订单?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

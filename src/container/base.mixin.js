@@ -88,6 +88,17 @@ export default {
 
   },
   methods: {
+    /**
+     * 斑马线的背景颜色样式
+     */
+    highlightRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 == 0) {
+        return 'stripe-row';
+      } else if (rowIndex % 2 != 0) {
+        return 'default-row'
+      }
+      return '';
+    },
     //深拷贝json
     copyJson(json) {
       return JSON.parse(JSON.stringify(json));

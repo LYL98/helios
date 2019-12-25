@@ -355,6 +355,12 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
+  //地采订单状态(颜色)
+  LOCAL_PURCHASE_STATUS_TYPE: {
+    init: 'warning',
+    part: 'danger',
+    all: 'info'
+  },
   //财务对财表状态
   S_STATEMENT_PAID_STATUS: (type)=>{
     let data = [

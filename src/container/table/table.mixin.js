@@ -141,18 +141,6 @@ export default {
       return row[this.$data.rowIdentifier] != this.$data.currentRow[this.$data.rowIdentifier] ? 'add-dot' : ''
     },
 
-    /**
-     * 斑马线的背景颜色样式
-     */
-    highlightRowClassName({row, rowIndex}) {
-      if (rowIndex % 2 == 0) {
-        return 'stripe-row';
-      } else if (rowIndex % 2 != 0) {
-        return 'default-row'
-      }
-      return '';
-    },
-
     //是否显示表头哪一项
     isShowTableTitle() {
       let { tableName, tableColumn, tableShowColumn } = this;

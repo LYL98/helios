@@ -1,5 +1,5 @@
 <template>
-  <div class="my-quill-editor">
+  <div :class="`my-quill-editor ${mainClass}`">
     <quill-editor
       v-model="content"
       ref="myQuillEditor"
@@ -75,7 +75,8 @@
     props: {
       value: {type: String, default: ''},
       module: {type: String, default: 'item'},
-      disabled: {type: Boolean, default: false}
+      disabled: {type: Boolean, default: false},
+      mainClass: { type: String, default: '' },
     },
     components: {
       'quill-editor': quillEditor,
@@ -85,11 +86,9 @@
       'el-collapse-transition': CollapseTransition
     },
     mounted() {
-
       let toolbar = this.$refs.myQuillEditor.quill.getModule('toolbar');
       toolbar.addHandler('image', this.imgHandler)
       toolbar.addHandler('video', this.videoHandler)
-
     },
     data() {
       return {
@@ -238,7 +237,6 @@
 </script>
 
 <style lang="scss">
-
 
   .my-quill-editor {
     line-height: 24px;
