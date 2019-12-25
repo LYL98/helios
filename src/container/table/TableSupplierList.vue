@@ -46,11 +46,15 @@
               <div class="td-item" v-else-if="item.key === 'bill_term'">
                 {{supplierBillTerm[scope.row.bill_term]}}
               </div>
-              <!--状态-->
-              <div class="td-item" v-else-if="item.key === 'status'">
+              <!--审核状态-->
+              <div class="td-item" v-else-if="item.key === 'is_audited'">
                 <el-tag v-if="!scope.row.is_audited" size="small" type="warning" disable-transitions>待审核</el-tag>
-                <el-tag v-else-if="scope.row.is_freeze" size="small" type="danger" disable-transitions>已冻结</el-tag>
-                <el-tag v-else size="small" type="info" disable-transitions>正常</el-tag>
+                <el-tag v-else size="small" type="info" disable-transitions>审核通过</el-tag>
+              </div>
+              <!--审核状态-->
+              <div class="td-item" v-else-if="item.key === 'is_freeze'">
+                <el-tag v-if="scope.row.is_freeze" size="small" type="danger" disable-transitions>已冻结</el-tag>
+                <el-tag v-else size="small" type="info" disable-transitions>未冻结</el-tag>
               </div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
@@ -82,6 +86,11 @@
                   title: '解冻',
                   isDisplay: (auth.isAdmin || auth.SupplierListUnFreeze) && scope.row.is_freeze && page === 'supplierList',
                   command: () => supplierFreeze(scope.row)
+                },
+                {
+                  title: '供应商品',
+                  isDisplay: (auth.isAdmin || auth.SupplierListItem) && page === 'supplierList',
+                  command: () => handleShowDetail('DetailSupplierListItem', scope.row)
                 },
               ]"
             />
@@ -123,11 +132,12 @@
         tableColumn: [
           { label: '名称', key: 'title', width: '3', isShow: true },
           { label: '联系人', key: 'linkman_contact_phone', width: '3', isShow: true },
-          { label: '登录手机号', key: 'phone', width: '3', isShow: true },
+          { label: '账号手机号', key: 'phone', width: '3', isShow: false },
           { label: '类型', key: 'supplier_type', width: '2', isShow: true },
           { label: '账期', key: 'bill_term', width: '2', isShow: true },
-          { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '创建时间', key: 'created', width: '3', isShow: true },
+          { label: '审核状态', key: 'is_audited', width: '2', isShow: true },
+          { label: '冻结状态', key: 'is_freeze', width: '2', isShow: true },
+          { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
         supplierType: Constant.SUPPLIER_TYPE(),

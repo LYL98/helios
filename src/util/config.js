@@ -59,6 +59,7 @@ const Config = (() => {
       supplierFreeze: apiM + '/supplier/freeze', //供应商冻结
       supplierUnFreeze: apiM + '/supplier/unfreeze', //供应商解冻
       supplierQuery: apiM + '/supplier/query', //供应商列表
+      supplierBindItems: apiM + '/supplier/bind_items', //供应商品
 
       //统采
       supplierGPurchaseQuery: apiM + '/supplier/g_purchase/query', //统采订单

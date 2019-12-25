@@ -1,43 +1,91 @@
 <template>
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-      <el-form class="custom-form" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
-
-        <h6 class="subtitle" v-if="pageType === 'detail'">基本信息</h6>
-        <el-form-item label="名称" prop="title">
-          <el-input placeholder="20个字符以内" size="medium" v-model="detail.title" style="width: 520px;"/>
-        </el-form-item>
-        <el-form-item label="联系人姓名" prop="linkman">
-          <el-input placeholder="请输入姓名" size="medium" :maxlength="10" v-model="detail.linkman" style="width: 320px;"/>
-        </el-form-item>
-        <el-form-item label="联系人手机号" prop="contact_phone">
-          <el-input placeholder="" size="medium" v-model="detail.contact_phone" style="width: 240px;"/>
-        </el-form-item>
-        <el-form-item label="登录手机号" prop="phone">
-          <el-input placeholder="" size="medium" v-model="detail.phone" style="width: 240px;"/>
-        </el-form-item>
-        <el-form-item label="类型" prop="supplier_type">
+      <el-form class="custom-form" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 90%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
+        <h6 class="subtitle">基本信息</h6>
+        <el-form-item label="供应商类型" prop="supplier_type">
           <el-radio v-model="detail.supplier_type" :label="key" :key="key" border size="mini" v-for="(value, key) in supplierType" @change="detail.bill_term = 0">{{value}}</el-radio>
         </el-form-item>
-        <el-form-item label="账期" prop="bill_term">
-          <el-radio v-model="detail.bill_term" :disabled="detail.supplier_type === 'global_pur' ? true : false" :label="Number(key)" :key="key" border size="mini" v-for="(value, key) in supplierBillTerm">{{value}}</el-radio>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="供应商名称" prop="title">
+              <el-input placeholder="10个字符以内" size="medium" :maxlength="10" v-model="detail.title"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="联系人" prop="linkman">
+              <el-input placeholder="10个字符以内" size="medium" :maxlength="10" v-model="detail.linkman"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="联系电话" prop="contact_phone">
+              <el-input placeholder="" size="medium" v-model="detail.contact_phone"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="账号手机号" prop="phone">
+              <el-input placeholder="" size="medium" v-model="detail.phone"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="结款类型" prop="bill_term">
+              <el-select size="medium" v-model="detail.bill_term" :disabled="detail.supplier_type === 'global_pur' ? true : false" style="width: 100%;">
+                <el-option v-for="(value, key) in supplierBillTerm" :value="Number(key)" :key="key" :label="value"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <h6 class="subtitle">银行账户信息</h6>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="档口号" prop="stall_code">
+              <el-input placeholder="30个字符以内" size="medium" :maxlength="30" v-model="detail.stall_code"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="开户行" prop="bank_name">
+              <el-input placeholder="10个字符以内" size="medium" :maxlength="10" v-model="detail.bank_name"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="账户名称" prop="bank_account_name">
+              <el-input placeholder="10个字符以内" size="medium" :maxlength="10" v-model="detail.bank_account_name"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="银行账户号" prop="bank_account">
+              <el-input placeholder="25个字符以内" size="medium" :maxlength="25" v-model="detail.bank_account"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <template v-if="pageType === 'detail'">
+          <h6 class="subtitle">操作记录</h6>
+          <el-row v-if="detail.creater && detail.creater.id">
+            <el-col :span="12">
+              <el-form-item label="创建人">{{detail.creater.realname}}</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="创建时间">{{detail.creater.created}}</el-form-item>
+            </el-col>
+          </el-row>
+          <el-row v-if="detail.auditer && detail.auditer.id">
+            <el-col :span="12">
+              <el-form-item label="审核人">{{detail.auditer.realname}}</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="审核时间">{{detail.auditer.created}}</el-form-item>
+            </el-col>
+          </el-row>
+        </template>
       </el-form>
 
-      <template v-if="pageType === 'detail'">
-        <h6 class="subtitle">商品信息</h6>
-        <el-table :data="detail.bind_items" :highlight-current-row="true" style="margin: 0 50px; width: 1000px; border-top: 1px solid #ececec;">
-          <el-table-column prop="title" label="编号/名称" width="180">
-            <template slot-scope="scope">
-              {{ scope.row.code }}<br/>
-              {{ scope.row.title }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="price" label="价格"></el-table-column>
-        </el-table>
-      </template>
-
-      <div style="margin-left: 110px; margin-top: 80px;">
+      <div style="margin-left: 140px; margin-top: 20px;">
         <template v-if="judgeOrs(pageType, ['add', 'edit'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
@@ -63,13 +111,28 @@ export default {
   created() {
   },
   data(){
+    let validBankAccount = function(rules, value, callback) {
+      if (isNaN(value)) {
+        return callback(new Error('请输入25位以内的数字'));
+      }
+      if (value.length <= 25) {
+        callback();
+      } else {
+        callback(new Error('请输入25位以内的数字'));
+      }
+    };
     let initDetail = {
       province_code: this.$province.code,
       title: '',
       phone: '',
       supplier_type: 'global_pur',
       bill_term: 0,
-      bind_items: []
+      stall_code: '',
+      bank_name: '',
+      bank_account_name: '',
+      bank_account: '',
+      creater: {},
+      auditer: {}
     }
     return {
       initDetail: initDetail,
@@ -79,7 +142,7 @@ export default {
       rules: {
         title: [
           { required: true, message: '供应商名称不能为空', trigger: 'change' },
-          { max: 20, message: '供应商名称不能超过20个字符', trigger: 'blur' }
+          { max: 10, message: '供应商名称不能超过10个字符', trigger: 'blur' }
         ],
         linkman: [
           {required: true, message: '联系人姓名不能为空', trigger: 'change'},
@@ -92,6 +155,22 @@ export default {
         phone: [
           { required: true, message: '登录手机号不能为空', trigger: 'change' },
           { pattern: Verification.testStrs.checkMobile, message: '请输入11位的手机号', trigger: 'blur' }
+        ],
+        stall_code: [
+          { required: true, message: '档口号不能为空', trigger: 'change' },
+          { max: 30, message: '请输入30个以内的字符', trigger: 'blur' }
+        ],
+        bank_name: [
+          { required: true, message: '开户行不能为空', trigger: 'change' },
+          { max: 10, message: '请输入10个以内的字符', trigger: 'blur' }
+        ],
+        bank_account_name: [
+          {required: true, message: '账户名称不能为空', trigger: 'change'},
+          { max: 10, message: '请输入10个以内的字符', trigger: 'blur' }
+        ],
+        bank_account: [
+          {required: true, message: '银行账户号不能为空', trigger: 'change'},
+          { validator: validBankAccount, trigger: 'blur' }
         ],
       },
       pageTitles: {
