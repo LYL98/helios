@@ -37,9 +37,9 @@
         <el-table-column label="操作" width="76">
           <template slot-scope="scope">
             <div>
-              <span v-if="scope.row.opt_type === 'is_approve'">已审核</span>
-              <el-button v-else-if="scope.row.opt_type === 'edit'" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date })">修改</el-button>
-              <el-button v-else-if="scope.row.opt_type === 'pricing'" type="primary" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date })">报价</el-button>
+              <a href="javascript:void(0);" v-if="scope.row.opt_type === 'is_approve'" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'detail')">详情</a>
+              <el-button v-else-if="scope.row.opt_type === 'edit'" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'edit')">修改</el-button>
+              <el-button v-else-if="scope.row.opt_type === 'pricing'" type="primary" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'add')">报价</el-button>
             </div>
             <div>
               <el-button v-if="scope.row.is_pricing" type="primary" size="mini" @click.native="audit([scope.row.item_id])">审核</el-button>
@@ -97,8 +97,8 @@
         tableName: 'TableItemPricing',
         tableColumn: [
           { label: '商品', key: 'code_title', width: '140', isShow: true },
-          { label: '昨日供货价', key: 'price_buy_last', width: '100', isShow: true },
-          { label: '今日供货价', key: 'price_buy', width: '100', isShow: true },
+          { label: '昨日供货价', key: 'price_buy_last', width: '90', isShow: true },
+          { label: '今日供货价', key: 'price_buy', width: '90', isShow: true },
           { label: '昨日销售价', key: 'price_sale_last', width: '90', isShow: true },
           { label: '建议价', key: 'suggest_price', width: '120', isShow: true },
           { label: '昨日加价率', key: 'yesterday_rise_rate', width: '100', isShow: true },

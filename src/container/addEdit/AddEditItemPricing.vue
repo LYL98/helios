@@ -1,86 +1,64 @@
 <template>
-  <add-edit-layout :title="`报价：${detail.code} ${detail.title}`" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <el-form class="custom-form" label-position="right" label-width="110px" style="width: 98%; max-width: 1400px;" :model="detail" :rules="rules" ref="ruleForm">
+  <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" style="width: 90%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
+      <h6 class="subtitle">商品报价</h6>
       <el-row>
-        <el-col :span="14">
-          <h6 class="subtitle">报价信息</h6>
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="昨日供货价">
-                <span class="show-span">
-                  &yen;{{detail.price_buy_last}}
-                </span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="16">
-              <el-form-item label="今日供货价">
-                <span class="show-span">
-                  &yen;{{detail.price_buy}}
-                </span>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="昨日加价率">
-                <span class="show-span">
-                  {{returnRate(detail.price_buy_last, detail.price_sale_last)}}
-                </span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="16">
-              <el-form-item label="建议价" prop="net_weight_temp">
-                <span class="show-span">
-                  {{detail.suggest_price}}
-                </span>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="昨日销售价">
-                <span class="show-span">
-                  &yen;{{detail.price_sale_last}}
-                </span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="16">
-              <el-form-item label="今日销售价" prop="price_sale">
-                <input-price size="medium" valueType="original" v-model="detail.price_sale" style="width: 140px;"/>
-                <span style="margin-left: 10px;">今日加价率：{{returnRate(detail.price_buy, detail.price_sale)}}</span>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="可销售数量">
-                <span class="show-span">
-                  {{detail.available_num}}&nbsp;件
-                </span>
-              </el-form-item>
-            </el-col>
-            <el-col :span="16">
-              <el-form-item label="库存" prop="item_stock">
-                <input-number size="medium" v-model="detail.item_stock" unit="件" style="width: 140px;"/>
-              </el-form-item>
-            </el-col>
-          </el-row>
+        <el-col :span="8">
+          <el-form-item label="昨日供货价">&yen;{{detail.price_buy_last}}</el-form-item>
         </el-col>
-        <el-col :span="10">
-          <h6 class="subtitle">供应商今日供货信息</h6>
-          <div style="margin-left: 20px;">
-            <el-row v-for="(item,index) in supplierList" :key="index" style="margin-bottom: 10px; ">
-              <el-col :span="14">{{item.supplier.title}}<span v-if="item.is_main" class="main-tag no-pre">主供应商</span></el-col>
-              <el-col :span="5">{{item.num}}件</el-col>
-              <el-col :span="5">{{returnPrice(item.price)}}元/件</el-col>
-            </el-row>
-          </div>
+        <el-col :span="16">
+          <el-form-item label="今日供货价">&yen;{{detail.price_buy}}</el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="昨日加价率">{{returnRate(detail.price_buy_last, detail.price_sale_last)}}</el-form-item>
+        </el-col>
+        <el-col :span="16">
+          <el-form-item label="今日建议价" prop="net_weight_temp">&yen;{{detail.suggest_price}}</el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="昨日销售价">&yen;{{detail.price_sale_last}}</el-form-item>
+        </el-col>
+        <el-col :span="16">
+          <el-form-item label="今日销售价" prop="price_sale">
+            <input-price size="medium" valueType="original" v-model="detail.price_sale" style="width: 140px;"/>
+            <span style="margin-left: 10px;">今日加价率：{{returnRate(detail.price_buy, detail.price_sale)}}</span>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="昨日销量">{{detail.sale_num_last}}&nbsp;件</el-form-item>
+        </el-col>
+        <el-col :span="16">
+          <el-form-item label="库存" prop="item_stock">
+            <input-number size="medium" v-model="detail.item_stock" unit="件" style="width: 140px;"/>
+            <span style="margin-left: 10px;">可售数量：{{detail.available_num}}&nbsp;件</span>
+          </el-form-item>
         </el-col>
       </el-row>
     </el-form>
-    <div style="margin-left: 110px; margin-top: 50px;">
-      <el-button @click.native="handleCancel">取 消</el-button>
-      <el-button type="primary" @click.native="handleAddEdit">确定报价</el-button>
+
+    <h6 class="subtitle">供应商报价</h6>
+    <div style="margin-left: 20px;">
+      <el-row v-for="(item,index) in supplierList" :key="index" style="margin-bottom: 10px; ">
+        <el-col :span="14">{{item.supplier.title}}<span v-if="item.is_main" class="main-tag no-pre">主供应商</span></el-col>
+        <el-col :span="5">{{item.num}}件</el-col>
+        <el-col :span="5">{{returnPrice(item.price)}}元/件</el-col>
+      </el-row>
+    </div>
+
+    <div style="margin-left: 140px; margin-top: 20px;">
+      <template v-if="judgeOrs(pageType, ['add', 'edit'])">
+        <el-button size="medium" @click.native="handleCancel">取 消</el-button>
+        <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
+      </template>
+      <template v-else>
+        <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
+      </template>
     </div>
   </add-edit-layout>
 </template>
@@ -121,8 +99,7 @@ export default {
 
     return {
       weightScope: Constant.WEIGHT_SCOPE,//重量浮动范围
-      initDetail: {
-      },
+      initDetail: {},
       rules: {
         price_sale: [
           { required: true, message: '请输入今日销售价', trigger: 'change' },
@@ -135,12 +112,19 @@ export default {
         ]
       },
       supplierList: [], //供应商报价列表
+      pageTitles: {
+        add: '报价',
+        edit: '修改报价',
+        detail: '报价详情'
+      },
+      pageType: 'add', //add, edit, detail
     }
   },
   methods: {
     //显示新增修改(重写)
-    showAddEdit(data){
+    showAddEdit(data, type){
       if(data){
+        this.$data.pageType = type;
         let d = JSON.parse( JSON.stringify(data));
         d.item_stock = d.available_num;
         d.price_buy_last = Number(d.price_buy_last);
@@ -159,6 +143,7 @@ export default {
         this.itemPriceDetail(d);
       }else{
         this.$data.detail = JSON.parse( JSON.stringify( this.initDetail ));
+        this.$data.pageType = 'add';
       }
       this.$data.isShow = true;
     },

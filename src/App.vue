@@ -719,6 +719,8 @@
     .el-form-item__label{
       color: #909399 !important;
       font-size: 14px !important;
+      height: 36px;
+      line-height: 36px !important;
     }
   }
 
