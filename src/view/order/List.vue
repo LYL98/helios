@@ -1,170 +1,158 @@
 <template>
-  <div class="order-list">
-    <query-order
-      v-model="query"
-      @change="changeQuery"
-      :reset="resetQuery"
-      @expandChange="onExpandChange"
-    >
-    </query-order>
-    <div class="operate" v-if="auth.isAdmin || auth.OrderListExport || auth.OrderItemExport">
-      <el-button
-        v-if="auth.isAdmin || auth.OrderListExport"
-        size="mini"
-        type="primary"
-        plain
-        @click.native="(e) => {orderListExport();}"
-      >导出订单列表
-      </el-button>
-      <el-button
-        v-if="auth.isAdmin || auth.OrderItemExport"
-        size="mini"
-        type="primary"
-        plain
-        @click.native="(e) => {orderListExport(true);}"
-      >导出订单商品详情
-      </el-button>
-    </div>
-    <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove">
-      <el-table
-        class="list-table"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
-        :data="dataItem.items"
-        :row-class-name="highlightRowClassName"
-        :highlight-current-row="true"
-        :height="viewWindowHeight - offsetHeight"
-        style="width: 100%"
-        :row-key="rowIdentifier"
-        :current-row-key="clickedRow[rowIdentifier]"
-      >
-        <el-table-column
-          type="index"
-          :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
-          label="序号"
-          :index="indexMethod"
+  <div>
+    <query-order v-model="query" @change="changeQuery" :reset="resetQuery"></query-order>
+    <div class="container-table">
+      <div class="table-top" v-if="auth.isAdmin || auth.OrderListExport || auth.OrderItemExport">
+        <el-button
+          v-if="auth.isAdmin || auth.OrderListExport"
+          size="mini"
+          type="primary"
+          plain
+          @click.native="(e) => {orderListExport();}"
+        >导出订单列表
+        </el-button>
+        <el-button
+          v-if="auth.isAdmin || auth.OrderItemExport"
+          size="mini"
+          type="primary"
+          plain
+          @click.native="(e) => {orderListExport(true);}"
+        >导出订单商品详情
+        </el-button>
+      </div>
+      <!-- 表格start -->
+      <div @mousemove="handleTableMouseMove" class="table-conter">
+        <el-table
+          class="list-table my-table-float"
+          :data="dataItem.items"
+          :row-class-name="highlightRowClassName"
+          :highlight-current-row="true"
+          style="width: 100%"
+          :row-key="rowIdentifier"
+          :current-row-key="clickedRow[rowIdentifier]"
         >
-        </el-table-column>
-        <el-table-column label="订单编号" prop="code" width="150">
-          <template slot-scope="scope">
-            <div style="position: relative;">
-              <span v-if="auth.isAdmin || auth.OrderDetail">
-                <a :class="`order-no ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="orderShowHideDetail(scope.row.id)">
-                  {{scope.row.code}}
-                </a>
-              </span>
-              <span v-else :class="isEllipsis(scope.row)">{{scope.row.code}}</span>
-              <span
-                v-if="scope.row.is_presale"
-                class="order-type-icon presale-order"
-              >
-                预
-              </span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="所在仓" prop="city_title" min-width="70">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.city_title }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="门店名称" prop="store_title" min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.store_title }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="订单价格" min-width="90">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.order_price == 0 ? '' : '￥' }}{{ scope.row.order_price == 0 ? '-' : returnPrice(scope.row.order_price) }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="付款状态" min-width="80">
-          <template slot-scope="scope">
-            <el-tag disable-transitions size="small" :type="scope.row.pay_status === 'wait_complete' ? 'danger' : 'info'">
-              {{payStatus[scope.row.pay_status]}}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="已付款" min-width="85">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.amount_pay == 0 ? '' : '￥' }}{{ scope.row.amount_pay == 0 ? '-' : returnPrice(scope.row.amount_pay) }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="待付款" min-width="85">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.order_price - scope.row.amount_pay == 0 ? '' : '￥' }}{{ scope.row.order_price - scope.row.amount_pay == 0 ? '-' : returnPrice(scope.row.order_price - scope.row.amount_pay) }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="订单状态" min-width="80">
-          <template slot-scope="scope">
-            <el-tag disable-transitions size="small" :type="statusTagType[scope.row.status]">
-              {{orderStatus[scope.row.status]}}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="下单时间" min-width="100" prop="created">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnDate(scope.row.created)}}</div>
-            <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnTime(scope.row.created)}}</div>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="100">
-          <template slot-scope="scope">
-            <my-table-operate
-              @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
-              :list="[
-                {
-                  title: '取消订单',
-                  isDisplay: (auth.isAdmin || auth.OrderCancel) && orderStatus[scope.row.status] === '待确认',
-                  command: () => handleOrderCancel(scope.row.id)
-                },
-                {
-                  title: '确认订单',
-                  isDisplay: (auth.isAdmin || auth.OrderManualConfirm) && orderStatus[scope.row.status] === '待确认',
-                  command: () => handleOrderConfirm(scope.row.id)
-                },
-                {
-                  title: '手动发货',
-                  isDisplay: (auth.isAdmin || auth.OrderManualDelivery) && orderStatus[scope.row.status] === '待发货',
-                  command: () => orderShowHideManualDelivery(scope.row)
-                }
-              ]"
-            ></my-table-operate>
-          </template>
-        </el-table-column>
-      </el-table>
-      <!-- 表格end -->
-    </div>
-    <div class="footer">
-      <div class="table-pagination">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-        />
+          <el-table-column
+            type="index"
+            :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
+            label="序号"
+            :index="indexMethod"
+          >
+          </el-table-column>
+          <el-table-column label="订单编号" prop="code" width="150">
+            <template slot-scope="scope">
+              <div style="position: relative;">
+                <span v-if="auth.isAdmin || auth.OrderDetail">
+                  <a class="order-no td-item add-dot2" href="javascript:void(0);" @click.prevent="orderShowHideDetail(scope.row.id)">
+                    {{scope.row.code}}
+                  </a>
+                </span>
+                <span v-else class="td-item add-dot2">{{scope.row.code}}</span>
+                <span v-if="scope.row.is_presale" class="order-type-icon presale-order">预</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="所在仓" prop="city_title" min-width="70">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                {{ scope.row.city_title }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="门店名称" prop="store_title" min-width="120">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                {{ scope.row.store_title }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="订单价格" min-width="90">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                {{ scope.row.order_price == 0 ? '' : '￥' }}{{ scope.row.order_price == 0 ? '-' : returnPrice(scope.row.order_price) }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="付款状态" min-width="80">
+            <template slot-scope="scope">
+              <el-tag disable-transitions size="small" :type="scope.row.pay_status === 'wait_complete' ? 'danger' : 'info'">
+                {{payStatus[scope.row.pay_status]}}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="已付款" min-width="85">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                {{ scope.row.amount_pay == 0 ? '' : '￥' }}{{ scope.row.amount_pay == 0 ? '-' : returnPrice(scope.row.amount_pay) }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="待付款" min-width="85">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                {{ scope.row.order_price - scope.row.amount_pay == 0 ? '' : '￥' }}{{ scope.row.order_price - scope.row.amount_pay == 0 ? '-' : returnPrice(scope.row.order_price - scope.row.amount_pay) }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="订单状态" min-width="80">
+            <template slot-scope="scope">
+              <el-tag disable-transitions size="small" :type="statusTagType[scope.row.status]">
+                {{orderStatus[scope.row.status]}}
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="下单时间" min-width="100" prop="created">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">{{returnDate(scope.row.created)}}</div>
+              <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnTime(scope.row.created)}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="100">
+            <template slot-scope="scope">
+              <my-table-operate
+                @command-click="handleCommandClick(scope.row)"
+                @command-visible="handleCommandVisible"
+                :list="[
+                  {
+                    title: '取消订单',
+                    isDisplay: (auth.isAdmin || auth.OrderCancel) && orderStatus[scope.row.status] === '待确认',
+                    command: () => handleOrderCancel(scope.row.id)
+                  },
+                  {
+                    title: '确认订单',
+                    isDisplay: (auth.isAdmin || auth.OrderManualConfirm) && orderStatus[scope.row.status] === '待确认',
+                    command: () => handleOrderConfirm(scope.row.id)
+                  },
+                  {
+                    title: '手动发货',
+                    isDisplay: (auth.isAdmin || auth.OrderManualDelivery) && orderStatus[scope.row.status] === '待发货',
+                    command: () => orderShowHideManualDelivery(scope.row)
+                  }
+                ]"
+              ></my-table-operate>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!-- 表格end -->
+      </div>
+      <div class="footer">
+        <div class="table-pagination">
+          <el-pagination
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            :page-sizes="[10, 20, 30, 40, 50]"
+            @size-change="changePageSize"
+            @current-change="changePage"
+            :total="dataItem.num"
+            :page-size="query.page_size"
+            :current-page="query.page"
+          />
+        </div>
       </div>
     </div>
     <!--订单详情-->
-    <order-detail :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="OrderDetail"/>
-    <after-sale-detail :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="AfterSaleDetail"/>
-    <my-manual-delivery :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="ManualDelivery"/>
+    <detail-order-list :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="DetailOrderList"/>
+    <detail-order-after-sale :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="DetailOrderAfterSale"/>
+    <form-order-list-manual-delivery :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="FormOrderListManualDelivery"/>
     <!--订单修改价格-->
     <!--<order-price-update :callback="myCallBack" />-->
   </div>
@@ -174,9 +162,7 @@
   import { ButtonGroup, TableOperate, SelectCity } from '@/common';
   import { QueryOrder } from '@/container';
   import {Config, DataHandle, Constant, Http} from '@/util';
-  import OrderDetail from './OrderDetail';
-  import AfterSaleDetail from "./AfterSaleDetail";
-  import ManualDelivery from './ManualDelivery';
+  import { DetailOrderList, DetailOrderAfterSale, FormOrderListManualDelivery } from '@/container';
   import tableMixin from '@/container/table/table.mixin';
   import viewMixin from '@/view/view.mixin';
 
@@ -186,9 +172,9 @@
       'my-select-city': SelectCity,
       'my-button-group': ButtonGroup,
       'my-table-operate': TableOperate,
-      'my-manual-delivery': ManualDelivery,
-      'order-detail': OrderDetail,
-      'after-sale-detail': AfterSaleDetail,
+      'form-order-list-manual-delivery': FormOrderListManualDelivery,
+      'detail-order-list': DetailOrderList,
+      'detail-order-after-sale': DetailOrderAfterSale,
       'query-order': QueryOrder,
     },
     mixins: [tableMixin, viewMixin],
@@ -196,10 +182,6 @@
       documentTitle('订单 - 订单列表');
       this.initQuery();
       this.getOrderGetList(this.query);
-
-      if (!this.auth.isAdmin && !this.auth.OrderListExport && !this.auth.OrderItemExport) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-      }
     },
     data() {
       return {
@@ -209,7 +191,6 @@
         },
         orderStatus: Constant.ORDER_STATUS,
         payStatus: Constant.PAY_STATUS,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         query: { },
         statusTagType: {
           wait_confirm: 'warning',
@@ -228,13 +209,6 @@
       //组件回调
       myCallBack(res) {
         this.getOrderGetList(this.query);
-      },
-      onExpandChange(isExpand) {
-        if (isExpand) {
-          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
-        } else {
-          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
-        }
       },
       changePageSize(pageSize) {
         let {query} = this;
@@ -369,12 +343,12 @@
       },
       //显示订单详情
       orderShowHideDetail(id){
-        let pc = this.viewGetPageComponents('OrderDetail');
+        let pc = this.viewGetPageComponents('DetailOrderList');
         pc.orderShowHideDetail(id);
       },
       //显示隐藏手动发货
       orderShowHideManualDelivery(data){
-        let pc = this.viewGetPageComponents('ManualDelivery');
+        let pc = this.viewGetPageComponents('FormOrderListManualDelivery');
         pc.orderShowHideManualDelivery(data);
       },
       //确认订单

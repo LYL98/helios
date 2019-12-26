@@ -1,7 +1,6 @@
 <template>
   <div>
-    <el-dialog title="订单详情" width="1200px" :visible.sync="isShow" v-if="isShow" :before-close="cancel"
-               append-to-body>
+    <detail-layout title="订单详情" :isShow="isShow" direction="ttb" :before-close="cancel" type="drawer">
       <div>
         <div class="detail-title">
           <span>下单时间：{{detail.created}}</span>
@@ -290,7 +289,7 @@
       <span slot="footer">
         <el-button @click.native="cancel">关 闭</el-button>
       </span>
-    </el-dialog>
+    </detail-layout>
   </div>
 </template>
 
@@ -300,7 +299,7 @@
   import detailMixin from '@/container/detail/detail.mixin';
 
   export default {
-    name: "OrderDetail",
+    name: "DetailOrderList",
     mixins: [detailMixin],
     components: {
       'my-image-preview': ImagePreview
@@ -417,7 +416,7 @@
       },
       //查看售后进度
       orderShowHideAfterSaleDetail(aftersale){
-        let pc = this.getPageComponents('AfterSaleDetail');
+        let pc = this.getPageComponents('DetailOrderAfterSale');
         pc.orderShowHideAfterSaleDetail(aftersale);
       }
     }

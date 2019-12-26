@@ -51,7 +51,7 @@ import formMixin from '@/container/form/form.mixin';
 import { Http, Config, DataHandle, Constant, Verification } from '@/util';
 
 export default {
-  name: "AfterSaleClose",
+  name: "FormOrderAfterSaleClose",
   mixins: [formMixin],
   components: {
   },
@@ -165,7 +165,6 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         this.cancel();
-        this.$attrs.callback();//回调, 自于AfterSaleDetail Component，用于刷新售后详情的数据。
         this.orderGetDetail(detail.order_id); // 由于订单详情中也有对售后结果的引用，所以在此处需要再次加载订单详情。
         this.initEditDate();
         this.$refs['ruleForm'].resetFields();
@@ -184,7 +183,7 @@ export default {
     },
     //订单详情
     orderGetDetail(id){
-      let pc = this.getPageComponents('OrderDetail');
+      let pc = this.getPageComponents('DetailOrderList');
       pc.orderGetDetail(id);
     }
   }

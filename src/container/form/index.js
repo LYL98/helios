@@ -16,3 +16,5 @@ export { default as FormOperateReceivingAllot } from './FormOperateReceivingAllo
 export { default as FormOperateReceivingNumber } from './FormOperateReceivingNumber';
 export { default as FormSupplierGPurchaseAudit } from './FormSupplierGPurchaseAudit';
 export { default as FormSupplierGPurchaseDistributeAudit } from './FormSupplierGPurchaseDistributeAudit';
+export { default as FormOrderAfterSaleClose } from './FormOrderAfterSaleClose';
+export { default as FormOrderListManualDelivery } from './FormOrderListManualDelivery';

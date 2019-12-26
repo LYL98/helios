@@ -136,7 +136,7 @@ export default {
       if(data){
         this.$data.pageType = type;
         let d = JSON.parse( JSON.stringify(data));
-        d.item_stock = d.available_num;
+        d.item_stock = type === 'add' ? d.available_num : d.item_stock;
         d.price_buy_last = Number(d.price_buy_last);
         d.price_buy = d.price_buy ? Number(d.price_buy) : '';
         d.price_sale = d.price_sale ? Number(d.price_sale) : '';

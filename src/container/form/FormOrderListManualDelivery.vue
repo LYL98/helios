@@ -72,11 +72,11 @@
 
 <script>
 import {Row, Col, Button, Dialog, RadioGroup, Radio, Form, FormItem, Input, Table, TableColumn, InputNumber, MessageBox} from 'element-ui';
-import { SelectExpressCompany } from '@/container'
+import SelectExpressCompany from './../select/SelectExpressCompany';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
 
 export default {
-  name: "ManualDelivery",
+  name: "FormOrderListManualDelivery",
   data() {
     return {
       isShow: false,

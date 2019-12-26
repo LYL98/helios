@@ -17,4 +17,7 @@ export { default as DetailGroupActivityEditLog } from './DetailGroupActivityEdit
 export { default as DetailGroupActivityItem } from './DetailGroupActivityItem';
 export { default as DetailGroupStoreOrder } from './DetailGroupStoreOrder';
 
+export { default as DetailOrderList } from './DetailOrderList';
+export { default as DetailOrderAfterSale } from './DetailOrderAfterSale';
+
 export { default as DetailSupplierListItem } from './DetailSupplierListItem';

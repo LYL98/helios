@@ -1,86 +1,79 @@
 <template>
-  <div class="query">
-    <my-collapse-query @expandChange="onExpandChange">
-      <template slot="header">
-        <el-row>
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="售后单状态">
-              <my-button-group
-                size="small"
-                v-model="editQuery.status"
-                :options="{ '全部': '', '待处理': 'waiting_dispose', '已完成': 'close' }"
-                @change="changeQuery"
-              />
-            </my-query-item>
-          </el-col>
-          <el-col :xl="10" :lg="14" :span="14">
-            <my-query-item label="搜索">
-              <div style="display: flex">
-                <el-input
-                  size="small"
-                  clearable
-                  placeholder="售后单号/门店名称"
-                  v-model="editQuery.condition"
-                  class="query-item-input"
-                  @keyup.enter.native="changeQuery"
-                  @clear="changeQuery"
-                  ref="condition"
-                />
-                <el-input
-                  size="small"
-                  clearable
-                  placeholder="商品编号或名称"
-                  v-model="editQuery.item"
-                  class="query-item-input"
-                  style="margin-left: 2px"
-                  @keyup.enter.native="changeQuery"
-                  @clear="changeQuery"
-                  ref="item"
-                />
-                <el-button size="small" type="primary" style="margin-left: 4px" @click="changeQuery" icon="el-icon-search"></el-button>
-                <el-button size="small" type="primary" v-if="!isExpand" class="query-item-reset" plain @click="resetQuery">重置</el-button>
-              </div>
-            </my-query-item>
-          </el-col>
-        </el-row>
-      </template>
-      <template slot="expand">
-        <el-row style="margin-top: 16px;">
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="处理类型">
-              <el-select size="small" v-model="editQuery.opt_type" class="query-item-select" placeholder="处理类型" clearable  @change="changeQuery">
-                <el-option v-for="(item, key) in afterSaleOptType" :key="key" :label="item" :value="key"></el-option>
-              </el-select>
-            </my-query-item>
-          </el-col>
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="所在仓">
-              <my-select-city size="small" :isUseToQuery="true" v-model="editQuery.city_code" placeholder="所在仓" clearable
-                              :provinceCode="query.province_code" @change="changeQuery"/>
-            </my-query-item>
-          </el-col>
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="下单日期">
-              <el-date-picker
-                size="small"
-                v-model="pickerValue"
-                type="daterange"
-                align="left"
-                value-format="yyyy-MM-dd"
-                unlink-panels
-                :picker-options="fixDateOptions"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                @change="changePicker"
-                class="query-item-date"
-              />
-              <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
-            </my-query-item>
-          </el-col>
-        </el-row>
-      </template>
-    </my-collapse-query>
+  <div class="container-query">
+    <el-row>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="售后单状态">
+          <my-button-group
+            size="small"
+            v-model="editQuery.status"
+            :options="{ '全部': '', '待处理': 'waiting_dispose', '已完成': 'close' }"
+            @change="changeQuery"
+          />
+        </my-query-item>
+      </el-col>
+      <el-col :xl="10" :lg="14" :span="14">
+        <my-query-item label="搜索">
+          <div style="display: flex">
+            <el-input
+              size="small"
+              clearable
+              placeholder="售后单号/门店名称"
+              v-model="editQuery.condition"
+              class="query-item-input"
+              @keyup.enter.native="changeQuery"
+              @clear="changeQuery"
+              ref="condition"
+            />
+            <el-input
+              size="small"
+              clearable
+              placeholder="商品编号或名称"
+              v-model="editQuery.item"
+              class="query-item-input"
+              style="margin-left: 2px"
+              @keyup.enter.native="changeQuery"
+              @clear="changeQuery"
+              ref="item"
+            />
+            <el-button size="small" type="primary" style="margin-left: 4px" @click="changeQuery" icon="el-icon-search"></el-button>
+            <el-button size="small" type="primary" v-if="!isExpand" class="query-item-reset" plain @click="resetQuery">重置</el-button>
+          </div>
+        </my-query-item>
+      </el-col>
+    </el-row>
+    <el-row style="margin-top: 16px;">
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="处理类型">
+          <el-select size="small" v-model="editQuery.opt_type" class="query-item-select" placeholder="处理类型" clearable  @change="changeQuery">
+            <el-option v-for="(item, key) in afterSaleOptType" :key="key" :label="item" :value="key"></el-option>
+          </el-select>
+        </my-query-item>
+      </el-col>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="所在仓">
+          <my-select-city size="small" :isUseToQuery="true" v-model="editQuery.city_code" placeholder="所在仓" clearable
+                          :provinceCode="query.province_code" @change="changeQuery"/>
+        </my-query-item>
+      </el-col>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="下单日期">
+          <el-date-picker
+            size="small"
+            v-model="pickerValue"
+            type="daterange"
+            align="left"
+            value-format="yyyy-MM-dd"
+            unlink-panels
+            :picker-options="fixDateOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change="changePicker"
+            class="query-item-date"
+          />
+        </my-query-item>
+      </el-col>
+    </el-row>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="售后单详情" :visible.sync="isShow" v-if="isShow" width="1200px" :before-close="cancel" append-to-body>
+    <detail-layout title="售后单详情" :isShow="isShow" direction="ttb" :before-close="cancel" type="drawer">
       <div class="after-title">
         <div class="title">
           <span>申请时间：{{detail.created}}</span>
@@ -171,27 +171,20 @@
         <el-button @click.native="cancel">关闭</el-button>
         <el-button type="primary" @click.native="orderShowHideAfterSaleClose()" v-if="detail.status === 'waiting_dispose' && (auth.isAdmin || auth.OrderAfterSaleUpdate)">处理完成</el-button>
       </span>
-    </el-dialog>
-    <after-sale-close :callback="myCallBack" :getPageComponents="getPageComponents" ref="AfterSaleClose" />
-    <!--商品详情-->
-    <item-detail :getPageComponents="getPageComponents" ref="AddEditItemList" page="after-sale-detail"/>
+    </detail-layout>
   </div>
 </template>
 
 <script>
 import { ImagePreview } from '@/common';
-import { AddEditItemList } from '@/container';
 import { Http, Config, DataHandle, Constant } from '@/util';
-import AfterSaleClose from './AfterSaleClose';
 import detailMixin from '@/container/detail/detail.mixin';
 
 export default {
-  name: "AfterSaleDetail",
+  name: "DetailOrderAfterSale",
   mixins: [detailMixin],
   components: {
-    'my-image-preview': ImagePreview,
-    'after-sale-close': AfterSaleClose,
-    'item-detail': AddEditItemList
+    'my-image-preview': ImagePreview
   },
   computed: {
     stepActive() {

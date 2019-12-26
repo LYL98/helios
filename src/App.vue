@@ -81,23 +81,6 @@
         },
         tencentPath: Config.tencentPath,
         menus:[{
-          title: '供应商',
-          icon: '&#xe736;',
-          name: 'Supplier',
-          children: [{
-            title: '供应商列表',
-            name: 'SupplierList'
-          },{
-            title: '统采订单',
-            name: 'SupplierGPurchase'
-          },{
-            title: '统采调拨单',
-            name: 'SupplierGPurchaseDistribute'
-          },{
-            title: '地采订单',
-            name: 'SupplierLocalPurchase'
-          }]
-        },{
           title: '客户',
           icon: '&#xe736;',
           name: 'Merchant',
@@ -116,17 +99,17 @@
             title: '商品池',
             name: 'ItemGlobal'
           },{
-            title: '回收站',
-            name: 'ItemRecover'
-          },{
             title: '商品列表',
             name: 'ItemList'
+          },{
+            title: '每日报价',
+            name: 'ItemPricing'
           },{
             title: '商品价格标签审核',
             name: 'ItemAuditInnerTag'
           },{
-            title: '每日报价',
-            name: 'ItemPricing'
+            title: '回收站',
+            name: 'ItemRecover'
           }]
         },{
           title: '营销',
@@ -138,6 +121,39 @@
           },{
             title: '优惠券',
             name: 'MarketingCouponQuery'
+          }]
+        },{
+          title: '订单',
+          icon: '&#xe737;',
+          name: 'Order',
+          children: [{
+            title: '订单列表',
+            name: 'OrderList'
+          },{
+            title: '售后列表',
+            name: 'OrderAfterSale'
+          }]
+        },{
+          title: '采购',
+          icon: '&#xe736;',
+          name: 'Purchase',
+          children: [{
+            title: '统采订单',
+            name: 'SupplierGPurchase'
+          },{
+            title: '统采调拨单',
+            name: 'SupplierGPurchaseDistribute'
+          },{
+            title: '地采订单',
+            name: 'SupplierLocalPurchase'
+          }]
+        },{
+          title: '供应商',
+          icon: '&#xe736;',
+          name: 'Supplier',
+          children: [{
+            title: '供应商列表',
+            name: 'SupplierList'
           }]
         },{
           title: '团购',
@@ -173,17 +189,6 @@
           },{
             title: 'Banner管理',
             name: 'GroupBanner'
-          }]
-        },{
-          title: '订单',
-          icon: '&#xe737;',
-          name: 'Order',
-          children: [{
-            title: '订单列表',
-            name: 'OrderList'
-          },{
-            title: '售后列表',
-            name: 'OrderAfterSale'
           }]
         },{
           title: '配送',
@@ -719,8 +724,12 @@
     .el-form-item__label{
       color: #909399 !important;
       font-size: 14px !important;
-      height: 36px;
-      line-height: 36px !important;
+    }
+    .el-form-item__content{
+      .el-input{
+        position: relative;
+        top: -4px;
+      }
     }
   }
 
