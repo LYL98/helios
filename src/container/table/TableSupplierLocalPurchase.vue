@@ -17,17 +17,13 @@
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
               <!--供应商-->
-              <template v-if="item.key === 'supplier'">
-                <div class="td-item add-dot2">{{scope.row.supplier.title}}</div>
-              </template>
+              <div v-if="item.key === 'supplier'" class="td-item add-dot2">{{scope.row.supplier.title}}</div>
               <!--商品名称-->
-              <template v-else-if="item.key === 'item'">
-                <div class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
-              </template>
+              <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
               <!--采购单价-->
-              <template v-else-if="item.key === 'price_buy'">
-                <div class="td-item add-dot2">&yen;{{returnPrice(scope.row.price_buy)}}</div>
-              </template>
+              <div v-else-if="item.key === 'price_buy'" class="td-item add-dot2">&yen;{{returnPrice(scope.row.price_buy)}}</div>
+              <!--采购总金额-->
+              <div v-else-if="item.key === 'num_price'" class="td-item add-dot2">&yen;{{returnPrice(scope.row.num * scope.row.price + scope.row.num * scope.row.frame_price)}}</div>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'status'">
                 <el-tag size="small" type="info" disable-transitions>全部入库</el-tag>
@@ -93,6 +89,7 @@
           { label: '供货商', key: 'supplier', width: '3', isShow: true },
           { label: '采购价', key: 'price_buy', width: '2', isShow: true },
           { label: '采购数量', key: 'num', width: '2', isShow: true },
+          { label: '采购总金额', key: 'num_price', width: '3', isShow: true },
           { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '采购日期', key: 'order_date', width: '3', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },

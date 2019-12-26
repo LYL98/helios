@@ -13,6 +13,9 @@
           <el-col :span="12">
             <el-form-item label="地采单号">{{detail.code}}</el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="采购日期">{{detail.order_date}}</el-form-item>
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
@@ -30,9 +33,18 @@
             <el-form-item label="采购数量">{{detail.num}}件</el-form-item>
           </el-col>
         </el-row>
+        <!--含筐-->
+        <el-row v-if="detail.frame_code">
+          <el-col :span="12">
+            <el-form-item label="筐金额">&yen;{{returnPrice(detail.num * detail.frame_price)}}</el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="采购商品金额">&yen;{{returnPrice(detail.num * detail.price_buy)}}</el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="采购日期">{{detail.order_date}}</el-form-item>
+            <el-form-item label="采购总金额">&yen;{{detail.frame_code ? returnPrice(detail.num * detail.price_buy + detail.num * detail.frame_price) : returnPrice(detail.num * detail.price_buy)}}</el-form-item>
           </el-col>
         </el-row>
       </el-form>
