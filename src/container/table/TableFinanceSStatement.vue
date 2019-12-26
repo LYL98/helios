@@ -36,6 +36,8 @@
               <div class="td-item" v-else-if="item.key === 'paid_status'">
                 <el-tag size="small" :type="paidStatusType[scope.row.paid_status]" disable-transitions>{{paidStatus[scope.row.paid_status]}}</el-tag>
               </div>
+              <!--生成日期-->
+              <div class="td-item" v-else-if="item.key === 'created_date'">{{returnDateFormat(scope.row.created, 'yyyy-MM-dd')}}</div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
@@ -95,7 +97,7 @@
           { label: '账单金额', key: 'bill_amount', width: '2', isShow: true },
           { label: '结款日期', key: 'bill_date', width: '2', isShow: true },
           { label: '状态', key: 'paid_status', width: '2', isShow: true },
-          { label: '账期生成日期', key: 'created', width: '3', isShow: true },
+          { label: '账期生成日期', key: 'created_date', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
