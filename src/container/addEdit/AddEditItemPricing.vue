@@ -43,15 +43,25 @@
     </el-form>
 
     <h6 class="subtitle">供应商报价</h6>
-    <div style="margin-left: 20px;">
-      <el-row v-for="(item,index) in supplierList" :key="index" style="margin-bottom: 10px; ">
-        <el-col :span="14">{{item.supplier.title}}<span v-if="item.is_main" class="main-tag no-pre">主供应商</span></el-col>
-        <el-col :span="5">{{item.num}}件</el-col>
-        <el-col :span="5">{{returnPrice(item.price)}}元/件</el-col>
-      </el-row>
+    <div style="margin: 0 60px;">
+      <el-table :data="supplierList" width="100%" :row-class-name="highlightRowClassName">
+        <el-table-column type="index" width="80" label="序号"></el-table-column>
+        <el-table-column label="供应商名称">
+          <template slot-scope="scope">{{scope.row.supplier.title}}<span v-if="scope.row.is_main" class="main-tag no-pre">主供应商</span></template>
+        </el-table-column>
+        <el-table-column label="供应商报价" width="100">
+          <template slot-scope="scope">
+            &yen;{{returnPrice(scope.row.price)}}
+          </template>
+        </el-table-column>
+        <el-table-column label="供应商库存" width="360">
+          <template slot-scope="scope">{{scope.row.num}}件</template>
+        </el-table-column>
+        <el-table-column label="报价时间" prop="updated" width="160"></el-table-column>
+      </el-table>
     </div>
 
-    <div style="margin-left: 140px; margin-top: 20px;">
+    <div style="margin-left: 140px; margin-top: 40px;">
       <template v-if="judgeOrs(pageType, ['add', 'edit'])">
         <el-button size="medium" @click.native="handleCancel">取 消</el-button>
         <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>

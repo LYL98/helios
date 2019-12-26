@@ -11,7 +11,7 @@
           </div>
           <div class="delete"><i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="detail.supplier_binds.length > 1"></i></div>
           <div class="main">
-            <span v-if="index === 0">主供应商</span>
+            <span v-if="item.is_main">主供应商</span>
             <a href="javascript: void(0);" v-else @click="settingMain(index)">设为主供应商</a>
           </div>
         </div>
