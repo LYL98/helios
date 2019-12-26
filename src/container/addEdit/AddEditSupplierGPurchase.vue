@@ -68,9 +68,7 @@
               <template slot-scope="scope">{{logTypes[scope.row.category]}}</template>
             </el-table-column>
             <el-table-column prop="remark" label="备注"></el-table-column>
-            <el-table-column label="操作人">
-              <template slot-scope="scope">{{scope.row.operator.realname}}</template>
-            </el-table-column>
+            <el-table-column prop="operator_name" label="操作人"></el-table-column>
           </el-table>
         </div>
       </template>
