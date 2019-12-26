@@ -1,6 +1,17 @@
 <template>
   <detail-layout title="账期详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <div style="margin: 16px;">账单日期：{{detail.begin_term}}&nbsp;至&nbsp;{{detail.end_term}}</div>
+    <el-row style="margin: 16px;">
+      <el-col :span="8">
+        账单时间：{{detail.begin_term}}&nbsp;至&nbsp;{{detail.end_term}}
+      </el-col>
+      <el-col :span="14">
+        账单金额：&yen;&nbsp;{{returnPrice(detail.bill_amount)}}
+      </el-col>
+      <el-col :span="2">
+        <el-tag size="small" :type="paidStatusType[detail.paid_status]" disable-transitions>{{paidStatus[detail.paid_status]}}</el-tag>
+      </el-col>
+    </el-row>
+    <div class="" style="border-bottom: 8px solid #eee; margin: 0 16px 16px;"></div>
     <div style="padding: 0 16px;">
       <el-table :data="detail.bill_details" width="100%" :row-class-name="highlightRowClassName">
         <el-table-column type="index" min-width="100" label="序号"></el-table-column>
@@ -42,6 +53,8 @@
         bill_details: []
       }
       return {
+        paidStatus: Constant.S_STATEMENT_PAID_STATUS(),
+        paidStatusType: Constant.S_STATEMENT_PAID_STATUS_TYPE,
         detail: this.copyJson(initDetail),
         initDetail: initDetail,
         billReason: Constant.SUPPLIER_BILL_REASON()

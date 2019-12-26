@@ -216,7 +216,7 @@
             title: '供应商流水审核',
             name: 'FinanceSBDetailAudit'
           },{
-            title: '供应商对账表',
+            title: '供应商对账单',
             name: 'FinanceSStatement'
           }]
         },{
@@ -1026,24 +1026,7 @@
     background: #fff;
   }
 
-  /*共用表格头部*/
-  .table-head {
-    margin-bottom: 10px;
-  }
-
   /*共用表格操作按钮*/
-  .optionButton > i {
-    margin-right: 5px;
-    cursor: pointer;
-  }
-
-  .optionButton > a {
-    font-size: 12px;
-    color: $--color-primary;
-    cursor: pointer;
-    display: block;
-  }
-
   .table-action {
     display: flex;
 
@@ -1073,14 +1056,6 @@
   .table-pagination {
     text-align: right;
     flex: 1;
-  }
-
-  .load-more {
-    text-align: center;
-    color: #999;
-    height: 40px;
-    line-height: 40px;
-    font-size: 12px;
   }
 
   .load-none {

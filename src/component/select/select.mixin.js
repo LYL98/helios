@@ -33,7 +33,7 @@ export default {
         id: '',
         condition: '',
         title: '',
-        count: 10
+        need_num: 10
       },
       dataItem: []
     };

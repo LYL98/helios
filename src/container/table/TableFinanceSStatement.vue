@@ -91,18 +91,16 @@
         tableName: 'TableFinanceSStatement',
         tableColumn: [
           { label: '供应商名称', key: 'supplier', width: '3', isShow: true },
-          { label: '账单日期', key: 'term', width: '4', isShow: true },
-          { label: '账单总金额', key: 'bill_amount', width: '2', isShow: true },
-          { label: '结算日期', key: 'bill_date', width: '2', isShow: true },
+          { label: '账单时间', key: 'term', width: '4', isShow: true },
+          { label: '账单金额', key: 'bill_amount', width: '2', isShow: true },
+          { label: '结款日期', key: 'bill_date', width: '2', isShow: true },
           { label: '状态', key: 'paid_status', width: '2', isShow: true },
+          { label: '账期生成日期', key: 'created', width: '3', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
         paidStatus: Constant.S_STATEMENT_PAID_STATUS(),
-        paidStatusType: {
-          init: 'warning',
-          paid: 'info'
-        }
+        paidStatusType: Constant.S_STATEMENT_PAID_STATUS_TYPE,
       }
     },
     methods: {

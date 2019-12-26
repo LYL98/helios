@@ -48,7 +48,7 @@
           <div style="display: flex">
             <el-input
               size="small"
-              placeholder="供应商名称/联系人姓名/联系人手机号"
+              placeholder="供应商名称/联系人姓名/电话"
               clearable
               class="query-item-input"
               v-model="query.condition"

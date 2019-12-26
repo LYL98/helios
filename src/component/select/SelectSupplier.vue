@@ -35,6 +35,7 @@
       billTerm: { type: String | Number, default: '' }, //账期
       placeholder: { type: String, default: '请选择供应商' },
       supplierIds: { type: Array }, //当前选择了的id
+      itemId: { type: String | Number, default: '' }, //商品搜索供应商
     },
     methods: {
       //获取数据
@@ -42,10 +43,11 @@
         let res = await Http.get(Config.api.baseSupplierList, {
           province_code: this.$props.provinceCode,
           condition: this.query.condition,
+          item_id: this.itemId,
           supplier_type: this.$props.supplierType,
           bill_term: this.$props.billTerm,
           is_audited: 1, // 是否审核通过？ 0 否 1 是 null 全部
-          is_freeze: 0 // 是否赠品？ 0 否 1 是 null 全部
+          is_freeze: 0 // 是否冻结？ 0 否 1 是 null 全部
         });
         if(res.code === 0){
           let rd = res.data;
@@ -78,6 +80,16 @@
         deep: true,
         handler: function (a, b) {
           this.judgeDisabled();
+        }
+      },
+      itemId: {
+        deep: true,
+        handler: function (a, b) {
+          if(a){
+            this.getData();
+          }else{
+            this.$data.dataItem = [];
+          }
         }
       }
     }

@@ -1,6 +1,6 @@
 <template>
   <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" style="width: 90%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
+    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
       <h6 class="subtitle">商品报价</h6>
       <el-row>
         <el-col :span="8">

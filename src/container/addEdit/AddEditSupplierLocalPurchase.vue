@@ -1,7 +1,7 @@
 <template>
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-      <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 90%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
+      <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <div class="f-r">
           <!--<el-tag size="small" :type="localPurchaseStatusType[detail.status]" disable-transitions>
             {{localPurchaseStatus[detail.status]}}
@@ -45,7 +45,7 @@
           <el-table-column prop="num" label="入库数量"></el-table-column>
           <el-table-column prop="created" label="入库时间"></el-table-column>
           <el-table-column prop="status" label="状态">
-            <template slot-scope="scope">{{scope.row.id}}</template>
+            <template slot-scope="scope">{{scope.row.id}}已入库</template>
           </el-table-column>
         </el-table>
       </div>

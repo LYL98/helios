@@ -1,31 +1,81 @@
 <template>
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-      <el-form class="custom-form" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
-        <el-form-item label="采购日期" prop="purchase_date">
-          <el-date-picker size="medium" v-model="detail.purchase_date" value-format="yyyy-MM-dd" placeholder="采购日期"/>
-        </el-form-item>
-        <el-form-item label="供应商" prop="supplier_id">
-          <select-supplier supplierType="global_pur" size="medium" v-model="detail.supplier_id" style="width: 360px;" :disabled="detail.id ? true : false"/>
-        </el-form-item>
-        <el-form-item label="商品" prop="item_id">
-          <select-g-item v-model="detail.item_id" size="medium" :supplierId="detail.supplier_id" @change="selectGItem" style="width: 360px;" :disabled="detail.id ? true : false"></select-g-item>
-        </el-form-item>
-        <el-form-item label="件数" prop="num">
-          <input-number size="medium" v-model="detail.num" style="width: 240px;" unit="件" />
-        </el-form-item>
-        <el-form-item label="单价" prop="price">
-          <input-price size="medium" v-model="detail.price" style="width: 240px;"/>
-        </el-form-item>
+      <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+        <h6 class="subtitle">采购信息</h6>
+        <el-row>
+          <el-form-item label="商品" prop="item_id">
+            <select-g-item v-model="detail.item_id" size="medium" @change="selectGItem" :disabled="detail.id ? true : false" filterable></select-g-item>
+          </el-form-item>
+          <el-col :span="12">
+            <el-form-item label="供应商" prop="supplier_id">
+              <select-supplier supplierType="global_pur" size="medium" :itemId="detail.item_id" v-model="detail.supplier_id" :disabled="detail.id ? true : false"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="采购日期" prop="purchase_date">
+              <el-date-picker size="medium" v-model="detail.purchase_date" value-format="yyyy-MM-dd" placeholder="采购日期" style="width: 100%;"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="采购数量" prop="num">
+              <input-number size="medium" v-model="detail.num" unit="件" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="采购价" prop="price">
+              <input-price size="medium" v-model="detail.price"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <!--含筐-->
-        <template v-if="detail.frame_code">
-          <el-form-item label="筐" v-if="detail.frame_code">&yen;&nbsp;{{returnPrice(detail.num * detail.frame_price)}}</el-form-item>
-          <el-form-item label="总价">&yen;&nbsp;{{returnPrice(detail.num * detail.price + detail.num * detail.frame_price)}}（含筐&yen;{{returnPrice(detail.num * detail.frame_price)}}）</el-form-item>
-        </template>
-        <el-form-item v-else label="总价">&yen;&nbsp;{{returnPrice(detail.num * detail.price)}}</el-form-item>
+        <el-row v-if="detail.frame_code">
+          <el-col :span="12">
+            <el-form-item label="筐金额"><input-price size="medium" :value="detail.num * detail.frame_price" disabled/></el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="采购商品金额"><input-price size="medium" :value="detail.num * detail.price" disabled/></el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="采购总金额">
+              <input-price size="medium" :value="detail.frame_code ? returnPrice(detail.num * detail.price + detail.num * detail.frame_price) : returnPrice(detail.num * detail.price)" disabled/>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
+      <template v-if="pageType === 'detail'">
+        <h6 class="subtitle">关联入库单</h6>
+        <div style="padding: 0 30px; margin-bottom: 30px;">
+          <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
+            <el-table-column prop="code" label="入库单号"></el-table-column>
+            <el-table-column prop="ware_title" label="库仓"></el-table-column>
+            <el-table-column prop="num" label="入库数量"></el-table-column>
+            <el-table-column prop="created" label="入库时间"></el-table-column>
+            <el-table-column prop="status" label="状态">
+              <template slot-scope="scope">{{scope.row.id}}已入库</template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <h6 class="subtitle">操作记录</h6>
+        <div style="padding: 0 30px;">
+          <el-table :data="detail.logs" :row-class-name="highlightRowClassName">
+            <el-table-column prop="created" label="时间"></el-table-column>
+            <el-table-column label="操作内容">
+              <template slot-scope="scope">{{logTypes[scope.row.category]}}</template>
+            </el-table-column>
+            <el-table-column prop="remark" label="备注"></el-table-column>
+            <el-table-column label="操作人">
+              <template slot-scope="scope">{{scope.row.operator.realname}}</template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </template>
 
-      <div style="margin-left: 110px; margin-top: 80px;">
+      <div class="bottom-btn">
         <template v-if="judgeOrs(pageType, ['add', 'edit'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
@@ -64,6 +114,8 @@ export default {
       item_id: '',
       num: '',
       price: '',
+      instocks: [],
+      logs: []
     }
     return {
       initDetail: initDetail,
@@ -91,6 +143,12 @@ export default {
         detail: '统采订单详情'
       },
       pageType: 'add', //add, edit, detail
+      logTypes: {
+        edit: '修改',
+        add: '新增',
+        audit_suc: '审核通过',
+        audit_fail: '审核不通过'
+      }
     }
   },
   methods: {

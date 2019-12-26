@@ -19,7 +19,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("财务 - 供应商对账表");
+      documentTitle("财务 - 供应商对账单");
     },
   };
 </script>

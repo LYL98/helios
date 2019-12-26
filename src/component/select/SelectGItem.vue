@@ -8,13 +8,14 @@
     :placeholder="placeholder"
     style="width:100%;"
     @change="handleChange"
+    :filter-method="searchMethod"
   >
     <el-option v-if="showAll" key="" label="全部" value="">
     </el-option>
     <el-option
       v-for="item in dataItem"
       :key="item.id"
-      :label="item.title"
+      :label="item.code + '/' + item.title"
       :value="item.id"
       :disabled="item.disabled"
     >
@@ -31,13 +32,15 @@
     mixins: [selectMixin],
     props: {
       supplierId: { type: String | Number, default: '' },
+      supType: { type: String, default: '' }
     },
     methods: {
       //获取数据
       async getData(){
         let res = await Http.get(Config.api.baseGItemList, {
-          condition: this.query.condition,
-          supplier_id: this.supplierId
+          ...this.query,
+          supplier_id: this.supplierId,
+          sup_type: this.supType
         });
         if(res.code === 0){
           let rd = res.data;

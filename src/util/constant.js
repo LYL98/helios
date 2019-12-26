@@ -369,6 +369,11 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
+  //财务对财表状态(颜色)
+  S_STATEMENT_PAID_STATUS_TYPE: {
+    init: 'warning',
+    paid: 'info'
+  },
   //供应商流水类型
   SUPPLIER_BILL_REASON: (type)=>{
     let data = [

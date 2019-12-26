@@ -1,26 +1,5 @@
 <template>
   <div style="display: flex; align-items: center;">
-    <!--<el-table ref="multipleTable" :data="listItem" width="200px" :height="height" @selection-change="handleSelectionChange">-->
-      <!--<el-table-column-->
-        <!--type="selection"-->
-        <!--width="30">-->
-      <!--</el-table-column>-->
-      <!--<el-table-column label="全选" prop="title"></el-table-column>-->
-    <!--</el-table>-->
-    <!--<ul class="into-out" style="margin: 0 50px;">-->
-      <!--<li><i class="el-icon-d-arrow-right" @click="intoSelectedList"></i></li>-->
-    <!--</ul>-->
-    <!--<el-table :data="selectedList" :height="height">-->
-      <!--<el-table-column label="已添加的商户等级列表" prop="title"></el-table-column>-->
-      <!--<el-table-column label="操作" width="60">-->
-        <!--<template slot-scope="scope">-->
-          <!--<ul class="table-action">-->
-            <!--<li><a href="javascript:void(0);" @click="handleRemoveSelectedItem(scope.row)">移除</a></li>-->
-          <!--</ul>-->
-        <!--</template>-->
-      <!--</el-table-column>-->
-    <!--</el-table>-->
-
     <el-select
       style="width: 100%;"
       v-model="selectedList"

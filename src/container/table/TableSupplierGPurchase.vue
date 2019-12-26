@@ -23,24 +23,18 @@
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
               <!--供应商-->
-              <template v-if="item.key === 'supplier'">
-                <div class="td-item add-dot2">{{scope.row.supplier.title}}</div>
-              </template>
+              <div class="td-item add-dot2" v-if="item.key === 'supplier'">{{scope.row.supplier.title}}</div>
               <!--商品名称-->
-              <template v-else-if="item.key === 'item'">
-                <div class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
-              </template>
+              <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
               <!--价格-->
-              <template v-else-if="item.key === 'price'">
-                <div class="td-item add-dot2">&yen;{{returnPrice(scope.row.price)}}</div>
-              </template>
+              <div class="td-item add-dot2" v-else-if="item.key === 'price'">&yen;{{returnPrice(scope.row.price)}}</div>
+              <!--采购总金额-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'num_price'">&yen;{{returnPrice(scope.row.num * scope.row.price)}}</div>
               <!--采购人-->
-              <template v-else-if="item.key === 'purchaser'">
-                <div class="td-item add-dot2">
-                  {{scope.row.creater.realname}}<br/>
-                  {{scope.row.creater.phone}}
-                </div>
-              </template>
+              <div class="td-item add-dot2" v-else-if="item.key === 'purchaser'">
+                {{scope.row.creater.realname}}<br/>
+                {{scope.row.creater.phone}}
+              </div>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'audit_status'">
                 <el-tag size="small" :type="auditStatusType[scope.row.audit_status]" disable-transitions>
@@ -108,14 +102,16 @@
       return {
         tableName: 'TableSupplierGPurchase',
         tableColumn: [
-          { label: '商品', key: 'item', width: '3', isShow: true },
+          { label: '统采单号', key: 'code', width: '2', isShow: true },
+          { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
           { label: '供货商', key: 'supplier', width: '3', isShow: true },
-          { label: '件数', key: 'num', width: '2', isShow: true },
-          { label: '单价', key: 'price', width: '2', isShow: true },
-          { label: '采购人', key: 'purchaser', width: '2', isShow: true },
+          { label: '采购价', key: 'price', width: '2', isShow: true },
+          { label: '采购数量', key: 'num', width: '2', isShow: true },
+          { label: '采购总金额', key: 'num_price', width: '3', isShow: true },
+          { label: '采购人', key: 'purchaser', width: '2', isShow: false },
+          { label: '状态', key: 'audit_status', width: '2', isShow: true },
           { label: '采购日期', key: 'purchase_date', width: '3', isShow: true },
-          { label: '审核状态', key: 'audit_status', width: '3', isShow: true },
-          { label: '创建时间', key: 'created', width: '3', isShow: true },
+          { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
         auditStatus: Constant.AUDIT_STATUS(),
