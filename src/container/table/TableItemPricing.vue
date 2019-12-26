@@ -35,6 +35,12 @@
           </el-table-column>
         </template>
         <el-table-column label="操作" width="76">
+          <!--
+            2019-12-26
+            1、只能报今日的价格
+            2、地采商品要等到供应商报价后方可报价
+            3、统采商品要有可销售数据方可报价
+          -->
           <template slot-scope="scope">
             <!--如何日期大于今日-->
             <template v-if="query.opt_date > today">-</template>
@@ -42,6 +48,8 @@
             <template v-else-if="(scope.row.sup_type === 'local_pur' && scope.row.main_bidded) || (scope.row.sup_type === 'global_pur' && scope.row.available_num > 0)">
               <div>
                 <a href="javascript:void(0);" v-if="scope.row.opt_type === 'is_approve'" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'detail')">详情</a>
+                <!--如果小于今日-->
+                <template v-else-if="query.opt_date < today">-</template>
                 <el-button v-else-if="scope.row.opt_type === 'edit'" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'edit')">修改</el-button>
                 <el-button v-else-if="scope.row.opt_type === 'pricing'" type="primary" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'add')">报价</el-button>
               </div>
@@ -49,6 +57,8 @@
                 <el-button v-if="scope.row.is_pricing" type="primary" size="mini" @click.native="audit([scope.row.item_id])">审核</el-button>
               </div>
             </template>
+            <!--如果小于今日-->
+            <template v-else-if="query.opt_date < today">-</template>
             <!--否则-->
             <el-button v-else type="primary" size="mini" @click.native="notBiddingHint(scope.row)">报价</el-button>
           </template>

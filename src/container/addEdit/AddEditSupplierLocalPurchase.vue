@@ -24,10 +24,10 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="采购价">{{returnPrice(detail.price_buy)}}</el-form-item>
+            <el-form-item label="采购价">&yen;{{returnPrice(detail.price_buy)}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购数量">{{detail.num}}</el-form-item>
+            <el-form-item label="采购数量">{{detail.num}}件</el-form-item>
           </el-col>
         </el-row>
         <el-row>
@@ -42,7 +42,9 @@
         <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
           <el-table-column prop="code" label="入库单号"></el-table-column>
           <el-table-column prop="ware_title" label="库仓"></el-table-column>
-          <el-table-column prop="num" label="入库数量"></el-table-column>
+          <el-table-column prop="num" label="入库数量">
+            <template slot-scope="scope">{{scope.row.num}}件</template>
+          </el-table-column>
           <el-table-column prop="created" label="入库时间"></el-table-column>
           <el-table-column prop="status" label="状态">
             <template slot-scope="scope">{{scope.row.id}}已入库</template>
