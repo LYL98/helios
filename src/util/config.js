@@ -303,7 +303,6 @@ const Config = (() => {
       merchantUnFreeze: apiM + '/merchant/unfreeze', //商户解冻
       merchantGradeTagsEdit: apiM + '/merchant/grade_tags/edit', //商户内标签修改
       merchantBalanceEdit: apiM + '/merchant/balance/edit',  // 商户充值 / 扣款
-      merchantBalanceLogQuery: apiM + '/merchant/balance/log/query', // 商户充值/扣款记录查询
       merchantRefundEdit: apiM + '/store/frame/edit', //修改门店的退筐信息
       merchantRefundLogQuery: apiM + '/store/frame/log/query', // 退筐日志查询
       merchantExport: apiM + '/store/export', // 商户导出

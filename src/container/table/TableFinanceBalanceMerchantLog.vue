@@ -19,9 +19,9 @@
         />
       </my-query-item>
       <my-query-item>
-        <el-select size="small" v-model="query.reason" style="width: 180px; margin-left: 20px;"
+        <el-select size="small" v-model="query.opt_type" style="width: 180px; margin-left: 20px;"
                    @change="changeQuery" placeholder="选择变动原因" clearable>
-          <el-option v-for="(item, key) in reason" :key="key" :label="item" :value="key"></el-option>
+          <el-option v-for="(item, key) in optType" :key="key" :label="item" :value="key"></el-option>
         </el-select>
       </my-query-item>
       <my-query-item>
@@ -105,10 +105,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="变动原因" prop="reason" width="160">
+      <el-table-column label="变动原因" prop="opt_type" width="160">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ reason[scope.row.reason] }}
+            {{ optType[scope.row.opt_type] }}
           </div>
         </template>
       </el-table-column>
@@ -164,7 +164,7 @@
           items: [],
           num: 0
         },
-        reason: Constant.MERCHANT_BALANCE_REASON,
+        optType: Constant.MERCHANT_BALANCE_REASON,
         operator: {
           member: '用户',
           operator: '运营人员',
@@ -211,7 +211,7 @@
       initQuery() {
         this.$data.query = Object.assign(this.$data.query, {
           province_code: this.province.code,
-          reason: '',
+          opt_type: '',
           operator_class: '',
           merchant_title: '',
           operator_name: '',
