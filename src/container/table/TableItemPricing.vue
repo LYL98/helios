@@ -53,8 +53,8 @@
                 <el-button v-else-if="scope.row.opt_type === 'edit'" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'edit')">修改</el-button>
                 <el-button v-else-if="scope.row.opt_type === 'pricing'" type="primary" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'add')">报价</el-button>
               </div>
-              <div>
-                <el-button v-if="scope.row.is_pricing" type="primary" size="mini" @click.native="audit([scope.row.item_id])">审核</el-button>
+              <div v-if="scope.row.is_pricing && query.opt_date === today">
+                <el-button type="primary" size="mini" @click.native="audit([scope.row.item_id])">审核</el-button>
               </div>
             </template>
             <!--如果小于今日-->
