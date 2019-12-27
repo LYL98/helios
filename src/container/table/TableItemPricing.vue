@@ -47,7 +47,7 @@
             <!--如果地采供应商已报价、或统采有可销售数量-->
             <template v-else-if="(scope.row.sup_type === 'local_pur' && scope.row.main_bidded) || (scope.row.sup_type === 'global_pur' && scope.row.available_num > 0)">
               <div>
-                <a href="javascript:void(0);" v-if="scope.row.opt_type === 'is_approve'" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'detail')">详情</a>
+                <a href="javascript:void(0);" v-if="scope.row.opt_type === 'is_audited'" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'detail')">详情</a>
                 <!--如果小于今日-->
                 <template v-else-if="query.opt_date < today">-</template>
                 <el-button v-else-if="scope.row.opt_type === 'edit'" size="mini" @click.native="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'edit')">修改</el-button>
@@ -227,8 +227,8 @@
 
           //操作类型
           item.opt_type = '';
-          if(item.is_approve){
-            item.opt_type = 'is_approve'; //已审核
+          if(item.is_audited){
+            item.opt_type = 'is_audited'; //已审核
           }else if((auth.isAdmin || auth.ItemPriceFix) && item.is_quoted){
             item.opt_type = 'edit';
           }else if(auth.isAdmin || auth.ItemPriceFix){
@@ -236,7 +236,7 @@
           }
           //是否有审核权限
           item.is_pricing = false;
-          if((auth.isAdmin || auth.ItemPriceAudit) && !item.is_approve && item.is_quoted){
+          if((auth.isAdmin || auth.ItemPriceAudit) && !item.is_audited && item.is_quoted){
             item.is_pricing = true;
           }
         });

@@ -99,18 +99,18 @@
     },
     props: {
       // 查询对象
-      query: {type: Object, required: true},
+      queryData: {type: Object, required: true},
       reset: {type: Function, required: true}
     },
     model: {
-      prop: 'query',
+      prop: 'queryData',
       event: 'change'
     },
     computed: {
       editQuery: {
         get() {
-          this.backupSort = this.$props.query.sort;
-          return this.$props.query;
+          this.backupSort = this.$props.queryData.sort;
+          return this.$props.queryData;
         },
         set(v) {
           this.$emit('change', v);

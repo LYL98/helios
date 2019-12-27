@@ -1,20 +1,20 @@
 <template>
   <div>
     <!-- 头部end -->
-    <div class="operate" v-if="auth.isAdmin || auth.BasicDataZoneListAdd">
-      <el-button @click="handleShowAddEdit('AddEditBasicDataZone')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataZoneListAdd">新增
-      </el-button>
+    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataZoneListAdd">
+      <div class="left"></div>
+      <div class="right">
+        <el-button @click="handleShowAddEdit('AddEditBasicDataZone')" size="mini" type="primary">新增</el-button>
+      </div>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove">
+    <div @mousemove="handleTableMouseMove" class="table-conter">
       <el-table
-        class="list-table"
+        class="list-table my-table-float"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
         :data="dataItem"
         :row-class-name="highlightRowClassName"
-        style="width: 100%"
-        :height="windowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -93,15 +93,11 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.BasicDataZoneListAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE
-      }
       let pc = this.getPageComponents('QueryBasicDataZone'); //获取query组件
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE,
         dataItem: [],
         rowIdentifier: 'code'
       }

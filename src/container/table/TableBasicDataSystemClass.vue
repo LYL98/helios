@@ -1,14 +1,13 @@
 <template>
   <div>
-    <div class="operate" v-if="auth.isAdmin || auth.BasicDataSystemClassListAdd">
-      <el-button @click="handleShowAddEdit('AddEditBasicDataSystemClass')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataSystemClassListAdd">新增(第一层)</el-button>
+    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataSystemClassListAdd">
+      <div class="left"></div>
+      <div class="right">
+        <el-button @click="handleShowAddEdit('AddEditBasicDataSystemClass')" size="mini" type="primary">新增(第一层)</el-button>
+      </div>
     </div>
     <!-- 树型start -->
-    <el-tree
-      :data="dataItem"
-      node-key="id"
-      :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - offsetHeight + 'px'}"
-      default-expand-all>
+    <el-tree :data="dataItem" node-key="id" default-expand-all>
       <span class="custom-tree-node" slot-scope="{node, data}">
         <span class="label">{{data.code}} {{ node.label }}</span>
         <span class="options" @click.stop>
@@ -52,14 +51,10 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.BasicDataSystemClassListAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
-      }
       this.getData();
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE,
         dataItem: [],
         rowIdentifier: 'code'
       }

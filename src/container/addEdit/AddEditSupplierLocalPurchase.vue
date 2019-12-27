@@ -44,7 +44,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="采购总金额">&yen;{{detail.frame_code ? returnPrice(detail.num * detail.price_buy + detail.num * detail.frame_price) : returnPrice(detail.num * detail.price_buy)}}</el-form-item>
+            <el-form-item label="采购总金额">&yen;{{returnPrice(detail.num * detail.price_buy + detail.num * detail.frame_price)}}</el-form-item>
           </el-col>
         </el-row>
       </el-form>

@@ -1,18 +1,19 @@
 <template>
   <div>
-    <div class="operate" v-if="auth.isAdmin || auth.BasicDataProvinceListAdd">
-      <el-button @click="handleShowAddEdit('AddEditBasicDataProvince')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataProvinceListAdd">新增</el-button>
+    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataProvinceListAdd">
+      <div class="left"></div>
+      <div class="right">
+        <el-button @click="handleShowAddEdit('AddEditBasicDataProvince')" size="mini" type="primary">新增</el-button>
+      </div>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove">
+    <div @mousemove="handleTableMouseMove" class="table-conter">
       <el-table
-        class="list-table"
+        class="list-table my-table-float"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
         :data="dataItem"
         :row-class-name="highlightRowClassName"
-        style="width: 100%"
-        :height="windowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -84,14 +85,10 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.BasicDataProvinceListAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
-      }
       this.getData();
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE,
         dataItem: [],
         rowIdentifier: 'code'
       }

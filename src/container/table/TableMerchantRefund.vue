@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.MerchantRefundLogQuery">
       <div class="left"></div>
       <div class="right">

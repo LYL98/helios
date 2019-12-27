@@ -1,11 +1,10 @@
 <template>
-  <div @mousemove="handleTableMouseMove">
+  <div @mousemove="handleTableMouseMove" class="table-conter">
     <el-table
-      class="list-table"
+      class="list-table my-table-float"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
       :data="data"
-      :height="windowHeight - offsetHeight"
       :row-class-name="highlightRowClassName"
       highlight-current-row="highlight-current-row"
       :row-key="rowIdentifier"
@@ -78,7 +77,6 @@
       itemEdit: {type: Function, required: true},
       approveLog: {type: Function, required: true},
       balanceLog: {type: Function, required: true},
-      offsetHeight: {type: Number, required: true}
     },
     methods: {
 

@@ -1,66 +1,64 @@
 <template>
-  <div>
+  <div class="container-table">
     <!-- 头部start -->
-    <div class="operate space-between">
-      <div>
-        <el-button v-if="auth.isAdmin || auth.SystemBannerDelete"
-                   :disabled="multipleSelection.length > 0 ? false : true"
-                   size="mini"
-                   type="primary"
-                   plain
-                   @click.native="handleDelete('multiple')">批量删除</el-button>
+    <div class="table-top" v-if="auth.isAdmin || auth.SystemBannerDelete || auth.SystemBannerAdd">
+      <div class="left" v-if="auth.isAdmin || auth.SystemBannerDelete">
+        <el-button :disabled="multipleSelection.length > 0 ? false : true" size="mini" type="primary" plain @click.native="handleDelete('multiple')">批量删除</el-button>
       </div>
-      <div>
-        <el-button @click="handleShowAddEdit('AddEditSystemBanner')" size="mini" v-if="auth.isAdmin || auth.SystemBannerAdd" type="primary">新增</el-button>
+      <div class="right" v-if="auth.isAdmin || auth.SystemBannerAdd">
+        <el-button @click="handleShowAddEdit('AddEditSystemBanner')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
-     <!--头部end-->
+    <!--头部end-->
     <!-- 表格start -->
-    <el-table :data="dataItem"
-              style="width: 100%"
-              :loading="true"
-              class="list-table"
-              :row-class-name="highlightRowClassName"
-              @selection-change="handleSelectionChange"
-              :height="windowHeight - offsetHeight">
-      <el-table-column type="selection" width="42"/>
-      <el-table-column label="图片">
-        <template slot-scope="scope">
-          <a href="javascript:void(0);">
-            <my-image-preview><img :src="tencentPath + scope.row.image + '_min200x200'" width="84" height="63"/></my-image-preview>
-          </a>
-        </template>
-      </el-table-column>
-      <el-table-column prop="rank" label="排序"/>
-      <!--<el-table-column label="类型">-->
-        <!--<template slot-scope="scope">-->
-          <!--{{{'commdity': '链接到商品', 'category': '链接到品类', 'external_link': '外部链接', 'nolink': '没有链接'}[scope.row.banner_type]}}-->
-        <!--</template>-->
-      <!--</el-table-column>-->
-      <el-table-column label="状态" width="180">
-        <template slot-scope="scope">
-          <el-tag size="mini" :type="scope.row.is_usable ? 'regular' : 'info'">{{scope.row.is_usable ? '可用' : '不可用'}}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="100" align="center">
-        <template slot-scope="scope">
-          <my-table-operate
-            :list="[
-              {
-                title: '修改',
-                isDisplay: auth.isAdmin || auth.SystemBannerEdit,
-                command: () => handleShowAddEdit('AddEditSystemBanner', scope.row)
-              },
-              {
-                title: '删除',
-                isDisplay: auth.isAdmin || auth.SystemBannerDelete,
-                command: () => handleDelete(scope.row)
-              }
-            ]"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class="table-conter">
+      <el-table
+        :data="dataItem"
+        style="width: 100%"
+        :loading="true"
+        class="list-table my-table-float"
+        :row-class-name="highlightRowClassName"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="42"/>
+        <el-table-column label="图片">
+          <template slot-scope="scope">
+            <a href="javascript:void(0);">
+              <my-image-preview><img :src="tencentPath + scope.row.image + '_min200x200'" width="84" height="63"/></my-image-preview>
+            </a>
+          </template>
+        </el-table-column>
+        <el-table-column prop="rank" label="排序"/>
+        <!--<el-table-column label="类型">-->
+          <!--<template slot-scope="scope">-->
+            <!--{{{'commdity': '链接到商品', 'category': '链接到品类', 'external_link': '外部链接', 'nolink': '没有链接'}[scope.row.banner_type]}}-->
+          <!--</template>-->
+        <!--</el-table-column>-->
+        <el-table-column label="状态" width="180">
+          <template slot-scope="scope">
+            <el-tag size="mini" :type="scope.row.is_usable ? 'regular' : 'info'">{{scope.row.is_usable ? '可用' : '不可用'}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="100" align="center">
+          <template slot-scope="scope">
+            <my-table-operate
+              :list="[
+                {
+                  title: '修改',
+                  isDisplay: auth.isAdmin || auth.SystemBannerEdit,
+                  command: () => handleShowAddEdit('AddEditSystemBanner', scope.row)
+                },
+                {
+                  title: '删除',
+                  isDisplay: auth.isAdmin || auth.SystemBannerDelete,
+                  command: () => handleDelete(scope.row)
+                }
+              ]"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <!--表格end -->
   </div>
 </template>
@@ -77,14 +75,10 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.SystemBannerAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT
-      }
       this.getData();
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE,
         dataItem: [],
         rowIdentifier: 'code'
       }

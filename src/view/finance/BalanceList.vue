@@ -40,7 +40,6 @@
       :itemEdit="handleBalanceEdit"
       :approveLog="handleApproveLog"
       :balanceLog="handleBalanceLog"
-      :offsetHeight="offsetHeight"
       :windowHeight="viewWindowHeight"
     >
     </table-finance-balance>
@@ -155,8 +154,9 @@
       return {
         province: this.$province,
         auth: this.$auth,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
-        query: {},
+        query: {
+          title: ''
+        },
         dataItem: {
           items: [],
           num: 0
@@ -176,10 +176,6 @@
       documentTitle('财务 - 客户财务管理');
       this.initQuery();
       this.getData();
-
-      if (!this.auth.isAdmin && !this.auth.FinanceBalanceExport && !this.auth.FinanceBalanceMerchantLogExport && !this.auth.FinanceBalanceMerchantLog) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-      }
     },
     methods: {
       initQuery() {

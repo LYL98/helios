@@ -51,18 +51,18 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="创建人">{{detail.creater.realname}}</el-form-item>
+              <el-form-item label="创建人">{{detail.creator.realname}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="创建时间">{{detail.creater.created}}</el-form-item>
+              <el-form-item label="创建时间">{{detail.creator.created}}</el-form-item>
             </el-col>
           </el-row>
-          <el-row v-if="detail.auditer.id">
+          <el-row v-if="detail.auditor.id">
             <el-col :span="12">
-              <el-form-item label="审核人">{{detail.auditer.realname}}</el-form-item>
+              <el-form-item label="审核人">{{detail.auditor.realname}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="审核时间">{{detail.auditer.created}}</el-form-item>
+              <el-form-item label="审核时间">{{detail.auditor.created}}</el-form-item>
             </el-col>
           </el-row>
       </el-form>
@@ -97,8 +97,8 @@ export default {
   data(){
     let initDetail = {
       supplier: {},
-      creater: {},
-      auditer: {},
+      creator: {},
+      auditor: {},
       supplier_id: '',
       type: 'top_up', //充值top_up、扣款withhold
       bill_reason: 'other', //其它other、货损item_damage

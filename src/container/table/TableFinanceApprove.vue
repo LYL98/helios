@@ -1,12 +1,11 @@
 <template>
-  <div @mousemove="handleTableMouseMove">
+  <div @mousemove="handleTableMouseMove" class="table-conter">
     <el-table
-      class="list-table"
+      class="list-table my-table-float"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
       :data="data"
       :row-class-name="highlightRowClassName"
-      :height="windowHeight - offsetHeight"
       :highlight-current-row="true"
       :row-key="rowIdentifier"
       :current-row-key="clickedRow[rowIdentifier]"
@@ -33,10 +32,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="提交人" prop="creater_name" min-width="100">
+      <el-table-column label="提交人" prop="creator_name" min-width="100">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ scope.row.creater_name }}
+            {{ scope.row.creator_name }}
           </div>
         </template>
       </el-table-column>
@@ -96,9 +95,9 @@
     >
       <el-form label-position="left" label-width="100px" style="margin-top: -10px; padding: 0 20px;" v-if="dialog.isShow">
         <el-form-item label="审核状态：">{{ status[dialog.detail.status] }}</el-form-item>
-        <el-form-item label="审核备注：">{{ dialog.detail.check_remark }}</el-form-item>
+        <el-form-item label="审核备注：">{{ dialog.detail.audit_remark }}</el-form-item>
         <el-form-item label="审核人：">{{ dialog.detail.checker_name }}</el-form-item>
-        <el-form-item label="审核时间：">{{ dialog.detail.check_time }}</el-form-item>
+        <el-form-item label="审核时间：">{{ dialog.detail.audit_time }}</el-form-item>
       </el-form>
     </el-dialog>
   </div>
@@ -122,7 +121,6 @@
       'highlight-current-row': {type: Boolean, default: true},
       page: {type: Number, required: true},
       pageSize: {type: Number, required: true},
-      offsetHeight: { type: Number, required: true},
       itemEdit: { type: Function, required: true }
     },
     computed: {

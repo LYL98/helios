@@ -7,37 +7,33 @@
       @expandChange="onExpandChange"
     >
     </query-marketing-scope-promotion>
-    <div class="operate" v-if="auth.isAdmin || auth.MarketingScopePromotionAdd">
-      <el-button
-        v-if="auth.isAdmin || auth.MarketingScopePromotionAdd"
-        type="primary"
-        size="mini"
-        @click="handleAddItem"
-      >
-        新增
-      </el-button>
-    </div>
-    <table-marketing-scope-promotion
-      :data="dataItem.items"
-      :page="query.page"
-      :pageSize="query.page_size"
-      :start="handleStart"
-      :end="handleEnd"
-      :offset-height="offsetHeight"
-      :windowHeight="viewWindowHeight"
-    />
-    <div class="footer">
-      <div class="table-pagination">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-        />
+    <div class="container-table">
+      <div class="table-top" v-if="auth.isAdmin || auth.MarketingScopePromotionAdd">
+        <div class="left"></div>
+        <div class="right">
+          <el-button @click="handleAddItem" size="mini" type="primary">新增</el-button>
+        </div>
+      </div>
+      <table-marketing-scope-promotion
+        :data="dataItem.items"
+        :page="query.page"
+        :pageSize="query.page_size"
+        :start="handleStart"
+        :end="handleEnd"
+      />
+      <div class="footer">
+        <div class="table-pagination">
+          <el-pagination
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            :page-sizes="[10, 20, 30, 40, 50]"
+            @size-change="changePageSize"
+            @current-change="changePage"
+            :total="dataItem.num"
+            :page-size="query.page_size"
+            :current-page="query.page"
+          />
+        </div>
       </div>
     </div>
     <el-dialog
@@ -86,7 +82,6 @@
         auth: this.$auth,
         query: {}, //查询条件
         item: {}, // 需要添加的活动对象
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         formSending: false,
         dialog: {
           isShow: false
@@ -102,10 +97,6 @@
       // 判断是否具有促销活动的权限
       this.initQuery();
       this.itemScopePromotionQuery();
-
-      if (!this.auth.isAdmin && !this.auth.MarketingScopePromotionAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-      }
     },
     methods: {
       //获取数据

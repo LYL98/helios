@@ -1,23 +1,16 @@
 <template>
   <!-- 头部start -->
-  <div class="query">
-    <el-row>
-      <el-col :xl="8" :lg="10" :span="10">
+  <div class="container-query">
+    <el-row :gutter="32">
+      <el-col :span="10">
         <my-query-item label="搜索">
-          <div style="display: flex">
-            <el-input
-              size="small"
-              placeholder="请输入线路名称、编号"
-              class="query-item-input"
-              clearable
-              v-model="query.condition"
-              @keyup.enter.native="handleQuery('TableOperateLine')"
-              @clear="handleQuery('TableOperateLine')"
-              ref="condition"
-            />
-            <el-button size="small" style="margin-left: 4px" type="primary" @click="handleQuery('TableOperateLine')" icon="el-icon-search"></el-button>
-            <el-button size="small" type="primary" class="query-item-reset" plain @click="handleClearQuery('TableOperateLine')">重置</el-button>
-          </div>
+          <query-search-input
+            size="small"
+            placeholder="线路名称/编号"
+            v-model="query.condition"
+            @search="handleQuery('TableOperateLine')"
+            @reset="handleClearQuery('TableOperateLine')"
+          />
         </my-query-item>
       </el-col>
     </el-row>

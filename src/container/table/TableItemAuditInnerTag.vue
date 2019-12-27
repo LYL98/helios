@@ -22,7 +22,7 @@
               </div>
               <!--修改人-->
               <div class="td-item add-dot2" v-else-if="item.key === 'realname'">
-                {{scope.row.creater.realname}}
+                {{scope.row.creator.realname}}
               </div>
               <!--原商品价格标签-->
               <div class="td-item add-dot2" v-else-if="item.key === 'cur_inner_tag'">

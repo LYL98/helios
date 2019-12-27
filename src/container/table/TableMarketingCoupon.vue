@@ -1,5 +1,5 @@
 <template>
-  <div @mousemove="handleTableMouseMove" class="container-table">
+  <div @mousemove="handleTableMouseMove" class="table-conter">
     <el-table
       class="list-table my-table-float"
       @cell-mouse-enter="cellMouseEnter"

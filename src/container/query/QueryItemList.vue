@@ -24,7 +24,13 @@
         </el-col>
         <el-col :span="10">
           <my-query-item label="搜索">
-            <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableItemList')" @reset="handleClearQuery('TableItemList')"/>
+            <query-search-input
+              size="small"
+              placeholder="商品编号/名称"
+              v-model="query.condition"
+              @search="handleQuery('TableItemList')"
+              @reset="handleClearQuery('TableItemList')"
+            />
           </my-query-item>
         </el-col>
       </el-row>
@@ -93,7 +99,13 @@
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="外标签/商品编号/名称" size="small" @search="handleQuery('TableItemList')" @reset="handleClearQuery('TableItemList')"/>
+          <query-search-input
+            size="small"
+            placeholder="外标签/商品编号/名称"
+            v-model="query.condition"
+            @search="handleQuery('TableItemList')"
+            @reset="handleClearQuery('TableItemList')"
+          />
         </my-query-item>
       </el-col>
     </el-row>

@@ -85,25 +85,6 @@
         this.beforeDateRange = b;
       }
     },
-    props: {
-      // 查询对象
-      query: {type: Object, required: true},
-      reset: {type: Function, required: true}
-    },
-    model: {
-      prop: 'query',
-      event: 'change'
-    },
-    computed: {
-      editQuery: {
-        get() {
-          return this.$props.query;
-        },
-        set(v) {
-          this.$emit('change', v);
-        }
-      }
-    },
     methods: {
       //搜索日期
       changePicker(value){

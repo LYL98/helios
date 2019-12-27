@@ -1,8 +1,10 @@
 <template>
   <div class="container-table">
-    <div class="operate" v-if="auth.isAdmin || auth.BasicDataCityListAdd">
-      <el-button @click="handleShowAddEdit('AddEditBasicDataCity')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataCityListAdd">新增
-      </el-button>
+    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataCityListAdd">
+      <div class="left"></div>
+      <div class="right">
+        <el-button @click="handleShowAddEdit('AddEditBasicDataCity')" size="mini" type="primary">新增</el-button>
+      </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -12,7 +14,6 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="dataItem.items"
         :row-class-name="highlightRowClassName"
-        style="width: 100%;"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"

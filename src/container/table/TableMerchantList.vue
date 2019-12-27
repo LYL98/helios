@@ -1,9 +1,8 @@
 <template>
-  <div @mousemove="handleTableMouseMove">
+  <div @mousemove="handleTableMouseMove" class="table-conter">
     <el-table
-      class="list-table"
+      class="list-table my-table-float"
       :data="dataItemTemp.items"
-      :height="windowHeight - offsetHeight"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
       :row-class-name="highlightRowClassName"
@@ -47,8 +46,8 @@
       </el-table-column>
       <el-table-column label="审核状态" min-width="80">
         <template slot-scope="scope">
-          <el-tag disable-transitions :type="scope.row.is_approve ? 'regular' : 'info'" size="small"
-          >{{scope.row.is_approve ? '已审核' : '未审核'}}</el-tag>
+          <el-tag disable-transitions :type="scope.row.is_audited ? 'regular' : 'info'" size="small"
+          >{{scope.row.is_audited ? '已审核' : '未审核'}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="冻结状态" min-width="80">
@@ -65,7 +64,7 @@
             :list="[
               {
                 title: '审核通过',
-                isDisplay: (auth.isAdmin || auth.MerchantStoreApprove) && !scope.row.is_approve,
+                isDisplay: (auth.isAdmin || auth.MerchantStoreApprove) && !scope.row.is_audited,
                 command: () => affirmApprove(scope.row)
               },
               {
@@ -110,7 +109,6 @@
       showDetail: Function, // 商户详情 的处理函数
       affirmStoreFreeze: Function, // 冻结商户 的处理函数
       affirmStoreUnFreeze: Function, // 解冻商户 的处理函数
-      offsetHeight: Number // 列表偏置高度
     },
 
     methods: {
@@ -143,7 +141,7 @@
         });
         if (res.code === 0) {
           this.$message({ message: '商户审核通过！', type: 'success' });
-          item.is_approve = true;
+          item.is_audited = true;
         } else {
           this.$message({ message: res.message, type: 'error' });
         }

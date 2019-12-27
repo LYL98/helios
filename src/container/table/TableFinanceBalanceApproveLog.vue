@@ -44,10 +44,10 @@
           clearable
           style="width: 180px; margin-left: 20px;"
           placeholder="输入提交人名称"
-          v-model="query.creater_name"
+          v-model="query.creator_name"
           @clear="changeQuery"
           @keyup.enter.native="changeQuery"
-          ref="creater_name"
+          ref="creator_name"
         ></el-input>
         <el-button size="small" type="primary" icon="el-icon-search" @click="changeQuery" style="margin-left: 4px;"></el-button>
         <el-button size="small" type="primary" plain style="margin-left: 10px;" @click="resetQuery">重置</el-button>
@@ -89,10 +89,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="提交人" prop="creater_name" width="120">
+      <el-table-column label="提交人" prop="creator_name" width="120">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ scope.row.creater_name }}
+            {{ scope.row.creator_name }}
           </div>
         </template>
       </el-table-column>
@@ -145,9 +145,9 @@
     >
       <el-form label-position="left" label-width="100px" style="padding: 20px;" v-if="dialog.isShow">
         <el-form-item label="审核状态：">{{ status[dialog.detail.status] }}</el-form-item>
-        <el-form-item label="审核备注：">{{ dialog.detail.check_remark }}</el-form-item>
+        <el-form-item label="审核备注：">{{ dialog.detail.audit_remark }}</el-form-item>
         <el-form-item label="审核人：">{{ dialog.detail.checker_name }}</el-form-item>
-        <el-form-item label="审核时间：">{{ dialog.detail.check_time }}</el-form-item>
+        <el-form-item label="审核时间：">{{ dialog.detail.audit_time }}</el-form-item>
       </el-form>
     </el-dialog>
   </div>
@@ -186,7 +186,7 @@
         auth: this.$auth,
         pickerValue: null,
         query: {
-          creater_name: ''
+          creator_name: ''
         },
         dataItem: {
           items: [],
@@ -243,7 +243,7 @@
           merchant_id: this.$props.merchant_id,
           status: '',
           opt_type: '',
-          creater_name: '',
+          creator_name: '',
           begin_date: '',
           end_date: '',
           page: 1,
@@ -270,7 +270,7 @@
         this.initQuery();
         this.$data.pickerValue = null;
         this.ApproveQuery();
-        this.$refs['creater_name'].currentValue = '';
+        this.$refs['creator_name'].currentValue = '';
       },
       changePage(page) {
         this.$data.query.page = page;

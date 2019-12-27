@@ -42,7 +42,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="采购总金额">
-              <input-price size="medium" :value="detail.frame_code ? returnPrice(detail.num * detail.price + detail.num * detail.frame_price) : returnPrice(detail.num * detail.price)" disabled/>
+              <input-price size="medium" :value="detail.num * detail.price + detail.num * detail.frame_price" disabled/>
             </el-form-item>
           </el-col>
         </el-row>

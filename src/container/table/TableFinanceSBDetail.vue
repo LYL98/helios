@@ -43,7 +43,7 @@
                 </div>
               </div>
               <!--创建人-->
-              <div v-else-if="item.key === 'creater'" class="td-item">{{scope.row.creater.realname || '系统'}}</div>
+              <div v-else-if="item.key === 'creator'" class="td-item">{{scope.row.creator.realname || '系统'}}</div>
               <!--审核状态-->
               <div v-else-if="item.key === 'audit_status'" class="td-item">
                 <el-tag size="small" :type="auditStatusType[scope.row.audit_status]" disable-transitions>{{auditStatus[scope.row.audit_status]}}</el-tag>
@@ -107,7 +107,7 @@
         { label: '结算类型', key: 'bill_term', width: '3', isShow: true },
         { label: '流水类型', key: 'bill_reason', width: '3', isShow: true },
         { label: '金额', key: 'bill_amount', width: '2', isShow: true },
-        { label: '创建人', key: 'creater', width: '3', isShow: true },
+        { label: '创建人', key: 'creator', width: '3', isShow: true },
       ];
 
       //审核页面

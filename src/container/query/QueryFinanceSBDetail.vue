@@ -1,11 +1,11 @@
 <template>
   <div class="container-query">
-    <el-row style="margin-bottom: 16px;">
+    <el-row :gutter="32" style="margin-bottom: 16px;">
       <!--流水页面-->
       <template v-if="page === 'sBDetail'">
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item label="流水类型">
-            <el-select v-model="query.bill_reason" size="small" class="query-item-select" clearable @change="handleQuery('TableFinanceSBDetail')">
+            <el-select v-model="query.bill_reason" size="small" style="width: 100%;" clearable @change="handleQuery('TableFinanceSBDetail')">
               <el-option label="全部" value=""></el-option>
               <template v-for="(key, value) in billReason">
                 <el-option :label="value" :value="key" :key="key"></el-option>
@@ -13,7 +13,7 @@
             </el-select>
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item label="结款类型">
             <select-option
               :options="{'全部': '', ...billTerm}"
@@ -26,9 +26,9 @@
       </template>
       <!--流水审核页面-->
       <template v-else-if="page === 'sBDetailAudit'">
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item label="流水类型">
-            <el-select v-model="query.bill_reason" size="small" class="query-item-select" clearable @change="handleQuery('TableFinanceSBDetail')">
+            <el-select v-model="query.bill_reason" size="small" style="width: 100%;" clearable @change="handleQuery('TableFinanceSBDetail')">
               <el-option label="全部" value=""></el-option>
               <template v-for="(key, value) in billReason">
                 <el-option :label="value" :value="key" :key="key" v-if="key === 'distribution' || key === 'other'"></el-option>
@@ -36,9 +36,9 @@
             </el-select>
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item label="审核状态">
-            <el-select v-model="query.audit_status" size="small" class="query-item-select" clearable @change="handleQuery('TableFinanceSBDetail')">
+            <el-select v-model="query.audit_status" size="small" style="width: 100%;" clearable @change="handleQuery('TableFinanceSBDetail')">
               <el-option label="全部" value=""></el-option>
               <el-option :label="key" :value="value" v-for="(value, key) in auditStatus" :key="key"></el-option>
             </el-select>
@@ -46,27 +46,20 @@
         </el-col>
       </template>
 
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="10">
         <my-query-item label="搜索">
-          <div style="display: flex">
-            <el-input
-              size="small"
-              placeholder="请输入供应商名称"
-              clearable
-              class="query-item-input"
-              v-model="query.condition"
-              @clear="handleQuery('TableFinanceSBDetail')"
-              ref="search_condition"
-              @keyup.enter.native="handleQuery('TableFinanceSBDetail')"
-            />
-            <el-button size="small" style="margin-left: 4px" type="primary" @click="handleQuery('TableFinanceSBDetail')" icon="el-icon-search"></el-button>
-            <el-button size="small" class="query-item-reset"  type="primary" plain @click="handleClearQuery('TableFinanceSBDetail')">重置</el-button>
-          </div>
+          <query-search-input
+            size="small"
+            placeholder="请输入供应商名称"
+            v-model="query.condition"
+            @search="handleQuery('TableFinanceSBDetail')"
+            @reset="handleClearQuery('TableFinanceSBDetail')"
+          />
         </my-query-item>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
+    <el-row :gutter="32">
+      <el-col :span="7">
         <my-query-item label="日期">
           <el-date-picker
             size="small"
@@ -80,7 +73,7 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             @change="changePicker"
-            class="query-item-date"
+            style="width: 100%;"
           />
         </my-query-item>
       </el-col>

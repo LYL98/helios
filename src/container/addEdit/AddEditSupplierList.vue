@@ -66,20 +66,20 @@
         </el-row>
         <template v-if="pageType === 'detail'">
           <h6 class="subtitle">操作记录</h6>
-          <el-row v-if="detail.creater && detail.creater.id">
+          <el-row v-if="detail.creator && detail.creator.id">
             <el-col :span="12">
-              <el-form-item label="创建人">{{detail.creater.realname}}</el-form-item>
+              <el-form-item label="创建人">{{detail.creator.realname}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="创建时间">{{detail.creater.created}}</el-form-item>
+              <el-form-item label="创建时间">{{detail.creator.created}}</el-form-item>
             </el-col>
           </el-row>
-          <el-row v-if="detail.auditer && detail.auditer.id">
+          <el-row v-if="detail.auditor && detail.auditor.id">
             <el-col :span="12">
-              <el-form-item label="审核人">{{detail.auditer.realname}}</el-form-item>
+              <el-form-item label="审核人">{{detail.auditor.realname}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="审核时间">{{detail.auditer.created}}</el-form-item>
+              <el-form-item label="审核时间">{{detail.auditor.created}}</el-form-item>
             </el-col>
           </el-row>
         </template>
@@ -131,8 +131,8 @@ export default {
       bank_name: '',
       bank_account_name: '',
       bank_account: '',
-      creater: {},
-      auditer: {}
+      creator: {},
+      auditor: {}
     }
     return {
       initDetail: initDetail,

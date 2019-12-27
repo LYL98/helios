@@ -1,56 +1,53 @@
 <template>
   <div>
     <query-marketing-coupon v-model="query" @change="changeQuery" :reset="resetQuery"/>
-    <div class="operate" v-if="auth.isAdmin || auth.MarketingCouponListExport || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
-      <el-button
-        v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic"
-        type="primary"
-        size="mini"
-        @click="dialog.isShowStatistic = true"
+    <div class="container-table">
+      <div class="table-top" v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
+        <div class="left"></div>
+        <div class="right">
+          <el-button
+            v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic"
+            type="primary"
+            size="mini"
+            @click="dialog.isShowStatistic = true"
+          >
+            优惠券发放统计列表
+          </el-button>
+          <el-button
+            v-if="auth.isAdmin || auth.MarketingCouponAdd"
+            type="primary"
+            size="mini"
+            @click="handleAddItem"
+          >
+            新增
+          </el-button>
+        </div>
+      </div>
+      <table-marketing-coupon
+        :data="dataItem.items"
+        :page="query.page"
+        :pageSize="query.page_size"
+        :sendItem="handleSendItem"
+        :autoDis="handleAutoDis"
+        :showItem="handleShowItem"
+        :showLog="handleShowLog"
+        :offsetHeight="offsetHeight"
+        :windowHeight="viewWindowHeight"
       >
-        优惠券发放统计列表
-      </el-button>
-      <el-button
-        v-if="auth.isAdmin || auth.MarketingCouponAdd"
-        type="primary"
-        size="mini"
-        @click="handleAddItem"
-      >
-        新增
-      </el-button>
-      <!--<el-button-->
-        <!--v-if="auth.isAdmin || auth.MarketingCouponDistributeLog"-->
-        <!--type="primary"-->
-        <!--size="mini"-->
-        <!--@click="dialog.isShowLog = true"-->
-      <!--&gt;-->
-        <!--优惠券发放记录-->
-      <!--</el-button>-->
-    </div>
-    <table-marketing-coupon
-      :data="dataItem.items"
-      :page="query.page"
-      :pageSize="query.page_size"
-      :sendItem="handleSendItem"
-      :autoDis="handleAutoDis"
-      :showItem="handleShowItem"
-      :showLog="handleShowLog"
-      :offsetHeight="offsetHeight"
-      :windowHeight="viewWindowHeight"
-    >
-    </table-marketing-coupon>
-    <div class="footer">
-      <div class="table-pagination">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-        />
+      </table-marketing-coupon>
+      <div class="footer">
+        <div class="table-pagination">
+          <el-pagination
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            :page-sizes="[10, 20, 30, 40, 50]"
+            @size-change="changePageSize"
+            @current-change="changePage"
+            :total="dataItem.num"
+            :page-size="query.page_size"
+            :current-page="query.page"
+          />
+        </div>
       </div>
     </div>
     <el-dialog

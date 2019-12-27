@@ -1,9 +1,9 @@
 <template>
   <div class="query">
-    <el-row>
-      <el-col :span="6">
-        <my-query-item label="省份" align="left">
-          <el-select size="small" v-model="query.province_code" clearable filterable placeholder="选择省份" style="width:210px;" @change="changeProvince">
+    <el-row :gutter="32">
+      <el-col :span="7">
+        <my-query-item label="省份">
+          <el-select size="small" v-model="query.province_code" clearable filterable placeholder="选择省份" style="width: 100%;" @change="changeProvince">
             <el-option
               v-for="item in provinceList"
               :key="item.code"
@@ -13,9 +13,9 @@
           </el-select>
         </my-query-item>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="7">
         <my-query-item label="片区">
-          <el-select size="small" v-model="query.zone_codes" clearable filterable placeholder="选择片区" style="width:210px;" @change="changeZone">
+          <el-select size="small" v-model="query.zone_codes" clearable filterable placeholder="选择片区" style="width: 100%;" @change="changeZone">
             <el-option
               v-for="item in zoneList"
               :key="item.code"

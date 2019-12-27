@@ -1,40 +1,44 @@
 <template>
   <div>
     <query-merchant-store v-model="query" @change="changeQuery" :reset="resetQuery" @expandChange="onExpandChange" />
-    <div class="operate" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
-      <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出商户列表</el-button>
-      <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="() => addMerchantDialogVisible = true" size="mini" type="primary">新增</el-button>
-    </div>
-    <!-- 头部end -->
+    <div class="container-table">
+      <div class="table-top" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
+        <div class="left"></div>
+        <div class="right">
+          <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出商户列表</el-button>
+        <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="() => addMerchantDialogVisible = true" size="mini" type="primary">新增</el-button>
+        </div>
+      </div>
+      <!-- 头部end -->
 
-    <!-- 列表渲染 -->
-    <table-merchant-list
-      :dataItemTemp="dataItem"
-      :page="query.page"
-      :pageSize="query.page_size"
-      :deleteStore="deleteStore"
-      :showDetail="showDetail"
-      :affirmStoreFreeze="affirmStoreFreeze"
-      :affirmStoreUnFreeze="affirmStoreUnFreeze"
-      :offset-height="offsetHeight"
-      :windowHeight="viewWindowHeight"
-      :getPageComponents="viewGetPageComponents"
-      ref="TableMerchantList"
-    />
+      <!-- 列表渲染 -->
+      <table-merchant-list
+        :dataItemTemp="dataItem"
+        :page="query.page"
+        :pageSize="query.page_size"
+        :deleteStore="deleteStore"
+        :showDetail="showDetail"
+        :affirmStoreFreeze="affirmStoreFreeze"
+        :affirmStoreUnFreeze="affirmStoreUnFreeze"
+        :getPageComponents="viewGetPageComponents"
+        ref="TableMerchantList"
+      />
+    
 
-    <!-- 分页标签 -->
-    <div class="footer" v-if="dataItem.num > 0">
-      <div class="table-pagination">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-        />
+      <!-- 分页标签 -->
+      <div class="footer" v-if="dataItem.num > 0">
+        <div class="table-pagination">
+          <el-pagination
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            :page-sizes="[10, 20, 30, 40, 50]"
+            @size-change="changePageSize"
+            @current-change="changePage"
+            :total="dataItem.num"
+            :page-size="query.page_size"
+            :current-page="query.page"
+          />
+        </div>
       </div>
     </div>
 
@@ -80,9 +84,6 @@
         that.$data.query.province_code = p.code;
         that.storeQuery();
       }
-      if (!this.auth.isAdmin && !this.auth.MerchantExport && !this.auth.MerchantAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-      }
     },
     data() {
       return {
@@ -91,9 +92,8 @@
         auth: this.$auth,
         tencentPath: Config.tencentPath,
         provinceList: [],//省列表
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         query: {
-          is_approve: '',
+          is_audited: '',
           is_freeze: '',
           is_post_pay: '',
           gb_included: '',
@@ -132,7 +132,7 @@
       refresh() {
         let {query} = this;
         query.page = 1;
-        query.is_approve = '';
+        query.is_audited = '';
         this.$data.query = query;
         this.storeQuery();
       },
@@ -188,7 +188,7 @@
       resetQuery(){
         let { page_size } = this.$data.query;
         this.$data.query = {
-          is_approve: '',
+          is_audited: '',
           is_freeze: '',
           is_post_pay: '',
           gb_included: '',
@@ -229,9 +229,9 @@
       //商户列表导出
       async merchantListExport() {
         let api = Config.api.merchantExport;
-        let {is_approve, is_freeze, is_post_pay, gb_included, city_code, condition, begin_date, end_date} = this.query;
+        let {is_audited, is_freeze, is_post_pay, gb_included, city_code, condition, begin_date, end_date} = this.query;
         let query = {
-          is_approve,
+          is_audited,
           is_freeze,
           is_post_pay,
           gb_included,
@@ -269,7 +269,7 @@
        */
       selectApprove(type) {
         let {query} = this;
-        query.is_approve = type;
+        query.is_audited = type;
         query.page = 1;
         this.$data.query = query;
         this.storeQuery();

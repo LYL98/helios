@@ -29,7 +29,7 @@
         </el-table-column>
         <el-table-column label="操作人" min-width="200">
           <template slot-scope="scope">
-            {{scope.row.creater.realname || '系统'}}
+            {{scope.row.creator.realname || '系统'}}
           </template>
         </el-table-column>
         <el-table-column label="备注" prop="remark" min-width="200"/>

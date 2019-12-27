@@ -1,17 +1,20 @@
 <template>
   <!-- 头部start -->
-  <div class="query">
-    <my-query-item label="省份" align="left">
-      <el-select size="small" v-model="query.province_code" clearable filterable placeholder="选择省份" style="width:210px;" @change="changeProvince">
-        <el-option
-          v-for="item in provinceList"
-          :key="item.code"
-          :label="item.title"
-          :value="item.code">
-        </el-option>
-      </el-select>
-    </my-query-item>
-    <!--<my-select-province-query size="mini" v-model="query.province_code" @change="changeProvince"/>-->
+  <div class="container-query">
+    <el-row :gutter="32">
+      <el-col :span="7">
+        <my-query-item label="省份">
+          <el-select size="small" v-model="query.province_code" clearable filterable placeholder="选择省份" style="width: 100%;" @change="changeProvince">
+            <el-option
+              v-for="item in provinceList"
+              :key="item.code"
+              :label="item.title"
+              :value="item.code">
+            </el-option>
+          </el-select>
+        </my-query-item>
+      </el-col>
+    </el-row>
   </div>
 </template>
 

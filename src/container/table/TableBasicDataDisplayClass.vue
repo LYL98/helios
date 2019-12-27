@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <div class="operate" v-if="auth.isAdmin || auth.BasicDataDisplayClassListAdd">
-      <el-button @click="handleShowAddEdit('AddEditBasicDataDisplayClass')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataDisplayClassListAdd">新增
-      </el-button>
+  <div class="container-table">
+    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataDisplayClassListAdd">
+      <div class="left"></div>
+      <div class="right">
+        <el-button @click="handleShowAddEdit('AddEditBasicDataDisplayClass')" size="mini" type="primary">新增</el-button>
+      </div>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove">
+    <div @mousemove="handleTableMouseMove" class="table-conter">
       <el-table :data="dataItem"
                 :row-class-name="highlightRowClassName"
-                style="width: 100%"
-                :height="windowHeight - offsetHeight"
-                class="list-table"
+                class="list-table my-table-float"
                 @cell-mouse-enter="cellMouseEnter"
                 @cell-mouse-leave="cellMouseLeave"
                 :highlight-current-row="true"

@@ -70,12 +70,12 @@
           <other-item-supplier :supplierType="detail.sup_type" :supplierBinds="detail.supplier_binds"/>
         </el-form-item>
         <h6 class="subtitle">操作记录</h6>
-        <el-row v-if="detail.creater && detail.creater.id">
+        <el-row v-if="detail.creator && detail.creator.id">
           <el-col :span="12">
-            <el-form-item label="创建人">{{detail.creater.realname}}</el-form-item>
+            <el-form-item label="创建人">{{detail.creator.realname}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="创建时间">{{detail.creater.created}}</el-form-item>
+            <el-form-item label="创建时间">{{detail.creator.created}}</el-form-item>
           </el-col>
         </el-row>
         <el-row v-if="detail.updated && detail.updated.id">
@@ -154,7 +154,7 @@ export default {
       supplier_ids: [], //供应商
       frame_code: '', //筐code
       content: '', //详细信息
-      creater: {},
+      creator: {},
       last_updater: {},
       has_ticket: false,
     }

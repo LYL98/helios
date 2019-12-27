@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.OperateLineAdd">
       <div class="left"></div>
       <div class="right">
@@ -14,7 +14,6 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="dataItem.items"
         :row-class-name="highlightRowClassName"
-        style="width: 100%"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"

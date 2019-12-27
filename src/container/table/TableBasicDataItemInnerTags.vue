@@ -1,19 +1,17 @@
 <template>
   <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.BasicDataItemInnerTagsAdd">
-      <el-button @click="handleShowAddEdit('AddEditBasicDataItemInnerTags')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataItemInnerTagsAdd">新增
-      </el-button>
+      <div class="left"></div>
+      <div class="right">
+        <el-button @click="handleShowAddEdit('AddEditBasicDataItemInnerTags')" size="mini" type="primary">新增</el-button>
+      </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem"
         :row-class-name="highlightRowClassName"
-        style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
+        class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -72,15 +70,11 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.BasicDataItemInnerTagsListAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
-      }
       let pc = this.getPageComponents('QueryBasicDataItemInnerTags'); //获取query组件
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE,
         dataItem: [],
         tableName: 'TableBasicDataItemInnerTags',
         tableColumn: [

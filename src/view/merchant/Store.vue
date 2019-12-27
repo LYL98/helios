@@ -52,16 +52,16 @@
             <div v-if="scope.row.id === currentRow.id">{{returnTime(scope.row.created)}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="审核状态" width="100" prop="is_approve">
+        <el-table-column label="审核状态" width="100" prop="is_audited">
           <template slot-scope="scope">
             <el-tag
               size="small"
-              :type="scope.row.is_approve ? 'regular' : 'info'"
-              disable-transitions>{{scope.row.is_approve ? '已审核' : '未审核'}}
+              :type="scope.row.is_audited ? 'regular' : 'info'"
+              disable-transitions>{{scope.row.is_audited ? '已审核' : '未审核'}}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="是否冻结" width="100" prop="is_approve">
+        <el-table-column label="是否冻结" width="100" prop="is_audited">
           <template slot-scope="scope">
             <el-tag
               size="small"
@@ -78,7 +78,7 @@
               :list="[
               {
                 title: '审核通过',
-                isDisplay: (auth.isAdmin || auth.MerchantStoreApprove) && !scope.row.is_approve,
+                isDisplay: (auth.isAdmin || auth.MerchantStoreApprove) && !scope.row.is_audited,
                 command: () => affirmApprove(scope.row)
               },
               {
@@ -206,7 +206,7 @@
       refresh() {
         let {query} = this;
         query.page = 1;
-        query.is_approve = '';
+        query.is_audited = '';
         query.province_code = '';
         this.$data.query = query;
         this.storeList();

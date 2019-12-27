@@ -54,7 +54,10 @@
       return {
         province: this.$province,
         auth: this.$auth,
-        query: {},
+        query: {
+          merchant_title: '',
+          operator_name: ''
+        },
         dataItem: {
           items: [],
           num: 0
@@ -123,7 +126,7 @@
         this.$data.item = Object.assign(this.$data.item, {
           id: item.id,
           status: 'checked',
-          check_remark: ''
+          audit_remark: ''
         });
       },
       handleSubmit(item) {

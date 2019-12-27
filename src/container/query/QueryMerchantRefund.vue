@@ -1,7 +1,7 @@
 <template>
-  <div class="query">
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
+  <div class="container-query">
+    <el-row :gutter="32">
+      <el-col  :span="7">
         <my-query-item label="所在仓">
           <select-city
             size="small"
@@ -12,21 +12,15 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :xl="10" :lg="14" :span="14">
+      <el-col :span="10">
         <my-query-item label="搜索">
-          <div style="display: flex">
-            <el-input
-              size="small"
-              placeholder="门店名称、用户名称、电话"
-              v-model="query.condition"
-              class="query-item-input"
-              clearable
-              @keyup.enter.native="handleQuery('TableMerchantRefund')"
-              @clear="handleQuery('TableMerchantRefund')"
-            />
-            <el-button type="primary" size="small" @click="handleQuery('TableMerchantRefund')" icon="el-icon-search" style="margin-left: 4px;"></el-button>
-            <el-button type="primary" size="small" class="query-item-reset" plain @click="handleClearQuery('TableMerchantRefund')">重置</el-button>
-          </div>
+          <query-search-input
+            size="small"
+            placeholder="门店名称/用户名称/电话"
+            v-model="query.condition"
+            @search="handleQuery('TableMerchantRefund')"
+            @reset="handleClearQuery('TableMerchantRefund')"
+          />
         </my-query-item>
       </el-col>
     </el-row>

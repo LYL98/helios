@@ -1,17 +1,17 @@
 <template>
-  <div>
-    <div class="operate" v-if="auth.isAdmin || auth.BasicDataFrameListAdd">
-      <el-button @click="handleShowAddEdit('AddEditBasicDataFrame')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataFrameListAdd">新增
-      </el-button>
+  <div class="container-table">
+    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataFrameListAdd">
+      <div class="left"></div>
+      <div class="right">
+        <el-button @click="handleShowAddEdit('AddEditBasicDataFrame')" size="mini" type="primary">新增</el-button>
+      </div>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove">
+    <div @mousemove="handleTableMouseMove" class="table-conter">
       <el-table
         :data="dataItem"
         :row-class-name="highlightRowClassName"
-        style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
+        class="list-table my-table-float"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
         :highlight-current-row="true"
@@ -93,15 +93,10 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.BasicDataFrameListAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
-      }
-
       this.getData();
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE,
         dataItem: [],
         rowIdentifier: 'code'
       }

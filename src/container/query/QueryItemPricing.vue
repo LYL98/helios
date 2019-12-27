@@ -16,7 +16,7 @@
           <my-query-item :label="!isPad && '审核状态'">
             <select-option
               :options="{'全部': '', '未审核': 0, '已审核': 1}"
-              v-model="query.is_approve"
+              v-model="query.is_audited"
               @change="handleQuery('TableItemPricing')"
               size="small"
             />
@@ -81,7 +81,7 @@
       let initQuery = {
         province_code: this.$province.code,
         opt_date: nowDate,
-        is_approve: '',
+        is_audited: '',
         is_quoted: '',
         system_class_code: '',
         system_class_codes: [],

@@ -1,7 +1,7 @@
 <template>
   <div class="container-query">
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
+    <el-row :gutter="32">
+      <el-col :span="7">
         <my-query-item label="日期">
           <el-date-picker
             size="small"
@@ -15,11 +15,11 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             @change="changePicker"
-            class="query-item-date"
+            style="width: 100%;"
           />
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="7">
         <my-query-item label="状态">
           <select-option
             :options="{'全部': '', ...paidStatus}"
@@ -29,22 +29,15 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="10">
         <my-query-item label="搜索">
-          <div style="display: flex">
-            <el-input
-              size="small"
-              placeholder="请输入供应商名称"
-              clearable
-              class="query-item-input"
-              v-model="query.condition"
-              @clear="handleQuery('TableFinanceSStatement')"
-              ref="search_condition"
-              @keyup.enter.native="handleQuery('TableFinanceSStatement')"
-            />
-            <el-button size="small" style="margin-left: 4px" type="primary" @click="handleQuery('TableFinanceSStatement')" icon="el-icon-search"></el-button>
-            <el-button size="small" class="query-item-reset"  type="primary" plain @click="handleClearQuery('TableFinanceSStatement')">重置</el-button>
-          </div>
+          <query-search-input
+            size="small"
+            placeholder="请输入供应商名称"
+            v-model="query.condition"
+            @search="handleQuery('TableFinanceSStatement')"
+            @reset="handleClearQuery('TableFinanceSStatement')"
+          />
         </my-query-item>
       </el-col>
     </el-row>

@@ -1,9 +1,9 @@
 <template>
   <!-- 头部start -->
-    <div class="query">
+    <div class="container-query">
       <my-collapse-query @expandChange="(isExpand) => onExpandChange(isExpand, 'TableOperateReceiving')">
         <template slot="header">
-          <el-row >
+          <el-row :gutter="32">
             <el-col :xl="6" :lg="7" :span="7">
               <my-query-item :label="!isPad && '日期'">
                 <el-date-picker
@@ -14,7 +14,7 @@
                   :clearable="false"
                   :editable="false"
                   placeholder="请选择日期"
-                  class="query-item-date"
+                  style="width: 100%;"
                   @change="handleQuery('TableOperateReceiving')"
                 ></el-date-picker>
               </my-query-item>
@@ -43,7 +43,7 @@
           </el-row>
         </template>
         <template slot="expand">
-          <el-row style="margin-top: 16px">
+          <el-row :gutter="32" style="margin-top: 16px">
             <el-col :xl="6" :lg="7" :span="7">
               <my-query-item :label="!isPad && '缺货状态'">
                 <select-option
