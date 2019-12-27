@@ -15,7 +15,7 @@
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="结款类型">
-            <button-group
+            <select-option
               :options="{'全部': '', ...billTerm}"
               v-model="query.bill_term"
               @change="handleQuery('TableFinanceSBDetail')"
@@ -89,14 +89,14 @@
 </template>
 
 <script>
-  import { ButtonGroup } from '@/common';
-  import queryMixin from './query.mixin2';
+  import { SelectOption } from '@/common';
+  import queryMixin from './query.mixin';
   import { Constant } from '@/util';
 
   export default {
     name: "QueryFinanceSBDetail",
     components: {
-      'button-group': ButtonGroup
+      'select-option': SelectOption
     },
     mixins: [queryMixin],
     props: {

@@ -7,7 +7,7 @@
     :placeholder="placeholder || '请选择所在仓'"
     :size="size"
     @change="onChange"
-    :class="isUseToQuery ? 'query-item-select' : 'default'"
+    style="width: 100%;"
   >
     <el-option v-if="typeof showAll !== 'undefined'" key="" label="全部" value="">
     </el-option>
@@ -30,7 +30,7 @@
       'el-select': Select,
       'el-option': Option
     },
-    props: ['value', 'provinceCode', 'zoneCode' ,'showAll', 'clearable', 'placeholder', 'disabled', 'size','isUseToQuery'],
+    props: ['value', 'provinceCode', 'zoneCode' ,'showAll', 'clearable', 'placeholder', 'disabled', 'size'],
     model: {
       prop: 'value',
       event: 'change'
@@ -102,8 +102,4 @@
 </script>
 
 <style scoped>
-  .default{
-    width: 100%;
-  }
-
 </style>

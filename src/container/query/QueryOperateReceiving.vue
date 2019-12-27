@@ -24,7 +24,6 @@
                 <select-line-query
                   :provinceCode="province.code"
                   size="small"
-                  :isUseToQuery="true"
                   :clearable="false"
                   v-model="query.line_code"
                   @change="handleQuery('TableOperateReceiving')"
@@ -33,7 +32,7 @@
             </el-col>
             <el-col :xl="6" :lg="7" :span="7">
               <my-query-item :label="!isPad && '收货状态'">
-                <button-group
+                <select-option
                   :options="{'全部': '', '未收货': false, '已收货': true}"
                   v-model="query.is_receiving"
                   @change="refreshData"
@@ -47,7 +46,7 @@
           <el-row style="margin-top: 16px">
             <el-col :xl="6" :lg="7" :span="7">
               <my-query-item :label="!isPad && '缺货状态'">
-                <button-group
+                <select-option
                   :options="{'全部': '', '缺货商品': true}"
                   v-model="query.is_stockout"
                   @change="refreshData"
@@ -64,15 +63,15 @@
 
 <script>
   import { Http, Config, DataHandle } from '@/util';
-  import queryMixin from './query.mixin2';
-  import { SelectLineQuery, ButtonGroup } from '@/common';
+  import queryMixin from './query.mixin';
+  import { SelectLineQuery, SelectOption } from '@/common';
 
   export default {
     name: "QueryOperateReceiving",
     mixins: [queryMixin],
     components: {
       'select-line-query': SelectLineQuery,
-      'button-group': ButtonGroup
+      'select-option': SelectOption
     },
     computed: {
       isPad: {

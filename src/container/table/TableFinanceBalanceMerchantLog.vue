@@ -137,7 +137,7 @@
 
 <script>
   import { Input, Button, Select, Option, Table, TableColumn, Pagination, Message, DatePicker } from 'element-ui';
-  import { ButtonGroup, QueryItem, OmissionText, TableOperate } from '@/common';
+  import { SelectOption, QueryItem, OmissionText, TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
   export default {
     name: "TableFinanceBalanceMerchantLog",
@@ -150,7 +150,7 @@
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
       'el-date-picker': DatePicker,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate

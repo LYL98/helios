@@ -5,7 +5,7 @@
           <el-row>
             <el-col :xl="6" :lg="7" :span="7">
               <my-query-item label="角色">
-                <search-role size="small" style="width: 210px;" @onSelectRole="handleQuery('TableSystemOperator')" :isUseToQuery="true" ref="mySearchRole"></search-role>
+                <search-role size="small" style="width: 210px;" @onSelectRole="handleQuery('TableSystemOperator')" ref="mySearchRole"></search-role>
               </my-query-item>
             </el-col>
             <el-col :xl="6" :lg="7" :span="7">
@@ -55,7 +55,7 @@
             </el-col>
             <el-col :xl="6" :lg="7" :span="7">
               <my-query-item label="状态">
-                <my-button-group
+                <select-option
                   :options="{'全部': '', '已冻结': 1, '未冻结': 0}"
                   v-model="query.is_freeze"
                   @change="handleQuery('TableSystemOperator')"
@@ -71,16 +71,16 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin2';
+  import queryMixin from './query.mixin';
   import SearchRole from './../search/SearchRole';
-  import { ButtonGroup } from '@/common';
+  import { SelectOption } from '@/common';
 
   export default {
     name: "QuerySystemOperator",
     mixins: [queryMixin],
     components: {
       'search-role': SearchRole,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
     },
     props: {
     },

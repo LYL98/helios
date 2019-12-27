@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="frameCode" :size="size" filterable :clearable="clearable" placeholder="请选择展示分类" :class="isUseToQuery ? 'query-item-select' : 'default'" @change="changeDisplayClass">
+  <el-select v-model="frameCode" :size="size" filterable :clearable="clearable" placeholder="请选择展示分类" @change="changeDisplayClass" style="width: 100%;">
     <el-option v-if="hasAllSelection" label="全部" value=""></el-option>
     <el-option
       v-for="item in dataItem"
@@ -23,7 +23,7 @@ export default {
   created(){
     this.baseDisplayClassList();
   },
-  props: ['value', 'size', 'hasAllSelection', 'useName', 'isUseToQuery', 'clearable'],
+  props: ['value', 'size', 'hasAllSelection', 'useName', 'clearable'],
   model: {
     prop: 'value',
     event: 'ev'
@@ -72,7 +72,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .default{
-    width: 100%;
-  }
+
 </style>

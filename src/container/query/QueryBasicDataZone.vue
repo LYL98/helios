@@ -17,7 +17,7 @@
 
 <script>
   import { Http, Config } from '@/util';
-  import queryMixin from './query.mixin2';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryBasicDataZone",

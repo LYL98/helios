@@ -1,14 +1,14 @@
 <template>
   <div class="container-query">
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
+    <el-row :gutter="32">
+      <el-col :span="7">
         <my-query-item label="科学分类">
-          <select-system-class v-model="query.system_class_codes" @change="selectSystemClass" :clearable="false" size="small" style="width: 224px;"/>
+          <select-system-class v-model="query.system_class_codes" @change="selectSystemClass" :clearable="false" size="small"/>
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="7">
         <my-query-item label="供应商类型">
-          <button-group
+          <select-option
             :options="{'全部': '', ...supplierType}"
             v-model="query.sup_type"
             @change="handleQuery('TableItemGlobal')"
@@ -16,13 +16,9 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="10">
         <my-query-item label="搜索">
-          <div style="display: flex">
-            <el-input v-model="query.condition" size="small" placeholder="请输入商品编号、名称" @keyup.enter.native="handleQuery('TableItemGlobal')" class="query-item-input"/>
-            <el-button class="search" size="small" type="primary" @click="handleQuery('TableItemGlobal')" icon="el-icon-search"></el-button>
-            <el-button class="reset" size="small"  type="primary" plain @click="handleClearQuery('TableItemGlobal')">重置</el-button>
-          </div>
+          <query-search-input v-model="query.condition" placeholder="请输入商品编号/名称" size="small" @search="handleQuery('TableItemGlobal')" @reset="handleClearQuery('TableItemGlobal')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -30,8 +26,8 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin2';
-  import { ButtonGroup, SelectSystemClass } from '@/common';
+  import queryMixin from './query.mixin';
+  import { SelectOption, SelectSystemClass } from '@/common';
   import { Constant } from '@/util';
 
   export default {
@@ -39,7 +35,7 @@
     mixins: [queryMixin],
     components: {
       'select-system-class': SelectSystemClass,
-      'button-group': ButtonGroup
+      'select-option': SelectOption,
     },
     props: {
       page: { type: String, default: 'global' }, //页面global、recover

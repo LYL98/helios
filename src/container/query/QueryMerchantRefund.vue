@@ -5,7 +5,6 @@
         <my-query-item label="所在仓">
           <select-city
             size="small"
-            :isUseToQuery="true"
             clearable
             v-model="query.city_code"
             :provinceCode="query.province_code"
@@ -37,7 +36,7 @@
 <script>
   import { Constant } from '@/util';
   import { SelectCity } from '@/common';
-  import queryMixin from './query.mixin2';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryItem",

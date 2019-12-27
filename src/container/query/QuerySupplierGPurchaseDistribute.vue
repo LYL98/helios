@@ -3,7 +3,7 @@
     <el-row>
       <el-col :xl="8" :lg="9" :span="9">
         <my-query-item label="审核状态">
-          <button-group
+          <select-option
             :options="{'全部': '', ...auditStatus}"
             v-model="query.audit_status"
             @change="handleQuery('TableSupplierGPurchaseDistribute')"
@@ -34,14 +34,14 @@
 </template>
 
 <script>
-  import { ButtonGroup } from '@/common';
-  import queryMixin from './query.mixin2';
+  import { SelectOption } from '@/common';
+  import queryMixin from './query.mixin';
   import { Constant } from '@/util';
 
   export default {
     name: "QuerySupplierGPurchaseDistribute",
     components: {
-      'button-group': ButtonGroup
+      'select-option': SelectOption
     },
     mixins: [queryMixin],
     data() {

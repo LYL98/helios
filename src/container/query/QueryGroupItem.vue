@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin2';
+  import queryMixin from './query.mixin';
   import { SelectGroupItemClass } from '@/common';
 
   export default {

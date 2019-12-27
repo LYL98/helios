@@ -152,7 +152,7 @@ export default {
         num: 0
       },
       afterSaleStatus: Constant.AFTER_SALE_STATUS,
-      afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE,
+      afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE(),
       payStatus: Constant.PAY_STATUS,
       query: {},
     }

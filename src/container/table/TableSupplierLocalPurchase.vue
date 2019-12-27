@@ -23,7 +23,7 @@
               <!--采购单价-->
               <div v-else-if="item.key === 'price_buy'" class="td-item add-dot2">&yen;{{returnPrice(scope.row.price_buy)}}</div>
               <!--采购总金额-->
-              <div v-else-if="item.key === 'num_price'" class="td-item add-dot2">&yen;{{returnPrice(scope.row.num * scope.row.price + scope.row.num * scope.row.frame_price)}}</div>
+              <div v-else-if="item.key === 'num_price'" class="td-item add-dot2">&yen;{{returnPrice(scope.row.num * scope.row.price_buy + scope.row.num * scope.row.frame_price)}}</div>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'status'">
                 <el-tag size="small" type="info" disable-transitions>全部入库</el-tag>

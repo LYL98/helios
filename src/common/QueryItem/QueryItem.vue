@@ -13,7 +13,7 @@
     name: "QueryItem",
     props: {
       align: { type: String, default: 'right' },
-      label: { type: String | undefined, default: ''}
+      label: { type: String | undefined, default: '' }
     }
   }
 </script>
@@ -36,11 +36,4 @@
     width: 60px;
     text-align: right;
   }
-
-  /*.align-right {*/
-    /*justify-content: flex-end;*/
-    /*width: 60px;*/
-    /*background-color: red;*/
-  /*}*/
-
 </style>

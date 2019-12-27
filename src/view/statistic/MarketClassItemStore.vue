@@ -49,7 +49,6 @@
               size="small"
               @change="changeQuery"
               class="query-item-select"
-              :isUseToQuery="true"
               :showAll="true"
             />
           </my-query-item>
@@ -58,7 +57,6 @@
           <my-query-item label="所在仓">
             <my-select-city
               size="small"
-              :isUseToQuery="true"
               placeholder="所在仓"
               clearable
               v-model="query.city_code"

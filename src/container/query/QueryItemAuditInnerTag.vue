@@ -1,16 +1,14 @@
 <template>
   <div class="container-query">
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
+    <el-row :gutter="32">
+      <el-col :span="7">
         <my-query-item label="审核状态">
-          <button-group :options="{'待审核': 0, '已审核': 1}" v-model="query.is_audited" @change="handleQuery('TableItemAuditInnerTag')" size="small" />
+          <select-option :options="{'待审核': 0, '已审核': 1}" v-model="query.is_audited" @change="handleQuery('TableItemAuditInnerTag')" size="small" />
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="10">
         <my-query-item label="搜索">
-          <el-input aria-placeholder="商品编号/名称/商品标签" v-model="query.condition" @keyup.enter.native="handleQuery('TableItemAuditInnerTag')" style="width: 200px;" size="small"/>
-          <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 2px;" @click="handleQuery('TableItemAuditInnerTag')"></el-button>
-          <el-button size="small" type="primary" plain @click="handleClearQuery('TableItemAuditInnerTag')">重置</el-button>
+          <query-search-input v-model="query.condition" placeholder="商品编号/名称/商品标签" size="small" @search="handleQuery('TableItemAuditInnerTag')" @reset="handleClearQuery('TableItemAuditInnerTag')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -18,14 +16,14 @@
 </template>
 
 <script>
-  import { ButtonGroup } from '@/common';
+  import { SelectOption } from '@/common';
   import { Constant } from '@/util';
-  import queryMixin from './query.mixin2';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryItemAuditInnerTag",
     components: {
-      'button-group': ButtonGroup,
+      'select-option': SelectOption,
     },
     mixins: [queryMixin],
     data() {

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin2';
+  import queryMixin from './query.mixin';
   import { Constant } from '@/util';
   import { SelectCity } from '@/common';
 

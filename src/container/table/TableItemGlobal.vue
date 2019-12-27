@@ -1,8 +1,11 @@
 <template>
   <div class="container-table">
     <div class="table-top" v-if="page === 'global' && (auth.isAdmin || auth.ItemGlobalAdd || auth.ItemGlobalExport)">
-      <el-button @click="handleExport('pItemExport', query)" size="mini" v-if="auth.isAdmin || auth.ItemGlobalExport">导出商品池</el-button>
-      <el-button @click="handleShowAddEdit('AddEditItemGlobal', null, 'add')" size="mini" type="primary" v-if="auth.isAdmin || auth.ItemGlobalAdd">新增</el-button>
+      <div class="left"></div>
+      <div class="right">
+        <el-button @click="handleExport('pItemExport', query)" size="mini" v-if="auth.isAdmin || auth.ItemGlobalExport" type="primary" plain>导出商品池</el-button>
+        <el-button @click="handleShowAddEdit('AddEditItemGlobal', null, 'add')" size="mini" type="primary" v-if="auth.isAdmin || auth.ItemGlobalAdd">新增</el-button>
+      </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">

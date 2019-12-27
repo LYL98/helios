@@ -48,7 +48,7 @@
         <el-row style="margin-top: 16px;">
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="类型">
-              <my-button-group
+              <select-option
                 size="small"
                 v-model="editQuery.reason"
                 :options="{'全部': '', '充值': 'manual_topup', '扣款': 'manual_deduct'}"
@@ -83,7 +83,7 @@
 
 <script>
   import {Row, Col, Input, Button, DatePicker, Select, Option} from 'element-ui';
-  import {ButtonGroup, QueryItem, CollapseQuery} from '@/common';
+  import {SelectOption, QueryItem, CollapseQuery} from '@/common';
   import {SelectCity} from '@/container';
   import queryMixin from './query.mixin';
 
@@ -99,7 +99,7 @@
       'el-select': Select,
       'el-option': Option,
       'my-query-item': QueryItem,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-select-city': SelectCity,
       'my-collapse-query': CollapseQuery
     },

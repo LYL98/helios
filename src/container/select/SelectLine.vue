@@ -5,7 +5,7 @@
     :filterable="filterable"
     :clearable="clearable"
     :placeholder="placeholder"
-    :class="isUseToQuery ? 'query-item-select' : 'default'"
+    style="width: 100%;"
     :disabled="disabled">
     <el-option
       v-for="item in listItem"
@@ -33,7 +33,6 @@
       disabled: { type: Boolean, default: false },
       provinceCode: { type: String | Number, required: true },
       lineCode: { type: String | Number, required: true },
-      isUseToQuery: {type: Boolean, default: false}
     },
     model: {
       prop: 'lineCode',

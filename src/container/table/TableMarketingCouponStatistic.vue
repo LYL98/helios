@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="wp-query">
-      <my-button-group
+      <select-option
         buttonWidth="60"
         :options="{'全部': '', '未使用': 0, '已使用': 1}"
         v-model="query.is_used"
@@ -103,7 +103,7 @@
 
 <script>
   import { Input, Button, Table, TableColumn, Pagination, Message } from 'element-ui';
-  import { ButtonGroup } from '@/common';
+  import { SelectOption } from '@/common';
   import { Http, Config, Constant } from '@/util';
   export default {
     name: "TableMarketingCouponStatistic",
@@ -113,7 +113,7 @@
       'el-table': Table,
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
-      'my-button-group': ButtonGroup
+      'select-option': SelectOption
     },
     props: {
       showItem: { type: Function, required: true }

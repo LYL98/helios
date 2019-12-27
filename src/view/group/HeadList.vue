@@ -6,7 +6,6 @@
           <my-query-item label="所在仓">
             <my-select-city
               size="small"
-              :isUseToQuery="true"
               :provinceCode="province.code"
               v-model="query.city_code"
               clearable
@@ -17,7 +16,7 @@
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="门店状态">
-            <my-button-group
+            <select-option
               :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
               v-model="query.is_freeze_header"
               @change="changeQuery"
@@ -160,7 +159,7 @@
    * resetQuery
    *
    */
-  import { ButtonGroup, QueryItem, SelectCity, TableOperate } from '@/common';
+  import { SelectOption, QueryItem, SelectCity, TableOperate } from '@/common';
   import { Constant, Http, Config } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
 
@@ -168,7 +167,7 @@
     name: "HeadList",
     components: {
       'my-select-city': SelectCity,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate
     },

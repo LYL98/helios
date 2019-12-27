@@ -2,7 +2,7 @@
   <el-select v-model="zoneCode" @clear="onClear"
              :clearable="clearable" :size="size"
              filterable placeholder="请选择片区"
-             :class="isUseToQuery ? 'query-item-select' : 'default'"
+             style="width: 100%;"
              @change="changeZone">
     <el-option v-if="typeof showAll !== 'undefined'" key="" label="全部" value=""></el-option>
     <el-option
@@ -27,7 +27,7 @@ export default {
   created(){
     this.baseZoneList();
   },
-  props: ['value', 'provinceCode', 'showAll', 'size', 'clearable', 'isUseToQuery'],
+  props: ['value', 'provinceCode', 'showAll', 'size', 'clearable'],
   model: {
     prop: 'value',
     event: 'ev'
@@ -101,8 +101,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .default{
-    width: 100%;
-  }
-
 </style>

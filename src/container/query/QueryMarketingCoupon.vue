@@ -13,7 +13,7 @@
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="优惠券状态">
-          <my-button-group
+          <select-option
             :options="{'全部': '', '未过期': 'st_on_date', '已过期': 'st_out_of_date'}"
             v-model="editQuery.status"
             @change="changeQuery"
@@ -22,7 +22,7 @@
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="自动发放">
-          <my-button-group
+          <select-option
             :options="{'全部': '', '是': '1', '否': '0'}"
             v-model="editQuery.is_auto_dis"
             @change="changeQuery"
@@ -35,7 +35,7 @@
 
 <script>
   import { Row, Col, Button, Input, Select, Option } from 'element-ui';
-  import { ButtonGroup, QueryItem } from '@/common';
+  import { SelectOption, QueryItem } from '@/common';
   import queryMixin from './query.mixin';
 
   export default {
@@ -47,7 +47,7 @@
       'el-button': Button,
       'el-select': Select,
       'el-option': Option,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem
     },
     mixins: [queryMixin]

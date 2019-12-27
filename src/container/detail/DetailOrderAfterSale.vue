@@ -207,7 +207,7 @@ export default {
       priceChange: Constant.PRICE_CHANGE,
       afterSaleStatus: Constant.AFTER_SALE_STATUS,
       afterSaleResult: Constant.AFTER_SALE_RESULT,
-      afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE,
+      afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE(),
       defaultAvatar: Constant.IMGS.defaultAvatar,
       editData: {
         content: ''

@@ -3,22 +3,25 @@
     <query-order v-model="query" @change="changeQuery" :reset="resetQuery"></query-order>
     <div class="container-table">
       <div class="table-top" v-if="auth.isAdmin || auth.OrderListExport || auth.OrderItemExport">
-        <el-button
-          v-if="auth.isAdmin || auth.OrderListExport"
-          size="mini"
-          type="primary"
-          plain
-          @click.native="(e) => {orderListExport();}"
-        >导出订单列表
-        </el-button>
-        <el-button
-          v-if="auth.isAdmin || auth.OrderItemExport"
-          size="mini"
-          type="primary"
-          plain
-          @click.native="(e) => {orderListExport(true);}"
-        >导出订单商品详情
-        </el-button>
+        <div class="left"></div>
+        <div class="right">
+          <el-button
+            v-if="auth.isAdmin || auth.OrderListExport"
+            size="mini"
+            type="primary"
+            plain
+            @click.native="(e) => {orderListExport();}"
+          >导出订单列表
+          </el-button>
+          <el-button
+            v-if="auth.isAdmin || auth.OrderItemExport"
+            size="mini"
+            type="primary"
+            plain
+            @click.native="(e) => {orderListExport(true);}"
+          >导出订单商品详情
+          </el-button>
+        </div>
       </div>
       <!-- 表格start -->
       <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -159,7 +162,7 @@
 </template>
 
 <script>
-  import { ButtonGroup, TableOperate, SelectCity } from '@/common';
+  import { SelectOption, TableOperate, SelectCity } from '@/common';
   import { QueryOrder } from '@/container';
   import {Config, DataHandle, Constant, Http} from '@/util';
   import { DetailOrderList, DetailOrderAfterSale, FormOrderListManualDelivery } from '@/container';
@@ -170,7 +173,7 @@
     name: "OrderList",
     components: {
       'my-select-city': SelectCity,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-table-operate': TableOperate,
       'form-order-list-manual-delivery': FormOrderListManualDelivery,
       'detail-order-list': DetailOrderList,

@@ -59,7 +59,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   /*.group{*/
     /*min-width: 270px;*/
   /*}*/

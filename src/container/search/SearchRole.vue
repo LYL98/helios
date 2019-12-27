@@ -7,7 +7,6 @@
     clearable
     :size="size"
     style="width: 100%"
-    :class="isUseToQuery ? 'query-item-select' : 'default'"
     @clear="clearSelect"
   ></el-autocomplete>
 </template>
@@ -22,7 +21,7 @@ export default {
     'el-autocomplete': Autocomplete,
     'el-button': Button
   },
-  props: ['value', 'size', 'isUseToQuery'],
+  props: ['value', 'size'],
   data() {
     return {
       itemList: [],

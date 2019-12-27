@@ -5,7 +5,7 @@
         <h6 class="subtitle">采购信息</h6>
         <el-row>
           <el-form-item label="商品" prop="item_id">
-            <select-g-item v-model="detail.item_id" size="medium" @change="selectGItem" :disabled="detail.id ? true : false" filterable></select-g-item>
+            <select-g-item v-model="detail.item_id" size="medium" supType="global_pur" @change="selectGItem" :disabled="detail.id ? true : false" filterable></select-g-item>
           </el-form-item>
           <el-col :span="12">
             <el-form-item label="供应商" prop="supplier_id">

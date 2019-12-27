@@ -42,7 +42,6 @@
               @change="changeZone"
               @changeTitle="changeZoneTitle"
               class="query-item-select"
-              :isUseToQuery="true"
             />
           </my-query-item>
         </el-col>

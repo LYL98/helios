@@ -6,7 +6,7 @@
     :clearable="clearable"
     :disabled="disabled"
     :placeholder="placeholder"
-    :class="isUseToQuery ? 'query-item-select' : 'default'"
+    style="width: 100%;"
   >
     <el-option v-if="showAll" key="" label="全部" value="">
     </el-option>
@@ -40,7 +40,6 @@
       clearable: { type: Boolean, default: true},
       placeholder: { type: String, default: '所在仓' },
       disabled: { type: Boolean, default: false },
-      isUseToQuery: {type: Boolean, default: false}
     },
     model: {
       prop: 'value',
@@ -107,7 +106,4 @@
 </script>
 
 <style scoped>
-  .default{
-    width: 100%;
-  }
 </style>

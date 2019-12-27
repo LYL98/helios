@@ -1,5 +1,5 @@
 <template>
-  <el-select :size="size"  v-model="salesManId" filterable placeholder="请选择采购员" clearable :class="isUseToQuery ? 'query-item-select' : 'default'" @change="changeBuyer">
+  <el-select :size="size"  v-model="salesManId" filterable placeholder="请选择采购员" clearable style="width: 100%;" @change="changeBuyer">
     <el-option class="custom-el-select" v-if="hasAllSelection" label="全部" value=""></el-option>
     <el-option
       class="custom-el-select"
@@ -24,7 +24,7 @@ export default {
   created(){
     this.baseCommonBuyerList();
   },
-  props: ['value', 'provinceCode', 'size', 'hasAllSelection', 'isUseToQuery'],
+  props: ['value', 'provinceCode', 'size', 'hasAllSelection'],
   model: {
     prop: 'value',
     event: 'ev'
@@ -89,7 +89,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .default{
-    width: 100%;
-  }
 </style>

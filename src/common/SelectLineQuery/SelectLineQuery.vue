@@ -1,6 +1,5 @@
 <template>
-  <el-select v-model="lineCode" :size="size" :filterable="filterable" :clearable="clearable" :class="isUseToQuery ? 'query-item-select' : 'default'"
-             placeholder="请选择线路" @change="changeLine">
+  <el-select v-model="lineCode" :size="size" :filterable="filterable" :clearable="clearable" style="width: 100%;" placeholder="请选择线路" @change="changeLine">
     <el-option
       v-for="item in dataItem"
       :key="item.code"
@@ -23,7 +22,7 @@ export default {
   created(){
     this.baseLineList();
   },
-  props: ['value', 'provinceCode', 'size', 'filterable', 'clearable', 'isUseToQuery'],
+  props: ['value', 'provinceCode', 'size', 'filterable', 'clearable'],
   model: {
     prop: 'value',
     event: 'ev'
@@ -88,8 +87,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .item{
-    border-bottom: 1px solid #f3f4f6;
-    padding: 10px;
-  }
 </style>

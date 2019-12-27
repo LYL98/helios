@@ -1,10 +1,10 @@
 <template>
   <!-- 头部start -->
-    <div class="query container-query">
-      <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
+    <div class="container-query">
+      <el-row :gutter="32">
+        <el-col :span="7">
           <my-query-item :label="!isPad && '报价状态'">
-            <button-group
+            <select-option
               :options="{'全部': '', '未报价': 0, '已报价': 1}"
               v-model="query.is_quoted"
               @change="handleQuery('TableItemPricing')"
@@ -12,9 +12,9 @@
             />
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item :label="!isPad && '审核状态'">
-            <button-group
+            <select-option
               :options="{'全部': '', '未审核': 0, '已审核': 1}"
               v-model="query.is_approve"
               @change="handleQuery('TableItemPricing')"
@@ -22,26 +22,14 @@
             />
           </my-query-item>
         </el-col>
-        <el-col :xl="8" :lg="10" :span="10">
+        <el-col :span="10">
           <my-query-item label="搜索">
-            <div style="display: flex">
-              <el-input
-                size="small"
-                placeholder="请输入商品名称或编号"
-                class="query-item-input"
-                clearable
-                @clear="handleQuery('TableItemPricing')"
-                v-model="query.condition"
-                @keyup.enter.native="handleQuery('TableItemPricing')"
-              />
-              <el-button size="small" type="primary" style="margin-left: 4px" @click="handleQuery('TableItemPricing')" icon="el-icon-search"></el-button>
-              <el-button size="small" type="primary" class="query-item-reset" plain @click="handleClearQuery('TableItemPricing')">重置</el-button>
-            </div>
+            <query-search-input v-model="query.condition" placeholder="请输入商品名称/编号" size="small" @search="handleQuery('TableItemPricing')" @reset="handleClearQuery('TableItemPricing')"/>
           </my-query-item>
         </el-col>
       </el-row>
-      <el-row style="margin-top: 16px;">
-        <el-col :xl="6" :lg="7" :span="7">
+      <el-row :gutter="32" style="margin-top: 16px;">
+        <el-col :span="7">
           <my-query-item :label="!isPad && '时间'">
             <el-date-picker
               v-model="query.opt_date"
@@ -50,15 +38,15 @@
               value-format="yyyy-MM-dd"
               :clearable="false"
               :editable="false"
-              class="query-item-date"
+              style="width: 100%;"
               @change="handleQuery('TableItemPricing')"
             >
             </el-date-picker>
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item :label="!isPad && '科学分类'">
-            <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass" style="width: 225px;"/>
+            <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass"/>
           </my-query-item>
         </el-col>
       </el-row>
@@ -67,15 +55,15 @@
 </template>
 
 <script>
-  import { ButtonGroup, SelectSystemClass } from '@/common';
+  import { SelectOption, SelectSystemClass } from '@/common';
   import { DataHandle } from '@/util';
-  import queryMixin from './query.mixin2';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryItemPricing",
     components: {
       'select-system-class': SelectSystemClass,
-      'button-group': ButtonGroup
+      'select-option': SelectOption
     },
     mixins: [queryMixin],
     computed: {

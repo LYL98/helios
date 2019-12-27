@@ -336,7 +336,7 @@
         },
         orderStatus: Constant.ORDER_STATUS,
         afterSaleStatus: Constant.AFTER_SALE_STATUS,
-        afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE,
+        afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE(),
         priceChange: Constant.PRICE_CHANGE,
         refundReason: Constant.ORDER_REFUND_RECORD_REASON,
         activeName: 'second',

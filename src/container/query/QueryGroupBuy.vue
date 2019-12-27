@@ -13,7 +13,7 @@
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="上架状态">
-          <my-button-group
+          <select-option
             :options="{'全部': '', '已上架': 'activated', '未上架': 'deactivated'}"
             v-model="editQuery.status"
             @change="changeQuery"
@@ -45,7 +45,7 @@
 
 <script>
   import { Row, Col, Button, Input, Select, Option } from 'element-ui';
-  import { ButtonGroup, QueryItem } from '@/common';
+  import { SelectOption, QueryItem } from '@/common';
   import queryMixin from './query.mixin';
 
   export default {
@@ -57,7 +57,7 @@
       'el-button': Button,
       'el-select': Select,
       'el-option': Option,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem
     },
     mixins: [queryMixin]

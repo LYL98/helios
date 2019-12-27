@@ -46,7 +46,7 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { QueryItem, ButtonGroup, CollapseQuery, SelectGroupItemClass } from '@/common';
+  import { QueryItem, SelectOption, CollapseQuery, SelectGroupItemClass } from '@/common';
   import { DataHandle, Constant } from '@/util';
   import queryMixin from './query.mixin';
 
@@ -58,7 +58,7 @@
       'el-col': Col,
       'el-input': Input,
       'el-button': Button,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-collapse-query': CollapseQuery,
       'select-group-item-class': SelectGroupItemClass

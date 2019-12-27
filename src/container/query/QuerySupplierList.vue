@@ -3,7 +3,7 @@
     <el-row>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="类型">
-          <button-group
+          <select-option
             :options="{'全部': '', ...supplierType}"
             v-model="query.supplier_type"
             @change="handleQuery('TableSupplierList')"
@@ -13,7 +13,7 @@
       </el-col>
       <el-col :xl="10" :lg="11" :span="11">
         <my-query-item label="账期类型">
-          <button-group
+          <select-option
             :options="{'全部': '', ...supplierBillTerm}"
             v-model="query.bill_term"
             @change="handleQuery('TableSupplierList')"
@@ -25,7 +25,7 @@
     <el-row style="margin-top: 16px;">
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="状态">
-          <button-group
+          <select-option
             :options="{'全部': '', '已冻结': 1, '未冻结': 0}"
             v-model="query.is_freeze"
             @change="handleQuery('TableSupplierList')"
@@ -35,7 +35,7 @@
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="审核状态">
-          <button-group
+          <select-option
             :options="{'全部': '', '已审核': 1, '未审核': 0}"
             v-model="query.is_audited"
             @change="handleQuery('TableSupplierList')"
@@ -66,14 +66,14 @@
 </template>
 
 <script>
-  import { ButtonGroup } from '@/common';
-  import queryMixin from './query.mixin2';
+  import { SelectOption } from '@/common';
+  import queryMixin from './query.mixin';
   import { Constant } from '@/util';
 
   export default {
     name: "QuerySupplierList",
     components: {
-      'button-group': ButtonGroup
+      'select-option': SelectOption
     },
     mixins: [queryMixin],
     data() {

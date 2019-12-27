@@ -7,7 +7,6 @@
                           :provinceCode="editQuery.province_code"
                           clearable
                           size="small"
-                          :isUseToQuery="true"
                           @change="changeQuery"/>
         </my-query-item>
       </el-col>

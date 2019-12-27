@@ -217,16 +217,20 @@ const Constant = {
     close: '已完成',
   },
   // 售后单处理类型
-  AFTER_SALE_OPT_TYPE: {
-    quality: '质量异常',
-    delivery: '物流异常',
-    amount_delivery: '运费退还',
-    weight: '少称',
-    not_match: '与SKU描述不相符',
-    num: '缺货/错货',
-    big_order_bonus: '大单优惠',
-    other: '其他'
+  AFTER_SALE_OPT_TYPE: (type) => {
+    let data = [
+      { key: 'quality', value: '质量异常' },
+      { key: 'delivery', value: '物流异常' },
+      { key: 'amount_delivery', value: '运费退还' },
+      { key: 'weight', value: '少称' },
+      { key: 'not_match', value: '与SKU描述不相符' },
+      { key: 'num', value: '缺货/错货' },
+      { key: 'big_order_bonus', value: '大单优惠' },
+      { key: 'other', value: '其他' }
+    ];
+    return handleKeyValue(type, data);
   },
+  
   //售后单处理结果
   AFTER_SALE_RESULT: {
     init: '商家提交售后申请，待处理', //正在处理

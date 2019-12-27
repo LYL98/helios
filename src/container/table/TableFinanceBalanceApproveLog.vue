@@ -13,7 +13,7 @@
         </el-select>
       </my-query-item>
       <my-query-item style="margin-left: 20px;">
-        <my-button-group
+        <select-option
           size="small"
           buttonWidth="60"
           :options="{'全部': '', '充值': 'manual_topup', '扣款': 'manual_deduct'}"
@@ -155,7 +155,7 @@
 
 <script>
   import { Input, Button, Table, TableColumn, Pagination, Message, DatePicker, Select, Option, Dialog, Form, FormItem } from 'element-ui';
-  import { ButtonGroup, QueryItem, OmissionText, TableOperate } from '@/common';
+  import { SelectOption, QueryItem, OmissionText, TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
   
   export default {
@@ -172,7 +172,7 @@
       'el-dialog': Dialog,
       'el-form': Form,
       'el-form-item': FormItem,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate

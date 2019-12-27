@@ -49,7 +49,6 @@
               @change="changeZone"
               @changeTitle="changeZoneTitle"
               class="query-item-select"
-              :isUseToQuery="true"
             />
           </my-query-item>
         </el-col>
@@ -65,7 +64,6 @@
               @change="changeCity"
               @changeCityName="changeCityName"
               class="query-item-select"
-              :isUseToQuery="true"
             />
           </my-query-item>
         </el-col>

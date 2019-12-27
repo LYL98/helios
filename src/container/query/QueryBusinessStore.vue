@@ -7,8 +7,7 @@
                           :provinceCode="editQuery.province_code"
                           clearable
                           size="small"
-                          @change="changeZone"
-                          :isUseToQuery="true"/>
+                          @change="changeZone"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
@@ -19,8 +18,7 @@
                           clearable
                           size="small"
                           :zoneCode="editQuery.zone_code"
-                          @change="changeQuery"
-                          :isUseToQuery="true"/>
+                          @change="changeQuery"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">

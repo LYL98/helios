@@ -5,7 +5,7 @@
         <el-row>
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="活动类型">
-              <my-button-group
+              <select-option
                 :options="{'全部': '', '全场满减': 'type_reduction', '全场满折': 'scope_discount'}"
                 v-model="editQuery.promotion_type"
                 @change="changeQuery"
@@ -48,7 +48,7 @@
         <el-row style="margin-top: 16px;">
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="上架状态">
-              <my-button-group
+              <select-option
                 :options="{'全部': '', '已上架': 'st_activated', '未上架': 'st_deactivated' }"
                 v-model="editQuery.status"
                 @change="changeQuery"
@@ -64,7 +64,7 @@
 
 <script>
   import {Row, Col, Button, Input, DatePicker, Select, Option} from 'element-ui';
-  import {ButtonGroup, QueryItem, CollapseQuery} from '@/common';
+  import {SelectOption, QueryItem, CollapseQuery} from '@/common';
   import queryMixin from './query.mixin';
 
   export default {
@@ -76,7 +76,7 @@
       'el-button': Button,
       'el-select': Select,
       'el-option': Option,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-collapse-query': CollapseQuery
     },

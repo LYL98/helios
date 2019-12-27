@@ -7,7 +7,6 @@
             <my-query-item label="所在仓">
               <my-select-city
                 size="small"
-                :isUseToQuery="true"
                 placeholder="所在仓"
                 clearable
                 v-model="editQuery.city_code"
@@ -40,7 +39,7 @@
         <el-row style="margin-top: 16px;">
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="审核状态">
-              <my-button-group
+              <select-option
                 :options="{'全部': '', '待审核': 0, '已审核': 1}"
                 v-model="editQuery.is_approve"
                 @change="changeQuery"
@@ -50,7 +49,7 @@
           </el-col>
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="冻结状态">
-              <my-button-group
+              <select-option
                 :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
                 v-model="editQuery.is_freeze"
                 @change="changeQuery"
@@ -60,7 +59,7 @@
           </el-col>
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="商户性质">
-              <my-button-group
+              <select-option
                 :options="{'全部': '', '非协议': 0, '协议': 1}"
                 v-model="editQuery.is_post_pay"
                 @change="changeQuery"
@@ -90,7 +89,7 @@
           </el-col>
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="团购门店">
-              <my-button-group
+              <select-option
                 :options="{'全部': '', '非团购': 0, '团购': 1}"
                 v-model="editQuery.gb_included"
                 @change="changeQuery"
@@ -107,7 +106,7 @@
 
 <script>
   import {Row, Col, Input, Button, DatePicker} from 'element-ui';
-  import {ButtonGroup, QueryItem, CollapseQuery} from '@/common';
+  import {SelectOption, QueryItem, CollapseQuery} from '@/common';
   import {SelectCity} from '@/container';
   import queryMixin from './query.mixin';
 
@@ -121,7 +120,7 @@
       'el-button': Button,
       'el-date-picker': DatePicker,
       'my-query-item': QueryItem,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-select-city': SelectCity,
       'my-collapse-query': CollapseQuery
     },

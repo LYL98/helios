@@ -19,7 +19,6 @@
                 <my-select-line
                   size="small"
                   clearable
-                  :isUseToQuery="true"
                   :provinceCode="province.code"
                   v-model="query.line_code"
                   @change="selectByCondition"
@@ -54,7 +53,6 @@
                 <my-select-city
                   clearable
                   size="small"
-                  :isUseToQuery="true"
                   placeholder="所在仓"
                   v-model="query.city_code"
                   :provinceCode="query.province_code"
@@ -252,7 +250,7 @@
 
 <script>
   import {Row, Col, Table, TableColumn, Popover, Pagination, Button, Input, Select, Option, DatePicker, Dialog, Tag, MessageBox, Message} from 'element-ui';
-  import {ButtonGroup, QueryItem, TableOperate, CollapseQuery, OmissionText} from '@/common';
+  import {SelectOption, QueryItem, TableOperate, CollapseQuery, OmissionText} from '@/common';
   import {SelectLine, SelectCity} from '@/container';
   import {Config, Constant, DataHandle, Http} from '@/util';
   import tableMixin from '@/container/table/table.mixin';
@@ -277,7 +275,7 @@
       'el-date-picker': DatePicker,
       'my-select-line': SelectLine,
       'my-select-city': SelectCity,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-omission-text': OmissionText,
       'refund-add-store': RefundAddStore,

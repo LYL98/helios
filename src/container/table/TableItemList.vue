@@ -1,7 +1,10 @@
 <template>
   <div class="container-table">
     <div class="table-top" v-if="(auth.isAdmin || auth.ItemListExport)">
-      <el-button v-if="auth.isAdmin || auth.ItemListExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
+      <div class="left"></div>
+      <div class="right">
+        <el-button v-if="auth.isAdmin || auth.ItemListExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
+      </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">

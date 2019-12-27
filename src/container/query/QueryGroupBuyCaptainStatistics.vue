@@ -25,7 +25,6 @@
             <my-query-item label="所在仓">
               <my-select-city
                 size="small"
-                :isUseToQuery="true"
                 placeholder="所在仓"
                 clearable
                 v-model="editQuery.city_code"
@@ -57,7 +56,7 @@
         <el-row style="margin-top: 16px">
           <el-col :xl="6" :lg="7" :span="7">
             <my-query-item label="参团状态">
-              <my-button-group
+              <select-option
                 :options="{'参过团': 1, '未参团': 0}"
                 v-model="editQuery.is_group"
                 @change="changeQuery"
@@ -77,7 +76,7 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { QueryItem, ButtonGroup, CollapseQuery } from '@/common';
+  import { QueryItem, SelectOption, CollapseQuery } from '@/common';
   import { DataHandle, Constant } from '@/util';
   import {SelectCity} from '@/container';
   import queryMixin from './query.mixin';
@@ -92,7 +91,7 @@
       'el-button': Button,
       'my-select-city': SelectCity,
       'my-query-item': QueryItem,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-collapse-query': CollapseQuery
     },
     mixins: [queryMixin],
