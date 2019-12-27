@@ -286,9 +286,9 @@
           </div>
         </div>
       </div>
-      <span slot="footer">
+      <div style="margin-left: 20px;">
         <el-button @click.native="cancel">关 闭</el-button>
-      </span>
+      </div>
     </detail-layout>
   </div>
 </template>

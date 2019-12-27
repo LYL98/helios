@@ -1,6 +1,5 @@
 <template>
   <el-form label-position="right" label-width="100px" style="width: 740px;" :model="detail" :rules="rules" ref="ruleForm">
-
     <my-form-area label="商户信息">
       <el-form-item label="商户名称" prop="merchant_title">
         <el-input v-model="detail.merchant_title" :maxlength="10" placeholder="请输入商户名称" style="width: 260px;"/>

@@ -167,10 +167,10 @@
           </el-form>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
+      <div style="margin-left: 20px;">
         <el-button @click.native="cancel">关闭</el-button>
         <el-button type="primary" @click.native="orderShowHideAfterSaleClose()" v-if="detail.status === 'waiting_dispose' && (auth.isAdmin || auth.OrderAfterSaleUpdate)">处理完成</el-button>
-      </span>
+      </div>
     </detail-layout>
   </div>
 </template>
@@ -281,7 +281,7 @@ export default {
     },
     //关闭
     orderShowHideAfterSaleClose(){
-      let pc = this.getPageComponents('AfterSaleClose');
+      let pc = this.getPageComponents('FormOrderAfterSaleClose');
       pc.orderShowHideAfterSaleClose(this.detail);
     },
     //查看进度
