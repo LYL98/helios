@@ -225,8 +225,8 @@
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
         <template v-else>
-          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="(auth.isAdmin || auth.ItemListEdit) && detail.is_on_sale">修改销售信息</el-button>
-          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'on_sale'" v-if="(auth.isAdmin || auth.ItemListOnGround) && !detail.is_on_sale">上 架</el-button>
+          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="page !== 'after-sale-detail' && (auth.isAdmin || auth.ItemListEdit) && detail.is_on_sale">修改销售信息</el-button>
+          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'on_sale'" v-if="page !== 'after-sale-detail' && (auth.isAdmin || auth.ItemListOnGround) && !detail.is_on_sale">上 架</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>
