@@ -210,10 +210,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="第一次上架人">
+            <el-form-item label="第一次上架人" v-if="detail.first_grounder && detail.first_grounder.id">
               <div style="line-height: 24px;">{{detail.first_grounder.realname}}<br/>{{detail.created}}</div>
             </el-form-item>
-            <el-form-item label="最后更新人">
+            <el-form-item label="最后更新人" v-if="detail.last_updater && detail.last_updater.id">
               <div style="line-height: 24px;">{{detail.last_updater.realname}}<br/>{{detail.updated}}</div>
             </el-form-item>
           </el-col>
