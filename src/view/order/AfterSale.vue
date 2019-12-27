@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="after-sale">
     <query-order-aftersale v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <!-- 头部end -->
