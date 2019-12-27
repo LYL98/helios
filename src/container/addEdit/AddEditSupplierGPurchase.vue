@@ -112,6 +112,7 @@ export default {
       item_id: '',
       num: '',
       price: '',
+      frame_price: 0,
       instocks: [],
       logs: []
     }
