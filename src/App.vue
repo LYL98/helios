@@ -191,7 +191,30 @@
             name: 'GroupBanner'
           }]
         },{
-          title: '配送',
+          title: '仓库',
+          icon: '&#xe75f;',
+          name: 'Warehouse',
+          children: [{
+            title: '入库',
+            name: 'Warehouse'
+          },{
+            title: '盘点记录',
+            name: 'Warehouse'
+          },{
+            title: '移库记录',
+            name: 'Warehouse'
+          },{
+            title: '调拨记录',
+            name: 'Warehouse'
+          },{
+            title: '出库记录',
+            name: 'Warehouse'
+          },{
+            title: '调拨单',
+            name: 'Warehouse'
+          }]
+        },{
+          title: '场地',
           icon: '&#xe75f;',
           name: 'Operate',
           children: [{
@@ -275,6 +298,12 @@
           },{
             title: '县域列表',
             name: 'BasicDataCityList'
+          },{
+            title: '仓列表',
+            name: 'BasicDataStorehouseList'
+          },{
+            title: '库列表',
+            name: 'BasicDataWarehouseList'
           },{
             title: '商户等级列表',
             name: 'BasicDataGradeList'

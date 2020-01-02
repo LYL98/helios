@@ -31,6 +31,8 @@ export { default as TableBasicDataMerchantOuterTags } from './TableBasicDataMerc
 export { default as TableBasicDataProvince } from './TableBasicDataProvince';
 export { default as TableBasicDataSystemClass } from './TableBasicDataSystemClass';
 export { default as TableBasicDataZone } from './TableBasicDataZone';
+export { default as TableBasicDataStorehouse } from './TableBasicDataStorehouse';
+export { default as TableBasicDataWarehouse } from './TableBasicDataWarehouse';
 
 export { default as TableItemGlobal } from './TableItemGlobal';
 export { default as TableItemList } from './TableItemList';

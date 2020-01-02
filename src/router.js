@@ -286,7 +286,7 @@ const router = new Router({
     {
       path: '/basicdata/item/inner/tags/list',
       name: 'BasicDataItemInnerTagsList',
-      component: () => import(/* webpackChunkName: "basicdata" */ '@/view/basicdata/ItemInnerTagsList')
+      component: () => import('@/view/basicdata/ItemInnerTagsList')
     },
     {
       path: '/basicdata/province/list',
@@ -317,6 +317,16 @@ const router = new Router({
       path: '/basicdata/merchant/outer/tag/list',
       name: 'BasicDataMerchantOuterTagsList',
       component: () => import('@/view/basicdata/MerchantOuterTagsList')
+    },
+    {
+      path: '/basicdata/storehouse/list',
+      name: 'BasicDataStorehouseList',
+      component: () => import('@/view/basicdata/StorehouseList')
+    },
+    {
+      path: '/basicdata/warehouse/list',
+      name: 'BasicDataWarehouseList',
+      component: () => import('@/view/basicdata/WarehouseList')
     },
     /*系统设置*/
     {

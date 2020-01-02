@@ -9,6 +9,8 @@ export { default as AddEditBasicDataMerchantOuterTags } from './AddEditBasicData
 export { default as AddEditBasicDataProvince } from './AddEditBasicDataProvince';
 export { default as AddEditBasicDataSystemClass } from './AddEditBasicDataSystemClass';
 export { default as AddEditBasicDataZone } from './AddEditBasicDataZone';
+export { default as AddEditBasicDataStorehouse } from './AddEditBasicDataStorehouse';
+export { default as AddEditBasicDataWarehouse } from './AddEditBasicDataWarehouse';
 
 export { default as AddEditItemGlobal } from './AddEditItemGlobal';
 export { default as AddEditItemList } from './AddEditItemList';

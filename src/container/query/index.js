@@ -35,6 +35,8 @@ export { default as QueryBasicDataMerchantOuterTags } from './QueryBasicDataMerc
 export { default as QueryBasicDataProvince } from './QueryBasicDataProvince';
 export { default as QueryBasicDataSystemClass } from './QueryBasicDataSystemClass';
 export { default as QueryBasicDataZone } from './QueryBasicDataZone';
+export { default as QueryBasicDataStorehouse } from './QueryBasicDataStorehouse';
+export { default as QueryBasicDataWarehouse } from './QueryBasicDataWarehouse';
 
 export { default as QueryItemGlobal } from './QueryItemGlobal';
 export { default as QueryItemList } from './QueryItemList';
