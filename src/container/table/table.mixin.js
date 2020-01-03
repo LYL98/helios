@@ -2,7 +2,7 @@ import baseMixin from '@/container/base.mixin';
 import { Constant, Method, Config, Http } from '@/util';
 import { TableOperate } from '@/common';
 import SettingColumnTitle from './SettingColumnTitle';
-import Pagination from './Pagination';
+import Pagination from './../layout/Pagination';
 
 // 表格宽度： 860 / 830（带全选）
 

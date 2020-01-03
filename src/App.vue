@@ -750,6 +750,8 @@
   }
 
   .custom-form{
+    width: 90%;
+    max-width: 1400px;
     .el-form-item__label{
       color: #909399 !important;
       font-size: 14px !important;

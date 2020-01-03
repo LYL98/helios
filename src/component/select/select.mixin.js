@@ -10,7 +10,9 @@ export default {
     if (value) {
       this.$data.query.id = value;
     }
-    this.getData();
+    if(this.createdGetData){
+      this.getData();
+    }
   },
   props: {
     showAll: { type: Boolean, default: false },
@@ -21,6 +23,7 @@ export default {
     hasAllSelection: { type: Boolean, default: false },
     filterable: { type: Boolean, default: false },
     placeholder: { type: String, default: '' },
+    createdGetData: { type: Boolean, default: true }, //是否组件创建时取数据
   },
   model: {
     prop: 'value',

@@ -13,19 +13,34 @@ export default {
       isShow: false,
       detail: {},
       rules: {},
+      pageTitles: {
+        add: '新增',
+        edit: '修改',
+        detail: '详情'
+      },
+      pageType: 'add', //add, edit, detail
     }
   },
   created() {
     
   },
   methods: {
+    //窗体标题
+    returnPageTitles(title){
+      let { pageTitles, pageType } = this;
+      if(pageType === 'detail'){
+        return title + pageTitles[pageType];
+      }
+      return pageTitles[pageType] + title;
+    },
     //显示新增修改(供外部也调用)
-    showAddEdit(data){
+    showAddEdit(data, type){
       if(data){
         this.$data.detail = this.copyJson(data);
       }else{
         this.$data.detail = this.copyJson(this.initDetail);
       }
+      if(type) this.$data.pageType = type;
       this.$data.isShow = true;
     },
     //提交

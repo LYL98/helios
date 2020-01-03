@@ -11,6 +11,7 @@ export { default as AddEditBasicDataSystemClass } from './AddEditBasicDataSystem
 export { default as AddEditBasicDataZone } from './AddEditBasicDataZone';
 export { default as AddEditBasicDataStorehouse } from './AddEditBasicDataStorehouse';
 export { default as AddEditBasicDataWarehouse } from './AddEditBasicDataWarehouse';
+export { default as AddEditBasicDataWarehouseTray } from './AddEditBasicDataWarehouseTray';
 
 export { default as AddEditItemGlobal } from './AddEditItemGlobal';
 export { default as AddEditItemList } from './AddEditItemList';

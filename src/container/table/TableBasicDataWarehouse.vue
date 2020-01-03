@@ -1,105 +1,107 @@
 <template>
-  <div>
+  <div class="container-table">
     <!-- 头部end -->
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataZoneListAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataWarehouseAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataZone')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEditBasicDataWarehouse')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
-      <el-table
-        class="list-table my-table-float"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
-        :data="dataItem"
+      <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
+      <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
+        class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column width="20"/>
-        <el-table-column prop="code" label="编号" min-width="160">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.code }}
+        <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
+        <!--table-column start-->
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
+            <div slot-scope="scope" class="my-td-item">
+              <!--编号名称-->
+              <template v-if="item.key === 'code_title'">
+                <div class="td-item add-dot">
+                  <div class="link-item add-dot" @click="handleShowDetail('DetailBasicDataWarehouse', scope.row)" v-if="auth.isAdmin || auth.BasicDataWarehouseDetail">
+                    {{scope.row.title}}
+                  </div>
+                  <div class="add-dot" v-else>
+                    {{scope.row.title}}
+                  </div>
+                </div>
+              </template>
+              <!--所属仓-->
+              <div class="td-item" v-else-if="item.key === 'storehouse'">
+                <span v-if="scope.row.storehouse_id">{{scope.row.storehouse.title}}</span>
+                <span v-else>-</span>
+              </div>
+              <!--正常情况-->
+              <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="所属省份" min-width="160">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.province && scope.row.province.title }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="title" label="片区名称" min-width="160">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.title }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="rank" label="排序" min-width="160">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.rank }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="created" label="创建时间" min-width="160">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.created }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="100" align="center">
+          </el-table-column>
+        </template>
+        <el-table-column label="操作" width="110">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
               @command-visible="handleCommandVisible"
               :list="[
-              {
-                title: '修改',
-                isDisplay: auth.isAdmin || auth.BasicDataZoneListUpdate,
-                command: () => handleShowAddEdit('AddEditBasicDataZone', scope.row)
-              },
-              {
-                title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataZoneListDelete,
-                command: () => handleDelete(scope.row)
-              }
-            ]"
+                {
+                  title: '详情',
+                  isDisplay: auth.isAdmin || auth.BasicDataWarehouseDetail,
+                  command: () => handleShowDetail('DetailBasicDataWarehouse', scope.row)
+                },
+                {
+                  title: '修改',
+                  isDisplay: auth.isAdmin || auth.BasicDataWarehouseEdit,
+                  command: () => handleShowAddEdit('AddEditBasicDataWarehouse', scope.row, 'edit')
+                },
+                {
+                  title: '删除',
+                  isDisplay: auth.isAdmin || auth.BasicDataWarehouseDelete,
+                  command: () => handleDelete(scope.row)
+                }
+              ]"
             />
           </template>
         </el-table-column>
       </el-table>
+    </div>
+    <div class="table-bottom">
+      <div class="left"></div>
+      <div class="right">
+        <pagination :pageComponent="this" />
+      </div>
     </div>
     <!-- 表格end -->
   </div>
 </template>
 
 <script>
-  import { TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
     name: 'TableBasicDataWarehouse',
     components: {
-      'my-table-operate': TableOperate
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryBasicDataZone'); //获取query组件
+      let pc = this.getPageComponents('QueryBasicDataWarehouse'); //获取query组件
       this.getData(pc.query);
     },
     data() {
       return {
-        dataItem: [],
-        rowIdentifier: 'code'
+        tableName: 'TableBasicDataWarehouse',
+        tableColumn: [
+          { label: '编号/库', key: 'code_title', width: '2', isShow: true },
+          { label: '所属仓', key: 'storehouse', width: '2', isShow: true },
+          { label: '创建时间', key: 'created', width: '1', isShow: true },
+          { label: '更新时间', key: 'updated', width: '1', isShow: false },
+        ]
       }
     },
     methods: {
@@ -107,7 +109,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.basicdataZoneList, query);
+        let res = await Http.get(Config.api.basicdataWarehouseList, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -118,13 +120,17 @@
       //删除数据
       async deleteData(data) {
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.basicdataZoneDelete, {
-          code: data.code
+        let res = await Http.post(Config.api.basicdataWarehouseDelete, {
+          id: data.id
         });
         this.$loading({ isShow: false });
         if(res.code === 0){
           this.getData(this.query);
           this.$message({message: '已删除', type: 'success'});
+          //如果详情显示
+          let pc = this.getPageComponents('DetailBasicDataWarehouse');
+          if(pc.isShow) pc.$data.isShow = false;
+          
         }else{
           this.$message({message: res.message, type: 'error'});
         }
@@ -134,5 +140,9 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+  @import './table.scss';
+</style>
+<style lang="scss">
+  @import './table.global.scss';
 </style>

@@ -231,6 +231,8 @@ const Config = (() => {
       baseSupplierList: apiM + '/common/supplier/list', // 供应商列表(组件共用)
       baseItemDetail: apiM + '/common/item/detail', //商品列表（组件共用）
       baseOrderShipList: apiM + '/common/shipper/list', //快递公司列表 （订单手动发货时用）
+      baseStorehouseList: apiM + '/common/storehouse/list', //获取仓列表（组件共用）
+      baseWarehouseList: apiM + '/common/warehouse/list', //获取库列表（组件共用）
 
       basicdataProvinceAdd: apiM + '/basicdata/province/add', //省新增
       basicdataProvinceEdit: apiM + '/basicdata/province/edit', //省修改
@@ -288,6 +290,21 @@ const Config = (() => {
       basicdataGradeAdd: apiM + '/basicdata/grade/add', //商户级别添加
       basicdataGradeEdit: apiM + '/basicdata/grade/edit', //商户级别修改
       basicdataGradeDelete: apiM + '/basicdata/grade/delete', //商户等级删除
+
+      basicdataStorehouseList: apiM + '/sup_storehouse/query', //仓列表
+      basicdataStorehouseAdd: apiM + '/sup_storehouse/add', //仓新增
+      basicdataStorehouseEdit: apiM + '/sup_storehouse/edit', //仓修改
+      basicdataStorehouseDelete: apiM + '/sup_storehouse/delete', //仓删除
+
+      basicdataWarehouseList: apiM + '/sup_warehouse/query', //库列表
+      basicdataWarehouseAdd: apiM + '/sup_warehouse/add', //库新增
+      basicdataWarehouseEdit: apiM + '/sup_warehouse/edit', //库修改
+      basicdataWarehouseDelete: apiM + '/sup_warehouse/delete', //库删除
+      basicdataWarehouseDetail: apiM + '/sup_warehouse/detail', //库详情
+
+      basicdataWarehouseTrayAdd: apiM + '/sup_ware_tray/add', //托盘新增
+      basicdataWarehouseTrayEdit: apiM + '/sup_ware_tray/edit', //托盘新增
+      basicdataWarehouseTrayDelete: apiM + '/sup_ware_tray/delete', //删除
 
       // 商品统一描述
       basicdataGetCommonDescription: apiM + '/basicdata/constant/unified_description', // 获取商品统一描述
@@ -364,8 +381,6 @@ const Config = (() => {
       operateRefundFrameExport: apiM + '/frame/return/export', //退筐记录导出
 
       //常量
-      // basicdataConstantGet: apiM + '/basicdata/constant/get', //获取常量
-      // basicdataConstantSet: apiM + '/basicdata/constant/set', //设置常量
       basicdataConfirmTime: apiM + '/basicdata/constant/confirm/time', //截单时间 GET获取，POST设置
       basicdataOrderTime: apiM + '/basicdata/constant/order/time', //下单时间 GET获取，POST设置
       basicdataDeliveryInfo: apiM + '/basicdata/constant/delivery', //运费信息 GET获取，POST设置

@@ -5,7 +5,7 @@ import baseMixin from '@/container/base.mixin';
 export default {
   mixins: [baseMixin],
   components: {
-    'detail-layout': Layout,
+    'detail-layout': Layout
   },
   data() {
     return {

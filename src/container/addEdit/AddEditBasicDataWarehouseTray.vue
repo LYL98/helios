@@ -1,12 +1,17 @@
 <template>
   <div>
-    <add-edit-layout :title="returnPageTitles('仓')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
+    <add-edit-layout :title="returnPageTitles('托盘')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="110px" style="padding-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
-        <el-form-item label="仓名称" prop="title">
-          <el-input size="medium" v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
+        <h6 class="subtitle">库信息</h6>
+        <el-form-item label="库编号">{{detail.warehouse.code}}</el-form-item>
+        <el-form-item label="库名称">{{detail.warehouse.title}}</el-form-item>
+        <el-form-item label="所属仓">{{detail.warehouse.storehouse.title}}</el-form-item>
+        <h6 class="subtitle" style="margin-top: 20px; margin-bottom: 20px;">托盘信息</h6>
+        <el-form-item label="托盘编号" prop="code">
+          <el-input size="medium" :value="detail.code" placeholder="系统自动生成" disabled></el-input>
         </el-form-item>
-        <el-form-item label="所属省份" prop="province_code">
-          <my-select-province size="medium" v-model="detail.province_code" nationwide/>
+        <el-form-item label="托盘名称" prop="title">
+          <el-input size="medium" v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
       </el-form>
       <div style="margin-left: 110px; margin-top: 40px; margin-bottom: 20px;">
@@ -15,7 +20,7 @@
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
         <template v-else>
-          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="auth.isAdmin || auth.BasicDataStorehouseEdit">修改</el-button>
+          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayEdit">修改</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>
@@ -26,23 +31,25 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
-import { SelectProvince } from '@/common';
 
 export default {
-  name: "AddEditBasicDataStorehouse",
+  name: "AddEditBasicDataWarehouseTray",
   mixins: [addEditMixin],
   components: {
-    'my-select-province': SelectProvince
   },
   data(){
     return{
-      initDetail: {},
+      initDetail: {
+        code: '',
+        warehouse_id: '',
+        warehouse: {
+          code: '',
+          storehouse: {}
+        }
+      },
       rules: {
         title: [
             { required: true, message: '名称不能为空', trigger: 'change' }
-        ],
-        province_code: [
-            { required: true, message: '请选择所属省份', trigger: 'change' }
         ]
       },
     }
@@ -52,14 +59,15 @@ export default {
     async addEditData(){
       let { detail } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[detail.id ? 'basicdataStorehouseEdit' : 'basicdataStorehouseAdd'], detail);
+      let res = await Http.post(Config.api[detail.id ? 'basicdataWarehouseTrayEdit' : 'basicdataWarehouseTrayAdd'], detail);
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableBasicDataStorehouse');
-        pc.getData(pc.query);
+        let pc = this.getPageComponents('DetailBasicDataWarehouse');
+        if(this.pageType === 'add') pc.$data.query.page = 1;
+        pc.getDetail();
       }else{
         this.$message({message: res.message, type: 'error'});
       }
