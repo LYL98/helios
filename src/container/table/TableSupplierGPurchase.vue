@@ -1,8 +1,12 @@
 <template>
   <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.SupplierGPurchaseAdd">
-      <div class="left"></div>
+      <div class="left">
+        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAudit" @click="handleShowAddEdit('AddEditSupplierGPurchase')" size="mini" type="primary"
+        :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
+      </div>
       <div class="right">
+        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseExport" @click.native="handleExport('SupplierGPurchaseExport', query)" size="mini" type="primary" plain>导出统采单</el-button>
         <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAdd" @click="handleShowAddEdit('AddEditSupplierGPurchase')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
@@ -15,8 +19,10 @@
         class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
+        @selection-change="handleSelectionChange"
         :current-row-key="clickedRow[rowIdentifier]"
       >
+        <el-table-column type="selection" :selectable="returnAuditStatus" width="42" v-if="(auth.isAdmin || auth.FinanceSBDetailAudit)"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
@@ -131,6 +137,10 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+      //返回是否可选择
+      returnAuditStatus(d){
+        return d.audit_status === 'init' ? true : false;
+      }
     }
   };
 </script>

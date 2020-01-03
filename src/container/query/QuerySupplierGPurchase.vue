@@ -2,7 +2,12 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="审核状态">
+        <my-query-item label="采购日期">
+          <el-date-picker size="small" v-model="query.order_date" value-format="yyyy-MM-dd" style="width: 100%;" placeholder="采购日期" @change="handleQuery('TableSupplierGPurchase')"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
+        <my-query-item label="状态">
           <select-option
             :options="{'全部': '', ...auditStatus}"
             v-model="query.audit_status"
@@ -31,8 +36,13 @@
       'select-option': SelectOption
     },
     mixins: [queryMixin],
+    created() {
+      this.$data.initQuery.order_date = this.nowDate;
+      this.$data.query.order_date = this.nowDate;
+    },
     data() {
       let initQuery = {
+        order_date: '',
         audit_status: '',
         condition: '',
       }
