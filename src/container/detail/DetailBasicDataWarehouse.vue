@@ -23,20 +23,20 @@
           <el-button size="mini" type="primary">批量打印</el-button>
         </div>
         <div class="right">
-          <el-button @click="operate({}, 'add_tray')" size="mini" type="primary">增加拖盘</el-button>
+          <el-button @click="operate({}, 'add_tray')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayAdd">增加拖盘</el-button>
         </div>
       </div>
       <el-table :data="dataItem.items" :row-class-name="highlightRowClassName">
-        <el-table-column type="selection" width="42" v-if="auth.isAdmin || auth.Print"></el-table-column>
+        <el-table-column type="selection" width="42" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint"></el-table-column>
         <el-table-column type="index" label="序号" :index="indexMethod"/>
         <el-table-column prop="code" label="托盘编号"/>
         <el-table-column prop="title" label="托盘名称"/>
         <el-table-column prop="created" label="创建时间"/>
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
-            <a href="javascript: void(0);" style="margin-right: 10px;" @click="operate(scope.row, 'edit_tray')">修改</a>
-            <a href="javascript: void(0);" style="margin-right: 10px;">打印</a>
-            <a href="javascript: void(0);" @click="operate(scope.row, 'delete_tray')">删除</a>
+            <a href="javascript: void(0);" style="margin-right: 10px;" @click="operate(scope.row, 'edit_tray')" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayEdit">修改</a>
+            <a href="javascript: void(0);" style="margin-right: 10px;" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint">打印</a>
+            <a href="javascript: void(0);" @click="operate(scope.row, 'delete_tray')" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayDelete">删除</a>
           </template>
         </el-table-column>
       </el-table>
