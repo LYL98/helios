@@ -141,9 +141,6 @@
             title: '统采订单',
             name: 'SupplierGPurchase'
           },{
-            title: '统采调拨单',
-            name: 'SupplierGPurchaseDistribute'
-          },{
             title: '地采订单',
             name: 'SupplierLocalPurchase'
           }]
@@ -200,6 +197,9 @@
           },{
             title: '库存',
             name: 'WarehouseInventory'
+          },{
+            title: '统采调拨单',
+            name: 'WarehouseDistribute'
           }]
         },{
           title: '场地',

@@ -3,8 +3,8 @@
     <add-edit-layout :title="returnPageTitles('统采订单')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <div class="f-r" style="position: relative; right: -84px;" v-if="pageType === 'detail'">
-          <el-tag size="small" :type="auditStatusType[detail.audit_status]" disable-transitions>
-            {{auditStatus[detail.audit_status]}}
+          <el-tag size="small" :type="auditStatusType[detail.status]" disable-transitions>
+            {{auditStatus[detail.status]}}
           </el-tag>
         </div>
         <h6 class="subtitle">采购信息</h6>
@@ -93,7 +93,7 @@
         </template>
         <template v-else>
           <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'"
-            v-if="(auth.isAdmin || auth.SupplierGPurchaseEdit) && pageType === 'detail' && detail.audit_status === 'init'">修改</el-button>
+            v-if="(auth.isAdmin || auth.SupplierGPurchaseEdit) && pageType === 'detail' && detail.status === 'init'">修改</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>
@@ -177,7 +177,6 @@ export default {
       let res = await Http.get(Config.api.supplierGPurchaseDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
-        let rd = res.data;
         this.$data.detail = res.data;
         this.$data.isShow = true;
       }else{

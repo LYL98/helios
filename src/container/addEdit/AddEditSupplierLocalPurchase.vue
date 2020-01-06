@@ -18,8 +18,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购日期" prop="purchase_date">
-              <el-date-picker size="medium" v-model="detail.purchase_date" value-format="yyyy-MM-dd" placeholder="采购日期" style="width: 100%;"/>
+            <el-form-item label="采购日期" prop="order_date">
+              <el-date-picker size="medium" v-model="detail.order_date" value-format="yyyy-MM-dd" placeholder="采购日期" style="width: 100%;"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -72,7 +72,11 @@
         <h6 class="subtitle">操作记录</h6>
         <div style="padding: 0 30px;">
           <el-table :data="detail.logs" :row-class-name="highlightRowClassName">
-            <log-modified-detail :modifiedDetail="scope.row.modified_detail"/>
+            <el-table-column type="expand">
+              <template slot-scope="scope">
+                <log-modified-detail :modifiedDetail="scope.row.modified_detail"/>
+              </template>
+            </el-table-column>
             <el-table-column prop="created" label="时间"></el-table-column>
             <el-table-column label="操作内容">
               <template slot-scope="scope">{{logTypes[scope.row.category]}}</template>
@@ -90,7 +94,7 @@
         </template>
         <template v-else>
           <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'"
-            v-if="(auth.isAdmin || auth.SupplierLocalPurchaseEdit) && pageType === 'detail' && detail.audit_status === 'init'">修改</el-button>
+            v-if="(auth.isAdmin || auth.SupplierLocalPurchaseEdit) && pageType === 'detail' && detail.status === 'init'">修改</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>
@@ -118,11 +122,12 @@ export default {
   },
   data(){
     let initDetail = {
-      purchase_date: '',
+      order_date: '',
       supplier_id: '',
       item_id: '',
       num: '',
-      price: '',
+      frame_price: 0,
+      price_buy: '',
       item: {},
       instocks: [],
       logs: []
@@ -133,7 +138,7 @@ export default {
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       rules: {
-        purchase_date: [
+        order_date: [
           { required: true, message: '请选择采购日期', trigger: 'change' }
         ],
         supplier_id: [
@@ -145,7 +150,7 @@ export default {
         num: [
           { required: true, message: '请输入件数', trigger: 'change' },
         ],
-        price: [
+        price_buy: [
           { required: true, message: '请输入金额', trigger: 'change' },
         ],
       },
@@ -174,7 +179,6 @@ export default {
       let res = await Http.get(Config.api.supplierLocalPurchaseDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
-        let rd = res.data;
         this.$data.detail = res.data;
         this.$data.isShow = true;
       }else{
@@ -189,6 +193,22 @@ export default {
         detail.frame_code = data.frame_code;
         detail.frame_price = data.frame.price;
         this.$data.detail = detail;
+      }
+    },
+    //提交数据
+    async addEditData(){
+      let { detail, pageType } = this;
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api[pageType === 'edit' ? 'supplierLocalPurchaseEdit' : 'supplierLocalPurchaseAdd'], detail);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({message: `地采订单${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
+        this.handleCancel(); //隐藏
+        //刷新数据(列表)
+        let pc = this.getPageComponents('TableSupplierLocalPurchase');
+        pc.getData(pc.query);
+      }else{
+        this.$message({message: res.message, type: 'error'});
       }
     },
   },
