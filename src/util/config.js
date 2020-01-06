@@ -67,7 +67,7 @@ const Config = (() => {
       supplierGPurchaseEdit: apiM + '/supplier/g_purchase/edit', //新增统采订单， 同时会附带生成入库单
       supplierGPurchaseAudit: apiM + '/supplier/g_purchase/audit', //统采采购单审核
       supplierGPurchaseDetail: apiM + '/supplier/g_purchase/detail', //统采采购单详情
-      supplierGPurchaseExport: apiM + '', //统采采购单导出
+      supplierGPurchaseExport: apiM + '/supplier/g_purchase/export', //统采采购单导出
 
       //统采调拨单
       supplierInStockList: apiM + '/supplier/in_stock/list', //入库单列表(暂时，供统采调拨单用)
@@ -84,7 +84,7 @@ const Config = (() => {
       supplierLocalPurchaseAdd: apiM + '/from_supplier/order/add', //地采新增
       supplierLocalPurchaseEdit: apiM + '/from_supplier/order/edit', //地采修改
       supplierLocalPurchaseAudit: apiM + '/from_supplier/order/audit', //地采新增
-      supplierLocalPurchaseExport: apiM + '', //地采导出
+      supplierLocalPurchaseExport: apiM + '/from_supplier/order/export', //地采导出
 
       //商品池
       pItemAdd: apiM + '/p_item/add', //新商品资料添加
@@ -205,6 +205,10 @@ const Config = (() => {
       groupOrderDetail: apiM + '/gb_activity/order/detail', // 详情
       groupOrderCancel: apiM + '/gb_activity/order/cancel', // 取消
 
+      //仓库库存
+      inventoryQuery: apiM + '', //库存列表
+      inventoryExport: apiM + '', //库存导出
+
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
       groupBannerEdit: apiM + '/gb_basicdata/banner/edit', //banner修改
@@ -232,6 +236,7 @@ const Config = (() => {
       baseDistributorList: apiM + '/common/distributor/list', //配送人员列表（组件共用）
       baseItemList: apiM + '/common/item/list', //商品列表（组件共用）
       baseGItemList: apiM + '/common/p_item/list', //商品池列表（组件共用）
+      baseItemListTemp: apiM + '/common/sup_item/list', //商品列表（组件共用）
       baseMerchantList: apiM + '/common/merchant/list', //商品列表（组件共用）
       baseSupplierList: apiM + '/common/supplier/list', // 供应商列表(组件共用)
       baseItemDetail: apiM + '/common/item/detail', //商品列表（组件共用）

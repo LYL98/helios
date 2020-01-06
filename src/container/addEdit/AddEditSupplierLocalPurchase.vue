@@ -3,14 +3,14 @@
     <add-edit-layout :title="returnPageTitles('地采订单')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <div class="f-r" style="position: relative; right: -84px;" v-if="pageType === 'detail'">
-          <el-tag size="small" :type="localPurchaseStatusType[detail.status]" disable-transitions>
-            {{localPurchaseStatus[detail.status]}}
+          <el-tag size="small" :type="purchaseStatusType[detail.status]" disable-transitions>
+            {{purchaseStatus[detail.status]}}
           </el-tag>
         </div>
         <h6 class="subtitle">采购信息</h6>
         <el-row>
           <el-form-item label="商品" prop="item_id">
-            <select-g-item v-model="detail.item_id" size="medium" supType="local_pur" @change="selectGItem" :disabled="pageType !== 'add' ? true : false" filterable></select-g-item>
+            <select-item v-model="detail.item_id" size="medium" supType="local_pur" :provinceCode="province.code" @change="selectGItem" :disabled="pageType !== 'add' ? true : false" filterable></select-item>
           </el-form-item>
           <el-col :span="12">
             <el-form-item label="地采单号" v-if="pageType === 'detail'">
@@ -18,22 +18,22 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购日期">
+            <el-form-item label="采购日期" prop="purchase_date">
               <el-date-picker size="medium" v-model="detail.purchase_date" value-format="yyyy-MM-dd" placeholder="采购日期" style="width: 100%;"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="供货商">
+            <el-form-item label="供货商" prop="supplier_id">
               <select-supplier supplierType="local_pur" size="medium" :itemId="detail.item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购数量">
+            <el-form-item label="采购数量" prop="num">
               <input-number size="medium" v-model="detail.num" unit="件" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购价">
+            <el-form-item label="采购价" prop="price_buy">
               <input-price size="medium" v-model="detail.price_buy"/>
             </el-form-item>
           </el-col>
@@ -102,14 +102,14 @@
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant } from '@/util';
 import { InputNumber, InputPrice } from '@/common';
-import { SelectSupplier, SelectGItem, LogModifiedDetail } from '@/component';
+import { SelectSupplier, SelectItem, LogModifiedDetail } from '@/component';
 
 export default {
   name: "AddEditSupplierLocalPurchase",
   mixins: [addEditMixin],
   components: {
     'select-supplier': SelectSupplier,
-    'select-g-item': SelectGItem,
+    'select-item': SelectItem,
     'input-number': InputNumber,
     'input-price': InputPrice,
     'log-modified-detail': LogModifiedDetail
@@ -128,8 +128,8 @@ export default {
       logs: []
     }
     return {
-      localPurchaseStatus: Constant.LOCAL_PURCHASE_STATUS(),
-      localPurchaseStatusType: Constant.LOCAL_PURCHASE_STATUS_TYPE,
+      purchaseStatus: Constant.PURCHASE_STATUS(),
+      purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       rules: {

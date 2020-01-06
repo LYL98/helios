@@ -198,20 +198,8 @@
             title: '入库',
             name: 'Warehouse'
           },{
-            title: '盘点记录',
-            name: 'Warehouse'
-          },{
-            title: '移库记录',
-            name: 'Warehouse'
-          },{
-            title: '调拨记录',
-            name: 'Warehouse'
-          },{
-            title: '出库记录',
-            name: 'Warehouse'
-          },{
-            title: '调拨单',
-            name: 'Warehouse'
+            title: '库存',
+            name: 'WarehouseInventory'
           }]
         },{
           title: '场地',

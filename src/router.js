@@ -134,6 +134,7 @@ const router = new Router({
       name: 'GroupBanner',
       component: () => import('@/view/group/Banner')
     },
+    
     /*订单*/
     {
       path: '/order/list',
@@ -144,6 +145,13 @@ const router = new Router({
       path: '/order/after_sale',
       name: 'OrderAfterSale',
       component: () => import('@/view/order/AfterSale')
+    },
+
+    /*仓库*/
+    {
+      path: '/warehouse/inventory',
+      name: 'WarehouseInventory',
+      component: () => import('@/view/warehouse/Inventory')
     },
 
     /*配送*/

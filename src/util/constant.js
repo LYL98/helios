@@ -350,20 +350,24 @@ const Constant = {
     success: 'info',
     fail: 'danger'
   },
-  //地采订单状态
-  LOCAL_PURCHASE_STATUS: (type)=>{
+  //采购订单状态（统采、地采）
+  PURCHASE_STATUS: (type)=>{
     let data = [
-      { key: 'init', value: '待采购' },
-      { key: 'part', value: '部分入库' },
-      { key: 'all', value: '全部入库' }
+      { key: 'init', value: '待审核' },
+      { key: 'success', value: '审核通过' },
+      { key: 'fail', value: '作废' },
+      { key: 'part_in', value: '部分入库' },
+      { key: 'all_in', value: '全部入库' }
     ];
     return handleKeyValue(type, data);
   },
-  //地采订单状态(颜色)
-  LOCAL_PURCHASE_STATUS_TYPE: {
+  //采购订单状态(颜色)
+  PURCHASE_STATUS_TYPE: {
     init: 'warning',
-    part: 'danger',
-    all: 'info'
+    success: 'success',
+    fail: 'danger',
+    part_in: 'info',
+    all_in: 'info'
   },
   //财务对财表状态
   S_STATEMENT_PAID_STATUS: (type)=>{

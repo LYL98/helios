@@ -52,3 +52,5 @@ export { default as QuerySupplierList } from './QuerySupplierList';
 export { default as QuerySupplierGPurchase } from './QuerySupplierGPurchase';
 export { default as QuerySupplierGPurchaseDistribute } from './QuerySupplierGPurchaseDistribute';
 export { default as QuerySupplierLocalPurchase } from './QuerySupplierLocalPurchase';
+
+export { default as QueryWarehouseInventory } from './QueryWarehouseInventory';

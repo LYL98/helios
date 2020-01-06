@@ -25,9 +25,9 @@
     </el-row>
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
-        <my-query-item label="审核状态">
+        <my-query-item label="状态">
           <select-option
-            :options="{'全部': '', ...localPurchaseStatus}"
+            :options="{'全部': '', ...purchaseStatus}"
             v-model="query.status"
             @change="handleQuery('TableSupplierLocalPurchase')"
             size="small"
@@ -64,7 +64,7 @@
         condition: '',
       }
       return {
-        localPurchaseStatus: Constant.LOCAL_PURCHASE_STATUS('value_key'),
+        purchaseStatus: Constant.PURCHASE_STATUS('value_key'),
         initQuery: initQuery,
         query: this.copyJson(initQuery),
       }

@@ -22,3 +22,5 @@ export { default as DetailOrderList } from './DetailOrderList';
 export { default as DetailOrderAfterSale } from './DetailOrderAfterSale';
 
 export { default as DetailSupplierListItem } from './DetailSupplierListItem';
+
+export { default as DetailWarehouseInventory } from './DetailWarehouseInventory';

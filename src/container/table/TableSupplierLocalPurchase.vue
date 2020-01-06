@@ -41,8 +41,8 @@
               <div class="td-item" v-else-if="item.key === 'status'">
                 <el-tag size="small" type="info" disable-transitions>全部入库</el-tag>
                 <!--
-                <el-tag size="small" :type="localPurchaseStatusType[scope.row.status]" disable-transitions>
-                  {{localPurchaseStatus[scope.row.status]}}
+                <el-tag size="small" :type="purchaseStatusType[scope.row.status]" disable-transitions>
+                  {{purchaseStatus[scope.row.status]}}
                 </el-tag>
                 -->
               </div>
@@ -64,12 +64,12 @@
                 },
                 {
                   title: '修改',
-                  isDisplay: (auth.isAdmin || auth.SupplierLocalPurchaseEdit) && scope.row.audit_status === 'init',
+                  isDisplay: (auth.isAdmin || auth.SupplierLocalPurchaseEdit) && scope.row.status === 'init',
                   command: () => handleShowAddEdit('AddEditSupplierLocalPurchase', scope.row, 'edit')
                 },
                 {
                   title: '审核',
-                  isDisplay: (auth.isAdmin || auth.SupplierLocalPurchaseAudit) && scope.row.audit_status === 'init',
+                  isDisplay: (auth.isAdmin || auth.SupplierLocalPurchaseAudit) && scope.row.status === 'init',
                   command: () => handleShowForm('FormAudit', { ids: [scope.row.id] })
                 }
               ]"
@@ -118,8 +118,8 @@
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
-        localPurchaseStatus: Constant.LOCAL_PURCHASE_STATUS(),
-        localPurchaseStatusType: Constant.LOCAL_PURCHASE_STATUS_TYPE,
+        purchaseStatus: Constant.PURCHASE_STATUS(),
+        purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
       }
     },
     methods: {
@@ -137,7 +137,7 @@
       },
       //返回是否可选择
       returnAuditStatus(d){
-        return d.audit_status === 'init' ? true : false;
+        return d.status === 'init' ? true : false;
       }
     }
   };

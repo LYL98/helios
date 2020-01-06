@@ -42,9 +42,9 @@
                 {{scope.row.creator.phone}}
               </div>
               <!--状态-->
-              <div class="td-item" v-else-if="item.key === 'audit_status'">
-                <el-tag size="small" :type="auditStatusType[scope.row.audit_status]" disable-transitions>
-                  {{auditStatus[scope.row.audit_status]}}
+              <div class="td-item" v-else-if="item.key === 'status'">
+                <el-tag size="small" :type="auditStatusType[scope.row.status]" disable-transitions>
+                  {{auditStatus[scope.row.status]}}
                 </el-tag>
               </div>
               <!--正常情况-->
@@ -65,12 +65,12 @@
                 },
                 {
                   title: '修改',
-                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseEdit) && scope.row.audit_status === 'init',
+                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseEdit) && scope.row.status === 'init',
                   command: () => handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'edit')
                 },
                 {
                   title: '审核',
-                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseAudit) && scope.row.audit_status === 'init',
+                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseAudit) && scope.row.status === 'init',
                   command: () => handleShowForm('FormAudit', { ids: [scope.row.id] })
                 }
               ]"
@@ -115,7 +115,7 @@
           { label: '采购数量', key: 'num', width: '2', isShow: true },
           { label: '采购总金额', key: 'num_price', width: '3', isShow: true },
           { label: '采购人', key: 'purchaser', width: '2', isShow: false },
-          { label: '状态', key: 'audit_status', width: '2', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '采购日期', key: 'purchase_date', width: '3', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
@@ -139,7 +139,7 @@
       },
       //返回是否可选择
       returnAuditStatus(d){
-        return d.audit_status === 'init' ? true : false;
+        return d.status === 'init' ? true : false;
       }
     }
   };
