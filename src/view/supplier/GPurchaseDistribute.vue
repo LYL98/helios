@@ -3,12 +3,12 @@
     <query-supplier-g-purchase-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QuerySupplierGPurchaseDistribute"/>
     <table-supplier-g-purchase-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableSupplierGPurchaseDistribute"/>
     <add-edit-supplier-g-purchase-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditSupplierGPurchaseDistribute"/>
-    <form-supplier-g-purchase-distribute-audit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormSupplierGPurchaseDistributeAudit"/>
+    <form-audit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormAudit" page="SupplierGPurchaseDistribute" title="统采调拨单审核"/>
   </div>
 </template>
 
 <script>
-  import { QuerySupplierGPurchaseDistribute, TableSupplierGPurchaseDistribute, AddEditSupplierGPurchaseDistribute, FormSupplierGPurchaseDistributeAudit} from '@/container';
+  import { QuerySupplierGPurchaseDistribute, TableSupplierGPurchaseDistribute, AddEditSupplierGPurchaseDistribute, FormAudit} from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -17,7 +17,7 @@
       'query-supplier-g-purchase-distribute': QuerySupplierGPurchaseDistribute,
       'table-supplier-g-purchase-distribute': TableSupplierGPurchaseDistribute,
       'add-edit-supplier-g-purchase-distribute': AddEditSupplierGPurchaseDistribute,
-      'form-supplier-g-purchase-distribute-audit': FormSupplierGPurchaseDistributeAudit
+      'form-audit': FormAudit
     },
     mixins: [viewMixin],
     created() {

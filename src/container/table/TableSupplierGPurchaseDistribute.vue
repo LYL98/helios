@@ -66,7 +66,7 @@
                 {
                   title: '审核',
                   isDisplay: (auth.isAdmin || auth.SupplierGPurchaseDistributeAudit) && scope.row.audit_status === 'init',
-                  command: () => handleShowForm('FormSupplierGPurchaseDistributeAudit', scope.row)
+                  command: () => handleShowForm('FormAudit', {id: scope.row.id})
                 }
               ]"
             />

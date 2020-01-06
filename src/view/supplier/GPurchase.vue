@@ -3,12 +3,12 @@
     <query-supplier-g-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QuerySupplierGPurchase"/>
     <table-supplier-g-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableSupplierGPurchase"/>
     <add-edit-supplier-g-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditSupplierGPurchase"/>
-    <form-supplier-g-purchase-audit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormSupplierGPurchaseAudit"/>
+    <form-audit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormAudit" page="SupplierGPurchase" title="统采订单审核"/>
   </div>
 </template>
 
 <script>
-  import { QuerySupplierGPurchase, TableSupplierGPurchase, AddEditSupplierGPurchase, FormSupplierGPurchaseAudit} from '@/container';
+  import { QuerySupplierGPurchase, TableSupplierGPurchase, AddEditSupplierGPurchase, FormAudit} from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -17,7 +17,7 @@
       'query-supplier-g-purchase': QuerySupplierGPurchase,
       'table-supplier-g-purchase': TableSupplierGPurchase,
       'add-edit-supplier-g-purchase': AddEditSupplierGPurchase,
-      'form-supplier-g-purchase-audit': FormSupplierGPurchaseAudit
+      'form-audit': FormAudit
     },
     mixins: [viewMixin],
     created() {

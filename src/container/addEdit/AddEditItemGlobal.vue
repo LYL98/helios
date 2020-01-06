@@ -1,5 +1,5 @@
 <template>
-  <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <add-edit-layout :title="returnPageTitles('商品')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
       <h6 class="subtitle">基本信息</h6>
       <el-form-item label="商品图片" prop="images">
@@ -188,12 +188,6 @@ export default {
           { len: 8, message: '请选择至第三级分类', trigger: 'blur' }
         ],
       },
-      pageTitles: {
-        add: '新增商品',
-        edit: '修改商品',
-        detail: '商品详情'
-      },
-      pageType: 'add', //add, edit, detail
     }
   },
   methods: {

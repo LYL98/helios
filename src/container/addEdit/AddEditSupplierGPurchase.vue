@@ -1,15 +1,20 @@
 <template>
   <div>
-    <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <add-edit-layout :title="returnPageTitles('统采订单')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+        <div class="f-r" style="position: relative; right: -84px;" v-if="pageType === 'detail'">
+          <el-tag size="small" :type="auditStatusType[detail.audit_status]" disable-transitions>
+            {{auditStatus[detail.audit_status]}}
+          </el-tag>
+        </div>
         <h6 class="subtitle">采购信息</h6>
         <el-row>
           <el-form-item label="商品" prop="item_id">
-            <select-g-item v-model="detail.item_id" size="medium" supType="global_pur" @change="selectGItem" :disabled="detail.id ? true : false" filterable></select-g-item>
+            <select-g-item v-model="detail.item_id" size="medium" supType="global_pur" @change="selectGItem" :disabled="pageType !== 'add' ? true : false" filterable></select-g-item>
           </el-form-item>
-          <el-col :span="12">
-            <el-form-item label="供应商" prop="supplier_id">
-              <select-supplier supplierType="global_pur" size="medium" :itemId="detail.item_id" v-model="detail.supplier_id" :disabled="detail.id ? true : false"/>
+          <el-col :span="12" v-if="pageType === 'detail'">
+            <el-form-item label="统采单号">
+              <el-input size="medium" :value="detail.code" disabled placeholder="系统自动生成"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -17,8 +22,11 @@
               <el-date-picker size="medium" v-model="detail.purchase_date" value-format="yyyy-MM-dd" placeholder="采购日期" style="width: 100%;"/>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
+          <el-col :span="12">
+            <el-form-item label="供应商" prop="supplier_id">
+              <select-supplier supplierType="global_pur" size="medium" :itemId="detail.item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false"/>
+            </el-form-item>
+          </el-col>
           <el-col :span="12">
             <el-form-item label="采购数量" prop="num">
               <input-number size="medium" v-model="detail.num" unit="件" />
@@ -29,17 +37,17 @@
               <input-price size="medium" v-model="detail.price"/>
             </el-form-item>
           </el-col>
-        </el-row>
-        <!--含筐-->
-        <el-row v-if="detail.frame_code">
-          <el-col :span="12">
-            <el-form-item label="筐金额"><input-price size="medium" :value="detail.num * detail.frame_price" disabled/></el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="采购商品金额"><input-price size="medium" :value="detail.num * detail.price" disabled/></el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
+
+          <!--含筐-->
+          <template v-if="detail.frame_code">
+            <el-col :span="12">
+              <el-form-item label="筐金额"><input-price size="medium" :value="detail.num * detail.frame_price" disabled/></el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="采购商品金额"><input-price size="medium" :value="detail.num * detail.price" disabled/></el-form-item>
+            </el-col>
+          </template>
+
           <el-col :span="12">
             <el-form-item label="采购总金额">
               <input-price size="medium" :value="detail.num * detail.price + detail.num * detail.frame_price" disabled/>
@@ -63,11 +71,16 @@
         <h6 class="subtitle">操作记录</h6>
         <div style="padding: 0 30px;">
           <el-table :data="detail.logs" :row-class-name="highlightRowClassName">
+            <el-table-column type="expand">
+              <template slot-scope="scope">
+                <log-modified-detail :modifiedDetail="scope.row.modified_detail"/>
+              </template>
+            </el-table-column>
             <el-table-column prop="created" label="时间"></el-table-column>
             <el-table-column label="操作内容">
               <template slot-scope="scope">{{logTypes[scope.row.category]}}</template>
             </el-table-column>
-            <el-table-column prop="modified_attrs" label="备注"></el-table-column>
+            <el-table-column prop="remark" label="备注"></el-table-column>
             <el-table-column prop="operator_name" label="操作人"></el-table-column>
           </el-table>
         </div>
@@ -90,9 +103,9 @@
 
 <script>
 import addEditMixin from './add.edit.mixin';
-import { Http, Config } from '@/util';
+import { Http, Config, Constant } from '@/util';
 import { InputNumber, InputPrice } from '@/common';
-import { SelectSupplier, SelectGItem } from '@/component';
+import { SelectSupplier, SelectGItem, LogModifiedDetail } from '@/component';
 
 export default {
   name: "AddEditSupplierGPurchase",
@@ -101,7 +114,8 @@ export default {
     'select-supplier': SelectSupplier,
     'select-g-item': SelectGItem,
     'input-number': InputNumber,
-    'input-price': InputPrice
+    'input-price': InputPrice,
+    'log-modified-detail': LogModifiedDetail
   },
   created() {
   },
@@ -117,6 +131,8 @@ export default {
       logs: []
     }
     return {
+      auditStatus: Constant.AUDIT_STATUS(),
+      auditStatusType: Constant.AUDIT_STATUS_TYPE,
       initDetail: initDetail,
       detail: JSON.parse(JSON.stringify(initDetail)),
       rules: {
@@ -136,12 +152,6 @@ export default {
           { required: true, message: '请输入金额', trigger: 'change' },
         ],
       },
-      pageTitles: {
-        add: '新增统采订单',
-        edit: '修改统采订单',
-        detail: '统采订单详情'
-      },
-      pageType: 'add', //add, edit, detail
       logTypes: {
         edit: '修改',
         add: '新增',
@@ -153,13 +163,12 @@ export default {
   methods: {
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
+      this.$data.pageType = type || 'add';
       if(data){
         this.supplierGPurchaseDetail(data.id);
-        this.$data.pageType = type;
       }else{
         this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
         this.$data.isShow = true;
-        this.$data.pageType = 'add';
       }
     },
     //获取详情

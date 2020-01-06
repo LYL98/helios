@@ -3,7 +3,7 @@
     <div class="table-top" v-if="auth.isAdmin || auth.FinanceSBDetailAdd">
       <div class="left">
         <el-button v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAudit)"
-          @click="handleShowForm('FormFinanceSBDetailAudit', returnListKeyList('id', multipleSelection))" size="mini" type="primary"
+          @click="handleShowForm('FormAudit', returnListKeyList('id', multipleSelection))" size="mini" type="primary"
           :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
       </div>
       <div class="right">
@@ -67,7 +67,7 @@
                 {
                   title: '审核',
                   isDisplay: page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit) && scope.row.audit_status === 'init',
-                  command: () => handleShowForm('FormFinanceSBDetailAudit', [scope.row.id])
+                  command: () => handleShowForm('FormAudit', [scope.row.id])
                 }
               ]"
             />

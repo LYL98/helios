@@ -3,12 +3,12 @@
     <query-finance-s-b-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryFinanceSBDetail" page="sBDetailAudit"/>
     <table-finance-s-b-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableFinanceSBDetail" page="sBDetailAudit"/>
     <add-edit-finance-s-b-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditFinanceSBDetail"/>
-    <audit-finance-s-b-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormFinanceSBDetailAudit"/>
+    <form-audit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormAudit" page="FinanceSBDetail" title="供应商流水审核"/>
   </div>
 </template>
 
 <script>
-  import { QueryFinanceSBDetail, TableFinanceSBDetail, AddEditFinanceSBDetail, FormFinanceSBDetailAudit} from '@/container';
+  import { QueryFinanceSBDetail, TableFinanceSBDetail, AddEditFinanceSBDetail, FormAudit} from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -17,7 +17,7 @@
       'query-finance-s-b-detail': QueryFinanceSBDetail,
       'table-finance-s-b-detail': TableFinanceSBDetail,
       'add-edit-finance-s-b-detail': AddEditFinanceSBDetail,
-      'audit-finance-s-b-detail': FormFinanceSBDetailAudit
+      'form-audit': FormAudit
     },
     mixins: [viewMixin],
     created() {

@@ -1,12 +1,12 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.SupplierGPurchaseAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.SupplierGPurchaseAdd || auth.SupplierGPurchaseAudit || auth.SupplierGPurchaseExport">
       <div class="left">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAudit" @click="handleShowAddEdit('AddEditSupplierGPurchase')" size="mini" type="primary"
+        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAudit" @click="handleShowForm('FormAudit', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
         :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
       </div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseExport" @click.native="handleExport('SupplierGPurchaseExport', query)" size="mini" type="primary" plain>导出统采单</el-button>
+        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseExport" @click.native="handleExport('supplierGPurchaseExport', query)" size="mini" type="primary" plain>导出统采单</el-button>
         <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAdd" @click="handleShowAddEdit('AddEditSupplierGPurchase')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
@@ -22,7 +22,7 @@
         @selection-change="handleSelectionChange"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="selection" :selectable="returnAuditStatus" width="42" v-if="(auth.isAdmin || auth.FinanceSBDetailAudit)"></el-table-column>
+        <el-table-column type="selection" :selectable="returnAuditStatus" width="42" v-if="(auth.isAdmin || auth.SupplierGPurchaseAudit)"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
@@ -71,7 +71,7 @@
                 {
                   title: '审核',
                   isDisplay: (auth.isAdmin || auth.SupplierGPurchaseAudit) && scope.row.audit_status === 'init',
-                  command: () => handleShowForm('FormSupplierGPurchaseAudit', scope.row)
+                  command: () => handleShowForm('FormAudit', { ids: [scope.row.id] })
                 }
               ]"
             />

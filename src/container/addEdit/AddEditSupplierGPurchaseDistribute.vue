@@ -1,6 +1,6 @@
 <template>
   <div>
-    <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <add-edit-layout :title="returnPageTitles('统采调拨单')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="选择入库单" prop="id">
           <select-in-stock size="medium" v-model="detail.id" style="width: 480px;" @change="selectInStock" :disabled="judgeOrs(pageType, ['edit', 'detail'])"/>
@@ -78,13 +78,7 @@ export default {
         id: [
           { required: true, message: '请选择入库单', trigger: 'change' }
         ]
-      },
-      pageTitles: {
-        add: '新增统采调拨单',
-        edit: '修改统采调拨单',
-        detail: '统采调拨单详情'
-      },
-      pageType: 'add', //add, edit, detail
+      }
     }
   },
   methods: {

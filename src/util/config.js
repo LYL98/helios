@@ -67,6 +67,7 @@ const Config = (() => {
       supplierGPurchaseEdit: apiM + '/supplier/g_purchase/edit', //新增统采订单， 同时会附带生成入库单
       supplierGPurchaseAudit: apiM + '/supplier/g_purchase/audit', //统采采购单审核
       supplierGPurchaseDetail: apiM + '/supplier/g_purchase/detail', //统采采购单详情
+      supplierGPurchaseExport: apiM + '', //统采采购单导出
 
       //统采调拨单
       supplierInStockList: apiM + '/supplier/in_stock/list', //入库单列表(暂时，供统采调拨单用)
@@ -80,6 +81,10 @@ const Config = (() => {
       //地采
       supplierLocalPurchaseQuery: apiM + '/from_supplier/order/query', //地采订单
       supplierLocalPurchaseDetail: apiM + '/from_supplier/order/detail', //统采采购单详情
+      supplierLocalPurchaseAdd: apiM + '/from_supplier/order/add', //地采新增
+      supplierLocalPurchaseEdit: apiM + '/from_supplier/order/edit', //地采修改
+      supplierLocalPurchaseAudit: apiM + '/from_supplier/order/audit', //地采新增
+      supplierLocalPurchaseExport: apiM + '', //地采导出
 
       //商品池
       pItemAdd: apiM + '/p_item/add', //新商品资料添加

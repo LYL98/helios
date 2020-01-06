@@ -1,6 +1,6 @@
 <template>
   <div>
-    <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <add-edit-layout :title="returnPageTitles('供应商')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <h6 class="subtitle">基本信息</h6>
         <el-form-item label="供应商类型" prop="supplier_type">
@@ -173,12 +173,6 @@ export default {
           { validator: validBankAccount, trigger: 'blur' }
         ],
       },
-      pageTitles: {
-        add: '新增供应商',
-        edit: '修改供应商',
-        detail: '供应商详情'
-      },
-      pageType: 'add', //add, edit, detail
     }
   },
   methods: {

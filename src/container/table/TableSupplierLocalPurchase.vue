@@ -1,5 +1,16 @@
 <template>
   <div class="container-table">
+    <!--头部-->
+    <div class="table-top" v-if="auth.isAdmin || auth.SupplierLocalPurchaseAdd || auth.SupplierLocalPurchaseAudit || auth.SupplierLocalPurchaseExport">
+      <div class="left">
+        <el-button v-if="auth.isAdmin || auth.SupplierLocalPurchaseAudit" @click="handleShowForm('FormAudit', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
+        :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
+      </div>
+      <div class="right">
+        <el-button v-if="auth.isAdmin || auth.SupplierLocalPurchaseExport" @click.native="handleExport('supplierLocalPurchaseExport', query)" size="mini" type="primary" plain>导出地采单</el-button>
+        <el-button v-if="auth.isAdmin || auth.SupplierLocalPurchaseAdd" @click="handleShowAddEdit('AddEditSupplierLocalPurchase', null, 'add')" size="mini" type="primary">新增</el-button>
+      </div>
+    </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
@@ -9,8 +20,10 @@
         class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
+        @selection-change="handleSelectionChange"
         :current-row-key="clickedRow[rowIdentifier]"
       >
+        <el-table-column type="selection" :selectable="returnAuditStatus" width="42" v-if="(auth.isAdmin || auth.SupplierLocalPurchaseAudit)"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
@@ -48,6 +61,16 @@
                   title: '详情',
                   isDisplay: auth.isAdmin || auth.SupplierLocalPurchaseDetail,
                   command: () => handleShowAddEdit('AddEditSupplierLocalPurchase', scope.row, 'detail')
+                },
+                {
+                  title: '修改',
+                  isDisplay: (auth.isAdmin || auth.SupplierLocalPurchaseEdit) && scope.row.audit_status === 'init',
+                  command: () => handleShowAddEdit('AddEditSupplierLocalPurchase', scope.row, 'edit')
+                },
+                {
+                  title: '审核',
+                  isDisplay: (auth.isAdmin || auth.SupplierLocalPurchaseAudit) && scope.row.audit_status === 'init',
+                  command: () => handleShowForm('FormAudit', { ids: [scope.row.id] })
                 }
               ]"
             />
@@ -112,6 +135,10 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+      //返回是否可选择
+      returnAuditStatus(d){
+        return d.audit_status === 'init' ? true : false;
+      }
     }
   };
 </script>
