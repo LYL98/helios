@@ -5,4 +5,3 @@ export { default as SelectItem } from './SelectItem';
 export { default as SelectInStock } from './SelectInStock';
 export { default as SelectLineOperate } from './SelectLineOperate';
 export { default as SelectStorehouse } from './SelectStorehouse';
-export { default as SelectWarehouse } from './SelectWarehouse';

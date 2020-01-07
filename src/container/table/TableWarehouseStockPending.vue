@@ -11,10 +11,9 @@
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
-        style="width: 100%"
         class="list-table my-table-float"
         :highlight-current-row="true"
-        :row-key="rowIdentifier"
+        :row-key="getRowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
@@ -25,7 +24,7 @@
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
                 <div v-if="auth.isAdmin || auth.WarehouseStockPendingDetail"
-                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail')">
+                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + tabValue)">
                   {{scope.row.code}}
                 </div>
                 <div class="td-item add-dot2" v-else>
@@ -41,7 +40,7 @@
                 {{scope.row.purchase_date || scope.row.order_date || scope.row.available_date}}
               </div>
               <!--调出仓、调入仓-->
-              <div v-else-if="judgeOrs(item.key, ['src_store_house', 'tar_store_house'])" class="td-item add-dot2">{{scope.row[item.key].title}}件</div>
+              <div v-else-if="judgeOrs(item.key, ['src_store_house', 'tar_store_house'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--状态-->
               <div class="td-item add-dot2" v-else-if="item.key === 'status'">
                 <el-tag size="small" :type="inventoryStatusType[scope.row.status]" disable-transitions>
@@ -62,12 +61,12 @@
                 {
                   title: '入库',
                   isDisplay: auth.isAdmin || auth.WarehouseStockPendingAdd,
-                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add')
+                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add_' + tabValue)
                 },
                 {
                   title: '详情',
                   isDisplay: auth.isAdmin || auth.WarehouseStockPendingDetail,
-                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail')
+                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + tabValue)
                 },
                 {
                   title: '打印',
@@ -114,6 +113,10 @@
       }
     },
     methods: {
+      //key
+      getRowIdentifier(row){
+        return row.id + (row.order_type || '');
+      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
@@ -133,10 +136,13 @@
       //处理表头
       handleTableColumn(){
         let { tableColumn, tabValue } = this;
+        this.$data.dataItem = {
+          items: [],
+          num: 0
+        };
         tableColumn = [
           { label: '采购单号', key: 'code', width: '3', isShow: true },
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true }
-          
         ];
         //采购
         if(tabValue === 'purchase'){
@@ -162,6 +168,7 @@
         ]);
         this.$data.tableColumn = tableColumn;
         let pc = this.getPageComponents('QueryWarehouseStockPending');
+        pc.$data.query.page = 1;
         this.getData(pc.query);
       },
     }

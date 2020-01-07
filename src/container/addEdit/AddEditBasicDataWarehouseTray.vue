@@ -38,15 +38,17 @@ export default {
   components: {
   },
   data(){
-    return{
-      initDetail: {
+    let initDetail = {
+      code: '',
+      warehouse_id: '',
+      warehouse: {
         code: '',
-        warehouse_id: '',
-        warehouse: {
-          code: '',
-          storehouse: {}
-        }
-      },
+        storehouse: {}
+      }
+    }
+    return{
+      initDetail: initDetail,
+      detail: this.copyJson(initDetail),
       rules: {
         title: [
             { required: true, message: '名称不能为空', trigger: 'change' }

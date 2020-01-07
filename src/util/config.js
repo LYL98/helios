@@ -212,6 +212,7 @@ const Config = (() => {
       //仓库待入库
       supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括统采和地采订单
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
+      supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
 
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
@@ -247,6 +248,7 @@ const Config = (() => {
       baseOrderShipList: apiM + '/common/shipper/list', //快递公司列表 （订单手动发货时用）
       baseStorehouseList: apiM + '/common/storehouse/list', //获取仓列表（组件共用）
       baseWarehouseList: apiM + '/common/warehouse/list', //获取库列表（组件共用）
+      baseWareTrayList: apiM + '/common/ware_tray/list', //获取临库、托盘列表（组件共用）
 
       basicdataProvinceAdd: apiM + '/basicdata/province/add', //省新增
       basicdataProvinceEdit: apiM + '/basicdata/province/edit', //省修改

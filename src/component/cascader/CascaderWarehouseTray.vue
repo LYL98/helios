@@ -1,13 +1,13 @@
 <template>
   <el-cascader
-    :options="systemClassTree"
+    :options="dataTree"
     :size="size"
     style="width: 100%"
     :clearable="clearable"
     expand-trigger="hover"
-    :props="systemClassProps"
-    @change="onChang"
-    placeholder="请选择科学分类"
+    :props="dataProps"
+    @change="handleChange"
+    :placeholder="placeholder"
     :value="value"
     popper-class="my-cascader"
   ></el-cascader>
@@ -28,10 +28,7 @@ export default {
     this.baseSystemClassListTree();
   },
   props: {
-    value: {type: Array, default: []},
-    size: {type: String, default: ''},
-    hasAllSelection: { type: Boolean, default: false },
-    clearable: { type: Boolean, default: false }
+    placeholder: { type: String, default: '请选择仓/库/托盘' }
   },
   model: {
     prop: 'value',
@@ -39,56 +36,45 @@ export default {
   },
   data() {
     return {
-      systemClassProps: {
+      dataProps: {
         value: 'code',
         label: 'title',
         children: 'childs',
         checkStrictly: true
       },
-      systemClassTree: []
+      dataTree: []
     };
   },
   methods: {
-    //获取所有科学分类
-    async baseSystemClassListTree(){
-      let res = await Http.get(Config.api.baseSystemClassListTree, {});
+    //获取仓列表
+    async getData(){
+      let res = await Http.get(Config.api.baseStorehouseList, {need_num: 50});
       if(res.code === 0){
         let rd = res.data;
-        let fun = (d) =>{
-          for(let i = 0; i < d.length; i++){
-            if(d[i].childs.length === 0){
-              delete d[i].childs;
-            }else{
-              fun(d[i].childs);
-            }
-          }
-        }
-        fun(rd);
-        this.$data.systemClassTree = rd;
-        typeof callback === 'function' && callback(rd);
+        this.$data.dataItem = rd;
       }else{
-        MessageBox.alert(res.message, '提示');
+        this.$messageBox.alert(res.message, '提示');
       }
     },
-    //选择改变
-    onChang(val) {
-      let data = {};
-      let { systemClassTree } = this;
-      if(val.length > 0){
-        let fun = (d) =>{
-          for(let i = 0; i < d.length; i++){
-            if(d[i].code === val[val.length - 1]){
-              data = d[i];
-              break;
-            }
-            if(d[i].childs){
-              fun(d[i].childs);
-            }
-          }
-        }
-        fun(systemClassTree);
+    //获取库列表
+    async baseWarehouseList(){
+      let res = await Http.get(Config.api.baseWarehouseList, {need_num: 50});
+      if(res.code === 0){
+        let rd = res.data;
+        this.$data.dataItem = rd;
+      }else{
+        this.$messageBox.alert(res.message, '提示');
       }
-      this.$emit('change', val, data);
+    },
+    //获取临库、托盘列表
+    async baseWareTrayList(){
+      let res = await Http.get(Config.api.baseWareTrayList, {need_num: 1000});
+      if(res.code === 0){
+        let rd = res.data;
+        this.$data.dataItem = rd;
+      }else{
+        this.$messageBox.alert(res.message, '提示');
+      }
     },
   },
 };
