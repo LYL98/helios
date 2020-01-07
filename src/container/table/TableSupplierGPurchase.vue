@@ -81,7 +81,8 @@
     </div>
     <div class="table-bottom">
       <div class="left">
-        <!--<el-button type="danger" size="mini" disabled>批量删除</el-button>-->
+        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAudit" @click="handleShowForm('FormAudit', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
+        :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
       </div>
       <div class="right">
         <pagination :pageComponent='this'/>

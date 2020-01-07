@@ -1,10 +1,10 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.WarehouseInventoryAdd || auth.WarehouseInventoryAudit || auth.WarehouseInventoryExport">
-      <div class="left"></div>
-      <div class="right">
-        <el-button v-if="auth.isAdmin || auth.WarehouseInventoryExport" @click.native="handleExport('inventoryExport', query)" size="mini" type="primary" plain>导出库存</el-button>
+    <div class="table-top">
+      <div class="left">
+        <query-tabs v-model="query.status" @change="getData(query)" :tab-panes="{'采购': 'a', '调拨': 'b'}"/>
       </div>
+      <div class="right"></div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -24,13 +24,17 @@
             <div slot-scope="scope" class="my-td-item">
               <!--商品名称-->
               <div v-if="item.key === 'item'" class="td-item add-dot2">
-                <div v-if="auth.isAdmin || auth.WarehouseInventoryDetail"
-                  class="td-item link-item add-dot2" @click="handleShowDetail('DetailWarehouseInventory', scope.row, 'detail')">
+                <div v-if="auth.isAdmin || auth.WarehouseStockPendingDetail"
+                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail')">
                   {{scope.row.item.code}}<br/>{{scope.row.item.title}}
                 </div>
                 <div class="td-item add-dot2" v-else>
                   {{scope.row.item.code}}<br/>{{scope.row.item.title}}
                 </div>
+              </div>
+              <!--供应商-->
+              <div v-else-if="item.key === 'supplier'" class="td-item add-dot2">
+                <!--{{scope.row.supplier.title}}-->123
               </div>
               <!--科学分类-->
               <div class="td-item add-dot2" v-else-if="item.key === 'system_class'">苹果</div>
@@ -41,16 +45,26 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="74">
+        <el-table-column label="操作" width="140">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '管理',
-                  isDisplay: auth.isAdmin || auth.WarehouseInventoryDetail,
-                  command: () => handleShowDetail('DetailWarehouseInventory', scope.row, 'detail')
+                  title: '入库',
+                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingAdd,
+                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add')
+                },
+                {
+                  title: '详情',
+                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingDetail,
+                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail')
+                },
+                {
+                  title: '打印',
+                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
+                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail')
                 },
               ]"
             />
@@ -71,23 +85,29 @@
 <script>
   import { Http, Config } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
+  import queryTabs from './QueryTabs';
 
   export default {
-    name: 'TableWarehouseInventory',
+    name: 'TableWarehouseStockPending',
     components: {
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryWarehouseInventory');
+      let pc = this.getPageComponents('QueryWarehouseStockPending');
       this.getData(pc.query);
     },
     data() {
       return {
-        tableName: 'TableWarehouseInventory',
+        tableName: 'TableWarehouseStockPending',
         tableColumn: [
+          { label: '采购单号', key: 'code', width: '3', isShow: true },
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-          { label: '科学分类', key: 'system_class', width: '3', isShow: true },
-          { label: '库存', key: 'inventory', width: '3', isShow: true },
+          { label: '供应商', key: 'supplier', width: '3', isShow: true },
+          { label: '采购数量', key: 'inventory', width: '2', isShow: true },
+          { label: '采购日期', key: 'inventory', width: '3', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true },
+          { label: '入库数量', key: 'num', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],

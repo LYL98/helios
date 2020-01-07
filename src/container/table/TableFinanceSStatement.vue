@@ -66,7 +66,9 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left"></div>
+      <div class="left">
+        <el-button v-if="auth.isAdmin || auth.FinanceSStatementPay" :disabled="multipleSelection.length === 0 ? true : false" @click="supplierStatementPay('batch')" size="mini" type="primary">批量结款</el-button>
+      </div>
       <div class="right">
         <pagination :pageComponent='this'/>
       </div>

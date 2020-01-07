@@ -38,3 +38,5 @@ export { default as AddEditSystemBanner } from './AddEditSystemBanner';
 
 export { default as AddEditFinanceSBDetail } from './AddEditFinanceSBDetail';
 
+export { default as AddEditWarehouseStockPending } from './AddEditWarehouseStockPending';
+

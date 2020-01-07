@@ -77,7 +77,10 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left"></div>
+      <div class="left">
+        <el-button type="primary" size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelete('multi')" v-if="(auth.isAdmin || auth.GroupItemDelete) && page === 'item'">批量删除</el-button>
+        <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleRecover('multi')" v-if="(auth.isAdmin || auth.GroupItemRecover) && page === 'recover'">批量恢复</el-button>
+      </div>
       <div class="right">
         <pagination :pageComponent='this'/>
       </div>

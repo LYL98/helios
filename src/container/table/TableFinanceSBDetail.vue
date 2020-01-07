@@ -76,7 +76,11 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left"></div>
+      <div class="left">
+        <el-button v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAudit)"
+          @click="handleShowForm('FormAudit', returnListKeyList('id', multipleSelection))" size="mini" type="primary"
+          :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
+      </div>
       <div class="right">
         <pagination :pageComponent='this'/>
       </div>

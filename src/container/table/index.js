@@ -54,3 +54,4 @@ export { default as TableSupplierGPurchaseDistribute } from './TableSupplierGPur
 export { default as TableSupplierLocalPurchase } from './TableSupplierLocalPurchase';
 
 export { default as TableWarehouseInventory } from './TableWarehouseInventory';
+export { default as TableWarehouseStockPending } from './TableWarehouseStockPending';

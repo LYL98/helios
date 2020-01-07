@@ -99,9 +99,7 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left">
-        <!--<el-button type="danger" size="mini" disabled>批量删除</el-button>-->
-      </div>
+      <div class="left"></div>
       <div class="right">
         <pagination :pageComponent='this'/>
       </div>

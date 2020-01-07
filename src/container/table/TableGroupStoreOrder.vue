@@ -75,7 +75,10 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left"></div>
+      <div class="left">
+        <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelivery('multi')" plain v-if="auth.isAdmin || auth.GroupStoreOrderDelivery">批量发货</el-button>
+        <el-button size="mini" @click.native="handleDeliveryAll" type="primary" v-if="auth.isAdmin || auth.GroupStoreOrderDeliveryAll">一键发货</el-button>
+      </div>
       <div class="right">
         <pagination :pageComponent='this'/>
       </div>
