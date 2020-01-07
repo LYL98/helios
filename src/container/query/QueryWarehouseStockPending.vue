@@ -2,23 +2,37 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="科学分类">
-          <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass"/>
+        <my-query-item label="创建时间">
+          <el-date-picker
+            size="small"
+            v-model="query.picker_value"
+            type="daterange"
+            align="right"
+            value-format="yyyy-MM-dd"
+            unlink-panels
+            :picker-options="fixDateOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change="changePicker"
+            style="width: 100%;"
+          />
         </my-query-item>
       </el-col>
       <el-col :span="7">
-        <my-query-item label="仓库">
+        <my-query-item label="状态">
           <select-option
-            :options="{'全部': '', ...auditStatus}"
-            v-model="query.audit_status"
+            :options="inventoryStatus"
+            v-model="query.status"
             @change="handleQuery('TableWarehouseStockPending')"
             size="small"
+            clearable
           />
         </my-query-item>
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableWarehouseStockPending')" @reset="handleClearQuery('TableWarehouseStockPending')"/>
+          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseStockPending')" @reset="handleClearQuery('TableWarehouseStockPending')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -41,26 +55,42 @@
     },
     data() {
       let initQuery = {
-        system_class_codes: [],
-        system_class_code: '',
-        audit_status: '',
+        begin_date: '',
+        end_date: '',
+        status: '',
         condition: '',
-        status: 'a'
+        picker_value: null,
+        province_code: this.$province.code
       }
       return {
-        auditStatus: Constant.AUDIT_STATUS('value_key'),
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }
     },
-    methods: {
-      //选择科学分类
-      selectSystemClass(value, data){
-        if(value.length === 0){
-          this.$data.query.system_class_code = '';
-        }else{
-          this.$data.query.system_class_code = data.code;
+    computed: {
+      inventoryStatus: {
+        get(){
+          let d = Constant.INVENTORY_STATUS('value_key');
+          delete d['全部入库'];
+          return {
+            '全部': '',
+            ...d
+          };
         }
+      }
+    },
+    methods: {
+      //搜索日期
+      changePicker(value){
+        if(value && value.length === 2){
+          this.query.begin_date = value[0];
+          this.query.end_date = value[1];
+        }else{
+          this.query.begin_date = '';
+          this.query.end_date = '';
+        }
+        this.query.page = 1;
+        this.$data.query = this.query;
         this.handleQuery('TableWarehouseStockPending');
       },
     }

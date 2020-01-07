@@ -209,6 +209,10 @@ const Config = (() => {
       inventoryQuery: apiM + '', //库存列表
       inventoryExport: apiM + '', //库存导出
 
+      //仓库待入库
+      supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括统采和地采订单
+      supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
+
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
       groupBannerEdit: apiM + '/gb_basicdata/banner/edit', //banner修改
