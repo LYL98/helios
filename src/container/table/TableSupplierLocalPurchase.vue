@@ -39,12 +39,9 @@
               <div v-else-if="item.key === 'num_price'" class="td-item add-dot2">&yen;{{returnPrice(scope.row.num * scope.row.price_buy + scope.row.num * scope.row.frame_price)}}</div>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'status'">
-                <el-tag size="small" type="info" disable-transitions>全部入库</el-tag>
-                <!--
                 <el-tag size="small" :type="purchaseStatusType[scope.row.status]" disable-transitions>
                   {{purchaseStatus[scope.row.status]}}
                 </el-tag>
-                -->
               </div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>

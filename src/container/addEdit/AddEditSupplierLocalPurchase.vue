@@ -65,7 +65,7 @@
             </el-table-column>
             <el-table-column prop="created" label="入库时间"></el-table-column>
             <el-table-column prop="status" label="状态">
-              <template slot-scope="scope">{{scope.row.id}}已入库</template>
+              <template slot-scope="scope">{{inventoryStatus[scope.row.status]}}</template>
             </el-table-column>
           </el-table>
         </div>
@@ -135,6 +135,7 @@ export default {
     return {
       purchaseStatus: Constant.PURCHASE_STATUS(),
       purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
+      inventoryStatus: Constant.INVENTORY_STATUS(),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       rules: {
@@ -156,7 +157,8 @@ export default {
       },
       logTypes: {
         edit: '修改',
-        add: '新增',
+        auto_add: '自动新增',
+        manual_add: '手动新增',
         audit_suc: '审核通过',
         audit_fail: '审核不通过'
       }

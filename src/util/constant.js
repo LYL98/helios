@@ -392,6 +392,19 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
+  //入库单状态
+  INVENTORY_STATUS: (type)=>{
+    let data = [
+      { key: 'part_in', value: '部分入库' },
+      { key: 'all_in', value: '全部入库' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //入库单状态
+  INVENTORY_STATUS_TYPE: {
+    part_in: 'info',
+    all_in: 'info'
+  },
 };
 
 //处理key value
