@@ -4,12 +4,10 @@
     :size="size"
     style="width: 100%"
     :clearable="clearable"
-    expand-trigger="hover"
     :props="dataProps"
     @change="handleChange"
     :placeholder="placeholder"
-    :value="value"
-    popper-class="my-cascader"
+    v-model="selectIds"
   ></el-cascader>
 </template>
 
@@ -25,53 +23,70 @@ export default {
     'el-cascader': Cascader
   },
   created(){
-    this.baseSystemClassListTree();
   },
   props: {
     placeholder: { type: String, default: '请选择仓/库/托盘' }
   },
-  model: {
-    prop: 'value',
-    event: 'ev'
-  },
   data() {
+    let that = this;
     return {
       dataProps: {
-        value: 'code',
+        value: 'id',
         label: 'title',
-        children: 'childs',
-        checkStrictly: true
+        children: 'children',
+        lazy: true,
+        lazyLoad (node, resolve) {
+          that.getData(node, resolve, (data)=>{
+            const nodes = data.map(item => ({
+              id: item.id,
+              title: item.title,
+              leaf: node.level >= 2
+            }));
+            // 通过调用resolve将子节点数据返回，通知组件数据加载完成
+            resolve(nodes);
+          });
+        }
       },
       dataTree: []
     };
   },
   methods: {
     //获取仓列表
-    async getData(){
+    getData(node, resolve, callback){
+      if(node){
+        if(node.level === 1){
+          this.baseWarehouseList(node.value, callback);
+        }else if(node.level === 2){
+          this.baseWareTrayList(node.value, callback);
+        }
+      }else{
+        this.baseStorehouseList(callback);
+      }
+    },
+    //获取仓列表
+    async baseStorehouseList(callback){
       let res = await Http.get(Config.api.baseStorehouseList, {need_num: 50});
       if(res.code === 0){
-        let rd = res.data;
-        this.$data.dataItem = rd;
+        this.$data.dataTree = res.data;
+        //typeof callback === 'function' && callback(res.data);
       }else{
         this.$messageBox.alert(res.message, '提示');
       }
     },
     //获取库列表
-    async baseWarehouseList(){
-      let res = await Http.get(Config.api.baseWarehouseList, {need_num: 50});
+    async baseWarehouseList(storehouseId, callback){
+      let res = await Http.get(Config.api.baseWarehouseList, {storehouse_id: storehouseId, need_num: 50});
       if(res.code === 0){
-        let rd = res.data;
-        this.$data.dataItem = rd;
+        typeof callback === 'function' && callback(res.data);
       }else{
         this.$messageBox.alert(res.message, '提示');
       }
     },
     //获取临库、托盘列表
-    async baseWareTrayList(){
-      let res = await Http.get(Config.api.baseWareTrayList, {need_num: 1000});
+    async baseWareTrayList(warehouseId, callback){
+      let res = await Http.get(Config.api.baseWareTrayList, {storehouse_id: this.selectIds[0], warehouse_id: warehouseId, need_num: 1000});
       if(res.code === 0){
-        let rd = res.data;
-        this.$data.dataItem = rd;
+        typeof callback === 'function' && callback(res.data);
       }else{
         this.$messageBox.alert(res.message, '提示');
       }
@@ -82,19 +97,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-  .my-cascader{
-    .el-radio{
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      .el-radio__input{
-        width: 100%;
-        height: 34px;
-        .el-radio__inner{
-          opacity: 0;
-        }
-      }
-    }
-  }
 </style>

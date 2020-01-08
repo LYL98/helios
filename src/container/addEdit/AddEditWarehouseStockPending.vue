@@ -50,28 +50,31 @@
         <template v-if="judgeOrs(pageType, ['add_purchase', 'add_allot'])">
           <h6 class="subtitle">入库信息</h6>
           <el-row>
-            <el-col :span="12">
+            <el-col :span="10">
               <el-form-item label="生产日期">
-                <el-date-picker size="medium" v-model="inventoryData.produce_date" value-format="yyyy-MM-dd" placeholder="生产日期" style="width: 100%;"/>
+                <el-date-picker size="medium" v-model="inventoryData.produce_date" :disabled="inventoryData.produce_date_disabled" value-format="yyyy-MM-dd" placeholder="生产日期" style="width: 100%;"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row v-for="(item, index) in inventoryData.trays" :key="index">
-            <el-col :span="12">
+            <el-col :span="10">
               <el-form-item label="入库">
-                <cascader-warehouse-tray size="medium" :value="item.tray_ids"/>
+                <cascader-warehouse-tray size="medium" v-model="item.ids" @change="(value) => changeTray(value, index)"/>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="10">
               <el-form-item label="入库数量">
-                <input-number size="medium" :value="inventoryData.num" unit="件"/>
+                <input-number size="medium" v-model="item.num" unit="件"/>
               </el-form-item>
+            </el-col>
+            <el-col :span="2" v-if="index > 0">
+              <a href="javascript:void(0);" class="d-b" @click="deleteTray(index)" style="margin: 3px 0 0 10px;">删除</a>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
               <el-form-item label="">
-                <el-button @click.native="add" size="mini" type="primary" plain>添加仓库</el-button>
+                <el-button @click.native="addTray" size="mini" type="primary" plain>添加仓库</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -113,13 +116,18 @@ export default {
     }
     let initInventoryData = {
       province_code: this.$province.code,
+      produce_date_disabled: false,
       produce_date: '',
       in_type: '',
       relate_order_id: '',
       trays: [{
-        tray_ids: [],
+        ids: [],
+        ids_error: '',
+        storehouse_id: '',
+        warehouse_id: '',
         tray_id: '',
-        num: ''
+        num: '',
+        num_error: ''
       }]
     }
     return {
@@ -128,20 +136,8 @@ export default {
       initInventoryData: initInventoryData,
       inventoryData: this.copyJson(initInventoryData),
       rules: {
-        purchase_date: [
+        produce_date: [
           { required: true, message: '请选择采购日期', trigger: 'change' }
-        ],
-        supplier_id: [
-          { required: true, message: '请选择供应商', trigger: 'change' }
-        ],
-        item_id: [
-          {required: true, message: '请选择商品', trigger: 'change'},
-        ],
-        num: [
-          { required: true, message: '请输入件数', trigger: 'change' },
-        ],
-        price: [
-          { required: true, message: '请输入金额', trigger: 'change' },
         ],
       },
       pageTitles: {
@@ -157,12 +153,13 @@ export default {
     showAddEdit(data, type){
       this.$data.pageType = type;
       this.$data.detail = data;
-      this.$data.inventoryData = {
+      this.$data.inventoryData = this.copyJson({
         ...this.initInventoryData,
+        produce_date_disabled: data.produce_date ? true : false,
         produce_date: data.produce_date || '',
         in_type: data.order_type || 'distribute', //'global_pur', 'local_pur', 'distribute'
         relate_order_id: data.id,
-      };
+      });
       this.$data.isShow = true;
     },
     //提交数据
@@ -181,6 +178,33 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
+    //选择仓库
+    changeTray(value, index){
+      let { inventoryData } = this;
+      inventoryData.trays[index].storehouse_id = value[0];
+      inventoryData.trays[index].warehouse_id = value[1];
+      inventoryData.trays[index].tray_id = value[2];
+      inventoryData.trays[index].ids_error = '';
+      this.$data.inventoryData = inventoryData;
+    },
+    //添加仓库
+    addTray(){
+      this.inventoryData.trays.push({
+        ids: [],
+        ids_error: '',
+        storehouse_id: '',
+        warehouse_id: '',
+        tray_id: '',
+        num: '',
+        num_error: ''
+      });
+      this.$data.inventoryData = this.copyJson(this.inventoryData);
+    },
+    //删除仓库
+    deleteTray(index){
+      this.inventoryData.trays.remove(index);
+      this.$data.inventoryData = this.copyJson(this.inventoryData);
+    }
   },
 };
 </script>

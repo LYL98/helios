@@ -15,7 +15,7 @@ export default {
     }
   },
   props: {
-    clearable: { type: Boolean, default: false },
+    clearable: { type: Boolean, default: true },
     disabled: { type: Boolean, default: false },
     value: {type: Array, default: []},
     size: { type: String, default: '' },
@@ -25,6 +25,16 @@ export default {
   model: {
     prop: 'value',
     event: 'ev'
+  },
+  computed: {
+    selectIds: {
+      get(){
+        return this.value;
+      },
+      set(v){
+        this.$emit('change', v);
+      }
+    }
   },
   data() {
     return {
@@ -40,23 +50,7 @@ export default {
   methods: {
     //选择改变
     handleChange(val) {
-      let data = {};
-      let { dataTree } = this;
-      if(val.length > 0){
-        let fun = (d) =>{
-          for(let i = 0; i < d.length; i++){
-            if(d[i].code === val[val.length - 1]){
-              data = d[i];
-              break;
-            }
-            if(d[i].childs){
-              fun(d[i].childs);
-            }
-          }
-        }
-        fun(dataTree);
-      }
-      this.$emit('change', val, data);
+      //this.$emit('change', val);
     },
   },
 }
