@@ -55,3 +55,4 @@ export { default as TableSupplierLocalPurchase } from './TableSupplierLocalPurch
 
 export { default as TableWarehouseInventory } from './TableWarehouseInventory';
 export { default as TableWarehouseStockPending } from './TableWarehouseStockPending';
+export { default as TableWarehouseStock } from './TableWarehouseStock';

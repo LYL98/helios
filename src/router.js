@@ -154,6 +154,11 @@ const router = new Router({
       component: () => import('@/view/warehouse/StockPending')
     },
     {
+      path: '/warehouse/stock',
+      name: 'WarehouseStock',
+      component: () => import('@/view/warehouse/Stock')
+    },
+    {
       path: '/warehouse/inventory',
       name: 'WarehouseInventory',
       component: () => import('@/view/warehouse/Inventory')

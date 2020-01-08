@@ -401,11 +401,26 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
-  //入库单状态
+  //入库单状态(颜色)
   INVENTORY_STATUS_TYPE: {
     init: 'info',
     part_in: 'info',
     all_in: 'info'
+  },
+  //入库类型
+  INVENTORY_TYPES: (type)=>{
+    let data = [
+      { key: 'global_pur', value: '统采入库' },
+      { key: 'local_pur', value: '地采入库' },
+      { key: 'distribute', value: '调拨入库' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //入库类型(颜色)
+  INVENTORY_TYPES_TYPE: {
+    global_pur: 'info',
+    local_pur: 'info',
+    distribute: 'info'
   },
 };
 

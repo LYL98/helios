@@ -196,7 +196,7 @@
             name: 'WarehouseStockPending'
           },{
             title: '入库单',
-            name: 'Warehouse'
+            name: 'WarehouseStock'
           },{
             title: '库存',
             name: 'WarehouseInventory'
@@ -738,6 +738,13 @@
         font-size: 12px !important;
       }
     }
+  }
+
+  .subtitle{
+    color: #5A5D64;
+    margin-left: 30px;
+    font-size: 14px;
+    margin-bottom: 16px;
   }
 
   .custom-form{

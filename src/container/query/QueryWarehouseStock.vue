@@ -19,20 +19,9 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :span="7">
-        <my-query-item label="状态">
-          <select-option
-            :options="inventoryStatus"
-            v-model="query.status"
-            @change="handleQuery('TableWarehouseStockPending')"
-            size="small"
-            clearable
-          />
-        </my-query-item>
-      </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseStockPending')" @reset="handleClearQuery('TableWarehouseStockPending')"/>
+          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseStock')" @reset="handleClearQuery('TableWarehouseStock')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -40,14 +29,12 @@
 </template>
 
 <script>
-  import { SelectOption } from '@/common';
   import queryMixin from './query.mixin';
   import { Constant } from '@/util';
 
   export default {
-    name: "QueryWarehouseStockPending",
+    name: "QueryWarehouseStock",
     components: {
-      'select-option': SelectOption
     },
     mixins: [queryMixin],
     created() {
@@ -56,7 +43,6 @@
       let initQuery = {
         begin_date: '',
         end_date: '',
-        status: '',
         condition: '',
         picker_value: null,
         province_code: this.$province.code
@@ -64,18 +50,6 @@
       return {
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
-      }
-    },
-    computed: {
-      inventoryStatus: {
-        get(){
-          let d = Constant.INVENTORY_STATUS('value_key');
-          delete d['全部入库'];
-          return {
-            '全部': '',
-            ...d
-          };
-        }
       }
     },
     methods: {
@@ -90,7 +64,7 @@
         }
         this.query.page = 1;
         this.$data.query = this.query;
-        this.handleQuery('TableWarehouseStockPending');
+        this.handleQuery('TableWarehouseStock');
       },
     }
   }

@@ -40,9 +40,9 @@
             <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
-          <el-col :span="12">
             <el-form-item label="可售日期">{{detail.available_date}}</el-form-item>
           </el-col>
+          <el-col :span="12">
             <el-form-item label="可入库数量">{{detail.num - detail.num_in}}件</el-form-item>
           </el-col>
         </el-row>

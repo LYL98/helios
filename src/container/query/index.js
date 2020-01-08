@@ -55,3 +55,4 @@ export { default as QuerySupplierLocalPurchase } from './QuerySupplierLocalPurch
 
 export { default as QueryWarehouseInventory } from './QueryWarehouseInventory';
 export { default as QueryWarehouseStockPending } from './QueryWarehouseStockPending';
+export { default as QueryWarehouseStock } from './QueryWarehouseStock';

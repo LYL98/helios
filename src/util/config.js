@@ -214,6 +214,10 @@ const Config = (() => {
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
       supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
 
+      supInStockQuery: apiM + '/sup_in_stock/query', //查询入库单
+      supInStockDetail: apiM + '/sup_in_stock/detail', //入库单详情
+      supInStockExport: apiM + '/sup_in_stock/export', //入库单导出
+
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
       groupBannerEdit: apiM + '/gb_basicdata/banner/edit', //banner修改

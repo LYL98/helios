@@ -24,3 +24,5 @@ export { default as DetailOrderAfterSale } from './DetailOrderAfterSale';
 export { default as DetailSupplierListItem } from './DetailSupplierListItem';
 
 export { default as DetailWarehouseInventory } from './DetailWarehouseInventory';
+
+export { default as DetailWarehouseStock } from './DetailWarehouseStock';
