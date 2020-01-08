@@ -32,7 +32,7 @@ export default {
         return this.value;
       },
       set(v){
-        this.$emit('change', v);
+        this.$emit('ev', v);
       }
     }
   },
@@ -50,7 +50,7 @@ export default {
   methods: {
     //选择改变
     handleChange(val) {
-      //this.$emit('change', val);
+      this.$emit('change', val);
     },
   },
 }

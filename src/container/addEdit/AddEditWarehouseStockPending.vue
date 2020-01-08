@@ -51,7 +51,7 @@
           <h6 class="subtitle">入库信息</h6>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="生产日期">
+              <el-form-item label="生产日期" prop="produce_date">
                 <el-date-picker size="medium" v-model="inventoryData.produce_date" :disabled="inventoryData.produce_date_disabled" value-format="yyyy-MM-dd" placeholder="生产日期" style="width: 100%;"/>
               </el-form-item>
             </el-col>
@@ -60,14 +60,16 @@
             <el-col :span="10">
               <el-form-item label="入库">
                 <cascader-warehouse-tray size="medium" v-model="item.ids" @change="(value) => changeTray(value, index)"/>
+                <div v-if="item.ids_error" class="el-form-item__error">{{item.ids_error}}</div>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="入库数量">
-                <input-number size="medium" v-model="item.num" unit="件"/>
+                <input-number size="medium" v-model="item.num" unit="件" @change="inputNumChange(index)"/>
+                <div v-if="item.num_error" class="el-form-item__error">{{item.num_error}}</div>
               </el-form-item>
             </el-col>
-            <el-col :span="2" v-if="index > 0">
+            <el-col :span="2" v-if="inventoryData.trays.length > 0">
               <a href="javascript:void(0);" class="d-b" @click="deleteTray(index)" style="margin: 3px 0 0 10px;">删除</a>
             </el-col>
           </el-row>
@@ -164,7 +166,25 @@ export default {
     },
     //提交数据
     async addEditData(){
-      let { inventoryData, pageType } = this;
+      let { detail, inventoryData, pageType } = this;
+      let con = true, num = 0;
+      for(let i = 0; i < inventoryData.trays.length; i++){
+        if(!inventoryData.trays[i].num){
+          inventoryData.trays[i].num_error = '不能小于1件';
+          con = false;
+        }else{
+          num += inventoryData.trays[i].num;
+        }
+        if(!inventoryData.trays[i].tray_id){
+          inventoryData.trays[i].ids_error = '不能为空';
+          con = false;
+        }
+      }
+      if(num > detail.num - detail.num_in){
+        this.$message({message: `可入库数量只有${detail.num - detail.num_in}件`, type: 'error'});
+        con = false;
+      }
+      if(!con) return;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.supInStockAdd, inventoryData);
       this.$loading({isShow: false});
@@ -178,6 +198,14 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
+    //入库数量输入
+    inputNumChange(index){
+      let { inventoryData } = this;
+      if(inventoryData.trays[index].num_error){
+        inventoryData.trays[index].num_error = '';
+        this.$data.inventoryData = inventoryData;
+      }
+    },
     //选择仓库
     changeTray(value, index){
       let { inventoryData } = this;
@@ -185,7 +213,7 @@ export default {
       inventoryData.trays[index].warehouse_id = value[1];
       inventoryData.trays[index].tray_id = value[2];
       inventoryData.trays[index].ids_error = '';
-      this.$data.inventoryData = inventoryData;
+      this.$data.inventoryData = this.copyJson(inventoryData);
     },
     //添加仓库
     addTray(){
