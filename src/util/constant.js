@@ -395,7 +395,7 @@ const Constant = {
   //入库单状态
   INVENTORY_STATUS: (type)=>{
     let data = [
-      { key: 'init', value: '待入库' },
+      { key: 'success', value: '待入库' },
       { key: 'part_in', value: '部分入库' },
       { key: 'all_in', value: '全部入库' }
     ];
@@ -403,7 +403,7 @@ const Constant = {
   },
   //入库单状态(颜色)
   INVENTORY_STATUS_TYPE: {
-    init: 'info',
+    success: 'info',
     part_in: 'info',
     all_in: 'info'
   },

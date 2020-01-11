@@ -57,7 +57,7 @@ export default {
         if(node.level === 1){
           this.baseWarehouseList(node.value, callback);
         }else if(node.level === 2){
-          this.baseWareTrayList(node.value, callback);
+          this.baseWareTrayList(node.path[0], node.value, callback);
         }
       }else{
         this.baseStorehouseList(callback);
@@ -83,8 +83,8 @@ export default {
       }
     },
     //获取临库、托盘列表
-    async baseWareTrayList(warehouseId, callback){
-      let res = await Http.get(Config.api.baseWareTrayList, {storehouse_id: this.selectIds[0], warehouse_id: warehouseId, need_num: 1000});
+    async baseWareTrayList(storehouseId, warehouseId, callback){
+      let res = await Http.get(Config.api.baseWareTrayList, {storehouse_id: storehouseId, warehouse_id: warehouseId, need_num: 1000});
       if(res.code === 0){
         typeof callback === 'function' && callback(res.data);
       }else{

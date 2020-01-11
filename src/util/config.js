@@ -76,11 +76,11 @@ const Config = (() => {
       supplierGPurchaseDistributeAdd: apiM + '/supplier/distribute/add', //调拨单新增
       supplierGPurchaseDistributeEdit: apiM + '/supplier/distribute/edit', //调拨单修改
       supplierGPurchaseDistributeAudit: apiM + '/supplier/distribute/audit', //调拨单审核
-      supplierGPurchaseDistributeDetail: apiM + '/supplier/distribute/detail', //调拨单详情
+      supplierGPurchaseDistributeDetail: apiM + '/sup_distribute/detail', //调拨单详情
       
       //地采
       supplierLocalPurchaseQuery: apiM + '/from_supplier/order/query', //地采订单
-      supplierLocalPurchaseDetail: apiM + '/from_supplier/order/detail', //统采采购单详情
+      supplierLocalPurchaseDetail: apiM + '/from_supplier/order/detail', //地采购单详情
       supplierLocalPurchaseAdd: apiM + '/from_supplier/order/add', //地采新增
       supplierLocalPurchaseEdit: apiM + '/from_supplier/order/edit', //地采修改
       supplierLocalPurchaseAudit: apiM + '/from_supplier/order/audit', //地采新增
@@ -252,7 +252,7 @@ const Config = (() => {
       baseOrderShipList: apiM + '/common/shipper/list', //快递公司列表 （订单手动发货时用）
       baseStorehouseList: apiM + '/common/storehouse/list', //获取仓列表（组件共用）
       baseWarehouseList: apiM + '/common/warehouse/list', //获取库列表（组件共用）
-      baseWareTrayList: apiM + '/common/ware_tray/list', //获取临库、托盘列表（组件共用）
+      baseWareTrayList: apiM + '/common/ware_tray/list', //获取托盘列表（组件共用）
 
       basicdataProvinceAdd: apiM + '/basicdata/province/add', //省新增
       basicdataProvinceEdit: apiM + '/basicdata/province/edit', //省修改
