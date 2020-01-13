@@ -1,19 +1,55 @@
 <template>
-  <detail-layout title="售后单详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <el-table :data="dataItem.items" width="100%" :height="460">
-      <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
-      <el-table-column label="操作时间" prop="created" width="260"/>
-      <el-table-column label="操作内容" width="600">
-        <template slot-scope="scope">
-          <span v-if="scope.row.category === 'item_edit'">{{returnAttrStr(scope.row.modified_attrs)}}</span>
-          <span v-else>{{categorys[scope.row.category]}}</span>
+  <detail-layout title="库存管理" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <el-row style="margin: 10px 20px;">
+      <el-col :span="12">商品编号/名称：{{detail.p_item.title}}</el-col>
+      <el-col :span="12">总库存：{{detail.stock_num}}件</el-col>
+    </el-row>
+    <div style="margin: 0 20px;">
+      <el-table :data="dataItem.items" width="100%">
+        <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
+        <el-table-column label="批次" prop="batch_code"/>
+        <el-table-column label="供应商" prop="supplier_title" min-width="100"/>
+        <el-table-column label="库存" min-width="60">
+          <template slot-scope="scope">{{scope.row.num}}件</template>
+        </el-table-column>
+        <el-table-column label="仓库" prop="warehouse_title"/>
+        <el-table-column label="过期时间" prop="due_date"/>
+        <el-table-column label="操作" width="100">
+          <template>
+          <my-table-operate
+            :list="[
+              {
+                title: '盘点',
+                isDisplay: auth.isAdmin || auth.xxxx,
+                command: () => xxxx()
+              },
+              {
+                title: '变动',
+                isDisplay: auth.isAdmin || auth.xxxx,
+                command: () => xxxx()
+              },
+              {
+                title: '调拨',
+                isDisplay: auth.isAdmin || auth.xxxx,
+                command: () => xxxx()
+              },
+              {
+                title: '移库',
+                isDisplay: auth.isAdmin || auth.xxxx,
+                command: () => xxxx()
+              },
+              {
+                title: '出库',
+                isDisplay: auth.isAdmin || auth.xxxx,
+                command: () => xxxx()
+              }
+            ]"
+          />
         </template>
-      </el-table-column>
-      <el-table-column label="操作人">
-        <template slot-scope="scope">{{scope.row.operator.realname}}</template>
-      </el-table-column>
-    </el-table>
-    <div class="pagination-div" v-if="dataItem.num > 0">
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="pagination-div" v-if="dataItem.num > 0" style="margin: 20px;">
         <el-pagination
           background
           layout="total, sizes, prev, pager, next, jumper"
@@ -29,6 +65,7 @@
 </template>
 
 <script>
+  import { TableOperate } from '@/common';
   import detailMixin from './detail.mixin';
   import { Http, Config, Constant } from '@/util';
 
@@ -36,25 +73,24 @@
     name: "DetailWarehouseInventory",
     mixins: [detailMixin],
     components: {
+      'my-table-operate': TableOperate
     },
     data() {
+      let initDetail = {
+        p_item: {}
+      }
       return {
-        initDetail: {},
-        categorys: {
-          item_edit: '编辑商品',
-          item_add: '添加商品',
-          item_delete: '删除商品',
-          item_recover: '恢复商品'
-        },
         query: {
-          id: '',
+          p_item_id: '',
           page: 1,
           page_size: Constant.PAGE_SIZE,
         },
+        initDetail: initDetail,
+        detail: this.copyJson(initDetail),
         dataItem: {
           items: [],
           num: 0
-        },
+        }
       }
     },
     methods: {
@@ -65,21 +101,18 @@
           num: 0
         };
         this.$data.query.page = 1;
+        this.$data.query.p_item_id = data.p_item.id;
         if(data){
-          this.$data.detail = JSON.parse(JSON.stringify(data));
+          this.$data.detail = this.copyJson(data);
         }else{
-          this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+          this.$data.detail = this.copyJson(this.initDetail);
         }
-        
-        //获取明细列表
-        this.$data.query.id = data.id;
-        this.pItemModifyDetail();
+        this.wareTrayItemQeruy();
       },
       //获取明细列表
-      async pItemModifyDetail(){
+      async wareTrayItemQeruy(){
         this.$loading({isShow: true, isWhole: true});
-        let { query } = this;
-        let res = await Http.get(Config.api.pItemModifyDetail, query);
+        let res = await Http.get(Config.api.wareTrayItemQeruy, this.query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.isShow = true;
@@ -93,24 +126,14 @@
       changePageSize(pageSize) {
         this.$data.query.page_size = pageSize;
         this.$data.query.page = 1;
-        this.pItemModifyDetail();
+        this.wareTrayItemQeruy();
       },
 
       //翻页
       changePage(page) {
         this.$data.query.page = page;
-        this.pItemModifyDetail();
+        this.wareTrayItemQeruy();
       },
-
-      //返回str
-      returnAttrStr(list){
-        let str = '';
-        list.forEach(item => {
-          str += item + '/';
-        });
-        str = str.substring(0, str.length - 1);
-        return str;
-      }
     }
   }
 </script>

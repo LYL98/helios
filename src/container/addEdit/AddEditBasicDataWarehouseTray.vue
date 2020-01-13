@@ -3,15 +3,11 @@
     <add-edit-layout :title="returnPageTitles('托盘')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="110px" style="padding-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
         <h6 class="subtitle">库信息</h6>
-        <el-form-item label="库编号">{{detail.warehouse.code}}</el-form-item>
         <el-form-item label="库名称">{{detail.warehouse.title}}</el-form-item>
         <el-form-item label="所属仓">{{detail.warehouse.storehouse.title}}</el-form-item>
         <h6 class="subtitle" style="margin-top: 20px; margin-bottom: 20px;">托盘信息</h6>
         <el-form-item label="托盘编号" prop="code">
-          <el-input size="medium" :value="detail.code" placeholder="系统自动生成" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="托盘名称" prop="title">
-          <el-input size="medium" v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
+          <el-input size="medium" v-model="detail.code" placeholder="请输入30位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
       </el-form>
       <div style="margin-left: 110px; margin-top: 40px; margin-bottom: 20px;">
@@ -50,8 +46,8 @@ export default {
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       rules: {
-        title: [
-            { required: true, message: '名称不能为空', trigger: 'change' }
+        code: [
+            { required: true, message: '编号不能为空', trigger: 'change' }
         ]
       },
     }

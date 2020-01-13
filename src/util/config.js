@@ -206,8 +206,9 @@ const Config = (() => {
       groupOrderCancel: apiM + '/gb_activity/order/cancel', // 取消
 
       //仓库库存
-      inventoryQuery: apiM + '', //库存列表
-      inventoryExport: apiM + '', //库存导出
+      wareTrayQeruy: apiM + '/sup_stock/query', //查询库存
+      wareTrayItemQeruy: apiM + '/ware_tray_item/query', //查询具体托盘的库存
+      wareTrayExport: apiM + '', //库存导出
 
       //仓库待入库
       supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括统采和地采订单

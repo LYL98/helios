@@ -8,6 +8,9 @@
         <el-form-item label="所属省份" prop="province_code">
           <my-select-province size="medium" v-model="detail.province_code" nationwide/>
         </el-form-item>
+        <el-form-item label="地址" prop="address">
+          <el-input size="medium" v-model="detail.title" placeholder="请输入200位以内的字符" :maxlength="200"></el-input>
+        </el-form-item>
       </el-form>
       <div style="margin-left: 110px; margin-top: 40px; margin-bottom: 20px;">
         <template v-if="judgeOrs(pageType, ['add', 'edit'])">
@@ -43,7 +46,10 @@ export default {
         ],
         province_code: [
             { required: true, message: '请选择所属省份', trigger: 'change' }
-        ]
+        ],
+        address: [
+            { required: true, message: '请输入详细地址', trigger: 'change' }
+        ],
       },
     }
   },

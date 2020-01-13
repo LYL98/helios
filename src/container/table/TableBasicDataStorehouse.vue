@@ -4,7 +4,7 @@
     <div class="table-top" v-if="auth.isAdmin || auth.BasicDataStorehouseAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataStorehouse')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEditBasicDataStorehouse', null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -94,6 +94,7 @@
         tableColumn: [
           { label: '仓', key: 'title', width: '2', isShow: true },
           { label: '所属省份', key: 'province', width: '2', isShow: true },
+          { label: '地址', key: 'address', width: '3', isShow: true },
           { label: '创建时间', key: 'created', width: '1', isShow: true },
           { label: '更新时间', key: 'updated', width: '1', isShow: false },
         ]

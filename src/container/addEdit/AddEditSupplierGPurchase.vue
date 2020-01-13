@@ -3,8 +3,8 @@
     <add-edit-layout :title="returnPageTitles('统采订单')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <div class="f-r" style="position: relative; right: -84px;" v-if="pageType === 'detail'">
-          <el-tag size="small" :type="auditStatusType[detail.status]" disable-transitions>
-            {{auditStatus[detail.status]}}
+          <el-tag size="small" :type="purchaseStatusType[detail.status]" disable-transitions>
+            {{purchaseStatus[detail.status]}}
           </el-tag>
         </div>
         <h6 class="subtitle">采购信息</h6>
@@ -35,6 +35,11 @@
           <el-col :span="12">
             <el-form-item label="采购价" prop="price">
               <input-price size="medium" v-model="detail.price"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="送达仓" prop="storehouse_id">
+              <select-storehouse size="medium" v-model="detail.storehouse_id" />
             </el-form-item>
           </el-col>
 
@@ -105,7 +110,7 @@
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant } from '@/util';
 import { InputNumber, InputPrice } from '@/common';
-import { SelectSupplier, SelectGItem, LogModifiedDetail } from '@/component';
+import { SelectSupplier, SelectGItem, LogModifiedDetail, SelectStorehouse } from '@/component';
 
 export default {
   name: "AddEditSupplierGPurchase",
@@ -115,7 +120,8 @@ export default {
     'select-g-item': SelectGItem,
     'input-number': InputNumber,
     'input-price': InputPrice,
-    'log-modified-detail': LogModifiedDetail
+    'log-modified-detail': LogModifiedDetail,
+    'select-storehouse': SelectStorehouse
   },
   created() {
   },
@@ -123,6 +129,7 @@ export default {
     let initDetail = {
       purchase_date: '',
       supplier_id: '',
+      storehouse_id: '',
       item_id: '',
       num: '',
       price: '',
@@ -131,8 +138,8 @@ export default {
       logs: []
     }
     return {
-      auditStatus: Constant.AUDIT_STATUS(),
-      auditStatusType: Constant.AUDIT_STATUS_TYPE,
+      purchaseStatus: Constant.PURCHASE_STATUS(),
+      purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
       inventoryStatus: Constant.INVENTORY_STATUS(),
       initDetail: initDetail,
       detail: JSON.parse(JSON.stringify(initDetail)),
@@ -151,6 +158,9 @@ export default {
         ],
         price: [
           { required: true, message: '请输入金额', trigger: 'change' },
+        ],
+        storehouse_id: [
+          { required: true, message: '请选择送达仓', trigger: 'change' },
         ],
       },
       logTypes: {

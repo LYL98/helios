@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.WarehouseInventoryAdd || auth.WarehouseInventoryAudit || auth.WarehouseInventoryExport">
+    <div class="table-top" v-if="auth.isAdmin || auth.WarehouseInventoryExport">
       <div class="left"></div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.WarehouseInventoryExport" @click.native="handleExport('inventoryExport', query)" size="mini" type="primary" plain>导出库存</el-button>
+        <el-button @click.native="handleExport('wareTrayExport', query)" size="mini" type="primary" plain>导出库存</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -26,16 +26,16 @@
               <div v-if="item.key === 'item'" class="td-item add-dot2">
                 <div v-if="auth.isAdmin || auth.WarehouseInventoryDetail"
                   class="td-item link-item add-dot2" @click="handleShowDetail('DetailWarehouseInventory', scope.row, 'detail')">
-                  {{scope.row.item.code}}<br/>{{scope.row.item.title}}
+                  {{scope.row.p_item.code}}<br/>{{scope.row.p_item.title}}
                 </div>
                 <div class="td-item add-dot2" v-else>
-                  {{scope.row.item.code}}<br/>{{scope.row.item.title}}
+                  {{scope.row.p_item.code}}<br/>{{scope.row.p_item.title}}
                 </div>
               </div>
               <!--科学分类-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'system_class'">苹果</div>
+              <div class="td-item add-dot2" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
               <!--库存-->
-              <div class="td-item" v-else-if="item.key === 'inventory'">10000件</div>
+              <div class="td-item" v-else-if="item.key === 'inventory'">{{scope.row.stock_num}}件</div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
@@ -98,7 +98,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supplierGPurchaseQuery, query);
+        let res = await Http.get(Config.api.wareTrayQeruy, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

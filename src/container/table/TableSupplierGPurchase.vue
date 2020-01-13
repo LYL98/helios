@@ -43,8 +43,8 @@
               </div>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'status'">
-                <el-tag size="small" :type="auditStatusType[scope.row.status]" disable-transitions>
-                  {{auditStatus[scope.row.status]}}
+                <el-tag size="small" :type="purchaseStatusType[scope.row.status]" disable-transitions>
+                  {{purchaseStatus[scope.row.status]}}
                 </el-tag>
               </div>
               <!--正常情况-->
@@ -121,8 +121,8 @@
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
-        auditStatus: Constant.AUDIT_STATUS(),
-        auditStatusType: Constant.AUDIT_STATUS_TYPE,
+        purchaseStatus: Constant.PURCHASE_STATUS(),
+        purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
       }
     },
     methods: {

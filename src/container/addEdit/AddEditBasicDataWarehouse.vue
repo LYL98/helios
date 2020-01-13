@@ -6,7 +6,7 @@
           <el-input size="medium" v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
         <el-form-item label="所属仓" prop="storehouse_id">
-          <select-storehouse size="medium" v-model="detail.storehouse_id" />
+          <select-storehouse size="medium" v-model="detail.storehouse_id" :disabled="pageType === 'add' ? false : true" />
         </el-form-item>
       </el-form>
       <div style="margin-left: 110px; margin-top: 40px; margin-bottom: 20px;">

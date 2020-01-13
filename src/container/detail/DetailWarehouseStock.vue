@@ -9,7 +9,7 @@
           <el-form-item label="采购单号">{{detail.code}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="采购日期">{{detail.order_date || detail.purchase_date}}</el-form-item>
+          <el-form-item label="采购日期">{{detail.relate_order.order_date || detail.relate_order.purchase_date}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
@@ -42,16 +42,16 @@
 
       <h6 class="subtitle">入库信息</h6>
       <el-row>
-        <el-col :span="10">
-          <el-form-item label="生产日期">{{detail.produce_date}}</el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="12">
           <el-form-item label="入库单号">{{detail.code}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="入库类型">{{inventoryType[detail.in_type]}}</el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="10">
+          <el-form-item label="生产日期">{{detail.produce_date}}</el-form-item>
         </el-col>
       </el-row>
       <el-row v-for="(item, index) in detail.trays" :key="index">
@@ -87,6 +87,7 @@
     data() {
       let initDetail = {
         trays: [],
+        relate_order: {},
         creator: {}
       }
       return {

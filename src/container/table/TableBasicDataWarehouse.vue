@@ -4,7 +4,7 @@
     <div class="table-top" v-if="auth.isAdmin || auth.BasicDataWarehouseAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataWarehouse')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEditBasicDataWarehouse', null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -23,7 +23,7 @@
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
               <!--编号名称-->
-              <template v-if="item.key === 'code_title'">
+              <template v-if="item.key === 'title'">
                 <div class="td-item add-dot">
                   <div class="link-item add-dot" @click="handleShowDetail('DetailBasicDataWarehouse', scope.row)" v-if="auth.isAdmin || auth.BasicDataWarehouseDetail">
                     {{scope.row.title}}
@@ -97,8 +97,9 @@
       return {
         tableName: 'TableBasicDataWarehouse',
         tableColumn: [
-          { label: '编号/库', key: 'code_title', width: '2', isShow: true },
+          { label: '库', key: 'title', width: '2', isShow: true },
           { label: '所属仓', key: 'storehouse', width: '2', isShow: true },
+          { label: '托盘数', key: 'tray_num', width: '1', isShow: true },
           { label: '创建时间', key: 'created', width: '1', isShow: true },
           { label: '更新时间', key: 'updated', width: '1', isShow: false },
         ]
