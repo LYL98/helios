@@ -50,9 +50,9 @@ export { default as QuerySystemOperator } from './QuerySystemOperator';
 
 export { default as QuerySupplierList } from './QuerySupplierList';
 export { default as QuerySupplierGPurchase } from './QuerySupplierGPurchase';
-export { default as QuerySupplierGPurchaseDistribute } from './QuerySupplierGPurchaseDistribute';
 export { default as QuerySupplierLocalPurchase } from './QuerySupplierLocalPurchase';
 
 export { default as QueryWarehouseInventory } from './QueryWarehouseInventory';
 export { default as QueryWarehouseStockPending } from './QueryWarehouseStockPending';
 export { default as QueryWarehouseStock } from './QueryWarehouseStock';
+export { default as QueryWarehouseDistribute } from './QueryWarehouseDistribute';

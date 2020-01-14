@@ -201,7 +201,7 @@
             title: '库存',
             name: 'WarehouseInventory'
           },{
-            title: '统采调拨单',
+            title: '调拨单',
             name: 'WarehouseDistribute'
           }]
         },{

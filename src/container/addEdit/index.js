@@ -29,7 +29,6 @@ export { default as AddEditGroupItemClass } from './AddEditGroupItemClass';
 
 export { default as AddEditSupplierList } from './AddEditSupplierList';
 export { default as AddEditSupplierGPurchase } from './AddEditSupplierGPurchase';
-export { default as AddEditSupplierGPurchaseDistribute } from './AddEditSupplierGPurchaseDistribute';
 export { default as AddEditSupplierLocalPurchase } from './AddEditSupplierLocalPurchase';
 
 export { default as AddEditSystemRole } from './AddEditSystemRole';

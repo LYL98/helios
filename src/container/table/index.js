@@ -50,9 +50,9 @@ export { default as TableMerchantRefund } from './TableMerchantRefund';
 
 export { default as TableSupplierList } from './TableSupplierList';
 export { default as TableSupplierGPurchase } from './TableSupplierGPurchase';
-export { default as TableSupplierGPurchaseDistribute } from './TableSupplierGPurchaseDistribute';
 export { default as TableSupplierLocalPurchase } from './TableSupplierLocalPurchase';
 
 export { default as TableWarehouseInventory } from './TableWarehouseInventory';
 export { default as TableWarehouseStockPending } from './TableWarehouseStockPending';
 export { default as TableWarehouseStock } from './TableWarehouseStock';
+export { default as TableWarehouseDistribute } from './TableWarehouseDistribute';

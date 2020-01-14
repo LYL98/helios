@@ -68,15 +68,6 @@ const Config = (() => {
       supplierGPurchaseAudit: apiM + '/supplier/g_purchase/audit', //统采采购单审核
       supplierGPurchaseDetail: apiM + '/supplier/g_purchase/detail', //统采采购单详情
       supplierGPurchaseExport: apiM + '/supplier/g_purchase/export', //统采采购单导出
-
-      //统采调拨单
-      supplierInStockList: apiM + '/supplier/in_stock/list', //入库单列表(暂时，供统采调拨单用)
-      supplierInStockDetail: apiM + '/supplier/in_stock/detail', //入库单详情(暂时，供统采调拨单用)
-      supplierGPurchaseDistributeQuery: apiM + '/supplier/distribute/query', //调拨单查询
-      supplierGPurchaseDistributeAdd: apiM + '/supplier/distribute/add', //调拨单新增
-      supplierGPurchaseDistributeEdit: apiM + '/supplier/distribute/edit', //调拨单修改
-      supplierGPurchaseDistributeAudit: apiM + '/supplier/distribute/audit', //调拨单审核
-      supplierGPurchaseDistributeDetail: apiM + '/sup_distribute/detail', //调拨单详情
       
       //地采
       supplierLocalPurchaseQuery: apiM + '/from_supplier/order/query', //地采订单
@@ -210,10 +201,11 @@ const Config = (() => {
       wareTrayItemQeruy: apiM + '/ware_tray_item/query', //查询具体托盘的库存
       wareTrayExport: apiM + '', //库存导出
 
-      //仓库待入库
+      //仓库待入库、调拨单
       supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括统采和地采订单
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
       supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
+      supDistributeExport: apiM + '', //导出调拨单
 
       supInStockQuery: apiM + '/sup_in_stock/query', //查询入库单
       supInStockDetail: apiM + '/sup_in_stock/detail', //入库单详情

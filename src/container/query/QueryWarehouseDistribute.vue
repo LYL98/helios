@@ -2,6 +2,18 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
+        <my-query-item label="可售时间">
+          <el-date-picker
+            size="small"
+            v-model="query.available_date"
+            value-format="yyyy-MM-dd"
+            @change="handleQuery('TableWarehouseDistribute')"
+            placeholder="可售时间"
+            style="width: 100%;"
+          />
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="创建时间">
           <el-date-picker
             size="small"
@@ -19,20 +31,27 @@
           />
         </my-query-item>
       </el-col>
+      <el-col :span="10">
+        <my-query-item label="搜索">
+          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseDistribute')" @reset="handleClearQuery('TableWarehouseDistribute')"/>
+        </my-query-item>
+      </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="状态">
           <select-option
             :options="inventoryStatus"
             v-model="query.status"
-            @change="handleQuery('TableWarehouseStockPending')"
+            @change="handleQuery('TableWarehouseDistribute')"
             size="small"
             clearable
           />
         </my-query-item>
       </el-col>
-      <el-col :span="10">
-        <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseStockPending')" @reset="handleClearQuery('TableWarehouseStockPending')"/>
+      <el-col :span="7">
+        <my-query-item label="调出仓">
+          <select-storehouse size="small" v-model="query.storehouse_id" clearable filterable @change="handleQuery('TableWarehouseDistribute')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -43,17 +62,21 @@
   import { SelectOption } from '@/common';
   import queryMixin from './query.mixin';
   import { Constant } from '@/util';
+  import { SelectStorehouse } from '@/component';
 
   export default {
-    name: "QueryWarehouseStockPending",
+    name: "QueryWarehouseDistribute",
     components: {
-      'select-option': SelectOption
+      'select-option': SelectOption,
+      'select-storehouse': SelectStorehouse
     },
     mixins: [queryMixin],
     created() {
     },
     data() {
       let initQuery = {
+        storehouse_id: '',
+        available_date: '',
         begin_date: '',
         end_date: '',
         status: '',
@@ -71,7 +94,6 @@
       inventoryStatus: {
         get(){
           let d = Constant.INVENTORY_STATUS('value_key');
-          delete d['全部入库'];
           return {
             '全部': '',
             ...d
@@ -91,7 +113,7 @@
         }
         this.query.page = 1;
         this.$data.query = this.query;
-        this.handleQuery('TableWarehouseStockPending');
+        this.handleQuery('TableWarehouseDistribute');
       },
     }
   }

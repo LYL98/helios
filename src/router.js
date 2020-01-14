@@ -30,11 +30,6 @@ const router = new Router({
       component: () => import('@/view/supplier/GPurchase')
     },
     {
-      path: '/supplier/gpurchase/distribute',
-      name: 'SupplierGPurchaseDistribute',
-      component: () => import('@/view/supplier/GPurchaseDistribute')
-    },
-    {
       path: '/supplier/localpurchase',
       name: 'SupplierLocalPurchase',
       component: () => import('@/view/supplier/LocalPurchase')
@@ -162,6 +157,11 @@ const router = new Router({
       path: '/warehouse/inventory',
       name: 'WarehouseInventory',
       component: () => import('@/view/warehouse/Inventory')
+    },
+    {
+      path: '/warehouse/distribute',
+      name: 'WarehouseDistribute',
+      component: () => import('@/view/warehouse/Distribute')
     },
 
     /*配送*/

@@ -63,11 +63,6 @@ export default {
           api: Config.api.supplierLocalPurchaseAudit,
           table: 'TableSupplierLocalPurchase'
         },
-        //统采调拨订单
-        'SupplierGPurchaseDistribute': {
-          api: Config.api.supplierGPurchaseDistributeAudit,
-          table: 'TableSupplierGPurchaseDistribute'
-        },
         //供应商流水审核
         'FinanceSBDetail': {
           api: Config.api.financeSupBDetailAudit,
