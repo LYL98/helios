@@ -206,6 +206,7 @@ const Config = (() => {
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
       supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
       supDistributeExport: apiM + '', //导出调拨单
+      supDistributeDetail: apiM + '/sup_distribute/detail', //调拨单详情
 
       supInStockQuery: apiM + '/sup_in_stock/query', //查询入库单
       supInStockDetail: apiM + '/sup_in_stock/detail', //入库单详情

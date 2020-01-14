@@ -24,7 +24,7 @@
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
                 <div v-if="auth.isAdmin || auth.WarehouseDistributeDetail"
-                  class="td-item link-item add-dot2" @click="handleShowDetail('DetailWarehouseDistribute', scope.row, 'detail_' + tabValue)">
+                  class="td-item link-item add-dot2" @click="handleShowDetail('DetailWarehouseDistribute', scope.row)">
                   {{scope.row.code}}
                 </div>
                 <div class="td-item add-dot2" v-else>
