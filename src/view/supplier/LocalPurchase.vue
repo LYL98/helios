@@ -21,7 +21,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("供应商 - 地采订单");
+      documentTitle("采购 - 地采订单");
     },
   };
 </script>

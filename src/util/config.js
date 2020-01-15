@@ -212,6 +212,18 @@ const Config = (() => {
       supInStockDetail: apiM + '/sup_in_stock/detail', //入库单详情
       supInStockExport: apiM + '/sup_in_stock/export', //入库单导出
 
+      supCheckQuery: apiM + '/sup_check/query', //盘点查询(变动记录)
+      supModifyQuery: apiM + '/sup_modify/query', //变动查询(变动记录)
+      supDistributeRecordQuery: apiM + '/sup_p_distribute/query', //调拨单查询(变动记录)
+      supMoveQuery: apiM + '/sup_move/query', //移库查询(变动记录)
+      supOutQuery: apiM + '/sup_out/query', //出库单查询(变动记录)
+
+      supCheckDetail: apiM + '/sup_check/detail', //盘点查询(变动记录详情)
+      supModifyDetail: apiM + '/sup_modify/detail', //变动查询(变动记录详情)
+      supDistributeRecordDetail: apiM + '/sup_p_distribute/detail', //调拨单查询(变动记录详情)
+      supMoveDetail: apiM + '/sup_move/detail', //移库查询(变动记录详情)
+      supOutDetail: apiM + '/sup_out/detail', //出库单查询(变动记录详情)
+
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
       groupBannerEdit: apiM + '/gb_basicdata/banner/edit', //banner修改

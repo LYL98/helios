@@ -2,12 +2,23 @@
   <div>
     <query-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseInventoryMove"/>
     <table-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseInventoryMove"/>
-    <detail-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMove"/>
+    <detail-warehouse-inventory-move-check :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveCheck"/>
+    <detail-warehouse-inventory-move-variation :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveVariation"/>
+    <detail-warehouse-inventory-move-allot :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveAllot"/>
+    <detail-warehouse-inventory-move-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveMove"/>
+    <detail-warehouse-inventory-move-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveOutStorage"/>
   </div>
 </template>
-
 <script>
-  import { QueryWarehouseInventoryMove, TableWarehouseInventoryMove, DetailWarehouseInventoryMove } from '@/container';
+  import {
+    QueryWarehouseInventoryMove,
+    TableWarehouseInventoryMove,
+    DetailWarehouseInventoryMoveCheck,
+    DetailWarehouseInventoryMoveVariation,
+    DetailWarehouseInventoryMoveAllot,
+    DetailWarehouseInventoryMoveMove,
+    DetailWarehouseInventoryMoveOutStorage
+  } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -15,7 +26,11 @@
     components: {
       'query-warehouse-inventory-move': QueryWarehouseInventoryMove,
       'table-warehouse-inventory-move': TableWarehouseInventoryMove,
-      'detail-warehouse-inventory-move': DetailWarehouseInventoryMove
+      'detail-warehouse-inventory-move-check': DetailWarehouseInventoryMoveCheck,
+      'detail-warehouse-inventory-move-variation': DetailWarehouseInventoryMoveVariation,
+      'detail-warehouse-inventory-move-allot': DetailWarehouseInventoryMoveAllot,
+      'detail-warehouse-inventory-move-move': DetailWarehouseInventoryMoveMove,
+      'detail-warehouse-inventory-move-out-storage': DetailWarehouseInventoryMoveOutStorage,
     },
     mixins: [viewMixin],
     created() {

@@ -21,30 +21,36 @@
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
-              <!--采购编号、调拨单号-->
-              <div v-if="item.key === 'code'" class="td-item add-dot2">
+              <!--商品名称-->
+              <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
+              <!--批次-->
+              <div v-else-if="item.key === 'batch_code'" class="td-item add-dot2">
                 <div v-if="auth.isAdmin || auth.WarehouseInventoryMoveDetail"
-                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseInventoryMove', scope.row, 'detail_' + tabValue)">
-                  {{scope.row.code}}
+                  class="td-item link-item add-dot2" @click="handleShowDetail(types[tabValue].detail, scope.row)">
+                  {{scope.row.batch_code}}
                 </div>
                 <div class="td-item add-dot2" v-else>
-                  {{scope.row.code}}
+                  {{scope.row.batch_code}}
                 </div>
               </div>
-              <!--商品名称-->
-              <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
-              <!--采购、调拨数量、入库数量-->
-              <div v-else-if="judgeOrs(item.key, ['num', 'num_in'])" class="td-item add-dot2">{{scope.row[item.key]}}件</div>
+              <!--数量-->
+              <div v-else-if="judgeOrs(item.key, ['num', 'num_in', 'chg_num', 'num_before', 'num_after'])" class="td-item add-dot2">{{scope.row[item.key]}}件</div>
+              <!--盘点数量-->
+              <div v-else-if="item.key === 'num_check'" class="td-item add-dot2">{{scope.row.num_after - scope.row.num_before}}件</div>
+              <!--盘点类型-->
+              <div v-else-if="item.key === 'check_type'" class="td-item add-dot2">{{returnCheckType(scope.row)}}</div>
+              <!--仓库-->
+              <div v-else-if="judgeOrs(item.key, ['storehouse', 'src_storehouse', 'tar_storehouse'])">{{scope.row[item.key].title}}</div>
+              <!--价格-->
+              <div v-else-if="judgeOrs(item.key, ['amount'])" class="td-item add-dot2">{{returnPrice(scope.row[item.key])}}元</div>
               <!--日期-->
               <div v-else-if="item.key === 'date'" class="td-item add-dot2">
                 {{scope.row.purchase_date || scope.row.order_date || scope.row.available_date}}
               </div>
-              <!--调出仓、调入仓-->
-              <div v-else-if="judgeOrs(item.key, ['src_store_house', 'tar_store_house'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
-              <!--状态-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'status'">
-                <el-tag size="small" :type="inventoryStatusType[scope.row.status]" disable-transitions>
-                  {{inventoryStatus[scope.row.status]}}
+              <!--变动类型-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'opt_type'">
+                <el-tag size="small" :type="supOptTypesType[scope.row.opt_type]" disable-transitions>
+                  {{supOptTypes[scope.row.opt_type]}}
                 </el-tag>
               </div>
               <!--正常情况-->
@@ -52,7 +58,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="140">
+        <el-table-column label="操作" width="80">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -61,7 +67,7 @@
                 {
                   title: '详情',
                   isDisplay: auth.isAdmin || auth.WarehouseInventoryMoveDetail,
-                  command: () => handleShowAddEdit('AddEditWarehouseInventoryMove', scope.row, 'detail_' + tabValue)
+                  command: () => handleShowDetail(types[tabValue].detail, scope.row)
                 }
               ]"
             />
@@ -106,19 +112,50 @@
           '调拨': 'allot',
           '移库': 'move',
           '出库': 'out_storage',
-        }
+        },
+        types: {
+          check: {
+            detail: 'DetailWarehouseInventoryMoveCheck',
+            api: Config.api.supCheckQuery
+          },
+          variation: {
+            detail: 'DetailWarehouseInventoryMoveVariation',
+            api: Config.api.supModifyQuery
+          },
+          allot: {
+            detail: 'DetailWarehouseInventoryMoveAllot',
+            api: Config.api.supDistributeRecordQuery
+          },
+          move: {
+            detail: 'DetailWarehouseInventoryMoveMove',
+            api: Config.api.supMoveQuery
+          },
+          out_storage: {
+            detail: 'DetailWarehouseInventoryMoveOutStorage',
+            api: Config.api.supOutQuery
+          }
+        },
+        supOptTypes: Constant.SUP_OPT_TYPES(),
+        supOptTypesType: Constant.SUP_OPT_TYPES_TYPE,
       }
     },
     methods: {
+      //返回盘点类型
+      returnCheckType(data){
+        if(data.num_after - data.num_before > 0){
+          return '盘盈';
+        }
+        if(data.num_after - data.num_before < 0){
+          return '盘亏';
+        }
+        return '正常';
+      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
-        let apis = {
-          check: Config.api.supPurchaseQuery,
-          allot: Config.api.supDistributeQuery
-        }
+        let { types } = this;
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(apis[this.tabValue], query);
+        let res = await Http.get(this.types[this.tabValue].api, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -134,28 +171,54 @@
           num: 0
         };
         tableColumn = [
-          { label: '采购单号', key: 'code', width: '3', isShow: true },
-          { label: '商品编号/名称', key: 'item', width: '4', isShow: true }
+          { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+          { label: '批次', key: 'batch_code', width: '3', isShow: true }
         ];
-        //采购
-        if(tabValue === 'purchase'){
+        //盘点
+        if(tabValue === 'check'){
           tableColumn = tableColumn.concat([
-            { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
-            { label: '采购数量', key: 'num', width: '2', isShow: true },
-            { label: '采购日期', key: 'date', width: '3', isShow: true }
+            { label: '仓库', key: 'storehouse', width: '3', isShow: true },
+            { label: '盘点前库存', key: 'num_before', width: '2', isShow: true },
+            { label: '盘点类型', key: 'check_type', width: '3', isShow: true },
+            { label: '盘点后库存', key: 'num_after', width: '2', isShow: true },
+            { label: '盘点数量', key: 'num_check', width: '2', isShow: true },
           ]);
-        }else{
-        //调拨
+        }
+        //变动
+        else if(tabValue === 'variation'){
           tableColumn = tableColumn.concat([
-            { label: '调出仓', key: 'src_store_house', width: '3', isShow: true },
+            { label: '仓库', key: 'storehouse', width: '3', isShow: true },
+            { label: '变动类型', key: 'opt_type', width: '2', isShow: true },
+            { label: '变动数量', key: 'chg_num', width: '3', isShow: true },
+            { label: '处理金额', key: 'amount', width: '3', isShow: true }
+          ]);
+        }
+        //调拨
+        else if(tabValue === 'allot'){
+          tableColumn = tableColumn.concat([
+            { label: '调出仓', key: 'src_storehouse', width: '3', isShow: true },
             { label: '调拨数量', key: 'num', width: '2', isShow: true },
-            { label: '调入仓', key: 'tar_store_house', width: '3', isShow: true },
+            { label: '调入仓', key: 'tar_storehouse', width: '3', isShow: true },
             { label: '可售日期', key: 'date', width: '3', isShow: true }
           ]);
         }
+        //移库
+        else if(tabValue === 'move'){
+          tableColumn = tableColumn.concat([
+            { label: '原仓库', key: 'src_storehouse', width: '3', isShow: true },
+            { label: '移库数量', key: 'num', width: '2', isShow: true },
+            { label: '现仓库', key: 'tar_storehouse', width: '3', isShow: true }
+          ]);
+        }
+        //出库
+        else if(tabValue === 'out_storage'){
+          tableColumn = tableColumn.concat([
+            { label: '仓库', key: 'src_storehouse', width: '3', isShow: true },
+            { label: '出库数量', key: 'num', width: '2', isShow: true },
+            { label: '出库时间', key: 'tar_storehouse', width: '3', isShow: true }
+          ]);
+        }
         tableColumn = tableColumn.concat([
-          { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '入库数量', key: 'num_in', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ]);

@@ -81,7 +81,7 @@
   import { Http, Config, Constant } from '@/util';
 
   export default {
-    name: "DetailWarehouseInventoryMove",
+    name: "DetailWarehouseInventoryMoveVariation",
     mixins: [detailMixin],
     components: {
     },

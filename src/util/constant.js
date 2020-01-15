@@ -422,6 +422,23 @@ const Constant = {
     local_pur: 'info',
     distribute: 'info'
   },
+  //变动类型
+  SUP_OPT_TYPES: (type)=>{
+    let data = [
+      { key: 'damage', value: '报损' },
+      { key: 'damage_sale', value: '报损销售' },
+      { key: 'sale_offline', value: '线下销售' },
+      { key: 'refund', value: '退货' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //变动类型(颜色)
+  SUP_OPT_TYPES_TYPE: {
+    damage: 'info',
+    damage_sale: 'info',
+    sale_offline: 'info',
+    refund: 'info'
+  },
 };
 
 //处理key value
