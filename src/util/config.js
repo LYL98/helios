@@ -201,6 +201,8 @@ const Config = (() => {
       wareTrayItemQeruy: apiM + '/ware_tray_item/query', //查询具体托盘的库存
       wareTrayExport: apiM + '', //库存导出
 
+      supOutAdd: apiM + '/sup_out/add', //出库
+
       //仓库待入库、调拨单
       supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括统采和地采订单
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
@@ -223,6 +225,8 @@ const Config = (() => {
       supDistributeRecordDetail: apiM + '/sup_p_distribute/detail', //调拨单查询(变动记录详情)
       supMoveDetail: apiM + '/sup_move/detail', //移库查询(变动记录详情)
       supOutDetail: apiM + '/sup_out/detail', //出库单查询(变动记录详情)
+
+      supOutPlanQuery: apiM + '/sup_out_plan/query', //出库计划查询
 
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增

@@ -16,3 +16,4 @@ export { default as FormOperateReceivingAllot } from './FormOperateReceivingAllo
 export { default as FormOperateReceivingNumber } from './FormOperateReceivingNumber';
 export { default as FormOrderAfterSaleClose } from './FormOrderAfterSaleClose';
 export { default as FormOrderListManualDelivery } from './FormOrderListManualDelivery';
+export { default as FormWarehouseInventoryOutStorage } from './FormWarehouseInventoryOutStorage';

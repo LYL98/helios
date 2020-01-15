@@ -6,7 +6,6 @@ export { default as DetailItemListEditRecord } from './DetailItemListEditRecord'
 export { default as DetailHeadBalanceLog } from './DetailHeadBalanceLog';
 
 export { default as DetailSystemOperator } from './DetailSystemOperator';
-export { default as DetailOperateReceivingAudit } from './DetailOperateReceivingAudit';
 
 export { default as DetailMerchantList } from './DetailMerchantList';
 export { default as DetailMerchantRefundLog } from './DetailMerchantRefundLog';

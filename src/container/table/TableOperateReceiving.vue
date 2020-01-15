@@ -1,289 +1,201 @@
 <template>
-  <div class="operate-receiving">
-    <!-- 表格start -->
-    <el-table :data="dataList" stripe style="width: 100%; margin-top: 16px;" size="mini" :height="windowHeight - offsetHeight" ref="myTable" :row-key="returnTableKey">
-      <el-table-column prop="name" label="商品" width="160">
-        <template slot-scope="scope">
-          <div style="font-size: 13px;">
-            <span>{{scope.row.code}}</span>
-            <span>{{scope.row.title}}</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="小计" width="110">
-        <el-table-column prop="name" label="实收/应收(件)" width="110">
-          <template slot-scope="scope">
-            <div class="county">
-              <span :style="`${scope.row.subtotal1!=scope.row.subtotal2 && 'color:red;font-weight: bold;'}`">{{scope.row.subtotal1}}</span>
-              <span>/</span>
-              <span>{{scope.row.subtotal2}}</span>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table-column>
-      <el-table-column :label="item.title" v-for="(item, index) in dataItem.cities" :key="index" width="110">
-        <el-table-column prop="name" label="实收/应收(件)" width="110">
-          <template slot-scope="scope">
-            <div v-if="scope.row.city_items[index] && scope.row.city_items[index].order_number">
-              <div class="county">
-                <span :class="{
-                  'warn': scope.row.city_items[index].real_number !==null && scope.row.city_items[index].order_number !== scope.row.city_items[index].real_number}">
-                    {{scope.row.city_items[index].real_number}}
-                  </span>
-                <span>/</span>
-                <span>{{scope.row.city_items[index].order_number}}</span>
-                <span class="f-r allot-btn" v-if="(auth.isAdmin || auth.OperateReceivingAllot) && !dataItem.is_all_line_checked && scope.row.city_items[index].is_show_allot">
-                  <a href="javascript:void(0);" style="font-size: 12px;" @click="handleShowForm('FormOperateReceivingAllot', scope.row.city_items[index])">分配</a>
-                </span>
-              </div>
-            </div>
-            <div v-else>&nbsp;</div>
-          </template>
-        </el-table-column>
-      </el-table-column>
-      <el-table-column label="操作" width="80">
-        <template slot-scope="scope">
-          <!--已审核 checked -->
-          <span v-if="scope.row.status === 'checked'" style="font-size: 12px;">已审核</span>
-          <!--收货 receiving-->
-          <el-button size="mini" type="primary" v-else-if="(auth.isAdmin || auth.OperateReceivingAdd) &&  scope.row.status === 'receiving'" @click.native="handleShowForm('FormOperateReceivingNumber', {data: scope.row, dataItem: dataItem})">收货</el-button>
-          <!--修改 update-->
-          <el-button size="mini" v-else-if="(auth.isAdmin || auth.OperateReceivingEdit) && scope.row.status === 'update'" @click.native="handleShowForm('FormOperateReceivingNumber', {data: scope.row, dataItem: dataItem})">修改</el-button>
-          <!--已收货没有修改权限 -->
-          <span v-else>已收货</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="" min-width="1"/>
-    </el-table>
-    <!-- 表格end -->
-
-    <div class="bottom">
+  <div class="container-table">
+    <div class="table-top">
       <div class="left">
-        <span>实收/应收总计（件）：</span>
-        <span :style="`${dataItem.total1 != dataItem.total2 && 'color:red;font-weight: bold;'}`">{{dataItem.total1}}</span>
-        <span>/</span>
-        <span>{{dataItem.total2}}</span>
+        <query-tabs v-model="tabValue" @change="handleTableColumn" :tab-panes="{'采购': 'purchase', '调拨': 'allot', '出库计划': 'out_storage'}"/>
       </div>
-      <div class="right t-r">
-        <span v-if="dataItem.dataListLength === 0"></span>
-        <el-button type="primary" @click.native="handleShowDetail('DetailOperateReceivingAudit', { query, dataItem })" v-else-if="!dataItem.is_all_line_checked">审核预览</el-button>
-        <el-button @click.native="handleShowDetail('DetailOperateReceivingAudit', { query, dataItem })" v-else-if="dataItem.is_all_line_checked">已审核</el-button>
+      <div class="right"></div>
+    </div>
+    <!-- 表格start -->
+    <div @mousemove="handleTableMouseMove" class="table-conter">
+      <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
+      <el-table :data="dataItem.items"
+        :row-class-name="highlightRowClassName"
+        class="list-table my-table-float"
+        :highlight-current-row="true"
+        :row-key="getRowIdentifier"
+        :current-row-key="clickedRow[rowIdentifier]"
+      >
+        <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
+        <!--table-column start-->
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
+            <div slot-scope="scope" class="my-td-item">
+              <!--采购编号、调拨单号-->
+              <div v-if="item.key === 'code'" class="td-item add-dot2">
+                <div v-if="auth.isAdmin || auth.OperateReceivingDetail"
+                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditOperateReceiving', scope.row, 'detail_' + tabValue)">
+                  {{scope.row.code}}
+                </div>
+                <div class="td-item add-dot2" v-else>
+                  {{scope.row.code}}
+                </div>
+              </div>
+              <!--商品名称-->
+              <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
+              <!--采购、调拨数量、入库数量-->
+              <div v-else-if="judgeOrs(item.key, ['num', 'num_in', 'num_out'])" class="td-item add-dot2">{{scope.row[item.key] ? scope.row[item.key] + '件' : '-'}}</div>
+              <!--日期-->
+              <div v-else-if="item.key === 'date'" class="td-item add-dot2">
+                {{scope.row.purchase_date || scope.row.order_date || scope.row.available_date}}
+              </div>
+              <!--调出仓、调入仓-->
+              <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
+              <!--采购、调拨状态-->
+              <div class="td-item add-dot2" v-else-if="judgeOrs(item.key, ['purchase_status', 'allot_status'])">
+                <el-tag size="small" :type="inventoryStatusType[scope.row.status]" disable-transitions>
+                  {{inventoryStatus[scope.row.status]}}
+                </el-tag>
+              </div>
+              <!--出库计划状态-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'out_storage_status'">
+                <el-tag size="small" type="info" disable-transitions v-if="scope.row.num_out > 0">已出库</el-tag>
+                <el-tag size="small" type="info" disable-transitions v-else>未出库</el-tag>
+              </div>
+              <!--正常情况-->
+              <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
+            </div>
+          </el-table-column>
+        </template>
+        <el-table-column label="操作" width="80">
+          <template slot-scope="scope">
+            <my-table-operate
+              @command-click="handleCommandClick(scope.row)"
+              @command-visible="handleCommandVisible"
+              :list="[
+                {
+                  title: '收货',
+                  isDisplay: (auth.isAdmin || auth.OperateReceivingAdd) && judgeOrs(tabValue, ['purchase', 'allot']),
+                  command: () => handleShowAddEdit('AddEditOperateReceiving', scope.row, 'add_' + tabValue)
+                },
+                {
+                  title: '出库',
+                  isDisplay: (auth.isAdmin || auth.OperateReceivingOutStorage) && tabValue === 'out_storage',
+                  command: () => handleShowDetail('DetailWarehouseInventory', {
+                    ...scope.row,
+                    p_item: {
+                      id: scope.row.item_id
+                    }
+                  })
+                }
+              ]"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="table-bottom">
+      <div class="left"></div>
+      <div class="right">
+        <pagination :pageComponent='this'/>
       </div>
     </div>
+    <!-- 表格end -->
   </div>
 </template>
 
 <script>
-  import { TableOperate } from '@/common';
-  import { Http, Config, Constant, DataHandle } from '@/util';
+  import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
+  import queryTabs from './QueryTabs';
 
   export default {
     name: 'TableOperateReceiving',
     components: {
-      'my-table-operate': TableOperate
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
-      //let pc = this.getPageComponents('QueryOperateReceiving'); //获取query组件
-      //this.getData(pc.query);
-    },
-    computed: {
-      isPad: {
-        get() {
-          return navigator.userAgent.indexOf('Android') > 0 || navigator.userAgent.indexOf('iPad') > 0;
-        }
-      }
+      this.handleTableColumn();
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + 48,
-        dataItem: {
-          cities: []
-        },
-        dataList: [], //列表数据
-        checkData: [],
-        receivingDataItem: [], //原始数据
+        tabValue: 'purchase', //'采购': 'purchase', '调拨': 'allot', '出库计划': 'out_storage'
+        inventoryStatus: Constant.INVENTORY_STATUS(),
+        inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
+        tableName: 'TableOperateReceiving',
+        tableColumn: [],
       }
     },
     methods: {
-      //搜索条件展开隐藏
-      onExpandChange(isExpand) {
-        if (isExpand) {
-          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-        } else {
-          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-        }
+      //key
+      getRowIdentifier(row){
+        return row.id + (row.order_type || '');
       },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
+        let apis = {
+          purchase: Config.api.supPurchaseQuery,
+          allot: Config.api.supDistributeQuery,
+          out_storage: Config.api.supOutPlanQuery
+        }
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.orderDeliveryItems, query);
+        let res = await Http.get(apis[this.tabValue], query);
         this.$loading({isShow: false});
         if(res.code === 0){
-          this.$data.receivingDataItem = res.data;
-          this.refreshData(res.data);
+          this.$data.dataItem = res.data;
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
-      //返回tabile key
-      returnTableKey(d){
-        return d.item_id;
-      },
-      //计算数据
-      refreshData(data, q){
-        if(q) this.$data.query = q; //赋值，minxin用
-        let that = this;
-        let total1 = '',
-            total2 = '',
-            isAllLineChecked = true, //整条线路是否已审核
-            dataTemp = {
-              cities: data.cities
-            };
-        let itemsTemp = []; //保存items
-
-        data.items.map((item)=>{
-          let t1 = '', //空代表未收货
-              t2 = '', //空代表未收货
-              isAllChecked = true, //是否全部审核
-              isAllUpdated = true; //是否全部已修改
-
-          item.city_items.map((ci, i)=>{
-            if(ci.id && !ci.is_checked){
-              isAllChecked = false;
-            }
-            if(ci.id && !ci.is_updated){
-              isAllUpdated = false;
-            }
-            if(ci.real_number || ci.real_number === 0){
-              t1 = Number(t1) + ci.real_number;
-            }
-            if(ci.order_number){
-              t2 = Number(t2) + ci.order_number;
-            }
-            //判断是否显示【分配到门店】
-            if(ci.id){
-              ci.is_show_allot = ci.real_number !== null && ci.real_number > 0 && ci.order_number !== ci.real_number ? true : false;
-            }
-          });
-
-          //判断sku，设置状态（status：checked已审核、receiving收货、update修改.）
-          let status = 'receiving';
-          if(isAllChecked){
-            status = 'checked';
-          }else if(isAllUpdated){
-            status = 'update';
-          }
-
-          //是否显示称重按钮
-          item.is_show_weigh = false;
-          if(item.is_weigh && (status === 'update' || status === 'checked')){
-            item.is_show_weigh = true;
-          }
-
-          //是否缺货
-          item.is_stockout = false;
-          if(t1 !== '' && t1 !== t2){
-            item.is_stockout = true;
-          }
-
-          item.status = status;
-          item.subtotal1 = t1;
-          item.subtotal2 = t2;
-
-          //整条线路是否已审核
-          if(item.status !== 'checked'){
-            isAllLineChecked = false;
-          }
-
-          //加入数据列表
-          let fun = () => {
-            total1 = Number(total1) + t1;
-            total2 = Number(total2) + t2;
-            itemsTemp.push(item);
-          }
-
-          //筛选条件
-          let { query } = that;
-          if(
-            //判断是否收货条件
-            (query.is_receiving === '' ||
-            (query.is_receiving === true && item.status === 'update') ||
-            (query.is_receiving === false && item.status === 'receiving'))
-            //且
-            &&
-            //判断是否缺货
-            (query.is_stockout === '' || (query.is_stockout === true && item.is_stockout))
-          ){
-            fun();
-          }
-
-        });
-
-        dataTemp.total1 = total1;
-        dataTemp.total2 = total2;
-        dataTemp.is_all_line_checked = isAllLineChecked;
-        dataTemp.dataListLength = itemsTemp.length;
-
-        that.$data.dataItem = Object.freeze(dataTemp); //保存一般数据 //加 Object.freeze 不对list里的object做getter、setter绑定
-
-        //分段式渲染（20条）
-        let page = 1, pageSize = 20, num = itemsTemp.length, dataList = [];
-        let funTemp = (data) => {
-          dataList = data;
-          that.$data.dataList = Object.freeze(data);
-          that.$nextTick(()=>{
-            setTimeout(()=>{
-              if(num / pageSize > page){
-                dataList = dataList.concat(itemsTemp.slice(page * pageSize, page * pageSize + pageSize)); //拼接数据
-                funTemp(dataList);
-                page++;
-              }
-            }, 0);
-          });
+      //处理表头
+      handleTableColumn(){
+        let { tableColumn, tabValue } = this;
+        this.$data.dataItem = {
+          items: [],
+          num: 0
+        };
+        tableColumn = [];
+        //采购
+        if(tabValue === 'purchase'){
+          tableColumn = tableColumn.concat([
+            { label: '采购单号', key: 'code', width: '3', isShow: true },
+            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+            { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
+            { label: '应收货', key: 'num', width: '2', isShow: true },
+            { label: '未收货', key: 'num', width: '2', isShow: true },
+            { label: '缺货', key: 'num_in', width: '3', isShow: true },
+            { label: '状态', key: 'purchase_status', width: '2', isShow: true },
+          ]);
         }
-
-        funTemp(itemsTemp.slice(0, pageSize));
+        //调拨
+        else if(tabValue === 'allot'){
+          tableColumn = tableColumn.concat([
+            { label: '调拨单号', key: 'code', width: '3', isShow: true },
+            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+            { label: '调出仓', key: 'src_storehouse', width: '3', isShow: true },
+            { label: '应收货', key: 'num', width: '2', isShow: true },
+            { label: '缺货', key: 'tar_storehouse', width: '3', isShow: true },
+            { label: '状态', key: 'allot_status', width: '2', isShow: true },
+          ]);
+        }
+        //出库计划
+        else{
+          tableColumn = tableColumn.concat([
+            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+            { label: '应出库', key: 'num', width: '3', isShow: true },
+            { label: '状态', key: 'out_storage_status', width: '2', isShow: true },
+            { label: '已出库', key: 'num_out', width: '3', isShow: true },
+          ]);
+        }
+        tableColumn = tableColumn.concat([
+          { label: '创建时间', key: 'created', width: '3', isShow: false },
+          { label: '更新时间', key: 'updated', width: '3', isShow: false }
+        ]);
+        this.$data.tableColumn = tableColumn;
+        let pc = this.getPageComponents('QueryOperateReceiving');
+        pc.$data.query.page = 1;
+        this.getData(pc.query);
       },
     }
   };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
   @import './table.scss';
-
-  .operate-receiving {
-    .is-group {
-      tr {
-        th {
-          background-color: #fff;
-        }
-      }
-    }
-    .county{
-      text-align: center;
-      font-size: 16px;
-      >span{
-        &.warn{
-          color: red;
-          font-weight: bold;
-        }
-      }
-    }
-
-    .bottom{
-      display: flex;
-      height: 48px;
-      line-height: 58px;
-      overflow: hidden;
-      padding: 0 10px;
-      .left{
-        font-size: 18px;
-        flex: 1;
-      }
-    }
-  }
+</style>
+<style lang="scss">
+  @import './table.global.scss';
 </style>

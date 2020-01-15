@@ -1,7 +1,7 @@
 <template>
   <detail-layout title="库存管理" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-row style="margin: 10px 20px;">
-      <el-col :span="12">商品编号/名称：{{detail.p_item.title}}</el-col>
+      <el-col :span="12">商品编号/名称：{{detail.item_code}}/{{detail.item_title}}</el-col>
       <el-col :span="12">总库存：{{detail.stock_num}}件</el-col>
     </el-row>
     <div style="margin: 0 20px;">
@@ -13,35 +13,36 @@
           <template slot-scope="scope">{{scope.row.num}}件</template>
         </el-table-column>
         <el-table-column label="仓库" prop="warehouse_title"/>
+        <el-table-column label="入库时间" prop="created"/>
         <el-table-column label="过期时间" prop="due_date"/>
         <el-table-column label="操作" width="100">
-          <template>
+          <template slot-scope="scope">
           <my-table-operate
             :list="[
               {
                 title: '盘点',
-                isDisplay: auth.isAdmin || auth.xxxx,
+                isDisplay: (auth.isAdmin || auth.xxxx) && fromPage !== 'receiving',
                 command: () => xxxx()
               },
               {
                 title: '变动',
-                isDisplay: auth.isAdmin || auth.xxxx,
+                isDisplay: (auth.isAdmin || auth.xxxx) && fromPage !== 'receiving',
                 command: () => xxxx()
               },
               {
                 title: '调拨',
-                isDisplay: auth.isAdmin || auth.xxxx,
+                isDisplay: (auth.isAdmin || auth.xxxx) && fromPage !== 'receiving',
                 command: () => xxxx()
               },
               {
                 title: '移库',
-                isDisplay: auth.isAdmin || auth.xxxx,
+                isDisplay: (auth.isAdmin || auth.xxxx) && fromPage !== 'receiving',
                 command: () => xxxx()
               },
               {
                 title: '出库',
-                isDisplay: auth.isAdmin || auth.xxxx,
-                command: () => xxxx()
+                isDisplay: auth.isAdmin || (auth.OperateReceivingOutStorage && fromPage === 'receiving') || (auth.WarehouseInventoryOutStorage && fromPage === 'inventory'),
+                command: () => handleShowForm('FormWarehouseInventoryOutStorage', scope.row)
               }
             ]"
           />
@@ -72,13 +73,14 @@
   export default {
     name: "DetailWarehouseInventory",
     mixins: [detailMixin],
+    props: {
+      fromPage: { type: String, default: 'inventory' }, //receiving 收货、inventory 库存
+    },
     components: {
       'my-table-operate': TableOperate
     },
     data() {
-      let initDetail = {
-        p_item: {}
-      }
+      let initDetail = {}
       return {
         query: {
           p_item_id: '',
@@ -100,10 +102,21 @@
           items: [],
           num: 0
         };
-        this.$data.query.page = 1;
-        this.$data.query.p_item_id = data.p_item.id;
+        let { query, detail } = this;
+        query.page = 1;
+        //如果来自 场地 - 收货
+        if(this.fromPage === 'receiving'){
+          query.sub_item_id = data.item_id;
+          detail.item_title = data.item_title;
+          detail.item_code = data.item_code;
+        }else{
+          detail.item_title = data.p_item.title;
+          detail.item_code = data.p_item.code;
+          query.p_item_id = data.p_item.id;
+        }
+        this.$data.query = query;
         if(data){
-          this.$data.detail = this.copyJson(data);
+          this.$data.detail = this.copyJson(detail);
         }else{
           this.$data.detail = this.copyJson(this.initDetail);
         }
@@ -118,6 +131,7 @@
           this.$data.isShow = true;
           let rd = res.data;
           this.$data.dataItem = rd;
+          this.$data.detail.stock_num = rd.stock_num;
         }else{
           this.$message({message: res.message, type: 'error'});
         }
@@ -140,18 +154,4 @@
 
 <style lang="scss" scoped>
   @import "./detail.scss";
-  .amount{
-    >.up{
-      color: #F8931D;
-      &::before{
-        content: '+';
-      }
-    }
-    >.down{
-        color: #76C627;
-        &::before{
-          content: '-';
-        }
-    }
-  }
 </style>
