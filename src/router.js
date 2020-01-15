@@ -159,6 +159,11 @@ const router = new Router({
       component: () => import('@/view/warehouse/Inventory')
     },
     {
+      path: '/warehouse/inventory/move',
+      name: 'WarehouseInventoryMove',
+      component: () => import('@/view/warehouse/InventoryMove')
+    },
+    {
       path: '/warehouse/distribute',
       name: 'WarehouseDistribute',
       component: () => import('@/view/warehouse/Distribute')

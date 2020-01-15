@@ -201,6 +201,9 @@
             title: '库存',
             name: 'WarehouseInventory'
           },{
+            title: '库存变动记录',
+            name: 'WarehouseInventoryMove'
+          },{
             title: '调拨单',
             name: 'WarehouseDistribute'
           }]
