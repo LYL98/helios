@@ -13,7 +13,7 @@
         :row-class-name="highlightRowClassName"
         class="list-table my-table-float"
         :highlight-current-row="true"
-        :row-key="getRowIdentifier"
+        :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
@@ -23,8 +23,8 @@
             <div slot-scope="scope" class="my-td-item">
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
-                <div v-if="auth.isAdmin || auth.WarehouseStockPendingDetail"
-                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + tabValue)">
+                <div v-if="auth.isAdmin || auth.WarehouseInventoryMoveDetail"
+                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseInventoryMove', scope.row, 'detail_' + tabValue)">
                   {{scope.row.code}}
                 </div>
                 <div class="td-item add-dot2" v-else>
@@ -59,20 +59,10 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '入库',
-                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingAdd,
-                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add_' + tabValue)
-                },
-                {
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingDetail,
-                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + tabValue)
-                },
-                {
-                  title: '打印',
-                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
-                  command: () => handleShowPrint('PrintWarehouseStockPending', scope.row)
-                },
+                  isDisplay: auth.isAdmin || auth.WarehouseInventoryMoveDetail,
+                  command: () => handleShowAddEdit('AddEditWarehouseInventoryMove', scope.row, 'detail_' + tabValue)
+                }
               ]"
             />
           </template>
@@ -95,7 +85,7 @@
   import queryTabs from './QueryTabs';
 
   export default {
-    name: 'TableWarehouseStockPending',
+    name: 'TableWarehouseInventoryMove',
     components: {
       'query-tabs': queryTabs
     },
@@ -105,30 +95,26 @@
     },
     data() {
       return {
-        tabValue: 'purchase', //'采购': 'purchase', '调拨': 'allot'
+        tabValue: 'check',
         inventoryStatus: Constant.INVENTORY_STATUS(),
         inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
-        tableName: 'TableWarehouseStockPending',
+        tableName: 'TableWarehouseInventoryMove',
         tableColumn: [],
         queryTabsData: {
-          '盘点': 'purchase',
-          '变动': 'allot',
-          '调拨': 'allot1',
-          '移库': 'allot2',
-          '出库': 'allot3',
+          '盘点': 'check',
+          '变动': 'variation',
+          '调拨': 'allot',
+          '移库': 'move',
+          '出库': 'out_storage',
         }
       }
     },
     methods: {
-      //key
-      getRowIdentifier(row){
-        return row.id + (row.order_type || '');
-      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         let apis = {
-          purchase: Config.api.supPurchaseQuery,
+          check: Config.api.supPurchaseQuery,
           allot: Config.api.supDistributeQuery
         }
         this.$loading({isShow: true, isWhole: true});
@@ -174,8 +160,9 @@
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ]);
         this.$data.tableColumn = tableColumn;
-        let pc = this.getPageComponents('QueryWarehouseStockPending');
+        let pc = this.getPageComponents('QueryWarehouseInventoryMove');
         pc.$data.query.page = 1;
+        pc.$data.tabValue = this.tabValue;
         this.getData(pc.query);
       },
     }

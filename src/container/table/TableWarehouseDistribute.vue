@@ -3,7 +3,7 @@
     <div class="table-top">
       <div class="left"></div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseExport" @click.native="handleExport('supDistributeExport', query)" size="mini" type="primary" plain>导出调拨单</el-button>
+        <el-button v-if="auth.isAdmin || auth.WarehouseDistributeExport" @click.native="handleExport('supDistributeExport', query)" size="mini" type="primary" plain>导出调拨单</el-button>
       </div>
     </div>
     <!-- 表格start -->

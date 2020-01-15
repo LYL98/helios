@@ -20,19 +20,13 @@
         </my-query-item>
       </el-col>
       <el-col :span="7">
-        <my-query-item label="状态">
-          <select-option
-            :options="inventoryStatus"
-            v-model="query.status"
-            @change="handleQuery('TableWarehouseStockPending')"
-            size="small"
-            clearable
-          />
+        <my-query-item :label="queryTitles[tabValue] || '仓库'">
+          <select-storehouse v-model="query.storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" />
         </my-query-item>
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseStockPending')" @reset="handleClearQuery('TableWarehouseStockPending')"/>
+          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableWarehouseInventoryMove')" @reset="handleClearQuery('TableWarehouseInventoryMove')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -40,14 +34,14 @@
 </template>
 
 <script>
-  import { SelectOption } from '@/common';
+  import { SelectStorehouse } from '@/component';
   import queryMixin from './query.mixin';
   import { Constant } from '@/util';
 
   export default {
     name: "QueryWarehouseInventoryMove",
     components: {
-      'select-option': SelectOption
+      'select-storehouse': SelectStorehouse
     },
     mixins: [queryMixin],
     created() {
@@ -56,13 +50,21 @@
       let initQuery = {
         begin_date: '',
         end_date: '',
-        status: '',
+        storehouse_id: '',
         condition: '',
         picker_value: null,
-        province_code: this.$province.code,
+        //province_code: this.$province.code,
         for_instock: 1, //该查询是否是用来 入库的 (调拨单)
       }
       return {
+        tabValue: '', //由table控制
+        queryTitles: {
+          'check': '仓库',
+          'variation': '仓库',
+          'allot': '调入仓库',
+          'move': '原仓库',
+          'out_storage': '仓库'
+        },
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }
@@ -91,7 +93,7 @@
         }
         this.query.page = 1;
         this.$data.query = this.query;
-        this.handleQuery('TableWarehouseStockPending');
+        this.handleQuery('TableWarehouseInventoryMove');
       },
     }
   }

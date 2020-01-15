@@ -30,10 +30,13 @@
           <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="调出仓">{{detail.relate_order.src_store_house && detail.relate_order.src_store_house.title}}</el-form-item>
+          <el-form-item label="调出仓">{{detail.relate_order.src_storehouse_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="调入仓">{{detail.relate_order.tar_storehouse_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="可售日期">{{detail.relate_order.available_date}}</el-form-item>
@@ -88,9 +91,7 @@
     data() {
       let initDetail = {
         trays: [],
-        relate_order: {
-          src_store_house: {},
-        },
+        relate_order: {},
         creator: {}
       }
       return {
