@@ -34,7 +34,9 @@
               <!--商品名称-->
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
               <!--采购、调拨数量、入库数量-->
-              <div v-else-if="judgeOrs(item.key, ['num', 'num_in', 'num_out'])" class="td-item add-dot2">{{scope.row[item.key] ? scope.row[item.key] + '件' : '-'}}</div>
+              <div v-else-if="judgeOrs(item.key, ['num', 'num_out'])" class="td-item add-dot2">{{scope.row[item.key] ? scope.row[item.key] + '件' : '-'}}</div>
+              <!--缺货-->
+              <div v-else-if="item.key === 'stockout'" class="td-item add-dot2">{{returnStockout(scope.row)}}</div>
               <!--日期-->
               <div v-else-if="item.key === 'date'" class="td-item add-dot2">
                 {{scope.row.purchase_date || scope.row.order_date || scope.row.available_date}}
@@ -118,6 +120,13 @@
       }
     },
     methods: {
+      //返回缺货
+      returnStockout(data){
+        if(data.num_in <= 0 || data.num_in === data.num){
+          return '-';
+        }
+        return (data.num_in - data.num) + '件'
+      },
       //key
       getRowIdentifier(row){
         return row.id + (row.order_type || '');
@@ -155,7 +164,7 @@
             { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
             { label: '应收货', key: 'num', width: '2', isShow: true },
             { label: '未收货', key: 'num', width: '2', isShow: true },
-            { label: '缺货', key: 'num_in', width: '3', isShow: true },
+            { label: '缺货', key: 'stockout', width: '3', isShow: true },
             { label: '状态', key: 'purchase_status', width: '2', isShow: true },
           ]);
         }
@@ -166,7 +175,7 @@
             { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
             { label: '调出仓', key: 'src_storehouse', width: '3', isShow: true },
             { label: '应收货', key: 'num', width: '2', isShow: true },
-            { label: '缺货', key: 'tar_storehouse', width: '3', isShow: true },
+            { label: '缺货', key: 'stockout', width: '3', isShow: true },
             { label: '状态', key: 'allot_status', width: '2', isShow: true },
           ]);
         }

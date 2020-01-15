@@ -44,10 +44,10 @@ export default {
       this.$data.isShow = true;
     },
     //提交
-    handleAddEdit(){
+    handleAddEdit(e){
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
-          this.addEditData();
+          this.addEditData(e);
         } else {
           return false;
         }

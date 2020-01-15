@@ -202,6 +202,7 @@ const Config = (() => {
       wareTrayExport: apiM + '', //库存导出
 
       supOutAdd: apiM + '/sup_out/add', //出库
+      supAcceptAdd: apiM + '/sup_accept/add', //场地收货
 
       //仓库待入库、调拨单
       supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括统采和地采订单

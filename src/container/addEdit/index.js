@@ -39,3 +39,5 @@ export { default as AddEditFinanceSBDetail } from './AddEditFinanceSBDetail';
 
 export { default as AddEditWarehouseStockPending } from './AddEditWarehouseStockPending';
 
+export { default as AddEditOperateReceiving } from './AddEditOperateReceiving';
+

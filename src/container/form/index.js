@@ -12,8 +12,6 @@ export { default as FormSystemSettingOperating } from './FormSystemSettingOperat
 export { default as FormSystemSettingItemCommonDes } from './FormSystemSettingItemCommonDes';
 export { default as FormSystemOperatorResetPwd } from './FormSystemOperatorResetPwd';
 export { default as FormItemListEditInnerTag } from './FormItemListEditInnerTag';
-export { default as FormOperateReceivingAllot } from './FormOperateReceivingAllot';
-export { default as FormOperateReceivingNumber } from './FormOperateReceivingNumber';
 export { default as FormOrderAfterSaleClose } from './FormOrderAfterSaleClose';
 export { default as FormOrderListManualDelivery } from './FormOrderListManualDelivery';
 export { default as FormWarehouseInventoryOutStorage } from './FormWarehouseInventoryOutStorage';

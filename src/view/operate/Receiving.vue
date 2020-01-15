@@ -3,14 +3,13 @@
     <query-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateReceiving"/>
     <table-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateReceiving"/>
     <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory" fromPage="receiving"/>
-    <form-operate-receiving-allot :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateReceivingAllot"/>
-    <form-operate-receiving-number :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateReceivingNumber"/>
     <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage"/>
+    <add-edit-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateReceiving"/>
   </div>
 </template>
 
 <script>
-  import { QueryOperateReceiving, TableOperateReceiving, DetailWarehouseInventory, FormOperateReceivingAllot, FormOperateReceivingNumber, FormWarehouseInventoryOutStorage } from '@/container';
+  import { QueryOperateReceiving, TableOperateReceiving, DetailWarehouseInventory, FormWarehouseInventoryOutStorage, AddEditOperateReceiving } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -19,9 +18,8 @@
       'query-operate-receiving': QueryOperateReceiving,
       'table-operate-receiving': TableOperateReceiving,
       'detail-warehouse-inventory': DetailWarehouseInventory,
-      'form-operate-receiving-allot': FormOperateReceivingAllot,
-      'form-operate-receiving-number': FormOperateReceivingNumber,
-      'form-warehouse-inventory-out-storage': FormWarehouseInventoryOutStorage
+      'form-warehouse-inventory-out-storage': FormWarehouseInventoryOutStorage,
+      'add-edit-operate-receiving': AddEditOperateReceiving
     },
     mixins: [viewMixin],
     created() {
