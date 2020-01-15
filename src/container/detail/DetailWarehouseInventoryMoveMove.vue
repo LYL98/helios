@@ -1,45 +1,26 @@
 <template>
-  <detail-layout title="入库单详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <detail-layout title="移库详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
-      <!--统采、地采-->
-      <el-row v-if="judgeOrs(detail.in_type, ['global_pur', 'local_pur'])">
-        <h6 class="subtitle">采购信息</h6>
+      <el-row>
+        <h6 class="subtitle">商品信息</h6>
         <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
         <el-col :span="12">
-          <el-form-item label="采购单号">{{detail.code}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="采购日期">{{detail.relate_order.order_date || detail.relate_order.purchase_date}}</el-form-item>
+          <el-form-item label="批次">{{detail.batch_code}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="采购数量">{{detail.num}}件</el-form-item>
+          <el-form-item label="入库数量">{{detail.num}}件</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="仓库">{{detail.supplier_title}}(待修改)</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="入库时间">{{detail.created}}</el-form-item>
         </el-col>
       </el-row>
-
-      <!--调拨-->
-      <el-row v-else-if="detail.in_type === 'distribute'">
-        <h6 class="subtitle">调拨信息</h6>
-        <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
-        <el-col :span="12">
-          <el-form-item label="调拨单号">{{detail.code}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="调出仓">{{detail.relate_order.src_storehouse && detail.relate_order.src_storehouse.title}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="可售日期">{{detail.relate_order.available_date}}</el-form-item>
-        </el-col>
-      </el-row>
-
+      
       <h6 class="subtitle">入库信息</h6>
       <el-row>
         <el-col :span="12">

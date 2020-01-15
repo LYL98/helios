@@ -17,14 +17,6 @@ const Config = (() => {
       loginByToken: apiM + '/sign/login_by_token',//通过token登录
       getBrand: apiM + '/common/constant/brand', //全局获取品牌
 
-      orderDeliveryItems: apiM + '/delivery/city/items',//拉取收货单
-      orderDeliveryItemsSubmit: apiM + '/delivery/city/items/set_num',//提交收货单(post)
-      operatorOrderDistributeStores: apiM + '/delivery/city/item/detail', //获取要分配商品的门店列表
-      operatorOrderDistribute: apiM + '/delivery/store/items/set_num', //分配商品到门店
-      deliveryPreCheck: apiM + '/delivery/pre_check', //称重收货，预审，查看缺货的，称重偏差在20%的
-      orderDeliveryCheck: apiM + '/delivery/check',//审核通过(post)
-
-      orderDeliveryItemQuery: apiM + '/order/delivery/item/query', // 获取商品信息列表
       orderCityExport: apiM + '/order/city/export', //县域订货单导出，从每日县域汇总表导出
       orderExport: apiM + '/order/export', //订单导出
       orderListExport: apiM + '/order/list/export', //订单列表导出

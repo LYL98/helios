@@ -39,8 +39,12 @@
               <div v-else-if="item.key === 'num_check'" class="td-item add-dot2">{{scope.row.num_after - scope.row.num_before}}件</div>
               <!--盘点类型-->
               <div v-else-if="item.key === 'check_type'" class="td-item add-dot2">{{returnCheckType(scope.row)}}</div>
-              <!--仓库-->
+              <!--仓-->
               <div v-else-if="judgeOrs(item.key, ['storehouse', 'src_storehouse', 'tar_storehouse'])">{{scope.row[item.key].title}}</div>
+              <!--仓/库-->
+              <div v-else-if="item.key === 'storehouse_warehouse'">{{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}</div>
+              <!--仓/库/托盘-->
+              <div v-else-if="item.key === 'storehouse_warehouse_tray'">{{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}{{scope.row.tray.code}}</div>
               <!--价格-->
               <div v-else-if="judgeOrs(item.key, ['amount'])" class="td-item add-dot2">{{returnPrice(scope.row[item.key])}}元</div>
               <!--日期-->
@@ -177,7 +181,7 @@
         //盘点
         if(tabValue === 'check'){
           tableColumn = tableColumn.concat([
-            { label: '仓库', key: 'storehouse', width: '3', isShow: true },
+            { label: '仓库', key: 'storehouse_warehouse_tray', width: '3', isShow: true },
             { label: '盘点前库存', key: 'num_before', width: '2', isShow: true },
             { label: '盘点类型', key: 'check_type', width: '3', isShow: true },
             { label: '盘点后库存', key: 'num_after', width: '2', isShow: true },
@@ -187,7 +191,7 @@
         //变动
         else if(tabValue === 'variation'){
           tableColumn = tableColumn.concat([
-            { label: '仓库', key: 'storehouse', width: '3', isShow: true },
+            { label: '仓库', key: 'storehouse_warehouse_tray', width: '3', isShow: true },
             { label: '变动类型', key: 'opt_type', width: '2', isShow: true },
             { label: '变动数量', key: 'chg_num', width: '3', isShow: true },
             { label: '处理金额', key: 'amount', width: '3', isShow: true }
@@ -213,9 +217,9 @@
         //出库
         else if(tabValue === 'out_storage'){
           tableColumn = tableColumn.concat([
-            { label: '仓库', key: 'src_storehouse', width: '3', isShow: true },
+            { label: '仓库', key: 'storehouse_warehouse_tray', width: '3', isShow: true },
             { label: '出库数量', key: 'num', width: '2', isShow: true },
-            { label: '出库时间', key: 'tar_storehouse', width: '3', isShow: true }
+            { label: '出库时间', key: 'delivery_date', width: '3', isShow: true }
           ]);
         }
         tableColumn = tableColumn.concat([

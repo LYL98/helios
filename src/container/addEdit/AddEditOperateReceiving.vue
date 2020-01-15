@@ -136,8 +136,8 @@ export default {
       pageTitles: {
         add_purchase: '收货',
         add_allot: '收货',
-        detail_purchase: '采购入库详情',
-        detail_allot: '调拨入库详情',
+        detail_purchase: '采购单详情',
+        detail_allot: '调拨单详情',
       }
     }
   },
