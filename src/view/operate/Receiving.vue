@@ -23,7 +23,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle('配送 - 收货');
+      documentTitle('场地 - 收货');
     }
   };
 </script>

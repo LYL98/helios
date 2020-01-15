@@ -34,7 +34,7 @@
             <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="调出仓">{{detail.src_store_house.title}}</el-form-item>
+            <el-form-item label="调出仓">{{detail.src_storehouse.title}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
@@ -114,7 +114,7 @@ export default {
   },
   data(){
     let initDetail = {
-      src_store_house: {}
+      src_storehouse: {}
     }
     let initInventoryData = {
       province_code: this.$province.code,

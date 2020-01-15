@@ -38,7 +38,7 @@
                 {{scope.row.purchase_date || scope.row.order_date || scope.row.available_date}}
               </div>
               <!--调出仓、调入仓-->
-              <div v-else-if="judgeOrs(item.key, ['src_store_house', 'tar_store_house'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
+              <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--状态-->
               <div class="td-item add-dot2" v-else-if="item.key === 'status'">
                 <el-tag size="small" :type="inventoryStatusType[scope.row.status]" disable-transitions>
@@ -96,9 +96,9 @@
         tableColumn: [
           { label: '调拨单号', key: 'code', width: '3', isShow: true },
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-          { label: '调出仓', key: 'src_store_house', width: '3', isShow: true },
+          { label: '调出仓', key: 'src_storehouse', width: '3', isShow: true },
           { label: '调拨数量', key: 'num', width: '2', isShow: true },
-          { label: '调入仓', key: 'tar_store_house', width: '3', isShow: true },
+          { label: '调入仓', key: 'tar_storehouse', width: '3', isShow: true },
           { label: '可售日期', key: 'date', width: '3', isShow: true },
           { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
