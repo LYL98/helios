@@ -13,7 +13,7 @@
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'ReceivingList',
+    name: 'Receiving',
     components: {
       'query-operate-receiving': QueryOperateReceiving,
       'table-operate-receiving': TableOperateReceiving,

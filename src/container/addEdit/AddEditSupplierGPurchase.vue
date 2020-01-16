@@ -65,8 +65,9 @@
         <div style="padding: 0 30px; margin-bottom: 30px;">
           <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
             <el-table-column prop="code" label="入库单号"></el-table-column>
-            <el-table-column prop="ware_title" label="库仓"></el-table-column>
-            <el-table-column prop="num" label="入库数量"></el-table-column>
+            <el-table-column prop="num" label="入库数量">
+              <template slot-scope="scope">{{scope.row.num}}件</template>
+            </el-table-column>
             <el-table-column prop="created" label="入库时间"></el-table-column>
             <el-table-column prop="status" label="状态">
               <template slot-scope="scope">{{inventoryStatus[scope.row.status]}}</template>

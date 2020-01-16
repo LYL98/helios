@@ -215,6 +215,9 @@
             title: '收货',
             name: 'OperateReceiving'
           },{
+            title: '分拣',
+            name: 'OperateSort'
+          },{
             title: '线路规划',
             name: 'OperateLineList'
           },{

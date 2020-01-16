@@ -169,11 +169,16 @@ const router = new Router({
       component: () => import('@/view/warehouse/Distribute')
     },
 
-    /*配送*/
+    /*场地*/
     {
       path: '/operate/receiving',
       name: 'OperateReceiving',
       component: () => import('@/view/operate/Receiving')
+    },
+    {
+      path: '/operate/sort',
+      name: 'OperateSort',
+      component: () => import('@/view/operate/Sort')
     },
     {
       path: '/operate/line/list',
