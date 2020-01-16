@@ -50,9 +50,9 @@
     data() {
       let initQuery = {
         delivery_date: '',
-        //sort_status: 'unsort',
+        sort_status: 'unsort',
         condition: '',
-        //province_code: this.$province.code,
+        province_code: this.$province.code,
       }
       return {
         initQuery: initQuery,
