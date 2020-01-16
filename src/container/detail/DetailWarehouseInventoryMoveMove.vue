@@ -21,13 +21,13 @@
       <h6 class="subtitle">移库信息</h6>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="原仓库">{{detail.src_storehouse.title}}/{{detail.src_warehouse.title}}/{{detail.src_tray.title}}</el-form-item>
+          <el-form-item label="原仓库">{{detail.src_storehouse.title}}/{{detail.src_warehouse.title}}/{{detail.src_tray.code}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="移动数量">{{detail.num}}件</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="现仓库">{{detail.tar_storehouse.title}}/{{detail.tar_warehouse.title}}/{{detail.tar_tray.title}}</el-form-item>
+          <el-form-item label="现仓库">{{detail.tar_storehouse.title}}/{{detail.tar_warehouse.title}}/{{detail.tar_tray.code}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="移库备注">{{detail.remark}}</el-form-item>

@@ -14,7 +14,7 @@
           <el-form-item label="库存数量">{{detail.pre_num}}件</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="仓库">{{detail.storehouse.title}}/{{detail.warehouse.title}}/{{detail.tray.title}}</el-form-item>
+          <el-form-item label="仓库">{{detail.storehouse.title}}/{{detail.warehouse.title}}/{{detail.tray.code}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="入库时间">{{detail.created}}</el-form-item>

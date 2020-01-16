@@ -22,7 +22,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="调出仓库">
-            <div v-for="(item, index) in detail.dist_outs" :key="index">{{item.src_storehouse.title}}/{{item.src_warehouse.title}}/{{item.src_tray.title}}</div>
+            <div v-for="(item, index) in detail.dist_outs" :key="index">{{item.src_storehouse.title}}/{{item.src_warehouse.title}}/{{item.src_tray.code}}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">

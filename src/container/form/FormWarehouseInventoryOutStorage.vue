@@ -9,7 +9,7 @@
           <el-form-item label="批次">{{detail.batch_code}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="仓库">{{detail.warehouse_title}}/{{detail.tray_title}}</el-form-item>
+          <el-form-item label="仓库">{{detail.warehouse_title}}/{{detail.tray_code}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="库存数量">{{detail.num}}件</el-form-item>

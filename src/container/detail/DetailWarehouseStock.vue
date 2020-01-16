@@ -60,7 +60,7 @@
       <el-row v-for="(item, index) in detail.trays" :key="index">
         <el-col :span="12">
           <el-form-item label="入库">
-            {{item.storehouse.title}}/{{item.warehouse.title}}/{{item.tray.title}}
+            {{item.storehouse.title}}/{{item.warehouse.title}}/{{item.tray.code}}
           </el-form-item>
         </el-col>
         <el-col :span="12">
