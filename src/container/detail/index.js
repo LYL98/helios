@@ -31,3 +31,5 @@ export { default as DetailWarehouseInventoryMoveVariation } from './DetailWareho
 export { default as DetailWarehouseInventoryMoveAllot } from './DetailWarehouseInventoryMoveAllot';
 export { default as DetailWarehouseInventoryMoveMove } from './DetailWarehouseInventoryMoveMove';
 export { default as DetailWarehouseInventoryMoveOutStorage } from './DetailWarehouseInventoryMoveOutStorage';
+
+export { default as DetailOperateSort } from './DetailOperateSort';

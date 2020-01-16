@@ -88,6 +88,26 @@ export default {
 
   },
   methods: {
+    //显示新增修改(新增组件，数据, add,edit,detail)
+    handleShowAddEdit(pageComponents, data, type){
+      let pc = this.getPageComponents(pageComponents);
+      pc.showAddEdit(data, type);
+    },
+    //显示详情
+    handleShowDetail(pageComponents, data){
+      let pc = this.getPageComponents(pageComponents);
+      pc.showDetail(data);
+    },
+    //显示form
+    handleShowForm(pageComponents, data){
+      let pc = this.getPageComponents(pageComponents);
+      pc.showForm(data);
+    },
+    //显示打印
+    handleShowPrint(pageComponents, data){
+      let pc = this.getPageComponents(pageComponents);
+      pc.showPrint(data);
+    },
     /**
      * 斑马线的背景颜色样式
      */

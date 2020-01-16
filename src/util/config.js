@@ -211,7 +211,7 @@ const Config = (() => {
       supModifyQuery: apiM + '/sup_modify/query', //变动查询(变动记录)
       supDistributeRecordQuery: apiM + '/sup_p_distribute/query', //调拨单查询(变动记录)
       supMoveQuery: apiM + '/sup_move/query', //移库查询(变动记录)
-      supOutQuery: apiM + '/sup_out/query', //出库单查询(变动记录)
+      supOutQuery: apiM + '/sup_out/query', //出库单查询(变动记录)(场地)
 
       supCheckDetail: apiM + '/sup_check/detail', //盘点查询(变动记录详情)
       supModifyDetail: apiM + '/sup_modify/detail', //变动查询(变动记录详情)
@@ -220,6 +220,13 @@ const Config = (() => {
       supOutDetail: apiM + '/sup_out/detail', //出库单查询(变动记录详情)
 
       supOutPlanQuery: apiM + '/sup_out_plan/query', //出库计划查询
+
+      //场地
+      supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
+      supAllocateNeedItem: apiM + '/sup_allocate/need_item', //返回某个商品还有多少件需要分配
+
+      supSortQuery: apiM + '/sup_sort/query', //分拣记录查询（包括待分拣和已分拣）
+      supAllocateDoSort: apiM + '/sup_allocate/do_sort', //对待分拣的记录进行分拣
 
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增

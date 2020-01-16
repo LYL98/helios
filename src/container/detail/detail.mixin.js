@@ -37,10 +37,5 @@ export default {
       this.$data.isShow = false;
       this.$data.detail = this.copyJson(this.initDetail);
     },
-    //显示form
-    handleShowForm(pageComponents, data){
-      let pc = this.getPageComponents(pageComponents);
-      pc.showForm(data);
-    },
   }
 }

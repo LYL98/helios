@@ -7,18 +7,18 @@
             size="small"
             v-model="query.delivery_date"
             value-format="yyyy-MM-dd"
-            @change="handleQuery('TableOperateReceiving')"
+            @change="handleQuery('TableOperateSort')"
             style="width: 100%;"
             placeholder="配送日期"
           />
         </my-query-item>
       </el-col>
       <el-col :span="7">
-        <my-query-item label="状态">
+        <my-query-item label="类型">
           <select-option
-            :options="inventoryStatus"
-            v-model="query.status"
-            @change="handleQuery('TableOperateReceiving')"
+            :options="sortStatus"
+            v-model="query.sort_status"
+            @change="handleQuery('TableOperateSort')"
             size="small"
             clearable
           />
@@ -26,7 +26,7 @@
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableOperateReceiving')" @reset="handleClearQuery('TableOperateReceiving')"/>
+          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableOperateSort')" @reset="handleClearQuery('TableOperateSort')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -36,10 +36,9 @@
 <script>
   import { SelectOption } from '@/common';
   import queryMixin from './query.mixin';
-  import { Constant } from '@/util';
 
   export default {
-    name: "QueryOperateReceiving",
+    name: "QueryOperateSort",
     components: {
       'select-option': SelectOption
     },
@@ -51,20 +50,19 @@
     data() {
       let initQuery = {
         delivery_date: '',
-        status: '',
+        //sort_status: 'unsort',
         condition: '',
-        province_code: this.$province.code,
+        //province_code: this.$province.code,
       }
       return {
         initQuery: initQuery,
-        query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
+        query: this.copyJson(initQuery),
       }
     },
     computed: {
-      inventoryStatus: {
+      sortStatus: {
         get(){
-          let d = Constant.INVENTORY_STATUS('value_key');
-          return { '全部': '', ...d };
+          return { '待分拣': 'unsort', '已分拣': 'sorted' };
         }
       }
     },
