@@ -33,3 +33,4 @@ export { default as DetailWarehouseInventoryMoveMove } from './DetailWarehouseIn
 export { default as DetailWarehouseInventoryMoveOutStorage } from './DetailWarehouseInventoryMoveOutStorage';
 
 export { default as DetailOperateSort } from './DetailOperateSort';
+export { default as DetailOperateSortCity } from './DetailOperateSortCity';

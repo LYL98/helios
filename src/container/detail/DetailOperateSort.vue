@@ -19,7 +19,7 @@
           <el-form-item label="入场时间">{{detail.created}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="分配人">{{detail.creator.realname}}</el-form-item>
+          <el-form-item label="分配人">{{detail.creator && detail.creator.realname}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="分配时间">{{detail.created}}</el-form-item>
@@ -28,13 +28,35 @@
     </el-form>
     <h6 class="subtitle">线路信息</h6>
     <div style="padding: 0 30px;">
-      <el-table :data="detail.logs" :row-class-name="highlightRowClassName">
-        <el-table-column prop="created" label="时间"></el-table-column>
-        <el-table-column label="操作内容">
-          <template slot-scope="scope">{{logTypes[scope.row.category]}}</template>
+      <el-table :data="detail.allocates" :row-class-name="highlightRowClassName">
+        <el-table-column label="线路">
+          <template slot-scope="scope">{{scope.row.line.title}}</template>
         </el-table-column>
-        <el-table-column prop="modified_attrs" label="备注"></el-table-column>
-        <el-table-column prop="operator_name" label="操作人"></el-table-column>
+        <el-table-column label="县域">
+          <template slot-scope="scope">{{scope.row.city.title}}</template>
+        </el-table-column>
+        <el-table-column label="数量">
+          <template slot-scope="scope">{{scope.row.num}}</template>
+        </el-table-column>
+        <el-table-column label="分拣员">
+          <template slot-scope="scope">{{scope.row.sorter.realname}}</template>
+        </el-table-column>
+        <el-table-column label="分拣时间">
+          <template slot-scope="scope">{{scope.row.created}}</template>
+        </el-table-column>
+        <el-table-column label="操作" width="80">
+          <template slot-scope="scope">
+            <my-table-operate
+              :list="[
+                {
+                  title: '查看门店',
+                  isDisplay: auth.isAdmin || auth.OperateSortDetailCity,
+                  command: () => handleShowDetail('DetailOperateSortCity', scope.row)
+                }
+              ]"
+            />
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="bottom-btn">
@@ -45,6 +67,7 @@
 </template>
 
 <script>
+  import { TableOperate } from '@/common';
   import detailMixin from './detail.mixin';
   import { Http, Config, Constant } from '@/util';
 
@@ -52,9 +75,11 @@
     name: "DetailOperateSort",
     mixins: [detailMixin],
     components: {
+      'my-table-operate': TableOperate
     },
     data() {
       let initDetail = {
+        allocates: [],
         creator: {}
       }
       return {
@@ -66,25 +91,12 @@
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.supOutDetail(data.id);
+        this.supAllocateDetail(data.id);
       },
       //获取明细列表
-      async supOutDetail(id){
+      async supAllocateDetail(id){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supOutDetail, { id });
-        this.$loading({isShow: false});
-        if(res.code === 0){
-          this.$data.detail = res.data;
-          this.$data.isShow = true;
-          this.supInStockDetail();
-        }else{
-          this.$message({message: res.message, type: 'error'});
-        }
-      },
-      //获取明细列表
-      async supInStockDetail(){
-        this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supInStockDetail, { id: this.detail.id });
+        let res = await Http.get(Config.api.supAllocateDetail, { out_stock_id: id }); // id:6测试
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;

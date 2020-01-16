@@ -181,6 +181,11 @@ const router = new Router({
       component: () => import('@/view/operate/Sort')
     },
     {
+      path: '/operate/depart',
+      name: 'OperateDepart',
+      component: () => import('@/view/operate/Depart')
+    },
+    {
       path: '/operate/line/list',
       name: 'OperateLineList',
       component: () => import('@/view/operate/LineList')

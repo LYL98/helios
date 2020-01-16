@@ -218,6 +218,9 @@
             title: '分拣',
             name: 'OperateSort'
           },{
+            title: '发车',
+            name: 'OperateDepart'
+          },{
             title: '线路规划',
             name: 'OperateLineList'
           },{

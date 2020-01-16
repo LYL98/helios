@@ -224,6 +224,8 @@ const Config = (() => {
       //场地
       supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
       supAllocateNeedItem: apiM + '/sup_allocate/need_item', //返回某个商品还有多少件需要分配
+      supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
+      supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情
 
       supSortQuery: apiM + '/sup_sort/query', //分拣记录查询（包括待分拣和已分拣）
       supAllocateDoSort: apiM + '/sup_allocate/do_sort', //对待分拣的记录进行分拣

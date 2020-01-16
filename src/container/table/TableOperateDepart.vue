@@ -1,11 +1,15 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.OperateSortPrint">
+    <div class="table-top" v-if="auth.isAdmin || auth.OperateDepartPrint">
       <div class="left">
-        <el-button @click="handleShowPrint('PrintOperateSort', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
+        <el-button @click="handleShowPrint('PrintOperateDepart', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
+        :disabled="multipleSelection.length === 0 ? true : false">批量确认</el-button>
+        <el-button @click="handleShowPrint('PrintOperateDepart', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
         :disabled="multipleSelection.length === 0 ? true : false" plain>批量打印</el-button>
       </div>
-      <div class="right"></div>
+      <div class="right">
+        <el-button @click="handleShowPrint('PrintOperateDepart')" size="mini" type="primary" plain>缺货记录</el-button>
+      </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -18,7 +22,7 @@
         @selection-change="handleSelectionChange"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="selection" :selectable="returnStatus" width="42" v-if="(auth.isAdmin || auth.OperateSortPrint)"></el-table-column>
+        <el-table-column type="selection" :selectable="returnStatus" width="42" v-if="(auth.isAdmin || auth.OperateDepartPrint)"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
@@ -44,17 +48,21 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '分配',
-                  isDisplay: (auth.isAdmin || auth.OperateSortAdd) && !scope.row.allocated_time,
-                  command: () => handleShowAddEdit('AddEditOperateSort', scope.row, 'add')
+                  title: '确认',
+                  isDisplay: (auth.isAdmin || auth.OperateDepartAdd) && !scope.row.allocated_time,
+                  command: () => handleShowAddEdit('AddEditOperateDepart', scope.row, 'add')
                 },{
                   title: '详情',
-                  isDisplay: (auth.isAdmin || auth.OperateSortDetail) && scope.row.allocated_time,
-                  command: () => handleShowDetail('DetailOperateSort', scope.row)
+                  isDisplay: (auth.isAdmin || auth.OperateDepartDetail) && scope.row.allocated_time,
+                  command: () => handleShowDetail('DetailOperateDepart', scope.row)
+                },{
+                  title: '司机轨迹',
+                  isDisplay: (auth.isAdmin || auth.OperateDepartDetail) && scope.row.allocated_time,
+                  command: () => handleShowDetail('DetailOperateDepart', scope.row)
                 },{
                   title: '打印',
-                  isDisplay: (auth.isAdmin || auth.OperateSortPrint) && scope.row.allocated_time,
-                  command: () => handleShowPrint('PrintOperateSort', scope.row)
+                  isDisplay: (auth.isAdmin || auth.OperateDepartPrint) && scope.row.allocated_time,
+                  command: () => handleShowPrint('PrintOperateDepart', scope.row)
                 }
               ]"
             />
@@ -77,25 +85,25 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableOperateSort',
+    name: 'TableOperateDepart',
     components: {
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryOperateSort');
+      let pc = this.getPageComponents('QueryOperateDepart');
       this.getData(pc.query);
     },
     data() {
       return {
         inventoryStatus: Constant.INVENTORY_STATUS(),
         inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
-        tableName: 'TableOperateSort',
+        tableName: 'TableOperateDepart',
         tableColumn: [
-          { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-          { label: '入场数', key: 'num', width: '2', isShow: true },
-          { label: '入场时间', key: 'created', width: '3', isShow: true },
-          { label: '分配时间', key: 'allocated_time', width: '3', isShow: true },
-          { label: '已分拣', key: 'allocated_num', width: '2', isShow: true },
+          { label: '线路', key: 'item', width: '4', isShow: true },
+          { label: '应出库', key: 'num', width: '2', isShow: true },
+          { label: '实际出库', key: 'created', width: '3', isShow: true },
+          { label: '缺货', key: 'allocated_time', width: '3', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ],
@@ -104,7 +112,7 @@
     methods: {
       //返回是否可选中
       returnStatus(d){
-        return d.allocated_time ? true : false;
+        return false;
       },
       //获取数据
       async getData(query){

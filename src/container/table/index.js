@@ -42,6 +42,7 @@ export { default as TableItemPricing } from './TableItemPricing';
 export { default as TableOperateLine } from './TableOperateLine';
 export { default as TableOperateReceiving } from './TableOperateReceiving';
 export { default as TableOperateSort } from './TableOperateSort';
+export { default as TableOperateDepart } from './TableOperateDepart';
 
 export { default as TableSystemBanner } from './TableSystemBanner';
 export { default as TableSystemOperator } from './TableSystemOperator';
