@@ -11,48 +11,45 @@
           <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="入库数量">{{detail.num}}件</el-form-item>
+          <el-form-item label="入库数量">{{detail.num_after}}件</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="仓库">{{detail.supplier_title}}(待修改)</el-form-item>
+          <el-form-item label="仓库">{{detail.storehouse.title}}/{{detail.warehouse.title}}/{{detail.tray.title}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="入库时间">{{detail.created}}</el-form-item>
         </el-col>
       </el-row>
 
-      <h6 class="subtitle">入库信息</h6>
+      <h6 class="subtitle">变动信息</h6>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="入库单号">{{detail.code}}</el-form-item>
+          <el-form-item label="变动数量">{{detail.chg_num}}件</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="入库类型">{{inventoryType[detail.in_type]}}</el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="10">
-          <el-form-item label="生产日期">{{detail.produce_date}}</el-form-item>
-        </el-col>
-      </el-row>
-      <el-row v-for="(item, index) in detail.trays" :key="index">
-        <el-col :span="12">
-          <el-form-item label="入库">
-            {{item.storehouse.title}}/{{item.warehouse.title}}/{{item.tray.title}}
-          </el-form-item>
+          <el-form-item label="变动类型">{{supOptTypes[detail.opt_type]}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="入库数量">{{item.num}}件</el-form-item>
+          <el-form-item label="变动后库存">{{detail.num_after}}件</el-form-item>
         </el-col>
       </el-row>
+
+      <h6 class="subtitle">处理结果</h6>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="创建人">{{detail.creator.realname || '系统'}}</el-form-item>
+          <el-form-item label="处理金额">&yen;{{returnPrice(detail.amount)}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="创建时间">{{detail.created}}</el-form-item>
+          <el-form-item label="备注">{{detail.remark}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="变动人">{{detail.creator.realname}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="变动时间">{{detail.created}}</el-form-item>
         </el-col>
       </el-row>
+      
     </el-form>
   </detail-layout>
 </template>
@@ -68,14 +65,13 @@
     },
     data() {
       let initDetail = {
-        trays: [],
-        relate_order: {
-          src_storehouse: {},
-        },
+        storehouse: {},
+        warehouse: {},
+        tray: {},
         creator: {}
       }
       return {
-        inventoryType: Constant.INVENTORY_TYPES(),
+        supOptTypes: Constant.SUP_OPT_TYPES(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail)
       }
@@ -83,12 +79,12 @@
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.supInStockDetail(data.id);
+        this.supModifyDetail(data.id);
       },
       //获取明细列表
-      async supInStockDetail(id){
+      async supModifyDetail(id){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supInStockDetail, { id });
+        let res = await Http.get(Config.api.supModifyDetail, { id });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;

@@ -9,7 +9,7 @@
           <my-select-province size="medium" v-model="detail.province_code" nationwide/>
         </el-form-item>
         <el-form-item label="地址" prop="address">
-          <el-input size="medium" v-model="detail.title" placeholder="请输入200位以内的字符" :maxlength="200"></el-input>
+          <el-input size="medium" v-model="detail.address" placeholder="请输入200位以内的字符" :maxlength="200"></el-input>
         </el-form-item>
       </el-form>
       <div style="margin-left: 110px; margin-top: 40px; margin-bottom: 20px;">

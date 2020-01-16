@@ -9,8 +9,8 @@
       <el-col :span="7">
         <my-query-item label="状态">
           <select-option
-            :options="{'全部': '', ...auditStatus}"
-            v-model="query.audit_status"
+            :options="{'全部': '', ...purchaseStatus}"
+            v-model="query.status"
             @change="handleQuery('TableSupplierGPurchase')"
             size="small"
           />
@@ -43,11 +43,11 @@
     data() {
       let initQuery = {
         order_date: '',
-        audit_status: '',
+        status: '',
         condition: '',
       }
       return {
-        auditStatus: Constant.AUDIT_STATUS('value_key'),
+        purchaseStatus: Constant.PURCHASE_STATUS('value_key'),
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }

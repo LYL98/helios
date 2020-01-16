@@ -11,48 +11,34 @@
           <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="入库数量">{{detail.num}}件</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="仓库">{{detail.supplier_title}}(待修改)</el-form-item>
+          <el-form-item label="库库数量">{{detail.pre_num}}件</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="入库时间">{{detail.created}}</el-form-item>
         </el-col>
       </el-row>
 
-      <h6 class="subtitle">入库信息</h6>
+      <h6 class="subtitle">调拨信息</h6>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="入库单号">{{detail.code}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="入库类型">{{inventoryType[detail.in_type]}}</el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="10">
-          <el-form-item label="生产日期">{{detail.produce_date}}</el-form-item>
-        </el-col>
-      </el-row>
-      <el-row v-for="(item, index) in detail.trays" :key="index">
-        <el-col :span="12">
-          <el-form-item label="入库">
-            {{item.storehouse.title}}/{{item.warehouse.title}}/{{item.tray.title}}
+          <el-form-item label="调出仓库">
+            <div v-for="(item, index) in detail.dist_outs" :key="index">{{item.src_storehouse.title}}/{{item.src_warehouse.title}}/{{item.src_tray.title}}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="入库数量">{{item.num}}件</el-form-item>
+          <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
         </el-col>
       </el-row>
+      <el-form-item label="调入仓库">{{detail.tar_storehouse.title}}/临时库</el-form-item>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="创建人">{{detail.creator.realname || '系统'}}</el-form-item>
+          <el-form-item label="创建人">{{detail.creator.realname}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="创建时间">{{detail.created}}</el-form-item>
         </el-col>
       </el-row>
+      
     </el-form>
   </detail-layout>
 </template>
@@ -68,14 +54,11 @@
     },
     data() {
       let initDetail = {
-        trays: [],
-        relate_order: {
-          src_storehouse: {},
-        },
+        dist_outs: [],
+        tar_storehouse: {},
         creator: {}
       }
       return {
-        inventoryType: Constant.INVENTORY_TYPES(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail)
       }
@@ -83,12 +66,12 @@
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.supInStockDetail(data.id);
+        this.supDistributeRecordDetail(data.id);
       },
       //获取明细列表
-      async supInStockDetail(id){
+      async supDistributeRecordDetail(id){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supInStockDetail, { id });
+        let res = await Http.get(Config.api.supDistributeRecordDetail, { id });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;
