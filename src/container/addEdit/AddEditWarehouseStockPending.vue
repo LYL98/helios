@@ -69,7 +69,7 @@
                 <div v-if="item.num_error" class="el-form-item__error">{{item.num_error}}</div>
               </el-form-item>
             </el-col>
-            <el-col :span="2" v-if="inventoryData.trays.length > 0">
+            <el-col :span="2" v-if="inventoryData.trays.length > 1">
               <a href="javascript:void(0);" class="d-b" @click="deleteTray(index)" style="margin: 3px 0 0 10px;">删除</a>
             </el-col>
           </el-row>
