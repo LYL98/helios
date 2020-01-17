@@ -34,3 +34,4 @@ export { default as DetailWarehouseInventoryMoveOutStorage } from './DetailWareh
 
 export { default as DetailOperateSort } from './DetailOperateSort';
 export { default as DetailOperateSortCity } from './DetailOperateSortCity';
+export { default as DetailOperateLineDriver } from './DetailOperateLineDriver';

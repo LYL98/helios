@@ -230,6 +230,22 @@ const Config = (() => {
       supSortQuery: apiM + '/sup_sort/query', //分拣记录查询（包括待分拣和已分拣）
       supAllocateDoSort: apiM + '/sup_allocate/do_sort', //对待分拣的记录进行分拣
 
+      //线路
+      operateLineAdd: apiM + '/basicdata/line/add', //线路新增
+      operateLineEdit: apiM + '/basicdata/line/edit', //线路修改
+      operateLineList: apiM + '/basicdata/line/list', //线路列表
+      operateLineDelete: apiM + '/basicdata/line/delete', //线路删除
+      operateLineConfirm: apiM + '/sup_cap_pool/confirm', //一键确认今日所有线路的司机
+      operateLineDriverList: apiM + '/basicdata/line/list', //待分配司机列表
+
+      // 线路退筐
+      operateRefundQuery: apiM + '/frame/return/query', // 线路的退筐查询
+      operateRefundStoreList: apiM + '/frame/return/store/list', // 可以退筐的门店列表
+      operateRefundStoreReturn: apiM + '/frame/return/add', // 退还多个门店的退筐数据
+      operateRefundFrameApprove: apiM + '/frame/return/check', //退筐记录审核
+      operateRefundFrameReject: apiM + '/frame/return/reject', //退筐记录驳回
+      operateRefundFrameExport: apiM + '/frame/return/export', //退筐记录导出
+
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
       groupBannerEdit: apiM + '/gb_basicdata/banner/edit', //banner修改
@@ -398,19 +414,6 @@ const Config = (() => {
       operatorPwdModify: apiM + '/operator/password_modify', //运营人员修改密码（自己密码）
       operatorFreeze: apiM + '/operator/freeze', //运营人员冻结
       operatorUnFreeze: apiM + '/operator/unfreeze', //运营人员解冻
-
-      operateLineAdd: apiM + '/basicdata/line/add', //线路新增
-      operateLineEdit: apiM + '/basicdata/line/edit', //线路修改
-      operateLineList: apiM + '/basicdata/line/list', //线路列表
-      operateLineDelete: apiM + '/basicdata/line/delete', //线路删除
-
-      // 线路退筐
-      operateRefundQuery: apiM + '/frame/return/query', // 线路的退筐查询
-      operateRefundStoreList: apiM + '/frame/return/store/list', // 可以退筐的门店列表
-      operateRefundStoreReturn: apiM + '/frame/return/add', // 退还多个门店的退筐数据
-      operateRefundFrameApprove: apiM + '/frame/return/check', //退筐记录审核
-      operateRefundFrameReject: apiM + '/frame/return/reject', //退筐记录驳回
-      operateRefundFrameExport: apiM + '/frame/return/export', //退筐记录导出
 
       //常量
       basicdataConfirmTime: apiM + '/basicdata/constant/confirm/time', //截单时间 GET获取，POST设置

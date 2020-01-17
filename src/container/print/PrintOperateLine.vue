@@ -1,8 +1,8 @@
 <template>
-  <print-layout title="打印商品码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <print-layout title="打印线路码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <div>
       <qr-code :content="qrCodeContent" v-if="isShow" :width="240" :height="240"/>
-      <div style="font-size: 16px;">{{detail.item_code}}/{{detail.item_title}}</div>
+      <div style="font-size: 16px;">{{detail.title}}</div>
     </div>
     <div class="bottom-btn-body">
       <div class="bottom-btn">
@@ -19,7 +19,7 @@ import { Http, Config } from '@/util';
 import { QrCode } from '@/common';
 
 export default {
-  name: "PrintWarehouseStockPending",
+  name: "PrintOperateLine",
   mixins: [printMixin],
   components: {
     'qr-code': QrCode
@@ -39,7 +39,7 @@ export default {
     qrCodeContent: {
       get(){
         let { detail } = this;
-        return `{"type":"item","sub_item_id":${detail.item_id},"order_id":${detail.id},"order_type":"${(detail.order_type || 'distribute')}","batch_code":"${detail.batch_code}"}`;
+        return `{"type":"line","code":"${detail.code}"}`;
       }
     }
   },

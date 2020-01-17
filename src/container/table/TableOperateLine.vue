@@ -1,17 +1,18 @@
 <template>
   <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.OperateLineAdd">
-      <div class="left"></div>
+      <div class="left">
+        <el-button @click.native="operateLineConfirm" size="mini" type="primary" plain>一键分配司机</el-button>
+      </div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditOperateLine')" size="mini" type="primary">新增</el-button>
+        <el-button @click.native="handleShowDetail('DetailOperateLineDriver')" size="mini" type="primary" plain>待分配司机</el-button>
+        <el-button @click.native="handleShowAddEdit('AddEditOperateLine', null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <el-table
         class="list-table my-table-float"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
@@ -20,43 +21,27 @@
       >
         <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod"/>
         <el-table-column prop="title" label="线路编号 / 名称" min-width="200">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.code }} / {{ scope.row.title }}
-            </div>
-          </template>
+          <template slot-scope="scope">{{ scope.row.code }} / {{ scope.row.title }}</template>
         </el-table-column>
-        <el-table-column label="所属省份" min-width="100">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{scope.row.province && scope.row.province.title}}
-            </div>
-          </template>
+        <el-table-column prop="item_num" label="线路总数量" min-width="100">
+          <template slot-scope="scope">{{ scope.row.item_num }}件</template>
         </el-table-column>
         <el-table-column label="包含县域" min-width="200">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)" v-for="(item, index) in scope.row.citys" :key="index">
+            <div v-for="(item, index) in scope.row.citys" :key="index">
               {{item.title}}{{'（' + item.item_num + '件）'}}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="配送员" min-width="200">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
             <span v-for="(item, index) in scope.row.distributors" :key="index">
               {{item.realname}}{{index === scope.row.distributors.length-1 ? '' : ', '}}
             </span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="item_num" label="线路总件数" min-width="100">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.item_num }}
-            </div>
-          </template>
-        </el-table-column>
-        <!--<el-table-column prop="created" label="创建时间" width="100"/>-->
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
@@ -66,7 +51,12 @@
               {
                 title: '修改',
                 isDisplay: auth.isAdmin || auth.OperateLineEdit,
-                command: () => handleShowAddEdit('AddEditOperateLine', scope.row)
+                command: () => handleShowAddEdit('AddEditOperateLine', scope.row, 'edit')
+              },
+              {
+                title: '打印',
+                isDisplay: auth.isAdmin || auth.OperateLinePrint,
+                command: () => handleShowPrint('PrintOperateLine', scope.row)
               },
               {
                 title: '删除',
@@ -136,10 +126,35 @@
           this.$message({message: res.message, type: 'error'});
         }
       },
+      //一键确认今日所有线路的司机
+      operateLineConfirm(){
+        this.$messageBox.confirm(`系统已为所有线路自动匹配相对应的司机，确定后将完成。`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          (async ()=>{
+            this.$loading({isShow: true});
+            let res = await Http.post(Config.api.operateLineConfirm, {});
+            this.$loading({isShow: false});
+            if(res.code === 0){
+              this.$message({message: '已分配', type: 'success'});
+            }else{
+              this.$message({message: res.message, type: 'error'});
+            }
+          })();
+        }).catch(() => {
+          //console.log('取消');
+        });
+      }
     }
   };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+  @import './table.scss';
+</style>
+<style lang="scss">
+  @import './table.global.scss';
 </style>

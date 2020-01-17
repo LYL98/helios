@@ -3,12 +3,13 @@
     <query-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateLine"/>
     <table-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateLine"/>
     <add-edit-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateLine"/>
-
+    <print-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintOperateLine"/>
+    <detail-operate-line-driver :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateLineDriver"/>
   </div>
 </template>
 
 <script>
-  import { QueryOperateLine, TableOperateLine, AddEditOperateLine } from '@/container';
+  import { QueryOperateLine, TableOperateLine, AddEditOperateLine, PrintOperateLine, DetailOperateLineDriver } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -17,10 +18,12 @@
       'query-operate-line': QueryOperateLine,
       'table-operate-line': TableOperateLine,
       'add-edit-operate-line': AddEditOperateLine,
+      'print-operate-line': PrintOperateLine,
+      'detail-operate-line-driver': DetailOperateLineDriver
     },
     mixins: [viewMixin],
     created() {
-      documentTitle('配送 - 线路规划');
+      documentTitle('场地 - 线路规划');
     }
   };
 </script>

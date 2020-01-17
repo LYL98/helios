@@ -1,4 +1,4 @@
-AddEditCity<template>
+<template>
   <div class="zone-add-eidt">
     <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}县域`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="120px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">

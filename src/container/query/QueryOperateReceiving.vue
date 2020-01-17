@@ -10,6 +10,7 @@
             @change="handleQuery('TableOperateReceiving')"
             style="width: 100%;"
             placeholder="配送日期"
+            :clearable="false"
           />
         </my-query-item>
       </el-col>

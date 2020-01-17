@@ -2,6 +2,19 @@
   <!-- 头部start -->
   <div class="container-query">
     <el-row :gutter="32">
+      <el-col :span="7">
+        <my-query-item label="配送日期">
+          <el-date-picker
+            size="small"
+            v-model="query.delivery_date"
+            value-format="yyyy-MM-dd"
+            @change="handleQuery('TableOperateLine')"
+            style="width: 100%;"
+            placeholder="配送日期"
+            :clearable="false"
+          />
+        </my-query-item>
+      </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
           <query-search-input
@@ -25,9 +38,14 @@
   export default {
     name: "QueryOperateLine",
     mixins: [queryMixin],
+    created() {
+      this.$data.initQuery.delivery_date = this.today;
+      this.$data.query.delivery_date = this.today;
+    },
     data() {
       let initQuery = {
         province_code: this.$province.code,
+        delivery_date: '',
         condition: ''
       }
       return {

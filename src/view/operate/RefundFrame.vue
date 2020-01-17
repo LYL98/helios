@@ -308,7 +308,7 @@
       }
     },
     created() {
-      documentTitle('配送 - 退筐');
+      documentTitle('场地 - 退筐');
       this.$data.query.province_code = this.province.code;
       this.listQuery();
     },
