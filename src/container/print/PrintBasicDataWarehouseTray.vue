@@ -1,8 +1,8 @@
 <template>
   <print-layout title="打印商品码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <div>
-      <qr-code :content="qrCodeContent" v-if="isShow" :width="240" :height="240"/>
-      <div style="font-size: 16px;">{{detail.item_code}}/{{detail.item_title}}</div>
+    <div v-for="(item, index) in dataItem" :key="index">
+      <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="240" :height="240"/>
+      <div style="font-size: 16px;">{{item.code}}</div>
     </div>
     <div class="bottom-btn-body">
       <div class="bottom-btn">
@@ -27,34 +27,23 @@ export default {
   created(){
   },
   data() {
-    let initDetail = {
-    }
+    let initDetail = {}
     return {
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
+      dataItem: []
     };
-  },
-  computed: {
-    //内容
-    qrCodeContent: {
-      get(){
-        let { detail } = this;
-        return `{"type":"item",sub_item_id:${detail.item_id},"order_id":${detail.id},"order_type":"${(detail.order_type || 'distribute')}","batch_code":"${detail.batch_code}"}`;
-      }
-    }
   },
   methods: {
     //显示打印(供外部也调用)
     showPrint(data){
-      if(data){
-        this.$data.detail = this.copyJson(data);
-      }else{
-        this.$data.detail = this.copyJson(this.initDetail);
-      }
+      this.$data.dataItem = data;
       this.$data.isShow = true;
     },
+    qrCodeContent(item){
+      return `{"type":"tray",id:${item.id}}`;
+    }
   },
-  
 };
 </script>
 

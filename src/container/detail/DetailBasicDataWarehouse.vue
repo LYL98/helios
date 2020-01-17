@@ -19,13 +19,14 @@
       <h6 class="subtitle" style="margin-top: 20px;">托盘信息</h6>
       <div class="tray-top">
         <div class="left">
-          <el-button size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint">批量打印</el-button>
+          <el-button size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint"
+            @click.native="handleShowPrint('PrintBasicDataWarehouseTray', multipleSelection)" :disabled="multipleSelection.length > 0 ? false : true">批量打印</el-button>
         </div>
         <div class="right">
           <el-button @click="operate({}, 'add_tray')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayAdd">增加拖盘</el-button>
         </div>
       </div>
-      <el-table :data="dataItem.items" :row-class-name="highlightRowClassName">
+      <el-table :data="dataItem.items" :row-class-name="highlightRowClassName" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="42" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint"></el-table-column>
         <el-table-column type="index" label="序号" :index="indexMethod"/>
         <el-table-column prop="code" label="托盘编号"/>
@@ -33,7 +34,7 @@
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
             <a href="javascript: void(0);" style="margin-right: 10px;" @click="operate(scope.row, 'edit_tray')" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayEdit">修改</a>
-            <a href="javascript: void(0);" style="margin-right: 10px;" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint">打印</a>
+            <a href="javascript: void(0);" style="margin-right: 10px;" @click="handleShowPrint('PrintBasicDataWarehouseTray', [scope.row])" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint">打印</a>
             <a href="javascript: void(0);" @click="operate(scope.row, 'delete_tray')" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayDelete">删除</a>
           </template>
         </el-table-column>
@@ -70,7 +71,8 @@
           warehouse: {},
           items: [],
           num: 0
-        }
+        },
+        multipleSelection: []
       }
     },
     methods: {
@@ -91,6 +93,10 @@
         }else{
           this.$message({message: res.message, type: 'error'});
         }
+      },
+      //选择
+      handleSelectionChange(val) {
+        this.$data.multipleSelection = val;
       },
       //操作
       operate(data, type) {

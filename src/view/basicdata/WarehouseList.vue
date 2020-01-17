@@ -5,11 +5,12 @@
     <detail-warehouse :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailBasicDataWarehouse"/>
     <add-edit-warehouse :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataWarehouse"/>
     <add-edit-warehouse-tray :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataWarehouseTray"/>
+    <print-warehouse-tray :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintBasicDataWarehouseTray"/>
   </div>
 </template>
 
 <script>
-  import { QueryBasicDataWarehouse, TableBasicDataWarehouse, AddEditBasicDataWarehouse, DetailBasicDataWarehouse, AddEditBasicDataWarehouseTray } from '@/container';
+  import { QueryBasicDataWarehouse, TableBasicDataWarehouse, AddEditBasicDataWarehouse, DetailBasicDataWarehouse, AddEditBasicDataWarehouseTray, PrintBasicDataWarehouseTray } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -19,7 +20,8 @@
       'table-warehouse': TableBasicDataWarehouse,
       'detail-warehouse': DetailBasicDataWarehouse,
       'add-edit-warehouse': AddEditBasicDataWarehouse,
-      'add-edit-warehouse-tray': AddEditBasicDataWarehouseTray
+      'add-edit-warehouse-tray': AddEditBasicDataWarehouseTray,
+      'print-warehouse-tray': PrintBasicDataWarehouseTray
     },
     mixins: [viewMixin],
     created() {
