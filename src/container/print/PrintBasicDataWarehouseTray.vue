@@ -1,5 +1,5 @@
 <template>
-  <print-layout title="打印商品码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <print-layout title="打印托盘码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <div v-for="(item, index) in dataItem" :key="index">
       <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="240" :height="240"/>
       <div style="font-size: 16px;">{{item.code}}</div>
@@ -41,7 +41,7 @@ export default {
       this.$data.isShow = true;
     },
     qrCodeContent(item){
-      return `{"type":"tray",id:${item.id}}`;
+      return `{"type":"tray","id":${item.id}}`;
     }
   },
 };

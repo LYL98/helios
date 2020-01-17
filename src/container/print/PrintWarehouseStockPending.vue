@@ -39,7 +39,7 @@ export default {
     qrCodeContent: {
       get(){
         let { detail } = this;
-        return `{"type":"item",sub_item_id:${detail.item_id},"order_id":${detail.id},"order_type":"${(detail.order_type || 'distribute')}","batch_code":"${detail.batch_code}"}`;
+        return `{"type":"item","sub_item_id":${detail.item_id},"order_id":${detail.id},"order_type":"${(detail.order_type || 'distribute')}","batch_code":"${detail.batch_code}"}`;
       }
     }
   },
