@@ -197,6 +197,7 @@ const Config = (() => {
       supCheckAdd: apiM + '/sup_check/add', //盘点
       supMoveAdd: apiM + '/sup_move/add', //移库
       supModifyAdd: apiM + '/sup_modify/add', //变动
+      supDistributeAdd: apiM + '/sup_distribute/add', //调拨单
 
       supAcceptAdd: apiM + '/sup_accept/add', //场地收货
 

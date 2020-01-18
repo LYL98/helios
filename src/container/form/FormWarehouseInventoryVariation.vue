@@ -20,16 +20,32 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="变动类型">
+          <el-form-item label="变动类型" prop="opt_type">
             <select-option
               size="small"
-              v-model="detail.reason"
+              v-model="detail.opt_type"
               :options="supOptTypes"
             />
           </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="变动后库存">123件</el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="变动后库存">
+            <template v-if="typeof detail.chg_num !== 'number'">-件</template>
+            <template v-else-if="detail.opt_type === 'refund'">{{detail.num + detail.chg_num}}件</template>
+            <template v-else>{{detail.num - detail.chg_num}}件</template>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12" v-if="detail.opt_type === 'damage_sale' || detail.opt_type === 'sale_offline'">
+          <el-form-item label="处理金额" prop="amount">
+            <input-price size="medium" v-model="detail.amount" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="detail.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
+      </el-form-item>
     </el-form>
     <div style="margin-left: 110px; margin-top: 20px;">
       <el-button @click.native="handleCancel">取 消</el-button>
@@ -41,7 +57,7 @@
 <script>
 import formMixin from './form.mixin';
 import { Http, Config, Constant } from '@/util';
-import { InputNumber, SelectOption } from '@/common';
+import { InputNumber, InputPrice, SelectOption } from '@/common';
 
 export default {
   name: "FormWarehouseInventoryVariation",
@@ -50,6 +66,7 @@ export default {
   },
   components: {
     'input-number': InputNumber,
+    'input-price': InputPrice,
     'select-option': SelectOption
   },
   data(){
@@ -57,7 +74,10 @@ export default {
     return{
       supOptTypes: Constant.SUP_OPT_TYPES('value_key'),
       rules: {
-        chg_num: { required: true, message: '请输入变动数量', trigger: 'change' }
+        chg_num: { required: true, message: '请输入变动数量', trigger: 'change' },
+        opt_type: { required: true, message: '请选择变动类型', trigger: 'change' },
+        amount: { required: true, message: '请输入处理金额', trigger: 'change' },
+        remark: { required: true, message: '请输入备注', trigger: 'change' }
       },
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -72,7 +92,7 @@ export default {
         id: detail.id,
         num: detail.chg_num,
         opt_type: detail.opt_type,
-        chg_num: detail.chg_num,
+        chg_num: detail.opt_type === 'refund' ? detail.chg_num : -detail.chg_num,
         amount: detail.amount,
         remark: detail.remark
       });

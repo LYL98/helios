@@ -1,6 +1,6 @@
 <template>
-  <form-layout title="出库" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="110px" :model="detail" ref="ruleForm" :rules="rules">
+  <form-layout title="移库" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
+    <el-form class="custom-form" size="mini" label-position="right" label-width="110px" :model="addData" ref="ruleForm" :rules="rules">
       <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
       <el-row>
         <el-col :span="12">
@@ -12,12 +12,28 @@
         <el-col :span="12">
           <el-form-item label="库存数量">{{detail.num}}件</el-form-item>
         </el-col>
+      </el-row>
+      <el-row v-for="(item, index) in addData.trays" :key="index">
         <el-col :span="12">
-          <el-form-item label="出库">场地</el-form-item>
+          <el-form-item label="现仓库">
+            <cascader-warehouse-tray size="medium" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
+            <div v-if="item.tray_ids_error" class="el-form-item__error">{{item.tray_ids_error}}</div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="移库数量">
+            <input-number size="medium" v-model="item.num" unit="件" :min="1" @change="inputNum(index)"/>
+            <div v-if="item.num_error" class="el-form-item__error">{{item.num_error}}</div>
+          </el-form-item>
+          <a href="javascript:void(0);" @click="deleteTray(index)" v-if="addData.trays.length > 1" class="delete-a">删除</a>
         </el-col>
       </el-row>
-      <el-form-item label="出库数量" prop="num_out">
-        <input-number size="medium" v-model="detail.num_out" unit="件" :min="1"/>
+      <el-form-item label="">
+        <el-button size="mini" type="primary" @click.native="addTray">增加仓库</el-button>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="addData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
+        <div v-if="addData.remark_error" class="el-form-item__error">{{addData.remark_error}}</div>
       </el-form-item>
     </el-form>
     <div style="margin-left: 110px; margin-top: 20px;">
@@ -29,8 +45,9 @@
 
 <script>
 import formMixin from './form.mixin';
-import { Http, Config, Constant, Verification } from '@/util';
+import { Http, Config, Constant } from '@/util';
 import { InputNumber } from '@/common';
+import { CascaderWarehouseTray } from '@/component';
 
 export default {
   name: "FormWarehouseInventoryMove",
@@ -38,13 +55,17 @@ export default {
   created() {
   },
   components: {
-    'input-number': InputNumber
+    'input-number': InputNumber,
+    'cascader-warehouse-tray': CascaderWarehouseTray
   },
   data(){
     let initDetail = {}
     return{
-      rules: {
-        num_out: { required: true, message: '请输入出库数量', trigger: 'change' }
+      rules: {},
+      addData: {
+        id: '', //tray_item_id
+        remark: '',
+        trays: [{tray_id: '', num: '', tray_ids: []}]
       },
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -53,16 +74,34 @@ export default {
   methods: {
     //提交
     async submitData(){
-      let { detail } = this;
+      let { detail, addData } = this;
+      let con = true;
+      for(let i = 0; i < addData.trays.length; i++){
+        if(!addData.trays[i].tray_id){
+          addData.trays[i].tray_ids_error = '请选择托盘';
+          con = false;
+        }
+        if(!addData.trays[i].num){
+          addData.trays[i].num_error = '请输入数量';
+          con = false;
+        }
+      }
+      if(!addData.remark){
+        addData.remark_error = '请输入备注';
+        con = false;
+      }
+      if(!con){
+        this.$data.addData = this.copyJson(addData);
+        return;
+      }
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supOutAdd, {
-        id: detail.id,
-        num: detail.num_out,
-        province_code: this.$province.code
+      let res = await Http.post(Config.api.supMoveAdd, {
+        ...addData,
+        id: detail.id
       });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: '已出库', type: 'success'});
+        this.$message({message: '已移库', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('DetailWarehouseInventory');
@@ -72,10 +111,40 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
+    //添加仓库
+    addTray(){
+      this.addData.trays.push({tray_id: '', num: '', tray_ids: []});
+      this.$data.addData = this.copyJson(this.addData);
+    },
+    //删除仓库
+    deleteTray(index){
+      this.addData.trays.remove(index);
+      this.$data.addData = this.copyJson(this.addData);
+    },
+    //选择仓库
+    changeTray(value, index){
+      let { addData } = this;
+      addData.trays[index].tray_id = value[2];
+      addData.trays[index].tray_ids = value;
+      addData.trays[index].tray_ids_error = '';
+      this.$data.addData = this.copyJson(addData);
+    },
+    //输入数量
+    inputNum(index){
+      let { addData } = this;
+      addData.trays[index].num_error = '';
+      this.$data.addData = this.copyJson(addData);
+    }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  .delete-a{
+    font-size: 12px;
+    position: absolute;
+    right: -30px;
+    top: 5px;
+  }
 </style>
