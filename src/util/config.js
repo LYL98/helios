@@ -194,6 +194,10 @@ const Config = (() => {
       wareTrayExport: apiM + '', //库存导出
 
       supOutAdd: apiM + '/sup_out/add', //出库
+      supCheckAdd: apiM + '/sup_check/add', //盘点
+      supMoveAdd: apiM + '/sup_move/add', //移库
+      supModifyAdd: apiM + '/sup_modify/add', //变动
+
       supAcceptAdd: apiM + '/sup_accept/add', //场地收货
 
       //仓库待入库、调拨单

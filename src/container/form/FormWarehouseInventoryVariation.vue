@@ -1,5 +1,5 @@
 <template>
-  <form-layout title="出库" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
+  <form-layout title="变动" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
     <el-form class="custom-form" size="mini" label-position="right" label-width="110px" :model="detail" ref="ruleForm" :rules="rules">
       <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
       <el-row>
@@ -12,13 +12,24 @@
         <el-col :span="12">
           <el-form-item label="库存数量">{{detail.num}}件</el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
-          <el-form-item label="出库">场地</el-form-item>
+          <el-form-item label="变动数量" prop="chg_num">
+            <input-number size="medium" v-model="detail.chg_num" unit="件" :min="1"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="变动类型">
+            <select-option
+              size="small"
+              v-model="detail.reason"
+              :options="supOptTypes"
+            />
+          </el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="出库数量" prop="num_out">
-        <input-number size="medium" v-model="detail.num_out" unit="件" :min="1"/>
-      </el-form-item>
+      <el-form-item label="变动后库存">123件</el-form-item>
     </el-form>
     <div style="margin-left: 110px; margin-top: 20px;">
       <el-button @click.native="handleCancel">取 消</el-button>
@@ -29,22 +40,24 @@
 
 <script>
 import formMixin from './form.mixin';
-import { Http, Config } from '@/util';
-import { InputNumber } from '@/common';
+import { Http, Config, Constant } from '@/util';
+import { InputNumber, SelectOption } from '@/common';
 
 export default {
-  name: "FormWarehouseInventoryOutStorage",
+  name: "FormWarehouseInventoryVariation",
   mixins: [formMixin],
   created() {
   },
   components: {
-    'input-number': InputNumber
+    'input-number': InputNumber,
+    'select-option': SelectOption
   },
   data(){
     let initDetail = {}
     return{
+      supOptTypes: Constant.SUP_OPT_TYPES('value_key'),
       rules: {
-        num_out: { required: true, message: '请输入出库数量', trigger: 'change' }
+        chg_num: { required: true, message: '请输入变动数量', trigger: 'change' }
       },
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -55,14 +68,17 @@ export default {
     async submitData(){
       let { detail } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supOutAdd, {
+      let res = await Http.post(Config.api.supModifyAdd, {
         id: detail.id,
-        num: detail.num_out,
-        province_code: this.$province.code
+        num: detail.chg_num,
+        opt_type: detail.opt_type,
+        chg_num: detail.chg_num,
+        amount: detail.amount,
+        remark: detail.remark
       });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: '已出库', type: 'success'});
+        this.$message({message: '已变动', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('DetailWarehouseInventory');

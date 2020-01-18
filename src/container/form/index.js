@@ -14,4 +14,9 @@ export { default as FormSystemOperatorResetPwd } from './FormSystemOperatorReset
 export { default as FormItemListEditInnerTag } from './FormItemListEditInnerTag';
 export { default as FormOrderAfterSaleClose } from './FormOrderAfterSaleClose';
 export { default as FormOrderListManualDelivery } from './FormOrderListManualDelivery';
+export { default as FormWarehouseInventoryAllot } from './FormWarehouseInventoryAllot';
+export { default as FormWarehouseInventoryCheck } from './FormWarehouseInventoryCheck';
+export { default as FormWarehouseInventoryMove } from './FormWarehouseInventoryMove';
 export { default as FormWarehouseInventoryOutStorage } from './FormWarehouseInventoryOutStorage';
+export { default as FormWarehouseInventoryVariation } from './FormWarehouseInventoryVariation';
+export { default as FormOperateDepartAffirm } from './FormOperateDepartAffirm';

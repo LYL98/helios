@@ -29,11 +29,11 @@
 
 <script>
 import formMixin from './form.mixin';
-import { Http, Config } from '@/util';
+import { Http, Config, Constant, Verification } from '@/util';
 import { InputNumber } from '@/common';
 
 export default {
-  name: "FormWarehouseInventoryOutStorage",
+  name: "FormWarehouseInventoryAllot",
   mixins: [formMixin],
   created() {
   },

@@ -21,23 +21,23 @@
             :list="[
               {
                 title: '盘点',
-                isDisplay: (auth.isAdmin || auth.xxxx) && fromPage !== 'receiving',
-                command: () => xxxx()
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryCheck) && fromPage !== 'receiving',
+                command: () => handleShowForm('FormWarehouseInventoryCheck', scope.row)
               },
               {
                 title: '变动',
-                isDisplay: (auth.isAdmin || auth.xxxx) && fromPage !== 'receiving',
-                command: () => xxxx()
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryVariation) && fromPage !== 'receiving',
+                command: () => handleShowForm('FormWarehouseInventoryVariation', scope.row)
               },
               {
                 title: '调拨',
-                isDisplay: (auth.isAdmin || auth.xxxx) && fromPage !== 'receiving',
-                command: () => xxxx()
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryAllot) && fromPage !== 'receiving',
+                command: () => handleShowForm('FormWarehouseInventoryAllot', scope.row)
               },
               {
                 title: '移库',
-                isDisplay: (auth.isAdmin || auth.xxxx) && fromPage !== 'receiving',
-                command: () => xxxx()
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryMove) && fromPage !== 'receiving',
+                command: () => handleShowForm('FormWarehouseInventoryMove', scope.row)
               },
               {
                 title: '出库',

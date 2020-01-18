@@ -54,7 +54,7 @@
                 {
                   title: '打印',
                   isDisplay: auth.isAdmin || auth.WarehouseStockPrint,
-                  command: () => handleShowPrint('PrintWarehouseStock', scope.row)
+                  command: () => handleShowPrint('PrintWarehouseStock', {...scope.row, order_type: scope.row.in_type})
                 },
               ]"
             />

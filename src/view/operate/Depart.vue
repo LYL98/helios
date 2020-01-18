@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import { QueryOperateDepart, TableOperateDepart, DetailOperateDepart, FormOperateDepartAffirm } from '@/container';
+  import { QueryOperateDepart, TableOperateDepart, DetailOperateDepart, FormOperateDepartAffirm, DetailOperateDepartDriverTrack, DetailOperateDepartStockout } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -17,7 +17,9 @@
       'query-operate-depart': QueryOperateDepart,
       'table-operate-depart': TableOperateDepart,
       'detail-operate-depart': DetailOperateDepart,
-      'form-operate-depart-affirm': FormOperateDepartAffirm
+      'form-operate-depart-affirm': FormOperateDepartAffirm,
+      'detail-operate-depart-driver-track': DetailOperateDepartDriverTrack,
+      'detail-operate-depart-stockout': DetailOperateDepartStockout
     },
     mixins: [viewMixin],
     created() {
