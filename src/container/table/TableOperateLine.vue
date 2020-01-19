@@ -49,8 +49,13 @@
               @command-visible="handleCommandVisible"
               :list="[
               {
+                title: '解绑司机',
+                isDisplay: (auth.isAdmin || auth.OperateLineUnDriver) && scope.row.deliver.id,
+                command: () => handleLineUnDriver(scope.row)
+              },
+              {
                 title: '修改',
-                isDisplay: auth.isAdmin || auth.OperateLineEdit,
+                isDisplay: (auth.isAdmin || auth.OperateLineEdit) && !scope.row.deliver.id,
                 command: () => handleShowAddEdit('AddEditOperateLine', scope.row, 'edit')
               },
               {
@@ -60,7 +65,7 @@
               },
               {
                 title: '删除',
-                isDisplay: auth.isAdmin || auth.OperateLineDelete,
+                isDisplay: (auth.isAdmin || auth.OperateLineDelete) && !scope.row.deliver.id,
                 command: () => handleDelete(scope.row)
               }
             ]"
@@ -126,9 +131,33 @@
           this.$message({message: res.message, type: 'error'});
         }
       },
+      //解绑司机
+      handleLineUnDriver(data){
+        this.$messageBox.confirm('您要解绑司机？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          (async ()=>{
+            this.$loading({isShow: true});
+            let res = await Http.post(Config.api.operateLineUnDriver, {
+              line_code: data.code
+            });
+            this.$loading({isShow: false});
+            if(res.code === 0){
+              this.getData(this.query);
+              this.$message({message: '已解绑', type: 'success'});
+            }else{
+              this.$message({message: res.message, type: 'error'});
+            }
+          })();
+        }).catch(() => {
+          //console.log('取消');
+        });
+      },
       //一键确认今日所有线路的司机
       operateLineConfirm(){
-        this.$messageBox.confirm(`系统已为所有线路自动匹配相对应的司机，确定后将完成。`, '提示', {
+        this.$messageBox.confirm('系统已为所有线路自动匹配相对应的司机，确定后将完成。', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

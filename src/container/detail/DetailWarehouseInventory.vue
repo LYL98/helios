@@ -36,7 +36,7 @@
               },
               {
                 title: '移库',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryMove) && fromPage !== 'receiving',
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryMoveOp) && fromPage !== 'receiving',
                 command: () => handleShowForm('FormWarehouseInventoryMove', scope.row)
               },
               {

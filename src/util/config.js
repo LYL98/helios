@@ -241,7 +241,8 @@ const Config = (() => {
       operateLineList: apiM + '/basicdata/line/list', //线路列表
       operateLineDelete: apiM + '/basicdata/line/delete', //线路删除
       operateLineConfirm: apiM + '/sup_cap_pool/confirm', //一键确认今日所有线路的司机
-      operateLineDriverList: apiM + '/basicdata/line/list', //待分配司机列表
+      operateLineDriverList: apiM + '/sup_cap_pool/list', //待分配司机列表
+      operateLineUnDriver: apiM + '/sup_ldeliver/un_confirm', //解绑司机
 
       // 线路退筐
       operateRefundQuery: apiM + '/frame/return/query', // 线路的退筐查询

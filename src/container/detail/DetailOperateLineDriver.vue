@@ -3,16 +3,16 @@
     <div style="padding: 0 16px;">
       <el-table :data="dataItem" :row-class-name="highlightRowClassName">
         <el-table-column label="姓名">
-          <template slot-scope="scope">{{scope.row.title}}</template>
+          <template slot-scope="scope">{{scope.row.deliver.realname}}</template>
         </el-table-column>
         <el-table-column label="手机号">
-          <template slot-scope="scope">{{scope.row.title}}</template>
+          <template slot-scope="scope">{{scope.row.deliver.phone}}</template>
         </el-table-column>
         <el-table-column label="签到线路">
-          <template slot-scope="scope">{{scope.row.title}}</template>
+          <template slot-scope="scope">{{scope.row.line.title}}</template>
         </el-table-column>
-        <el-table-column label="签到时间" width="120">
-          <template slot-scope="scope">{{scope.row.num}}件</template>
+        <el-table-column label="签到时间">
+          <template slot-scope="scope">{{scope.row.created}}</template>
         </el-table-column>
       </el-table>
     </div>
