@@ -89,14 +89,14 @@
       }
     },
     methods: {
-      //显示新增修改(重写mixin)
-      showDetail(data){
-        this.supAllocateDetail(data.id);
+      //显示(重写mixin)
+      showDetail(dta){
+        this.supConfirmStoreLack();
       },
       //获取明细列表
-      async supAllocateDetail(id){
+      async supConfirmStoreLack(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supAllocateDetail, { out_stock_id: id }); // id:6测试
+        let res = await Http.get(Config.api.supConfirmStoreLack, {});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;

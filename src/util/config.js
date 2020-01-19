@@ -252,6 +252,7 @@ const Config = (() => {
       operateRefundFrameReject: apiM + '/frame/return/reject', //退筐记录驳回
       operateRefundFrameExport: apiM + '/frame/return/export', //退筐记录导出
 
+      //发车
       supConfirmWait: apiM + '/sup_confirm/wait', //待确认分配查询列表（也就是运营中心的发车列表）
       supConfirmStoreLack: apiM + '/sup_confirm/store_lack', //门店商品缺货列表
       supSend: apiM + '/sup_send', //一键确认线路商品分配

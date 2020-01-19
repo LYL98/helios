@@ -1,73 +1,59 @@
 <template>
-  <div class="query">
-      <my-collapse-query @expandChange="onExpandChange">
-        <template slot="header">
-          <el-row>
-            <el-col :xl="6" :lg="7" :span="7">
-              <my-query-item label="角色">
-                <search-role size="small" style="width: 210px;" @onSelectRole="handleQuery('TableSystemOperator')" ref="mySearchRole"></search-role>
-              </my-query-item>
-            </el-col>
-            <el-col :xl="6" :lg="7" :span="7">
-              <my-query-item label="职务">
-                <el-select v-model="query.post" placeholder="请选择" size="small" class="query-item-select" @change="handleQuery('TableSystemOperator')">
-                  <el-option label="全部" value=""></el-option>
-                  <el-option label="业务员" value="salesman"></el-option>
-                  <el-option label="采购员" value="buyer"></el-option>
-                  <el-option label="配送员" value="distributor"></el-option>
-                  <el-option label="其他" value="other"></el-option>
-                </el-select>
-              </my-query-item>
-            </el-col>
-            <el-col :xl="8" :lg="10" :span="10">
-              <my-query-item label="搜索">
-                <div style="display: flex">
-                  <el-input
-                    size="small"
-                    placeholder="请输入用户名、手机号"
-                    class="query-item-input"
-                    v-model="query.condition"
-                    clearable
-                    @keyup.enter.native="handleQuery('TableSystemOperator')"
-                    @clear="handleQuery('TableSystemOperator')"
-                    ref="condition"
-                  />
-                  <el-button size="small" type="primary" @click="handleQuery('TableSystemOperator')" icon="el-icon-search" style="margin-left: 4px"></el-button>
-                  <el-button v-if="!isExpand" size="small" type="primary" plain @click="handleClearQuery('TableSystemOperator')" class="query-item-reset">重置</el-button>
-                </div>
-              </my-query-item>
-            </el-col>
-          </el-row>
-        </template>
-        <template slot="expand">
-          <el-row style="margin-top: 16px">
-            <el-col :xl="6" :lg="7" :span="7">
-              <my-query-item label="权限级别">
-                <el-select v-model="query.data_level" placeholder="请选择" class="query-item-select" size="small" @change="handleQuery('TableSystemOperator')">
-                  <el-option label="全部" value="">全部</el-option>
-                  <el-option label="全国" :value="1">全国</el-option>
-                  <el-option label="省级" :value="2"></el-option>
-                  <el-option label="片区" :value="3"></el-option>
-                  <el-option label="县域" :value="4"></el-option>
-                  <el-option label="线路" :value="5"></el-option>
-                </el-select>
-              </my-query-item>
-            </el-col>
-            <el-col :xl="6" :lg="7" :span="7">
-              <my-query-item label="状态">
-                <select-option
-                  :options="{'全部': '', '已冻结': 1, '未冻结': 0}"
-                  v-model="query.is_freeze"
-                  @change="handleQuery('TableSystemOperator')"
-                  size="small"
-                />
-                <el-button size="small" type="primary" plain @click="handleClearQuery('TableSystemOperator')" class="query-item-reset">重置</el-button>
-              </my-query-item>
-            </el-col>
-          </el-row>
-        </template>
-      </my-collapse-query>
-    </div>
+  <div class="container-query">
+    <el-row :gutter="32">
+      <el-col :span="7">
+        <my-query-item label="角色">
+          <search-role size="small" style="width: 210px;" @onSelectRole="handleQuery('TableSystemOperator')" ref="mySearchRole"></search-role>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
+        <my-query-item label="职务">
+          <el-select v-model="query.post" placeholder="请选择" size="small" class="query-item-select" @change="handleQuery('TableSystemOperator')">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="业务员" value="salesman"></el-option>
+            <el-option label="采购员" value="buyer"></el-option>
+            <el-option label="配送员" value="distributor"></el-option>
+            <el-option label="其他" value="other"></el-option>
+          </el-select>
+        </my-query-item>
+      </el-col>
+      <el-col :span="10">
+        <my-query-item label="搜索">
+          <query-search-input
+            size="small"
+            placeholder="用户名/手机号"
+            v-model="query.condition"
+            @search="handleQuery('TableSystemOperator')"
+            @reset="handleClearQuery('TableSystemOperator')"
+          />
+        </my-query-item>
+      </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
+      <el-col :span="7">
+        <my-query-item label="权限级别">
+          <el-select v-model="query.data_level" placeholder="请选择" class="query-item-select" size="small" @change="handleQuery('TableSystemOperator')">
+            <el-option label="全部" value="">全部</el-option>
+            <el-option label="全国" :value="1">全国</el-option>
+            <el-option label="省级" :value="2"></el-option>
+            <el-option label="片区" :value="3"></el-option>
+            <el-option label="县域" :value="4"></el-option>
+            <el-option label="线路" :value="5"></el-option>
+          </el-select>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
+        <my-query-item label="状态">
+          <select-option
+            :options="{'全部': '', '已冻结': 1, '未冻结': 0}"
+            v-model="query.is_freeze"
+            @change="handleQuery('TableSystemOperator')"
+            size="small"
+          />
+        </my-query-item>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>

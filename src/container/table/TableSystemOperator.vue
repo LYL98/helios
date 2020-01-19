@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-table">
     <!-- 头部end -->
     <div class="table-top" v-if="auth.isAdmin || auth.SystemOperatorAdd">
       <div class="left"></div>

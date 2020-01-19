@@ -1,70 +1,79 @@
 <template>
-  <div class="user-reset-password">
-    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}运营人员`" :visible="isShow" width="720px" :before-close="handleCancel">
-      <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm">
-        <!-- <el-form-item label="用户" v-show="detail.id">
-          <div>{{detail.realname}}&nbsp;<span v-show="detail.phone">({{detail.phone}})</span></div>
-        </el-form-item> -->
-        <el-form-item label="姓名" prop="realname">
-          <el-input v-model="detail.realname" placeholder="请输入10位以内字符" :maxlength="10"></el-input>
-        </el-form-item>
-        <el-form-item label="手机号"  prop="phone">
-          <el-input v-model="detail.phone" :maxlength="11" placeholder="请输入11位的手机号" autocomplete="new-password"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" v-show="!detail.id" prop="password">
-          <el-input v-model="detail.password" type="password" placeholder="区分英文大小写，可输入数字与特殊符号限定为6-15个字符" autocomplete="new-password"></el-input>
-        </el-form-item>
-        <el-form-item label="工号" prop="employee_no">
-          <el-input v-model="detail.employee_no" :maxlength="10" placeholder="请输入10位以内字符"></el-input>
-        </el-form-item>
+  <div>
+    <add-edit-layout :title="returnPageTitles('运营人员')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+      <el-form class="custom-form" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="姓名" prop="realname">
+              <el-input v-model="detail.realname" size="medium" placeholder="请输入10位以内字符" :maxlength="10"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="工号" prop="employee_no">
+              <el-input v-model="detail.employee_no" size="medium" :maxlength="10" placeholder="请输入10位以内字符"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="手机号"  prop="phone">
+              <el-input v-model="detail.phone" size="medium" :maxlength="11" placeholder="请输入11位的手机号" autocomplete="new-password"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="密码" v-show="!detail.id" prop="password">
+              <el-input v-model="detail.password" size="medium" type="password" placeholder="区分英文大小写，可输入数字与特殊符号限定为6-15个字符" autocomplete="new-password"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        
          <el-form-item label="上传头像">
-          <my-avatar style="height:64px;"  :avatar="true" ref="upload" :limit="size" module="system" v-model="detail.avatar"></my-avatar>
+          <my-avatar style="height:64px;" :avatar="true" ref="upload" :limit="size" module="system" v-model="detail.avatar"></my-avatar>
         </el-form-item>
         <el-form-item label="职务">
           <el-radio v-model="detail.post" @change="handleChange" label="">无</el-radio>
-          <el-radio v-model="detail.post" @change="handleChange" label="salesman">业务员</el-radio>
-          <el-radio v-model="detail.post" @change="handleChange" label="buyer">采购员</el-radio>
-          <el-radio v-model="detail.post" @change="handleChange" label="distributor">配送员</el-radio>
+          <el-radio v-model="detail.post" @change="handleChange" v-for="(value, key) in operatorPost" :key="key" :label="key">{{value}}</el-radio>
         </el-form-item>
-        <el-form-item label="角色" prop="role_ids">
-          <el-transfer v-model="detail.role_ids" :data="roleList" :titles="['未选角色','已选角色']"></el-transfer>
-        </el-form-item>
-        <el-form-item label="权限级别">
-          <el-radio v-for="(item, key) in dataLevel" :disabled="detail.data_level != 1 && (current.length>0 && key != current)" :key="key" v-model="detail.data_level" :label="key" @change="changeDataLevel">{{item}}</el-radio>
-        </el-form-item>
-        <!--如果级别 == 3、4、5 片区、县市、线路-->
-        <el-form-item label="选择省份" prop="province_code" v-if="detail.data_level == '3' || detail.data_level === '4' || detail.data_level === '5'">
-          <my-select-province v-model="detail.province_code" @change="changeProvince" />
-        </el-form-item>
-        <!--省份列表（多选） 如果级别 == 2-->
-        <el-form-item label="省份列表" prop="data_value" v-if="detail.data_level == '2'">
-          <my-select-province-multi v-model="detail.data_value"/>
-        </el-form-item>
+        <!--如不是司机、装车员、落地配司机-->
+        <template v-if="judgeOrs(detail.post, ['', 'salesman', 'buyer'])">
+          <el-form-item label="角色" prop="role_ids">
+            <el-transfer v-model="detail.role_ids" :data="roleList" :titles="['未选角色','已选角色']"></el-transfer>
+          </el-form-item>
+          <el-form-item label="权限级别">
+            <el-radio v-for="(item, key) in dataLevel" :disabled="detail.data_level != 1 && (current.length>0 && key != current)" :key="key" v-model="detail.data_level" :label="key" @change="changeDataLevel">{{item}}</el-radio>
+          </el-form-item>
+          <!--如果级别 == 3、4、5 片区、县市、线路-->
+          <el-form-item label="选择省份" prop="province_code" v-if="detail.data_level == '3' || detail.data_level === '4' || detail.data_level === '5'">
+            <my-select-province size="medium" v-model="detail.province_code" @change="changeProvince" />
+          </el-form-item>
+          <!--省份列表（多选） 如果级别 == 2-->
+          <el-form-item label="省份列表" prop="data_value" v-if="detail.data_level == '2'">
+            <my-select-province-multi size="medium" v-model="detail.data_value"/>
+          </el-form-item>
 
-        <!--片区列表（多选） 如果级别 == 3-->
-        <el-form-item label="片区列表" prop="data_value" v-else-if="detail.data_level == '3'">
-          <my-select-zone-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
-        </el-form-item>
+          <!--片区列表（多选） 如果级别 == 3-->
+          <el-form-item label="片区列表" prop="data_value" v-else-if="detail.data_level == '3'">
+            <my-select-zone-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
+          </el-form-item>
 
-        <!--县市列表（多选） 如果级别 == 4-->
-        <el-form-item label="县域列表" prop="data_value" v-else-if="detail.data_level == '4'">
-          <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" />
-        </el-form-item>
+          <!--县市列表（多选） 如果级别 == 4-->
+          <el-form-item label="县域列表" prop="data_value" v-else-if="detail.data_level == '4'">
+            <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" />
+          </el-form-item>
 
-        <!--线路列表（多选） 如果级别 == 5-->
-        <el-form-item label="线路列表" prop="data_value" v-else-if="detail.data_level == '5'">
-          <my-select-line-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
-        </el-form-item>
+          <!--线路列表（多选） 如果级别 == 5-->
+          <el-form-item label="线路列表" prop="data_value" v-else-if="detail.data_level == '5'">
+            <my-select-line-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
+          </el-form-item>
+        </template>
 
         <el-form-item label="备注">
           <el-input v-model="detail.remark" type="textarea" placeholder="请输入200位以内字符" :maxlength="200"></el-input>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
+      <div class="bottom-btn">
         <el-button @click.native="handleCancel">取 消</el-button>
         <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
-      </span>
-    </el-dialog>
+      </div>
+    </add-edit-layout>
   </div>
 </template>
 
@@ -91,6 +100,7 @@ export default {
   data(){
     let that = this;
     return{
+      operatorPost: Constant.OPERATOR_POST,
       dataLevel: Constant.OPERATOR_DATA_LEVEL,
       roleList: [],
       initDetail: {
@@ -233,5 +243,6 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+  @import "./add.edit.scss";
 </style>

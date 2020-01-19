@@ -259,7 +259,9 @@ const Constant = {
   OPERATOR_POST: {
     salesman: '业务员',
     buyer: '采购员',
-    distributor: '配送员'
+    deliver: '司机',
+    sorter: '装车员',
+    local_distributor: '落地配送员'
   },
   // 退筐记录的状态
   OPERATE_REFUND_FRAME_STATUS: {
