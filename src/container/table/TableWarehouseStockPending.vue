@@ -2,7 +2,7 @@
   <div class="container-table">
     <div class="table-top">
       <div class="left">
-        <query-tabs v-model="tabValue" @change="handleTableColumn" :tab-panes="{'采购': 'purchase', '调拨': 'allot'}"/>
+        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="{'采购': 'purchase', '调拨': 'allot'}"/>
       </div>
       <div class="right"></div>
     </div>
@@ -102,6 +102,7 @@
     mixins: [tableMixin],
     created() {
       this.handleTableColumn();
+      //初始化在query组件
     },
     data() {
       return {
@@ -132,6 +133,12 @@
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
+      },
+      //切换记录tab
+      changeTab(){
+        this.handleTableColumn();
+        let pc = this.getPageComponents('QueryWarehouseStockPending');
+        this.getData(pc.query);
       },
       //处理表头
       handleTableColumn(){
@@ -167,9 +174,6 @@
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ]);
         this.$data.tableColumn = tableColumn;
-        let pc = this.getPageComponents('QueryWarehouseStockPending');
-        pc.$data.query.page = 1;
-        this.getData(pc.query);
       },
     }
   };

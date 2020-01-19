@@ -25,7 +25,9 @@ export default {
   created(){
   },
   props: {
-    placeholder: { type: String, default: '请选择仓/库/托盘' }
+    placeholder: { type: String, default: '请选择仓/库/托盘' },
+    isAuth: { type: Boolean, default: false }, //是否要求权限(仓)
+    storehouseId: { type: Number | String, default: '' }
   },
   data() {
     let that = this;
@@ -65,7 +67,10 @@ export default {
     },
     //获取仓列表
     async baseStorehouseList(callback){
-      let res = await Http.get(Config.api.baseStorehouseList, {need_num: 50});
+      let res = await Http.get(this.isAuth ? Config.api.baseSupStorehouseList : Config.api.baseStorehouseList, {
+        need_num: 50,
+        id: this.storehouseId
+      });
       if(res.code === 0){
         this.$data.dataTree = res.data;
         //typeof callback === 'function' && callback(res.data);

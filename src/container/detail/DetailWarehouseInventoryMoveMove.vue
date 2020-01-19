@@ -27,7 +27,7 @@
           <el-form-item label="移动数量">{{detail.num}}件</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="现仓库">{{detail.tar_storehouse.title}}/{{detail.tar_warehouse.title}}/{{detail.tar_tray.code}}</el-form-item>
+          <el-form-item label="移入仓库">{{detail.tar_storehouse.title}}/{{detail.tar_warehouse.title}}/{{detail.tar_tray.code}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="移库备注">{{detail.remark}}</el-form-item>

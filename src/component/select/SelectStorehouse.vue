@@ -32,21 +32,19 @@
     mixins: [selectMixin],
     props: {
       placeholder: { type: String, default: '选择仓' },
+      isAuth: { type: Boolean, default: false }, //是否要求权限
+      initCallBack:  { type: Function }, //获取数据时回调，方便外边控制
     },
     methods: {
       //获取数据
       async getData(){
-        let res = await Http.get(Config.api.baseStorehouseList, {
+        let res = await Http.get(this.isAuth ? Config.api.baseSupStorehouseList : Config.api.baseStorehouseList, {
           ...this.query
         });
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
-          //判断当前选择的id是否在列表里
-          let con = rd.filter(item => item.id === this.selectId);
-          if(con.length === 0){
-            this.handleChange('');
-          }
+          this.$emit('initCallBack', rd);
         }else{
           this.$messageBox.alert(res.message, '提示');
         }

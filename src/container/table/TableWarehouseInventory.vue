@@ -78,8 +78,9 @@
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryWarehouseInventory');
-      this.getData(pc.query);
+      //初始化在query组件
+      //let pc = this.getPageComponents('QueryWarehouseInventory');
+      //this.getData(pc.query);
     },
     data() {
       return {

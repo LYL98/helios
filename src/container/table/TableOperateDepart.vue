@@ -8,7 +8,7 @@
         :disabled="multipleSelection.length === 0 ? true : false" plain>批量打印</el-button>
       </div>
       <div class="right">
-        <el-button @click="handleShowPrint('PrintOperateDepart')" size="mini" type="primary" plain>缺货记录</el-button>
+        <el-button @click="handleShowDetail('DetailOperateDepartStockout', {})" size="mini" type="primary" plain>缺货记录</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -28,8 +28,18 @@
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
-              <!--商品名称-->
-              <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
+              <!--线路-->
+              <template v-if="item.key === 'line'">
+                <div class="td-item add-dot">
+                  <div class="link-item add-dot" @click="handleShowAddEdit('DetailOperateDepart', scope.row, 'detail')" v-if="auth.isAdmin || auth.OperateDepartDetail">
+                    {{scope.row.code}}/{{scope.row.title}}
+                  </div>
+                  <div class="add-dot" v-else>
+                    {{scope.row.code}}/{{scope.row.title}}
+                  </div>
+                </div>
+              </template>
+              <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.line.code}}/{{scope.row.line.title}}</div>
               <!--数量-->
               <div v-else-if="judgeOrs(item.key, ['num', 'allocated_num'])" class="td-item add-dot2">{{scope.row[item.key] ? scope.row[item.key] + '件' : '-'}}</div>
               <!--日期-->
@@ -57,8 +67,8 @@
                   command: () => handleShowDetail('DetailOperateDepart', scope.row)
                 },{
                   title: '司机轨迹',
-                  isDisplay: (auth.isAdmin || auth.OperateDepartDetail) && scope.row.allocated_time,
-                  command: () => handleShowDetail('DetailOperateDepart', scope.row)
+                  isDisplay: (auth.isAdmin || auth.OperateDepartDriverTrack) && scope.row.allocated_time,
+                  command: () => handleShowDetail('DetailOperateDepartDriverTrack', scope.row)
                 },{
                   title: '打印',
                   isDisplay: (auth.isAdmin || auth.OperateDepartPrint) && scope.row.allocated_time,
@@ -99,7 +109,7 @@
         inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
         tableName: 'TableOperateDepart',
         tableColumn: [
-          { label: '线路', key: 'item', width: '4', isShow: true },
+          { label: '线路', key: 'line', width: '4', isShow: true },
           { label: '应出库', key: 'num', width: '2', isShow: true },
           { label: '实际出库', key: 'created', width: '3', isShow: true },
           { label: '缺货', key: 'allocated_time', width: '3', isShow: true },
@@ -118,7 +128,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supOutQuery, query);
+        let res = await Http.get(Config.api.supConfirmWait, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

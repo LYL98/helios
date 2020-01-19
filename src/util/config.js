@@ -252,6 +252,13 @@ const Config = (() => {
       operateRefundFrameReject: apiM + '/frame/return/reject', //退筐记录驳回
       operateRefundFrameExport: apiM + '/frame/return/export', //退筐记录导出
 
+      supConfirmWait: apiM + '/sup_confirm/wait', //待确认分配查询列表（也就是运营中心的发车列表）
+      supConfirmStoreLack: apiM + '/sup_confirm/store_lack', //门店商品缺货列表
+      supSend: apiM + '/sup_send', //一键确认线路商品分配
+      supDeliveryCityDetail: apiM + '/sup_delivery/city_detail', //确认分配之后用于查看各个县域分配的详情
+      supDeliveryStoreDetail: apiM + '/sup_delivery/store_detail', //确认分配之后用于查看某个县域各个门店分配的详情
+      supDeliveryItemDetail: apiM + '/sup_delivery/item_detail', //确认分配之后用于查看某个门店各种商品的详情
+
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
       groupBannerEdit: apiM + '/gb_basicdata/banner/edit', //banner修改
@@ -284,6 +291,7 @@ const Config = (() => {
       baseSupplierList: apiM + '/common/supplier/list', // 供应商列表(组件共用)
       baseItemDetail: apiM + '/common/item/detail', //商品列表（组件共用）
       baseOrderShipList: apiM + '/common/shipper/list', //快递公司列表 （订单手动发货时用）
+      baseSupStorehouseList: apiM + '/sup_storehouse/list', //根据登陆账号权限，返回仓列表
       baseStorehouseList: apiM + '/common/storehouse/list', //获取仓列表（组件共用）
       baseWarehouseList: apiM + '/common/warehouse/list', //获取库列表（组件共用）
       baseWareTrayList: apiM + '/common/ware_tray/list', //获取托盘列表（组件共用）

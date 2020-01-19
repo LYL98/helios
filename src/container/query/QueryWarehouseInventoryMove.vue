@@ -21,7 +21,7 @@
       </el-col>
       <el-col :span="7">
         <my-query-item :label="queryTitles[tabValue] || '仓库'">
-          <select-storehouse v-model="query.storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" />
+          <select-storehouse v-model="query.storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" isAuth @initCallBack="storehouseInit" />
         </my-query-item>
       </el-col>
       <el-col :span="10">
@@ -95,6 +95,18 @@
         this.$data.query = this.query;
         this.handleQuery('TableWarehouseInventoryMove');
       },
+      //初始化选择仓库时
+      storehouseInit(dataItem){
+        let d = dataItem.filter(item => item.province_code === this.$province.code);
+        if(d.length > 0){
+          this.$data.initQuery.storehouse_id = d[0].id;
+          this.$data.query.storehouse_id = d[0].id;
+        }else{
+          this.$data.initQuery.storehouse_id = dataItem[0].id;
+          this.$data.query.storehouse_id = dataItem[0].id;
+        }
+        this.handleQuery('TableWarehouseInventoryMove');
+      }
     }
   }
 </script>

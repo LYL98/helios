@@ -4,11 +4,14 @@
     <table-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateDepart"/>
     <detail-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepart"/>
     <form-operate-depart-affirm :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateDepartAffirm"/>
+    <detail-operate-depart-driver-track :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartDriverTrack"/>
+    <detail-operate-depart-stockout :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStockout"/>
+    <print-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintOperateDepart"/>
   </div>
 </template>
 
 <script>
-  import { QueryOperateDepart, TableOperateDepart, DetailOperateDepart, FormOperateDepartAffirm, DetailOperateDepartDriverTrack, DetailOperateDepartStockout } from '@/container';
+  import { QueryOperateDepart, TableOperateDepart, DetailOperateDepart, FormOperateDepartAffirm, DetailOperateDepartDriverTrack, DetailOperateDepartStockout, PrintOperateDepart } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -19,7 +22,8 @@
       'detail-operate-depart': DetailOperateDepart,
       'form-operate-depart-affirm': FormOperateDepartAffirm,
       'detail-operate-depart-driver-track': DetailOperateDepartDriverTrack,
-      'detail-operate-depart-stockout': DetailOperateDepartStockout
+      'detail-operate-depart-stockout': DetailOperateDepartStockout,
+      'print-operate-depart': PrintOperateDepart
     },
     mixins: [viewMixin],
     created() {

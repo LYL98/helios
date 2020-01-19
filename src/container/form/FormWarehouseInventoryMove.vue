@@ -16,7 +16,7 @@
       <el-row v-for="(item, index) in addData.trays" :key="index">
         <el-col :span="12">
           <el-form-item label="现仓库">
-            <cascader-warehouse-tray size="medium" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
+            <cascader-warehouse-tray v-if="isShow" size="medium" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
             <div v-if="item.tray_ids_error" class="el-form-item__error">{{item.tray_ids_error}}</div>
           </el-form-item>
         </el-col>
@@ -60,18 +60,35 @@ export default {
   },
   data(){
     let initDetail = {}
+    let initAddData = {
+      id: '', //tray_item_id
+      remark: '',
+      trays: [{tray_id: '', num: '', tray_ids: []}]
+    }
     return{
+      storehouseId: '', //页面的条件
       rules: {},
-      addData: {
-        id: '', //tray_item_id
-        remark: '',
-        trays: [{tray_id: '', num: '', tray_ids: []}]
-      },
+      initAddData: initAddData,
+      addData: this.copyJson(initAddData),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
     }
   },
   methods: {
+    //显示form(重写)
+    showForm(data){
+      if(data){
+        this.$data.detail = this.copyJson(data);
+      }else{
+        this.$data.detail = this.copyJson(this.initDetail);
+      }
+      let pc = this.getPageComponents('QueryWarehouseInventory');
+      if(pc){
+        this.$data.storehouseId = pc.query.storehouse_id;
+      }
+      this.$data.addData = this.copyJson(this.initAddData);
+      this.$data.isShow = true;
+    },
     //提交
     async submitData(){
       let { detail, addData } = this;

@@ -2,7 +2,7 @@
   <div class="container-table">
     <div class="table-top">
       <div class="left">
-        <query-tabs v-model="tabValue" @change="handleTableColumn" :tab-panes="queryTabsData"/>
+        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="queryTabsData"/>
       </div>
       <div class="right"></div>
     </div>
@@ -102,6 +102,7 @@
     mixins: [tableMixin],
     created() {
       this.handleTableColumn();
+      //初始化在query组件
     },
     data() {
       return {
@@ -167,6 +168,13 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+      //切换记录tab
+      changeTab(){
+        this.handleTableColumn();
+        let pc = this.getPageComponents('QueryWarehouseInventoryMove');
+        pc.$data.tabValue = this.tabValue;
+        this.getData(pc.query);
+      },
       //处理表头
       handleTableColumn(){
         let { tableColumn, tabValue } = this;
@@ -227,10 +235,6 @@
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ]);
         this.$data.tableColumn = tableColumn;
-        let pc = this.getPageComponents('QueryWarehouseInventoryMove');
-        pc.$data.query.page = 1;
-        pc.$data.tabValue = this.tabValue;
-        this.getData(pc.query);
       },
     }
   };

@@ -59,7 +59,7 @@
           <el-row v-for="(item, index) in inventoryData.trays" :key="index">
             <el-col :span="10">
               <el-form-item label="入库">
-                <cascader-warehouse-tray size="medium" v-model="item.ids" @change="(value) => changeTray(value, index)"/>
+                <cascader-warehouse-tray v-if="isShow" size="medium" v-model="item.ids" :storehouseId="storehouseId" @change="(value) => changeTray(value, index)"/>
                 <div v-if="item.ids_error" class="el-form-item__error">{{item.ids_error}}</div>
               </el-form-item>
             </el-col>
@@ -133,6 +133,7 @@ export default {
       }]
     }
     return {
+      storehouseId: '', //页面搜索条件
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       initInventoryData: initInventoryData,
@@ -162,6 +163,10 @@ export default {
         in_type: data.order_type || 'distribute', //'global_pur', 'local_pur', 'distribute'
         relate_order_id: data.id,
       });
+      let pc = this.getPageComponents('QueryWarehouseStockPending');
+      if(pc){
+        this.$data.storehouseId = pc.query.storehouse_id;
+      }
       this.$data.isShow = true;
     },
     //提交数据
