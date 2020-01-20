@@ -33,6 +33,8 @@ export { default as DetailWarehouseInventoryMoveMove } from './DetailWarehouseIn
 export { default as DetailWarehouseInventoryMoveOutStorage } from './DetailWarehouseInventoryMoveOutStorage';
 
 export { default as DetailOperateSort } from './DetailOperateSort';
+export { default as DetailOperateDepartStore } from './DetailOperateDepartStore';
+export { default as DetailOperateDepartStoreItem } from './DetailOperateDepartStoreItem';
 export { default as DetailOperateSortCity } from './DetailOperateSortCity';
 export { default as DetailOperateLineDriver } from './DetailOperateLineDriver';
 export { default as DetailOperateDepart } from './DetailOperateDepart';

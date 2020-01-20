@@ -1,33 +1,9 @@
 <template>
   <detail-layout title="123" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
-      <el-row>
-        <h6 class="subtitle">线路信息</h6>
-        <el-col :span="12">
-          <el-form-item label="应出库">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="实际出库">{{detail.code}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="确认人">{{detail.num}}件</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="确认时间">{{detail.created}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="司机">{{detail.driver && detail.driver.realname}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="司机发车时间">{{detail.created}}</el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-    <h6 class="subtitle">县域信息</h6>
     <div style="padding: 0 30px;">
-      <el-table :data="dataItem" :row-class-name="highlightRowClassName">
-        <el-table-column label="县域">
-          <template slot-scope="scope">{{scope.row.city.title}}</template>
+      <el-table :data="detail.allocates" :row-class-name="highlightRowClassName">
+        <el-table-column label="门店名称">
+          <template slot-scope="scope">{{scope.row.store.title}}</template>
         </el-table-column>
         <el-table-column label="应出库">
           <template slot-scope="scope">{{scope.row.count_real}}件</template>
@@ -38,10 +14,13 @@
         <el-table-column label="缺货">
           <template slot-scope="scope">{{scope.row.count_real - scope.row.allocate_num}}件</template>
         </el-table-column>
-        <el-table-column label="接驳人">
+        <el-table-column label="配送员">
           <template slot-scope="scope">{{scope.row.sorter.realname}}</template>
         </el-table-column>
-        <el-table-column label="接驳时间">
+        <el-table-column label="收货人姓名">
+          <template slot-scope="scope">{{scope.row.sorter.realname}}</template>
+        </el-table-column>
+        <el-table-column label="收货时间">
           <template slot-scope="scope">{{scope.row.created}}</template>
         </el-table-column>
         <el-table-column label="操作" width="80">
@@ -49,9 +28,9 @@
             <my-table-operate
               :list="[
                 {
-                  title: '查看门店',
-                  isDisplay: auth.isAdmin || auth.OperateDepartDetailStore,
-                  command: () => handleShowDetail('DetailOperateDepartStore', scope.row)
+                  title: '详情',
+                  isDisplay: auth.isAdmin || auth.OperateDepartDetailStoreItem,
+                  command: () => handleShowDetail('DetailOperateDepartStoreItem', scope.row)
                 }
               ]"
             />
@@ -68,7 +47,7 @@
   import { Http, Config, Constant } from '@/util';
 
   export default {
-    name: "DetailOperateDepart",
+    name: "DetailOperateDepartStore",
     mixins: [detailMixin],
     components: {
       'my-table-operate': TableOperate
@@ -92,18 +71,18 @@
         }else{
           this.$data.detail = this.copyJson(this.initDetail);
         }
-        this.supDeliveryCityDetail(data);
+        this.supDeliveryStoreDetail(data);
       },
       //获取明细列表
-      async supDeliveryCityDetail(data){
+      async supDeliveryStoreDetail(data){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supDeliveryCityDetail, {
+        let res = await Http.get(Config.api.supDeliveryStoreDetail, {
           delivery_date: data.delivery_date,
           line_code: data.line_code,
         });
         this.$loading({isShow: false});
         if(res.code === 0){
-          this.$data.dataItem = res.data;
+          this.$data.detail = res.data;
           this.$data.isShow = true;
         }else{
           this.$message({message: res.message, type: 'error'});

@@ -14,7 +14,12 @@ export default {
   created(){
     this.baseCityList();
   },
-  props: ['value', 'provinceCode', 'filterable'],
+  props: {
+    value: { type: String | Number, default: '' },
+    provinceCode: { type: String | Number, default: '' },
+    filterable: { type: Boolean, default: false },
+    forCreateLine: { type: Boolean, default: false },
+  },
   model: {
     prop: 'value',
     event: 'ev'
@@ -41,7 +46,8 @@ export default {
         return false;
       }
       let res = await Http.get(Config.api.baseCityList, {
-        province_code: pCode
+        province_code: pCode,
+        for_create_line: this.forCreateLine ? 1 : 0
       });
       if(res.code === 0){
         let rd = res.data, d = [];

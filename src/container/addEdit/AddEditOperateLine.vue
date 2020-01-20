@@ -9,7 +9,7 @@
           <el-input v-model="detail.title" size="medium" :maxlength="10" placeholder="请输入名称"></el-input>
         </el-form-item>
         <el-form-item label="包含县域" prop="city_codes">
-          <my-select-city-multi filterable :provinceCode="detail.province_code" v-model="detail.city_codes" />
+          <my-select-city-multi v-if="isShow" filterable :forCreateLine="detail.id ? false : true" :provinceCode="detail.province_code" v-model="detail.city_codes" />
         </el-form-item>
       </el-form>
       

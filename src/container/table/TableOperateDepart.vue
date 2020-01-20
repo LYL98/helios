@@ -31,7 +31,11 @@
               <!--线路-->
               <template v-if="item.key === 'line'">
                 <div class="td-item add-dot">
-                  <div class="link-item add-dot" @click="handleShowDetail('DetailOperateDepart', scope.row)" v-if="auth.isAdmin || auth.OperateDepartDetail">
+                  <div class="link-item add-dot" @click="handleShowDetail('DetailOperateDepart', {
+                    delivery_date: query.delivery_date,
+                    line_code: scope.row.line.code,
+                    ...scope.row
+                  })" v-if="auth.isAdmin || auth.OperateDepartDetail">
                     {{scope.row.line.code}}/{{scope.row.line.title}}
                   </div>
                   <div class="add-dot" v-else>
@@ -63,7 +67,11 @@
                 },{
                   title: '详情',
                   isDisplay: (auth.isAdmin || auth.OperateDepartDetail) && scope.row.allocated_time,
-                  command: () => handleShowDetail('DetailOperateDepart', scope.row)
+                  command: () => handleShowDetail('DetailOperateDepart', {
+                    delivery_date: query.delivery_date,
+                    line_code: scope.row.line.code,
+                    ...scope.row
+                  })
                 },{
                   title: '司机轨迹',
                   isDisplay: (auth.isAdmin || auth.OperateDepartDriverTrack) && scope.row.allocated_time,

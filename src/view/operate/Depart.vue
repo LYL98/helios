@@ -3,6 +3,8 @@
     <query-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateDepart"/>
     <table-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateDepart"/>
     <detail-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepart"/>
+    <detail-operate-depart-store :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStore"/>
+    <detail-operate-depart-store-item :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStoreItem"/>
     <form-operate-depart-affirm :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateDepartAffirm"/>
     <detail-operate-depart-driver-track :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartDriverTrack"/>
     <detail-operate-depart-stockout :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStockout"/>
@@ -11,7 +13,17 @@
 </template>
 
 <script>
-  import { QueryOperateDepart, TableOperateDepart, DetailOperateDepart, FormOperateDepartAffirm, DetailOperateDepartDriverTrack, DetailOperateDepartStockout, PrintOperateDepart } from '@/container';
+  import {
+    QueryOperateDepart,
+    TableOperateDepart,
+    DetailOperateDepart,
+    DetailOperateDepartStore,
+    DetailOperateDepartStoreItem,
+    FormOperateDepartAffirm,
+    DetailOperateDepartDriverTrack,
+    DetailOperateDepartStockout,
+    PrintOperateDepart
+  } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -20,6 +32,8 @@
       'query-operate-depart': QueryOperateDepart,
       'table-operate-depart': TableOperateDepart,
       'detail-operate-depart': DetailOperateDepart,
+      'detail-operate-depart-store': DetailOperateDepartStore,
+      'detail-operate-depart-store-item': DetailOperateDepartStoreItem,
       'form-operate-depart-affirm': FormOperateDepartAffirm,
       'detail-operate-depart-driver-track': DetailOperateDepartDriverTrack,
       'detail-operate-depart-stockout': DetailOperateDepartStockout,
