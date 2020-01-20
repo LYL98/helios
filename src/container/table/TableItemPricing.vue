@@ -61,7 +61,7 @@
             <!--如何日期不是今日-->
             <template v-if="query.opt_date > today">-</template>
             <template v-else>
-              <div>
+              <div v-if="auth.isAdmin || auth.ItemPriceDetail">
                 <a href="javascript:void(0);" @click="handleShowDetail('DetailItemPricing', { ...scope.row, opt_date: query.opt_date })">详情</a>
               </div>
               <div v-if="returnIsPricing(scope.row) && (auth.isAdmin || auth.ItemPriceAudit) && query.opt_date === today">

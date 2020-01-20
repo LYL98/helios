@@ -4,11 +4,12 @@
     <table-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemPricing"/>
     <add-edit-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemPricing"/>
     <detail-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemPricing"/>
+    <form-item-pricing-edit-num :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemPricingEditNum"/>
   </div>
 </template>
 
 <script>
-  import { QueryItemPricing, TableItemPricing, AddEditItemPricing, DetailItemPricing } from '@/container';
+  import { QueryItemPricing, TableItemPricing, AddEditItemPricing, DetailItemPricing, FormItemPricingEditNum } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -17,7 +18,8 @@
       'query-item-pricing': QueryItemPricing,
       'table-item-pricing': TableItemPricing,
       'add-edit-item-pricing': AddEditItemPricing,
-      'detail-item-pricing': DetailItemPricing
+      'detail-item-pricing': DetailItemPricing,
+      'form-item-pricing-edit-num': FormItemPricingEditNum
     },
     mixins: [viewMixin],
     created() {
