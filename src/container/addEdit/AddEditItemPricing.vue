@@ -1,74 +1,29 @@
 <template>
-  <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" style="width: 98%; max-width: 1400px;" :model="detail" :rules="rules" ref="ruleForm">
-      <h6 class="subtitle">商品报价</h6>
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="昨日供货价">&yen;{{detail.price_buy_last}}</el-form-item>
-        </el-col>
-        <el-col :span="16">
-          <el-form-item label="今日供货价">&yen;{{detail.price_buy}}</el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="昨日加价率">{{returnRate(detail.price_buy_last, detail.price_sale_last)}}</el-form-item>
-        </el-col>
-        <el-col :span="16">
-          <el-form-item label="今日建议价" prop="net_weight_temp">&yen;{{detail.suggest_price}}</el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="昨日销售价">&yen;{{detail.price_sale_last}}</el-form-item>
-        </el-col>
-        <el-col :span="16">
-          <el-form-item label="今日销售价" prop="price_sale">
-            <input-price size="medium" valueType="original" v-model="detail.price_sale" style="width: 140px;"/>
-            <span style="margin-left: 10px;">今日加价率：{{returnRate(detail.price_buy, detail.price_sale)}}</span>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8">
-          <el-form-item label="昨日销量">{{detail.sale_num_last}}&nbsp;件</el-form-item>
-        </el-col>
-        <el-col :span="16">
-          <el-form-item label="库存" prop="item_stock">
-            <input-number size="medium" v-model="detail.item_stock" unit="件" style="width: 140px;"/>
-            <span style="margin-left: 10px;">可售数量：{{detail.available_num}}&nbsp;件</span>
-          </el-form-item>
-        </el-col>
-      </el-row>
+  <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
+    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+      <el-form-item label="今日销售价" prop="price_sale">
+        <input-price size="medium" v-model="detail.price_sale"/>
+      </el-form-item>
+      <el-form-item label="供应商报价">
+        <el-table :data="supplierList" width="100%" size="mini" :row-class-name="highlightRowClassName">
+          <el-table-column label="供应商名称">
+            <template slot-scope="scope">{{scope.row.supplier.title}}<span v-if="scope.row.is_main" class="main-tag no-pre">主供应商</span></template>
+          </el-table-column>
+          <el-table-column label="供应商报价" width="120">
+            <template slot-scope="scope">
+              &yen;{{returnPrice(scope.row.price)}}
+            </template>
+          </el-table-column>
+          <el-table-column label="供应商库存" width="100">
+            <template slot-scope="scope">{{scope.row.num}}件</template>
+          </el-table-column>
+        </el-table>
+      </el-form-item>
     </el-form>
 
-    <h6 class="subtitle">供应商报价</h6>
-    <div style="margin: 0 60px;">
-      <el-table :data="supplierList" width="100%" :row-class-name="highlightRowClassName">
-        <el-table-column type="index" width="80" label="序号"></el-table-column>
-        <el-table-column label="供应商名称">
-          <template slot-scope="scope">{{scope.row.supplier.title}}<span v-if="scope.row.is_main" class="main-tag no-pre">主供应商</span></template>
-        </el-table-column>
-        <el-table-column label="供应商报价" width="100">
-          <template slot-scope="scope">
-            &yen;{{returnPrice(scope.row.price)}}
-          </template>
-        </el-table-column>
-        <el-table-column label="供应商库存" width="360">
-          <template slot-scope="scope">{{scope.row.num}}件</template>
-        </el-table-column>
-        <el-table-column label="报价时间" prop="updated" width="160"></el-table-column>
-      </el-table>
-    </div>
-
     <div style="margin-left: 140px; margin-top: 40px;">
-      <template v-if="judgeOrs(pageType, ['add', 'edit'])">
-        <el-button size="medium" @click.native="handleCancel">取 消</el-button>
-        <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
-      </template>
-      <template v-else>
-        <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-      </template>
+      <el-button size="medium" @click.native="handleCancel">取 消</el-button>
+      <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
     </div>
   </add-edit-layout>
 </template>
@@ -97,16 +52,6 @@ export default {
       }
     };
 
-    //库存
-    let validItemStock = function (rules, value, callback) {
-      let { detail } = that;
-      if (Number(value) > Number(detail.available_num)) {
-        callback('库存不能大于可销售数量')
-      }else{
-        callback();
-      }
-    };
-
     return {
       weightScope: Constant.WEIGHT_SCOPE,//重量浮动范围
       initDetail: {},
@@ -116,75 +61,37 @@ export default {
           { type: 'number', min: 0.01, message: '请输入今日销售价', trigger: 'change' },
           //{ validator: validPriceSale, trigger: 'change' },
         ],
-        item_stock: [
-          { required: true, message: '请输入库存', trigger: 'change' },
-          { validator: validItemStock, trigger: 'change' },
-        ]
       },
       supplierList: [], //供应商报价列表
       pageTitles: {
         add: '报价',
         edit: '修改报价',
-        detail: '报价详情'
       },
-      pageType: 'add', //add, edit, detail
     }
   },
   methods: {
     //显示新增修改(重写)
     showAddEdit(data, type){
-      if(data){
-        this.$data.pageType = type;
-        let d = JSON.parse( JSON.stringify(data));
-        d.item_stock = type === 'add' ? d.available_num : d.item_stock;
-        d.price_buy_last = Number(d.price_buy_last);
-        d.price_buy = d.price_buy ? Number(d.price_buy) : '';
-        d.price_sale = d.price_sale ? Number(d.price_sale) : '';
-        if(d.price_buy && d.rise_min && d.rise_max){
-          let min = DataHandle.returnSuggestPrice(d.price_buy, d.rise_min);
-          let max = DataHandle.returnSuggestPrice(d.price_buy, d.rise_max);
-          d.suggest_min = min;
-          d.suggest_max = max;
-        }else{
-          d.suggest_min = 0;
-          d.suggest_max = 0;
-        }
-        this.$data.detail = d;
-        this.itemPriceDetail(d);
-      }else{
-        this.$data.detail = JSON.parse( JSON.stringify( this.initDetail ));
-        this.$data.pageType = 'add';
-      }
-      this.$data.isShow = true;
+      this.$data.pageType = type;
+      let d = this.copyJson(data);
+      d.price_sale = d.price_sale || '';
+      this.$data.detail = d;
+      this.itemPriceDetail(d);
     },
     //获取供应商列表
     async itemPriceDetail(data){
+      this.$loading({isShow: true});
       let res = await Http.get(Config.api.itemPriceDetail, {
         item_id: data.item_id,
         opt_date: data.opt_date
       });
+      this.$loading({isShow: false});
       if(res.code === 0){
         this.$data.supplierList = res.data;
+        this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
       }
-    },
-    //返回建议价(今日询价，加价率)
-    returnSuggestPrice(priceBuy){
-      let { detail } = this;
-      let min = DataHandle.returnSuggestPrice(priceBuy, detail.rise_min);
-      let max = DataHandle.returnSuggestPrice(priceBuy, detail.rise_max);
-      detail.suggest_min = min;
-      detail.suggest_max = max;
-      this.$data.detail = detail;
-      if(min === '0' && max === '0') return '-';
-      return `￥${min} - ￥${max}`;
-    },
-    //返回加价率(询价，销售价)
-    returnRate(p1, p2){
-      if(!p1 || !p2) return '-';
-      //传的数值：如10.3 传 103
-      return this.returnMarkup((p2 / p1 - 1) * 1000) + '%';
     },
 
     //提交数据
@@ -194,8 +101,7 @@ export default {
       let res = await Http.post(Config.api.itemPriceFix, {
         province_code: this.$province.code,
         item_id: detail.item_id,
-        item_stock: Number(detail.item_stock),
-        price_sale: this.handlePrice(detail.price_sale)
+        price_sale: detail.price_sale
       });
       this.$loading({isShow: false});
       if(res.code === 0){
@@ -215,13 +121,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import "./add.edit.scss";
-  .input-behind-span{
-    height: 34px;
-    line-height: 34px;
-    float: left;
-    font-size: 18px;
-    margin-left: 5px;
-  }
   .main-tag{
     font-size: 12px;
     color: #fff;

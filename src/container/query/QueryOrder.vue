@@ -143,7 +143,6 @@
       resetQuery() {
         this.$data.pickerValue = null;
         this.$props.reset();
-        this.$refs['condition'].currentValue = '';
       }
     }
   }

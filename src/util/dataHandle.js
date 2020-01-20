@@ -124,13 +124,7 @@ const dataHandle = {
   returnSuggestPrice(priceBuy, markupRate){
     let v = priceBuy * (1 + markupRate / 1000);
     let p = v.toFixed(2);
-    if(p.substring(p.length - 3, p.length) === '.00'){
-      return p.substring(0, p.length - 3);
-    }
-    if(p.substring(p.length - 1, p.length) === '0'){
-      return p.substring(0, p.length - 1);
-    }
-    return p;
+    return this.returnPrice(p);
   },
   //返回百分比
   returnPercentage(item_num, sun){

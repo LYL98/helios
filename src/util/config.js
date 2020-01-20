@@ -34,8 +34,6 @@ const Config = (() => {
       orderDetail: apiM + '/order/detail', //订单详情
       orderConfirm: apiM + '/order/manual_confirm', // 手动确认订单
       orderCancel: apiM + '/order/cancel', //取消订单
-      orderManualChange: apiM + '/order/item/manual_chg', //手动修改订单
-      orderShip: apiM + '/order/ship', //手动发货
 
       afterSaleQuery: apiM + '/aftersale/query', //获取负责处理的售后单
       afterSaleListExport: apiM + '/aftersale/list/export', // 售后单列表导出

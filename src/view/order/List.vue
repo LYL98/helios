@@ -124,11 +124,6 @@
                     title: '确认订单',
                     isDisplay: (auth.isAdmin || auth.OrderManualConfirm) && orderStatus[scope.row.status] === '待确认',
                     command: () => handleOrderConfirm(scope.row.id)
-                  },
-                  {
-                    title: '手动发货',
-                    isDisplay: (auth.isAdmin || auth.OrderManualDelivery) && orderStatus[scope.row.status] === '待发货',
-                    command: () => orderShowHideManualDelivery(scope.row)
                   }
                 ]"
               ></my-table-operate>
@@ -155,7 +150,6 @@
     <!--订单详情-->
     <detail-order-list :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="DetailOrderList"/>
     <detail-order-after-sale :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="DetailOrderAfterSale"/>
-    <form-order-list-manual-delivery :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="FormOrderListManualDelivery"/>
     <!--订单修改价格-->
     <!--<order-price-update :callback="myCallBack" />-->
   </div>
@@ -165,7 +159,7 @@
   import { SelectOption, TableOperate, SelectCity } from '@/common';
   import { QueryOrder } from '@/container';
   import {Config, DataHandle, Constant, Http} from '@/util';
-  import { DetailOrderList, DetailOrderAfterSale, FormOrderListManualDelivery } from '@/container';
+  import { DetailOrderList, DetailOrderAfterSale } from '@/container';
   import tableMixin from '@/container/table/table.mixin';
   import viewMixin from '@/view/view.mixin';
 
@@ -175,7 +169,6 @@
       'my-select-city': SelectCity,
       'select-option': SelectOption,
       'my-table-operate': TableOperate,
-      'form-order-list-manual-delivery': FormOrderListManualDelivery,
       'detail-order-list': DetailOrderList,
       'detail-order-after-sale': DetailOrderAfterSale,
       'query-order': QueryOrder,
@@ -349,11 +342,6 @@
         let pc = this.viewGetPageComponents('DetailOrderList');
         pc.orderShowHideDetail(id);
       },
-      //显示隐藏手动发货
-      orderShowHideManualDelivery(data){
-        let pc = this.viewGetPageComponents('FormOrderListManualDelivery');
-        pc.orderShowHideManualDelivery(data);
-      },
       //确认订单
       async orderConfirm({id, callback}) {
         this.$loading({isShow: true, isWhole: true});
@@ -389,6 +377,25 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+  }
+
+  .table-top{
+    text-align: right;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    >.left{
+        text-align: left;
+        flex: 1;
+        min-height: 28px;
+    }
+    >.right{
+        text-align: right;
+        position: relative;
+        z-index: 1;
+        min-height: 28px;
+    }
   }
 
   .order-no {

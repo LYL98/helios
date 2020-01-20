@@ -13,7 +13,6 @@ export { default as FormSystemSettingItemCommonDes } from './FormSystemSettingIt
 export { default as FormSystemOperatorResetPwd } from './FormSystemOperatorResetPwd';
 export { default as FormItemListEditInnerTag } from './FormItemListEditInnerTag';
 export { default as FormOrderAfterSaleClose } from './FormOrderAfterSaleClose';
-export { default as FormOrderListManualDelivery } from './FormOrderListManualDelivery';
 export { default as FormWarehouseInventoryAllot } from './FormWarehouseInventoryAllot';
 export { default as FormWarehouseInventoryCheck } from './FormWarehouseInventoryCheck';
 export { default as FormWarehouseInventoryMove } from './FormWarehouseInventoryMove';

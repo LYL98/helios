@@ -491,6 +491,24 @@
 </script>
 
 <style lang="scss" scoped>
+  .table-top{
+    text-align: right;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    >.left{
+        text-align: left;
+        flex: 1;
+        min-height: 28px;
+    }
+    >.right{
+        text-align: right;
+        position: relative;
+        z-index: 1;
+        min-height: 28px;
+    }
+  }
   .action {
     display: flex;
 
