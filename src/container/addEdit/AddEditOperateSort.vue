@@ -3,7 +3,7 @@
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="分配方式">
-          <button-group v-model="detail.opt_type" :options="{'按线路分配': 'by_line', '按下单时间分配': 'by_od_time'}" buttonWidth="160"/>
+          <button-group v-model="detail.opt_type" :options="allotOptTypes" buttonWidth="160"/>
         </el-form-item>
         <el-form-item label="">
           <el-row>
@@ -55,6 +55,7 @@ export default {
     return {
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
+      allotOptTypes: Constant.ALLOT_OPT_TYPES('value_key'),
       allocateNeed: {
         num: 0,
         cur_opt_type: ''
@@ -72,7 +73,7 @@ export default {
       this.$data.pageType = type;
       this.$data.detail = this.copyJson({
         num: data.num,
-        out_stock_id: data.id,
+        out_stock_id: type === 'add' ? data.id : data.out_stock.id,
         opt_type: 'by_line'
       });
       this.supAllocateNeedItem(data.item_id);

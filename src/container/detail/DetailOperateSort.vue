@@ -2,7 +2,7 @@
   <detail-layout title="分配详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <div class="f-r" style="position: relative; right: -84px;">
-        <el-tag size="small" type="info" disable-transitions>已分拣(待添加)</el-tag>
+        <el-tag size="small" :type="sortStatusType[detail.sort_status]" disable-transitions>{{sortStatus[detail.sort_status]}}</el-tag>
       </div>
       <el-row>
         <h6 class="subtitle">商品信息</h6>
@@ -10,7 +10,7 @@
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="分配方式">{{detail.code}}</el-form-item>
+          <el-form-item label="分配方式">{{allotOptTypes[detail.opt_type]}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="入场数">{{detail.num}}件</el-form-item>
@@ -83,7 +83,9 @@
         creator: {}
       }
       return {
-        inventoryType: Constant.INVENTORY_TYPES(),
+        sortStatus: Constant.SORT_STATUS(),
+        sortStatusType: Constant.SORT_STATUS_TYPE,
+        allotOptTypes: Constant.ALLOT_OPT_TYPES(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail)
       }

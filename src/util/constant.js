@@ -441,6 +441,32 @@ const Constant = {
     sale_offline: 'info',
     refund: 'info'
   },
+  //分拣状态
+  SORT_STATUS: (type)=>{
+    let data = [
+      { key: 'unsort', value: '待分拣' },
+      { key: 'sorted', value: '已分拣' },
+    ];
+    return handleKeyValue(type, data);
+  },
+  //分拣状态(颜色)
+  SORT_STATUS_TYPE: {
+    unsort: 'info',
+    sorted: 'info'
+  },
+  //分配方式
+  ALLOT_OPT_TYPES: (type)=>{
+    let data = [
+      { key: 'by_line', value: '按线路分配' },
+      { key: 'by_od_time', value: '按下单时间分配' },
+    ];
+    return handleKeyValue(type, data);
+  },
+  //分拣状态(颜色)
+  ALLOT_OPT_TYPES_TYPE: {
+    by_line: 'info',
+    by_od_time: 'info'
+  },
 };
 
 //处理key value

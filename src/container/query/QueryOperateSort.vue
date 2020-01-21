@@ -37,6 +37,7 @@
 <script>
   import { SelectOption } from '@/common';
   import queryMixin from './query.mixin';
+  import { Constant } from '@/util';
 
   export default {
     name: "QueryOperateSort",
@@ -58,13 +59,7 @@
       return {
         initQuery: initQuery,
         query: this.copyJson(initQuery),
-      }
-    },
-    computed: {
-      sortStatus: {
-        get(){
-          return { '待分拣': 'unsort', '已分拣': 'sorted' };
-        }
+        sortStatus: Constant.SORT_STATUS('value_key')
       }
     },
     methods: {
