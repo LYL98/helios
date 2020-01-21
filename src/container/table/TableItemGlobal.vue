@@ -79,7 +79,7 @@
                 {
                   title: '采购属性',
                   isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalCheckSupplierType),
-                  command: () => handleShowForm('FormItemGlobalCheckSupplierType', scope.row)
+                  command: () => handleShowForm('FormItemGlobalSupplierType', scope.row)
                 },
                 {
                   title: '修改日志',

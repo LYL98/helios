@@ -92,11 +92,6 @@
                   command: () => handleShowForm('FormItemListEditInnerTag', scope.row)
                 },
                 {
-                  title: '修改供应商',
-                  isDisplay: scope.row.sup_type === 'local_pur' && (auth.isAdmin || auth.ItemListEditSupplier),
-                  command: () => handleShowForm('FormItemListEditSupplier', scope.row)
-                },
-                {
                   title: '修改日志',
                   isDisplay: (auth.isAdmin || auth.ItemListEditRecord),
                   command: () => handleShowDetail('DetailItemListEditRecord', scope.row)

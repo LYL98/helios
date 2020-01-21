@@ -4,12 +4,12 @@
     <table-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemGlobal" page="global"/>
     <add-edit-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemGlobal" page="global"/>
     <detail-item-global-edit-record :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemGlobalEditRecord" page="global"/>
-    <form-item-global-check-supplier-type :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemGlobalCheckSupplierType" page="global"/>
+    <form-item-global-supplier-type :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemGlobalSupplierType" page="global"/>
   </div>
 </template>
 
 <script>
-  import { QueryItemGlobal, TableItemGlobal, AddEditItemGlobal, DetailItemGlobalEditRecord, FormItemGlobalCheckSupplierType } from '@/container';
+  import { QueryItemGlobal, TableItemGlobal, AddEditItemGlobal, DetailItemGlobalEditRecord, FormItemGlobalSupplierType } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -19,7 +19,7 @@
       'table-item-global': TableItemGlobal,
       'add-edit-item-global': AddEditItemGlobal,
       'detail-item-global-edit-record': DetailItemGlobalEditRecord,
-      'form-item-global-check-supplier-type': FormItemGlobalCheckSupplierType
+      'form-item-global-supplier-type': FormItemGlobalSupplierType
     },
     mixins: [viewMixin],
     created() {

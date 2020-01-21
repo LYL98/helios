@@ -27,7 +27,12 @@
               <!--商品名称-->
               <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
               <!--数量-->
-              <div v-else-if="judgeOrs(item.key, ['num', 'allocated_num'])" class="td-item add-dot2">{{scope.row[item.key] ? scope.row[item.key] + '件' : '-'}}</div>
+              <div v-else-if="item.key === 'num'" class="td-item add-dot2">
+                <template v-if="scope.row.allocated_time">{{scope.row.allocated_num ? scope.row.allocated_num + '件' : '-'}}</template>
+                <template v-else>{{scope.row.num ? scope.row.num + '件' : '-'}}</template>
+              </div>
+              <!--分拣数量-->
+              <div v-else-if="item.key === 'sort_num'" class="td-item add-dot2">{{scope.row.sort_num ? scope.row.sort_num + '件' : '-'}}</div>
               <!--日期-->
               <div v-else-if="item.key === 'allocated_time'" class="td-item add-dot2">
                 {{scope.row.allocated_time || '-'}}
@@ -95,7 +100,7 @@
           { label: '入场数', key: 'num', width: '2', isShow: true },
           { label: '入场时间', key: 'created', width: '3', isShow: true },
           { label: '分配时间', key: 'allocated_time', width: '3', isShow: true },
-          { label: '已分拣', key: 'allocated_num', width: '2', isShow: true },
+          { label: '已分拣', key: 'sort_num', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ],

@@ -13,7 +13,7 @@
           <el-form-item label="分配方式">{{allotOptTypes[detail.opt_type]}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="入场数">{{detail.num}}件</el-form-item>
+          <el-form-item label="入场数">{{detail.num ? detail.num + '件' : '-'}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="入场时间">{{detail.created}}</el-form-item>

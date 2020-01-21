@@ -39,7 +39,7 @@ import { Http, Config, Constant, Verification } from '@/util';
 import { SelectSupplier } from '@/component';
 
 export default {
-  name: "FormItemGlobalCheckSupplierType",
+  name: "FormItemGlobalSupplierType",
   mixins: [formMixin],
   components: {
     'select-supplier': SelectSupplier
@@ -75,11 +75,7 @@ export default {
   methods: {
     //显示form(供外部也调用)
     showForm(data){
-      if(data){
-        this.pItemDetail(data.id);
-      }else{
-        this.$data.detail = this.copyJson(this.initDetail);
-      }
+      this.pItemDetail(data.id);
     },
     
     //获取详情

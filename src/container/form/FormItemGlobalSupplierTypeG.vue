@@ -31,7 +31,7 @@ import { Http, Config, Constant, Verification } from '@/util';
 import { SelectSupplier } from '@/component';
 
 export default {
-  name: "FormItemGlobalCheckSupplierType",
+  name: "FormItemListEditSupplier",
   mixins: [formMixin],
   components: {
     'select-supplier': SelectSupplier
