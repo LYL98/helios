@@ -136,7 +136,8 @@
     methods: {
       //返回是否可选中
       returnStatus(d){
-        return true;
+        if(d.assign_confirm_time) return true;
+        return false;
       },
       //获取数据
       async getData(query){
