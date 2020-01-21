@@ -18,12 +18,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
+          <el-form-item label="保质期" prop="shelf_life">
+            <input-number size="medium" v-model="detail.shelf_life" :min="1" unit="天"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="筐">
             <select-frame size="medium" v-model="detail.frame_code"/>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="12">
           <el-form-item label="包装规格" prop="package_spec">
             <el-input size="medium" v-model="detail.package_spec" :maxLength="6" placeholder="请输入6位以内的字符"></el-input>
@@ -34,8 +37,6 @@
             <el-input size="medium" v-model="detail.origin_place" :maxLength="30" placeholder="请输入30位以内的字符"></el-input>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="12">
           <el-form-item label="净重" prop="net_weight">
             <input-weight size="medium" v-model="detail.net_weight" placeholder="0.1 - 100000" unit="斤"/>
@@ -46,8 +47,6 @@
             <input-weight size="medium" v-model="detail.gross_weight" placeholder="0.1 - 100000" unit="斤"/>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="12">
           <el-form-item label="科学分类" prop="system_class_code">
             <select-system-class size="medium" v-model="detail.system_class_codes" @change="selectSystemClass"/>
@@ -104,7 +103,7 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Verification, Constant } from '@/util';
-import { ImagePreview, QuillEditor, UploadImg, InputWeight, SelectFrame, SelectSystemClass } from '@/common';
+import { ImagePreview, QuillEditor, UploadImg, InputWeight, InputNumber, SelectFrame, SelectSystemClass } from '@/common';
 import { OtherItemSupplier } from '@/component';
 
 export default {
@@ -115,6 +114,7 @@ export default {
     'upload-img': UploadImg,
     'quill-editor': QuillEditor,
     'input-weight': InputWeight,
+    'input-number': InputNumber,
     'select-frame': SelectFrame,
     'select-system-class': SelectSystemClass,
     'other-item-supplier': OtherItemSupplier
@@ -167,7 +167,10 @@ export default {
           { type: 'array', required: true, message: '至少要上传一张图片', trigger: 'change' }
         ],
         title: [
-            { required: true, message: '商品名称不能为空', trigger: 'change' },
+          { required: true, message: '商品名称不能为空', trigger: 'change' },
+        ],
+        shelf_life: [
+          { required: true, message: '保质期不能为空', trigger: 'change' },
         ],
         package_spec: [
           { required: true, message: '包装规格不能为空', trigger: 'change' },

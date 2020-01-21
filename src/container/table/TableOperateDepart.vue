@@ -126,7 +126,7 @@
           { label: '应出库', key: 'count_real', width: '2', isShow: true },
           { label: '实际出库', key: 'allocate_num', width: '3', isShow: true },
           { label: '缺货', key: 'stockout', width: '3', isShow: true },
-          { label: '状态', key: 'sort_status', width: '2', isShow: true },
+          /*{ label: '状态', key: 'sort_status', width: '2', isShow: true },*/
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ],

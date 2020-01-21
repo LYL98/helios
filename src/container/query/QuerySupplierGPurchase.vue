@@ -37,8 +37,6 @@
     },
     mixins: [queryMixin],
     created() {
-      this.$data.initQuery.order_date = this.nowDate;
-      this.$data.query.order_date = this.nowDate;
     },
     data() {
       let initQuery = {

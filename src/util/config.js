@@ -77,7 +77,8 @@ const Config = (() => {
       pItemModifyDetail: apiM + '/p_item/modify_detail', //商品资料修改日志
       pItemExportCheck: apiM + '/p_item/export_check', //商品导出之前进行校验
       pItemExport: apiM + '/p_item/export', //商品导出
-      pItemChgSupAttr: apiM + '/p_item/chg_sup_attr', //修改商品的供应属性:统采/地采, 如果是统采商品则支持修改商品的供应商
+      pItemChgToGlobal: apiM + '/p_item/chg_to_global', //修改商品的供应属性为统采，同时修改商品的供应商
+      pItemChgToLocal: apiM + '/p_item/chg_to_local', //修改商品的供应属性为地采，同时修改商品的供应商
 
       // 商品管理
       itemEdit: apiM + '/item/edit', //商品编辑

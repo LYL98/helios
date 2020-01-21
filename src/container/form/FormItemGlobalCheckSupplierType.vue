@@ -1,25 +1,36 @@
 <template>
-  <el-dialog :close-on-click-modal="false" title="切换供应商类型" :visible="isShow" width="540px" :before-close="handleCancel">
-    <el-form label-position="right" label-width="120px" style="width: 460px;" :model="detail" :rules="rules" ref="ruleForm">
+  <form-layout title="采购属性" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+      <el-form-item label="商品编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
       <el-form-item label="供应商类型" prop="sup_type">
         <el-radio v-model="detail.sup_type" :label="key" :key="key" border size="mini" v-for="(value, key) in supplierType">{{value}}</el-radio>
+        <div style="color: #ff5252; margin-top: 10px;">采购类型为商品重要属性，一旦切换需要重新选择供应商。</div>
       </el-form-item>
+      <!--统采-->
       <el-form-item label="选择供应商" v-if="detail.sup_type === 'global_pur'">
         <div v-for="(item, index) in detail.supplier_binds" :key="index" style="margin-bottom: 10px;">
-          <select-supplier v-model="item.supplier_id" supplierType="global_pur" :supplierIds="supplierIds" style="width: 240px;"/>
+          <select-supplier v-model="item.supplier_id" size="medium" supplierType="global_pur" :supplierIds="supplierIds" style="width: 360px;"/>
           <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="detail.supplier_binds.length > 1"></i>
         </div>
         <a href="javascript: void(0);" @click="addSupplier" style="font-size: 12px;">增加供应商</a>
       </el-form-item>
-      <el-form-item label="选择供应商" v-else>
-        <span style="color: #ff5252;">在商品列表选择供应商</span>
-      </el-form-item>
+      <!--地采-->
+      <template v-else>
+        <el-form-item label="选择供应商">
+          <div>江西省</div>
+          <div>
+            <select-supplier v-model="supplier_id" size="medium" supplierType="global_pur" :supplierIds="supplierIds" style="width: 360px;"/>
+            <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="detail.supplier_binds.length > 1"></i>
+          </div>
+          <a href="javascript: void(0);" @click="addSupplier" style="font-size: 12px;">增加供应商</a>
+        </el-form-item>
+      </template>
     </el-form>
-    <span slot="footer" class="dialog-footer">
+    <div style="margin-left: 110px; margin-top: 20px;">
       <el-button @click.native="handleCancel">取 消</el-button>
       <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
-    </span>
-  </el-dialog>
+    </div>
+  </form-layout>
 </template>
 
 <script>
@@ -44,6 +55,14 @@ export default {
       supplierType: Constant.SUPPLIER_TYPE(),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
+      gAddEditData: {
+        id: '',
+        supplier_binds: []
+      },
+      lAddEditData: {
+        id: '',
+        provinces: []
+      },
     }
   },
   computed: {
@@ -106,7 +125,7 @@ export default {
         return;
       }
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.pItemChgSupAttr, {
+      let res = await Http.post(detail.sup_type === 'global_pur' ? Config.api.pItemChgToGlobal : Config.api.pItemChgToLocal, {
         id: detail.id,
         sup_type: detail.sup_type,
         supplier_binds: detail.supplier_binds

@@ -77,7 +77,7 @@
                   command: () => handleRecover(scope.row)
                 },
                 {
-                  title: '切换供应商类型',
+                  title: '采购属性',
                   isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalCheckSupplierType),
                   command: () => handleShowForm('FormItemGlobalCheckSupplierType', scope.row)
                 },
