@@ -58,8 +58,8 @@
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="入库" prop="tray_id">
-                <cascader-warehouse-tray size="medium" v-model="addData.tray_ids" @change="changeTray"/>
+              <el-form-item label="入库">
+                <el-input size="medium" value="临时库" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -111,8 +111,6 @@ export default {
       produce_date: '',
       order_type: '',
       relate_order_id: '',
-      tray_ids: [],
-      tray_id: '',
       storehouse_id: '',
       warehouse_id: '',
       num: ''
@@ -125,9 +123,6 @@ export default {
       rules: {
         produce_date: [
           { required: true, message: '请选择采购日期', trigger: 'change' }
-        ],
-        tray_id: [
-          { required: true, message: '请选择托盘', trigger: 'change' }
         ],
         num: [
           { required: true, message: '请输入入库数量', trigger: 'change' }
@@ -152,6 +147,7 @@ export default {
         produce_date: data.produce_date || '',
         order_type: data.order_type || 'distribute', //'global_pur', 'local_pur', 'distribute'
         relate_order_id: data.id,
+        province_code: this.$province.code
       });
       this.$data.isShow = true;
     },
@@ -170,14 +166,6 @@ export default {
       }else{
         this.$message({message: res.message, type: 'error'});
       }
-    },
-    //选择仓库
-    changeTray(value){
-      let { addData } = this;
-      addData.storehouse_id = value[0];
-      addData.warehouse_id = value[1];
-      addData.tray_id = value[2];
-      this.$data.addData = this.copyJson(addData);
     },
   },
 };

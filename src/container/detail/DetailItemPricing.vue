@@ -59,12 +59,12 @@
         <el-table-column label="供应商名称">
           <template slot-scope="scope">{{scope.row.supplier.title}}<span v-if="scope.row.is_main" class="main-tag no-pre">主供应商</span></template>
         </el-table-column>
-        <el-table-column label="供应商报价" width="240">
+        <el-table-column label="供应商报价" width="200">
           <template slot-scope="scope">
             &yen;{{returnPrice(scope.row.price)}}
           </template>
         </el-table-column>
-        <el-table-column label="供应商库存" width="240">
+        <el-table-column label="供应商库存" width="200">
           <template slot-scope="scope">
             <span style="margin-right: 10px;">{{scope.row.num}}件</span>
             <a href="javascript:void(0);"
@@ -72,7 +72,7 @@
               @click="handleShowForm('FormItemPricingEditNum', scope.row)">修改</a>
           </template>
         </el-table-column>
-        <el-table-column label="报价时间" width="160">
+        <el-table-column label="报价时间" width="200">
           <template slot-scope="scope">{{scope.row.created || '-'}}</template>
         </el-table-column>
       </el-table>
