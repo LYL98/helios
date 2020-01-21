@@ -7,42 +7,29 @@
         <div style="color: #ff5252; margin-top: 10px;">采购类型为商品重要属性，一旦切换需要重新选择供应商。</div>
       </el-form-item>
       <!--统采-->
-      <el-form-item label="选择供应商" v-if="detail.sup_type === 'global_pur'">
-        <div v-for="(item, index) in detail.supplier_binds" :key="index" style="margin-bottom: 10px;">
-          <select-supplier v-model="item.supplier_id" size="medium" supplierType="global_pur" :supplierIds="supplierIds" style="width: 360px;"/>
-          <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="detail.supplier_binds.length > 1"></i>
-        </div>
-        <a href="javascript: void(0);" @click="addSupplier" style="font-size: 12px;">增加供应商</a>
+      <el-form-item label="选择供应商" v-if="isShow && detail.sup_type === 'global_pur'">
+        <form-item-global-supplier-type-g :pageComponent="this"/>
       </el-form-item>
       <!--地采-->
-      <template v-else>
-        <el-form-item label="选择供应商">
-          <div>江西省</div>
-          <div>
-            <select-supplier v-model="supplier_id" size="medium" supplierType="global_pur" :supplierIds="supplierIds" style="width: 360px;"/>
-            <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="detail.supplier_binds.length > 1"></i>
-          </div>
-          <a href="javascript: void(0);" @click="addSupplier" style="font-size: 12px;">增加供应商</a>
-        </el-form-item>
-      </template>
+      <el-form-item label="选择供应商" v-else-if="isShow && detail.sup_type === 'local_pur'">
+        <form-item-global-supplier-type-l :pageComponent="this"/>
+      </el-form-item>
     </el-form>
-    <div style="margin-left: 110px; margin-top: 20px;">
-      <el-button @click.native="handleCancel">取 消</el-button>
-      <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
-    </div>
   </form-layout>
 </template>
 
 <script>
 import formMixin from './form.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
-import { SelectSupplier } from '@/component';
+import FormItemGlobalSupplierTypeG from './FormItemGlobalSupplierTypeG';
+import FormItemGlobalSupplierTypeL from './FormItemGlobalSupplierTypeL';
 
 export default {
   name: "FormItemGlobalSupplierType",
   mixins: [formMixin],
   components: {
-    'select-supplier': SelectSupplier
+    'form-item-global-supplier-type-g': FormItemGlobalSupplierTypeG,
+    'form-item-global-supplier-type-l': FormItemGlobalSupplierTypeL
   },
   created() {
   },
@@ -55,21 +42,6 @@ export default {
       supplierType: Constant.SUPPLIER_TYPE(),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
-      gAddEditData: {
-        id: '',
-        supplier_binds: []
-      },
-      lAddEditData: {
-        id: '',
-        provinces: []
-      },
-    }
-  },
-  computed: {
-    //当前选择的供应商ids
-    supplierIds() {
-      let ids = this.detail.supplier_binds.map(item => item.supplier_id);
-      return ids;
     }
   },
   methods: {
@@ -84,55 +56,8 @@ export default {
       let res = await Http.get(Config.api.pItemDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
-        let rd = res.data;
-        //补全供应商信息
-        if(!rd.sup_type) rd.sup_type = 'global_pur';
-        if(rd.supplier_binds.length === 0) rd.supplier_binds = [{ supplier_id: '' }];
-
-        this.$data.detail = this.copyJson(rd);
+        this.$data.detail = res.data;
         this.$data.isShow = true;
-      }else{
-        this.$message({message: res.message, type: 'error'});
-      }
-    },
-    //增加供应商
-    addSupplier(){
-      this.$data.detail.supplier_binds.push({ supplier_id: '' });
-    },
-    //删除供应商
-    deleteSupplier(index){
-      let { detail } = this;
-      detail.supplier_binds.remove(index)
-      this.$data.detail = this.copyJson(detail);
-    },
-    //提交
-    async submitData(){
-      let { detail } = this;
-      let con = true;
-      if(detail.sup_type === 'global_pur'){
-        detail.supplier_binds.forEach(item => {
-          if(!item.supplier_id){
-            con = false;
-          }
-        });
-      }
-      if(!con){
-        this.$message({message: '请选择供应商', type: 'error'});
-        return;
-      }
-      this.$loading({isShow: true});
-      let res = await Http.post(detail.sup_type === 'global_pur' ? Config.api.pItemChgToGlobal : Config.api.pItemChgToLocal, {
-        id: detail.id,
-        sup_type: detail.sup_type,
-        supplier_binds: detail.supplier_binds
-      });
-      this.$loading({isShow: false});
-      if(res.code === 0){
-        this.$message({message: '修改成功', type: 'success'});
-        this.handleCancel(); //隐藏
-        //刷新数据(列表)
-        let pc = this.getPageComponents('TableItemGlobal');
-        pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});
       }

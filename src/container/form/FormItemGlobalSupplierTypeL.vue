@@ -1,65 +1,49 @@
 <template>
-  <form-layout title="采购属性" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
-      <el-form-item label="商品编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
-      <el-form-item label="供应商类型" prop="sup_type">
-        <el-radio v-model="detail.sup_type" :label="key" :key="key" border size="mini" v-for="(value, key) in supplierType">{{value}}</el-radio>
-        <div style="color: #ff5252; margin-top: 10px;">采购类型为商品重要属性，一旦切换需要重新选择供应商。</div>
-      </el-form-item>
-      <!--统采-->
-      <el-form-item label="选择供应商" v-if="detail.sup_type === 'global_pur'">
-        <div v-for="(item, index) in detail.supplier_binds" :key="index" style="margin-bottom: 10px;">
-          <select-supplier v-model="item.supplier_id" size="medium" supplierType="global_pur" :supplierIds="supplierIds" style="width: 360px;"/>
-          <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="detail.supplier_binds.length > 1"></i>
+  <div>
+    <div v-for="(item, index) in provinceList" :key="index" style="margin-bottom: 20px;">
+      <div style="margin-bottom: 8px;">{{item.title}}</div>
+      <div v-for="(s, i) in item.supplier_binds" :key="i" class="select-supplier">
+        <div class="select"><select-supplier v-model="item.supplier_id" supplierType="local_pur" :provinceCode="item.province_code" :supplierIds="[]"/></div>
+        <div class="move">
+          <a href="javascript: void(0);" v-if="i !== 0" @click="upMove(index, i)">上移</a>
+          <a href="javascript: void(0);" v-if="i !== item.supplier_binds.length - 1" @click="downMove(index, i)">下移</a>
         </div>
-        <a href="javascript: void(0);" @click="addSupplier" style="font-size: 12px;">增加供应商</a>
-      </el-form-item>
-      <!--地采-->
-      <template v-else>
-        <el-form-item label="选择供应商">
-          <div>江西省</div>
-          <div>
-            <select-supplier v-model="supplier_id" size="medium" supplierType="global_pur" :supplierIds="supplierIds" style="width: 360px;"/>
-            <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="detail.supplier_binds.length > 1"></i>
-          </div>
-          <a href="javascript: void(0);" @click="addSupplier" style="font-size: 12px;">增加供应商</a>
-        </el-form-item>
-      </template>
-    </el-form>
-    <div style="margin-left: 110px; margin-top: 20px;">
-      <el-button @click.native="handleCancel">取 消</el-button>
-      <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
+        <div class="main">
+          <span v-if="s.is_main" @click="settingMain(index, i)">主供应商</span>
+          <a href="javascript: void(0);" v-else @click="settingMain(index, i)">设为主供应商</a>
+        </div>
+        <div class="delete" title="删除"><i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index, i)"></i></div>
+      </div>
+      <a href="javascript: void(0);" @click="addSupplier(index)" style="font-size: 12px;">增加供应商</a>
     </div>
-  </form-layout>
+    <div style="margin-top: 20px;">
+      <el-button @click.native="pageComponent.handleCancel">取 消</el-button>
+      <el-button type="primary" @click.native="submitData">确 定</el-button>
+    </div>
+  </div>
 </template>
 
 <script>
 import formMixin from './form.mixin';
-import { Http, Config, Constant, Verification } from '@/util';
+import { Http, Config } from '@/util';
 import { SelectSupplier } from '@/component';
 
 export default {
-  name: "FormItemGlobalSupplierType",
+  name: "FormItemGlobalSupplierTypeL",
   mixins: [formMixin],
   components: {
     'select-supplier': SelectSupplier
   },
+  props: {
+    pageComponent: { type: Object, default: {} }
+  },
   created() {
+    this.baseProvinceList();
   },
   data(){
-    let initDetail = {
-      sup_type: 'global_pur',
-      supplier_binds: [{ supplier_id: '' }]
-    }
     return{
-      supplierType: Constant.SUPPLIER_TYPE(),
-      initDetail: initDetail,
-      detail: this.copyJson(initDetail),
-      gAddEditData: {
-        id: '',
-        supplier_binds: []
-      },
-      lAddEditData: {
+      provinceList: [],
+      addEditData: {
         id: '',
         provinces: []
       },
@@ -67,72 +51,124 @@ export default {
   },
   computed: {
     //当前选择的供应商ids
-    supplierIds() {
-      let ids = this.detail.supplier_binds.map(item => item.supplier_id);
+    supplierIds(e, index){
+      let ids = this.provinceList[index].supplier_binds.map(item => item.supplier_id);
       return ids;
     }
   },
   methods: {
-    //显示form(供外部也调用)
-    showForm(data){
-      this.pItemDetail(data.id);
-    },
-    
-    //获取详情
-    async pItemDetail(id){
+    //获取省列表
+    async baseProvinceList(){
       this.$loading({isShow: true});
-      let res = await Http.get(Config.api.pItemDetail, { id: id });
+      let res = await Http.get(Config.api.baseProvinceList, {});
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
-        //补全供应商信息
-        if(!rd.sup_type) rd.sup_type = 'global_pur';
-        if(rd.supplier_binds.length === 0) rd.supplier_binds = [{ supplier_id: '' }];
-
-        this.$data.detail = this.copyJson(rd);
-        this.$data.isShow = true;
+        rd.forEach(item => {
+          item.province_code = item.code;
+          item.supplier_binds = [];
+        });
+        this.$data.provinceList = rd;
       }else{
         this.$message({message: res.message, type: 'error'});
       }
     },
     //增加供应商
-    addSupplier(){
-      this.$data.detail.supplier_binds.push({ supplier_id: '' });
+    addSupplier(index){
+      let len = this.provinceList[index].supplier_binds.length;
+      this.$data.provinceList[index].supplier_binds.push({ supplier_id: '', is_main: false, rank: len});
     },
     //删除供应商
-    deleteSupplier(index){
-      let { detail } = this;
-      detail.supplier_binds.remove(index)
-      this.$data.detail = this.copyJson(detail);
+    deleteSupplier(index, i){
+      let { provinceList } = this;
+      provinceList[index].supplier_binds.remove(i)
+      this.$data.provinceList = this.copyJson(provinceList);
+    },
+    //设置主供应商
+    settingMain(index, i){
+      let { provinceList } = this;
+      let isMain = provinceList[index].supplier_binds[i].is_main;
+      provinceList[index].supplier_binds[i].is_main = !isMain;
+      this.$data.provinceList = this.copyJson(provinceList);
+    },
+    //上移
+    upMove(index, i){
+      let { provinceList } = this;
+      let ub = [];
+      provinceList[index].supplier_binds.forEach((item, ii) => {
+        if(ii === i - 1){
+          ub.push({
+            ...provinceList[index].supplier_binds[ii],
+            is_main: ub.length === 0 ? true : false,
+            rank: ub.length
+          });
+        }else if(i === ii){
+          ub.push({
+            ...provinceList.supplier_binds[ii - 1],
+            is_main: ub.length === 0 ? true : false,
+            rank: ub.length
+          });
+        }else{
+          ub.push({
+            ...item,
+            is_main: ub.length === 0 ? true : false,
+            rank: ub.length
+          });
+        }
+      });
+      provinceList.supplier_binds = ub;
+      this.$data.provinceList = this.copyJson(provinceList);
+    },
+    //下移
+    downMove(index, i){
+      let { provinceList } = this;
+      let ub = [];
+      provinceList[index].supplier_binds.forEach((item, ii) => {
+        if(ii === i){
+          ub.push({
+            ...provinceList.supplier_binds[ii + 1],
+            is_main: ub.length === 0 ? true : false,
+            rank: ub.length
+          });
+        }else if(ii === i + 1){
+          ub.push({
+            ...provinceList.supplier_binds[ii - 1],
+            is_main: ub.length === 0 ? true : false,
+            rank: ub.length
+          });
+        }else{
+          ub.push({
+            ...item,
+            is_main: ub.length === 0 ? true : false,
+            rank: ub.length
+          });
+        }
+      });
+      provinceList[index].supplier_binds = ub;
+      this.$data.provinceList = this.copyJson(provinceList);
     },
     //提交
     async submitData(){
-      let { detail } = this;
+      let { addEditData, pageComponent } = this;
       let con = true;
-      if(detail.sup_type === 'global_pur'){
-        detail.supplier_binds.forEach(item => {
-          if(!item.supplier_id){
-            con = false;
-          }
-        });
-      }
+      addEditData.supplier_binds.forEach(item => {
+        if(!item.supplier_id){
+          con = false;
+        }
+      });
       if(!con){
         this.$message({message: '请选择供应商', type: 'error'});
         return;
       }
       this.$loading({isShow: true});
-      let res = await Http.post(detail.sup_type === 'global_pur' ? Config.api.pItemChgToGlobal : Config.api.pItemChgToLocal, {
-        id: detail.id,
-        sup_type: detail.sup_type,
-        supplier_binds: detail.supplier_binds
-      });
+      let res = await Http.post(Config.api.pItemChgToLocal, addEditData);
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '修改成功', type: 'success'});
-        this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableItemGlobal');
+        let pc = pageComponent.getPageComponents('TableItemGlobal');
         pc.getData(pc.query);
+        pageComponent.handleCancel(); //隐藏
       }else{
         this.$message({message: res.message, type: 'error'});
       }
@@ -142,5 +178,37 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+  .select-supplier{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    >.select{
+      width: 240px;
+    }
+    >.move{
+      margin-left: 10px;
+      font-size: 12px;
+      >a{
+        margin-right: 5px;
+        display: block;
+        line-height: 20px;
+      }
+    }
+    >.main{
+      margin-left: 10px;
+      font-size: 12px;
+      >span{
+        cursor: pointer;
+        &:hover{
+          &::before{
+            content: '移除'
+          }
+        }
+      }
+    }
+    >.delete{
+      font-size: 12px;
+    }
+  }
 </style>
