@@ -5,11 +5,12 @@
     <detail-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateSort"/>
     <add-edit-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateSort"/>
     <detail-operate-sort-city :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateSortCity"/>
+    <print-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintOperateSort"/>
   </div>
 </template>
 
 <script>
-  import { QueryOperateSort, TableOperateSort, DetailOperateSort, AddEditOperateSort, DetailOperateSortCity } from '@/container';
+  import { QueryOperateSort, TableOperateSort, DetailOperateSort, AddEditOperateSort, DetailOperateSortCity, PrintOperateSort } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -19,7 +20,8 @@
       'table-operate-sort': TableOperateSort,
       'detail-operate-sort': DetailOperateSort,
       'add-edit-operate-sort': AddEditOperateSort,
-      'detail-operate-sort-city': DetailOperateSortCity
+      'detail-operate-sort-city': DetailOperateSortCity,
+      'print-operate-sort': PrintOperateSort
     },
     mixins: [viewMixin],
     created() {

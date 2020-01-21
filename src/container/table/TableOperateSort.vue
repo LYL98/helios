@@ -2,7 +2,7 @@
   <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.OperateSortPrint">
       <div class="left">
-        <el-button @click="handleShowPrint('PrintOperateSort', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
+        <el-button @click="handleShowPrint('PrintOperateSort', multipleSelection)" size="mini" type="primary"
         :disabled="multipleSelection.length === 0 ? true : false" plain>批量打印</el-button>
       </div>
       <div class="right"></div>
@@ -54,7 +54,7 @@
                 },{
                   title: '打印',
                   isDisplay: (auth.isAdmin || auth.OperateSortPrint) && scope.row.allocated_time,
-                  command: () => handleShowPrint('PrintOperateSort', scope.row)
+                  command: () => handleShowPrint('PrintOperateSort', [scope.row])
                 }
               ]"
             />

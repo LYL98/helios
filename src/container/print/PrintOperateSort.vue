@@ -1,8 +1,8 @@
 <template>
-  <print-layout title="打印门店收货表" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <print-layout title="打印订单码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <div v-for="(item, index) in dataItem" :key="index">
       <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="240" :height="240"/>
-      <div style="font-size: 16px;">{{item.code}}</div>
+      <div style="font-size: 16px;">{{item.item_title}}</div>
     </div>
     <div class="bottom-btn-body">
       <div class="bottom-btn">
@@ -19,7 +19,7 @@ import { Http, Config } from '@/util';
 import { QrCode } from '@/common';
 
 export default {
-  name: "PrintOperateDepart",
+  name: "PrintOperateSort",
   mixins: [printMixin],
   components: {
     'qr-code': QrCode
