@@ -19,6 +19,7 @@ export default {
     provinceCode: { type: String | Number, default: '' },
     filterable: { type: Boolean, default: false },
     forCreateLine: { type: Boolean, default: false },
+    connectData: { type: Array, default: [] }
   },
   model: {
     prop: 'value',
@@ -40,7 +41,7 @@ export default {
     //获取所有县市
     async baseCityList(){
       let that = this;
-      let { pCode } = that;
+      let { pCode, connectData } = that;
       if(!pCode){
         that.$data.dataItem = [];
         return false;
@@ -51,6 +52,7 @@ export default {
       });
       if(res.code === 0){
         let rd = res.data, d = [];
+        rd = rd.concat(connectData);
         rd.forEach(item => {
           d.push({
             label: item.title,

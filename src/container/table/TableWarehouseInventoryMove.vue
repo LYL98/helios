@@ -45,6 +45,10 @@
               <div v-else-if="item.key === 'storehouse_warehouse'">{{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}</div>
               <!--仓/库/托盘-->
               <div v-else-if="item.key === 'storehouse_warehouse_tray'">{{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}{{scope.row.tray.code}}</div>
+              <!--仓/库/托盘-->
+              <div v-else-if="item.key === 'src_storehouse_warehouse_tray'">{{scope.row.src_storehouse.title}}/{{scope.row.src_warehouse.title}}{{scope.row.src_tray.code}}</div>
+              <!--仓/库/托盘-->
+              <div v-else-if="item.key === 'tar_storehouse_warehouse_tray'">{{scope.row.tar_storehouse.title}}/{{scope.row.tar_warehouse.title}}{{scope.row.tar_tray.code}}</div>
               <!--价格-->
               <div v-else-if="judgeOrs(item.key, ['amount'])" class="td-item add-dot2">{{returnPrice(scope.row[item.key])}}元</div>
               <!--日期-->
@@ -217,9 +221,9 @@
         //移库
         else if(tabValue === 'move'){
           tableColumn = tableColumn.concat([
-            { label: '原仓库', key: 'src_storehouse', width: '3', isShow: true },
+            { label: '原仓库', key: 'src_storehouse_warehouse_tray', width: '3', isShow: true },
             { label: '移库数量', key: 'num', width: '2', isShow: true },
-            { label: '现仓库', key: 'tar_storehouse', width: '3', isShow: true }
+            { label: '现仓库', key: 'tar_storehouse_warehouse_tray', width: '3', isShow: true }
           ]);
         }
         //出库

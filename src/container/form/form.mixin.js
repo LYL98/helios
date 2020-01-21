@@ -39,6 +39,7 @@ export default {
         this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
       }
       this.$data.isShow = true;
+      if(this.$refs['ruleForm']) this.$refs['ruleForm'].resetFields();
     },
     //提交
     handleFormSubmit(){

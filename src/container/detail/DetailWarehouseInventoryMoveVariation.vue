@@ -11,7 +11,7 @@
           <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="入库数量">{{detail.num_after}}件</el-form-item>
+          <el-form-item label="库存数量">{{detail.num_before}}件</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="仓库">{{detail.storehouse.title}}/{{detail.warehouse.title}}/{{detail.tray.code}}</el-form-item>

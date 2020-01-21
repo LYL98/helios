@@ -15,7 +15,7 @@
       </el-row>
       <el-row v-for="(item, index) in addData.trays" :key="index">
         <el-col :span="12">
-          <el-form-item label="现仓库">
+          <el-form-item label="移入仓库">
             <cascader-warehouse-tray v-if="isShow" size="medium" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
             <div v-if="item.tray_ids_error" class="el-form-item__error">{{item.tray_ids_error}}</div>
           </el-form-item>

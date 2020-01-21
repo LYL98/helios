@@ -42,6 +42,7 @@ export default {
       }
       if(type) this.$data.pageType = type;
       this.$data.isShow = true;
+      if(this.$refs['ruleForm']) this.$refs['ruleForm'].resetFields();
     },
     //提交
     handleAddEdit(e){

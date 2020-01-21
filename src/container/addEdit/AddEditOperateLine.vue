@@ -3,13 +3,13 @@
     <add-edit-layout :title="returnPageTitles('线路')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="编号" prop="code">
-          <el-input v-model="detail.code" size="medium" :maxlength="12" placeholder="请输入编号" :disabled="detail.id"></el-input>
+          <el-input v-model="detail.code" size="medium" :maxlength="2" placeholder="请输入编号" :disabled="detail.id"></el-input>
         </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" size="medium" :maxlength="10" placeholder="请输入名称"></el-input>
         </el-form-item>
-        <el-form-item label="包含县域" prop="city_codes">
-          <my-select-city-multi v-if="isShow" filterable :forCreateLine="detail.id ? false : true" :provinceCode="detail.province_code" v-model="detail.city_codes" />
+        <el-form-item label="包含县域">
+          <select-city-multi v-if="isShow" filterable forCreateLine :connectData="connectData" :provinceCode="detail.province_code" v-model="detail.city_codes" />
         </el-form-item>
       </el-form>
       
@@ -30,12 +30,12 @@ export default {
   name: "AddEditOperateLine",
   mixins: [addEditMixin],
   components: {
-    'my-select-city-multi': SelectCityMulti
+    'select-city-multi': SelectCityMulti
   },
   data(){
     let validCode = (rules, value, callback) => {
       if (value && !Verification.isNumber(value)) {
-        return callback(new Error('请输入12位以内的数字'));
+        return callback(new Error('请输入2位以内的数字'));
       }
       callback();
     };
@@ -46,6 +46,7 @@ export default {
         city_codes: [],
         province_code: this.$province.code
       },
+      connectData: [],
       rules: {
         code: [
             { required: true, message: '编号不能为空', trigger: 'change' },
@@ -57,9 +58,6 @@ export default {
         ],
         province_code: [
             { required: true, message: '请选择所属省份', trigger: 'change' }
-        ],
-        city_codes: [
-            { required: true, type: 'array', message: '至少选择一个县域', trigger: 'click' }
         ]
       }
     }
@@ -68,9 +66,11 @@ export default {
     //显示新增修改(重写)
     showAddEdit(data){
       if(data){
-        this.$data.detail = JSON.parse(JSON.stringify({ ...data, id: true }));
+        this.$data.detail = this.copyJson({ ...data, id: true });
+        this.$data.connectData = data.citys;
       }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.detail = this.copyJson(this.initDetail);
+        this.$data.connectData = [];
       }
       this.$data.isShow = true;
     },

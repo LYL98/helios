@@ -82,8 +82,7 @@
         status: '',
         condition: '',
         picker_value: null,
-        province_code: this.$province.code,
-        for_instock: 1, //该查询是否是用来 入库的 (调拨单)
+        province_code: this.$province.code
       }
       return {
         initQuery: initQuery,

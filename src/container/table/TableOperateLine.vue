@@ -33,14 +33,8 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="配送员" min-width="200">
-          <template slot-scope="scope">
-            <div>
-            <span v-for="(item, index) in scope.row.distributors" :key="index">
-              {{item.realname}}{{index === scope.row.distributors.length-1 ? '' : ', '}}
-            </span>
-            </div>
-          </template>
+        <el-table-column label="司机" min-width="200">
+          <template slot-scope="scope">{{scope.row.deliver.realname || '-'}}</template>
         </el-table-column>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
