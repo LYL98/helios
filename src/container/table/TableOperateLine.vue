@@ -114,7 +114,7 @@
       //删除数据
       async deleteData(data) {
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.basicdataZoneDelete, {
+        let res = await Http.post(Config.api.operateLineDelete, {
           code: data.code
         });
         this.$loading({ isShow: false });
