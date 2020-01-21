@@ -1,22 +1,22 @@
 <template>
-  <detail-layout title="123" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <detail-layout :title="layoutTitle" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <el-row>
         <h6 class="subtitle">线路信息</h6>
         <el-col :span="12">
-          <el-form-item label="应出库">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
+          <el-form-item label="应出库">{{detail.count_real}}件</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="实际出库">{{detail.code}}</el-form-item>
+          <el-form-item label="实际出库">{{detail.allocate_num}}件</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="确认人">{{detail.num}}件</el-form-item>
+          <el-form-item label="确认人">{{detail.assign_confirmer.realname}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="确认时间">{{detail.created}}</el-form-item>
+          <el-form-item label="确认时间">{{detail.assign_confirm_time}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="司机">{{detail.driver && detail.driver.realname}}</el-form-item>
+          <el-form-item label="司机">{{detail.deliver.realname}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="司机发车时间">{{detail.created}}</el-form-item>
@@ -25,7 +25,7 @@
     </el-form>
     <h6 class="subtitle">县域信息</h6>
     <div style="padding: 0 30px;">
-      <el-table :data="dataItem" :row-class-name="highlightRowClassName">
+      <el-table :data="detail.cities" :row-class-name="highlightRowClassName">
         <el-table-column label="县域">
           <template slot-scope="scope">{{scope.row.city.title}}</template>
         </el-table-column>
@@ -36,10 +36,11 @@
           <template slot-scope="scope">{{scope.row.allocate_num}}件</template>
         </el-table-column>
         <el-table-column label="缺货">
-          <template slot-scope="scope">{{scope.row.count_real - scope.row.allocate_num}}件</template>
+          <template slot-scope="scope" v-if="scope.row.count_real - scope.row.allocate_num <= 0">-</template>
+          <template slot-scope="scope" v-else>{{scope.row.count_real - scope.row.allocate_num}}件</template>
         </el-table-column>
         <el-table-column label="接驳人">
-          <template slot-scope="scope">{{scope.row.sorter.realname}}</template>
+          <template slot-scope="scope">{{scope.row.hand_over.realname}}</template>
         </el-table-column>
         <el-table-column label="接驳时间">
           <template slot-scope="scope">{{scope.row.created}}</template>
@@ -51,7 +52,11 @@
                 {
                   title: '查看门店',
                   isDisplay: auth.isAdmin || auth.OperateDepartDetailStore,
-                  command: () => handleShowDetail('DetailOperateDepartStore', scope.row)
+                  command: () => handleShowDetail('DetailOperateDepartStore', {
+                    ...scope.row,
+                    delivery_date: detail.delivery_date,
+                    layoutTitle: layoutTitle + '/' + scope.row.city.title
+                  })
                 }
               ]"
             />
@@ -75,23 +80,21 @@
     },
     data() {
       let initDetail = {
-        allocates: [],
+        assign_confirmer: {},
+        cities: [],
+        deliver: {},
         creator: {}
       }
       return {
         initDetail: initDetail,
         detail: this.copyJson(initDetail),
-        dataItem: []
+        layoutTitle: ''
       }
     },
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        if(data){
-          this.$data.detail = this.copyJson(data);
-        }else{
-          this.$data.detail = this.copyJson(this.initDetail);
-        }
+        this.$data.layoutTitle = `${data.line_code}/${data.line.title}`;
         this.supDeliveryCityDetail(data);
       },
       //获取明细列表
@@ -103,7 +106,7 @@
         });
         this.$loading({isShow: false});
         if(res.code === 0){
-          this.$data.dataItem = res.data;
+          this.$data.detail = res.data;
           this.$data.isShow = true;
         }else{
           this.$message({message: res.message, type: 'error'});

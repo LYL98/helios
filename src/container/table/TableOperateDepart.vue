@@ -2,13 +2,13 @@
   <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin|| auth.OperateDepartAffirm || auth.OperateDepartPrint  || auth.OperateDepartStockout">
       <div class="left">
-        <el-button @click="handleShowForm('FormOperateDepartAffirm', [multipleSelection])" size="mini" type="primary"
+        <el-button @click="handleShowForm('FormOperateDepartAffirm', multipleSelection)" size="mini" type="primary"
         :disabled="multipleSelection.length === 0 ? true : false" v-if="auth.isAdmin || auth.OperateDepartAffirm">批量确认</el-button>
-        <el-button @click="handleShowPrint('PrintOperateDepart', [multipleSelection])" size="mini" type="primary"
+        <el-button @click="handleShowPrint('PrintOperateDepart', multipleSelection)" size="mini" type="primary"
         :disabled="multipleSelection.length === 0 ? true : false" plain v-if="auth.isAdmin || auth.OperateDepartPrint">批量打印</el-button>
       </div>
       <div class="right" v-if="auth.isAdmin || auth.OperateDepartStockout">
-        <el-button @click="handleShowDetail('DetailOperateDepartStockout', {})" size="mini" type="primary" plain>缺货记录</el-button>
+        <el-button @click="handleShowDetail('DetailOperateDepartStockout', { delivery_date: query.delivery_date })" size="mini" type="primary" plain>缺货记录</el-button>
       </div>
     </div>
     <!-- 表格start -->

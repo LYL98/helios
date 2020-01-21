@@ -1,9 +1,12 @@
 <template>
-  <detail-layout title="缺货记录" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <detail-layout :title="detail.item.code + '/' + detail.item.title" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <div style="padding: 0 30px;">
       <el-table :data="dataItem" :row-class-name="highlightRowClassName">
-        <el-table-column label="商品编号/名称">
-          <template slot-scope="scope">{{scope.row.item.code}}/{{scope.row.item.title}}</template>
+        <el-table-column label="县域">
+          <template slot-scope="scope">{{scope.row.city.code}}/{{scope.row.city.title}}</template>
+        </el-table-column>
+        <el-table-column label="门店">
+          <template slot-scope="scope">{{scope.row.store.code}}/{{scope.row.store.title}}</template>
         </el-table-column>
         <el-table-column label="应出库">
           <template slot-scope="scope">{{scope.row.count_real}}件</template>
@@ -15,30 +18,12 @@
           <template slot-scope="scope" v-if="scope.row.count_real - scope.row.allocate_num <= 0">-</template>
           <template slot-scope="scope" v-else>{{scope.row.count_real - scope.row.allocate_num}}件</template>
         </el-table-column>
-        <el-table-column label="操作" width="80">
-          <template slot-scope="scope">
-            <my-table-operate
-              :list="[
-                {
-                  title: '详情',
-                  isDisplay: auth.isAdmin || auth.OperateDepartStockoutDetail,
-                  command: () => handleShowDetail('DetailOperateDepartStockoutDetail', {
-                    ...scope.row,
-                    delivery_date: detail.delivery_date,
-                    item_id: scope.row.item.id
-                  })
-                }
-              ]"
-            />
-          </template>
-        </el-table-column>
       </el-table>
     </div>
   </detail-layout>
 </template>
 
 <script>
-  import { TableOperate } from '@/common';
   import detailMixin from './detail.mixin';
   import { Http, Config, Constant } from '@/util';
 
@@ -46,10 +31,11 @@
     name: "DetailOperateDepartStockout",
     mixins: [detailMixin],
     components: {
-      'my-table-operate': TableOperate
     },
     data() {
-      let initDetail = {}
+      let initDetail = {
+        item: {}
+      }
       return {
         initDetail: initDetail,
         detail: this.copyJson(initDetail),
@@ -60,13 +46,14 @@
       //显示(重写mixin)
       showDetail(data){
         this.$data.detail = data;
-        this.supDeliveryLackHistoryItem(data);
+        this.supDeliveryLackHistoryStore(data);
       },
       //获取明细列表
-      async supDeliveryLackHistoryItem(data){
+      async supDeliveryLackHistoryStore(data){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supDeliveryLackHistoryItem, {
-          delivery_date: data.delivery_date
+        let res = await Http.get(Config.api.supDeliveryLackHistoryStore, {
+          delivery_date: data.delivery_date,
+          item_id: data.item_id
         });
         this.$loading({isShow: false});
         if(res.code === 0){

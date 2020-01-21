@@ -8,6 +8,7 @@
     <form-operate-depart-affirm :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateDepartAffirm"/>
     <detail-operate-depart-driver-track :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartDriverTrack"/>
     <detail-operate-depart-stockout :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStockout"/>
+    <detail-operate-depart-stockout-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStockoutDetail"/>
     <print-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintOperateDepart"/>
   </div>
 </template>
@@ -22,6 +23,7 @@
     FormOperateDepartAffirm,
     DetailOperateDepartDriverTrack,
     DetailOperateDepartStockout,
+    DetailOperateDepartStockoutDetail,
     PrintOperateDepart
   } from '@/container';
   import viewMixin from '@/view/view.mixin';
@@ -37,6 +39,7 @@
       'form-operate-depart-affirm': FormOperateDepartAffirm,
       'detail-operate-depart-driver-track': DetailOperateDepartDriverTrack,
       'detail-operate-depart-stockout': DetailOperateDepartStockout,
+      'detail-operate-depart-stockout-detail': DetailOperateDepartStockoutDetail,
       'print-operate-depart': PrintOperateDepart
     },
     mixins: [viewMixin],

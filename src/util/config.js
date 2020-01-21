@@ -258,6 +258,8 @@ const Config = (() => {
       supDeliveryCityDetail: apiM + '/sup_delivery/city_detail', //确认分配之后用于查看各个县域分配的详情
       supDeliveryStoreDetail: apiM + '/sup_delivery/store_detail', //确认分配之后用于查看某个县域各个门店分配的详情
       supDeliveryItemDetail: apiM + '/sup_delivery/item_detail', //确认分配之后用于查看某个门店各种商品的详情
+      supDeliveryLackHistoryItem: apiM + '/sup_delivery/lack_history/item', //商品缺货缺货历史记录
+      supDeliveryLackHistoryStore: apiM + '/sup_delivery/lack_history/store', //确认分配之后用于查看缺货记录中某个商品在各个门店分配的详情
 
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增

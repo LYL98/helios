@@ -15,7 +15,7 @@
             </template>
           </el-table-column>
           <el-table-column label="供应商库存" width="100">
-            <template slot-scope="scope">{{scope.row.num}}件</template>
+            <template slot-scope="scope">{{scope.row.num ? scope.row.num + '件' : '-'}}</template>
           </el-table-column>
         </el-table>
       </el-form-item>
