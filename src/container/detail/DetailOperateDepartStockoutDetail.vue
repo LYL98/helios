@@ -6,7 +6,7 @@
           <template slot-scope="scope">{{scope.row.city.code}}/{{scope.row.city.title}}</template>
         </el-table-column>
         <el-table-column label="门店">
-          <template slot-scope="scope">{{scope.row.store.code}}/{{scope.row.store.title}}</template>
+          <template slot-scope="scope">{{scope.row.store.title}}</template>
         </el-table-column>
         <el-table-column label="应出库">
           <template slot-scope="scope">{{scope.row.count_real}}件</template>

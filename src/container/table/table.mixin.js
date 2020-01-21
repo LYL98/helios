@@ -179,23 +179,5 @@ export default {
       Method.setPageSetting('Table', ts);
       this.isShowTableTitle();//重新刷新表头
     },
-    //列表导出
-    async handleExport(apiStr, query) {
-      let api = Config.api[apiStr];
-      //判断是否可导出
-      this.$loading({ isShow: true });
-      let res = await Http.get(`${api}_check`, query);
-      if(res.code === 0){
-        let queryStr = `${api}?`;
-        for(let item in query){
-          queryStr += `${item}=${query[item]}&`;
-        }
-        queryStr = queryStr.substring(0, queryStr.length - 1);
-        window.open(queryStr);
-      }else{
-        this.$message({ title: '提示', message: res.message, type: 'error' });
-      }
-      this.$loading({ isShow: false });
-    },
   }
 }

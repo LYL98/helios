@@ -1,32 +1,29 @@
 <template>
   <form-layout title="发车确认" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" ref="ruleForm" :rules="rules">
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="批次">{{detail.batch_code}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="仓库">{{detail.warehouse_title}}/{{detail.tray_code}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="库存数量">{{detail.num}}件</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="出库">场地</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="出库数量" prop="num_out">
-            <input-number size="medium" v-model="detail.num_out" unit="件" :min="1"/>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
+    <div style="padding: 0 30px 20px; color: #ff5252;">注：以下为缺货商品分配情况，确认后系统将自动改单</div>
+    <div style="padding: 0 30px;">
+      <el-table :data="dataItem" :row-class-name="highlightRowClassName">
+        <el-table-column label="县域">
+          <template slot-scope="scope">{{scope.row.city.code}}/{{scope.row.city.title}}</template>
+        </el-table-column>
+        <el-table-column label="门店">
+          <template slot-scope="scope">{{scope.row.store.title}}</template>
+        </el-table-column>
+        <el-table-column label="应出库">
+          <template slot-scope="scope">{{scope.row.count_real}}件</template>
+        </el-table-column>
+        <el-table-column label="实际出库">
+          <template slot-scope="scope">{{scope.row.allocate_num}}件</template>
+        </el-table-column>
+        <el-table-column label="缺货">
+          <template slot-scope="scope" v-if="scope.row.count_real - scope.row.allocate_num <= 0">-</template>
+          <template slot-scope="scope" v-else>{{scope.row.count_real - scope.row.allocate_num}}件</template>
+        </el-table-column>
+      </el-table>
+    </div>
     <div style="margin-left: 140px; margin-top: 20px;">
       <el-button @click.native="handleCancel">取 消</el-button>
-      <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
+      <el-button type="primary" @click.native="submitData">确 定</el-button>
     </div>
   </form-layout>
 </template>
@@ -48,56 +45,60 @@ export default {
       rules: {},
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
+      dataItem: []
     }
   },
   methods: {
     //显示form(重写)
     showForm(data){
-      this.departAffirm(data.id);
+      this.$data.detail = data;
+      this.supConfirmStoreLack();
     },
-    //获取发车确认
-    async departAffirm(id){
+    //获取列表
+    async supConfirmStoreLack(){
+      let { detail } = this;
       this.$loading({isShow: true, isWhole: true});
-      let res = await Http.get(Config.api.departAffirm, { id });
+      let res = await Http.get(Config.api.supConfirmStoreLack, {
+        delivery_date: detail.delivery_date,
+        line_code: detail.line_code,
+      });
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
-        //如果没有缺货
-        if(rd.id){
-          this.$messageBox.confirm(`商品正常，您确认发车？`, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            this.submitData();
-          }).catch(() => {
-            //console.log('取消');
-          });
-        }else{
-          this.$data.detail = res.data;
+        if(rd.length > 0){
+          this.$data.dataItem = res.data;
           this.$data.isShow = true;
+        }else{
+          this.supSend();
         }
       }else{
         this.$message({message: res.message, type: 'error'});
       }
     },
+    //获取发车确认
+    supSend(){
+      this.$messageBox.confirm(`商品正常，您确认发车？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.submitData();
+      }).catch(() => {
+        //console.log('取消');
+      });
+    },
     //提交
     async submitData(){
       let { detail } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supOutAdd, {
-        id: detail.id,
-        num: detail.num_out,
-        province_code: this.$province.code
-      });
+      let res = await Http.post(Config.api.supSend, { line_code: detail.line_code });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: '已出库', type: 'success'});
+        this.$message({message: '已确认', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('DetailWarehouseInventory');
-        pc.$data.query.page = 1;
-        pc.wareTrayItemQeruy();
+        let pc = this.getPageComponents('TableOperateDepart');
+        pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});
       }
