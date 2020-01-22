@@ -34,10 +34,7 @@ export default {
   created() {
   },
   data(){
-    let initDetail = {
-      sup_type: 'global_pur',
-      supplier_binds: [{ supplier_id: '' }]
-    }
+    let initDetail = {}
     return{
       supplierType: Constant.SUPPLIER_TYPE(),
       initDetail: initDetail,
@@ -45,23 +42,6 @@ export default {
     }
   },
   methods: {
-    //显示form(供外部也调用)
-    showForm(data){
-      this.pItemDetail(data.id);
-    },
-    
-    //获取详情
-    async pItemDetail(id){
-      this.$loading({isShow: true});
-      let res = await Http.get(Config.api.pItemDetail, { id: id });
-      this.$loading({isShow: false});
-      if(res.code === 0){
-        this.$data.detail = res.data;
-        this.$data.isShow = true;
-      }else{
-        this.$message({message: res.message, type: 'error'});
-      }
-    },
   }
 };
 </script>

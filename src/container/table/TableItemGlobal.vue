@@ -78,7 +78,7 @@
                 },
                 {
                   title: '采购属性',
-                  isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalCheckSupplierType),
+                  isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalSupplierType),
                   command: () => handleShowForm('FormItemGlobalSupplierType', scope.row)
                 },
                 {

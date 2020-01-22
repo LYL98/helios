@@ -2,12 +2,12 @@
   <div>
     <div v-for="(item, index) in addEditData.supplier_binds" :key="index" style="margin-bottom: 10px;">
       <select-supplier v-model="item.supplier_id" size="medium" supplierType="global_pur" :supplierIds="supplierIds" style="width: 360px;"/>
-      <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)" v-if="addEditData.supplier_binds.length > 1"></i>
+      <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteSupplier(index)"></i>
     </div>
     <a href="javascript: void(0);" @click="addSupplier" style="font-size: 12px;">增加供应商</a>
     <div style="margin-top: 20px;">
-      <el-button @click.native="pageComponent.handleCancel">取 消</el-button>
-      <el-button type="primary" @click.native="submitData">确 定</el-button>
+      <el-button size="medium" @click.native="pageComponent.handleCancel">取 消</el-button>
+      <el-button size="medium" type="primary" @click.native="submitData">确 定</el-button>
     </div>
   </div>
 </template>
@@ -27,7 +27,8 @@ export default {
     'select-supplier': SelectSupplier
   },
   created() {
-    this.$data.addEditData = this.copyJson(this.pageComponent.detail);
+    let d = this.copyJson(this.pageComponent.detail);
+    this.pItemGetSuppliers(d.id);
   },
   data(){
     return{
@@ -45,6 +46,22 @@ export default {
     }
   },
   methods: {
+    //返回商品的供应商
+    async pItemGetSuppliers(id){
+      this.$loading({isShow: true});
+      let res = await Http.get(Config.api.pItemGetSuppliers, { id });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        let rd = res.data;
+        let supplier_binds = [];
+        if(rd.sup_type === 'global_pur'){
+          supplier_binds = rd.suppliers;
+        }
+        this.$data.addEditData = {id, supplier_binds};
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
+    },
     //增加供应商
     addSupplier(){
       this.$data.addEditData.supplier_binds.push({ supplier_id: '' });
@@ -87,5 +104,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-
 </style>

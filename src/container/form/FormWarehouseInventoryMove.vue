@@ -15,13 +15,13 @@
       </el-row>
       <el-row v-for="(item, index) in addData.trays" :key="index">
         <el-col :span="12">
-          <el-form-item label="移入仓库">
+          <el-form-item label="移入仓库" class="is-required">
             <cascader-warehouse-tray v-if="isShow" size="medium" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
             <div v-if="item.tray_ids_error" class="el-form-item__error">{{item.tray_ids_error}}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="移库数量">
+          <el-form-item label="移库数量" class="is-required">
             <input-number size="medium" v-model="item.num" unit="件" :min="1" @change="inputNum(index)"/>
             <div v-if="item.num_error" class="el-form-item__error">{{item.num_error}}</div>
           </el-form-item>
@@ -31,7 +31,7 @@
       <el-form-item label="">
         <el-button size="mini" type="primary" @click.native="addTray">增加仓库</el-button>
       </el-form-item>
-      <el-form-item label="备注" prop="remark">
+      <el-form-item label="备注" class="is-required">
         <el-input v-model="addData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
         <div v-if="addData.remark_error" class="el-form-item__error">{{addData.remark_error}}</div>
       </el-form-item>
