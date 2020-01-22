@@ -15,6 +15,7 @@
       :size="size"
       :key="key"
       :type="selectValue === value ? 'primary' : 'default'"
+      :disabled="disabled"
       @click="handleClick(value)"
     >
       {{ key }}
@@ -34,7 +35,8 @@
       size: { type: String, default: 'small' },
       value: [ String, Number, Boolean ],
       options: { type: Object, default: {} },
-      buttonWidth: { type: String | Number, default: null }
+      buttonWidth: { type: String | Number, default: null },
+      disabled: { type: Boolean, default: false }
     },
     model: {
       prop: 'value',

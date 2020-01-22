@@ -61,7 +61,8 @@
     </div>
     <div class="bottom-btn">
       <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-      <el-button size="medium" type="primary" @click.native="handleShowAddEdit('AddEditOperateSort', detail, 'edit')">修改分配方式</el-button>
+      <el-button size="medium" v-if="(auth.isAdmin || auth.OperateSortDetailCity) && !allocateNeed.sorted" type="primary"
+        @click.native="handleShowAddEdit('AddEditOperateSort', detail, 'edit')">修改分配方式</el-button>
     </div>
   </detail-layout>
 </template>
@@ -88,13 +89,28 @@
         sortStatusType: Constant.SORT_STATUS_TYPE,
         allotOptTypes: Constant.ALLOT_OPT_TYPES(),
         initDetail: initDetail,
-        detail: this.copyJson(initDetail)
+        detail: this.copyJson(initDetail),
+        allocateNeed: {
+          num: 0,
+          cur_opt_type: '',
+          sorted: false
+        },
       }
     },
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
         this.supAllocateDetail(data.id);
+        this.supAllocateNeedItem(data.item_id);
+      },
+      //返回某个商品还有多少件需要分配
+      async supAllocateNeedItem(itemId){
+        let res = await Http.get(Config.api.supAllocateNeedItem, {sub_item_id: itemId});
+        if(res.code === 0){
+          this.$data.allocateNeed = res.data;
+        }else{
+          this.$message({message: res.message, type: 'error'});
+        }
       },
       //获取明细列表
       async supAllocateDetail(id){

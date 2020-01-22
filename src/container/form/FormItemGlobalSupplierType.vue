@@ -2,7 +2,7 @@
   <form-layout title="采购属性" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
       <el-form-item label="商品编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
-      <el-form-item label="供应商类型" prop="sup_type">
+      <el-form-item label="采购类型" prop="sup_type">
         <el-radio v-model="detail.sup_type" :label="key" :key="key" border size="mini" v-for="(value, key) in supplierType">{{value}}</el-radio>
         <div style="color: #ff5252; margin-top: 10px;">采购类型为商品重要属性，一旦切换需要重新选择供应商。</div>
       </el-form-item>

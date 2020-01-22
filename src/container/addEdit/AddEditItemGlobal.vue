@@ -64,7 +64,7 @@
       </el-form-item>
       <template v-if="pageType === 'detail'">
         <h6 class="subtitle">供应商</h6>
-        <el-form-item label="供应商类型">{{supplierType[detail.sup_type]}}</el-form-item>
+        <el-form-item label="采购类型">{{supplierType[detail.sup_type]}}</el-form-item>
         <el-form-item label="供应商" v-if="detail.supplier_binds.length > 0">
           <other-item-supplier :supplierType="detail.sup_type" :supplierBinds="detail.supplier_binds"/>
         </el-form-item>
@@ -149,7 +149,7 @@ export default {
       net_weight: '', //净重
       system_class_code: '', //科学分类编号
       system_class_codes: [], //科学分类编号s
-      sup_type: 'global_pur', //供应商类型（默认统采）
+      sup_type: 'global_pur', //采购类型（默认统采）
       supplier_binds: [],
       supplier_ids: [], //供应商
       frame_code: '', //筐code

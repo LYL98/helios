@@ -58,7 +58,7 @@
               <div class="td-item" v-else-if="item.key === 'display_class'">{{scope.row.display_class.title || '-'}}</div>
               <!--库存-->
               <div class="td-item" v-else-if="item.key === 'item_stock'">{{query.is_on_sale ? scope.row.item_stock + '件' : '-'}}</div>
-              <!--供应商类型-->
+              <!--采购类型-->
               <div class="td-item" v-else-if="item.key === 'sup_type'">{{supplierType[scope.row.sup_type]}}</div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
@@ -138,7 +138,7 @@
           { label: '库存', key: 'item_stock', width: '1', isShow: true },
           { label: '净重', key: 'net_weight', width: '1', isShow: false },
           { label: '包装规格', key: 'package_spec', width: '1', isShow: false },
-          { label: '供应商类型', key: 'sup_type', width: '1', isShow: true },
+          { label: '采购类型', key: 'sup_type', width: '1', isShow: true },
           { label: '创建时间', key: 'created', width: '1', isShow: true },
           { label: '更新时间', key: 'updated', width: '1', isShow: false },
         ]

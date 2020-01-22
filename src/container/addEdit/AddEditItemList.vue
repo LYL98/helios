@@ -197,8 +197,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <h6 class="subtitle">供应商信息</h6>
-        <el-form-item label="供应商类型">{{supplierType[detail.sup_type]}}</el-form-item>
+        <h6 class="subtitle">采购信息</h6>
+        <el-form-item label="采购类型">{{supplierType[detail.sup_type]}}</el-form-item>
         <el-form-item label="供应商">
           <other-item-supplier :supplierType="detail.sup_type" :supplierBinds="detail.supplier_binds"/>
         </el-form-item>
@@ -348,7 +348,7 @@ export default {
       first_grounder: {},
       last_updater: {},
       city_prices_temp: [],
-      sup_type: 'global_pur', //供应商类型（默认统采）
+      sup_type: 'global_pur', //采购类型（默认统采）
       supplier_binds: []
     }
     return {

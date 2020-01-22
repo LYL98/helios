@@ -68,7 +68,7 @@
           </my-query-item>
         </el-col>
         <el-col :span="7">
-          <my-query-item label="供应商类型">
+          <my-query-item label="采购类型">
             <select-option
               :options="{'全部': '', ...supplierType}"
               v-model="query.sup_type"
