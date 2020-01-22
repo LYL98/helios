@@ -106,10 +106,15 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '商品已报价', type: 'success'});
-        this.handleCancel(); //隐藏
+        //刷新详情数据
+        let pcd = this.getPageComponents('DetailItemPricing');
+        if(pcd && pcd.isShow){
+          pcd.$data.detail.price_sale = detail.price_sale;
+        }
         //刷新数据(列表)
         let pc = this.getPageComponents('TableItemPricing');
         pc.getData(pc.query);
+        this.handleCancel(); //隐藏
       }else{
         this.$message({message: res.message, type: 'error'});
       }

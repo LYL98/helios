@@ -58,7 +58,7 @@
                   command: () => handleShowDetail('DetailOperateSort', scope.row)
                 },{
                   title: '打印',
-                  isDisplay: (auth.isAdmin || auth.OperateSortPrint) && scope.row.allocated_time,
+                  isDisplay: (auth.isAdmin || auth.OperateSortPrint) && returnStatus(scope.row),
                   command: () => handleShowPrint('PrintOperateSort', [scope.row])
                 }
               ]"
@@ -109,7 +109,7 @@
     methods: {
       //返回是否可选中
       returnStatus(d){
-        return d.allocated_time ? true : false;
+        return d.allocated_time && d.allocated_num ? true : false;
       },
       //获取数据
       async getData(query){

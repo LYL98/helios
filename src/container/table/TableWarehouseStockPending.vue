@@ -33,8 +33,10 @@
               </div>
               <!--商品名称-->
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
-              <!--采购、调拨数量、入库数量-->
-              <div v-else-if="judgeOrs(item.key, ['num', 'num_in'])" class="td-item add-dot2">{{scope.row[item.key]}}件</div>
+              <!--采购、调拨数量-->
+              <div v-else-if="item.key === 'num'" class="td-item add-dot2">{{scope.row.num}}件</div>
+              <!--入库数量-->
+              <div v-else-if="item.key === 'num_in'" class="td-item add-dot2">{{scope.row.num_in ? scope.row.num_in + '件' : '-'}}</div>
               <!--日期-->
               <div v-else-if="item.key === 'date'" class="td-item add-dot2">
                 {{scope.row.purchase_date || scope.row.order_date || scope.row.available_date}}

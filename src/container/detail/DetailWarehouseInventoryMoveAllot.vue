@@ -10,12 +10,9 @@
         <el-col :span="12">
           <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="库库数量">{{detail.pre_num}}件</el-form-item>
-        </el-col>
-        <el-col :span="12">
+        <!--<el-col :span="12">
           <el-form-item label="入库时间">{{detail.created}}</el-form-item>
-        </el-col>
+        </el-col>-->
       </el-row>
 
       <h6 class="subtitle">调拨信息</h6>

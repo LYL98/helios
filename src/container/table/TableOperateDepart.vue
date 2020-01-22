@@ -93,12 +93,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="table-bottom">
-      <div class="left"></div>
-      <div class="right">
-        <pagination :pageComponent='this'/>
-      </div>
-    </div>
     <!-- 表格end -->
   </div>
 </template>

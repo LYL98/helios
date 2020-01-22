@@ -31,7 +31,8 @@
               <div v-else-if="judgeOrs(item.key, ['price_sale_last', 'price_buy'])">{{scope.row[item.key] ? '￥' + returnPrice(scope.row[item.key]) : '-'}}</div>
               <!--今日销售价-->
               <div v-else-if="item.key === 'price_sale'">
-                <span style="margin-right: 10px;">{{scope.row.price_sale ? '￥' + returnPrice(scope.row.price_sale) : '-'}}</span>
+                <span v-if="query.opt_date !== today" style="margin-right: 10px;">{{scope.row.price_sale ? '￥' + returnPrice(scope.row.price_sale) : '-'}}</span>
+                <span v-else style="margin-right: 10px;">{{scope.row.price_sale ? '￥' + returnPrice(scope.row.price_sale) : ''}}</span>
                 <!--
                   2019-12-26
                   1、只能报今日的价格
@@ -61,11 +62,11 @@
             <!--如何日期不是今日-->
             <template v-if="query.opt_date > today">-</template>
             <template v-else>
-              <div v-if="auth.isAdmin || auth.ItemPriceDetail">
-                <a href="javascript:void(0);" @click="handleShowDetail('DetailItemPricing', { ...scope.row, opt_date: query.opt_date })">详情</a>
-              </div>
               <div v-if="returnIsPricing(scope.row) && (auth.isAdmin || auth.ItemPriceAudit) && query.opt_date === today">
                 <el-button type="primary" size="mini" @click.native="audit([scope.row.item_id])">审核</el-button>
+              </div>
+              <div v-if="auth.isAdmin || auth.ItemPriceDetail">
+                <a href="javascript:void(0);" @click="handleShowDetail('DetailItemPricing', { ...scope.row, opt_date: query.opt_date })">详情</a>
               </div>
             </template>
           </template>

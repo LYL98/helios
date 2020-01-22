@@ -16,9 +16,9 @@
         <el-col :span="12">
           <el-form-item label="仓库">{{detail.storehouse.title}}/{{detail.warehouse.title}}/{{detail.tray.code}}</el-form-item>
         </el-col>
-        <el-col :span="12">
+        <!---<el-col :span="12">
           <el-form-item label="入库时间">{{detail.created}}</el-form-item>
-        </el-col>
+        </el-col>-->
       </el-row>
 
       <h6 class="subtitle">出库信息</h6>

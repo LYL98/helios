@@ -16,7 +16,7 @@
           <el-form-item label="入场数">{{detail.num ? detail.num + '件' : '-'}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="入场时间">{{detail.created}}</el-form-item>
+          <el-form-item label="入场时间">{{detail.out_stock.created}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="分配人">{{detail.creator && detail.creator.realname}}</el-form-item>
@@ -42,7 +42,7 @@
           <template slot-scope="scope">{{scope.row.sorter.realname}}</template>
         </el-table-column>
         <el-table-column label="分拣时间">
-          <template slot-scope="scope">{{scope.row.created}}</template>
+          <template slot-scope="scope">{{scope.row.sort_time}}</template>
         </el-table-column>
         <el-table-column label="操作" width="80">
           <template slot-scope="scope">
@@ -80,6 +80,7 @@
     data() {
       let initDetail = {
         allocates: [],
+        out_stock: {},
         creator: {}
       }
       return {

@@ -24,7 +24,8 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="今日销售价">
-            <span style="margin-right: 10px;">{{returnPriceFormat(detail.price_sale)}}</span>
+            <span v-if="detail.opt_date !== today" style="margin-right: 10px;">{{detail.price_sale ? '￥' + returnPrice(detail.price_sale) : '-'}}</span>
+            <span v-else style="margin-right: 10px;">{{detail.price_sale ? '￥' + returnPrice(detail.price_sale) : ''}}</span>
             <!--如果不是今日-->
             <template v-if="detail.opt_date !== today"></template>
             <!--如果地采供应商已报价、或统采有可销售数量-->
