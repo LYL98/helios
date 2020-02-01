@@ -89,7 +89,7 @@
                 },
                 {
                   title: '供应商品',
-                  isDisplay: (auth.isAdmin || auth.SupplierListItem) && page === 'supplierList',
+                  isDisplay: (auth.isAdmin || auth.SupplierListItem) && scope.row.is_audited && page === 'supplierList',
                   command: () => handleShowDetail('DetailSupplierListItem', scope.row)
                 },
               ]"

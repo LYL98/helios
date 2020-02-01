@@ -25,7 +25,7 @@
               <!--商品名称-->
               <div v-if="item.key === 'item'" class="td-item add-dot2">
                 <div v-if="auth.isAdmin || auth.WarehouseInventoryDetail"
-                  class="td-item link-item add-dot2" @click="handleShowDetail('DetailWarehouseInventory', scope.row, 'detail')">
+                  class="td-item link-item add-dot2" @click="handleShowDetail('DetailWarehouseInventory', {...scope.row, storehouse_id: query.storehouse_id}, 'detail')">
                   {{scope.row.p_item.code}}<br/>{{scope.row.p_item.title}}
                 </div>
                 <div class="td-item add-dot2" v-else>
@@ -50,7 +50,7 @@
                 {
                   title: '管理',
                   isDisplay: auth.isAdmin || auth.WarehouseInventoryDetail,
-                  command: () => handleShowDetail('DetailWarehouseInventory', scope.row, 'detail')
+                  command: () => handleShowDetail('DetailWarehouseInventory', {...scope.row, storehouse_id: query.storehouse_id}, 'detail')
                 },
               ]"
             />

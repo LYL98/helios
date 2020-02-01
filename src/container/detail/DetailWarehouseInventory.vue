@@ -83,6 +83,7 @@
       let initDetail = {}
       return {
         query: {
+          storehouse_id: '',
           p_item_id: '',
           page: 1,
           page_size: Constant.PAGE_SIZE,
@@ -112,6 +113,7 @@
           detail.plan_out_id = data.id; //根据出库计划出库的时候，传递这个参数
         }else{
           query.p_item_id = data.p_item.id;
+          query.storehouse_id = data.storehouse_id;
           detail.item_title = data.p_item.title;
           detail.item_code = data.p_item.code;
           detail.plan_out_id = ''; //根据出库计划出库的时候，传递这个参数

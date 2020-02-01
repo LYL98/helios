@@ -6,7 +6,10 @@
     <div v-else-if="supplierType === 'local_pur'">
       <el-tabs>
         <el-tab-pane v-for="(item, index) in supplierBindsData" :key="index" :label="item.province_title">
-          <p v-for="(s, i) in item.child" :key="i">{{i + 1}}、{{s.supplier_title}}</p>
+          <p v-for="(s, i) in item.child" :key="i">
+            {{i + 1}}、{{s.supplier_title}}
+            <span v-if="s.is_main" class="main-span">主供应商</span>
+          </p>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -60,6 +63,14 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  .main-span{
+    background: #ff5252;
+    color: #fff;
+    padding: 0 3px;
+    border-radius: 3px;
+    font-size: 12px;
+    position: relative;
+    top: -1px;
+  }
 </style>
