@@ -42,7 +42,7 @@
               {
                 title: '出库',
                 isDisplay: auth.isAdmin || (auth.OperateReceivingOutStorage && fromPage === 'receiving') || (auth.WarehouseInventoryOutStorage && fromPage === 'inventory'),
-                command: () => handleShowForm('FormWarehouseInventoryOutStorage', scope.row)
+                command: () => handleShowForm('FormWarehouseInventoryOutStorage', {...scope.row, plan_out_id: detail.plan_out_id})
               }
             ]"
           />
@@ -109,10 +109,12 @@
           query.sub_item_id = data.item_id;
           detail.item_title = data.item_title;
           detail.item_code = data.item_code;
+          detail.plan_out_id = data.id; //根据出库计划出库的时候，传递这个参数
         }else{
+          query.p_item_id = data.p_item.id;
           detail.item_title = data.p_item.title;
           detail.item_code = data.p_item.code;
-          query.p_item_id = data.p_item.id;
+          detail.plan_out_id = ''; //根据出库计划出库的时候，传递这个参数
         }
         this.$data.query = query;
         if(data){

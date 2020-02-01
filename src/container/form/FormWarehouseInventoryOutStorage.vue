@@ -56,6 +56,7 @@ export default {
       let { detail } = this;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.supOutAdd, {
+        plan_out_id: detail.plan_out_id || null, //根据出库计划出库的时候，传递这个参数
         id: detail.id,
         num: detail.num_out,
         province_code: this.$province.code

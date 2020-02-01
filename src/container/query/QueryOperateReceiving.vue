@@ -57,6 +57,7 @@
         province_code: this.$province.code,
       }
       return {
+        tabValue: 'purchase', //'采购': 'purchase', '调拨': 'allot', '出库计划': 'out_storage'
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }
@@ -64,6 +65,10 @@
     computed: {
       inventoryStatus: {
         get(){
+          //出库计划
+          if(this.tabValue === 'out_storage'){
+            return { '全部': '', '待出库': 'wait_out', '已出库': 'done_out'};
+          }
           let d = Constant.INVENTORY_STATUS('value_key');
           return { '全部': '', ...d };
         }
