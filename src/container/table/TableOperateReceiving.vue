@@ -67,7 +67,7 @@
               :list="[
                 {
                   title: '收货',
-                  isDisplay: (auth.isAdmin || auth.OperateReceivingAdd) && judgeOrs(tabValue, ['purchase', 'allot']),
+                  isDisplay: (auth.isAdmin || auth.OperateReceivingAdd) && scope.row.status !== 'all_in' && judgeOrs(tabValue, ['purchase', 'allot']),
                   command: () => handleShowAddEdit('AddEditOperateReceiving', scope.row, 'add_' + tabValue)
                 },
                 {
