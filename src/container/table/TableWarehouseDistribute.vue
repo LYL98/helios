@@ -87,8 +87,9 @@
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryWarehouseDistribute');
-      this.getData(pc.query);
+      //已在query组件初始化
+      //let pc = this.getPageComponents('QueryWarehouseDistribute');
+      //this.getData(pc.query);
     },
     data() {
       return {

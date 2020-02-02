@@ -51,7 +51,12 @@
       </el-col>
       <el-col :span="7">
         <my-query-item label="调出仓">
-          <select-storehouse size="small" v-model="query.storehouse_id" clearable filterable @change="handleQuery('TableWarehouseDistribute')"/>
+          <select-storehouse size="small" v-model="query.src_storehouse_id" clearable filterable @change="handleQuery('TableWarehouseDistribute')"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
+        <my-query-item label="调入仓">
+          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="handleQuery('TableWarehouseDistribute')" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -75,7 +80,8 @@
     },
     data() {
       let initQuery = {
-        storehouse_id: '',
+        src_storehouse_id: '',
+        tar_storehouse_id: '',
         available_date: '',
         begin_date: '',
         end_date: '',
@@ -114,6 +120,18 @@
         this.$data.query = this.query;
         this.handleQuery('TableWarehouseDistribute');
       },
+      //初始化选择仓库时
+      storehouseInit(dataItem){
+        let d = dataItem.filter(item => item.province_code === this.$province.code);
+        if(d.length > 0){
+          this.$data.initQuery.tar_storehouse_id = d[0].id;
+          this.$data.query.tar_storehouse_id = d[0].id;
+        }else{
+          this.$data.initQuery.tar_storehouse_id = dataItem[0].id;
+          this.$data.query.tar_storehouse_id = dataItem[0].id;
+        }
+        this.handleQuery('TableWarehouseDistribute');
+      }
     }
   }
 </script>
