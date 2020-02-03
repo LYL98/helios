@@ -372,32 +372,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .form-search {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .table-top{
-    text-align: right;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    >.left{
-        text-align: left;
-        flex: 1;
-        min-height: 28px;
-    }
-    >.right{
-        text-align: right;
-        position: relative;
-        z-index: 1;
-        min-height: 28px;
-    }
-  }
-
+  @import './../../container/table/table.scss';
   .order-no {
     color: inherit;
     padding: 5px 10px 5px 0;
@@ -445,4 +420,7 @@
       font-weight: 900;
     }
   }
+</style>
+<style lang="scss">
+  @import './../../container/table/table.global.scss';
 </style>

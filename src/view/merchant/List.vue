@@ -1,12 +1,12 @@
 <template>
   <div>
-    <query-merchant-store v-model="query" @change="changeQuery" :reset="resetQuery" @expandChange="onExpandChange" />
+    <query-merchant-store v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <div class="table-top" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
         <div class="left"></div>
         <div class="right">
           <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出商户列表</el-button>
-        <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="() => addMerchantDialogVisible = true" size="mini" type="primary">新增</el-button>
+          <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="() => addMerchantDialogVisible = true" size="mini" type="primary">新增</el-button>
         </div>
       </div>
       <!-- 头部end -->
@@ -135,14 +135,6 @@
         query.is_audited = '';
         this.$data.query = query;
         this.storeQuery();
-      },
-
-      onExpandChange(isExpand) {
-        if (isExpand) {
-          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
-        } else {
-          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT * 2;
-        }
       },
 
       changePageSize(pageSize) {
@@ -618,92 +610,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .form-search {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .merchant-search {
-    padding-top: 20px;
-  }
-
-  .search-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 20px 30px 150px;
-    .el-input {
-      width: 200px;
-    }
-  }
-
-  .list-div {
-    overflow: hidden;
-    > div {
-      width: 48%;
-      float: left;
-      margin-right: 10px;
-      margin-bottom: 10px;
-    }
-    .item {
-      padding: 15px 20px 5px;
-      > div {
-        margin-bottom: 10px;
-      }
-      .title {
-        display: flex;
-        border-bottom: 1px solid #f3f4f6;
-        padding-bottom: 10px;
-        p {
-          flex: 1;
-          span {
-            display: inline-block;
-            background: $--color-primary;
-            color: #fff;
-            padding: 2px 5px;
-            border-radius: 6px;
-            margin-left: 10px;
-          }
-        }
-      }
-      .label-div {
-        span {
-          display: inline-block;
-          padding: 2px 5px;
-          border: 1px solid #999;
-          border-radius: 3px;
-          color: #999;
-          font-size: 12px;
-          margin-right: 5px;
-        }
-      }
-      .img-div {
-        overflow: hidden;
-        > img {
-          width: 64px;
-          height: 64px;
-          margin-right: 10px;
-        }
-      }
-    }
-    .store-div {
-      a {
-        color: $--color-primary;
-        margin-right: 10px;
-      }
-    }
-  }
-
-  .level, .label {
-    padding: 12px 0 2px;
-    span {
-      display: inline-block;
-      padding: 2px 5px;
-      margin: 0 5px 10px;
-      border: 1px solid #999;
-      border-radius: 3px;
-    }
-  }
+  @import './../../container/table/table.scss';
+</style>
+<style lang="scss">
+  @import './../../container/table/table.global.scss';
 </style>

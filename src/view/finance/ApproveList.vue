@@ -1,6 +1,6 @@
 <template>
   <div>
-    <query-finance-approve v-model="query" @change="changeQuery" :reset="resetQuery" @expandChange="onExpandChange"/>
+    <query-finance-approve v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <table-finance-approve :data="dataItem.items" :windowHeight="viewWindowHeight" :page="query.page" :pageSize="query.page_size" :offset-height="offsetHeight" :itemEdit="handleItemEdit"/>
     <div class="footer">
       <div class="table-pagination">
@@ -113,13 +113,6 @@
         this.$data.query.page = 1;
         this.$data.query.page_size = size;
         this.getData();
-      },
-      onExpandChange(isExpand) {
-        if (isExpand) {
-          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-        } else {
-          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-        }
       },
       handleItemEdit(item) {
         this.$data.dialog.isShowApproveEdit = true;

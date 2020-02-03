@@ -4,7 +4,6 @@
       v-model="query"
       @change="changeQuery"
       :reset="resetQuery"
-      @expandChange="onExpandChange"
     >
     </query-marketing-scope-promotion>
     <div class="container-table">
@@ -170,13 +169,6 @@
         this.$data.query.page_size = size;
         this.itemScopePromotionQuery();
       },
-      onExpandChange(isExpand) {
-        if (isExpand) {
-          this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-        } else {
-          this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-        }
-      },
       handleAddItem() {
         // 为需要编辑的活动对象进行初始化设置
         this.$data.item = Object.assign({}, this.item, {
@@ -252,4 +244,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import './../../container/table/table.scss';
+</style>
+<style lang="scss">
+  @import './../../container/table/table.global.scss';
 </style>

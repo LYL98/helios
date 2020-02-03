@@ -71,7 +71,7 @@
 
 <script>
   import {Row, Col, Select, Option, DatePicker, Button, Input} from 'element-ui';
-  import {SelectOption, QueryItem, CollapseQuery} from '@/common';
+  import {SelectOption, QueryItem} from '@/common';
   import {SelectCity} from "@/container";
   import { Constant } from '@/util';
   import queryMixin from './query.mixin';
@@ -88,8 +88,7 @@
       'el-input': Input,
       'select-option': SelectOption,
       'my-select-city': SelectCity,
-      'my-query-item': QueryItem,
-      'my-collapse-query': CollapseQuery
+      'my-query-item': QueryItem
     },
     mixins: [queryMixin],
     data() {

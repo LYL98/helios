@@ -3,8 +3,7 @@
     <query-group-buy-captain-statistics
     v-model="query"
     @change="changeQuery"
-    :reset="resetQuery"
-    @expandChange="onExpandChange"/>
+    :reset="resetQuery"/>
     <div v-if="auth.isAdmin || auth.GroupBuyCaptainStatementExport" class="operate">
       <el-button
         v-if="auth.isAdmin || auth.GroupBuyCaptainStatementExport"
@@ -196,14 +195,6 @@ export default {
         return 'stripe-row'
       }
       return '';
-    },
-
-    onExpandChange(isExpand) {
-      if (isExpand) {
-        this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-      } else {
-        this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-      }
     },
 
     formatDate(date) {

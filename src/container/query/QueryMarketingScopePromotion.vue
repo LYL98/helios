@@ -50,7 +50,7 @@
 
 <script>
   import {Row, Col, Button, Input, DatePicker, Select, Option} from 'element-ui';
-  import {SelectOption, QueryItem, CollapseQuery} from '@/common';
+  import {SelectOption, QueryItem} from '@/common';
   import queryMixin from './query.mixin';
 
   export default {
@@ -63,8 +63,7 @@
       'el-select': Select,
       'el-option': Option,
       'select-option': SelectOption,
-      'my-query-item': QueryItem,
-      'my-collapse-query': CollapseQuery
+      'my-query-item': QueryItem
     },
     mixins: [queryMixin],
     methods: {

@@ -6,8 +6,7 @@
       <query-item-fluctuation-analysis
         v-model="query"
         @change="changeQuery"
-        :reset="resetQuery"
-        @expandChange="onExpandChange"/>
+        :reset="resetQuery"/>
       <!--<p style="margin-top: 30px; font-size: 18px;">-->
         <!--商品<span style="color: blue;">{{indexOptions[selectIndex].label}}</span>波动分析-->
       <!--</p>-->
@@ -189,13 +188,6 @@ export default {
         return 'stripe-row'
       }
       return '';
-    },
-    onExpandChange(isExpand) {
-      if (isExpand) {
-        this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-      } else {
-        this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-      }
     },
     //返回价格
     returnPrice(price){

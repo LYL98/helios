@@ -235,7 +235,7 @@
 
 <script>
   import {Row, Col, Table, TableColumn, Popover, Pagination, Button, Input, Select, Option, DatePicker, Dialog, Tag, MessageBox, Message} from 'element-ui';
-  import {SelectOption, QueryItem, TableOperate, CollapseQuery, OmissionText, QuerySearchInput} from '@/common';
+  import {SelectOption, QueryItem, TableOperate, OmissionText, QuerySearchInput} from '@/common';
   import {SelectLine, SelectCity} from '@/container';
   import {Config, Constant, DataHandle, Http} from '@/util';
   import tableMixin from '@/container/table/table.mixin';
@@ -265,7 +265,6 @@
       'my-omission-text': OmissionText,
       'refund-add-store': RefundAddStore,
       'my-table-operate': TableOperate,
-      'my-collapse-query': CollapseQuery,
       'query-search-input': QuerySearchInput
     },
     mixins: [tableMixin, viewMixin],
@@ -491,40 +490,8 @@
 </script>
 
 <style lang="scss" scoped>
-  .table-top{
-    text-align: right;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    >.left{
-        text-align: left;
-        flex: 1;
-        min-height: 28px;
-    }
-    >.right{
-        text-align: right;
-        position: relative;
-        z-index: 1;
-        min-height: 28px;
-    }
-  }
-  .action {
-    display: flex;
-
-    li+li {
-      margin-left: 5px;
-    }
-
-    a {
-      font-size: 12px;
-      text-decoration: underline;
-    }
-
-    a:hover {
-      font-weight: 900;
-    }
-
-  }
-
+  @import './../../container/table/table.scss';
+</style>
+<style lang="scss">
+  @import './../../container/table/table.global.scss';
 </style>

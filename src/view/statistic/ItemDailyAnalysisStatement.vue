@@ -6,8 +6,7 @@
     <query-item-daily-analysis
       v-model="query"
       @change="changeQuery"
-      :reset="resetQuery"
-      @expandChange="onExpandChange"/>
+      :reset="resetQuery"/>
     <div class="statistics-table-list-container" style="position: relative;">
       <div style="height: 0">
         <el-select style="position: absolute; top: 8px; left: 20px; width: 110px; z-index: 100" size="small" v-model="selectArea" @change="onSelectArea">
@@ -209,13 +208,6 @@ export default {
         return 'stripe-row'
       }
       return '';
-    },
-    onExpandChange(isExpand) {
-      if (isExpand) {
-        this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-      } else {
-        this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-      }
     },
     formatValue(value) {
       return value || value === 0 ? value : '-'

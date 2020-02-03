@@ -1,82 +1,71 @@
 <template>
-  <div class="query">
-
-    <my-collapse-query :isSubPage="true" @expandChange="onExpandChange">
-      <template slot="header">
-        <el-row>
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="时间">
-              <el-date-picker
-                v-model="currentDateRange"
-                type="daterange"
-                size="small"
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :picker-options="fixDateOptions"
-                :clearable="false"
-                class="query-item-date"
-                @change="changePicker">
-              </el-date-picker>
-            </my-query-item>
-          </el-col>
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="所在仓">
-              <my-select-city
-                size="small"
-                placeholder="所在仓"
-                clearable
-                v-model="editQuery.city_code"
-                :provinceCode="editQuery.province_code"
-                @change="changeQuery"
-              />
-            </my-query-item>
-          </el-col>
-          <el-col :xl="8" :lg="10" :span="10">
-            <my-query-item label="搜索">
-              <div style="display: flex">
-                <el-input
-                  size="small"
-                  placeholder="请输入门店名称"
-                  class="query-item-input"
-                  clearable
-                  @clear="changeQuery"
-                  v-model="editQuery.condition"
-                  @keyup.enter.native="changeQuery"
-                />
-                <el-button size="small" type="primary" style="margin-left: 4px" @click="changeQuery" icon="el-icon-search"></el-button>
-                <el-button v-if="!isExpand" size="small" type="primary" class="query-item-reset" plain @click="resetQuery">重置</el-button>
-              </div>
-            </my-query-item>
-          </el-col>
-        </el-row>
-      </template>
-      <template slot="expand">
-        <el-row style="margin-top: 16px">
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="参团状态">
-              <select-option
-                :options="{'参过团': 1, '未参团': 0}"
-                v-model="editQuery.is_group"
-                @change="changeQuery"
-                size="small"
-              />
-              <el-button v-if="isExpand" size="small" type="primary" class="query-item-reset-offset" plain @click="resetQuery">重置</el-button>
-            </my-query-item>
-          </el-col>
-        </el-row>
-      </template>
-    </my-collapse-query>
-
-
-
+  <div class="container-query">
+    <el-row>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="时间">
+          <el-date-picker
+            v-model="currentDateRange"
+            type="daterange"
+            size="small"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="fixDateOptions"
+            :clearable="false"
+            @change="changePicker">
+          </el-date-picker>
+        </my-query-item>
+      </el-col>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="所在仓">
+          <my-select-city
+            size="small"
+            placeholder="所在仓"
+            clearable
+            v-model="editQuery.city_code"
+            :provinceCode="editQuery.province_code"
+            @change="changeQuery"
+          />
+        </my-query-item>
+      </el-col>
+      <el-col :xl="8" :lg="10" :span="10">
+        <my-query-item label="搜索">
+          <div style="display: flex">
+            <el-input
+              size="small"
+              placeholder="请输入门店名称"
+              class="query-item-input"
+              clearable
+              @clear="changeQuery"
+              v-model="editQuery.condition"
+              @keyup.enter.native="changeQuery"
+            />
+            <el-button size="small" type="primary" style="margin-left: 4px" @click="changeQuery" icon="el-icon-search"></el-button>
+            <el-button v-if="!isExpand" size="small" type="primary" class="query-item-reset" plain @click="resetQuery">重置</el-button>
+          </div>
+        </my-query-item>
+      </el-col>
+    </el-row>
+    <el-row style="margin-top: 16px">
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="参团状态">
+          <select-option
+            :options="{'参过团': 1, '未参团': 0}"
+            v-model="editQuery.is_group"
+            @change="changeQuery"
+            size="small"
+          />
+          <el-button v-if="isExpand" size="small" type="primary" class="query-item-reset-offset" plain @click="resetQuery">重置</el-button>
+        </my-query-item>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { QueryItem, SelectOption, CollapseQuery } from '@/common';
+  import { QueryItem, SelectOption } from '@/common';
   import { DataHandle, Constant } from '@/util';
   import {SelectCity} from '@/container';
   import queryMixin from './query.mixin';
@@ -91,8 +80,7 @@
       'el-button': Button,
       'my-select-city': SelectCity,
       'my-query-item': QueryItem,
-      'select-option': SelectOption,
-      'my-collapse-query': CollapseQuery
+      'select-option': SelectOption
     },
     mixins: [queryMixin],
     created() {

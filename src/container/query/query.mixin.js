@@ -1,12 +1,11 @@
 import baseMixin from '@/container/base.mixin';
 import { Constant } from '@/util';
-import { QueryItem, CollapseQuery, QuerySearchInput } from '@/common';
+import { QueryItem, QuerySearchInput } from '@/common';
 
 export default {
   mixins: [baseMixin],
   components: {
     'my-query-item': QueryItem,
-    'my-collapse-query': CollapseQuery,
     'query-search-input': QuerySearchInput
   },
   props: {
@@ -87,15 +86,5 @@ export default {
     resetQuery() {
       this.$props.reset();
     },
-    //收起展开
-    onExpandChange(isExpand, pageComponent) {
-      this.isExpand = isExpand;
-      let pc = this.getPageComponents(pageComponent);
-      if(pc){
-        pc.onExpandChange(isExpand);
-      }else{
-        this.$emit('expandChange', this.isExpand);
-      }
-    }
   }
 }

@@ -92,14 +92,13 @@
 
 <script>
   import {Row, Col, Input, Button, DatePicker} from 'element-ui';
-  import {SelectOption, QueryItem, CollapseQuery} from '@/common';
+  import {SelectOption, QueryItem} from '@/common';
   import {SelectCity} from '@/container';
   import queryMixin from './query.mixin';
 
   export default {
     name: "QueryMerchantStore",
     components: {
-      CollapseQuery,
       'el-row': Row,
       'el-col': Col,
       'el-input': Input,
@@ -107,8 +106,7 @@
       'el-date-picker': DatePicker,
       'my-query-item': QueryItem,
       'select-option': SelectOption,
-      'my-select-city': SelectCity,
-      'my-collapse-query': CollapseQuery
+      'my-select-city': SelectCity
     },
     mixins: [queryMixin],
     data() {

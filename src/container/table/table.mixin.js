@@ -36,10 +36,6 @@ export default {
     this.isShowTableTitle(); //显示表头
   },
   methods: {
-    //展开隐藏搜索(外部重写)
-    onExpandChange(isExpand){
-      //this.$data.isExpand = isExpand;
-    },
     //返回表格序号
     indexMethod(index) {
       let { query } = this;

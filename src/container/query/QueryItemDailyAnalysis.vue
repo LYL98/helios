@@ -43,7 +43,7 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { QueryItem, CollapseQuery, SelectSystemClass } from '@/common';
+  import { QueryItem, SelectSystemClass } from '@/common';
   import { DataHandle } from '@/util';
   import queryMixin from './query.mixin';
 
@@ -56,8 +56,7 @@
       'el-input': Input,
       'el-button': Button,
       'select-system-class': SelectSystemClass,
-      'my-query-item': QueryItem,
-      'my-collapse-query': CollapseQuery
+      'my-query-item': QueryItem
     },
     mixins: [queryMixin],
     created() {
