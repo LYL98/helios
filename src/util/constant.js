@@ -462,7 +462,7 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
-  //分拣状态(颜色)
+  //分配方式状态(颜色)
   ALLOT_OPT_TYPES_TYPE: {
     by_line: 'info',
     by_od_time: 'info'

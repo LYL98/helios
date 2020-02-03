@@ -145,7 +145,7 @@ export default {
         ...this.initAddData,
         produce_date_disabled: data.produce_date ? true : false,
         produce_date: data.produce_date || '',
-        order_type: data.order_type || 'distribute', //'global_pur', 'local_pur', 'distribute'
+        order_type: data.order_type || 'distribute', //'local_pur', 'distribute'
         relate_order_id: data.id,
         province_code: this.$province.code
       });

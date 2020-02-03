@@ -51,7 +51,6 @@
     },
     data() {
       let initQuery = {
-        for_accept: 1, //场地的采购列表
         delivery_date: '',
         status: '',
         condition: '',

@@ -146,7 +146,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         let apis = {
-          purchase: Config.api.supPurchaseQuery,
+          purchase: Config.api.supPurchaseQueryForAccept,
           allot: Config.api.supDistributeQuery,
           out_storage: Config.api.supOutPlanQuery
         }

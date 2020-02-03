@@ -228,6 +228,7 @@ const Config = (() => {
       supOutPlanQuery: apiM + '/sup_out_plan/query', //出库计划查询
 
       //场地
+      supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用地采订单查询
       supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
       supAllocateNeedItem: apiM + '/sup_allocate/need_item', //返回某个商品还有多少件需要分配
       supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
