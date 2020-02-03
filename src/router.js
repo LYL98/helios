@@ -63,6 +63,11 @@ const router = new Router({
       component: () => import('@/view/item/List')
     },
     {
+      path: '/item/list/for/sale',
+      name: 'ItemListForSale',
+      component: () => import('@/view/item/ListForSale')
+    },
+    {
       path: '/item/audit/inner/tag',
       name: 'ItemAuditInnerTag',
       component: () => import('@/view/item/AuditInnerTag')

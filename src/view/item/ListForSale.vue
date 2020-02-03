@@ -1,6 +1,6 @@
 <template>
   <div>
-    <query-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemList"/>
+    <query-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemList" fromPage="ListForSale"/>
     <table-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemList"/>
     <add-edit-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemList"/>
     <detail-item-list-edit-record :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemListEditRecord"/>
@@ -13,7 +13,7 @@
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'List',
+    name: 'ListForSale',
     components: {
       'query-item-list': QueryItemList,
       'table-item-list': TableItemList,
@@ -23,7 +23,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("商品 - 在售商品");
+      documentTitle("商品 - 待售商品");
     },
   };
 </script>

@@ -1,46 +1,66 @@
 <template>
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-      <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="110px" style="width: 98%; max-width: 1400px;" :model="detail" :rules="rules" ref="ruleForm">
+      <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 98%; max-width: 1400px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="商品图片">
           <image-preview>
             <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
           </image-preview>
         </el-form-item>
         <h6 class="subtitle">基本信息</h6>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="筐">
-              <span v-if="detail.frame_code">{{detail.frame.title}}&nbsp;(&yen;{{returnPrice(detail.frame.price)}})</span>
-              <span v-else>-</span>
+        <el-form-item label="商品编号/名称">
+          <el-input size="medium" :value="`${detail.code}/${detail.title}`" disabled></el-input>
+        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="规格">
+              <el-input size="medium" :value="`${detail.item_spec ? detail.item_spec : '-'}`" disabled></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="产地">{{detail.origin_place}}</el-form-item>
+          <el-col :span="12">
+            <el-form-item label="保质期" prop="shelf_life">
+              <input-number size="medium" v-model="detail.shelf_life" :min="1" unit="天" disabled/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="筐">
+              <el-input size="medium" v-if="detail.frame_code" :value="`${detail.frame.title} (￥${returnPrice(detail.frame.price)})`" disabled></el-input>
+              <el-input size="medium" v-else value="-" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="包装规格">
+              <el-input size="medium" :value="detail.package_spec" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="产地">
+              <el-input size="medium" :value="detail.origin_place" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="净重">
+              <input-weight size="medium" :value="detail.net_weight" disabled unit="斤"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="毛重">
+              <input-weight size="medium" :value="detail.gross_weight" disabled unit="斤"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="科学分类">
+              <el-input size="medium" :value="detail.system_class.title" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="发票">
+              <el-radio :value="detail.has_ticket" disabled :label="true" border size="mini">有</el-radio>
+              <el-radio :value="detail.has_ticket" disabled :label="false" border size="mini">无</el-radio>
+            </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="包装规格">{{detail.package_spec}}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="规格">{{detail.item_spec ? detail.item_spec : '-'}}</el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="毛重">{{returnWeight(detail.gross_weight)}}斤</el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col :span="8">
-            <el-form-item label="净重">{{returnWeight(detail.net_weight)}}斤</el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="科学分类">{{detail.system_class.title}}</el-form-item>
-          </el-col>
-        </el-row>
+
         <h6 class="subtitle">销售信息</h6>
         <el-row :gutter="10">
           <el-col :span="16">
@@ -184,7 +204,8 @@
                       </el-input>
                     </el-form-item>
                   </div>
-                  <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="handleRemoveCityPrice(index)"></i>
+                  <i style="margin-left: 10px; cursor: pointer; position: relative; top: -13px;"
+                    class="el-icon-close icon-button" @click="handleRemoveCityPrice(index)"></i>
                 </li>
               </ul>
               <!-- 新增区域定价按钮 -->
@@ -203,30 +224,37 @@
           <other-item-supplier :supplierType="detail.sup_type" :supplierBinds="detail.supplier_binds"/>
         </el-form-item>
         <h6 class="subtitle">其它信息</h6>
-        <el-row :gutter="10">
-          <el-col :span="16">
-            <el-form-item label="商品详情">
-              <div class="my-content-div" v-html="detail.content"></div>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="第一次上架人" v-if="detail.first_grounder && detail.first_grounder.id">
-              <div style="line-height: 24px;">{{detail.first_grounder.realname}}<br/>{{detail.created}}</div>
-            </el-form-item>
-            <el-form-item label="最后更新人" v-if="detail.last_updater && detail.last_updater.id">
-              <div style="line-height: 24px;">{{detail.last_updater.realname}}<br/>{{detail.updated}}</div>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="商品详情">
+          <div class="my-content-div" v-html="detail.content"></div>
+        </el-form-item>
+        <template v-if="pageType === 'detail'">
+          <h6 class="subtitle">操作记录</h6>
+          <el-row v-if="detail.first_grounder && detail.first_grounder.id">
+            <el-col :span="12">
+              <el-form-item label="第一次上架人">{{detail.first_grounder.realname}}</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="上架时间">{{detail.first_grounder.created}}</el-form-item>
+            </el-col>
+          </el-row>
+          <el-row v-if="detail.last_updater && detail.last_updater.id">
+            <el-col :span="12">
+              <el-form-item label="最后更新人">{{detail.last_updater.realname}}</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="更新时间">{{detail.last_updater.created}}</el-form-item>
+            </el-col>
+          </el-row>
+        </template>
       </el-form>
-      <div style="margin-left: 110px;">
+      <div style="margin-left: 140px;">
         <template v-if="judgeOrs(pageType, ['on_sale', 'edit'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
         <template v-else>
           <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="page !== 'after-sale-detail' && (auth.isAdmin || auth.ItemListEdit) && detail.is_on_sale">修改销售信息</el-button>
-          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'on_sale'" v-if="page !== 'after-sale-detail' && (auth.isAdmin || auth.ItemListOnGround) && !detail.is_on_sale">上 架</el-button>
+          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'on_sale'" v-if="page !== 'after-sale-detail' && (auth.isAdmin || auth.ItemListForSaleOnGround) && !detail.is_on_sale">上 架</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>
@@ -237,7 +265,7 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
-import { SelectDisplayClass, ImagePreview, InputNumber, InputPrice, SelectInnerTag, SelecItemTags } from '@/common';
+import { SelectDisplayClass, ImagePreview, InputNumber, InputPrice, InputWeight, SelectInnerTag, SelecItemTags } from '@/common';
 import { OtherItemSupplier } from '@/component';
 
 export default {
@@ -246,6 +274,7 @@ export default {
   components: {
     'input-price': InputPrice,
     'input-number': InputNumber,
+    'input-weight': InputWeight,
     'select-inner-tag': SelectInnerTag,
     'select-item-tags': SelecItemTags,
     'my-select-display-class': SelectDisplayClass,
@@ -332,6 +361,33 @@ export default {
         callback('必须是数值类型')
       }
     };
+    let validCityPercent = function (rules, value, callback) {
+      if (isNaN(value)) {
+        return callback(new Error('必须是数值类型'));
+      }
+      let num = Number(value);
+      if (typeof num === 'number' && value) {
+        let numStr = num.toString().split('').reverse();
+        if (numStr.indexOf('.') > 1) {
+          callback(new Error('最多只1位小数'))
+        } else if (num === 0) {
+          callback(new Error('不能等于零'));
+        } else if (num <= -100) {
+          callback(new Error('必须大于-100%'));
+        } else if (num > 1000) {
+          callback(new Error('不能超过1000%'));
+        } else {
+          callback()
+        }
+      }
+    };
+    let validCityPrice = function (rules, value, callback) {
+      if (value > 1000000) {
+        callback(new Error('不能超过1000000'));
+      } else {
+        callback();
+      }
+    };
     let initDetail = {
       images: [],
       is_weigh: true,
@@ -368,19 +424,9 @@ export default {
         本月（以本月作为选择）
         上月（以当前所在月的上一个月作为选择）*/
       fixDateOptions: Constant.FIX_DATE_RANGE,
+      validCityPercent: validCityPercent,
+      validCityPrice: validCityPrice,
       rules: {
-        images: [
-          { type: 'array', required: true, message: '至少要上传一张图片', trigger: 'change' }
-        ],
-        code: [
-          { required: true, message: '商品编号不能为空', trigger: 'change' },
-          { pattern: Verification.testStrs.isInteger, message: '商品编号只能是数字', trigger: 'blur' },
-          { max: 6, message: '编号不能大于6位数字', trigger: 'blur' }
-        ],
-        title: [
-            { required: true, message: '商品名称不能为空', trigger: 'change' },
-            { max: 20, message: '商品名称不能超过20个字符', trigger: 'blur' }
-        ],
         price_buy: [
             { required: true, message: '请输入采购价', trigger: 'change' },
             { pattern: Verification.testStrs.isValidValue, message: '采购价必须为数字', trigger: 'blur' },
@@ -394,18 +440,6 @@ export default {
         price_origin: [
           { pattern: Verification.testStrs.isValidValue, message: '原价必须为数字', trigger: 'change' },
           { validator: validPriceOrigin, trigger: 'blur' },
-        ],
-        package_spec: [
-          { required: true, message: '包装规格不能为空', trigger: 'change' },
-          { max: 6, message: '包装规格不能超过6个字符', trigger: 'blur' }
-        ],
-        item_spec: [
-          { required: false },
-          { max: 20, message: '规格不能超过20个字符', trigger: 'blur' }
-        ],
-        origin_place: [
-          { required: true, message: '产地不能为空', trigger: 'change' },
-          { max: 30, message: '产地不能超过30个字符', trigger: 'blur' }
         ],
         order_num_max: [
           { required: true, message: '请输入最大订货件数', trigger: 'change' },
@@ -607,60 +641,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import "./add.edit.scss";
-  .img-div{
-    overflow: hidden;
-    .img-item{
-      float: left;
-      width: 64px;
-      height: 64px;
-      margin-right: 10px;
-      position: relative;
-      >img{
-        width: 64px;
-        height: 64px;
-      }
-      .img-del{
-        position: absolute;
-        right: 0;
-        top: 0;
-        background: #ff5252;
-        color: #fff;
-        width: 18px;
-        height: 18px;
-        text-align: center;
-        line-height: 18px;
-        font-size: 14px;
-      }
-    }
-    .add-btn{
-      float: left;
-      border: 1px dashed #999;
-      width: 62px;
-      height: 62px;
-      color: #999;
-      text-align: center;
-      line-height: 62px;
-      font-size: 32px;
-      position: relative;
-    }
-    .add-btn > form > input{
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      opacity: 0;
-    }
-  }
 </style>
 <style lang="scss">
   .my-content-div{
-    width: 360px;
-    min-height: 200px;
+    height: 400px;
     border: 1px solid #ececec;
     padding: 0 10px;
     background: #F5F7FA;
-    overflow: hidden;
+    overflow-y: auto;
     img{
       width: 100% !important;
     }

@@ -4,13 +4,8 @@
     <template v-if="query.is_on_sale === 1">
       <el-row :gutter="32">
         <el-col :span="7">
-          <my-query-item label="上架状态">
-            <select-option
-              :options="{'已上架': 1, '未上架': 0}"
-              v-model="query.is_on_sale"
-              @change="changeOnSale"
-              size="small"
-            />
+          <my-query-item label="科学分类">
+            <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass"/>
           </my-query-item>
         </el-col>
         <el-col :span="7">
@@ -41,8 +36,13 @@
           </my-query-item>
         </el-col>
         <el-col :span="7">
-          <my-query-item label="科学分类">
-            <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass"/>
+          <my-query-item label="采购类型">
+            <select-option
+              :options="{'全部': '', ...supplierType}"
+              v-model="query.sup_type"
+              @change="handleQuery('TableItemList')"
+              size="small"
+            />
           </my-query-item>
         </el-col>
         <el-col :span="7">
@@ -67,31 +67,11 @@
             />
           </my-query-item>
         </el-col>
-        <el-col :span="7">
-          <my-query-item label="采购类型">
-            <select-option
-              :options="{'全部': '', ...supplierType}"
-              v-model="query.sup_type"
-              @change="handleQuery('TableItemList')"
-              size="small"
-            />
-          </my-query-item>
-        </el-col>
       </el-row>
     </template>
 
     <!--未上架-->
     <el-row :gutter="32" v-else>
-      <el-col :span="7">
-        <my-query-item label="上架状态">
-          <select-option
-            :options="{'已上架': 1, '未上架': 0}"
-            v-model="query.is_on_sale"
-            @change="changeOnSale"
-            size="small"
-          />
-        </my-query-item>
-      </el-col>
       <el-col :span="7">
         <my-query-item label="科学分类">
           <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass"/>
@@ -129,13 +109,22 @@
       'select-system-class': SelectSystemClass
     },
     mixins: [queryMixin],
+    props: {
+      fromPage: { type: String, default: 'List' }, //List 在售商品， ListForSale 待售商品
+    },
     created() {
-      this.$data.initQuery.province_code = this.province.code;
-      this.$data.query.province_code = this.province.code;
+      let { initQuery, query, fromPage } = this;
+      initQuery.province_code = this.$province.code;
+      query.province_code = this.$province.code;
+      let isOnSale = fromPage === 'List' ? 1 : 0;
+      initQuery.is_on_sale = isOnSale;
+      query.is_on_sale = isOnSale;
+      this.$data.initQuery = initQuery;
+      this.$data.query = query;
     },
     data() {
       let initQuery = {
-        is_on_sale: 1,
+        is_on_sale: 1, //在售1、待售0
         display_class_code: '',
         condition: '',
         sup_type: '',
@@ -161,14 +150,6 @@
         }
         this.handleQuery('TableItemList');
       },
-      //改变上下架
-      changeOnSale(){
-        let { isExpand, query } = this;
-        if(query.is_on_sale === 0 && isExpand){
-          this.onExpandChange(false, 'TableItemList');
-        }
-        this.handleQuery('TableItemList');
-      }
     }
   }
 </script>

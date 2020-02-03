@@ -11,7 +11,7 @@
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'ItemGlobal',
+    name: 'Recover',
     components: {
       'query-item-global': QueryItemGlobal,
       'table-item-global': TableItemGlobal,

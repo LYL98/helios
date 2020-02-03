@@ -13,7 +13,7 @@
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'ItemPricing',
+    name: 'Pricing',
     components: {
       'query-item-pricing': QueryItemPricing,
       'table-item-pricing': TableItemPricing,

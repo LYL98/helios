@@ -99,8 +99,11 @@
             title: '商品池',
             name: 'ItemGlobal'
           },{
-            title: '商品列表',
+            title: '在售商品',
             name: 'ItemList'
+          },{
+            title: '待售商品',
+            name: 'ItemListForSale'
           },{
             title: '每日报价',
             name: 'ItemPricing'

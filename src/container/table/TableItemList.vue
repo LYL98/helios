@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="(auth.isAdmin || auth.ItemListExport)">
+    <div class="table-top" v-if="(auth.isAdmin || auth.ItemListExport || auth.ItemListForSaleExport)">
       <div class="left"></div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.ItemListExport" @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
+        <el-button @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -25,7 +25,7 @@
               <!--编号名称-->
               <template v-if="item.key === 'code_title'">
                 <div class="td-item add-dot">
-                  <div class="link-item add-dot" @click="handleShowAddEdit('AddEditItemList', scope.row, 'detail')" v-if="auth.isAdmin || auth.ItemListDetail">
+                  <div class="link-item add-dot" @click="handleShowAddEdit('AddEditItemList', scope.row, 'detail')" v-if="auth.isAdmin || auth.ItemListDetail || auth.ItemListForSaleDetail">
                     {{scope.row.code}}/{{scope.row.title}}
                   </div>
                   <div class="add-dot" v-else>
@@ -78,7 +78,7 @@
                 },
                 {
                   title: '上架',
-                  isDisplay: (auth.isAdmin || auth.ItemListOnGround) &&  !scope.row.is_on_sale,
+                  isDisplay: (auth.isAdmin || auth.ItemListForSaleOnGround) &&  !scope.row.is_on_sale,
                   command: () => handleShowAddEdit('AddEditItemList', scope.row, 'on_sale')
                 },
                 {
@@ -93,7 +93,7 @@
                 },
                 {
                   title: '修改日志',
-                  isDisplay: (auth.isAdmin || auth.ItemListEditRecord),
+                  isDisplay: (auth.isAdmin || auth.ItemListEditRecord || auth.ItemListForSaleEditRecord),
                   command: () => handleShowDetail('DetailItemListEditRecord', scope.row)
                 }
               ]"

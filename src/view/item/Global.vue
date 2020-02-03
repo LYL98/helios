@@ -13,7 +13,7 @@
   import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: 'ItemGlobal',
+    name: 'Global',
     components: {
       'query-item-global': QueryItemGlobal,
       'table-item-global': TableItemGlobal,
