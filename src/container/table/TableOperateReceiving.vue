@@ -35,6 +35,8 @@
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
               <!--采购、调拨数量、入库数量-->
               <div v-else-if="judgeOrs(item.key, ['num', 'num_out'])" class="td-item add-dot2">{{scope.row[item.key] ? scope.row[item.key] + '件' : '-'}}</div>
+              <!--未收货-->
+              <div v-else-if="item.key === 'num_not_in'">{{returnNotIn(scope.row)}}</div>
               <!--缺货-->
               <div v-else-if="item.key === 'stockout'" class="td-item add-dot2">{{returnStockout(scope.row)}}</div>
               <!--日期-->
@@ -122,12 +124,19 @@
       }
     },
     methods: {
-      //返回缺货
-      returnStockout(data){
-        if(data.num_in <= 0 || data.num_in === data.num){
+      //返回未收货
+      returnNotIn(data){
+        if(data.status === 'all_in' || data.num_in <= 0 || data.num_in === data.num){
           return '-';
         }
-        return (data.num_in - data.num) + '件'
+        return (data.num - data.num_in) + '件';
+      },
+      //返回缺货
+      returnStockout(data){
+        if(data.status !== 'all_in' || data.num_in <= 0 || data.num_in === data.num){
+          return '-';
+        }
+        return (data.num - data.num_in) + '件';
       },
       //key
       getRowIdentifier(row){
@@ -174,7 +183,7 @@
             { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
             { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
             { label: '应收货', key: 'num', width: '2', isShow: true },
-            { label: '未收货', key: 'num', width: '2', isShow: true },
+            { label: '未收货', key: 'num_not_in', width: '2', isShow: true },
             { label: '缺货', key: 'stockout', width: '3', isShow: true },
             { label: '状态', key: 'purchase_status', width: '2', isShow: true },
           ]);
