@@ -86,7 +86,9 @@
             <el-table-column label="操作内容">
               <template slot-scope="scope">{{logTypes[scope.row.category]}}</template>
             </el-table-column>
-            <el-table-column prop="remark" label="备注"></el-table-column>
+            <el-table-column prop="remark" label="备注">
+              <template slot-scope="scope">{{returnRemark(scope.row)}}</template>
+            </el-table-column>
             <el-table-column prop="operator_name" label="操作人"></el-table-column>
           </el-table>
         </div>
@@ -221,6 +223,12 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
+    //返回备注
+    returnRemark(data){
+      if(data.remark) return data.remark;
+      if(data.after && data.after.audit_remark) return data.after.audit_remark;
+      return '';
+    }
   },
 };
 </script>
