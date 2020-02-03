@@ -74,7 +74,7 @@
                 },
                 {
                   title: '出库',
-                  isDisplay: (auth.isAdmin || auth.OperateReceivingOutStorage) && tabValue === 'out_storage',
+                  isDisplay: (auth.isAdmin || auth.OperateReceivingOutStorage) && tabValue === 'out_storage' && scope.row.num_out < scope.row.num,
                   command: () => handleShowDetail('DetailWarehouseInventory', {
                     ...scope.row,
                     p_item: {

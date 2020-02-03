@@ -1,5 +1,5 @@
 <template>
-  <detail-layout title="库存管理" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <detail-layout :title="fromPage === 'receiving' ? '出库' : '库存管理'" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-row style="margin: 10px 20px;">
       <el-col :span="12">商品编号/名称：{{detail.item_code}}/{{detail.item_title}}</el-col>
       <el-col :span="12">总库存：{{detail.stock_num}}件</el-col>
