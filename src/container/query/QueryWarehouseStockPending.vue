@@ -70,13 +70,8 @@
       //修改仓库
       changeStorehouse(){
         let { initQuery, query } = this;
-        if(d.length > 0){
-          initQuery.storehouse_id = initQuery.tar_storehouse_id;
-          query.storehouse_id = query.tar_storehouse_id;
-        }else{
-          initQuery.storehouse_id = initQuery.tar_storehouse_id;
-          query.storehouse_id = query.tar_storehouse_id;
-        }
+        initQuery.storehouse_id = initQuery.tar_storehouse_id;
+        query.storehouse_id = query.tar_storehouse_id;
         this.$data.initQuery = initQuery;
         this.$data.query = query;
         this.handleQuery('TableWarehouseStockPending');
