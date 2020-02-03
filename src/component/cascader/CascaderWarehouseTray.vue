@@ -91,7 +91,12 @@ export default {
     async baseWareTrayList(storehouseId, warehouseId, callback){
       let res = await Http.get(Config.api.baseWareTrayList, {storehouse_id: storehouseId, warehouse_id: warehouseId, need_num: 1000});
       if(res.code === 0){
-        typeof callback === 'function' && callback(res.data);
+        let rd = res.data;
+        //处理title为code
+        rd.forEach(item => {
+          item.title = item.code;
+        });
+        typeof callback === 'function' && callback(rd);
       }else{
         this.$messageBox.alert(res.message, '提示');
       }
