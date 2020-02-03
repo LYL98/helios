@@ -126,14 +126,14 @@
     methods: {
       //返回未收货
       returnNotIn(data){
-        if(data.status === 'all_in' || data.num_in <= 0 || data.num_in === data.num){
+        if(data.status === 'all_in' || data.num_in <= 0 || data.num_in >= data.num){
           return '-';
         }
         return (data.num - data.num_in) + '件';
       },
       //返回缺货
       returnStockout(data){
-        if(data.status !== 'all_in' || data.num_in <= 0 || data.num_in === data.num){
+        if(data.status !== 'all_in' || data.num_in <= 0 || data.num_in >= data.num){
           return '-';
         }
         return (data.num - data.num_in) + '件';
