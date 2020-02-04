@@ -17,6 +17,7 @@
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="门店状态">
             <select-option
+              size="small"
               :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
               v-model="query.is_freeze_header"
               @change="changeQuery"
@@ -51,12 +52,11 @@
 
     <div @mousemove="handleTableMouseMove">
       <el-table
-        class="list-table"
+        class="list-table my-table-float"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"

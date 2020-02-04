@@ -114,6 +114,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  @import './table.scss';
   .custom-tree-node {
     flex: 1;
     display: flex;
@@ -128,7 +129,8 @@
     }
   }
 </style>
-<style>
+<style lang="scss">
+  @import './table.global.scss';
   .custom-tree-node:hover .options{
     display: block;
   }

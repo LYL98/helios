@@ -55,9 +55,10 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="140">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
+              width="100"
               @command-click="handleCommandClick(scope.row)"
               @command-visible="handleCommandVisible"
               :list="[

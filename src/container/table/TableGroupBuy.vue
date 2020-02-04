@@ -1,11 +1,10 @@
 <template>
   <div @mousemove="handleTableMouseMove">
     <el-table
-      class="list-table"
+      class="list-table my-table-float"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
       :data="data"
-      :height="windowHeight - offsetHeight"
       :row-class-name="highlightRowClassName"
       highlight-current-row="highlight-current-row"
       :row-key="rowIdentifier"

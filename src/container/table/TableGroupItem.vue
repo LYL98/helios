@@ -47,9 +47,7 @@
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
         </el-table-column>
-        <!--table-column end 操作占位-->
-        <el-table-column label min-width="1"/>
-        <el-table-column label="操作" width="100" fixed="right" align="center">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -109,13 +107,13 @@
       return {
         tableName: 'TableGroupItem',
         tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '商品分类', key: 'category', width: '180', isShow: true },
+          { label: '商品编号/名称', key: 'code_title', width: '200', isShow: true },
+          { label: '商品分类', key: 'category', width: '120', isShow: true },
           { label: '市场价', key: 'price_origin', width: '100', isShow: true },
           { label: '建议团长价', key: 'advice_header_price', width: '100', isShow: true },
           { label: '建议团购价', key: 'advice_price_sale', width: '100', isShow: true },
-          { label: '创建时间', key: 'created', width: '160', isShow: true },
-          { label: '更新时间', key: 'updated', width: '160', isShow: false },
+          { label: '创建时间', key: 'created', width: '120', isShow: true },
+          { label: '更新时间', key: 'updated', width: '120', isShow: false },
         ]
       }
     },

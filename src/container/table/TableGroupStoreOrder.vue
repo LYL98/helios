@@ -50,9 +50,7 @@
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
         </el-table-column>
-        <!--table-column end 操作占位-->
-        <el-table-column label min-width="1"/>
-        <el-table-column label="操作" width="100" fixed="right" align="center">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -106,13 +104,13 @@
         tableColumn: [
           { label: '门店名称', key: 'store_title', width: '160', isShow: true },
           { label: '门店地址', key: 'store_address', width: '160', isShow: true },
-          { label: '联系方式', key: 'linkman', width: '160', isShow: true },
+          { label: '联系方式', key: 'linkman', width: '120', isShow: true },
           { label: '所在仓', key: 'city_title', width: '100', isShow: true },
           { label: '实付金额', key: 'amount', width: '100', isShow: true },
           { label: '状态', key: 'status', width: '80', isShow: true },
-          { label: '发货日期', key: 'delivery_date', width: '160', isShow: true },
-          { label: '创建时间', key: 'created', width: '160', isShow: false },
-          { label: '更新时间', key: 'updated', width: '160', isShow: false },
+          { label: '发货日期', key: 'delivery_date', width: '120', isShow: true },
+          { label: '创建时间', key: 'created', width: '120', isShow: false },
+          { label: '更新时间', key: 'updated', width: '120', isShow: false },
         ],
         groupStoreOrderStatus: Constant.GROUP_STORE_ORDER_STATUS,
         groupStoreOrderStatusType: Constant.GROUP_STORE_ORDER_STATUS_TYPE,

@@ -12,7 +12,6 @@
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
-        style="width: 100%"
         class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
@@ -49,9 +48,7 @@
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
         </el-table-column>
-        <!--table-column end 操作占位-->
-        <el-table-column label min-width="1"/>
-        <el-table-column label="操作" width="100" fixed="right" align="center">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -115,15 +112,15 @@
       return {
         tableName: 'TableGroupActivity',
         tableColumn: [
-          { label: '团购编号/名称', key: 'tid_title', width: '360', isShow: true },
-          { label: '开始时间', key: 'start_time', width: '160', isShow: true },
-          { label: '结束时间', key: 'end_time', width: '160', isShow: true },
-          { label: '商品数量', key: 'sku_num', width: '120', isShow: true },
+          { label: '团购编号/名称', key: 'tid_title', width: '240', isShow: true },
+          { label: '开始时间', key: 'start_time', width: '120', isShow: true },
+          { label: '结束时间', key: 'end_time', width: '120', isShow: true },
+          { label: '商品数量', key: 'sku_num', width: '80', isShow: true },
           { label: '团购状态', key: 'progress_status', width: '100', isShow: true },
           { label: '上架状态', key: 'status', width: '100', isShow: true },
           { label: '发货时间', key: 'delivery_date', width: '120', isShow: true },
-          { label: '创建时间', key: 'created', width: '160', isShow: false },
-          { label: '更新时间', key: 'updated', width: '160', isShow: false },
+          { label: '创建时间', key: 'created', width: '120', isShow: false },
+          { label: '更新时间', key: 'updated', width: '120', isShow: false },
         ],
         activityStatus: Constant.GROUP_ACTIVITY_STATUS,
         progressStatus: Constant.GROUP_ACTIVITY_PROGRESS_STATUS,
