@@ -162,6 +162,7 @@
             this.$loading({isShow: false});
             if(res.code === 0){
               this.$message({message: '已分配', type: 'success'});
+              this.getData(this.query);
             }else{
               this.$message({message: res.message, type: 'error'});
             }
