@@ -58,7 +58,7 @@
       inventoryStatus: {
         get(){
           let d = Constant.INVENTORY_STATUS('value_key');
-          delete d['全部入库'];
+          //delete d['全部入库'];
           return {
             '全部': '',
             ...d

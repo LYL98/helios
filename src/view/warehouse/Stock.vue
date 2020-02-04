@@ -3,7 +3,7 @@
     <query-warehouse-stock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseStock"/>
     <table-warehouse-stock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseStock"/>
     <detail-warehouse-stock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseStock"/>
-    <print-warehouse-stock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintWarehouseStock"/>
+    <print-warehouse-stock-pending :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintWarehouseStockPending"/>
   </div>
 </template>
 
@@ -17,7 +17,7 @@
       'query-warehouse-stock': QueryWarehouseStock,
       'table-warehouse-stock': TableWarehouseStock,
       'detail-warehouse-stock': DetailWarehouseStock,
-      'print-warehouse-stock': PrintWarehouseStockPending
+      'print-warehouse-stock-pending': PrintWarehouseStockPending
     },
     mixins: [viewMixin],
     created() {

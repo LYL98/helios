@@ -14,17 +14,6 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :span="7">
-        <my-query-item label="收货状态">
-          <select-option
-            :options="sortStatus"
-            v-model="query.sort_status"
-            @change="handleQuery('TableOperateDepart')"
-            size="small"
-            clearable
-          />
-        </my-query-item>
-      </el-col>
     </el-row>
   </div>
 </template>
@@ -46,7 +35,6 @@
     data() {
       let initQuery = {
         delivery_date: '',
-        sort_status: '',
         province_code: this.$province.code,
       }
       return {

@@ -170,7 +170,7 @@
           ]);
         }
         tableColumn = tableColumn.concat([
-          { label: '状态', key: 'status', width: '2', isShow: true },
+          { label: '状态', key: 'status', width: '3', isShow: true },
           { label: '入库数量', key: 'num_in', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
