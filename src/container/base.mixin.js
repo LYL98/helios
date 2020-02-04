@@ -26,7 +26,8 @@ import {
   InputNumber,
   Slider,
   TimePicker,
-  Drawer
+  Drawer,
+  Switch
 } from 'element-ui';
 import { DataHandle, Http, Config } from '@/util';
 
@@ -59,7 +60,8 @@ export default {
     'el-slider': Slider,
     'el-tree': Tree,
     'el-tooltip': Tooltip,
-    'el-drawer': Drawer
+    'el-drawer': Drawer,
+    'el-switch': Switch
   },
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件

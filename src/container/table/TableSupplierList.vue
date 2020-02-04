@@ -51,10 +51,15 @@
                 <el-tag v-if="!scope.row.is_audited" size="small" type="warning" disable-transitions>待审核</el-tag>
                 <el-tag v-else size="small" type="info" disable-transitions>审核通过</el-tag>
               </div>
-              <!--审核状态-->
+              <!--冻结状态-->
               <div class="td-item" v-else-if="item.key === 'is_freeze'">
-                <el-tag v-if="scope.row.is_freeze" size="small" type="danger" disable-transitions>已冻结</el-tag>
-                <el-tag v-else size="small" type="info" disable-transitions>未冻结</el-tag>
+                <el-switch
+                  @change="(v)=>supplierFreeze(v, scope.row)"
+                  :value="scope.row.is_freeze"
+                  :active-value="true"
+                  :inactive-value="false"
+                  :disabled="(auth.isAdmin || auth.SupplierListFreeze) && page === 'supplierList' ? false : true"
+                />
               </div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
@@ -76,16 +81,6 @@
                   title: '通过审核',
                   isDisplay: (auth.isAdmin || auth.SupplierListAudit) && !scope.row.is_audited && page === 'supplierList',
                   command: () => supplierAudit(scope.row)
-                },
-                {
-                  title: '冻结',
-                  isDisplay: (auth.isAdmin || auth.SupplierListFreeze) && !scope.row.is_freeze && page === 'supplierList',
-                  command: () => supplierFreeze(scope.row)
-                },
-                {
-                  title: '解冻',
-                  isDisplay: (auth.isAdmin || auth.SupplierListUnFreeze) && scope.row.is_freeze && page === 'supplierList',
-                  command: () => supplierFreeze(scope.row)
                 },
                 {
                   title: '供应商品',
@@ -184,16 +179,16 @@
         });
       },
       //冻结解冻
-      async supplierFreeze(data){
-        let str = data.is_freeze ? '解冻' : '冻结';
+      async supplierFreeze(value, data){
+        let str = value ? '冻结' : '解冻';
         this.$messageBox.confirm(`确认${str}该供应商?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Http.post(Config.api[data.is_freeze ? 'supplierUnFreeze' : 'supplierFreeze'], {
+          let res = await Http.post(Config.api[value ? 'supplierFreeze' : 'supplierUnFreeze'], {
             id: data.id,
-            is_freeze: !data.is_freeze
+            is_freeze: value
           });
           if(res.code === 0){
             this.$message({
