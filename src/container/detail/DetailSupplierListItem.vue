@@ -72,9 +72,7 @@
       'select-item': SelectItem
     },
     data() {
-      let initDetail = {
-
-      }
+      let initDetail = {}
       return {
         initDetail: initDetail,
         detail: this.copyJson(initDetail),

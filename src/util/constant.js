@@ -414,7 +414,8 @@ const Constant = {
     let data = [
       { key: 'global_pur', value: '统采入库' },
       { key: 'local_pur', value: '地采入库' },
-      { key: 'distribute', value: '调拨入库' }
+      { key: 'distribute', value: '调拨入库' },
+      { key: 'allocate', value: '场地入库' }
     ];
     return handleKeyValue(type, data);
   },
@@ -422,7 +423,8 @@ const Constant = {
   INVENTORY_TYPES_TYPE: {
     global_pur: 'info',
     local_pur: 'info',
-    distribute: 'info'
+    distribute: 'info',
+    allocate: 'info'
   },
   //变动类型
   SUP_OPT_TYPES: (type)=>{
