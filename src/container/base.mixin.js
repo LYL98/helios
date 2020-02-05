@@ -197,6 +197,13 @@ export default {
       return DataHandle.returnDateFormat(dateStr, 'HH:mm:ss')
     },
 
+    //处理单位（数据，单位，没值替换符）
+    returnUnit(data, unit, replaceStr){
+      if(data) return `${data}${unit}`;
+      if(replaceStr) return replaceStr;
+      return `${data}${unit}`;
+    },
+
     //处理基本数据类型转array
     handleToArray(data) {
       if (data) return [data];

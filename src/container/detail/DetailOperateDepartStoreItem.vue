@@ -9,11 +9,13 @@
           <template slot-scope="scope">{{scope.row.count_real}}件</template>
         </el-table-column>
         <el-table-column label="实际出库">
-          <template slot-scope="scope">{{scope.row.allocate_num}}件</template>
+          <template slot-scope="scope">{{returnUnit(scope.row.allocate_num, '件', '-')}}</template>
         </el-table-column>
         <el-table-column label="缺货">
-          <template slot-scope="scope" v-if="scope.row.count_real - scope.row.allocate_num <= 0">-</template>
-          <template slot-scope="scope" v-else>{{scope.row.count_real - scope.row.allocate_num}}件</template>
+          <template slot-scope="scope">
+            <span v-if="scope.row.count_real - scope.row.allocate_num <= 0">-</span>
+            <span v-else>{{scope.row.count_real - scope.row.allocate_num}}件</span>
+          </template>
         </el-table-column>
       </el-table>
     </div>
