@@ -47,7 +47,7 @@
       <el-col :span="7">
         <my-query-item label="审核状态">
           <select-option
-            :options="{'全部': '', '已审核': 1, '未审核': 0}"
+            :options="{'全部': '', '待审核': 0, '已审核': 1}"
             v-model="query.is_audited"
             @change="handleQuery('TableSupplierList')"
             size="small"

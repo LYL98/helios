@@ -49,7 +49,7 @@
               <!--审核状态-->
               <div class="td-item" v-else-if="item.key === 'is_audited'">
                 <el-tag v-if="!scope.row.is_audited" size="small" type="warning" disable-transitions>待审核</el-tag>
-                <el-tag v-else size="small" type="info" disable-transitions>审核通过</el-tag>
+                <el-tag v-else size="small" type="info" disable-transitions>已审核</el-tag>
               </div>
               <!--冻结状态-->
               <div class="td-item" v-else-if="item.key === 'is_freeze'">
@@ -78,7 +78,7 @@
                   command: () => handleShowAddEdit('AddEditSupplierList', scope.row, 'edit')
                 },
                 {
-                  title: '通过审核',
+                  title: '审核',
                   isDisplay: (auth.isAdmin || auth.SupplierListAudit) && !scope.row.is_audited && page === 'supplierList',
                   command: () => supplierAudit(scope.row)
                 },

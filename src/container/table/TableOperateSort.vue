@@ -28,11 +28,11 @@
               <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
               <!--数量-->
               <div v-else-if="item.key === 'num'" class="td-item add-dot2">
-                <template v-if="scope.row.allocated_time">{{scope.row.allocated_num ? scope.row.allocated_num + '件' : '-'}}</template>
-                <template v-else>{{scope.row.num ? scope.row.num + '件' : '-'}}</template>
+                <template v-if="scope.row.allocated_time">{{returnUnit(scope.row.allocated_num, '件', '-')}}</template>
+                <template v-else>{{returnUnit(scope.row.num, '件', '-')}}</template>
               </div>
               <!--分拣数量-->
-              <div v-else-if="item.key === 'sort_num'" class="td-item add-dot2">{{scope.row.sort_num ? scope.row.sort_num + '件' : '-'}}</div>
+              <div v-else-if="item.key === 'sort_num'" class="td-item add-dot2">{{returnUnit(scope.row.sort_num, '件', '-')}}</div>
               <!--日期-->
               <div v-else-if="item.key === 'allocated_time'" class="td-item add-dot2">
                 {{scope.row.allocated_time || '-'}}

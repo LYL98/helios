@@ -28,8 +28,17 @@
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
+              <!--编号-->
+              <template v-if="item.key === 'code'">
+                <div class="td-item">
+                  <div class="link-item link-item add-dot2" @click="handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'detail')" v-if="auth.isAdmin || auth.SupplierGPurchaseDetail">
+                    {{scope.row.code}}
+                  </div>
+                  <div class="add-dot2" v-else>{{scope.row.code}}</div>
+                </div>
+              </template>
               <!--供应商-->
-              <div class="td-item add-dot2" v-if="item.key === 'supplier'">{{scope.row.supplier.title}}</div>
+              <div class="td-item add-dot2" v-else-if="item.key === 'supplier'">{{scope.row.supplier.title}}</div>
               <!--商品名称-->
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
               <!--价格-->
@@ -41,6 +50,8 @@
                 {{scope.row.creator.realname}}<br/>
                 {{scope.row.creator.phone}}
               </div>
+              <!--送达仓-->
+              <div v-else-if="item.key === 'storehouse'">{{scope.row.storehouse.title}}</div>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'status'">
                 <el-tag size="small" :type="purchaseStatusType[scope.row.status]" disable-transitions>
@@ -52,7 +63,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="120">
+        <el-table-column label="操作" width="80">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -116,6 +127,7 @@
           { label: '采购数量', key: 'num', width: '2', isShow: true },
           { label: '采购总金额', key: 'num_price', width: '3', isShow: true },
           { label: '采购人', key: 'purchaser', width: '2', isShow: false },
+          { label: '送达仓', key: 'storehouse', width: '2', isShow: true },
           { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '采购日期', key: 'purchase_date', width: '3', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },

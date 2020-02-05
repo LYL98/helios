@@ -7,19 +7,19 @@
           <el-form-item label="应出库">{{detail.count_real}}件</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="实际出库">{{detail.allocate_num}}件</el-form-item>
+          <el-form-item label="实际出库">{{returnUnit(detail.allocate_num, '件', '-')}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="确认人">{{detail.assign_confirmer.realname}}</el-form-item>
+          <el-form-item label="确认人">{{returnUnit(detail.assign_confirmer.realname, '', '-')}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="确认时间">{{detail.assign_confirm_time}}</el-form-item>
+          <el-form-item label="确认时间">{{returnUnit(detail.assign_confirm_time, '', '-')}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="司机">{{detail.deliver.realname}}</el-form-item>
+          <el-form-item label="司机">{{returnUnit(detail.deliver.realname, '', '-')}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="司机发车时间">{{detail.created}}</el-form-item>
+          <el-form-item label="司机发车时间">{{returnUnit(detail.delivery_time, '', '-')}}</el-form-item>
         </el-col>
       </el-row>
     </el-form>

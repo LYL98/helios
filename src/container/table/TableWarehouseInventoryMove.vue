@@ -23,16 +23,6 @@
             <div slot-scope="scope" class="my-td-item">
               <!--商品名称-->
               <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
-              <!--批次-->
-              <div v-else-if="item.key === 'batch_code'" class="td-item add-dot2">
-                <div v-if="auth.isAdmin || auth.WarehouseInventoryMoveDetail"
-                  class="td-item link-item add-dot2" @click="handleShowDetail(types[tabValue].detail, scope.row)">
-                  {{scope.row.batch_code}}
-                </div>
-                <div class="td-item add-dot2" v-else>
-                  {{scope.row.batch_code}}
-                </div>
-              </div>
               <!--数量-->
               <div v-else-if="judgeOrs(item.key, ['num', 'num_in', 'chg_num', 'num_before', 'num_after'])" class="td-item add-dot2">{{scope.row[item.key]}}件</div>
               <!--盘点数量-->

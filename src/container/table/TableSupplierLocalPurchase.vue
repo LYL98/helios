@@ -29,8 +29,17 @@
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
+              <!--编号-->
+              <template v-if="item.key === 'code'">
+                <div class="td-item">
+                  <div class="link-item link-item add-dot2" @click="handleShowAddEdit('AddEditSupplierLocalPurchase', scope.row, 'detail')" v-if="auth.isAdmin || auth.SupplierLocalPurchaseDetail">
+                    {{scope.row.code}}
+                  </div>
+                  <div class="add-dot2" v-else>{{scope.row.code}}</div>
+                </div>
+              </template>
               <!--供应商-->
-              <div v-if="item.key === 'supplier'" class="td-item add-dot2">{{scope.row.supplier.title}}</div>
+              <div v-else-if="item.key === 'supplier'" class="td-item add-dot2">{{scope.row.supplier.title}}</div>
               <!--商品名称-->
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
               <!--采购单价-->
@@ -48,7 +57,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="120">
+        <el-table-column label="操作" width="80">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"

@@ -54,7 +54,7 @@
         </el-row>
       </el-form>
 
-      <template v-if="pageType === 'detail'">
+      <template v-if="pageType === 'detail' && detail.instocks.length > 0">
         <h6 class="subtitle">关联入库单</h6>
         <div style="padding: 0 30px; margin-bottom: 30px;">
           <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">

@@ -15,7 +15,7 @@
             <el-col :span="12" v-else-if="allocateNeed.num - detail.num < 0" style="color: #ff5252;">多货：{{detail.num - allocateNeed.num}}件</el-col>
           </el-row>
         </el-form-item>
-        <el-form-item label="" v-if="allocateNeed.num - detail.num > 0">
+        <el-form-item label="" v-if="allocateNeed.num - detail.num >= 0">
           <div>提示：</div>
           <div>1、选择分配方式后，后续到货的该商品都将按照该方式自动分配；</div>
           <div>2、若有缺货将根据分配方式系统自动取消订单。</div>

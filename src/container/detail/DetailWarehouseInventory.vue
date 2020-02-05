@@ -13,7 +13,6 @@
           <template slot-scope="scope">{{scope.row.num}}件</template>
         </el-table-column>
         <el-table-column label="仓库" prop="warehouse_title"/>
-        <el-table-column label="入库时间" prop="created"/>
         <el-table-column label="过期时间" prop="due_date"/>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
@@ -31,7 +30,7 @@
               },
               {
                 title: '调拨',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryAllot) && fromPage !== 'receiving',
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryAllot) && fromPage !== 'receiving' && scope.row.warehouse.ware_type === 'tmp',
                 command: () => handleShowForm('FormWarehouseInventoryAllot', scope.row)
               },
               {
