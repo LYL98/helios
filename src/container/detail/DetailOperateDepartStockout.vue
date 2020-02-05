@@ -73,6 +73,7 @@
         initDetail: initDetail,
         detail: this.copyJson(initDetail),
         query: {
+          province_code: this.$province.code,
           delivery_date: ''
         },
         dataItem: []
@@ -88,10 +89,7 @@
       //获取明细列表
       async supDeliveryLackHistoryItem(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supDeliveryLackHistoryItem, {
-          ...this.query,
-          province_code: this.$province.code,
-        });
+        let res = await Http.get(Config.api.supDeliveryLackHistoryItem, this.query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

@@ -22,5 +22,8 @@ module.exports = {
     TencentPath: 'https://cdn-xxx-dev.xxx.xxx/',
 
     //构建后文件目录
-    BuildOutputDir: '../dist'
+    BuildOutputDir: '../dist',
+
+    //是否是测试开发环境
+    IsDev: false
 }

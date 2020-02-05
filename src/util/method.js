@@ -42,7 +42,7 @@ export default {
     localStorage.setItem(name, JSON.stringify(data));
   },
   /**
-   * 写入LocalStorage
+   * 删除LocalStorage
    * @param {*name} name
    */
   removeLocalStorage(name) {

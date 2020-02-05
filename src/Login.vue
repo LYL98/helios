@@ -28,7 +28,7 @@
 
 <script>
 import { Form, FormItem, Button, Input, Checkbox } from 'element-ui';
-import { Config, Http } from '@/util';
+import { Config, Http, Method } from '@/util';
 import md5 from 'md5';
 
 export default {
@@ -48,6 +48,7 @@ export default {
   },
   data(){
     return{
+      isDev: Config.isDev,
       loading: false,
       brand: {
         brand_name: '',
@@ -74,7 +75,7 @@ export default {
       this.$refs['ruleForm'].validate((valid, vs) => {
         if (valid) {
           (async ()=>{
-            let { loginData, loading } = this;
+            let { loginData, loading, isDev } = this;
             let isSuccess = false, si = null;
             //防止错误时回车穿透
             let dom = document.getElementById('btn-submit');
@@ -90,6 +91,13 @@ export default {
             if(res.code === 0){
               this.$router.replace({ name: "Home" });
               isSuccess = true;
+              //如果是测试开发环境
+              if(isDev){
+                Method.setLocalStorage('loginData', {
+                  login_name: loginData.login_name,
+                  password: md5(loginData.password)
+                });
+              }
             }else{
               this.$message({message: res.message, type: 'error'});
             }

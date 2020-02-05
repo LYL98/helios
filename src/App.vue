@@ -15,9 +15,9 @@
             {{myInfo.realname}}
           </div>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="reloadAuth" v-if="isDev">重载权限</el-dropdown-item>
             <el-dropdown-item command="editPassword">修改密码</el-dropdown-item>
             <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
+            <el-dropdown-item command="reloadAuth" v-if="isDev">重载权限(仅供开发测试用)</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -75,13 +75,8 @@
     name: 'app',
     data() {
       let name = this.$router.history.current.name;
-      //判断是否是开发测试
-      let url = window.location.origin;
-      let isDev = url.indexOf('appledev.pgyscm.com') >= 0 ||
-                  url.indexOf('applenew.pgyscm.com') >= 0 ||
-                  url.indexOf('localhost') >= 0;
       return {
-        isDev: isDev,
+        isDev: Config.isDev,
         brand: {
           brand_name: '',
           brand_icon: ''
@@ -383,7 +378,7 @@
         } else if (command === 'editPassword') {
           PwdModify.show(); //修改密码
         } else if (command === 'reloadAuth') {
-          that.loginByToken();
+          that.signLogin();
         }
       },
       //登出
@@ -398,17 +393,15 @@
           this.$message({ message: res.message, type: 'error' });
         }
       },
-      //token重新登录
-      async loginByToken(){
-        let { myInfo } = this;
+      //重新登录
+      async signLogin(){
+        let data = Method.getLocalStorage('loginData');
         this.$loading({ isShow: true });
-        let res = await Http.get(Config.api.loginByToken, {
-          user_id: myInfo.id,
-          token: myInfo.access_token
-        });
+        let res = await Http.post(Config.api.signLogin, data);
         this.$loading({ isShow: false });
         if(res.code === 0){
-          window.location.reload();
+          if(this.$route.name !== 'Home') this.$router.replace({ name: "Home" });
+          //window.location.reload();
         }else{
           this.$message({ message: res.message, type: 'error' });
         }

@@ -1,12 +1,13 @@
 /***
  * 导入配置
  */
-import { RequestHttp, TencentUpPath, TencentPath, IsPrintRequestLog} from './../../configBase';
+import { IsDev, RequestHttp, TencentUpPath, TencentPath, IsPrintRequestLog } from './../../configBase';
 
 const Config = (() => {
   let apiM = RequestHttp + '/m';
   let apiCommon = RequestHttp + '/common';
   return {
+    isDev: IsDev,
     // ajax_http请求url
     api: {
       /*-- 基础信息 --*/
