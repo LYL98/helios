@@ -26,10 +26,10 @@
           <el-form-item label="今日销售价">
             <span v-if="detail.opt_date !== today" style="margin-right: 10px;">{{detail.price_sale ? '￥' + returnPrice(detail.price_sale) : '-'}}</span>
             <span v-else style="margin-right: 10px;">{{detail.price_sale ? '￥' + returnPrice(detail.price_sale) : ''}}</span>
-            <!--如果不是今日-->
-            <template v-if="detail.opt_date !== today"></template>
+            <!--如果不是今日 或 没有权限-->
+            <template v-if="detail.opt_date !== today || (!auth.isAdmin && !auth.ItemPriceFix)"></template>
             <!--如果地采供应商已报价、或统采有可销售数量-->
-            <template v-else-if="((detail.sup_type === 'local_pur' && detail.bd_status !== 'no_bd') || (detail.sup_type === 'global_pur' && detail.available_num > 0) && (auth.isAdmin || auth.ItemPriceFix))">
+            <template v-else-if="(detail.sup_type === 'local_pur' && detail.bd_status !== 'no_bd') || (detail.sup_type === 'global_pur' && detail.available_num > 0)">
               <a href="javascript:void(0);" v-if="!detail.is_quoted" @click="handleShowAddEdit('AddEditItemPricing', detail, 'add')">报价</a>
               <a href="javascript:void(0);" v-else-if="!detail.is_audited" @click="handleShowAddEdit('AddEditItemPricing', detail, 'edit')">修改</a>
             </template>
