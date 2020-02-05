@@ -14,7 +14,7 @@ const Config = (() => {
       signLogin: apiM + '/sign/login',//用户登录
       signLogout: apiM + '/sign/logout',//用户退出
       signIsLogin: apiM + '/sign/is_login',//判断是否登录
-      loginByToken: apiM + '/sign/login_by_token',//通过token登录
+      loginByToken: apiM + '/validate_user/by_token',//通过token登录
       getBrand: apiM + '/common/constant/brand', //全局获取品牌
 
       orderCityExport: apiM + '/order/city/export', //县域订货单导出，从每日县域汇总表导出

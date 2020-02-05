@@ -88,7 +88,6 @@ export default {
       let res = await Http.get(Config.api.signLogout, {});
       this.$loading({ isShow: false });
       if(res.code === 0){
-        if(Method.isFullScreen()) Method.closeFullScreen(); //退出全屏
         this.$router.replace({ name: "Login" });
         //window.location.replace('/');
       }else{

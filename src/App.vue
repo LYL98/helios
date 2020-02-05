@@ -15,6 +15,7 @@
             {{myInfo.realname}}
           </div>
           <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="reloadAuth" v-if="isDev">重载权限</el-dropdown-item>
             <el-dropdown-item command="editPassword">修改密码</el-dropdown-item>
             <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
           </el-dropdown-menu>
@@ -67,14 +68,20 @@
 
 <script>
   import { Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Notification, MessageBox, Backtop} from 'element-ui';
-  import {Http, Config, Method, DataHandle} from '@/util';
-  import {GlobalProvince, PwdModify} from '@/component';
+  import { Http, Config, Method, DataHandle } from '@/util';
+  import { GlobalProvince, PwdModify } from '@/component';
 
   export default {
     name: 'app',
     data() {
       let name = this.$router.history.current.name;
+      //判断是否是开发测试
+      let url = window.location.origin;
+      let isDev = url.indexOf('appledev.pgyscm.com') >= 0 ||
+                  url.indexOf('applenew.pgyscm.com') >= 0 ||
+                  url.indexOf('localhost') >= 0;
       return {
+        isDev: isDev,
         brand: {
           brand_name: '',
           brand_icon: ''
@@ -375,6 +382,8 @@
           });
         } else if (command === 'editPassword') {
           PwdModify.show(); //修改密码
+        } else if (command === 'reloadAuth') {
+          that.loginByToken();
         }
       },
       //登出
@@ -383,9 +392,23 @@
         let res = await Http.get(Config.api.signLogout, {});
         this.$loading({ isShow: false });
         if(res.code === 0){
-          if(Method.isFullScreen()) Method.closeFullScreen(); //退出全屏
           this.$router.replace({ name: "Login" });
           //window.location.replace('/');
+        }else{
+          this.$message({ message: res.message, type: 'error' });
+        }
+      },
+      //token重新登录
+      async loginByToken(){
+        let { myInfo } = this;
+        this.$loading({ isShow: true });
+        let res = await Http.get(Config.api.loginByToken, {
+          user_id: myInfo.id,
+          token: myInfo.access_token
+        });
+        this.$loading({ isShow: false });
+        if(res.code === 0){
+          window.location.reload();
         }else{
           this.$message({ message: res.message, type: 'error' });
         }
