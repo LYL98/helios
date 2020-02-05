@@ -94,7 +94,8 @@
                 },
                 {
                   title: '修改日志',
-                  isDisplay: (auth.isAdmin || auth.ItemListEditRecord || auth.ItemListForSaleEditRecord),
+                  isDisplay: ((auth.isAdmin || auth.ItemListEditRecord) && fromPage === 'List') ||
+                    ((auth.isAdmin || auth.ItemListForSaleEditRecord) && fromPage === 'ListForSale'),
                   command: () => handleShowDetail('DetailItemListEditRecord', scope.row)
                 }
               ]"
@@ -122,6 +123,9 @@
     components: {
     },
     mixins: [tableMixin],
+    props: {
+      fromPage: { type: String, default: 'List' }, //List 在售商品， ListForSale 待售商品
+    },
     created() {
       let pc = this.getPageComponents('QueryItemList');
       this.getData(pc.query);
