@@ -62,7 +62,7 @@
               :list="[
                 {
                   title: '入库',
-                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingAdd,
+                  isDisplay: (auth.isAdmin || auth.WarehouseStockPendingAdd) && scope.row.status !== 'all_in',
                   command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add_' + tabValue)
                 },
                 {

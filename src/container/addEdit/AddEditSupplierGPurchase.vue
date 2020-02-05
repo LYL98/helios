@@ -10,7 +10,7 @@
         <h6 class="subtitle">采购信息</h6>
         <el-row>
           <el-form-item label="商品" prop="item_id">
-            <select-g-item v-model="detail.item_id" size="medium" supType="global_pur" @change="selectGItem" :disabled="pageType !== 'add' ? true : false" filterable></select-g-item>
+            <select-g-item v-model="detail.item_id" placeholder="商品编号/名称" size="medium" supType="global_pur" @change="selectGItem" :disabled="pageType !== 'add' ? true : false" filterable clearable></select-g-item>
           </el-form-item>
           <el-col :span="12" v-if="pageType === 'detail'">
             <el-form-item label="统采单号">
