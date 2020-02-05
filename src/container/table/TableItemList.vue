@@ -1,6 +1,6 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="(auth.isAdmin || auth.ItemListExport || auth.ItemListForSaleExport)">
+    <div class="table-top" v-if="((auth.isAdmin || auth.ItemListExport) && fromPage === 'List') || ((auth.isAdmin || auth.ItemListForSaleExport) && fromPage === 'ListForSale')">
       <div class="left"></div>
       <div class="right">
         <el-button @click.native="handleExport('itemExport', query)" size="mini" type="primary" plain>导出商品</el-button>
