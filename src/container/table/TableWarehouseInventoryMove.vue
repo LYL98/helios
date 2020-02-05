@@ -4,7 +4,12 @@
       <div class="left">
         <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="queryTabsData"/>
       </div>
-      <div class="right"></div>
+      <div class="right">
+        <el-button v-if="auth.isAdmin || auth.WarehouseInventoryMoveExport"
+          @click.native="handleExport(types[tabValue].export_api, query)" size="mini" type="primary" plain>
+            {{types[tabValue].export_srt}}
+          </el-button>
+      </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -115,23 +120,33 @@
         types: {
           check: {
             detail: 'DetailWarehouseInventoryMoveCheck',
-            api: Config.api.supCheckQuery
+            api: Config.api.supCheckQuery,
+            export_api: 'supCheckExport',
+            export_srt: '导出记录'
           },
           variation: {
             detail: 'DetailWarehouseInventoryMoveVariation',
-            api: Config.api.supModifyQuery
+            api: Config.api.supModifyQuery,
+            export_api: 'supModifyExport',
+            export_srt: '导出记录'
           },
           allot: {
             detail: 'DetailWarehouseInventoryMoveAllot',
-            api: Config.api.supDistributeRecordQuery
+            api: Config.api.supDistributeRecordQuery,
+            export_api: 'supPDistributeExport',
+            export_srt: '导出记录'
           },
           move: {
             detail: 'DetailWarehouseInventoryMoveMove',
-            api: Config.api.supMoveQuery
+            api: Config.api.supMoveQuery,
+            export_api: 'supMoveExport',
+            export_srt: '导出记录'
           },
           out_storage: {
             detail: 'DetailWarehouseInventoryMoveOutStorage',
-            api: Config.api.supOutQuery
+            api: Config.api.supOutQuery,
+            export_api: 'supOutExport',
+            export_srt: '导出记录'
           }
         },
         supOptTypes: Constant.SUP_OPT_TYPES(),

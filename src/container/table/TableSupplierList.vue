@@ -1,6 +1,6 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="(page === 'supplierList' && (auth.isAdmin || auth.SupplierListAdd))">
+    <div class="table-top" v-if="(page === 'supplierList' && (auth.isAdmin || auth.SupplierListAdd || auth.SupplierListExport))">
       <div class="left"></div>
       <div class="right">
         <el-button v-if="auth.isAdmin || auth.SupplierListExport" @click.native="handleExport('supplierExport', query)" size="mini" type="primary" plain>导出供应商</el-button>

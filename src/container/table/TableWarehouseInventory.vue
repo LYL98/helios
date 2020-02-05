@@ -3,7 +3,7 @@
     <div class="table-top" v-if="auth.isAdmin || auth.WarehouseInventoryExport">
       <div class="left"></div>
       <div class="right">
-        <el-button @click.native="handleExport('wareTrayExport', query)" size="mini" type="primary" plain>导出库存</el-button>
+        <el-button @click.native="handleExport('supStockExport', query)" size="mini" type="primary" plain>导出库存</el-button>
       </div>
     </div>
     <!-- 表格start -->

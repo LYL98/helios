@@ -7,7 +7,7 @@
         :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
       </div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.SupplierLocalPurchaseExport" @click.native="handleExport('supplierLocalPurchaseExport', query)" size="mini" type="primary" plain>导出地采单</el-button>
+        <el-button v-if="auth.isAdmin || auth.SupplierLocalPurchaseExport" @click.native="handleExport('fromSupplierOrderExport', query)" size="mini" type="primary" plain>导出地采单</el-button>
         <el-button v-if="auth.isAdmin || auth.SupplierLocalPurchaseAdd" @click="handleShowAddEdit('AddEditSupplierLocalPurchase', null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>

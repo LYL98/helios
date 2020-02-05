@@ -50,7 +50,7 @@ const Config = (() => {
       supStockExport: apiM + '/sup_stock/export', //库存 sup_stock/export   sup_stock/export_check
       supCheckExport: apiM + '/sup_check/export', //盘点记录  sup_check/export.   sup_check/export_check
       supMoveExport: apiM + '/sup_move/export', //移库记录 sup_move/export   sup_move/export_check
-      suppliergGPurchaseExport: apiM + '/supplier/g_purchase/export', //统采单. supplier/g_purchase/export.   supplier/g_purchase/export_check
+      supplierGPurchaseExport: apiM + '/supplier/g_purchase/export', //统采单. supplier/g_purchase/export.   supplier/g_purchase/export_check
       supDeliveryLackHistoryItemExport: apiM + '/sup_delivery/lack_history/item/export', //缺货记录  sup_delivery/lack_history/item/export  sup_delivery/lack_history/item/export_check
       supDistributeExport: apiM + '/sup_distribute/export', //调拨单   sup_distribute/export   sup_distribute/export_check
       supPDistributeExport: apiM + '/sup_p_distribute/export', //调拨记录 sup_p_distribute/export  sup_p_distribute/export_check
@@ -72,7 +72,6 @@ const Config = (() => {
       supplierGPurchaseEdit: apiM + '/supplier/g_purchase/edit', //新增统采订单， 同时会附带生成入库单
       supplierGPurchaseAudit: apiM + '/supplier/g_purchase/audit', //统采采购单审核
       supplierGPurchaseDetail: apiM + '/supplier/g_purchase/detail', //统采采购单详情
-      supplierGPurchaseExport: apiM + '/supplier/g_purchase/export', //统采采购单导出
       
       //地采
       supplierLocalPurchaseQuery: apiM + '/from_supplier/order/query', //地采订单
@@ -80,7 +79,6 @@ const Config = (() => {
       supplierLocalPurchaseAdd: apiM + '/from_supplier/order/add', //地采新增
       supplierLocalPurchaseEdit: apiM + '/from_supplier/order/edit', //地采修改
       supplierLocalPurchaseAudit: apiM + '/from_supplier/order/audit', //地采新增
-      supplierLocalPurchaseExport: apiM + '/from_supplier/order/export', //地采导出
 
       //商品池
       pItemAdd: apiM + '/p_item/add', //新商品资料添加
@@ -207,7 +205,6 @@ const Config = (() => {
       //仓库库存
       wareTrayQeruy: apiM + '/sup_stock/query', //查询库存
       wareTrayItemQeruy: apiM + '/ware_tray_item/query', //查询具体托盘的库存
-      wareTrayExport: apiM + '', //库存导出
 
       supOutAdd: apiM + '/sup_out/add', //出库
       supCheckAdd: apiM + '/sup_check/add', //盘点

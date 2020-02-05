@@ -1,10 +1,12 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.FinanceSStatementPay">
+    <div class="table-top" v-if="auth.isAdmin || auth.FinanceSStatementPay || auth.FinanceSStatementExport">
       <div class="left">
         <el-button v-if="auth.isAdmin || auth.FinanceSStatementPay" :disabled="multipleSelection.length === 0 ? true : false" @click="supplierStatementPay('batch')" size="mini" type="primary">批量结款</el-button>
       </div>
-      <div class="right"></div>
+      <div class="right">
+        <el-button v-if="auth.isAdmin || auth.FinanceSStatementExport" @click.native="handleExport('supBillExport', query)" size="mini" type="primary" plain>导出对账单</el-button>
+      </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
