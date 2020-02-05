@@ -14,7 +14,7 @@
       <el-row v-if="detail.supplier_type === 'local_pur' && (auth.isAdmin || auth.SupplierListItemEdit)">
         <el-col :span="12">
           <el-form-item label="搜索">
-            <select-item size="medium" placeholder="商品编号/名称" v-model="selectItemId" supType="local_pur" :provinceCode="province.code" @change="changeItem" :disabled="false" filterable></select-item>
+            <select-item v-if="isShow" size="medium" placeholder="商品编号/名称" v-model="selectItemId" supType="local_pur" :provinceCode="detail.province_code" @change="changeItem" :disabled="false" filterable clearable></select-item>
             <div v-if="selectItemData.error" class="el-form-item__error">{{selectItemData.error}}</div>
           </el-form-item>
         </el-col>
@@ -85,6 +85,8 @@
       //显示新增修改(重写mixin)
       showDetail(data){
         this.$data.detail = data;
+        this.$data.selectItemId = '';
+        this.$data.selectItemData = {};
         this.getDetail(data.id);
       },
       //获取详情

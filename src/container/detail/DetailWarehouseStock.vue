@@ -44,6 +44,10 @@
       </el-row>
 
       <h6 class="subtitle">入库信息</h6>
+      <!--场地-->
+      <el-form-item label="商品编号/名称" v-if="detail.in_type === 'allocate'">
+        {{detail.item_code}}/{{detail.item_title}}
+      </el-form-item>
       <el-row>
         <el-col :span="12">
           <el-form-item label="入库单号">{{detail.code}}</el-form-item>
@@ -57,16 +61,31 @@
           <el-form-item label="生产日期">{{detail.produce_date}}</el-form-item>
         </el-col>
       </el-row>
-      <el-row v-for="(item, index) in detail.trays" :key="index">
-        <el-col :span="12">
-          <el-form-item label="入库">
-            {{item.storehouse.title}}/{{item.warehouse.title}}/{{item.tray.code}}
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="入库数量">{{item.num}}件</el-form-item>
-        </el-col>
-      </el-row>
+      <!--场地-->
+      <template v-if="detail.in_type === 'allocate'">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="入库">
+              {{detail.storehouse.title}}/临时库
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="入库数量">{{detail.num}}件</el-form-item>
+          </el-col>
+        </el-row>
+      </template>
+      <template v-else>
+        <el-row v-for="(item, index) in detail.trays" :key="index">
+          <el-col :span="12">
+            <el-form-item label="入库">
+              {{item.storehouse.title}}/{{item.warehouse.title}}/{{item.tray.code}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="入库数量">{{item.num}}件</el-form-item>
+          </el-col>
+        </el-row>
+      </template>
       <el-row>
         <el-col :span="12">
           <el-form-item label="创建人">{{detail.creator.realname || '系统'}}</el-form-item>
