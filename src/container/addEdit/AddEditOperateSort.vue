@@ -90,7 +90,10 @@ export default {
     //返回某个商品还有多少件需要分配
     async supAllocateNeedItem(data){
       this.$loading({isShow: true});
-      let res = await Http.get(Config.api.supAllocateNeedItem, {sub_item_id: data.item_id});
+      let res = await Http.get(Config.api.supAllocateNeedItem, {
+        sub_item_id: data.item_id,
+        delivery_date: data.delivery_date
+      });
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;

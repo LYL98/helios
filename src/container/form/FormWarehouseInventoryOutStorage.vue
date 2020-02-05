@@ -67,8 +67,15 @@ export default {
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('DetailWarehouseInventory');
-        pc.$data.query.page = 1;
-        pc.wareTrayItemQeruy();
+        if(pc) pc.wareTrayItemQeruy();
+
+        //刷新库存列表
+        pc = this.getPageComponents('TableWarehouseInventory');
+        if(pc) pc.getData(pc.query);
+
+        //刷新场地收货列表
+        pc = this.getPageComponents('TableOperateReceiving');
+        if(pc) pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});
       }

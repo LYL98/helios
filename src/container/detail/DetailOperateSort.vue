@@ -101,11 +101,15 @@
       //显示新增修改(重写mixin)
       showDetail(data){
         this.supAllocateDetail(data.id);
-        this.supAllocateNeedItem(data.item_id);
+        this.supAllocateNeedItem(data);
       },
       //返回某个商品还有多少件需要分配
-      async supAllocateNeedItem(itemId){
-        let res = await Http.get(Config.api.supAllocateNeedItem, {sub_item_id: itemId});
+      async supAllocateNeedItem(data){
+        let deliveryDate = '';
+        let res = await Http.get(Config.api.supAllocateNeedItem, {
+          sub_item_id: data.item_id,
+          delivery_date: data.delivery_date
+        });
         if(res.code === 0){
           this.$data.allocateNeed = res.data;
         }else{

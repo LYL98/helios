@@ -158,7 +158,9 @@
         }).then(() => {
           (async ()=>{
             this.$loading({isShow: true});
-            let res = await Http.post(Config.api.operateLineConfirm, {});
+            let res = await Http.post(Config.api.operateLineConfirm, {
+              delivery_date: this.query.delivery_date
+            });
             this.$loading({isShow: false});
             if(res.code === 0){
               this.$message({message: '已分配', type: 'success'});

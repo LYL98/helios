@@ -93,7 +93,10 @@ export default {
     async submitData(){
       let { detail } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supSend, { line_code: detail.line_code });
+      let res = await Http.post(Config.api.supSend, {
+        line_code: detail.line_code,
+        delivery_date: detail.delivery_date
+      });
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '已确认', type: 'success'});
