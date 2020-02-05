@@ -1,32 +1,43 @@
 <template>
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
-      <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+      <el-form class="custom-form" style="width: 100%;" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="分配方式">
           <button-group v-model="detail.opt_type" :options="allotOptTypes" buttonWidth="160" :disabled="allocateNeed.sorted"/>
         </el-form-item>
-        <el-form-item label="">
-          <el-row>
-            <el-col>应出商品总数：{{allocateNeed.num}}件</el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">该批次商品：{{detail.num}}件</el-col>
-            <el-col :span="12" v-if="allocateNeed.num - detail.num > 0" style="color: #ff5252;">缺货：{{allocateNeed.num - detail.num}}件</el-col>
-            <el-col :span="12" v-else-if="allocateNeed.num - detail.num < 0" style="color: #ff5252;">多货：{{detail.num - allocateNeed.num}}件</el-col>
-          </el-row>
-        </el-form-item>
-        <el-form-item label="" v-if="allocateNeed.num - detail.num >= 0">
-          <div>提示：</div>
-          <div>1、选择分配方式后，后续到货的该商品都将按照该方式自动分配；</div>
-          <div>2、若有缺货将根据分配方式系统自动取消订单。</div>
-          <div v-if="allocateNeed.sorted">3、该商品已经选{{allocateNeed.cur_opt_type==='by_line'?'按线路分配':'按下单时间分配'}}分配，所有批次商品都将按照该方式进行分配；</div>
-        </el-form-item>
-        <el-form-item label="" v-else-if="allocateNeed.num - detail.num < 0">
-          <div>提示：</div>
-          <div>1、多货的商品库存将在分配完成后，自动进入仓库的临时仓；</div>
-          <div>2、系统会自动将该批次分配数量调整为应出商品总数。</div>
-          <div v-if="allocateNeed.sorted">3、该商品已经选{{allocateNeed.cur_opt_type==='by_line'?'按线路分配':'按下单时间分配'}}分配，所有批次商品都将按照该方式进行分配；</div>
-        </el-form-item>
+        <!--如果从修改进来-->
+        <template v-if="pageType === 'edit'">
+          <el-form-item label="" style="color: #ff5252;">
+            <div>提示：</div>
+            <div>1、修改分配方式后，已经分配的商品都将同步调整为新的分配方式</div>
+            <div>2、后续到货的该商品也将按照新的方式自动分配。</div>
+          </el-form-item>
+        </template>
+        <!--新增-->
+        <template v-else>
+          <el-form-item label="">
+            <el-row>
+              <el-col>应出商品总数：{{allocateNeed.num}}件</el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">该批次商品：{{detail.num}}件</el-col>
+              <el-col :span="12" v-if="allocateNeed.num - detail.num > 0" style="color: #ff5252;">缺货：{{allocateNeed.num - detail.num}}件</el-col>
+              <el-col :span="12" v-else-if="allocateNeed.num - detail.num < 0" style="color: #ff5252;">多货：{{detail.num - allocateNeed.num}}件</el-col>
+            </el-row>
+          </el-form-item>
+          <el-form-item label="" v-if="allocateNeed.num - detail.num >= 0">
+            <div>提示：</div>
+            <div>1、选择分配方式后，后续到货的该商品都将按照该方式自动分配；</div>
+            <div>2、若有缺货将根据分配方式系统自动取消订单。</div>
+            <div v-if="allocateNeed.sorted">3、该商品已经选{{allocateNeed.cur_opt_type==='by_line'?'按线路分配':'按下单时间分配'}}分配，所有批次商品都将按照该方式进行分配；</div>
+          </el-form-item>
+          <el-form-item label="" v-else-if="allocateNeed.num - detail.num < 0">
+            <div>提示：</div>
+            <div>1、多货的商品库存将在分配完成后，自动进入仓库的临时仓；</div>
+            <div>2、系统会自动将该批次分配数量调整为应出商品总数。</div>
+            <div v-if="allocateNeed.sorted">3、该商品已经选{{allocateNeed.cur_opt_type==='by_line'?'按线路分配':'按下单时间分配'}}分配，所有批次商品都将按照该方式进行分配；</div>
+          </el-form-item>
+        </template>
       </el-form>
       <div class="bottom-btn">
         <el-button size="medium" @click.native="handleCancel">取 消</el-button>

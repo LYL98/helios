@@ -41,6 +41,20 @@ const Config = (() => {
       afterSaleUpdate: apiM + '/aftersale/update', //售后处理
       aftersaleAppend: apiM + '/aftersale/append', //售后单回复
 
+      //导出相关接口
+      supplierExport: apiM + '/supplier/export', //供应商导出 supplier/export.  supplier/export_check. 
+      supOutExport: apiM + '/sup_out/export', //出库记录 sup_out/export. sup_out/export_check 
+      supModifyExport: apiM + '/sup_modify/export', //变动记录  sup_modify/export   sup_modify/export_check
+      fromSupplierOrderExport: apiM + '/from_supplier/order/export', //地采单  from_supplier/order/export. from_supplier/order/export_check
+      supBillExport: apiM + '/sup_bill/export', //对账单 sup_bill/export. sup_bill/export_check
+      supStockExport: apiM + '/sup_stock/export', //库存 sup_stock/export   sup_stock/export_check
+      supCheckExport: apiM + '/sup_check/export', //盘点记录  sup_check/export.   sup_check/export_check
+      supMoveExport: apiM + '/sup_move/export', //移库记录 sup_move/export   sup_move/export_check
+      suppliergGPurchaseExport: apiM + '/supplier/g_purchase/export', //统采单. supplier/g_purchase/export.   supplier/g_purchase/export_check
+      supDeliveryLackHistoryItemExport: apiM + '/sup_delivery/lack_history/item/export', //缺货记录  sup_delivery/lack_history/item/export  sup_delivery/lack_history/item/export_check
+      supDistributeExport: apiM + '/sup_distribute/export', //调拨单   sup_distribute/export   sup_distribute/export_check
+      supPDistributeExport: apiM + '/sup_p_distribute/export', //调拨记录 sup_p_distribute/export  sup_p_distribute/export_check
+
       //供应商
       supplierDetail: apiM + '/supplier/detail', //供应商详情
       supplierAdd: apiM + '/supplier/add', //供应商新增
@@ -207,7 +221,6 @@ const Config = (() => {
       supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括统采和地采订单
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
       supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
-      supDistributeExport: apiM + '', //导出调拨单
       supDistributeDetail: apiM + '/sup_distribute/detail', //调拨单详情
 
       supInStockQuery: apiM + '/sup_in_stock/query', //查询入库单
@@ -264,7 +277,6 @@ const Config = (() => {
       supDeliveryItemDetail: apiM + '/sup_delivery/item_detail', //确认分配之后用于查看某个门店各种商品的详情
       supDeliveryLackHistoryItem: apiM + '/sup_delivery/lack_history/item', //商品缺货缺货历史记录
       supDeliveryLackHistoryStore: apiM + '/sup_delivery/lack_history/store', //确认分配之后用于查看缺货记录中某个商品在各个门店分配的详情
-      supDeliveryLackHistoryItemExport: apiM + '', //导出缺货记录
 
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增

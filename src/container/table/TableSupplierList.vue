@@ -3,6 +3,7 @@
     <div class="table-top" v-if="(page === 'supplierList' && (auth.isAdmin || auth.SupplierListAdd))">
       <div class="left"></div>
       <div class="right">
+        <el-button v-if="auth.isAdmin || auth.SupplierListExport" @click.native="handleExport('supplierExport', query)" size="mini" type="primary" plain>导出供应商</el-button>
         <el-button v-if="auth.isAdmin || auth.SupplierListAdd" @click="handleShowAddEdit('AddEditSupplierList')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
