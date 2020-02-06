@@ -5,7 +5,7 @@
         <el-button v-if="auth.isAdmin || auth.OperateLineConfirmDriver" @click.native="operateLineConfirm" size="mini" type="primary" plain>一键分配司机</el-button>
       </div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.OperateLineDriver" @click.native="handleShowDetail('DetailOperateLineDriver')" size="mini" type="primary" plain>待分配司机</el-button>
+        <el-button v-if="auth.isAdmin || auth.OperateLineDriver" @click.native="handleShowDetail('DetailOperateLineDriver', query)" size="mini" type="primary" plain>待分配司机</el-button>
         <el-button v-if="auth.isAdmin || auth.OperateLineAdd" @click.native="handleShowAddEdit('AddEditOperateLine', null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>

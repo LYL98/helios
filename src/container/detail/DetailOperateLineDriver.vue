@@ -49,14 +49,16 @@
         return t;
       },
       //显示新增修改(重写mixin)
-      showDetail(){
+      showDetail(data){
         this.$data.dataItem = [];
-        this.operateLineDriverList();
+        this.operateLineDriverList(data);
       },
       //获取待分配司机列表
-      async operateLineDriverList(){
+      async operateLineDriverList(data){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.operateLineDriverList, {});
+        let res = await Http.get(Config.api.operateLineDriverList, {
+          delivery_date: data.delivery_date
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
