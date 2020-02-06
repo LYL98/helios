@@ -135,7 +135,8 @@
           (async ()=>{
             this.$loading({isShow: true});
             let res = await Http.post(Config.api.operateLineUnDriver, {
-              line_code: data.code
+              line_code: data.code,
+              delivery_date: this.query.delivery_date
             });
             this.$loading({isShow: false});
             if(res.code === 0){
