@@ -8,9 +8,6 @@
 更新注意事项：
 更新服务器run目录下的configBase.js
 
-修改sys_permission表
-修改：id 380、381、382
-新增：id 379
 ```
 
 

@@ -5,7 +5,7 @@
     </div>
     <el-dialog title="选择省份" :visible="isShow" :before-close="cancel" append-to-body :show-close="false" :close-on-press-escape="false">
       <div v-if="dataItem.length > 0">
-        <el-tag :type="province && province.code === item.code ? 'danger' : 'info'" v-for="(item, index) in dataItem" :key="index" style="margin-right: 15px;cursor:pointer;" @click.native="changeProvince(item)">{{item.title}}</el-tag>
+        <el-tag :type="province && province.code === item.code ? 'danger' : 'info'" v-for="(item, index) in dataItem" :key="index" style="margin: 10px 10px 0 0;cursor:pointer;" @click.native="changeProvince(item)">{{item.title}}</el-tag>
       </div>
       <div style="color: #999;font-size: 18px;" v-else>无权限访问</div>
       <span slot="footer" class="dialog-footer">

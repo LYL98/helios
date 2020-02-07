@@ -32,38 +32,35 @@
           <el-radio v-model="detail.post" @change="handleChange" label="">无</el-radio>
           <el-radio v-model="detail.post" @change="handleChange" v-for="(value, key) in operatorPost" :key="key" :label="key">{{value}}</el-radio>
         </el-form-item>
-        <!--如不是司机、装车员、落地配司机-->
-        <template v-if="judgeOrs(detail.post, ['', 'salesman', 'buyer'])">
-          <el-form-item label="角色" prop="role_ids">
-            <el-transfer v-model="detail.role_ids" :data="roleList" :titles="['未选角色','已选角色']"></el-transfer>
-          </el-form-item>
-          <el-form-item label="权限级别">
-            <el-radio v-for="(item, key) in dataLevel" :disabled="detail.data_level != 1 && (current.length>0 && key != current)" :key="key" v-model="detail.data_level" :label="key" @change="changeDataLevel">{{item}}</el-radio>
-          </el-form-item>
-          <!--如果级别 == 3、4、5 片区、县市、线路-->
-          <el-form-item label="选择省份" prop="province_code" v-if="detail.data_level == '3' || detail.data_level === '4' || detail.data_level === '5'">
-            <my-select-province size="medium" v-model="detail.province_code" @change="changeProvince" />
-          </el-form-item>
-          <!--省份列表（多选） 如果级别 == 2-->
-          <el-form-item label="省份列表" prop="data_value" v-if="detail.data_level == '2'">
-            <my-select-province-multi size="medium" v-model="detail.data_value"/>
-          </el-form-item>
+        <el-form-item label="角色" prop="role_ids">
+          <el-transfer v-model="detail.role_ids" :data="roleList" :titles="['未选角色','已选角色']"></el-transfer>
+        </el-form-item>
+        <el-form-item label="权限级别">
+          <el-radio v-for="(item, key) in dataLevel" :disabled="detail.data_level != 1 && (current.length>0 && key != current)" :key="key" v-model="detail.data_level" :label="key" @change="changeDataLevel">{{item}}</el-radio>
+        </el-form-item>
+        <!--如果级别 == 3、4、5 片区、县市、线路-->
+        <el-form-item label="选择省份" prop="province_code" v-if="detail.data_level == '3' || detail.data_level === '4' || detail.data_level === '5'">
+          <my-select-province size="medium" v-model="detail.province_code" @change="changeProvince" />
+        </el-form-item>
+        <!--省份列表（多选） 如果级别 == 2-->
+        <el-form-item label="省份列表" prop="data_value" v-if="detail.data_level == '2'">
+          <my-select-province-multi size="medium" v-model="detail.data_value"/>
+        </el-form-item>
 
-          <!--片区列表（多选） 如果级别 == 3-->
-          <el-form-item label="片区列表" prop="data_value" v-else-if="detail.data_level == '3'">
-            <my-select-zone-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
-          </el-form-item>
+        <!--片区列表（多选） 如果级别 == 3-->
+        <el-form-item label="片区列表" prop="data_value" v-else-if="detail.data_level == '3'">
+          <my-select-zone-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
+        </el-form-item>
 
-          <!--县市列表（多选） 如果级别 == 4-->
-          <el-form-item label="县域列表" prop="data_value" v-else-if="detail.data_level == '4'">
-            <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" />
-          </el-form-item>
+        <!--县市列表（多选） 如果级别 == 4-->
+        <el-form-item label="县域列表" prop="data_value" v-else-if="detail.data_level == '4'">
+          <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" />
+        </el-form-item>
 
-          <!--线路列表（多选） 如果级别 == 5-->
-          <el-form-item label="线路列表" prop="data_value" v-else-if="detail.data_level == '5'">
-            <my-select-line-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
-          </el-form-item>
-        </template>
+        <!--线路列表（多选） 如果级别 == 5-->
+        <el-form-item label="线路列表" prop="data_value" v-else-if="detail.data_level == '5'">
+          <my-select-line-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
+        </el-form-item>
 
         <el-form-item label="备注">
           <el-input v-model="detail.remark" type="textarea" placeholder="请输入200位以内字符" :maxlength="200"></el-input>
