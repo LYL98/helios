@@ -256,6 +256,7 @@ const Config = (() => {
       operateLineDelete: apiM + '/basicdata/line/delete', //线路删除
       operateLineConfirm: apiM + '/sup_cap_pool/confirm', //一键确认今日所有线路的司机
       operateLineDriverList: apiM + '/sup_cap_pool/list', //待分配司机列表
+      operateLineDriverDelete: apiM + '/sup_lined/delete', //删除待分配司机
       operateLineUnDriver: apiM + '/sup_ldeliver/un_confirm', //解绑司机
 
       // 线路退筐

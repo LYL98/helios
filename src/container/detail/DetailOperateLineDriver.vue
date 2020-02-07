@@ -14,6 +14,11 @@
         <el-table-column label="签到时间">
           <template slot-scope="scope">{{scope.row.created}}</template>
         </el-table-column>
+        <el-table-column label="操作" width="80">
+          <template slot-scope="scope">
+            <a href="javascript:void(0);" v-if="auth.isAdmin || auth.OperateLineDriverDelete" @click="operateLineDriverDelete(scope.row)">删除</a>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </detail-layout>
@@ -51,13 +56,14 @@
       //显示新增修改(重写mixin)
       showDetail(data){
         this.$data.dataItem = [];
-        this.operateLineDriverList(data);
+        this.$data.detail = data;
+        this.operateLineDriverList();
       },
       //获取待分配司机列表
-      async operateLineDriverList(data){
+      async operateLineDriverList(){
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.operateLineDriverList, {
-          delivery_date: data.delivery_date
+          delivery_date: this.detail.delivery_date
         });
         this.$loading({isShow: false});
         if(res.code === 0){
@@ -67,6 +73,30 @@
           this.$message({message: res.message, type: 'error'});
         }
       },
+      //删除待分配司机
+      operateLineDriverDelete(data){
+        this.$messageBox.confirm('确认删除待分配司机？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          (async ()=>{
+            this.$loading({isShow: true});
+            let res = await Http.post(Config.api.operateLineDriverDelete, {
+              id: data.id
+            });
+            this.$loading({isShow: false});
+            if(res.code === 0){
+              this.$message({message: '已删除', type: 'success'});
+              this.operateLineDriverList();
+            }else{
+              this.$message({message: res.message, type: 'error'});
+            }
+          })();
+        }).catch(() => {
+          //console.log('取消');
+        });
+      }
     }
   }
 </script>

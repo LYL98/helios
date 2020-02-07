@@ -195,6 +195,7 @@
             { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
             { label: '调出仓', key: 'src_storehouse', width: '3', isShow: true },
             { label: '应收货', key: 'num', width: '2', isShow: true },
+            { label: '未收货', key: 'num_not_in', width: '2', isShow: true },
             { label: '缺货', key: 'stockout', width: '3', isShow: true },
             { label: '状态', key: 'allot_status', width: '2', isShow: true },
           ]);

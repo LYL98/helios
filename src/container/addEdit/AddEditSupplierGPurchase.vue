@@ -74,25 +74,26 @@
             </el-table-column>
           </el-table>
         </div>
-        <h6 class="subtitle">操作记录</h6>
-        <div style="padding: 0 30px;">
-          <el-table :data="detail.logs" :row-class-name="highlightRowClassName">
-            <el-table-column type="expand">
-              <template slot-scope="scope">
-                <log-modified-detail :modifiedDetail="scope.row.modified_detail"/>
-              </template>
-            </el-table-column>
-            <el-table-column prop="created" label="时间"></el-table-column>
-            <el-table-column label="操作内容">
-              <template slot-scope="scope">{{logTypes[scope.row.category]}}</template>
-            </el-table-column>
-            <el-table-column prop="remark" label="备注">
-              <template slot-scope="scope">{{returnRemark(scope.row)}}</template>
-            </el-table-column>
-            <el-table-column prop="operator_name" label="操作人"></el-table-column>
-          </el-table>
-        </div>
       </template>
+      
+      <h6 class="subtitle">操作记录</h6>
+      <div style="padding: 0 30px;">
+        <el-table :data="detail.logs" :row-class-name="highlightRowClassName">
+          <el-table-column type="expand">
+            <template slot-scope="scope">
+              <log-modified-detail :modifiedDetail="scope.row.modified_detail"/>
+            </template>
+          </el-table-column>
+          <el-table-column prop="created" label="时间"></el-table-column>
+          <el-table-column label="操作内容">
+            <template slot-scope="scope">{{logTypes[scope.row.category]}}</template>
+          </el-table-column>
+          <el-table-column prop="remark" label="备注">
+            <template slot-scope="scope">{{returnRemark(scope.row)}}</template>
+          </el-table-column>
+          <el-table-column prop="operator_name" label="操作人"></el-table-column>
+        </el-table>
+      </div>
 
       <div class="bottom-btn">
         <template v-if="judgeOrs(pageType, ['add', 'edit'])">
