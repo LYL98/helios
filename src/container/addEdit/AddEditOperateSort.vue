@@ -29,13 +29,13 @@
             <div>提示：</div>
             <div>1、选择分配方式后，后续到货的该商品都将按照该方式自动分配；</div>
             <div>2、若有缺货将根据分配方式系统自动取消订单。</div>
-            <div v-if="allocateNeed.sorted">3、该商品已经选{{allocateNeed.cur_opt_type==='by_line'?'按线路分配':'按下单时间分配'}}分配，所有批次商品都将按照该方式进行分配；</div>
+            <div v-if="allocateNeed.sorted">3、该商品已经选{{allocateNeed.cur_opt_type==='by_line'?'按线路分配':'按下单时间分配'}}，所有批次商品都将按照该方式进行分配；</div>
           </el-form-item>
           <el-form-item label="" v-else-if="allocateNeed.num - detail.num < 0">
             <div>提示：</div>
             <div>1、多货的商品库存将在分配完成后，自动进入仓库的临时仓；</div>
             <div>2、系统会自动将该批次分配数量调整为应出商品总数。</div>
-            <div v-if="allocateNeed.sorted">3、该商品已经选{{allocateNeed.cur_opt_type==='by_line'?'按线路分配':'按下单时间分配'}}分配，所有批次商品都将按照该方式进行分配；</div>
+            <div v-if="allocateNeed.sorted">3、该商品已经选{{allocateNeed.cur_opt_type==='by_line'?'按线路分配':'按下单时间分配'}}，所有批次商品都将按照该方式进行分配；</div>
           </el-form-item>
         </template>
       </el-form>
@@ -123,7 +123,8 @@ export default {
         //刷新详情数据
         let detailPc = this.getPageComponents('DetailOperateSort');
         if(detailPc.isShow){
-          
+          detailPc.supAllocateDetail();
+          detailPc.supAllocateNeedItem();
         }
       }else{
         this.$message({message: res.message, type: 'error'});

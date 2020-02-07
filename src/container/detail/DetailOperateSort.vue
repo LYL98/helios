@@ -95,20 +95,22 @@
           cur_opt_type: '',
           sorted: false
         },
+        detailTemp: {}
       }
     },
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.supAllocateDetail(data.id);
-        this.supAllocateNeedItem(data);
+        this.$data.detailTemp = data;
+        this.supAllocateDetail();
+        this.supAllocateNeedItem();
       },
       //返回某个商品还有多少件需要分配
-      async supAllocateNeedItem(data){
-        let deliveryDate = '';
+      async supAllocateNeedItem(){
+        let { detailTemp } = this;
         let res = await Http.get(Config.api.supAllocateNeedItem, {
-          sub_item_id: data.item_id,
-          delivery_date: data.delivery_date
+          sub_item_id: detailTemp.item_id,
+          delivery_date: detailTemp.delivery_date
         });
         if(res.code === 0){
           this.$data.allocateNeed = res.data;
@@ -117,9 +119,9 @@
         }
       },
       //获取明细列表
-      async supAllocateDetail(id){
+      async supAllocateDetail(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supAllocateDetail, { out_stock_id: id }); // id:6测试
+        let res = await Http.get(Config.api.supAllocateDetail, { out_stock_id: this.detailTemp.id }); // id:6测试
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;
