@@ -188,8 +188,7 @@ export default {
       }else if(e == 'buyer') {
         this.detail.data_level = '2'
         this.current = '2'
-
-      }else if(e == 'distributor') {
+      }else if(e == 'deliver') {
         this.detail.data_level = '5'
         this.current = '5'
       }else{
