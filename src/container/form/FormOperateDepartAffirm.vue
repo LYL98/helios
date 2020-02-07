@@ -54,7 +54,12 @@ export default {
     //显示form(重写)
     showForm(data){
       this.$data.detail = data;
-      this.supConfirmStoreLack();
+      //已全部分拣
+      if(data.sorted){
+        this.supConfirmStoreLack();
+      }else{
+        this.$message({message: '该线路商品尚未全部分拣完成，暂不可发车确认', type: 'error'});
+      }
     },
     //获取列表
     async supConfirmStoreLack(){

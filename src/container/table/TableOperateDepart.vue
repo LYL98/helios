@@ -63,7 +63,7 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '确认',
+                  title: '发车前确认',
                   isDisplay: (auth.isAdmin || auth.OperateDepartAffirm) && !scope.row.assign_confirm_time,
                   command: () => handleShowForm('FormOperateDepartAffirm', {
                     delivery_date: query.delivery_date,
@@ -82,11 +82,18 @@
                   title: '司机轨迹',
                   isDisplay: (auth.isAdmin || auth.OperateDepartDriverTrack) && scope.row.assign_confirm_time,
                   command: () => handleShowDetail('DetailOperateDepartDriverTrack', scope.row)
-                },{
+                },
+                /*暂时替换打印，权限共用*/
+                {
+                  title: '导出',
+                  isDisplay: (auth.isAdmin || auth.OperateDepartPrint) && scope.row.assign_confirm_time,
+                  command: () => handleOrderExport(scope.row)
+                }
+                /*{
                   title: '打印',
                   isDisplay: (auth.isAdmin || auth.OperateDepartPrint) && scope.row.assign_confirm_time,
                   command: () => handleShowPrint('PrintOperateDepart', [scope.row])
-                }
+                }*/
               ]"
             />
           </template>
@@ -145,6 +152,14 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+      //导出
+      handleOrderExport(data){
+        let url = Config.api.orderExport + '?';
+        url += `province_code=${this.$province.code}`;
+        url += `&date=${this.query.delivery_date}`;
+        url += `&line_code=${data.line.code}`;
+        window.open(url, '_blank');
+      }
     }
   };
 </script>
