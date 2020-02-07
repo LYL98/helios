@@ -36,9 +36,6 @@ export default {
     showPrint(data){
       this.$data.dataItem = data;
       this.$data.isShow = true;
-    },
-    qrCodeContent(item){
-      return `{"type":"tray","id":${item.id}}`;
     }
   },
 };

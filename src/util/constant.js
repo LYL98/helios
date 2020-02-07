@@ -260,7 +260,7 @@ const Constant = {
     salesman: '业务员',
     buyer: '采购员',
     deliver: '司机',
-    sorter: '装车员',
+    sorter: '分拣员',
     local_distributor: '落地配送员'
   },
   // 退筐记录的状态

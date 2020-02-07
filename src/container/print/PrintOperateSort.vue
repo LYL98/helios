@@ -41,7 +41,7 @@ export default {
       this.$data.isShow = true;
     },
     qrCodeContent(item){
-      return `{"type":"tray","id":${item.id}}`;
+      return `{"type":"sort","out_stock_id":${item.id}}`;
     }
   },
 };
