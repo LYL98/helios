@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top">
+    <div class="table-top" v-if="auth.isAdmin || auth.WarehouseDistributeExport">
       <div class="left"></div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.WarehouseDistributeExport" @click.native="handleExport('supDistributeExport', query)" size="mini" type="primary" plain>导出调拨单</el-button>
+        <el-button @click.native="handleExport('supDistributeExport', query)" size="mini" type="primary" plain>导出调拨单</el-button>
       </div>
     </div>
     <!-- 表格start -->

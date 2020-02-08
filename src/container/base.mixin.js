@@ -236,6 +236,23 @@ export default {
         data.push(item[key]);
       });
       return data;
+    },
+    //选择map key
+    selectMapKeys(mapData, keys){
+      let d = {};
+      for(const item in mapData) {
+        let con = keys.filter(key => key === item);
+        if(con.length > 0) d[item] = mapData[item];
+      }
+      return d;
+    },
+    //删除map key
+    deleteMapKeys(mapData, keys){
+      let d = this.copyJson(mapData);
+      keys.forEach(item => {
+        delete (d[item]);
+      });
+      return d;
     }
   }
 }

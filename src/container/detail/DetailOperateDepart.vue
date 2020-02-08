@@ -53,7 +53,7 @@
               :list="[
                 {
                   title: '查看门店',
-                  isDisplay: auth.isAdmin || auth.OperateDepartDetailStore,
+                  isDisplay: auth.isAdmin || auth.OperateDepartDetail,
                   command: () => handleShowDetail('DetailOperateDepartStore', {
                     ...scope.row,
                     delivery_date: detail.delivery_date,

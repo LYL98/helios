@@ -50,10 +50,15 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '库存修改成功', type: 'success'});
-        this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('DetailItemPricing');
         pc.itemPriceDetail(pc.detail);
+
+        //刷新列表
+        pc = this.getPageComponents('TableItemPricing');
+        pc.getData(pc.query);
+
+        this.handleCancel(); //隐藏
       }else{
         this.$message({message: res.message, type: 'error'});
       }

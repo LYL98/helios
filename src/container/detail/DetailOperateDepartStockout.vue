@@ -40,7 +40,7 @@
               :list="[
                 {
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.OperateDepartStockoutDetail,
+                  isDisplay: auth.isAdmin || auth.OperateDepartStockout,
                   command: () => handleShowDetail('DetailOperateDepartStockoutDetail', {
                     ...scope.row,
                     delivery_date: query.delivery_date,

@@ -3,19 +3,22 @@
     <div style="padding: 0 30px 20px; color: #ff5252;">注：以下为缺货商品分配情况，确认后系统将自动改单</div>
     <div style="padding: 0 30px;">
       <el-table :data="dataItem" :row-class-name="highlightRowClassName">
-        <el-table-column label="县域">
+        <el-table-column label="县域" min-width="100">
           <template slot-scope="scope">{{scope.row.city.code}}/{{scope.row.city.title}}</template>
         </el-table-column>
-        <el-table-column label="门店">
+        <el-table-column label="门店" min-width="100">
           <template slot-scope="scope">{{scope.row.store.title}}</template>
         </el-table-column>
-        <el-table-column label="应出库">
+        <el-table-column label="商品" min-width="200">
+          <template slot-scope="scope">{{scope.row.item.code}}/{{scope.row.item.title}}</template>
+        </el-table-column>
+        <el-table-column label="应出库" width="100">
           <template slot-scope="scope">{{scope.row.count_real}}件</template>
         </el-table-column>
-        <el-table-column label="实际出库">
+        <el-table-column label="实际出库" width="100">
           <template slot-scope="scope">{{returnUnit(scope.row.allocate_num, '件', '-')}}</template>
         </el-table-column>
-        <el-table-column label="缺货">
+        <el-table-column label="缺货" width="100">
           <template slot-scope="scope">
             <span v-if="scope.row.count_real - scope.row.allocate_num <= 0">-</span>
             <span v-else>{{scope.row.count_real - scope.row.allocate_num}}件</span>

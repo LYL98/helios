@@ -61,7 +61,7 @@
     </div>
     <div class="bottom-btn">
       <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-      <el-button size="medium" v-if="(auth.isAdmin || auth.OperateSortDetailCity) && !allocateNeed.sorted" type="primary"
+      <el-button size="medium" v-if="(auth.isAdmin || auth.OperateSortAdd) && !allocateNeed.sorted" type="primary"
         @click.native="handleShowAddEdit('AddEditOperateSort', detail, 'edit')">修改分配方式</el-button>
     </div>
   </detail-layout>

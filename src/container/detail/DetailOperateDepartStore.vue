@@ -32,7 +32,7 @@
               :list="[
                 {
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.OperateDepartDetailStoreItem,
+                  isDisplay: auth.isAdmin || auth.OperateDepartDetail,
                   command: () => handleShowDetail('DetailOperateDepartStoreItem', {
                     ...scope.row,
                     delivery_date: detail.delivery_date,

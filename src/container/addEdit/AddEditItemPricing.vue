@@ -114,6 +114,7 @@ export default {
         //刷新数据(列表)
         let pc = this.getPageComponents('TableItemPricing');
         pc.getData(pc.query);
+        
         this.handleCancel(); //隐藏
       }else{
         this.$message({message: res.message, type: 'error'});

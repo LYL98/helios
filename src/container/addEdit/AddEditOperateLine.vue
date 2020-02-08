@@ -3,7 +3,7 @@
     <add-edit-layout :title="returnPageTitles('线路')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="编号" prop="code">
-          <el-input v-model="detail.code" size="medium" :maxlength="2" placeholder="请输入编号" :disabled="detail.id"></el-input>
+          <el-input v-model="detail.code" size="medium" :maxlength="2" placeholder="请输入编号" :disabled="pageType === 'edit'"></el-input>
         </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" size="medium" :maxlength="10" placeholder="请输入名称"></el-input>
@@ -64,9 +64,10 @@ export default {
   },
   methods: {
     //显示新增修改(重写)
-    showAddEdit(data){
-      if(data){
-        this.$data.detail = this.copyJson({ ...data, id: true });
+    showAddEdit(data, type){
+      this.$data.pageType = type;
+      if(type === 'edit'){
+        this.$data.detail = this.copyJson(data);
         this.$data.connectData = data.citys;
       }else{
         this.$data.detail = this.copyJson(this.initDetail);
@@ -76,12 +77,12 @@ export default {
     },
     //提交数据
     async addEditData(){
-      let { detail } = this;
+      let { detail, pageType } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[detail.id ? 'operateLineEdit' : 'operateLineAdd'], detail);
+      let res = await Http.post(Config.api[pageType === 'edit' ? 'operateLineEdit' : 'operateLineAdd'], detail);
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.$message({message: `${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableOperateLine');
