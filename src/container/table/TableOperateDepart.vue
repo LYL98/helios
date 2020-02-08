@@ -154,8 +154,7 @@
       },
       //导出
       handleOrderExport(data){
-        let url = Config.api.orderExport + '?';
-        url += `province_code=${this.$province.code}`;
+        let url = Config.api.lineOrderExport + '?';
         url += `&date=${this.query.delivery_date}`;
         url += `&line_code=${data.line.code}`;
         window.open(url, '_blank');

@@ -116,7 +116,7 @@
         tableColumn: [
           { label: '地采单号', key: 'code', width: '2', isShow: true },
           { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
-          { label: '供货商', key: 'supplier', width: '3', isShow: true },
+          { label: '供应商', key: 'supplier', width: '3', isShow: true },
           { label: '采购价', key: 'price_buy', width: '2', isShow: true },
           { label: '采购数量', key: 'num', width: '2', isShow: true },
           { label: '采购总金额', key: 'num_price', width: '3', isShow: true },

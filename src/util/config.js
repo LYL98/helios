@@ -276,6 +276,7 @@ const Config = (() => {
       supDeliveryItemDetail: apiM + '/sup_delivery/item_detail', //确认分配之后用于查看某个门店各种商品的详情
       supDeliveryLackHistoryItem: apiM + '/sup_delivery/lack_history/item', //商品缺货缺货历史记录
       supDeliveryLackHistoryStore: apiM + '/sup_delivery/lack_history/store', //确认分配之后用于查看缺货记录中某个商品在各个门店分配的详情
+      lineOrderExport: apiM + '/line_order/export', //导出
 
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增

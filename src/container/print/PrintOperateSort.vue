@@ -1,5 +1,5 @@
 <template>
-  <print-layout title="打印订单码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <print-layout title="打印分拣码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <div v-for="(item, index) in dataItem" :key="index">
       <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="240" :height="240"/>
       <div style="font-size: 16px;">{{item.item_title}}</div>

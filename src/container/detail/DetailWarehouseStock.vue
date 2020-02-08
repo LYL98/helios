@@ -33,7 +33,7 @@
           <el-form-item label="调出仓">{{detail.relate_order.src_storehouse_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
+          <el-form-item label="调拨数量">{{detail.relate_order.num}}件</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="调入仓">{{detail.relate_order.tar_storehouse_title}}</el-form-item>

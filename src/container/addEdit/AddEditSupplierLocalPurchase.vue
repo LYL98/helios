@@ -23,7 +23,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="供货商" prop="supplier_id">
+            <el-form-item label="供应商" prop="supplier_id">
               <select-supplier supplierType="local_pur" size="medium" :itemId="detail.item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false"/>
             </el-form-item>
           </el-col>

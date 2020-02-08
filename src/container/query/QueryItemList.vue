@@ -31,7 +31,7 @@
       </el-row>
       <el-row :gutter="32" style="margin-top: 16px;">
         <el-col :span="7">
-          <my-query-item label="内标签">
+          <my-query-item label="价格标签">
             <select-inner-tag clearable size="small" v-model="query.inner_tag_id" @change="handleQuery('TableItemList')"/>
           </my-query-item>
         </el-col>
