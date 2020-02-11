@@ -23,8 +23,8 @@
             <div slot-scope="scope" class="my-td-item">
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
-                <div v-if="auth.isAdmin || auth.WarehouseStockPendingDetail"
-                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + tabValue)">
+                <div v-if="auth.isAdmin || auth.WarehouseQualityControlDetail"
+                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'detail_' + tabValue)">
                   {{scope.row.code}}
                 </div>
                 <div class="td-item add-dot2" v-else>
@@ -62,17 +62,17 @@
               :list="[
                 {
                   title: '入库',
-                  isDisplay: (auth.isAdmin || auth.WarehouseStockPendingAdd) && scope.row.status !== 'all_in',
-                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add_' + tabValue)
+                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlAdd) && scope.row.status !== 'all_in',
+                  command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'add_' + tabValue)
                 },
                 {
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingDetail,
-                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + tabValue)
+                  isDisplay: auth.isAdmin || auth.WarehouseQualityControlDetail,
+                  command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'detail_' + tabValue)
                 },
                 {
                   title: '打印',
-                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
+                  isDisplay: auth.isAdmin || auth.WarehouseQualityControlPrint,
                   command: () => handleShowPrint('PrintWarehouseStockPending', scope.row)
                 },
               ]"
@@ -97,7 +97,7 @@
   import queryTabs from './QueryTabs';
 
   export default {
-    name: 'TableWarehouseStockPending',
+    name: 'TableWarehouseQualityControl',
     components: {
       'query-tabs': queryTabs
     },
@@ -111,7 +111,7 @@
         tabValue: 'purchase', //'采购': 'purchase', '调拨': 'allot'
         inventoryStatus: Constant.INVENTORY_STATUS(),
         inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
-        tableName: 'TableWarehouseStockPending',
+        tableName: 'TableWarehouseQualityControl',
         tableColumn: [],
       }
     },
@@ -139,7 +139,7 @@
       //切换记录tab
       changeTab(){
         this.handleTableColumn();
-        let pc = this.getPageComponents('QueryWarehouseStockPending');
+        let pc = this.getPageComponents('QueryWarehouseQualityControl');
         this.getData(pc.query);
       },
       //处理表头
@@ -158,19 +158,20 @@
           tableColumn = tableColumn.concat([
             { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
             { label: '采购数量', key: 'num', width: '2', isShow: true },
-            { label: '采购日期', key: 'date', width: '3', isShow: true }
+            { label: '预计到货', key: 'date', width: '3', isShow: true }
           ]);
         }else{
         //调拨
           tableColumn = tableColumn.concat([
-            { label: '调出仓', key: 'src_storehouse', width: '3', isShow: true },
+            { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
             { label: '调拨数量', key: 'num', width: '2', isShow: true },
-            { label: '调入仓', key: 'tar_storehouse', width: '3', isShow: true },
-            { label: '可售日期', key: 'date', width: '3', isShow: true }
+            { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: true },
+            { label: '可售日期', key: 'date', width: '2', isShow: true },
+            { label: '预计到货', key: 'date2', width: '3', isShow: true }
           ]);
         }
         tableColumn = tableColumn.concat([
-          { label: '状态', key: 'status', width: '3', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '入库数量', key: 'num_in', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }

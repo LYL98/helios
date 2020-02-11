@@ -149,6 +149,11 @@ const router = new Router({
 
     /*仓库*/
     {
+      path: '/warehouse/quality/control',
+      name: 'WarehouseQualityControl',
+      component: () => import('@/view/warehouse/QualityControl')
+    },
+    {
       path: '/warehouse/stock/pending',
       name: 'WarehouseStockPending',
       component: () => import('@/view/warehouse/StockPending')

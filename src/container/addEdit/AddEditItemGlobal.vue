@@ -18,11 +18,6 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="保质期" prop="shelf_life">
-            <input-number size="medium" v-model="detail.shelf_life" :min="1" unit="天"/>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="筐">
             <select-frame size="medium" v-model="detail.frame_code"/>
           </el-form-item>
@@ -45,6 +40,16 @@
         <el-col :span="12">
           <el-form-item label="毛重" prop="gross_weight">
             <input-weight size="medium" v-model="detail.gross_weight" placeholder="0.1 - 100000" unit="斤"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="保质期" prop="shelf_life">
+            <input-number size="medium" v-model="detail.shelf_life" :min="1" unit="天"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="库存期" prop="stock_life">
+            <input-number size="medium" v-model="detail.stock_life" :min="1" unit="天"/>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -171,6 +176,9 @@ export default {
         ],
         shelf_life: [
           { required: true, message: '保质期不能为空', trigger: 'change' },
+        ],
+        stock_life: [
+          { required: true, message: '库存期不能为空', trigger: 'change' },
         ],
         package_spec: [
           { required: true, message: '包装规格不能为空', trigger: 'change' },

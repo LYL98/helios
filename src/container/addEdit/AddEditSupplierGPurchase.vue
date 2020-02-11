@@ -23,6 +23,11 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="预计到货" prop="estimate_arrive_at">
+              <el-date-picker size="medium" type="datetime" v-model="detail.estimate_arrive_at" value-format="yyyy-MM-dd HH:mm:ss" placeholder="预计到货" style="width: 100%;"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="供应商" prop="supplier_id">
               <select-supplier supplierType="global_pur" size="medium" :itemId="detail.item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false"/>
             </el-form-item>
@@ -134,6 +139,7 @@ export default {
   data(){
     let initDetail = {
       purchase_date: '',
+      estimate_arrive_at: '',
       supplier_id: '',
       storehouse_id: '',
       item_id: '',
@@ -152,6 +158,9 @@ export default {
       rules: {
         purchase_date: [
           { required: true, message: '请选择采购日期', trigger: 'change' }
+        ],
+        estimate_arrive_at: [
+          { required: true, message: '请选择预计到达时间', trigger: 'change' }
         ],
         supplier_id: [
           { required: true, message: '请选择供应商', trigger: 'change' }

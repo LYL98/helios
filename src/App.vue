@@ -197,7 +197,10 @@
           icon: '&#xe75f;',
           name: 'Warehouse',
           children: [{
-            title: '待入库',
+            title: '品控入库',
+            name: 'WarehouseQualityControl'
+          },{
+            title: '仓管入库',
             name: 'WarehouseStockPending'
           },{
             title: '入库单',

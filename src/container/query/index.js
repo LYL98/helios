@@ -56,6 +56,7 @@ export { default as QuerySupplierLocalPurchase } from './QuerySupplierLocalPurch
 
 export { default as QueryWarehouseInventory } from './QueryWarehouseInventory';
 export { default as QueryWarehouseStockPending } from './QueryWarehouseStockPending';
+export { default as QueryWarehouseQualityControl } from './QueryWarehouseQualityControl';
 export { default as QueryWarehouseStock } from './QueryWarehouseStock';
 export { default as QueryWarehouseDistribute } from './QueryWarehouseDistribute';
 export { default as QueryWarehouseInventoryMove } from './QueryWarehouseInventoryMove';

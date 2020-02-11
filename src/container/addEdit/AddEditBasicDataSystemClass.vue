@@ -1,15 +1,15 @@
 <template>
   <div class="user-reset-password">
-    <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}科学分类`" :visible="isShow" width="720px" :before-close="handleCancel">
-      <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">
+    <add-edit-layout :title="returnPageTitles('科学分类')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+      <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">
         <el-form-item label="父分类" v-if="detail.is_top_add">
           {{detail.top_code}}&nbsp;{{detail.top_title}}
         </el-form-item>
         <el-form-item label="编号">
-          <el-input v-model="detail.code" :disabled="detail.id" placeholder="系统自动生成" disabled></el-input>
+          <el-input v-model="detail.code" size="medium" placeholder="系统自动生成" disabled></el-input>
         </el-form-item>
         <el-form-item label="名称" prop="title">
-          <el-input v-model="detail.title" placeholder="请输入10位以内字符" :maxlength="10"></el-input>
+          <el-input v-model="detail.title" size="medium" placeholder="请输入10位以内字符" :maxlength="10"></el-input>
         </el-form-item>
         <!--<el-form-item label="排序" prop="rank">
           <el-input v-model="detail.rank" :maxlength="3" placeholder="0 - 999"></el-input>
@@ -17,23 +17,28 @@
         <el-form-item label="备注">
           <el-input v-model="detail.remark" type="textarea" :maxlength="200" placeholder="请输入200位以内的字符"></el-input>
         </el-form-item>
+        <el-form-item label="品控标准" prop="qa_standard" v-if="showQaStandard()">
+          <quill-editor mainClass="sys-class-quill-editor" v-model="detail.qa_standard" module="systemClass" height="200"></quill-editor>
+        </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click.native="handleCancel">取 消</el-button>
-        <el-button type="primary" @click.native="handleAddEdit">确 定</el-button>
-      </span>
-    </el-dialog>
+      <div style="margin-left: 140px; margin-top: 20px;">
+        <el-button size="medium" @click.native="handleCancel">取 消</el-button>
+        <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
+      </div>
+    </add-edit-layout>
   </div>
 </template>
 
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
+import { QuillEditor } from '@/common';
 
 export default {
   name: "AddEditSystemClass",
   mixins: [addEditMixin],
   components: {
+    'quill-editor': QuillEditor,
   },
   data(){
     return{
@@ -44,15 +49,28 @@ export default {
         ],
         rank: [
           { pattern: Verification.testStrs.isNumber, message: '排序必须为正整数数字', trigger: 'blur' },
-        ]
+        ],
+        qa_standard: [
+          { required: true, message: '品控标准不能为空', trigger: 'change' }
+        ],
       }
     }
   },
   methods: {
+    //是否显示修改标准
+    showQaStandard(){
+      let { detail } = this;
+      if((detail.code && detail.code.length >= 8) ||
+        (detail.top_code && detail.top_code.length >= 5 && detail.is_top_add)){
+          return true;
+      }
+      return false;  
+    },
     //显示新增修改(重写)
-    showAddEdit(data){
+    showAddEdit(data, type){
+      this.$data.pageType = type;
       if(data){
-        let d = JSON.parse(JSON.stringify(data));
+        let d = this.copyJson(data);
         let dd = {};
         if(d.is_top_add){
           dd.top_code = d.code;
@@ -60,22 +78,21 @@ export default {
           dd.is_top_add = true;
         }else{
           dd = d;
-          dd.id = true;
         }
-        this.$data.detail = JSON.parse(JSON.stringify(dd));
+        this.$data.detail = this.copyJson(dd);
       }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.detail = this.copyJson(this.initDetail);
       }
       this.$data.isShow = true;
     },
     //提交数据
     async addEditData(){
-      let { detail } = this;
+      let { detail, pageType } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[detail.id ? 'basicdataSystemClassEdit' : 'basicdataSystemClassAdd'], detail);
+      let res = await Http.post(Config.api[pageType === 'edit' ? 'basicdataSystemClassEdit' : 'basicdataSystemClassAdd'], detail);
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.$message({message: `${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableBasicDataSystemClass');
@@ -89,5 +106,12 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+</style>
+<style lang="scss">
+  .sys-class-quill-editor{
+    .ql-container {
+      height: 100px;
+    }
+  }
 </style>

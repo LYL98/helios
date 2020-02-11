@@ -3,7 +3,7 @@
     <div class="table-top" v-if="auth.isAdmin || auth.BasicDataSystemClassListAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataSystemClass')" size="mini" type="primary">新增(第一层)</el-button>
+        <el-button @click="handleShowAddEdit('AddEditBasicDataSystemClass', null, 'add')" size="mini" type="primary">新增(第一层)</el-button>
       </div>
     </div>
     <!-- 树型start -->
@@ -88,11 +88,11 @@
         this.handleShowAddEdit('AddEditBasicDataSystemClass', {
           ...data,
           is_top_add: true
-        });
+        }, 'add');
       },
       //编辑子分类
       editSystemClass(data){
-        this.handleShowAddEdit('AddEditBasicDataSystemClass', data);
+        this.handleShowAddEdit('AddEditBasicDataSystemClass', data, 'edit');
       },
       //删除数据
       async deleteData(data) {

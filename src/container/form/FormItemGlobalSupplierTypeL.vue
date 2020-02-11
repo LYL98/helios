@@ -105,9 +105,9 @@ export default {
       let { provinceList } = this;
       let ub = [];
       provinceList[index].supplier_binds.forEach((item, ii) => {
-        if(i === ii - 1){
+        if(ii === i - 1){
           ub.push({
-            ...provinceList[index].supplier_binds[ii],
+            ...provinceList[index].supplier_binds[ii + 1],
             rank: ub.length
           });
         }else if(ii === i){

@@ -21,7 +21,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("仓库 - 待入库");
+      documentTitle("仓库 - 仓管入库");
     },
   };
 </script>

@@ -11,10 +11,15 @@
         </el-col>
       </el-row>
       <h6 class="subtitle">商品信息</h6>
-      <el-row v-if="detail.supplier_type === 'local_pur' && (auth.isAdmin || auth.SupplierListItemEdit)">
+      <el-row v-if="auth.isAdmin || auth.SupplierListItemEdit">
         <el-col :span="12">
           <el-form-item label="搜索">
-            <select-item v-if="isShow" size="medium" placeholder="商品编号/名称" v-model="selectItemId" supType="local_pur" :provinceCode="detail.province_code" @change="changeItem" :disabled="false" filterable clearable></select-item>
+            <!--地采-->
+            <select-item v-if="isShow && detail.supplier_type === 'local_pur'" size="medium" placeholder="商品编号/名称"
+              v-model="selectItemId" supType="local_pur" :provinceCode="detail.province_code" @change="changeItem" :disabled="false" filterable clearable></select-item>
+            <!--统采-->
+            <select-g-item v-if="isShow && detail.supplier_type === 'global_pur'" size="medium" placeholder="商品编号/名称"
+              v-model="selectItemId" supType="global_pur" @change="changeItem" filterable clearable></select-g-item>
             <div v-if="selectItemData.error" class="el-form-item__error">{{selectItemData.error}}</div>
           </el-form-item>
         </el-col>
@@ -49,9 +54,9 @@
       </el-table>
     </div>
     <div style="margin: 30px 0 0 140px;">
-      <template v-if="detail.supplier_type === 'local_pur' && (auth.isAdmin || auth.SupplierListItemEdit)">
+      <template v-if="auth.isAdmin || auth.SupplierListItemEdit">
         <el-button size="medium" @click.native="handleCancel">取 消</el-button>
-        <el-button size="medium" type="primary" @click.native="supplierBindItemsEdit">确 定</el-button>
+        <el-button size="medium" type="primary" @click.native="editBindItems">确 定</el-button>
       </template>
       <template v-else>
         <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
@@ -63,13 +68,14 @@
 <script>
   import detailMixin from './detail.mixin';
   import { Http, Config, Constant } from '@/util';
-  import { SelectItem } from '@/component';
+  import { SelectItem, SelectGItem } from '@/component';
 
   export default {
     name: "DetailHeadBalanceLog",
     mixins: [detailMixin],
     components: {
-      'select-item': SelectItem
+      'select-item': SelectItem,
+      'select-g-item': SelectGItem
     },
     data() {
       let initDetail = {}
@@ -132,7 +138,20 @@
         dataItem.remove(index);
         this.$data.dataItem = this.copyJson(dataItem);
       },
-      //供应商品
+      //修改绑定商品
+      editBindItems(){
+        let { detail } = this;
+        if(detail.supplier_type === 'global_pur'){
+          this.supplierBindGItemsEdit();
+        }else{
+          this.supplierBindItemsEdit();
+        }
+      },
+      //统采供应商品
+      async supplierBindGItemsEdit(){
+
+      },
+      //地采供应商品
       async supplierBindItemsEdit(){
         let { detail, dataItem } = this;
         let bindItemIds = [];

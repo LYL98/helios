@@ -359,7 +359,8 @@ const Constant = {
       { key: 'success', value: '审核通过' },
       { key: 'fail', value: '作废' },
       { key: 'part_in', value: '部分入库' },
-      { key: 'all_in', value: '全部入库' }
+      { key: 'all_in', value: '全部入库' },
+      { key: 'close', value: '关闭' }
     ];
     return handleKeyValue(type, data);
   },
@@ -399,7 +400,8 @@ const Constant = {
     let data = [
       { key: 'success', value: '待入库' },
       { key: 'part_in', value: '部分入库' },
-      { key: 'all_in', value: '全部入库' }
+      { key: 'all_in', value: '全部入库' },
+      { key: 'close', value: '关闭' }
     ];
     return handleKeyValue(type, data);
   },
