@@ -48,35 +48,99 @@
         </el-row>
 
         <template v-if="judgeOrs(pageType, ['add_purchase', 'add_allot'])">
-          <h6 class="subtitle">入库信息</h6>
+          <h6 class="subtitle">品控信息</h6>
           <el-row>
-            <el-col :span="10">
+            <el-col :span="12">
+              <el-form-item label="到货数量" prop="num_arrive">
+                <input-number size="medium" :min="1" v-model="inventoryData.num_arrive" unit="件"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="品控数量" prop="qa_num">
+                <input-number size="medium" :min="1" v-model="inventoryData.qa_num" unit="件"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="入库数量" prop="num">
+                <input-number size="medium" :min="1" v-model="inventoryData.num" unit="件"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">
               <el-form-item label="生产日期" prop="produce_date">
-                <el-date-picker size="medium" v-model="inventoryData.produce_date" :disabled="inventoryData.produce_date_disabled" value-format="yyyy-MM-dd" placeholder="生产日期" style="width: 100%;"/>
+                <el-date-picker
+                  size="medium"
+                  style="width: 100%;"
+                  placeholder="生产日期"
+                  v-model="inventoryData.produce_date"
+                  type="date"
+                  value-format="yyyy-MM-dd"
+                  :disabled="inventoryData.produce_date_disabled"
+                />
               </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row v-for="(item, index) in inventoryData.trays" :key="index">
-            <el-col :span="10">
-              <el-form-item label="入库">
-                <cascader-warehouse-tray v-if="isShow" size="medium" v-model="item.ids" :storehouseId="storehouseId" @change="(value) => changeTray(value, index)"/>
-                <div v-if="item.ids_error" class="el-form-item__error">{{item.ids_error}}</div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="入库数量">
-                <input-number size="medium" v-model="item.num" unit="件" @change="inputNumChange(index)"/>
-                <div v-if="item.num_error" class="el-form-item__error">{{item.num_error}}</div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="2" v-if="inventoryData.trays.length > 1">
-              <a href="javascript:void(0);" class="d-b" @click="deleteTray(index)" style="margin: 3px 0 0 10px;">删除</a>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="">
-                <el-button @click.native="addTray" size="mini" type="primary" plain>添加仓库</el-button>
+              <el-form-item label="保质期" prop="shelf_life">
+                <input-number size="medium" :disabled="lifeDesabled" v-model="inventoryData.shelf_life" unit="天"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="库存期" prop="stock_life">
+                <input-number size="medium" :disabled="lifeDesabled" v-model="inventoryData.stock_life" unit="天"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+          <!--调拨，不合格商品处理-->
+          <template v-if="pageType === 'add_allot'">
+            <el-row>
+              <el-col :span="20">
+                <el-form-item label="" v-if="!isShowNo">
+                  <a href="javascript:void(0);" @click="showHideNo">不合格商品处理</a>
+                </el-form-item>
+                <h6 v-else class="subtitle">不合格商品处理</h6>
+              </el-col>
+              <el-col :span="4">
+                <a href="javascript:void(0);" class="f-r" v-if="isShowNo" @click="showHideNo">删除</a>
+              </el-col>
+            </el-row>
+            <el-row v-if="isShowNo">
+              <el-col :span="12">
+                <el-form-item label="处理数量" prop="un_qa_num">
+                  <input-number size="medium" :min="1" v-model="inventoryData.un_qa_num" unit="件"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="处理类型" prop="un_qa_type">
+                  <select-option
+                    size="medium"
+                    placeholder="请选择处理类型"
+                    v-model="inventoryData.un_qa_type"
+                    :options="supOptTypes"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="处理金额" prop="un_qa_amount">
+                  <input-price size="medium" v-model="detail.un_qa_amount" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </template>
+
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="备注" prop="remark">
+                <el-input v-model="inventoryData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="品控标准">
+                <div v-if="itemData.system_class.qa_standard" v-html="itemData.system_class.qa_standard" class="qa-standard"></div>
+                <div v-else class="qa-standard">暂无品控标准</div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -99,8 +163,7 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant } from '@/util';
-import { InputNumber, InputPrice } from '@/common';
-import { CascaderWarehouseTray } from '@/component';
+import { InputNumber, InputPrice, SelectOption } from '@/common';
 
 export default {
   name: "AddEditWarehouseQualityControl",
@@ -108,7 +171,7 @@ export default {
   components: {
     'input-number': InputNumber,
     'input-price': InputPrice,
-    'cascader-warehouse-tray': CascaderWarehouseTray
+    'select-option': SelectOption
   },
   created() {
   },
@@ -116,76 +179,137 @@ export default {
     let initDetail = {
       src_storehouse: {}
     }
+    /*
+      - province_code:
+      - produce_date: 商品生产日期, 根据商品所属的1级分配字段 has_produce_date 来传递，has_produce_date 则让用户手动填写，否则传递当前日期
+      - in_type:
+      - relate_order_id:
+      - num_arrive: 到货数量
+      - num: 入库数量
+      - qa_num: 品控数量
+      - shelf_life: 保质期
+      - stock_life: 库存期
+      - un_qa_num: 不合格处理数量
+      - un_qa_type: 不合格商品处理类型 damage/damage_sale/sale_offline
+      - remark:
+      - un_qa_amount:
+    */
     let initInventoryData = {
       province_code: this.$province.code,
-      produce_date_disabled: false,
       produce_date: '',
+      produce_date_disabled: false,
       in_type: '',
       relate_order_id: '',
-      trays: [{
-        ids: [],
-        ids_error: '',
-        storehouse_id: '',
-        warehouse_id: '',
-        tray_id: '',
-        num: '',
-        num_error: ''
-      }]
+      num_arrive: null,
+      num: null,
+      qa_num: null,
+      shelf_life: null,
+      stock_life: null,
+      un_qa_num: 0,
+      un_qa_type: '',
+      un_qa_amount: 0,
+      remark: '',
     }
     return {
-      storehouseId: '', //页面搜索条件
+      isShowNo: false,
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       initInventoryData: initInventoryData,
       inventoryData: this.copyJson(initInventoryData),
+      itemData: {
+        fisrt_system_class: {
+          has_produce_date: false
+        },
+        system_class: {
+          qa_standard: ''
+        }
+      },
       rules: {
-        produce_date: [
+        num_arrive: [
+          { required: true, message: '请输入到货数量', trigger: 'change' }
+        ],
+        qa_num: [
+          { required: true, message: '请选择品控数量', trigger: 'change' }
+        ],
+        num: [
           { required: true, message: '请选择采购日期', trigger: 'change' }
+        ],
+        un_qa_num: { required: true, message: '请输入处理数量', trigger: 'change' },
+        un_qa_type: { required: true, message: '请选择处理类型', trigger: 'change' },
+        un_qa_amount: { required: true, message: '请输入处理金额', trigger: 'change' },
+        remark: [
+          { required: true, message: '请输入备注', trigger: 'change' }
         ],
       },
       pageTitles: {
-        add_purchase: '采购入库',
-        add_allot: '调拨入库',
-        detail_purchase: '采购入库详情',
-        detail_allot: '调拨入库详情',
+        add_purchase: '采购品控入库',
+        add_allot: '调拨品控入库',
+        detail_purchase: '采购品控入库详情',
+        detail_allot: '调拨品控入库详情',
       }
     }
   },
+  computed: {
+    //处理类型
+    supOptTypes(){
+      let d = Constant.SUP_OPT_TYPES('value_key');
+      delete d['退货']; //删除退货
+      return d;
+    },
+    //库存期、保质期禁用
+    lifeDesabled(){
+      let con = false;
+      let { itemData, detail } = this;
+      if(detail.status !== 'success') return true;
+      if(itemData.fisrt_system_class.has_produce_date) return false;
+      return true;
+    }
+  },
   methods: {
+    //显示或隐藏处理
+    showHideNo(){
+      this.$data.isShowNo = !this.isShowNo;
+    },
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
+      this.$data.isShowNo = false;
       this.$data.pageType = type;
       this.$data.detail = data;
+      let orderType = data.order_type || 'distribute'; //'global_pur', 'local_pur', 'distribute'
       this.$data.inventoryData = this.copyJson({
         ...this.initInventoryData,
-        produce_date_disabled: data.produce_date ? true : false,
-        produce_date: data.produce_date || '',
-        in_type: data.order_type || 'distribute', //'global_pur', 'local_pur', 'distribute'
         relate_order_id: data.id,
+        produce_date: data.produce_date || '',
+        produce_date_disabled: data.produce_date ? true : false,
+        shelf_life: data.shelf_life || null,
+        stock_life: data.stock_life || null,
+        in_type: orderType
       });
-      let pc = this.getPageComponents('QueryWarehouseQualityControl');
-      if(pc){
-        this.$data.storehouseId = pc.query.storehouse_id;
-      }
+      this.supPItemDetail();
       this.$data.isShow = true;
+    },
+    //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
+    async supPItemDetail(){
+      let { inventoryData, detail } = this;
+      let res = await Http.get(Config.api.supPItemDetail, {
+        item_code: this.detail.item_code
+      });
+      if(res.code === 0){
+        let rd = res.data;
+        this.$data.itemData = rd;
+        //待入库
+        if(detail.status === 'success'){
+          inventoryData.shelf_life = rd.shelf_life;
+          inventoryData.stock_life = rd.stock_life;
+          this.$data.inventoryData = inventoryData;
+        }
+      }
     },
     //提交数据
     async addEditData(){
       let { detail, inventoryData, pageType } = this;
-      let con = true, num = 0;
-      for(let i = 0; i < inventoryData.trays.length; i++){
-        if(!inventoryData.trays[i].num){
-          inventoryData.trays[i].num_error = '不能小于1件';
-          con = false;
-        }else{
-          num += inventoryData.trays[i].num;
-        }
-        if(!inventoryData.trays[i].tray_id){
-          inventoryData.trays[i].ids_error = '不能为空';
-          con = false;
-        }
-      }
-      if(num > detail.num - detail.num_in){
+      let con = true;
+      if(inventoryData.num > detail.num - detail.num_in){
         this.$message({message: `可入库数量只有${detail.num - detail.num_in}件`, type: 'error'});
         con = false;
       }
@@ -194,7 +318,7 @@ export default {
       let res = await Http.post(Config.api.supInStockAdd, inventoryData);
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `${pageType === 'add_purchase' ? '统采' : '调拨'}入库成功`, type: 'success'});
+        this.$message({message: `${pageType === 'add_purchase' ? '统采' : '调拨'}品控入库成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableWarehouseQualityControl');
@@ -203,41 +327,6 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
-    //入库数量输入
-    inputNumChange(index){
-      let { inventoryData } = this;
-      if(inventoryData.trays[index].num_error){
-        inventoryData.trays[index].num_error = '';
-        this.$data.inventoryData = inventoryData;
-      }
-    },
-    //选择仓库
-    changeTray(value, index){
-      let { inventoryData } = this;
-      inventoryData.trays[index].storehouse_id = value[0];
-      inventoryData.trays[index].warehouse_id = value[1];
-      inventoryData.trays[index].tray_id = value[2];
-      inventoryData.trays[index].ids_error = '';
-      this.$data.inventoryData = this.copyJson(inventoryData);
-    },
-    //添加仓库
-    addTray(){
-      this.inventoryData.trays.push({
-        ids: [],
-        ids_error: '',
-        storehouse_id: '',
-        warehouse_id: '',
-        tray_id: '',
-        num: '',
-        num_error: ''
-      });
-      this.$data.inventoryData = this.copyJson(this.inventoryData);
-    },
-    //删除仓库
-    deleteTray(index){
-      this.inventoryData.trays.remove(index);
-      this.$data.inventoryData = this.copyJson(this.inventoryData);
-    }
   },
 };
 </script>
@@ -245,4 +334,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import "./add.edit.scss";
+  .qa-standard{
+    background-color: #F5F7FA;
+    border-color: #E4E7ED;
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
 </style>

@@ -4,11 +4,28 @@
     <table-warehouse-quality-control :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseQualityControl"/>
     <add-edit-warehouse-quality-control :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditWarehouseQualityControl"/>
     <print-warehouse-stock-pending :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintWarehouseStockPending"/>
+    <form-warehouse-quality-control-close :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseQualityControClose"/>
+    <detail-warehouse-quality-control-a :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlA"/>
+    <detail-warehouse-quality-control-g :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlG"/>
+    <detail-warehouse-quality-control-l :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlL"/>
+    <detail-warehouse-quality-control-instock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlInstock"/>
+    <form-warehouse-quality-control-edit-num :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseQualityControlEditNum"/>
   </div>
 </template>
 
 <script>
-  import { QueryWarehouseQualityControl, TableWarehouseQualityControl, AddEditWarehouseQualityControl, PrintWarehouseStockPending } from '@/container';
+  import {
+    QueryWarehouseQualityControl,
+    TableWarehouseQualityControl,
+    AddEditWarehouseQualityControl,
+    PrintWarehouseStockPending,
+    FormWarehouseQualityControClose,
+    DetailWarehouseQualityControlA,
+    DetailWarehouseQualityControlG,
+    DetailWarehouseQualityControlL,
+    DetailWarehouseQualityControlInstock,
+    FormWarehouseQualityControlEditNum
+  } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -17,7 +34,13 @@
       'query-warehouse-quality-control': QueryWarehouseQualityControl,
       'table-warehouse-quality-control': TableWarehouseQualityControl,
       'add-edit-warehouse-quality-control': AddEditWarehouseQualityControl,
-      'print-warehouse-stock-pending': PrintWarehouseStockPending
+      'print-warehouse-stock-pending': PrintWarehouseStockPending,
+      'form-warehouse-quality-control-close': FormWarehouseQualityControClose,
+      'detail-warehouse-quality-control-a': DetailWarehouseQualityControlA,
+      'detail-warehouse-quality-control-g': DetailWarehouseQualityControlG,
+      'detail-warehouse-quality-control-l': DetailWarehouseQualityControlL,
+      'detail-warehouse-quality-control-instock': DetailWarehouseQualityControlInstock,
+      'form-warehouse-quality-control-edit-num': FormWarehouseQualityControlEditNum,
     },
     mixins: [viewMixin],
     created() {

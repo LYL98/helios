@@ -24,7 +24,7 @@
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
                 <div v-if="auth.isAdmin || auth.WarehouseQualityControlDetail"
-                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'detail_' + tabValue)">
+                  class="td-item link-item add-dot2" @click="tableShowDetail(scope.row)">
                   {{scope.row.code}}
                 </div>
                 <div class="td-item add-dot2" v-else>
@@ -36,11 +36,7 @@
               <!--采购、调拨数量-->
               <div v-else-if="item.key === 'num'" class="td-item add-dot2">{{scope.row.num}}件</div>
               <!--入库数量-->
-              <div v-else-if="item.key === 'num_in'" class="td-item add-dot2">{{scope.row.num_in ? scope.row.num_in + '件' : '-'}}</div>
-              <!--日期-->
-              <div v-else-if="item.key === 'date'" class="td-item add-dot2">
-                {{scope.row.purchase_date || scope.row.order_date || scope.row.available_date}}
-              </div>
+              <div v-else-if="item.key === 'num_in'" class="td-item add-dot2">{{returnUnit(scope.row.num_in, '件', '-')}}</div>
               <!--调出仓、调入仓-->
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--状态-->
@@ -61,14 +57,19 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '入库',
-                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlAdd) && scope.row.status !== 'all_in',
+                  title: '品控',
+                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlAdd) && judgeOrs(scope.row.status, ['success', 'part_in']),
                   command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'add_' + tabValue)
                 },
                 {
                   title: '详情',
                   isDisplay: auth.isAdmin || auth.WarehouseQualityControlDetail,
-                  command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'detail_' + tabValue)
+                  command: () => tableShowDetail(scope.row)
+                },
+                {
+                  title: '关闭',
+                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlClose) && tabValue === 'purchase' && judgeOrs(scope.row.status, ['success', 'part_in']),
+                  command: () => handleShowForm('FormWarehouseQualityControClose', scope.row)
                 },
                 {
                   title: '打印',
@@ -158,7 +159,7 @@
           tableColumn = tableColumn.concat([
             { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
             { label: '采购数量', key: 'num', width: '2', isShow: true },
-            { label: '预计到货', key: 'date', width: '3', isShow: true }
+            { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
           ]);
         }else{
         //调拨
@@ -166,8 +167,8 @@
             { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
             { label: '调拨数量', key: 'num', width: '2', isShow: true },
             { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: true },
-            { label: '可售日期', key: 'date', width: '2', isShow: true },
-            { label: '预计到货', key: 'date2', width: '3', isShow: true }
+            { label: '可售日期', key: 'available_date', width: '2', isShow: true },
+            { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
           ]);
         }
         tableColumn = tableColumn.concat([
@@ -178,6 +179,17 @@
         ]);
         this.$data.tableColumn = tableColumn;
       },
+      //查看详情
+      tableShowDetail(data){
+        let orderType = data.order_type || 'distribute'; //'global_pur', 'local_pur', 'distribute'
+        let detailPages = {
+          global_pur: 'DetailWarehouseQualityControlG',
+          local_pur: 'DetailWarehouseQualityControlL',
+          distribute: 'DetailWarehouseQualityControlA'
+        }
+        let pc = this.getPageComponents(detailPages[orderType]);
+        pc.showDetail(data);
+      }
     }
   };
 </script>

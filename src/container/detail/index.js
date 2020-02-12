@@ -32,6 +32,10 @@ export { default as DetailWarehouseInventoryMoveVariation } from './DetailWareho
 export { default as DetailWarehouseInventoryMoveAllot } from './DetailWarehouseInventoryMoveAllot';
 export { default as DetailWarehouseInventoryMoveMove } from './DetailWarehouseInventoryMoveMove';
 export { default as DetailWarehouseInventoryMoveOutStorage } from './DetailWarehouseInventoryMoveOutStorage';
+export { default as DetailWarehouseQualityControlA } from './DetailWarehouseQualityControlA';
+export { default as DetailWarehouseQualityControlG } from './DetailWarehouseQualityControlG';
+export { default as DetailWarehouseQualityControlL } from './DetailWarehouseQualityControlL';
+export { default as DetailWarehouseQualityControlInstock } from './DetailWarehouseQualityControlInstock';
 
 export { default as DetailOperateSort } from './DetailOperateSort';
 export { default as DetailOperateDepartStore } from './DetailOperateDepartStore';

@@ -8,6 +8,11 @@
         <el-form-item label="编号">
           <el-input v-model="detail.code" size="medium" placeholder="系统自动生成" disabled></el-input>
         </el-form-item>
+        <!--该分类是否需要生产日期,第一级显示-->
+        <el-form-item label="" v-if="!detail.top_code">
+          <el-radio v-model="detail.has_produce_date" :label="true" border size="medium">该分类需要生产日期</el-radio>
+          <el-radio v-model="detail.has_produce_date" :label="false" border size="medium">不需要</el-radio>
+        </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" size="medium" placeholder="请输入10位以内字符" :maxlength="10"></el-input>
         </el-form-item>
@@ -42,7 +47,9 @@ export default {
   },
   data(){
     return{
-      initDetail: {},
+      initDetail: {
+        has_produce_date: false
+      },
       rules: {
         title: [
             { required: true, message: '名称不能为空', trigger: 'blur' },

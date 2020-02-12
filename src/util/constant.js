@@ -360,7 +360,7 @@ const Constant = {
       { key: 'fail', value: '作废' },
       { key: 'part_in', value: '部分入库' },
       { key: 'all_in', value: '全部入库' },
-      { key: 'close', value: '关闭' }
+      { key: 'closed', value: '关闭' }
     ];
     return handleKeyValue(type, data);
   },
@@ -370,7 +370,8 @@ const Constant = {
     success: 'success',
     fail: 'danger',
     part_in: 'info',
-    all_in: 'info'
+    all_in: 'info',
+    closed: 'info'
   },
   //财务对财表状态
   S_STATEMENT_PAID_STATUS: (type)=>{
@@ -401,7 +402,7 @@ const Constant = {
       { key: 'success', value: '待入库' },
       { key: 'part_in', value: '部分入库' },
       { key: 'all_in', value: '全部入库' },
-      { key: 'close', value: '关闭' }
+      { key: 'closed', value: '关闭' }
     ];
     return handleKeyValue(type, data);
   },
@@ -409,7 +410,8 @@ const Constant = {
   INVENTORY_STATUS_TYPE: {
     success: 'info',
     part_in: 'info',
-    all_in: 'info'
+    all_in: 'info',
+    closed: 'info'
   },
   //入库类型
   INVENTORY_TYPES: (type)=>{

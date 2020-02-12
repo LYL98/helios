@@ -220,6 +220,10 @@ const Config = (() => {
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
       supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
       supDistributeDetail: apiM + '/sup_distribute/detail', //调拨单详情
+      supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
+      supPurchaseInClose: apiM + '/sup_purchase/in_close', //统采购入库单关闭
+      supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //地采购入库单关闭
+      supInStockEditNum: apiM + '/sup_in_stock/edit_num', //修改品控入库数量
 
       supInStockQuery: apiM + '/sup_in_stock/query', //查询入库单
       supInStockDetail: apiM + '/sup_in_stock/detail', //入库单详情
