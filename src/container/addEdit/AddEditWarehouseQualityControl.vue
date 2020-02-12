@@ -123,7 +123,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="处理金额" prop="un_qa_amount">
-                  <input-price size="medium" v-model="detail.un_qa_amount" />
+                  <input-price size="medium" v-model="inventoryData.un_qa_amount" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -268,7 +268,18 @@ export default {
   methods: {
     //显示或隐藏处理
     showHideNo(){
-      this.$data.isShowNo = !this.isShowNo;
+      let { isShowNo, inventoryData } = this;
+      if(!isShowNo){
+        inventoryData.un_qa_num = '';
+        inventoryData.un_qa_type = '';
+        inventoryData.un_qa_amount = '';
+      }else{
+        inventoryData.un_qa_num = 0;
+        inventoryData.un_qa_type = '';
+        inventoryData.un_qa_amount = 0;
+      }
+      this.$data.isShowNo = !isShowNo;
+      this.$data.inventoryData = inventoryData;
     },
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){

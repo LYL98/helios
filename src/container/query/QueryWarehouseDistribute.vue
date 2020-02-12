@@ -99,10 +99,8 @@
       inventoryStatus: {
         get(){
           let d = Constant.INVENTORY_STATUS('value_key');
-          return {
-            '全部': '',
-            ...d
-          };
+          delete d['关闭'];
+          return { '全部': '', ...d };
         }
       }
     },

@@ -27,6 +27,26 @@
         <el-col :span="12">
           <el-form-item label="可售日期">{{detail.available_date}}</el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="预计到货">{{detail.estimate_arrive_at}}</el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="司机姓名">{{detail.driver_name}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="手机号">{{detail.driver_phone}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="车牌">{{detail.driver_car_num}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="车型">{{detail.driver_car_type}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="费用">&yen;{{returnPrice(detail.fee)}}</el-form-item>
+        </el-col>
       </el-row>
     </el-form>
     <h6 class="subtitle">入库单信息</h6>

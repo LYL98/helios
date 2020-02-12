@@ -1,6 +1,6 @@
 <template>
-  <form-layout title="调拨" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="110px" :model="detail" ref="ruleForm" :rules="rules">
+  <form-layout title="调拨" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" ref="ruleForm" :rules="rules">
       <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
       <el-row>
         <el-col :span="12">
@@ -36,9 +36,39 @@
             />
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="预计到货" prop="estimate_arrive_at">
+            <el-date-picker size="medium" type="datetime" v-model="detail.estimate_arrive_at" value-format="yyyy-MM-dd HH:mm:ss" placeholder="预计到货" style="width: 100%;"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="司机姓名" prop="driver_name">
+            <el-input size="medium" length="10" v-model="detail.driver_name"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="手机号" prop="driver_phone">
+            <el-input size="medium" length="11" v-model="detail.driver_phone"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="车牌" prop="driver_car_num">
+            <el-input size="medium" length="10" v-model="detail.driver_car_num"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="车型" prop="driver_car_type">
+            <el-input size="medium" length="20" v-model="detail.driver_car_type"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="费用" prop="fee">
+            <input-price size="medium" v-model="detail.fee"/>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
-    <div style="margin-left: 110px; margin-top: 20px;">
+    <div style="margin-left: 140px; margin-top: 20px;">
       <el-button @click.native="handleCancel">取 消</el-button>
       <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
     </div>
@@ -48,7 +78,7 @@
 <script>
 import formMixin from './form.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
-import { InputNumber } from '@/common';
+import { InputNumber, InputPrice } from '@/common';
 import { SelectStorehouse } from '@/component';
 
 export default {
@@ -58,6 +88,7 @@ export default {
   },
   components: {
     'input-number': InputNumber,
+    'input-price': InputPrice,
     'select-storehouse': SelectStorehouse
   },
   data(){
@@ -66,7 +97,26 @@ export default {
       rules: {
         num_in: { required: true, message: '请输入调入数量', trigger: 'change' },
         tar_storehouse_id: { required: true, message: '请选择调入仓', trigger: 'change' },
-        available_date: { required: true, message: '请选择可售日期', trigger: 'change' }
+        available_date: { required: true, message: '请选择可售日期', trigger: 'change' },
+        estimate_arrive_at: [
+          { required: true, message: '请选择预计到达时间', trigger: 'change' }
+        ],
+        driver_name: [
+          {required: true, message: '司机姓名不能为空', trigger: 'change'}
+        ],
+        driver_phone: [
+          { required: true, message: '手机号不能为空', trigger: 'change' },
+          { pattern: Verification.testStrs.checkMobile, message: '请输入11位的手机号', trigger: 'blur' }
+        ],
+        driver_car_num: [
+          { required: true, message: '车牌不能为空', trigger: 'change' },
+        ],
+        driver_car_type: [
+          { required: true, message: '车型不能为空', trigger: 'change' },
+        ],
+        fee: [
+          { required: true, message: '费用不能为空', trigger: 'change' },
+        ],
       },
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -79,7 +129,12 @@ export default {
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.supDistributeAdd, {
         tray_items: [{tray_item_id: detail.id, num: detail.num_in}],
-        storehouses: [{storehouse_id: detail.tar_storehouse_id, num: detail.num_in, available_date: detail.available_date}]
+        storehouses: [{storehouse_id: detail.tar_storehouse_id, num: detail.num_in, available_date: detail.available_date, estimate_arrive_at: detail.estimate_arrive_at}],
+        driver_name: detail.driver_name,
+        driver_phone: detail.driver_phone,
+        driver_car_num: detail.driver_car_num,
+        driver_car_type: detail.driver_car_type,
+        fee: detail.fee
       });
       this.$loading({isShow: false});
       if(res.code === 0){
