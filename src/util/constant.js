@@ -477,6 +477,10 @@ const Constant = {
 
 //处理key value
 const handleKeyValue = (type, data) => {
+  //list
+  if(type === 'list'){
+    return data;
+  }
   let d = {};
   //value_key
   if(type === 'value_key'){

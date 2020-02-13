@@ -12,6 +12,9 @@
           <el-form-item label="采购日期">{{detail.relate_order.order_date || detail.relate_order.purchase_date}}</el-form-item>
         </el-col>
         <el-col :span="12">
+          <el-form-item label="预计到货">{{detail.relate_order.estimate_arrive_at}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
@@ -40,6 +43,31 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="可售日期">{{detail.relate_order.available_date}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="预计到货">{{detail.relate_order.estimate_arrive_at}}</el-form-item>
+        </el-col>
+      </el-row>
+
+      <h6 class="subtitle">品控信息</h6>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="入库数量">{{detail.in_stock.num_in}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="生产日期">{{detail.in_stock.produce_date}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="保质期">{{detail.in_stock.shelf_life}}天</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="库存期">{{detail.in_stock.stock_life}}天</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="品控人">{{detail.in_stock.creator.realname}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="品控时间">{{detail.in_stock.created}}</el-form-item>
         </el-col>
       </el-row>
 
@@ -109,6 +137,9 @@
     },
     data() {
       let initDetail = {
+        in_stock: {
+          creator: {}
+        },
         trays: [],
         relate_order: {},
         creator: {}
@@ -122,12 +153,12 @@
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.supInStockDetail(data.id);
+        this.supMonitorInstockDetail(data.id);
       },
       //获取明细列表
-      async supInStockDetail(id){
+      async supMonitorInstockDetail(id){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supInStockDetail, { id });
+        let res = await Http.get(Config.api.supMonitorInstockDetail, { id });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;

@@ -3,7 +3,7 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="仓库">
-          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
+          <select-storehouse size="small" v-model="query.storehouse_id" @change="handleQuery('TableWarehouseStockPending')" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -45,9 +45,7 @@
       let initQuery = {
         status: '',
         condition: '',
-        storehouse_id: '',
-        tar_storehouse_id: '',
-        for_instock: 1, //该查询是否是用来 入库的 (调拨单)
+        storehouse_id: ''
       }
       return {
         initQuery: initQuery,
@@ -67,25 +65,16 @@
       }
     },
     methods: {
-      //修改仓库
-      changeStorehouse(){
-        let { initQuery, query } = this;
-        initQuery.storehouse_id = initQuery.tar_storehouse_id;
-        query.storehouse_id = query.tar_storehouse_id;
-        this.$data.initQuery = initQuery;
-        this.$data.query = query;
-        this.handleQuery('TableWarehouseStockPending');
-      },
       //初始化选择仓库时
       storehouseInit(dataItem){
         let d = dataItem.filter(item => item.province_code === this.$province.code);
         let { initQuery, query } = this;
         if(d.length > 0){
-          initQuery.storehouse_id = initQuery.tar_storehouse_id = d[0].id;
-          query.storehouse_id = query.tar_storehouse_id = d[0].id;
+          initQuery.storehouse_id = d[0].id;
+          query.storehouse_id = d[0].id;
         }else{
-          initQuery.storehouse_id = initQuery.tar_storehouse_id = dataItem[0].id;
-          query.storehouse_id = query.tar_storehouse_id = dataItem[0].id;
+          initQuery.storehouse_id = dataItem[0].id;
+          query.storehouse_id = dataItem[0].id;
         }
         this.$data.initQuery = initQuery;
         this.$data.query = query;

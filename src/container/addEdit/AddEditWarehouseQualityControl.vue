@@ -258,7 +258,6 @@ export default {
     },
     //库存期、保质期禁用
     lifeDesabled(){
-      let con = false;
       let { itemData, detail } = this;
       if(detail.status !== 'success') return true;
       if(itemData.fisrt_system_class.has_produce_date) return false;
@@ -329,7 +328,7 @@ export default {
       let res = await Http.post(Config.api.supInStockAdd, inventoryData);
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `${pageType === 'add_purchase' ? '统采' : '调拨'}品控入库成功`, type: 'success'});
+        this.$message({message: '品控入库成功', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableWarehouseQualityControl');

@@ -215,7 +215,7 @@ const Config = (() => {
 
       supAcceptAdd: apiM + '/sup_accept/add', //场地收货
 
-      //仓库待入库、调拨单
+      //品控待入库、调拨单
       supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括统采和地采订单
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
       supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
@@ -225,8 +225,13 @@ const Config = (() => {
       supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //地采购入库单关闭
       supInStockEditNum: apiM + '/sup_in_stock/edit_num', //修改品控入库数量
 
-      supInStockQuery: apiM + '/sup_in_stock/query', //查询入库单
-      supInStockDetail: apiM + '/sup_in_stock/detail', //入库单详情
+      //仓管待入库
+      supInStockShMonitorQuery: apiM + '/sup_in_stock/sh_monitor_query', //待入库
+      supInStockShMonitorAdd: apiM + '/sup_in_stock/sh_monitor_add', //确认入库
+
+      //入库单
+      supMonitorInstockQuery: apiM + '/sup_monitor_instock/query', //查询入库单
+      supMonitorInstockDetail: apiM + '/sup_monitor_instock/detail', //查询入库单详情
       supInStockExport: apiM + '/sup_in_stock/export', //入库单导出
 
       supCheckQuery: apiM + '/sup_check/query', //盘点查询(变动记录)

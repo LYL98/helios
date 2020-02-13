@@ -3,14 +3,14 @@
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="inventoryData" :rules="rules" ref="ruleForm">
         <!--采购、详情-->
-        <el-row v-if="judgeOrs(pageType, ['add_purchase', 'detail_purchase'])">
+        <el-row v-if="judgeOrs(pageType, ['add_pur', 'detail_pur'])">
           <h6 class="subtitle">采购信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
           <el-col :span="12">
             <el-form-item label="采购单号">{{detail.code}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购日期">{{detail.order_date || detail.purchase_date}}</el-form-item>
+            <el-form-item label="采购日期">{{detail.relate_order.order_date || detail.relate_order.purchase_date}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
@@ -19,12 +19,17 @@
             <el-form-item label="采购数量">{{detail.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可入库数量">{{detail.num - detail.num_in}}件</el-form-item>
+            <el-form-item label="待入库数量">{{detail.un_qa_num}}件</el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="可入库数量">
+              <span style="color: #ff5252;">{{detail.un_qa_num - detail.num_in}}件</span>
+            </el-form-item>
           </el-col>
         </el-row>
 
         <!--调拨、详情-->
-        <el-row v-else-if="judgeOrs(pageType, ['add_allot', 'detail_allot'])">
+        <el-row v-else-if="judgeOrs(pageType, ['add_distribute', 'detail_distribute'])">
           <h6 class="subtitle">调拨信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
           <el-col :span="12">
@@ -34,28 +39,50 @@
             <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="调出仓">{{detail.src_storehouse.title}}</el-form-item>
+            <el-form-item label="调出仓">{{detail.relate_order.src_storehouse.title}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可售日期">{{detail.available_date}}</el-form-item>
+            <el-form-item label="可售日期">{{detail.relate_order.available_date}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可入库数量">{{detail.num - detail.num_in}}件</el-form-item>
+            <el-form-item label="待入库数量">{{detail.un_qa_num}}件</el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="可入库数量">
+              <span style="color: #ff5252;">{{detail.un_qa_num - detail.num_in}}件</span>
+            </el-form-item>
           </el-col>
         </el-row>
 
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_allot'])">
-          <h6 class="subtitle">入库信息</h6>
+        <template v-if="judgeOrs(pageType, ['detail_pur', 'detail_distribute'])">
+          <h6 class="subtitle">品控信息</h6>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="生产日期" prop="produce_date">
-                <el-date-picker size="medium" v-model="inventoryData.produce_date" :disabled="inventoryData.produce_date_disabled" value-format="yyyy-MM-dd" placeholder="生产日期" style="width: 100%;"/>
-              </el-form-item>
+            <el-col :span="12">
+              <el-form-item label="入库数量">{{detail.relate_order.num_in}}</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="生产日期">{{detail.relate_order.produce_date}}</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="保质期">{{detail.relate_order.shelf_life}}天</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="库存期">{{detail.relate_order.stock_life}}天</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="品控人">{{detail.relate_order.realname}}</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="品控时间">{{detail.relate_order.created}}</el-form-item>
             </el-col>
           </el-row>
+        </template>
+
+        <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute'])">
+          <h6 class="subtitle">入库信息</h6>
           <el-row v-for="(item, index) in inventoryData.trays" :key="index">
             <el-col :span="10">
               <el-form-item label="入库">
@@ -84,7 +111,7 @@
       </el-form>
 
       <div class="bottom-btn">
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_allot'])">
+        <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
@@ -114,12 +141,12 @@ export default {
   },
   data(){
     let initDetail = {
-      src_storehouse: {}
+      relate_order: {
+        src_storehouse: {},
+      }
     }
     let initInventoryData = {
       province_code: this.$province.code,
-      produce_date_disabled: false,
-      produce_date: '',
       in_type: '',
       relate_order_id: '',
       trays: [{
@@ -138,16 +165,12 @@ export default {
       detail: this.copyJson(initDetail),
       initInventoryData: initInventoryData,
       inventoryData: this.copyJson(initInventoryData),
-      rules: {
-        produce_date: [
-          { required: true, message: '请选择采购日期', trigger: 'change' }
-        ],
-      },
+      rules: {},
       pageTitles: {
-        add_purchase: '采购入库',
-        add_allot: '调拨入库',
-        detail_purchase: '采购入库详情',
-        detail_allot: '调拨入库详情',
+        add_pur: '采购入库',
+        add_distribute: '调拨入库',
+        detail_pur: '采购入库详情',
+        detail_distribute: '调拨入库详情',
       }
     }
   },
@@ -158,8 +181,6 @@ export default {
       this.$data.detail = data;
       this.$data.inventoryData = this.copyJson({
         ...this.initInventoryData,
-        produce_date_disabled: data.produce_date ? true : false,
-        produce_date: data.produce_date || '',
         in_type: data.order_type || 'distribute', //'global_pur', 'local_pur', 'distribute'
         relate_order_id: data.id,
       });
@@ -185,16 +206,16 @@ export default {
           con = false;
         }
       }
-      if(num > detail.num - detail.num_in){
-        this.$message({message: `可入库数量只有${detail.num - detail.num_in}件`, type: 'error'});
+      if(num > detail.un_qa_num - detail.num_in){
+        this.$message({message: `可入库数量只有${detail.un_qa_num - detail.num_in}件`, type: 'error'});
         con = false;
       }
       if(!con) return;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supInStockAdd, inventoryData);
+      let res = await Http.post(Config.api.supInStockShMonitorAdd, inventoryData);
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `${pageType === 'add_purchase' ? '统采' : '调拨'}入库成功`, type: 'success'});
+        this.$message({message: `${pageType === 'add_pur' ? '统采' : '调拨'}入库成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableWarehouseStockPending');
