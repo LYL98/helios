@@ -34,6 +34,24 @@
           />
         </my-query-item>
       </el-col>
+      <el-col :span="7">
+        <my-query-item label="创建时间">
+          <el-date-picker
+            size="small"
+            v-model="query.picker_value"
+            type="daterange"
+            align="right"
+            value-format="yyyy-MM-dd"
+            unlink-panels
+            :picker-options="fixDateOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change="changePicker"
+            style="width: 100%;"
+          />
+        </my-query-item>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -60,6 +78,9 @@
         supplier_id: '',
         status: '',
         condition: '',
+        picker_value: null,
+        begin_date: '',
+        end_date: '',
       }
       return {
         purchaseStatus: Constant.PURCHASE_STATUS('value_key'),
@@ -68,6 +89,18 @@
       }
     },
     methods: {
+      //搜索日期
+      changePicker(value){
+        if(value && value.length === 2){
+          this.query.begin_date = value[0];
+          this.query.end_date = value[1];
+        }else{
+          this.query.begin_date = '';
+          this.query.end_date = '';
+        }
+        this.$data.query = this.query;
+        this.handleQuery('TableSupplierLocalPurchase');
+      },
     }
   }
 </script>

@@ -228,6 +228,7 @@ const Config = (() => {
       //仓管待入库
       supInStockShMonitorQuery: apiM + '/sup_in_stock/sh_monitor_query', //待入库
       supInStockShMonitorAdd: apiM + '/sup_in_stock/sh_monitor_add', //确认入库
+      supInStockDetail: apiM + '/sup_in_stock/detail', //品控单详情
 
       //入库单
       supMonitorInstockQuery: apiM + '/sup_monitor_instock/query', //查询入库单

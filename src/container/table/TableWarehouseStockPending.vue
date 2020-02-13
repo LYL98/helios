@@ -33,10 +33,10 @@
               </div>
               <!--商品名称-->
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
-              <!--采购、调拨、品控数量-->
-              <div v-else-if="judgeOrs(item.key, ['num', 'un_qa_num'])" class="td-item add-dot2">{{scope.row[item.key]}}件</div>
+              <!--采购、调拨数量-->
+              <div v-else-if="item.key === 'order_num'" class="td-item add-dot2">{{scope.row.relate_order.num}}件</div>
               <!--已入库数量-->
-              <div v-else-if="item.key === 'num_in'" class="td-item add-dot2">{{returnUnit(scope.row.num_in, '件', '-')}}</div>
+              <div v-else-if="judgeOrs(item.key, ['num', 'num_in'])" class="td-item add-dot2">{{returnUnit(scope.row[item.key], '件', '-')}}</div>
               <!--调出仓、调入仓-->
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row.relate_order[item.key].title}}</div>
               <!--状态-->
@@ -69,7 +69,7 @@
                 {
                   title: '打印',
                   isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
-                  command: () => handleShowPrint('PrintWarehouseStockPending', scope.row)
+                  command: () => handleShowPrint('PrintWarehouseStockPending', {...scope.row, order_type: scope.row.in_type, id: scope.row.relate_order_id})
                 },
               ]"
             />
@@ -152,18 +152,18 @@
         if(tabValue === 'pur'){
           tableColumn = tableColumn.concat([
             { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
-            { label: '采购数量', key: 'num', width: '2', isShow: true }
+            { label: '采购数量', key: 'order_num', width: '2', isShow: true }
           ]);
         }else{
         //调拨
           tableColumn = tableColumn.concat([
             { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
-            { label: '调拨数量', key: 'num', width: '2', isShow: true },
+            { label: '调拨数量', key: 'order_num', width: '2', isShow: true },
             { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: true }
           ]);
         }
         tableColumn = tableColumn.concat([
-          { label: '待入库数量', key: 'un_qa_num', width: '2', isShow: true },
+          { label: '待入库数量', key: 'num', width: '2', isShow: true },
           { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '已入库数量', key: 'num_in', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },

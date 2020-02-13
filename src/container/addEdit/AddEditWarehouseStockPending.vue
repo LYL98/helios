@@ -19,11 +19,11 @@
             <el-form-item label="采购数量">{{detail.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="待入库数量">{{detail.un_qa_num}}件</el-form-item>
+            <el-form-item label="待入库数量">{{detail.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="可入库数量">
-              <span style="color: #ff5252;">{{detail.un_qa_num - detail.num_in}}件</span>
+              <span style="color: #ff5252;">{{detail.num - detail.num_in}}件</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -39,20 +39,20 @@
             <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="调出仓">{{detail.relate_order.src_storehouse.title}}</el-form-item>
+            <el-form-item label="调出仓">{{detail.storehouse.title}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可售日期">{{detail.relate_order.available_date}}</el-form-item>
+            <el-form-item label="可售日期">{{detail.available_date}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="待入库数量">{{detail.un_qa_num}}件</el-form-item>
+            <el-form-item label="待入库数量">{{detail.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="可入库数量">
-              <span style="color: #ff5252;">{{detail.un_qa_num - detail.num_in}}件</span>
+              <span style="color: #ff5252;">{{detail.num - detail.num_in}}件</span>
             </el-form-item>
           </el-col>
         </el-row>
@@ -61,22 +61,22 @@
           <h6 class="subtitle">品控信息</h6>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="入库数量">{{detail.relate_order.num_in}}</el-form-item>
+              <el-form-item label="入库数量">{{detail.num_in}}件</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="生产日期">{{detail.relate_order.produce_date}}</el-form-item>
+              <el-form-item label="生产日期">{{detail.produce_date}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="保质期">{{detail.relate_order.shelf_life}}天</el-form-item>
+              <el-form-item label="保质期">{{detail.shelf_life}}天</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="库存期">{{detail.relate_order.stock_life}}天</el-form-item>
+              <el-form-item label="库存期">{{detail.stock_life}}天</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="品控人">{{detail.relate_order.realname}}</el-form-item>
+              <el-form-item label="品控人">{{detail.creator.realname}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="品控时间">{{detail.relate_order.created}}</el-form-item>
+              <el-form-item label="品控时间">{{detail.created}}</el-form-item>
             </el-col>
           </el-row>
         </template>
@@ -110,6 +110,19 @@
         </template>
       </el-form>
 
+      <template v-if="judgeOrs(pageType, ['detail_pur', 'detail_distribute']) && detail.monitor_instocks.length > 0">
+        <h6 class="subtitle">关联入库单</h6>
+        <div style="padding: 0 30px; margin-bottom: 30px;">
+          <el-table :data="detail.monitor_instocks" :row-class-name="highlightRowClassName">
+            <el-table-column prop="code" label="入库单号"></el-table-column>
+            <el-table-column prop="num" label="入库数量">
+              <template slot-scope="scope">{{scope.row.num}}件</template>
+            </el-table-column>
+            <el-table-column prop="created" label="入库时间" width="160"></el-table-column>
+          </el-table>
+        </div>
+      </template>
+
       <div class="bottom-btn">
         <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
@@ -141,14 +154,13 @@ export default {
   },
   data(){
     let initDetail = {
-      relate_order: {
-        src_storehouse: {},
-      }
+      creator: {},
+      storehouse: {},
+      monitor_instocks: [],
+      relate_order: {}
     }
     let initInventoryData = {
-      province_code: this.$province.code,
-      in_type: '',
-      relate_order_id: '',
+      in_stock_id: '',
       trays: [{
         ids: [],
         ids_error: '',
@@ -178,17 +190,36 @@ export default {
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
       this.$data.pageType = type;
-      this.$data.detail = data;
-      this.$data.inventoryData = this.copyJson({
-        ...this.initInventoryData,
-        in_type: data.order_type || 'distribute', //'global_pur', 'local_pur', 'distribute'
-        relate_order_id: data.id,
-      });
       let pc = this.getPageComponents('QueryWarehouseStockPending');
       if(pc){
         this.$data.storehouseId = pc.query.storehouse_id;
       }
-      this.$data.isShow = true;
+      this.supInStockDetail(data.id);
+    },
+    //获取数据
+    async supInStockDetail(id){
+      this.$loading({isShow: true});
+      let res = await Http.get(Config.api.supInStockDetail, { id });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        let rd = res.data;
+        this.$data.detail = rd;
+        this.$data.inventoryData = this.copyJson({
+          in_stock_id: rd.id,
+          trays: [{
+            ids: [],
+            ids_error: '',
+            storehouse_id: '',
+            warehouse_id: '',
+            tray_id: '',
+            num: rd.num - rd.num_in,
+            num_error: ''
+          }]
+        });
+        this.$data.isShow = true;
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
     },
     //提交数据
     async addEditData(){
@@ -206,8 +237,8 @@ export default {
           con = false;
         }
       }
-      if(num > detail.un_qa_num - detail.num_in){
-        this.$message({message: `可入库数量只有${detail.un_qa_num - detail.num_in}件`, type: 'error'});
+      if(num > detail.num - detail.num_in){
+        this.$message({message: `可入库数量只有${detail.num - detail.num_in}件`, type: 'error'});
         con = false;
       }
       if(!con) return;
