@@ -58,10 +58,10 @@
       </template>
     </el-form>
 
-    <template v-if="detail.in_stocks.length > 0">
+    <template v-if="detail.instocks.length > 0">
       <h6 class="subtitle">品控信息</h6>
       <div style="padding: 0 30px;">
-        <el-table :data="detail.in_stocks" :row-class-name="highlightRowClassName">
+        <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
           <el-table-column label="到货数量">
             <template slot-scope="scope">{{scope.row.num_arrive}}件</template>
           </el-table-column>
@@ -106,7 +106,7 @@
     },
     data() {
       let initDetail = {
-        in_stocks: []
+        instocks: []
       }
       return {
         purchaseStatus: Constant.PURCHASE_STATUS(),

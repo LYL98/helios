@@ -204,7 +204,7 @@ export default {
       if(res.code === 0){
         let rd = res.data;
         this.$data.detail = rd;
-        this.$data.inventoryData = this.copyJson({
+        this.$data.inventoryData = {
           in_stock_id: rd.id,
           trays: [{
             ids: [],
@@ -215,7 +215,7 @@ export default {
             num: rd.num - rd.num_in,
             num_error: ''
           }]
-        });
+        };
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});

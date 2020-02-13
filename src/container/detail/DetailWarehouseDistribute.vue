@@ -51,7 +51,7 @@
     </el-form>
     <h6 class="subtitle">入库单信息</h6>
     <div style="padding: 0 16px;">
-      <el-table :data="detail.in_stocks" width="100%">
+      <el-table :data="detail.instocks" width="100%">
         <el-table-column label="入库单号" prop="code"/>
         <el-table-column label="入库数量" prop="num"/>
         <el-table-column label="入库时间" prop="created"/>
@@ -74,7 +74,7 @@
     },
     data() {
       let initDetail = {
-        in_stocks: [],
+        instocks: [],
         relate_order: {},
         creator: {}
       }

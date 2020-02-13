@@ -225,6 +225,9 @@ export default {
         }
       },
       rules: {
+        produce_date: [
+          { required: true, message: '请选择采购日期', trigger: 'change' }
+        ],
         num_arrive: [
           { required: true, message: '请输入到货数量', trigger: 'change' }
         ],
