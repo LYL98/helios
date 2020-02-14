@@ -45,12 +45,12 @@
               </el-switch>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="80" v-if="auth.isAdmin || auth.SupplierListItemEdit">
-            <template slot-scope="scope">
-              <a href="javascript:void(0);" @click="deleteItem(scope.$index)">移除</a>
-            </template>
-          </el-table-column>
         </template>
+        <el-table-column label="操作" width="80" v-if="auth.isAdmin || auth.SupplierListItemEdit">
+          <template slot-scope="scope">
+            <a href="javascript:void(0);" @click="deleteItem(scope.$index)">移除</a>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div style="margin: 30px 0 0 140px;">
@@ -141,50 +141,29 @@
       },
       //修改绑定商品
       editBindItems(){
-        let { detail } = this;
+        let { detail, dataItem } = this;
+        let data = {
+          supplier_id: detail.id,
+          bind_item_ids: []
+        };
         if(detail.supplier_type === 'global_pur'){
-          this.supplierBindGItemsEdit();
-        }else{
-          this.supplierBindItemsEdit();
-        }
-      },
-      //统采供应商品
-      async supplierBindGItemsEdit(){
-        let { detail, dataItem } = this;
-        let bindItemIds = [];
-        dataItem.forEach(item => {
-          bindItemIds.push({
-            item_id: item.id
+          dataItem.forEach(item => {
+            data.bind_item_ids.push(item.id);
           });
-        });
-        this.$loading({isShow: true, isWhole: true});
-        let res = await Http.post(Config.api.supplierBindItemsEdit, {
-          supplier_id: detail.id,
-          bind_item_ids: bindItemIds
-        });
-        this.$loading({isShow: false});
-        if(res.code === 0){
-          this.$message({message: '供应商品修改成功', type: 'success'});
-          this.handleCancel();
         }else{
-          this.$message({message: res.message, type: 'error'});
-        }
-      },
-      //地采供应商品
-      async supplierBindItemsEdit(){
-        let { detail, dataItem } = this;
-        let bindItemIds = [];
-        dataItem.forEach(item => {
-          bindItemIds.push({
-            item_id: item.id,
-            is_main: item.is_main
+          dataItem.forEach(item => {
+            data.bind_item_ids.push({
+              item_id: item.id,
+              is_main: item.is_main
+            });
           });
-        });
+        }
+        this.supplierBindItemsEdit(data);
+      },
+      //供应商品
+      async supplierBindItemsEdit(data){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.post(Config.api.supplierBindItemsEdit, {
-          supplier_id: detail.id,
-          bind_item_ids: bindItemIds
-        });
+        let res = await Http.post(Config.api.supplierBindItemsEdit, data);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$message({message: '供应商品修改成功', type: 'success'});
