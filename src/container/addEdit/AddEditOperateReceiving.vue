@@ -222,6 +222,15 @@ export default {
       un_qa_amount: 0,
       remark: '',
     }
+    //数量判断
+    let numVar = (rules, value, callback)=>{
+      let { detail } = this;
+      if (Number(value) > detail.num - detail.num_in) {
+        callback('不能大于可入库数量')
+      }else {
+        callback();
+      }
+    }
     return {
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -246,7 +255,8 @@ export default {
           { required: true, message: '请选择品控数量', trigger: 'change' }
         ],
         num: [
-          { required: true, message: '请选择采购日期', trigger: 'change' }
+          { required: true, message: '请输入入库数量', trigger: 'change' },
+          { validator: numVar, trigger: 'blur' }
         ],
         un_qa_num: { required: true, message: '请输入处理数量', trigger: 'change' },
         un_qa_type: { required: true, message: '请选择处理类型', trigger: 'change' },

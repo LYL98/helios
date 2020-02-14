@@ -8,13 +8,13 @@
       </el-col>
       <el-col :span="7">
         <my-query-item label="职务">
-          <el-select v-model="query.post" placeholder="请选择" size="small" class="query-item-select" @change="handleQuery('TableSystemOperator')">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="业务员" value="salesman"></el-option>
-            <el-option label="采购员" value="buyer"></el-option>
-            <el-option label="配送员" value="distributor"></el-option>
-            <el-option label="其他" value="other"></el-option>
-          </el-select>
+          <select-option
+            :options="{'全部': '', ...operatorPost}"
+            v-model="query.post"
+            @change="handleQuery('TableSystemOperator')"
+            size="small"
+            clearable
+          />
         </my-query-item>
       </el-col>
       <el-col :span="10">
@@ -60,6 +60,7 @@
   import queryMixin from './query.mixin';
   import SearchRole from './../search/SearchRole';
   import { SelectOption } from '@/common';
+  import { Constant } from '@/util';
 
   export default {
     name: "QuerySystemOperator",
@@ -86,6 +87,7 @@
       return {
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
+        operatorPost: Constant.OPERATOR_POST('value_key'),
       }
     },
     methods: {

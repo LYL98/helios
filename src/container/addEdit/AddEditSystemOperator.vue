@@ -1,7 +1,7 @@
 <template>
   <div>
     <add-edit-layout :title="returnPageTitles('运营人员')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-      <el-form class="custom-form" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+      <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-row>
           <el-col :span="12">
             <el-form-item label="姓名" prop="realname">
@@ -32,6 +32,19 @@
           <el-radio v-model="detail.post" @change="handleChange" label="">无</el-radio>
           <el-radio v-model="detail.post" @change="handleChange" v-for="(value, key) in operatorPost" :key="key" :label="key">{{value}}</el-radio>
         </el-form-item>
+        <!--司机-->
+        <el-row v-if="detail.post === 'deliver'">
+          <el-col :span="12">
+            <el-form-item label="车牌" prop="driver_car_num">
+              <el-input v-model="detail.driver_car_num" size="medium" :maxlength="10" placeholder="请输入10位以内字符"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="车型" prop="driver_car_type">
+              <el-input v-model="detail.driver_car_type" size="medium" :maxlength="20" placeholder="请输入20位以内字符"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="角色" prop="role_ids">
           <el-transfer v-model="detail.role_ids" :data="roleList" :titles="['未选角色','已选角色']"></el-transfer>
         </el-form-item>
@@ -97,7 +110,7 @@ export default {
   data(){
     let that = this;
     return{
-      operatorPost: Constant.OPERATOR_POST,
+      operatorPost: Constant.OPERATOR_POST(),
       dataLevel: Constant.OPERATOR_DATA_LEVEL,
       roleList: [],
       initDetail: {
@@ -125,6 +138,12 @@ export default {
         ],
         role_ids: [
           { type: 'array', required: true, message: '请选择角色', trigger: 'blur' }
+        ],
+        driver_car_num: [
+          { required: true, message: '车牌不能为空', trigger: 'change' },
+        ],
+        driver_car_type: [
+          { required: true, message: '车型不能为空', trigger: 'change' },
         ],
         data_value: []
       }
@@ -197,7 +216,8 @@ export default {
       this.leveChange(this.detail.data_level)
     },
     //显示新增修改(重写)
-    showAddEdit(data){
+    showAddEdit(data, type){
+      this.$data.pageType = type;
       let d = {};
       if(data){
         d = JSON.parse(JSON.stringify(data));

@@ -256,12 +256,23 @@ const Constant = {
     '5': '线路'
   },
   //运营人员职务
-  OPERATOR_POST: {
-    salesman: '业务员',
-    buyer: '采购员',
-    deliver: '司机',
-    sorter: '分拣员',
-    local_distributor: '落地配送员'
+  OPERATOR_POST: (type) => {
+    let data = [
+      { key: 'salesman', value: '业务员' },
+      { key: 'buyer', value: '采购员' },
+      { key: 'deliver', value: '司机' },
+      { key: 'sorter', value: '分拣员' },
+      { key: 'local_distributor', value: '落地配送员' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //运营人员职务 颜色
+  OPERATOR_POST_TYPE: {
+    salesman: 'info',
+    buyer: 'info',
+    deliver: 'info',
+    sorter: 'info',
+    local_distributor: 'info'
   },
   // 退筐记录的状态
   OPERATE_REFUND_FRAME_STATUS: {

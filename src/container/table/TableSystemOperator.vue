@@ -4,7 +4,7 @@
     <div class="table-top" v-if="auth.isAdmin || auth.SystemOperatorAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditSystemOperator')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEditSystemOperator', null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -74,7 +74,7 @@
                     {
                       title: '修改',
                       isDisplay: auth.isAdmin || auth.SystemOperatorEdit,
-                      command: () => handleShowAddEdit('AddEditSystemOperator', scope.row)
+                      command: () => handleShowAddEdit('AddEditSystemOperator', scope.row, 'edit')
                     },
                     {
                       title: '重置密码',
@@ -117,7 +117,7 @@ export default {
       defaultAvatar: Constant.IMGS.defaultAvatar,
       gender: Constant.USER_GENDER,
       source: Constant.USER_SOURCE,
-      operatorPost: Constant.OPERATOR_POST,
+      operatorPost: Constant.OPERATOR_POST(),
       rowIdentifier: "code"
     };
   },

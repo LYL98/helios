@@ -2,8 +2,8 @@
   <detail-layout title="品控入库详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <div class="f-r" style="position: relative; right: -84px;">
-        <el-tag size="small" :type="purchaseStatusType[detail.status]" disable-transitions>
-          {{purchaseStatus[detail.status]}}
+        <el-tag size="small" :type="inventoryStatusType[detail.status]" disable-transitions>
+          {{inventoryStatus[detail.status]}}
         </el-tag>
       </div>
       <h6 class="subtitle">采购信息</h6>
@@ -108,8 +108,8 @@
         instocks: []
       }
       return {
-        purchaseStatus: Constant.PURCHASE_STATUS(),
-        purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
+        inventoryStatus: Constant.PURCHASE_STATUS(),
+        inventoryStatusType: Constant.PURCHASE_STATUS_TYPE,
         supOptTypes: Constant.SUP_OPT_TYPES(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail),

@@ -3,7 +3,7 @@
     <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}县域`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="120px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">
         <el-form-item label="编号">
-          <el-input v-model="detail.code" disabled placeholder="系统自动生成" :maxlength="12"></el-input>
+          <el-input v-model="detail.code" disabled placeholder="系统自动生成"></el-input>
         </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>

@@ -43,22 +43,22 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="司机姓名" prop="driver_name">
-            <el-input size="medium" length="10" v-model="detail.driver_name"/>
+            <el-input size="medium" :maxlength="10" v-model="detail.driver_name"/>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="手机号" prop="driver_phone">
-            <el-input size="medium" length="11" v-model="detail.driver_phone"/>
+            <el-input size="medium" :maxlength="11" v-model="detail.driver_phone"/>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="车牌" prop="driver_car_num">
-            <el-input size="medium" length="10" v-model="detail.driver_car_num"/>
+            <el-input size="medium" :maxlength="10" v-model="detail.driver_car_num"/>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="车型" prop="driver_car_type">
-            <el-input size="medium" length="20" v-model="detail.driver_car_type"/>
+            <el-input size="medium" :maxlength="20" v-model="detail.driver_car_type"/>
           </el-form-item>
         </el-col>
         <el-col :span="12">

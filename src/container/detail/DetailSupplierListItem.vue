@@ -120,6 +120,7 @@
           let con = dataItem.filter(item => item.id === selectItemData.id);
           if(con.length > 0){
             this.$data.selectItemData = { error: '选择商品的商品已存在' };
+            this.$data.selectItemId = '';
             return;
           }
           dataItem.push({
@@ -149,7 +150,25 @@
       },
       //统采供应商品
       async supplierBindGItemsEdit(){
-
+        let { detail, dataItem } = this;
+        let bindItemIds = [];
+        dataItem.forEach(item => {
+          bindItemIds.push({
+            item_id: item.id
+          });
+        });
+        this.$loading({isShow: true, isWhole: true});
+        let res = await Http.post(Config.api.supplierBindItemsEdit, {
+          supplier_id: detail.id,
+          bind_item_ids: bindItemIds
+        });
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$message({message: '供应商品修改成功', type: 'success'});
+          this.handleCancel();
+        }else{
+          this.$message({message: res.message, type: 'error'});
+        }
       },
       //地采供应商品
       async supplierBindItemsEdit(){
