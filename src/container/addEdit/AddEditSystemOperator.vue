@@ -32,6 +32,10 @@
           <el-radio v-model="detail.post" @change="handleChange" label="">无</el-radio>
           <el-radio v-model="detail.post" @change="handleChange" v-for="(value, key) in operatorPost" :key="key" :label="key">{{value}}</el-radio>
         </el-form-item>
+        <el-form-item label="角色" prop="role_ids">
+          <el-transfer v-model="detail.role_ids" :data="roleList" :titles="['未选角色','已选角色']"></el-transfer>
+        </el-form-item>
+
         <!--司机-->
         <el-row v-if="detail.post === 'deliver'">
           <el-col :span="12">
@@ -45,9 +49,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="角色" prop="role_ids">
-          <el-transfer v-model="detail.role_ids" :data="roleList" :titles="['未选角色','已选角色']"></el-transfer>
-        </el-form-item>
+
         <el-form-item label="权限级别">
           <el-radio v-for="(item, key) in dataLevel" :disabled="detail.data_level != 1 && (current.length>0 && key != current)" :key="key" v-model="detail.data_level" :label="key" @change="changeDataLevel">{{item}}</el-radio>
         </el-form-item>
@@ -108,18 +110,21 @@ export default {
     this.getRoleList();
   },
   data(){
-    let that = this;
+    let initDetail = {
+      data_level: '1',
+      data_value: [],
+      role_ids: [],
+      post: '',
+      avatar: [],
+      driver_car_num: '',
+      driver_car_type: ''
+    }
     return{
       operatorPost: Constant.OPERATOR_POST(),
       dataLevel: Constant.OPERATOR_DATA_LEVEL,
       roleList: [],
-      initDetail: {
-        data_level: '1',
-        data_value: [],
-        role_ids: [],
-        post: '',
-        avatar: []
-      },
+      initDetail: initDetail,
+      detail: this.copyJson(initDetail),
       size:1,
       current:'',
       rules: {
@@ -140,10 +145,10 @@ export default {
           { type: 'array', required: true, message: '请选择角色', trigger: 'blur' }
         ],
         driver_car_num: [
-          { required: true, message: '车牌不能为空', trigger: 'change' },
+          { required: true, message: '车牌不能为空', trigger: 'change' }
         ],
         driver_car_type: [
-          { required: true, message: '车型不能为空', trigger: 'change' },
+          { required: true, message: '车型不能为空', trigger: 'change' }
         ],
         data_value: []
       }
@@ -151,10 +156,7 @@ export default {
   },
   methods: {
     //改变权限等级
-    changeDataLevel(v){
-      this.leveChange(v)
-    },
-    leveChange(v) {
+    changeDataLevel(v) {
        if(v === '1' || v === '2'){
         this.$delete(this.detail, 'province_code');
       }
@@ -213,20 +215,20 @@ export default {
       }else{
         this.detail.data_level = '1'
       }
-      this.leveChange(this.detail.data_level)
+      this.changeDataLevel(this.detail.data_level)
     },
     //显示新增修改(重写)
     showAddEdit(data, type){
       this.$data.pageType = type;
       let d = {};
       if(data){
-        d = JSON.parse(JSON.stringify(data));
+        d = this.copyJson(data);
         d.avatar= [];
         if(data.avatar && typeof data.avatar == 'string'){
           d.avatar = [data.avatar];
         }
       }else{
-        d = JSON.parse(JSON.stringify(this.initDetail));
+        d = this.copyJson(this.initDetail);
       }
       this.judgeAddRules(data);
       this.$data.detail = d;

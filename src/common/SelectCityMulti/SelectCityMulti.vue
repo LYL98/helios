@@ -19,7 +19,7 @@ export default {
     provinceCode: { type: String | Number, default: '' },
     filterable: { type: Boolean, default: false },
     forCreateLine: { type: Boolean, default: false },
-    connectData: { type: Array, default: [] }
+    connectData: { type: Array, default: null}
   },
   model: {
     prop: 'value',
@@ -52,7 +52,7 @@ export default {
       });
       if(res.code === 0){
         let rd = res.data, d = [];
-        rd = rd.concat(connectData);
+        if(connectData) rd = rd.concat(connectData);
         rd.forEach(item => {
           d.push({
             label: item.title,

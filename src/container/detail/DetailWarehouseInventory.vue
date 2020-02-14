@@ -7,7 +7,13 @@
     <div style="margin: 0 20px;">
       <el-table :data="dataItem.items" width="100%">
         <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
-        <el-table-column label="批次" prop="batch_code"/>
+        <el-table-column label="批次" prop="batch_code">
+          <template slot-scope="scope">
+            <span v-if="auth.isAdmin || auth.WarehouseInventoryDetailBuyDetail" class="link-item"
+              @click="handleShowBuyDetail(scope.row)">{{scope.row.batch_code}}</span>
+            <span v-else>{{scope.row.batch_code}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="供应商" prop="supplier_title" min-width="100"/>
         <el-table-column label="库存" min-width="60">
           <template slot-scope="scope">{{scope.row.num}}件</template>
@@ -151,10 +157,31 @@
         this.$data.query.page = page;
         this.wareTrayItemQeruy();
       },
+
+      //显示详情采购
+      handleShowBuyDetail(data){
+        if(data.purchase_order_type === 'global_pur'){
+          this.handleShowAddEdit('AddEditSupplierGPurchase', {
+            id: data.purchase_order_id
+          }, 'detail');
+        }else{
+          this.handleShowAddEdit('AddEditSupplierLocalPurchase', {
+            id: data.purchase_order_id
+          }, 'detail');
+        }
+        
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
   @import "./detail.scss";
+  .link-item{
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover{
+      opacity: .7;
+    }
+  }
 </style>

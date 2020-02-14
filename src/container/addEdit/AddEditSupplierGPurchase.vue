@@ -70,12 +70,18 @@
           <h6 class="subtitle">关联入库单</h6>
           <div style="padding: 0 30px; margin-bottom: 30px;">
             <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
-              <el-table-column prop="code" label="入库单号"></el-table-column>
+              <el-table-column prop="code" label="入库单号">
+                <template slot-scope="scope">
+                  <span v-if="(auth.isAdmin || auth.SupplierGPurchaseDetailStock) && fromPage !== 'Inventory'" class="link-item"
+                    @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_pur')">{{scope.row.code}}</span>
+                  <span v-else>{{scope.row.code}}</span>
+                </template>
+              </el-table-column>
               <el-table-column prop="num" label="入库数量">
                 <template slot-scope="scope">{{scope.row.num}}件</template>
               </el-table-column>
               <el-table-column prop="created" label="入库时间"></el-table-column>
-              <el-table-column prop="status" label="状态">
+              <el-table-column prop="status" label="状态" width="140">
                 <template slot-scope="scope">{{inventoryStatus[scope.row.status]}}</template>
               </el-table-column>
             </el-table>
@@ -97,12 +103,16 @@
               <el-table-column prop="remark" label="备注">
                 <template slot-scope="scope">{{returnRemark(scope.row)}}</template>
               </el-table-column>
-              <el-table-column prop="operator_name" label="操作人"></el-table-column>
+              <el-table-column prop="operator_name" label="操作人" width="140"></el-table-column>
             </el-table>
           </div>
       </template>
-
-      <div class="bottom-btn">
+      <!--库存页面-->
+      <div v-if="fromPage === 'Inventory'" class="bottom-btn">
+        <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
+      </div>
+      <!--其它-->
+      <div class="bottom-btn" v-else>
         <template v-if="judgeOrs(pageType, ['add', 'edit'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
@@ -133,6 +143,9 @@ export default {
     'input-price': InputPrice,
     'log-modified-detail': LogModifiedDetail,
     'select-storehouse': SelectStorehouse
+  },
+  props: {
+    fromPage: { type: String, defalut: '' }, //来自页面 fromPage：Inventory 库存
   },
   created() {
   },
@@ -248,4 +261,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import "./add.edit.scss";
+  .link-item{
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover{
+      opacity: .7;
+    }
+  }
 </style>
