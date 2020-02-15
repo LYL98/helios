@@ -1,7 +1,8 @@
 <template>
   <div>
     <add-edit-layout :title="returnPageTitles('运营人员')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-      <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+      <!--isShow解决渲染问题-->
+      <el-form v-if="isShow" class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-row>
           <el-col :span="12">
             <el-form-item label="姓名" prop="realname">
