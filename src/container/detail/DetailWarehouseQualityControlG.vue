@@ -76,8 +76,7 @@
           <el-table-column label="合格数量" width="120">
             <template slot-scope="scope">
               <span>{{scope.row.num}}件</span>
-              <a v-if="scope.row.status === 'success' && (auth.isAdmin || auth.WarehouseQualityControlEditNum)"
-                style="margin-left: 10px;" href="javascript:void(0);" @click="handleShowForm('FormWarehouseQualityControlEditNum', scope.row)">修改</a>
+              <a v-if="editAuth(scope.row)" style="margin-left: 10px;" href="javascript:void(0);" @click="handleShowForm('FormWarehouseQualityControlEditNum', scope.row)">修改</a>
             </template>
           </el-table-column>
           <el-table-column label="备注" prop="remark"></el-table-column>
@@ -101,6 +100,9 @@
     name: "DetailWarehouseQualityControlG",
     mixins: [detailMixin],
     components: {
+    },
+    props: {
+      fromPage: { type: String, default: '' }, //Receiving 场地收货  QualityControl 仓库入库
     },
     data() {
       let initDetail = {
@@ -135,6 +137,16 @@
           this.$message({message: res.message, type: 'error'});
         }
       },
+      //修改权限
+      editAuth(data){
+        let { fromPage, auth } = this;
+        if(fromPage === 'Receiving' && data.status === 'success' && (auth.isAdmin || auth.OperateReceivingEditNum)){
+          return true;
+        }
+        if(fromPage === 'QualityControl' && data.status === 'success' && (auth.isAdmin || auth.WarehouseQualityControlEditNum)){
+          return true;
+        }
+      }
     }
   }
 </script>

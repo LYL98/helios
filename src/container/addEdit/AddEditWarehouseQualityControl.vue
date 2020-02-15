@@ -209,7 +209,7 @@ export default {
     const validNumArrive = (rules, value, callback)=>{
       let { detail } = this;
       if (Number(value) > detail.num - detail.num_in) {
-        return callback(new Error('不能大于可到货数量'));
+        return callback(new Error('不能大于可收货数量'));
       }
       callback();
     }

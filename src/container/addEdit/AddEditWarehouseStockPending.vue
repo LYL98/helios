@@ -51,7 +51,12 @@
         <template v-if="judgeOrs(pageType, ['detail_global_pur', 'detail_local_pur', 'detail_distribute', 'detail_allocate'])">
           <el-row>
             <h6 class="subtitle">入库信息</h6>
-            <el-form-item label="入库单号">{{detail.code}}</el-form-item>
+            <el-col :span="12">
+              <el-form-item label="入库单号">{{detail.code}}</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="到货数量">{{detail.num_arrive}}件</el-form-item>
+            </el-col>
             <el-col :span="12">
               <el-form-item label="合格数量">{{detail.num}}件</el-form-item>
             </el-col>
