@@ -18,11 +18,6 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="保质期" prop="shelf_life">
-              <input-number size="medium" v-model="detail.shelf_life" :min="1" unit="天" disabled/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="筐">
               <el-input size="medium" v-if="detail.frame_code" :value="`${detail.frame.title} (￥${returnPrice(detail.frame.price)})`" disabled></el-input>
               <el-input size="medium" v-else value="-" disabled></el-input>
@@ -46,6 +41,16 @@
           <el-col :span="12">
             <el-form-item label="毛重">
               <input-weight size="medium" :value="detail.gross_weight" disabled unit="斤"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="保质期">
+              <input-number size="medium" :value="detail.shelf_life" unit="天" disabled/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="库存期">
+              <input-number size="medium" :value="detail.stock_life" unit="天" disabled/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
