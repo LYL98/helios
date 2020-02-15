@@ -205,11 +205,11 @@ export default {
       remark: '',
     }
 
-    //收货数量校验
+    //到货数量校验
     const validNumArrive = (rules, value, callback)=>{
       let { detail } = this;
       if (Number(value) > detail.num - detail.num_in) {
-        return callback(new Error('不能大于可收货数量'));
+        return callback(new Error('不能大于可到货数量'));
       }
       callback();
     }
@@ -217,7 +217,7 @@ export default {
     const validNum = (rules, value, callback)=>{
       let { inventoryData } = this;
       if (Number(value) > inventoryData.num_arrive) {
-        return callback(new Error('不能大于收货数量'));
+        return callback(new Error('不能大于到货数量'));
       }
       callback();
     }
@@ -281,7 +281,7 @@ export default {
     //是否显示不合格处理
     isShowNo(){
       let { inventoryData, detail, pageType } = this;
-      //收货数量小于或等于可收货数量 && 收货数量大于合格数量
+      //到货数量小于或等于可到货数量 && 到货数量大于合格数量
       if(pageType === 'add_allot' &&
         typeof inventoryData.num_arrive === 'number' && typeof inventoryData.num === 'number' &&
         inventoryData.num_arrive <= detail.num - detail.num_in &&

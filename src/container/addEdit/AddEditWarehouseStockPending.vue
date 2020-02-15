@@ -77,7 +77,7 @@
                 <el-form-item label="处理金额">&yen;{{returnPrice(detail.un_qa_amount)}}</el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="备注">{{detail.un_qa_remark || '-'}}</el-form-item>
+            <el-form-item label="备注">{{detail.remark || '-'}}</el-form-item>
           </template>
           <el-row>
             <el-col :span="12">
@@ -208,7 +208,7 @@ export default {
       detail: this.copyJson(initDetail),
       initInventoryData: initInventoryData,
       inventoryData: this.copyJson(initInventoryData),
-      supOptTypes: Constant.SUP_OPT_TYPES('value_key'),
+      supOptTypes: Constant.SUP_OPT_TYPES(),
       rules: {},
       pageTitles: {
         add_global_pur: '采购入库',

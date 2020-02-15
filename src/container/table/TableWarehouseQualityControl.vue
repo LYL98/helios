@@ -150,13 +150,12 @@
           items: [],
           num: 0
         };
-        tableColumn = [
-          { label: '采购单号', key: 'code', width: '3', isShow: true },
-          { label: '商品编号/名称', key: 'item', width: '4', isShow: true }
-        ];
+        tableColumn = [];
         //采购
         if(tabValue === 'purchase'){
           tableColumn = tableColumn.concat([
+            { label: '采购单号', key: 'code', width: '3', isShow: true },
+            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
             { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
             { label: '采购数量', key: 'num', width: '2', isShow: true },
             { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
@@ -164,6 +163,8 @@
         }else{
         //调拨
           tableColumn = tableColumn.concat([
+            { label: '调拨单号', key: 'code', width: '3', isShow: true },
+            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
             { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
             { label: '调拨数量', key: 'num', width: '2', isShow: true },
             { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: true },
