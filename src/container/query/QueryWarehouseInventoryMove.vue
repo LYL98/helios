@@ -68,18 +68,6 @@
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }
     },
-    computed: {
-      inventoryStatus: {
-        get(){
-          let d = Constant.INVENTORY_STATUS('value_key');
-          delete d['全部入库'];
-          return {
-            '全部': '',
-            ...d
-          };
-        }
-      }
-    },
     methods: {
       //搜索日期
       changePicker(value){

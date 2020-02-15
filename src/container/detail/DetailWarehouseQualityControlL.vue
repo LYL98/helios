@@ -1,5 +1,5 @@
 <template>
-  <detail-layout title="品控入库详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <detail-layout title="品控详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <div class="f-r" style="position: relative; right: -84px;">
         <el-tag size="small" :type="qCStatusType[detail.status]" disable-transitions>
@@ -33,14 +33,22 @@
       <template v-if="detail.status === 'closed'">
         <h6 class="subtitle">关闭信息</h6>
         <el-form-item label="备注">{{detail.close_remark}}</el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="品控人">{{detail.closer.realname}}</el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="品控时间">{{detail.closer.created}}</el-form-item>
+          </el-col>
+        </el-row>
       </template>
       
       <!--否则-->
-      <template v-else>
-        <h6 class="subtitle">品控入库信息</h6>
+      <template v-else-if="judgeOrs(detail.status, ['part_in', 'all_in'])">
+        <h6 class="subtitle">品控信息</h6>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="入库数量">{{detail.num_in}}件</el-form-item>
+            <el-form-item label="合格数量">{{detail.num_in}}件</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="生产日期">{{detail.produce_date}}</el-form-item>
@@ -56,35 +64,28 @@
     </el-form>
 
     <template v-if="detail.instocks.length > 0">
-      <h6 class="subtitle">品控信息</h6>
+      <h6 class="subtitle">品控记录</h6>
       <div style="padding: 0 30px;">
         <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
-          <el-table-column label="到货数量">
+          <el-table-column label="到货数量" width="90">
             <template slot-scope="scope">{{scope.row.num_arrive}}件</template>
           </el-table-column>
-          <el-table-column label="品控数量">
+          <el-table-column label="品控抽检" width="90">
             <template slot-scope="scope">{{scope.row.qa_num}}件</template>
           </el-table-column>
-          <el-table-column label="入库数量">
+          <el-table-column label="合格数量" width="120">
             <template slot-scope="scope">
               <span>{{scope.row.num}}件</span>
               <a v-if="scope.row.status === 'success' && (auth.isAdmin || auth.WarehouseQualityControlEditNum)"
                 style="margin-left: 10px;" href="javascript:void(0);" @click="handleShowForm('FormWarehouseQualityControlEditNum', scope.row)">修改</a>
             </template>
           </el-table-column>
-          <el-table-column label="处理数量">
-            <template slot-scope="scope">{{returnUnit(scope.row.un_qa_num, '件', '-')}}</template>
+          <el-table-column label="备注" prop="remark"></el-table-column>
+          <el-table-column label="品控人" width="100">
+            <template slot-scope="scope">{{scope.row.creator.realname}}</template>
           </el-table-column>
-          <el-table-column label="处理类型">
-            <template slot-scope="scope">{{scope.row.un_qa_type ? supOptTypes[scope.row.un_qa_type] : '-'}}</template>
-          </el-table-column>
-          <el-table-column label="处理金额">
-            <template slot-scope="scope">{{scope.row.un_qa_amount ? '￥' + returnPrice(scope.row.un_qa_amount) : '-'}}</template>
-          </el-table-column>
-          <el-table-column label="操作" width="60">
-            <template slot-scope="scope">
-              <a href="javascript:void(0);" @click="handleShowDetail('DetailWarehouseQualityControlInstock', scope.row)">详情</a>
-            </template>
+          <el-table-column label="品控时间" width="160">
+            <template slot-scope="scope">{{scope.row.created}}</template>
           </el-table-column>
         </el-table>
       </div>
@@ -97,7 +98,7 @@
   import { Http, Config, Constant } from '@/util';
 
   export default {
-    name: "DetailWarehouseQualityControlG",
+    name: "DetailWarehouseQualityControlL",
     mixins: [detailMixin],
     components: {
     },

@@ -8,7 +8,6 @@
     <detail-warehouse-quality-control-a :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlA"/>
     <detail-warehouse-quality-control-g :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlG"/>
     <detail-warehouse-quality-control-l :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlL"/>
-    <detail-warehouse-quality-control-instock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlInstock"/>
     <form-warehouse-quality-control-edit-num :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseQualityControlEditNum"/>
   </div>
 </template>
@@ -23,7 +22,6 @@
     DetailWarehouseQualityControlA,
     DetailWarehouseQualityControlG,
     DetailWarehouseQualityControlL,
-    DetailWarehouseQualityControlInstock,
     FormWarehouseQualityControlEditNum
   } from '@/container';
   import viewMixin from '@/view/view.mixin';
@@ -39,7 +37,6 @@
       'detail-warehouse-quality-control-a': DetailWarehouseQualityControlA,
       'detail-warehouse-quality-control-g': DetailWarehouseQualityControlG,
       'detail-warehouse-quality-control-l': DetailWarehouseQualityControlL,
-      'detail-warehouse-quality-control-instock': DetailWarehouseQualityControlInstock,
       'form-warehouse-quality-control-edit-num': FormWarehouseQualityControlEditNum,
     },
     mixins: [viewMixin],

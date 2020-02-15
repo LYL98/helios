@@ -2,8 +2,21 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="仓库">
-          <select-storehouse size="small" v-model="query.storehouse_id" @change="handleQuery('TableWarehouseStockPending')" isAuth @initCallBack="storehouseInit"/>
+        <my-query-item label="创建时间">
+          <el-date-picker
+            size="small"
+            v-model="query.picker_value"
+            type="daterange"
+            align="right"
+            value-format="yyyy-MM-dd"
+            unlink-panels
+            :picker-options="fixDateOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change="changePicker"
+            style="width: 100%;"
+          />
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -20,6 +33,13 @@
       <el-col :span="10">
         <my-query-item label="搜索">
           <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseStockPending')" @reset="handleClearQuery('TableWarehouseStockPending')"/>
+        </my-query-item>
+      </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
+      <el-col :span="7">
+        <my-query-item label="仓库">
+          <select-storehouse size="small" v-model="query.storehouse_id" @change="handleQuery('TableWarehouseStockPending')" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -45,7 +65,10 @@
       let initQuery = {
         status: '',
         condition: '',
-        storehouse_id: ''
+        storehouse_id: '',
+        picker_value: null,
+        begin_date: '',
+        end_date: '',
       }
       return {
         initQuery: initQuery,
@@ -79,7 +102,19 @@
         this.$data.initQuery = initQuery;
         this.$data.query = query;
         this.handleQuery('TableWarehouseStockPending');
-      }
+      },
+      //搜索日期
+      changePicker(value){
+        if(value && value.length === 2){
+          this.query.begin_date = value[0];
+          this.query.end_date = value[1];
+        }else{
+          this.query.begin_date = '';
+          this.query.end_date = '';
+        }
+        this.$data.query = this.query;
+        this.handleQuery('TableWarehouseStockPending');
+      },
     }
   }
 </script>

@@ -19,7 +19,7 @@
             <el-form-item label="采购数量">{{detail.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可入库数量">{{detail.num - detail.num_in}}件</el-form-item>
+            <el-form-item label="可收货数量">{{detail.num - detail.num_in}}件</el-form-item>
           </el-col>
         </el-row>
 
@@ -43,7 +43,7 @@
             <el-form-item label="可售日期">{{detail.available_date}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可入库数量">{{detail.num - detail.num_in}}件</el-form-item>
+            <el-form-item label="可收货数量">{{detail.num - detail.num_in}}件</el-form-item>
           </el-col>
         </el-row>
 
@@ -61,8 +61,8 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="入库数量" prop="num">
-                <input-number size="medium" v-model="inventoryData.num" unit="件"/>
+              <el-form-item label="合格数量" prop="num">
+                <input-number size="medium" :min="pageType === 'add_allot' ? 0 : 1" v-model="inventoryData.num" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">
@@ -201,8 +201,8 @@ export default {
       order_type: '',
       status: '',
       relate_order_id: '',
-      num_arrive: null,
-      num: null,
+      num_arrive: '',
+      num: '',
       qa_num: null,
       shelf_life: null,
       stock_life: null,
@@ -253,7 +253,7 @@ export default {
           { validator: validNum, trigger: 'blur' }
         ],
         num: [
-          { required: true, message: '请输入入库数量', trigger: 'change' },
+          { required: true, message: '请输入合格数量', trigger: 'change' },
           { validator: validNum, trigger: 'blur' }
         ],
         un_qa_type: { required: true, message: '请选择处理类型', trigger: 'change' },
@@ -281,17 +281,26 @@ export default {
     lifeDesabled(){
       let { itemData, detail } = this;
       if(detail.status !== 'success') return true;
-      if(itemData.fisrt_system_class.has_produce_date) return false;
-      return true;
+      if(itemData.fisrt_system_class.has_produce_date) return true;
+      return false;
     },
     //是否显示不合格处理
     isShowNo(){
       let { inventoryData, detail } = this;
       //收货数量小于或等于可收货数量 && 收货数量大于合格数量
-      if(inventoryData.num_arrive <= detail.num - detail.num_in &&
+      if(typeof inventoryData.num_arrive === 'number' && typeof inventoryData.num === 'number' &&
+        inventoryData.num_arrive <= detail.num - detail.num_in &&
         inventoryData.num_arrive > inventoryData.num){
+          inventoryData.un_qa_num = inventoryData.num_arrive - inventoryData.num;
+          inventoryData.un_qa_type = '';
+          inventoryData.un_qa_amount = '';
+          this.$data.inventoryData = inventoryData;
         return true;
       }
+      inventoryData.un_qa_num = 0;
+      inventoryData.un_qa_type = '';
+      inventoryData.un_qa_amount = 0;
+      this.$data.inventoryData = inventoryData;
       return false;
     }
   },
@@ -333,12 +342,6 @@ export default {
     //提交数据
     async addEditData(e){
       let { inventoryData } = this;
-      //判断是否要处理不合格
-      if(!this.isShowNo){
-        inventoryData.un_qa_num = 0;
-        inventoryData.un_qa_type = '';
-        inventoryData.un_qa_amount = 0;
-      }
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.supAcceptAdd, {...inventoryData, status: e.currentTarget.dataset.status});
       this.$loading({isShow: false});

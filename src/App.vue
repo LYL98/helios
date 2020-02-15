@@ -203,9 +203,6 @@
             title: '入库',
             name: 'WarehouseStockPending'
           },{
-            title: '入库单',
-            name: 'WarehouseStock'
-          },{
             title: '库存',
             name: 'WarehouseInventory'
           },{

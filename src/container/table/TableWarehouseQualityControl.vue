@@ -35,7 +35,7 @@
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
               <!--采购、调拨数量-->
               <div v-else-if="item.key === 'num'" class="td-item add-dot2">{{scope.row.num}}件</div>
-              <!--入库数量-->
+              <!--合格数量-->
               <div v-else-if="item.key === 'num_in'" class="td-item add-dot2">{{returnUnit(scope.row.num_in, '件', '-')}}</div>
               <!--调出仓、调入仓-->
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
@@ -173,7 +173,7 @@
         }
         tableColumn = tableColumn.concat([
           { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '入库数量', key: 'num_in', width: '2', isShow: true },
+          { label: '合格数量', key: 'num_in', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ]);

@@ -57,6 +57,5 @@ export { default as TableSupplierLocalPurchase } from './TableSupplierLocalPurch
 export { default as TableWarehouseInventory } from './TableWarehouseInventory';
 export { default as TableWarehouseStockPending } from './TableWarehouseStockPending';
 export { default as TableWarehouseQualityControl } from './TableWarehouseQualityControl';
-export { default as TableWarehouseStock } from './TableWarehouseStock';
 export { default as TableWarehouseDistribute } from './TableWarehouseDistribute';
 export { default as TableWarehouseInventoryMove } from './TableWarehouseInventoryMove';

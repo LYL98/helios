@@ -24,7 +24,7 @@
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
                 <div v-if="auth.isAdmin || auth.OperateReceivingDetail"
-                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditOperateReceiving', scope.row, 'detail_' + tabValue)">
+                  class="td-item link-item add-dot2" @click="tableShowDetail(scope.row)">
                   {{scope.row.code}}
                 </div>
                 <div class="td-item add-dot2" v-else>
@@ -47,8 +47,8 @@
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--采购、调拨状态-->
               <div class="td-item add-dot2" v-else-if="judgeOrs(item.key, ['purchase_status', 'allot_status'])">
-                <el-tag size="small" :type="inventoryStatusType[scope.row.status]" disable-transitions>
-                  {{inventoryStatus[scope.row.status]}}
+                <el-tag size="small" :type="qCStatusType[scope.row.status]" disable-transitions>
+                  {{qCStatus[scope.row.status]}}
                 </el-tag>
               </div>
               <!--出库计划状态-->
@@ -117,8 +117,8 @@
     data() {
       return {
         tabValue: 'purchase', //'采购': 'purchase', '调拨': 'allot', '出库计划': 'out_storage'
-        inventoryStatus: Constant.INVENTORY_STATUS(),
-        inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
+        qCStatus: Constant.Q_C_STATUS(),
+        qCStatusType: Constant.Q_C_STATUS_TYPE,
         tableName: 'TableOperateReceiving',
         tableColumn: [],
       }
@@ -215,6 +215,17 @@
         ]);
         this.$data.tableColumn = tableColumn;
       },
+      //查看详情
+      tableShowDetail(data){
+        let orderType = data.order_type || 'distribute'; //'global_pur', 'local_pur', 'distribute'
+        let detailPages = {
+          global_pur: 'DetailWarehouseQualityControlG',
+          local_pur: 'DetailWarehouseQualityControlL',
+          distribute: 'DetailWarehouseQualityControlA'
+        }
+        let pc = this.getPageComponents(detailPages[orderType]);
+        pc.showDetail(data);
+      }
     }
   };
 </script>

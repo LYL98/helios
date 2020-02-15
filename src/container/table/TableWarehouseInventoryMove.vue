@@ -106,8 +106,6 @@
     data() {
       return {
         tabValue: 'check',
-        inventoryStatus: Constant.INVENTORY_STATUS(),
-        inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
         tableName: 'TableWarehouseInventoryMove',
         tableColumn: [],
         queryTabsData: {

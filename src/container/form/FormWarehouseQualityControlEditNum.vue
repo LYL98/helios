@@ -1,8 +1,8 @@
 <template>
-  <form-layout title="修改入库数量" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
+  <form-layout title="修改合格数量" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
     <el-form class="custom-form" size="mini" label-position="right" label-width="110px" :model="detail" ref="ruleForm" :rules="rules">
-      <el-form-item label="入库数量" prop="num">
-        <input-number size="medium" v-model="detail.num" unit="件"/>
+      <el-form-item label="合格数量" prop="num">
+        <input-number size="medium" :min="detail.in_type === 'distribute' ? 0 : 1" v-model="detail.num" unit="件"/>
       </el-form-item>
     </el-form>
     <div style="margin-left: 110px; margin-top: 20px;">
@@ -27,10 +27,19 @@ export default {
   },
   data(){
     let initDetail = {}
+    //品控抽样、合格数量校验
+    const validNum = (rules, value, callback)=>{
+      let { detail } = this;
+      if (Number(value) > detail.num_arrive) {
+        return callback(new Error('不能大于收货数量'));
+      }
+      callback();
+    }
     return{
       rules: {
         num: [
-          { required: true, message: '请输入数量', trigger: 'change' }
+          { required: true, message: '请输入数量', trigger: 'change' },
+          { validator: validNum, trigger: 'blur' }
         ]
       },
       initDetail: initDetail,

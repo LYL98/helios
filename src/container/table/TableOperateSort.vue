@@ -92,8 +92,6 @@
     },
     data() {
       return {
-        inventoryStatus: Constant.INVENTORY_STATUS(),
-        inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
         tableName: 'TableOperateSort',
         tableColumn: [
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },

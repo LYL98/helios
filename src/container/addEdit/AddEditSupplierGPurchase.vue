@@ -73,7 +73,7 @@
               <el-table-column prop="code" label="入库单号">
                 <template slot-scope="scope">
                   <span v-if="(auth.isAdmin || auth.SupplierGPurchaseDetailStock) && fromPage !== 'Inventory'" class="link-item"
-                    @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_pur')">{{scope.row.code}}</span>
+                    @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)">{{scope.row.code}}</span>
                   <span v-else>{{scope.row.code}}</span>
                 </template>
               </el-table-column>
@@ -82,7 +82,7 @@
               </el-table-column>
               <el-table-column prop="created" label="入库时间"></el-table-column>
               <el-table-column prop="status" label="状态" width="140">
-                <template slot-scope="scope">{{inventoryStatus[scope.row.status]}}</template>
+                <template slot-scope="scope">{{qCStatus[scope.row.status]}}</template>
               </el-table-column>
             </el-table>
           </div>
@@ -165,7 +165,7 @@ export default {
     return {
       purchaseStatus: Constant.PURCHASE_STATUS(),
       purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
-      inventoryStatus: Constant.INVENTORY_STATUS(),
+      qCStatus: Constant.Q_C_STATUS(),
       initDetail: initDetail,
       detail: JSON.parse(JSON.stringify(initDetail)),
       rules: {

@@ -17,7 +17,7 @@
       <el-col :span="7">
         <my-query-item label="状态">
           <select-option
-            :options="inventoryStatus"
+            :options="statusData"
             v-model="query.status"
             @change="handleQuery('TableOperateReceiving')"
             size="small"
@@ -63,15 +63,13 @@
       }
     },
     computed: {
-      inventoryStatus: {
-        get(){
-          //出库计划
-          if(this.tabValue === 'out_storage'){
-            return { '全部': '', '待出库': 'wait_out', '已出库': 'done_out'};
-          }
-          let d = Constant.INVENTORY_STATUS('value_key');
-          return { '全部': '', ...d };
+      statusData(){
+        //出库计划
+        if(this.tabValue === 'out_storage'){
+          return { '全部': '', '待出库': 'wait_out', '已出库': 'done_out'};
         }
+        let d = Constant.Q_C_STATUS('value_key');
+        return { '全部': '', ...d };
       }
     },
     methods: {

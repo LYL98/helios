@@ -428,9 +428,7 @@ const Constant = {
   INVENTORY_STATUS: (type)=>{
     let data = [
       { key: 'success', value: '待入库' },
-      { key: 'part_in', value: '部分入库' },
-      { key: 'all_in', value: '全部入库' },
-      { key: 'closed', value: '关闭' }
+      { key: 'all_in', value: '已入库' }
     ];
     return handleKeyValue(type, data);
   },

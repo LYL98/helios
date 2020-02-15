@@ -41,8 +41,8 @@
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--状态-->
               <div class="td-item add-dot2" v-else-if="item.key === 'status'">
-                <el-tag size="small" :type="inventoryStatusType[scope.row.status]" disable-transitions>
-                  {{inventoryStatus[scope.row.status]}}
+                <el-tag size="small" :type="qCStatusType[scope.row.status]" disable-transitions>
+                  {{qCStatus[scope.row.status]}}
                 </el-tag>
               </div>
               <!--正常情况-->
@@ -105,8 +105,8 @@
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ],
-        inventoryStatus: Constant.INVENTORY_STATUS(),
-        inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
+        qCStatus: Constant.Q_C_STATUS(),
+        qCStatusType: Constant.Q_C_STATUS_TYPE,
       }
     },
     methods: {

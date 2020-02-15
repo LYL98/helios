@@ -5,11 +5,23 @@
     <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory" fromPage="receiving"/>
     <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage"/>
     <add-edit-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateReceiving"/>
+    <detail-warehouse-quality-control-a :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlA"/>
+    <detail-warehouse-quality-control-g :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlG"/>
+    <detail-warehouse-quality-control-l :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlL"/>
   </div>
 </template>
 
 <script>
-  import { QueryOperateReceiving, TableOperateReceiving, DetailWarehouseInventory, FormWarehouseInventoryOutStorage, AddEditOperateReceiving } from '@/container';
+  import {
+    QueryOperateReceiving,
+    TableOperateReceiving,
+    DetailWarehouseInventory,
+    FormWarehouseInventoryOutStorage,
+    AddEditOperateReceiving,
+    DetailWarehouseQualityControlA,
+    DetailWarehouseQualityControlG,
+    DetailWarehouseQualityControlL,
+  } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -19,7 +31,10 @@
       'table-operate-receiving': TableOperateReceiving,
       'detail-warehouse-inventory': DetailWarehouseInventory,
       'form-warehouse-inventory-out-storage': FormWarehouseInventoryOutStorage,
-      'add-edit-operate-receiving': AddEditOperateReceiving
+      'add-edit-operate-receiving': AddEditOperateReceiving,
+      'detail-warehouse-quality-control-a': DetailWarehouseQualityControlA,
+      'detail-warehouse-quality-control-g': DetailWarehouseQualityControlG,
+      'detail-warehouse-quality-control-l': DetailWarehouseQualityControlL,
     },
     mixins: [viewMixin],
     created() {

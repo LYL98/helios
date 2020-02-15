@@ -1,9 +1,7 @@
 <template>
   <div class="container-table">
-    <div class="table-top">
-      <div class="left">
-        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="{'待入库': 'pur', '已入库': 'distribute'}"/>
-      </div>
+    <div class="table-top" v-if="auth.isAdmin || auth.WarehouseStockPendingExport">
+      <div class="left"></div>
       <div class="right">
         <el-button @click.native="handleExport('supInStockExport', query)" size="mini" type="primary" plain>导出入库单</el-button>
       </div>
@@ -26,7 +24,7 @@
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
                 <div v-if="auth.isAdmin || auth.WarehouseStockPendingDetail"
-                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + tabValue)">
+                  class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)">
                   {{scope.row.code}}
                 </div>
                 <div class="td-item add-dot2" v-else>
@@ -61,12 +59,12 @@
                 {
                   title: '确认入库',
                   isDisplay: (auth.isAdmin || auth.WarehouseStockPendingAdd) && scope.row.status !== 'all_in',
-                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add_' + tabValue)
+                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add_' + scope.row.in_type)
                 },
                 {
                   title: '详情',
                   isDisplay: auth.isAdmin || auth.WarehouseStockPendingDetail,
-                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + tabValue)
+                  command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)
                 },
                 {
                   title: '打印',
@@ -101,16 +99,23 @@
     },
     mixins: [tableMixin],
     created() {
-      this.handleTableColumn();
       //初始化在query组件
     },
     data() {
       return {
-        tabValue: 'pur', //'采购': 'pur', '调拨': 'distribute'
         inventoryStatus: Constant.INVENTORY_STATUS(),
         inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
         tableName: 'TableWarehouseStockPending',
-        tableColumn: [],
+        tableColumn: [
+          { label: '入库单号', key: 'code', width: '3', isShow: true },
+          { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+          { label: '批次', key: 'batch_code', width: '3', isShow: true },
+          { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
+          { label: '入库数量', key: 'num', width: '2', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true },
+          { label: '创建时间', key: 'created', width: '3', isShow: false },
+          { label: '更新时间', key: 'updated', width: '3', isShow: false }
+        ],
       }
     },
     methods: {
@@ -122,56 +127,13 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supInStockShMonitorQuery, {
-          ...query,
-          type_forsh: this.tabValue
-        });
+        let res = await Http.get(Config.api.supInStockShMonitorQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
-      },
-      //切换记录tab
-      changeTab(){
-        this.handleTableColumn();
-        let pc = this.getPageComponents('QueryWarehouseStockPending');
-        this.getData(pc.query);
-      },
-      //处理表头
-      handleTableColumn(){
-        let { tableColumn, tabValue } = this;
-        this.$data.dataItem = {
-          items: [],
-          num: 0
-        };
-        tableColumn = [
-          { label: '采购单号', key: 'code', width: '3', isShow: true },
-          { label: '商品编号/名称', key: 'item', width: '4', isShow: true }
-        ];
-        //采购
-        if(tabValue === 'pur'){
-          tableColumn = tableColumn.concat([
-            { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
-            { label: '采购数量', key: 'order_num', width: '2', isShow: true }
-          ]);
-        }else{
-        //调拨
-          tableColumn = tableColumn.concat([
-            { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
-            { label: '调拨数量', key: 'order_num', width: '2', isShow: true },
-            { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: true }
-          ]);
-        }
-        tableColumn = tableColumn.concat([
-          { label: '待入库数量', key: 'num', width: '2', isShow: true },
-          { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '已入库数量', key: 'num_in', width: '2', isShow: true },
-          { label: '创建时间', key: 'created', width: '3', isShow: false },
-          { label: '更新时间', key: 'updated', width: '3', isShow: false }
-        ]);
-        this.$data.tableColumn = tableColumn;
       },
     }
   };

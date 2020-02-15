@@ -2,8 +2,8 @@
   <detail-layout title="调拨单详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <div class="f-r" style="position: relative; right: -84px;">
-        <el-tag size="small" :type="inventoryStatusType[detail.status]" disable-transitions>
-          {{inventoryStatus[detail.status]}}
+        <el-tag size="small" :type="purchaseStatusType[detail.status]" disable-transitions>
+          {{purchaseStatus[detail.status]}}
         </el-tag>
       </div>
       <el-row>
@@ -56,7 +56,7 @@
         <el-table-column label="入库数量" prop="num"/>
         <el-table-column label="入库时间" prop="created"/>
         <el-table-column label="状态" width="120">
-          <template slot-scope="scope">{{inventoryStatus[scope.row.status]}}</template>
+          <template slot-scope="scope">{{qCStatus[scope.row.status]}}</template>
         </el-table-column>
       </el-table>
     </div>
@@ -79,8 +79,9 @@
         creator: {}
       }
       return {
-        inventoryStatus: Constant.INVENTORY_STATUS(),
-        inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
+        purchaseStatus: Constant.PURCHASE_STATUS(),
+        purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
+        qCStatus: Constant.Q_C_STATUS(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail)
       }
