@@ -93,7 +93,7 @@
           </el-row>
 
           <!--调拨，不合格商品处理-->
-          <template v-if="pageType === 'add_allot' && isShowNo">
+          <template v-if="isShowNo">
             <h6 class="subtitle">不合格商品处理</h6>
             <el-row>
               <el-col :span="12">
@@ -280,9 +280,10 @@ export default {
     },
     //是否显示不合格处理
     isShowNo(){
-      let { inventoryData, detail } = this;
+      let { inventoryData, detail, pageType } = this;
       //收货数量小于或等于可收货数量 && 收货数量大于合格数量
-      if(typeof inventoryData.num_arrive === 'number' && typeof inventoryData.num === 'number' &&
+      if(pageType === 'add_allot' &&
+        typeof inventoryData.num_arrive === 'number' && typeof inventoryData.num === 'number' &&
         inventoryData.num_arrive <= detail.num - detail.num_in &&
         inventoryData.num_arrive > inventoryData.num){
           inventoryData.un_qa_num = inventoryData.num_arrive - inventoryData.num;
