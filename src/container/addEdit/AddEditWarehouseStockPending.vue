@@ -118,7 +118,7 @@
               <el-form-item label="入库人">{{detail.ware_monitor.realname || '系统'}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="入库时间">{{detail.ware_monitor}}</el-form-item>
+              <el-form-item label="入库时间">{{detail.trays.length > 0 ? detail.trays[0].created : '-'}}</el-form-item>
             </el-col>
           </el-row>
         </template>
