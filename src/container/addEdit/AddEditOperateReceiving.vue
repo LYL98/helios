@@ -98,7 +98,7 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="处理数量" prop="un_qa_num">
-                  <input-number size="medium" :value="inventoryData.un_qa_num" unit="件"/>
+                  <input-number size="medium" disabled :value="inventoryData.un_qa_num" unit="件"/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -154,8 +154,7 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant } from '@/util';
-import { InputNumber, InputPrice } from '@/common';
-import { CascaderWarehouseTray } from '@/component';
+import { InputNumber, InputPrice, SelectOption } from '@/common';
 
 export default {
   name: "AddEditOperateReceiving",
@@ -163,7 +162,7 @@ export default {
   components: {
     'input-number': InputNumber,
     'input-price': InputPrice,
-    'cascader-warehouse-tray': CascaderWarehouseTray
+    'select-option': SelectOption
   },
   created() {
   },
