@@ -41,8 +41,8 @@
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--状态-->
               <div class="td-item add-dot2" v-else-if="item.key === 'status'">
-                <el-tag size="small" :type="inventoryStatusType[scope.row.status]" disable-transitions>
-                  {{inventoryStatus[scope.row.status]}}
+                <el-tag size="small" :type="qCStatusType[scope.row.status]" disable-transitions>
+                  {{qCStatus[scope.row.status]}}
                 </el-tag>
               </div>
               <!--正常情况-->
@@ -73,7 +73,7 @@
                 },
                 {
                   title: '打印',
-                  isDisplay: auth.isAdmin || auth.WarehouseQualityControlPrint,
+                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlPrint) && scope.row.status !== 'closed',
                   command: () => handleShowPrint('PrintWarehouseStockPending', scope.row)
                 },
               ]"
@@ -110,8 +110,8 @@
     data() {
       return {
         tabValue: 'purchase', //'采购': 'purchase', '调拨': 'allot'
-        inventoryStatus: Constant.INVENTORY_STATUS(),
-        inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
+        qCStatus: Constant.Q_C_STATUS(),
+        qCStatusType: Constant.Q_C_STATUS_TYPE,
         tableName: 'TableWarehouseQualityControl',
         tableColumn: [],
       }

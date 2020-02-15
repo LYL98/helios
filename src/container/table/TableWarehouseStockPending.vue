@@ -2,9 +2,11 @@
   <div class="container-table">
     <div class="table-top">
       <div class="left">
-        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="{'采购': 'pur', '调拨': 'distribute'}"/>
+        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="{'待入库': 'pur', '已入库': 'distribute'}"/>
       </div>
-      <div class="right"></div>
+      <div class="right">
+        <el-button @click.native="handleExport('supInStockExport', query)" size="mini" type="primary" plain>导出入库单</el-button>
+      </div>
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">

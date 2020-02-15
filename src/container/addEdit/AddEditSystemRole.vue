@@ -65,6 +65,9 @@ export default {
       this.$data.detail = JSON.parse( JSON.stringify( roleDetail ) );
       this.selectRoleVal = '';
       this.$data.isShow = true;
+      setTimeout(()=>{
+        this.$refs['ruleForm'].resetFields();
+      },0);
     },
     //取消
     cancelAddEdit(e, res){

@@ -19,7 +19,7 @@
             <el-form-item label="采购数量">{{detail.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可入库数量">{{detail.num - detail.num_in}}件</el-form-item>
+            <el-form-item label="可收货数量">{{detail.num - detail.num_in}}件</el-form-item>
           </el-col>
         </el-row>
 
@@ -43,7 +43,7 @@
             <el-form-item label="可售日期">{{detail.available_date}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可入库数量">{{detail.num - detail.num_in}}件</el-form-item>
+            <el-form-item label="可收货数量">{{detail.num - detail.num_in}}件</el-form-item>
           </el-col>
         </el-row>
 
@@ -56,13 +56,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="品控数量" prop="qa_num">
+              <el-form-item label="品控抽检" prop="qa_num">
                 <input-number size="medium" :min="1" v-model="inventoryData.qa_num" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="入库数量" prop="num">
-                <input-number size="medium" :min="1" v-model="inventoryData.num" unit="件"/>
+              <el-form-item label="合格数量" prop="num">
+                <input-number size="medium" v-model="inventoryData.num" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">
@@ -93,22 +93,12 @@
           </el-row>
 
           <!--调拨，不合格商品处理-->
-          <template v-if="pageType === 'add_allot'">
+          <template v-if="pageType === 'add_allot' && isShowNo">
+            <h6 class="subtitle">不合格商品处理</h6>
             <el-row>
-              <el-col :span="20">
-                <el-form-item label="" v-if="!isShowNo">
-                  <a href="javascript:void(0);" @click="showHideNo">不合格商品处理</a>
-                </el-form-item>
-                <h6 v-else class="subtitle">不合格商品处理</h6>
-              </el-col>
-              <el-col :span="4">
-                <a href="javascript:void(0);" class="f-r" v-if="isShowNo" @click="showHideNo">删除</a>
-              </el-col>
-            </el-row>
-            <el-row v-if="isShowNo">
               <el-col :span="12">
-                <el-form-item label="处理数量" prop="un_qa_num">
-                  <input-number size="medium" :min="1" v-model="inventoryData.un_qa_num" unit="件"/>
+                <el-form-item label="处理数量">
+                  <input-number size="medium" disabled :value="inventoryData.un_qa_num" unit="件"/>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -150,7 +140,8 @@
       <div class="bottom-btn">
         <template v-if="judgeOrs(pageType, ['add_purchase', 'add_allot'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
-          <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
+          <el-button size="medium" type="primary" @click.native="handleAddEdit" data-status="part_in">部分收货</el-button>
+          <el-button size="medium" type="primary" @click.native="handleAddEdit" data-status="all_in">全部收货</el-button>
         </template>
         <template v-else>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
@@ -186,6 +177,8 @@ export default {
       - relate_order_id:
       - num_arrive: 到货数量
       - num: 入库数量
+      - status: part_in/all_in
+
       - qa_num: 品控数量
       - shelf_life: 保质期
       - stock_life: 库存期
@@ -198,6 +191,7 @@ export default {
       province_code: this.$province.code,
       produce_date: '',
       produce_date_disabled: false,
+      status: '',
       in_type: '',
       relate_order_id: '',
       num_arrive: null,
@@ -210,8 +204,24 @@ export default {
       un_qa_amount: 0,
       remark: '',
     }
+
+    //收货数量校验
+    const validNumArrive = (rules, value, callback)=>{
+      let { detail } = this;
+      if (Number(value) > detail.num - detail.num_in) {
+        return callback(new Error('不能大于可收货数量'));
+      }
+      callback();
+    }
+    //品控抽样、合格数量校验
+    const validNum = (rules, value, callback)=>{
+      let { inventoryData } = this;
+      if (Number(value) > inventoryData.num_arrive) {
+        return callback(new Error('不能大于收货数量'));
+      }
+      callback();
+    }
     return {
-      isShowNo: false,
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       initInventoryData: initInventoryData,
@@ -229,15 +239,17 @@ export default {
           { required: true, message: '请选择采购日期', trigger: 'change' }
         ],
         num_arrive: [
-          { required: true, message: '请输入到货数量', trigger: 'change' }
+          { required: true, message: '请输入到货数量', trigger: 'change' },
+          { validator: validNumArrive, trigger: 'blur' }
         ],
         qa_num: [
-          { required: true, message: '请选择品控数量', trigger: 'change' }
+          { required: true, message: '请选择品控数量', trigger: 'change' },
+          { validator: validNum, trigger: 'blur' }
         ],
         num: [
-          { required: true, message: '请选择采购日期', trigger: 'change' }
+          { required: true, message: '请选择采购日期', trigger: 'change' },
+          { validator: validNum, trigger: 'blur' }
         ],
-        un_qa_num: { required: true, message: '请输入处理数量', trigger: 'change' },
         un_qa_type: { required: true, message: '请选择处理类型', trigger: 'change' },
         un_qa_amount: { required: true, message: '请输入处理金额', trigger: 'change' },
         remark: [
@@ -245,10 +257,10 @@ export default {
         ],
       },
       pageTitles: {
-        add_purchase: '采购品控入库',
-        add_allot: '调拨品控入库',
-        detail_purchase: '采购品控入库详情',
-        detail_allot: '调拨品控入库详情',
+        add_purchase: '品控',
+        add_allot: '品控',
+        detail_purchase: '品控详情',
+        detail_allot: '品控详情',
       }
     }
   },
@@ -265,24 +277,19 @@ export default {
       if(detail.status !== 'success') return true;
       if(itemData.fisrt_system_class.has_produce_date) return false;
       return true;
+    },
+    //是否显示不合格处理
+    isShowNo(){
+      let { inventoryData, detail } = this;
+      //收货数量小于或等于可收货数量 && 收货数量大于合格数量
+      if(inventoryData.num_arrive <= detail.num - detail.num_in &&
+        inventoryData.num_arrive > inventoryData.num){
+        return true;
+      }
+      return false;
     }
   },
   methods: {
-    //显示或隐藏处理
-    showHideNo(){
-      let { isShowNo, inventoryData } = this;
-      if(!isShowNo){
-        inventoryData.un_qa_num = '';
-        inventoryData.un_qa_type = '';
-        inventoryData.un_qa_amount = '';
-      }else{
-        inventoryData.un_qa_num = 0;
-        inventoryData.un_qa_type = '';
-        inventoryData.un_qa_amount = 0;
-      }
-      this.$data.isShowNo = !isShowNo;
-      this.$data.inventoryData = inventoryData;
-    },
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
       this.$data.isShowNo = false;
@@ -319,19 +326,19 @@ export default {
       }
     },
     //提交数据
-    async addEditData(){
-      let { detail, inventoryData, pageType } = this;
-      let con = true;
-      if(inventoryData.num > detail.num - detail.num_in){
-        this.$message({message: `可入库数量只有${detail.num - detail.num_in}件`, type: 'error'});
-        con = false;
+    async addEditData(e){
+      let { inventoryData } = this;
+      //判断是否要处理不合格
+      if(!this.isShowNo){
+        inventoryData.un_qa_num = 0;
+        inventoryData.un_qa_type = '';
+        inventoryData.un_qa_amount = 0;
       }
-      if(!con) return;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supInStockAdd, inventoryData);
+      let res = await Http.post(Config.api.supInStockAdd, {...inventoryData, status: e.currentTarget.dataset.status});
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: '品控入库成功', type: 'success'});
+        this.$message({message: '收货成功', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableWarehouseQualityControl');

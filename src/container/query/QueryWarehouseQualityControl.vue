@@ -9,7 +9,7 @@
       <el-col :span="7">
         <my-query-item label="状态">
           <select-option
-            :options="inventoryStatus"
+            :options="qCStatus"
             v-model="query.status"
             @change="handleQuery('TableWarehouseQualityControl')"
             size="small"
@@ -55,14 +55,10 @@
       }
     },
     computed: {
-      inventoryStatus: {
+      qCStatus: {
         get(){
-          let d = Constant.INVENTORY_STATUS('value_key');
-          //delete d['全部入库'];
-          return {
-            '全部': '',
-            ...d
-          };
+          let d = Constant.Q_C_STATUS('value_key');
+          return { '全部': '', ...d };
         }
       }
     },

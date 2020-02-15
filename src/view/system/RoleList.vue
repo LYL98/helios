@@ -5,7 +5,7 @@
       <div class="left">
         <div class="title">
           角色列表
-          <el-button class="btn" icon="el-icon-plus" size="mini" @click.native="showAddEdit" v-if="auth.isAdmin || auth.SystemRoleAdd" >新增</el-button>
+          <el-button class="btn" icon="el-icon-plus" size="mini" @click.native="showAddEdit('add')" v-if="auth.isAdmin || auth.SystemRoleAdd" >新增</el-button>
         </div>
         <div class="content" :style="`height:${viewWindowHeight - 118}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
           <div v-for="(item,index) in dataItem" :class="`role-item ${detail.id === item.id && 'active'}`" @click="selectRoleItem(item, detail.id === item.id)" :key="index">
@@ -14,7 +14,7 @@
             </div>
             <div class="option">
               <i class="el-icon-delete" v-if="auth.isAdmin || auth.SystemRoleDelete" @click="deleteData(item)"></i>
-              <i class="el-icon-edit-outline" v-if="auth.isAdmin || auth.SystemRoleEdit" @click="showAddEdit"></i>
+              <i class="el-icon-edit-outline" v-if="auth.isAdmin || auth.SystemRoleEdit" @click="showAddEdit(item)"></i>
             </div>
           </div>
         </div>
@@ -214,15 +214,19 @@ export default {
       }
     },
     //显示新增
-    showAddEdit(){
+    showAddEdit(data){
       this.$data.detailTemp = this.detail;
       //清detail
       this.getRoleDetail({
         permission_codes: [],
         is_super_admin: false
       });
+      let d = this.detail;
+      if(data !== 'add'){
+        d = data;
+      }
       let pc = this.viewGetPageComponents('AddEditSystemRole');
-      pc.showAddEdit(this.dataItem, this.detail);
+      pc.showAddEdit(this.dataItem, d);
     },
     //删除数据
     deleteData(data) {

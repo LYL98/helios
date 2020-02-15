@@ -369,8 +369,8 @@ const Constant = {
       { key: 'init', value: '待审核' },
       { key: 'success', value: '审核通过' },
       { key: 'fail', value: '作废' },
-      { key: 'part_in', value: '部分入库' },
-      { key: 'all_in', value: '全部入库' },
+      { key: 'part_in', value: '部分收货' },
+      { key: 'all_in', value: '全部收货' },
       { key: 'closed', value: '关闭' }
     ];
     return handleKeyValue(type, data);
@@ -406,6 +406,23 @@ const Constant = {
       { key: 'item_damage', value: '货损' } //货损
     ];
     return handleKeyValue(type, data);
+  },
+  //品控单状态
+  Q_C_STATUS: (type)=>{
+    let data = [
+      { key: 'success', value: '待收货' },
+      { key: 'part_in', value: '部分收货' },
+      { key: 'all_in', value: '全部收货' },
+      { key: 'closed', value: '关闭' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //品控单状态颜色
+  Q_C_STATUS_TYPE: {
+    success: 'info',
+    part_in: 'info',
+    all_in: 'info',
+    closed: 'info'
   },
   //入库单状态
   INVENTORY_STATUS: (type)=>{
