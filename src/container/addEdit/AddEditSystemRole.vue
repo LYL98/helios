@@ -1,7 +1,8 @@
 <template>
   <div class="system-role-add-edit">
     <el-dialog :close-on-click-modal="false" title="修改角色" :visible="isShow" width="540px" :before-close="cancelAddEdit">
-      <el-form label-position="right" label-width="120px" style="width: 400px;" :model="detail" :rules="rules" ref="ruleForm">
+      <!--isShow防止渲染问题-->
+      <el-form v-if="isShow" label-position="right" label-width="120px" style="width: 400px;" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="角色名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入角色名称" :maxLength="10"></el-input>
         </el-form-item>
@@ -65,17 +66,11 @@ export default {
       this.$data.detail = JSON.parse( JSON.stringify( roleDetail ) );
       this.selectRoleVal = '';
       this.$data.isShow = true;
-      setTimeout(()=>{
-        this.$refs['ruleForm'].resetFields();
-      },0);
     },
     //取消
     cancelAddEdit(e, res){
       this.$data.isShow = false;
       this.$attrs.callback(res);//回调
-      setTimeout(()=>{
-        this.$refs['ruleForm'].resetFields();
-      },0);
     },
     //选择角色
     selectRole(index){
