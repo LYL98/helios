@@ -70,7 +70,7 @@
               <el-form-item label="库存期">{{detail.stock_life}}天</el-form-item>
             </el-col>
           </el-row>
-          <template v-if="detail.un_qa_num">
+          <template v-if="detail.un_qa_num && detail.in_type === 'allocate'">
             <el-row>
               <el-col :span="12">
                 <el-form-item label="不合格数量">{{detail.un_qa_num}}</el-form-item>
