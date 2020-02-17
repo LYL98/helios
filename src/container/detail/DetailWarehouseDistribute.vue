@@ -2,8 +2,8 @@
   <detail-layout title="调拨单详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <div class="f-r" style="position: relative; right: -84px;">
-        <el-tag size="small" :type="purchaseStatusType[detail.status]" disable-transitions>
-          {{purchaseStatus[detail.status]}}
+        <el-tag size="small" :type="distributeStatusType[detail.status]" disable-transitions>
+          {{distributeStatus[detail.status]}}
         </el-tag>
       </div>
       <el-row>
@@ -52,11 +52,17 @@
     <h6 class="subtitle">入库单信息</h6>
     <div style="padding: 0 16px;">
       <el-table :data="detail.instocks" width="100%">
-        <el-table-column label="入库单号" prop="code"/>
+        <el-table-column prop="code" label="入库单号">
+            <template slot-scope="scope">
+              <span v-if="auth.isAdmin || auth.WarehouseDistributeDetailStock" class="link-item"
+                @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)">{{scope.row.code}}</span>
+              <span v-else>{{scope.row.code}}</span>
+            </template>
+          </el-table-column>
         <el-table-column label="入库数量" prop="num"/>
         <el-table-column label="入库时间" prop="created"/>
         <el-table-column label="状态" width="120">
-          <template slot-scope="scope">{{qCStatus[scope.row.status]}}</template>
+          <template slot-scope="scope">{{inventoryStatus[scope.row.status]}}</template>
         </el-table-column>
       </el-table>
     </div>
@@ -79,9 +85,9 @@
         creator: {}
       }
       return {
-        purchaseStatus: Constant.PURCHASE_STATUS(),
-        purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
-        qCStatus: Constant.Q_C_STATUS(),
+        distributeStatus: Constant.DISTRIBUTE_STATUS(),
+        distributeStatusType: Constant.DISTRIBUTE_STATUS_TYPE,
+        inventoryStatus: Constant.INVENTORY_STATUS(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail)
       }

@@ -370,7 +370,7 @@ const Constant = {
       { key: 'success', value: '审核通过' },
       { key: 'fail', value: '作废' },
       { key: 'part_in', value: '部分收货' },
-      { key: 'all_in', value: '全部收货' },
+      { key: 'all_in', value: '完成' },
       { key: 'closed', value: '关闭' }
     ];
     return handleKeyValue(type, data);
@@ -383,6 +383,21 @@ const Constant = {
     part_in: 'info',
     all_in: 'info',
     closed: 'info'
+  },
+  //调拨单状态
+  DISTRIBUTE_STATUS: (type)=>{
+    let data = [
+      { key: 'success', value: '待收货' },
+      { key: 'part_in', value: '部分收货' },
+      { key: 'all_in', value: '完成' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //调拨单状态(颜色)
+  DISTRIBUTE_STATUS_TYPE: {
+    success: 'success',
+    part_in: 'info',
+    all_in: 'info'
   },
   //财务对财表状态
   S_STATEMENT_PAID_STATUS: (type)=>{

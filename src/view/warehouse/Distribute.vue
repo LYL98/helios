@@ -3,11 +3,12 @@
     <query-warehouse-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseDistribute"/>
     <table-warehouse-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseDistribute"/>
     <detail-warehouse-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseDistribute"/>
+    <detail-warehouse-stock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditWarehouseStockPending"/>
   </div>
 </template>
 
 <script>
-  import { QueryWarehouseDistribute, TableWarehouseDistribute, DetailWarehouseDistribute } from '@/container';
+  import { QueryWarehouseDistribute, TableWarehouseDistribute, DetailWarehouseDistribute, AddEditWarehouseStockPending } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -15,7 +16,8 @@
     components: {
       'query-warehouse-distribute': QueryWarehouseDistribute,
       'table-warehouse-distribute': TableWarehouseDistribute,
-      'detail-warehouse-distribute': DetailWarehouseDistribute
+      'detail-warehouse-distribute': DetailWarehouseDistribute,
+      'detail-warehouse-stock': AddEditWarehouseStockPending
     },
     mixins: [viewMixin],
     created() {

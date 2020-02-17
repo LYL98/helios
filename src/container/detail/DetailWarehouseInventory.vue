@@ -19,7 +19,8 @@
           <template slot-scope="scope">{{scope.row.num}}件</template>
         </el-table-column>
         <el-table-column label="仓库" prop="warehouse_title"/>
-        <el-table-column label="过期时间" prop="due_date"/>
+        <el-table-column label="商品过期时间" prop="due_date"/>
+        <el-table-column label="库存过期时间" prop="stock_due_date"/>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
           <my-table-operate

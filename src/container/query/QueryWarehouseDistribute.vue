@@ -41,7 +41,7 @@
       <el-col :span="7">
         <my-query-item label="状态">
           <select-option
-            :options="purchaseStatus"
+            :options="distributeStatus"
             v-model="query.status"
             @change="handleQuery('TableWarehouseDistribute')"
             size="small"
@@ -96,10 +96,9 @@
       }
     },
     computed: {
-      purchaseStatus: {
+      distributeStatus: {
         get(){
-          let d = Constant.PURCHASE_STATUS('value_key');
-          delete d['关闭'];
+          let d = Constant.DISTRIBUTE_STATUS('value_key');
           return { '全部': '', ...d };
         }
       }
