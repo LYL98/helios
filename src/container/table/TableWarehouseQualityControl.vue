@@ -74,7 +74,10 @@
                 {
                   title: '打印',
                   isDisplay: (auth.isAdmin || auth.WarehouseQualityControlPrint) && scope.row.status !== 'closed',
-                  command: () => handleShowPrint('PrintWarehouseStockPending', scope.row)
+                  command: () => handleShowPrint('PrintWarehouseStockPending', {
+                    ...scope.row,
+                    batch_code: scope.row.batch_code || scope.row.code
+                  })
                 },
               ]"
             />

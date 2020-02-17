@@ -44,22 +44,22 @@
               :list="[
               {
                 title: '解绑司机',
-                isDisplay: (auth.isAdmin || auth.OperateLineUnDriver) && scope.row.deliver.id,
+                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineUnDriver) && scope.row.deliver.id,
                 command: () => handleLineUnDriver(scope.row)
               },
               {
                 title: '修改',
-                isDisplay: (auth.isAdmin || auth.OperateLineEdit) && !scope.row.deliver.id,
+                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineEdit) && !scope.row.deliver.id,
                 command: () => handleShowAddEdit('AddEditOperateLine', scope.row, 'edit')
               },
               {
                 title: '打印',
-                isDisplay: auth.isAdmin || auth.OperateLinePrint,
+                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLinePrint),
                 command: () => handleShowPrint('PrintOperateLine', scope.row)
               },
               {
                 title: '删除',
-                isDisplay: (auth.isAdmin || auth.OperateLineDelete) && !scope.row.deliver.id,
+                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineDelete) && !scope.row.deliver.id,
                 command: () => handleDelete(scope.row)
               }
             ]"
