@@ -47,6 +47,12 @@
           </el-col>
         </el-row>
 
+        <!--场地入库-->
+        <el-row v-else-if="judgeOrs(pageType, ['add_allocate', 'detail_allocate'])">
+          <h6 class="subtitle">商品信息</h6>
+          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
+        </el-row>
+
         <!--入库信息详情-->
         <template v-if="judgeOrs(pageType, ['detail_global_pur', 'detail_local_pur', 'detail_distribute', 'detail_allocate'])">
           <el-row>
@@ -84,7 +90,7 @@
             </el-row>
             <el-form-item label="备注">{{detail.remark || '-'}}</el-form-item>
           </template>
-          <el-row>
+          <el-row v-if="pageType !== 'detail_allocate'">
             <el-col :span="12">
               <el-form-item label="品控人">{{detail.creator.realname}}</el-form-item>
             </el-col>
@@ -93,30 +99,16 @@
             </el-col>
           </el-row>
 
-          <template v-if="detail.in_type === 'allocate'">
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="入库">
-                  {{detail.storehouse.title}}/临时库
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="入库数量">{{detail.num}}件</el-form-item>
-              </el-col>
-            </el-row>
-          </template>
-          <template v-else>
-            <el-row v-for="(item, index) in detail.trays" :key="index">
-              <el-col :span="12">
-                <el-form-item label="入库">
-                  {{item.storehouse.title}}/{{item.warehouse.title}}/{{item.tray.code}}
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="入库数量">{{item.num}}件</el-form-item>
-              </el-col>
-            </el-row>
-          </template>
+          <el-row v-for="(item, index) in detail.trays" :key="index">
+            <el-col :span="12">
+              <el-form-item label="入库">
+                {{item.storehouse.title}}/{{item.warehouse.title}}/{{item.tray.code}}
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="入库数量">{{item.num}}件</el-form-item>
+            </el-col>
+          </el-row>
           
           <el-row v-if="detail.ware_monitor.id">
             <el-col :span="12">
@@ -128,7 +120,7 @@
           </el-row>
         </template>
 
-        <template v-if="judgeOrs(pageType, ['add_global_pur', 'add_local_pur', 'add_distribute'])">
+        <template v-if="judgeOrs(pageType, ['add_global_pur', 'add_local_pur', 'add_distribute', 'add_allocate'])">
           <el-form-item label="合格数量">{{detail.num}}件</el-form-item>
           <h6 class="subtitle">入库信息</h6>
           <el-row v-for="(item, index) in inventoryData.trays" :key="index">
@@ -159,7 +151,7 @@
       </el-form>
 
       <div class="bottom-btn">
-        <template v-if="judgeOrs(pageType, ['add_global_pur', 'add_local_pur', 'add_distribute'])">
+        <template v-if="judgeOrs(pageType, ['add_global_pur', 'add_local_pur', 'add_distribute', 'add_allocate'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
@@ -222,6 +214,7 @@ export default {
         detail_global_pur: '采购入库详情',
         detail_local_pur: '采购入库详情',
         detail_distribute: '调拨入库详情',
+        add_allocate: '场地入库', //场地入库
         detail_allocate: '入库单详情', //场地入库
       }
     }

@@ -427,7 +427,7 @@ const Constant = {
     let data = [
       { key: 'success', value: '待收货' },
       { key: 'part_in', value: '部分收货' },
-      { key: 'all_in', value: '全部收货' },
+      { key: 'all_in', value: '已完成' },
       { key: 'closed', value: '关闭' }
     ];
     return handleKeyValue(type, data);
