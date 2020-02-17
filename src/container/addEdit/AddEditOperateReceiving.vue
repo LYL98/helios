@@ -332,7 +332,7 @@ export default {
         let rd = res.data;
         this.$data.itemData = rd;
         //待入库
-        if(this.judgeOrs(detail.status, ['success', 'part_in', 'all_in'])){
+        if(detail.status === 'success'){
           inventoryData.shelf_life = rd.shelf_life;
           inventoryData.stock_life = rd.stock_life;
           this.$data.inventoryData = inventoryData;
