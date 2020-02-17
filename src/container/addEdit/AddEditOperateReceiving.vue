@@ -315,8 +315,8 @@ export default {
         relate_order_id: data.id,
         produce_date: data.produce_date || '',
         produce_date_disabled: data.produce_date ? true : false,
-        shelf_life: data.shelf_life || null,
-        stock_life: data.stock_life || null,
+        shelf_life: data.shelf_life,
+        stock_life: data.stock_life,
         order_type: orderType
       });
       this.supPItemDetail();
