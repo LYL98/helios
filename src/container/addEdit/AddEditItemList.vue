@@ -71,12 +71,12 @@
         <el-row :gutter="10">
           <el-col :span="8" v-if="page !== 'after-sale-detail'">
             <el-form-item label="采购价" prop="price_buy">
-              <input-price  placeholder="0 - 1000000" size="medium" v-model="detail.price_buy"/>
+              <input-price size="medium" :value="detail.price_buy" disabled/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="销售价" prop="price_sale">
-              <input-price  placeholder="0 - 1000000" size="medium" v-model="detail.price_sale"/>
+              <input-price size="medium" :value="detail.price_sale" disabled/>
             </el-form-item>
           </el-col>
           <el-col :span="8" v-if="page !== 'after-sale-detail'">
@@ -105,8 +105,8 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="库存" prop="item_stock">
-              <input-number size="medium" v-model="detail.item_stock" unit="件" :max="999999"/>
+            <el-form-item label="可售数量" prop="item_stock">
+              <input-number size="medium" disabled :value="detail.item_stock" unit="件" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -156,7 +156,7 @@
         
         <el-form-item label="区域定价">
           <ul>
-            <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center; justify-content: space-between;">
+            <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center;">
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <el-form-item
                   :prop="'city_prices_temp.' + index + '.city_code'"
@@ -219,14 +219,13 @@
           <!-- 新增区域定价按钮 -->
           <el-button plain size="medium" type="primary" @click="handleAddCityPrice">增加区域定价</el-button>
         </el-form-item>
-
-        <template v-if="supplierList.length > 0">
+        <template v-if="supplierData.global_supplier_binds.length > 0 || supplierData.local_suppliers.length > 0">
           <h6 class="subtitle">供应商信息</h6>
-          <el-form-item label="全国">
-            <other-item-supplier supplierType="global_pur" :supplierBinds="supplierList"/>
+          <el-form-item label="全国" v-if="supplierData.global_supplier_binds.length > 0">
+            <other-item-supplier supplierType="global_pur" :supplierBinds="supplierData.global_supplier_binds"/>
           </el-form-item>
-          <el-form-item label="区域">
-            <other-item-supplier supplierType="local_pur" :supplierBinds="supplierList"/>
+          <el-form-item label="区域" v-if="supplierData.local_suppliers.length > 0">
+            <other-item-supplier supplierType="local_pur" :supplierBinds="supplierData.local_suppliers"/>
           </el-form-item>
         </template>
         <h6 class="subtitle">其它信息</h6>
@@ -415,7 +414,10 @@ export default {
       supplier_binds: []
     }
     return {
-      supplierList: [],
+      supplierData: {
+        global_supplier_binds: [],
+        local_suppliers: []
+      },
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       systemClassProps: {
@@ -533,11 +535,14 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
-    //获取供应商列表
-    async pItemGetSuppliers(id){
-      let res = Http.get(Config.api.pItemGetSuppliers, { id });
+    //返回商品的供应商
+    async pItemGetSuppliers(){
+      let { localSuppliers } = this;
+      let res = await Http.get(Config.api.pItemGetSuppliers, { p_item_id: this.detail.id });
       if(res.code === 0){
-        this.$data.supplierList = res.data;
+        this.$data.supplierData = rd.data;
+      }else{
+        this.$message({message: res.message, type: 'error'});
       }
     },
     //新增区域价格

@@ -783,7 +783,7 @@
       font-size: 14px !important;
     }
     .el-form-item__content{
-      .el-input{
+      .el-input, .el-date-editor{
         position: relative;
         top: -4px;
       }

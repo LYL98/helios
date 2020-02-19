@@ -59,7 +59,7 @@
               <!--可售数量-->
               <div class="td-item" v-else-if="item.key === 'item_stock'">{{query.is_on_sale ? scope.row.item_stock + '件' : '-'}}</div>
               <!--已售数量-->
-              <div class="td-item" v-else-if="item.key === 'item_stock2'">{{query.is_on_sale ? scope.row.item_stock2 + '件' : '-'}}</div>
+              <div class="td-item" v-else-if="item.key === 'sale_already'">{{query.is_on_sale ? scope.row.sale_already + '件' : '-'}}</div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
@@ -140,7 +140,7 @@
           { label: '科学分类', key: 'system_class', width: '1', isShow: false },
           { label: '展示分类', key: 'display_class', width: '1', isShow: true },
           { label: '可售数量', key: 'item_stock', width: '1', isShow: true },
-          { label: '已售数量', key: 'item_stock2', width: '1', isShow: true },
+          { label: '已售数量', key: 'sale_already', width: '1', isShow: true },
           { label: '净重', key: 'net_weight', width: '1', isShow: false },
           { label: '包装规格', key: 'package_spec', width: '1', isShow: false },
           { label: '创建时间', key: 'created', width: '1', isShow: false },

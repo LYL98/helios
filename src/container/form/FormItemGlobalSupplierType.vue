@@ -1,5 +1,5 @@
 <template>
-  <form-layout title="采购属性" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <form-layout title="供应商" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
       <el-form-item label="商品编号/名称">{{detail.code}}/{{detail.title}}</el-form-item>
       <el-form-item label="选择供应商">
@@ -71,7 +71,6 @@ export default {
     showForm(data){
       this.$data.detail = this.copyJson(data);
       this.baseProvinceList();
-      this.$data.isShow = true;
     },
     //当前选择的供应商ids
     supplierIds(index){
@@ -99,20 +98,21 @@ export default {
     async pItemGetSuppliers(){
       let { localSuppliers } = this;
       this.$loading({isShow: true});
-      let res = await Http.get(Config.api.pItemGetSuppliers, { id: this.detail.id });
+      let res = await Http.get(Config.api.pItemGetSuppliers, { p_item_id: this.detail.id });
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
         //匹配数据
-        if(rd.sup_type === 'local_pur'){
-          localSuppliers.forEach(item => {
-            rd.suppliers.forEach(r => {
-              if(item.province_code === r.province_code){
-                item.suppliers = r.suppliers;
-              }
-            });
+        localSuppliers.forEach(item => {
+          rd.local_suppliers.forEach(r => {
+            if(item.province_code === r.province_code){
+              item.suppliers = r.suppliers;
+            }
           });
-        }
+        });
+        this.$data.globalSupplierBinds = rd.global_supplier_binds;
+        this.$data.localSuppliers = localSuppliers;
+        this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
       }
@@ -192,6 +192,9 @@ export default {
     async submitData(){
       let { globalSupplierBinds, localSuppliers } = this;
       let con = true, conMain = true;
+      globalSupplierBinds.forEach(item => {
+        if(!item.supplier_id) con = false;
+      });
       localSuppliers.forEach(item => {
         let mainNum = 0;
         item.suppliers.forEach(s => {
@@ -211,13 +214,13 @@ export default {
         return;
       }
       if(!conMain){
-        this.$message({message: '请选择主供应商', type: 'error'});
+        this.$message({message: '请选择反采供应商', type: 'error'});
         return;
       }
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.pItemChgSupplier, {
         id: this.detail.id,
-        global_suppliers: globalSupplierBinds,
+        global_suppliers_binds: this.returnListKeyList('supplier_id', globalSupplierBinds),
         local_suppliers: localSuppliers
       });
       this.$loading({isShow: false});

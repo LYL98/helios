@@ -1,32 +1,34 @@
 <template>
-  <el-dialog title="操作日志" :visible="isShow" width="1200px" :before-close="handleCancel">
-    <el-table :data="dataItem.items" width="100%" :height="460">
-      <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
-      <el-table-column label="操作时间" prop="created" width="260"/>
-      <el-table-column label="操作内容" width="600">
-        <template slot-scope="scope">
-          <span v-if="scope.row.category === 'item_edit'" v-html="returnAttrStr(scope.row.modified_detail)"></span>
-          <span v-else-if="scope.row.category === 'item_on_ground'" v-html="'上架：' + returnAttrStr(scope.row.modified_detail)"></span>
-          <span v-else>{{categorys[scope.row.category]}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作人">
-        <template slot-scope="scope">{{scope.row.operator.realname}}</template>
-      </el-table-column>
-    </el-table>
-    <div class="pagination-div" v-if="dataItem.num > 0">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-        />
+  <detail-layout title="操作日志" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <div style="padding: 0 30px;">
+      <el-table :data="dataItem.items" width="100%">
+        <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
+        <el-table-column label="操作时间" prop="created" width="260"/>
+        <el-table-column label="操作内容">
+          <template slot-scope="scope">
+            <span v-if="scope.row.category === 'item_edit'" v-html="returnAttrStr(scope.row.modified_detail)"></span>
+            <span v-else-if="scope.row.category === 'item_on_ground'" v-html="'上架：' + returnAttrStr(scope.row.modified_detail)"></span>
+            <span v-else>{{categorys[scope.row.category]}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作人" width="160">
+          <template slot-scope="scope">{{scope.row.operator.realname}}</template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination-div" v-if="dataItem.num > 0">
+          <el-pagination
+            background
+            layout="total, sizes, prev, pager, next, jumper"
+            :page-sizes="[10, 20, 30, 40, 50]"
+            @size-change="changePageSize"
+            @current-change="changePage"
+            :total="dataItem.num"
+            :page-size="query.page_size"
+            :current-page="query.page"
+          />
+      </div>
     </div>
-  </el-dialog>
+  </detail-layout>
 </template>
 
 <script>
