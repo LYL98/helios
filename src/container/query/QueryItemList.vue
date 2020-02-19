@@ -36,16 +36,6 @@
           </my-query-item>
         </el-col>
         <el-col :span="7">
-          <my-query-item label="采购类型">
-            <select-option
-              :options="{'全部': '', ...supplierType}"
-              v-model="query.sup_type"
-              @change="handleQuery('TableItemList')"
-              size="small"
-            />
-          </my-query-item>
-        </el-col>
-        <el-col :span="7">
           <my-query-item label="活动类型">
             <select-option
               :options="{'全部': '', '预售': 1, '非预售': 0}"
@@ -55,8 +45,6 @@
             />
           </my-query-item>
         </el-col>
-      </el-row>
-      <el-row :gutter="32" style="margin-top: 16px">
         <el-col :span="7">
           <my-query-item label="是否赠品">
             <select-option
@@ -127,7 +115,6 @@
         is_on_sale: 1, //在售1、待售0
         display_class_code: '',
         condition: '',
-        sup_type: '',
         inner_tag_id: '',
         is_presale: '',
         is_gift: '',
@@ -137,7 +124,6 @@
       return {
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
-        supplierType: Constant.SUPPLIER_TYPE('value_key'),
       }
     },
     methods: {

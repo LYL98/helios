@@ -325,8 +325,8 @@ const Constant = {
   //供应商类型
   SUPPLIER_TYPE: (type) => {
     let data = [
-      { key: 'global_pur', value: '统采' },
-      { key: 'local_pur', value: '地采' }
+      { key: 'global_pur', value: '全国' },
+      { key: 'local_pur', value: '区域' }
     ];
     return handleKeyValue(type, data);
   },
@@ -359,9 +359,9 @@ const Constant = {
   },
   //审核状态(颜色)
   AUDIT_STATUS_TYPE: {
-    init: 'warning',
-    success: 'info',
-    fail: 'danger'
+    init: 'primary',
+    success: 'regular',
+    fail: 'info'
   },
   //采购订单状态（统采、地采）
   PURCHASE_STATUS: (type)=>{
@@ -377,11 +377,11 @@ const Constant = {
   },
   //采购订单状态(颜色)
   PURCHASE_STATUS_TYPE: {
-    init: 'warning',
+    init: 'primary',
     success: 'success',
-    fail: 'danger',
-    part_in: 'info',
-    all_in: 'info',
+    fail: 'info',
+    part_in: 'warning',
+    all_in: 'regular',
     closed: 'info'
   },
   //调拨单状态
@@ -395,9 +395,9 @@ const Constant = {
   },
   //调拨单状态(颜色)
   DISTRIBUTE_STATUS_TYPE: {
-    success: 'success',
-    part_in: 'info',
-    all_in: 'info'
+    success: 'primary',
+    part_in: 'warning',
+    all_in: 'regular'
   },
   //财务对财表状态
   S_STATEMENT_PAID_STATUS: (type)=>{
@@ -434,9 +434,9 @@ const Constant = {
   },
   //品控单状态颜色
   Q_C_STATUS_TYPE: {
-    success: 'info',
-    part_in: 'info',
-    all_in: 'info',
+    success: 'primary',
+    part_in: 'warning',
+    all_in: 'regular',
     closed: 'info'
   },
   //入库单状态
@@ -449,10 +449,8 @@ const Constant = {
   },
   //入库单状态(颜色)
   INVENTORY_STATUS_TYPE: {
-    success: 'info',
-    part_in: 'info',
-    all_in: 'info',
-    closed: 'info'
+    success: 'primary',
+    all_in: 'regular'
   },
   //入库类型
   INVENTORY_TYPES: (type)=>{

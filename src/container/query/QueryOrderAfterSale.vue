@@ -25,7 +25,7 @@
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="订单号/门店名称" size="small" @search="changeQuery" @reset="resetQuery"/>
+          <query-search-input v-model="editQuery.item" placeholder="商品编号/名称" size="small" @search="changeQuery" @reset="resetQuery"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -44,7 +44,7 @@
       <el-col :span="7">
         <my-query-item label="所在仓">
           <my-select-city size="small" v-model="editQuery.city_code" placeholder="所在仓" clearable
-                          :provinceCode="query.province_code" @change="changeQuery"/>
+                          :provinceCode="editQuery.province_code" @change="changeQuery"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -113,8 +113,6 @@
       resetQuery() {
         this.$data.pickerValue = null;
         this.$props.reset();
-        this.$refs['condition'].currentValue = '';
-        this.$refs['item'].currentValue = '';
       }
     }
   }

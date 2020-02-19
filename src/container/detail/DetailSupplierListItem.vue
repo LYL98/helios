@@ -7,17 +7,17 @@
           <el-form-item label="供应商名称">{{detail.title}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="联系人">{{detail.linkman}}</el-form-item>
+          <el-form-item label="类型">{{supplierType[detail.supplier_type]}}</el-form-item>
         </el-col>
       </el-row>
       <h6 class="subtitle">商品信息</h6>
       <el-row v-if="auth.isAdmin || auth.SupplierListItemEdit">
         <el-col :span="12">
           <el-form-item label="搜索">
-            <!--地采-->
+            <!--区域-->
             <select-item v-if="isShow && detail.supplier_type === 'local_pur'" size="medium" placeholder="商品编号/名称"
               v-model="selectItemId" supType="local_pur" :provinceCode="detail.province_code" @change="changeItem" :disabled="false" filterable clearable></select-item>
-            <!--统采-->
+            <!--全国-->
             <select-g-item v-if="isShow && detail.supplier_type === 'global_pur'" size="medium" placeholder="商品编号/名称"
               v-model="selectItemId" supType="global_pur" @change="changeItem" filterable clearable></select-g-item>
             <div v-if="selectItemData.error" class="el-form-item__error">{{selectItemData.error}}</div>
@@ -39,7 +39,7 @@
           <template slot-scope="scope">{{returnWeight(scope.row.gross_weight)}}斤</template>
         </el-table-column>
         <template v-if="detail.supplier_type === 'local_pur'">
-          <el-table-column prop="is_main" label="主供应商">
+          <el-table-column prop="is_main" label="反采供应商">
             <template slot-scope="scope">
               <el-switch :disabled="(auth.isAdmin || auth.SupplierListItemEdit) ? false : true" v-model="scope.row.is_main" :active-value="true" :inactive-value="false">
               </el-switch>
@@ -71,7 +71,7 @@
   import { SelectItem, SelectGItem } from '@/component';
 
   export default {
-    name: "DetailHeadBalanceLog",
+    name: "DetailSupplierListItem",
     mixins: [detailMixin],
     components: {
       'select-item': SelectItem,
@@ -80,6 +80,7 @@
     data() {
       let initDetail = {}
       return {
+        supplierType: Constant.SUPPLIER_TYPE(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail),
         dataItem: [],

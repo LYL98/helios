@@ -29,7 +29,7 @@ import {
   Drawer,
   Switch
 } from 'element-ui';
-import { DataHandle, Http, Config } from '@/util';
+import { DataHandle, Http, Config, Constant } from '@/util';
 
 export default {
   components: {
@@ -79,6 +79,7 @@ export default {
     return {
       tencentPathUp: Config.tencentUpPath,
       tencentPath: Config.tencentPath,
+      defaultAvatar: Constant.IMGS.defaultAvatar,
       province: this.$province,
       auth: this.$auth,
       today: today,

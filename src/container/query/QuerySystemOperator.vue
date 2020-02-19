@@ -3,7 +3,7 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="角色">
-          <search-role size="small" style="width: 210px;" @onSelectRole="handleQuery('TableSystemOperator')" ref="mySearchRole"></search-role>
+          <search-role size="small" style="width: 100%;" v-model="query.role_id" @change="handleQuery('TableSystemOperator')"></search-role>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -32,7 +32,7 @@
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="权限级别">
-          <el-select v-model="query.data_level" placeholder="请选择" class="query-item-select" size="small" @change="handleQuery('TableSystemOperator')">
+          <el-select v-model="query.data_level" placeholder="请选择" style="width: 100%;" size="small" @change="handleQuery('TableSystemOperator')">
             <el-option label="全部" value="">全部</el-option>
             <el-option label="全国" :value="1">全国</el-option>
             <el-option label="省级" :value="2"></el-option>
@@ -91,7 +91,6 @@
       }
     },
     methods: {
-
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="editValue" filterable placeholder="请选择" :disabled="disabled" :size="size" style="width:100%;">
+  <el-select v-model="editValue" filterable placeholder="请选择" :disabled="disabled" :size="size" :clearable="clearable" style="width:100%;">
     <el-option v-if="nationwide" key="nationwide" value="nationwide" label="全国"/>
     <el-option v-for="item in dataItem" :key="item.code" :label="item.title" :value="item.code"/>
   </el-select>
@@ -18,6 +18,7 @@
     props: {
       value: { type: [String, Number], default: '' },
       disabled: { type: Boolean, default: false },
+      clearable: {type: Boolean, default: false},
       size: { type: String, default: '' },
       nationwide: { type: Boolean, default: false }, //是否显示全国
     },

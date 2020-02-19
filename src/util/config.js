@@ -66,6 +66,10 @@ const Config = (() => {
       supplierQuery: apiM + '/supplier/query', //供应商列表
       supplierBindItems: apiM + '/supplier/bind_items', //供应商品
       supplierBindItemsEdit: apiM + '/supplier/bind_items', //提交供应商品
+      supAccountAdd: apiM + '/sup_account/add', //添加账号
+      supAccountEdit: apiM + '/sup_account/edit', //修改供应商的某个账号
+      supAccountFreeze: apiM + '/sup_account/freeze', //冻结供应商的某个账号
+      supAccountUnFreeze: apiM + '/sup_account/unfreeze', //解冻供应商的某个账号
 
       //统采
       supplierGPurchaseQuery: apiM + '/supplier/g_purchase/query', //统采订单
@@ -88,12 +92,11 @@ const Config = (() => {
       pItemDetail: apiM + '/p_item/detail', //商品资料详情
       pItemDelete: apiM + '/p_item/delete', //商品删除
       pItemRecover: apiM + '/p_item/recover', //已删除商品恢复
-      pItemModifyDetail: apiM + '/p_item/modify_detail', //商品资料修改日志
+      pItemModifyDetail: apiM + '/p_item/modify_detail', //商品资料操作日志
       pItemExportCheck: apiM + '/p_item/export_check', //商品导出之前进行校验
       pItemExport: apiM + '/p_item/export', //商品导出
       pItemGetSuppliers: apiM + '/p_item/get_suppliers', //返回商品的供应商
-      pItemChgToGlobal: apiM + '/p_item/chg_to_global', //修改商品的供应属性为统采，同时修改商品的供应商
-      pItemChgToLocal: apiM + '/p_item/chg_to_local', //修改商品的供应属性为地采，同时修改商品的供应商
+      pItemChgSupplier: apiM + '/p_item/chg_supplier', //修改商品的供应商
 
       // 商品管理
       itemEdit: apiM + '/item/edit', //商品编辑
@@ -104,7 +107,7 @@ const Config = (() => {
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
       itemDetail: apiM + '/item/detail',//商品详情
-      itemModifyDetail: apiM + '/item/modify_detail', //商品修改日志
+      itemModifyDetail: apiM + '/item/modify_detail', //商品操作日志
       itemExport: apiM + '/item/export', //商品列表导出
       itemPriceList: apiM + '/item/price/query',//每日定价页面查询
       itemPriceFix: apiM + '/item/price/fix',//商品定价

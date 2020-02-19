@@ -1,6 +1,6 @@
 <template>
   <el-autocomplete
-    v-model="inputValue"
+    v-model="selectId"
     :fetch-suggestions="querySearchAsync"
     placeholder="请输入角色名称"
     @select="handleSelect"
@@ -21,11 +21,18 @@ export default {
     'el-autocomplete': Autocomplete,
     'el-button': Button
   },
-  props: ['value', 'size'],
+  props: {
+    value: { type: Number | String, default: '' },
+    size: { type: String, default: '' },
+  },
+  model: {
+    prop: 'value',
+    event: 'ev'
+  },
   data() {
     return {
-      itemList: [],
-      inputValue: this.value
+      selectId: this.value || '',
+      itemList: []
     }
   },
   methods: {
@@ -43,10 +50,12 @@ export default {
       }
     },
     handleSelect(item) {
-      this.$emit('onSelectRole', item)
+      this.$emit('ev', item.id)
+      this.$emit('change', item)
     },
     clearSelect() {
-      this.$emit('onSelectRole', { id: '' })
+      this.$emit('ev', '')
+      this.$emit('change', { id: '' })
     },
     createStateFilter(queryString) {
       let regex = new RegExp(queryString);
@@ -54,9 +63,6 @@ export default {
         // return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
         return regex.test(state.value);
       };
-    },
-    clear() {
-      this.inputValue = '';
     },
     async roleList(callback) {
       let res = await Http.get(Config.api.roleList, {});
@@ -66,6 +72,14 @@ export default {
         callback(this.itemList);
       }
     },
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler: function (a, b) {
+        this.$data.selectId = a || '';
+      }
+    }
   }
 }
 </script>

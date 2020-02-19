@@ -57,22 +57,11 @@
             <select-system-class size="medium" v-model="detail.system_class_codes" @change="selectSystemClass"/>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="发票">
-            <el-radio v-model="detail.has_ticket" :label="true" border size="mini">有</el-radio>
-            <el-radio v-model="detail.has_ticket" :label="false" border size="mini">无</el-radio>
-          </el-form-item>
-        </el-col>
       </el-row>
       <el-form-item label="商品详情">
         <quill-editor mainClass="item-g-quill-editor" v-model="detail.content" module="item" height="200" :disabled="pageType === 'detail' ? true : false"></quill-editor>
       </el-form-item>
       <template v-if="pageType === 'detail'">
-        <h6 class="subtitle">供应商</h6>
-        <el-form-item label="采购类型">{{supplierType[detail.sup_type]}}</el-form-item>
-        <el-form-item label="供应商" v-if="detail.supplier_binds.length > 0">
-          <other-item-supplier :supplierType="detail.sup_type" :supplierBinds="detail.supplier_binds"/>
-        </el-form-item>
         <h6 class="subtitle">操作记录</h6>
         <el-row v-if="detail.creator && detail.creator.id">
           <el-col :span="12">
@@ -109,7 +98,6 @@
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Verification, Constant } from '@/util';
 import { ImagePreview, QuillEditor, UploadImg, InputWeight, InputNumber, SelectFrame, SelectSystemClass } from '@/common';
-import { OtherItemSupplier } from '@/component';
 
 export default {
   name: "AddEditItemGlobal",
@@ -121,8 +109,7 @@ export default {
     'input-weight': InputWeight,
     'input-number': InputNumber,
     'select-frame': SelectFrame,
-    'select-system-class': SelectSystemClass,
-    'other-item-supplier': OtherItemSupplier
+    'select-system-class': SelectSystemClass
   },
   props: {
     page: { type: String, default: 'global' }, //页面global、recover
@@ -161,7 +148,6 @@ export default {
       content: '', //详细信息
       creator: {},
       last_updater: {},
-      has_ticket: false,
     }
     return{
       supplierType: Constant.SUPPLIER_TYPE(),
@@ -261,7 +247,7 @@ export default {
         this.$message({message: res.message, type: 'error'});
       }
     },
-    //显示修改日志
+    //显示操作日志
     handleShowEditRecord(){
       let pc = this.getPageComponents('DetailItemGlobalEditRecord');
       pc.showDetail(this.detail);

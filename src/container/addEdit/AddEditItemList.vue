@@ -58,12 +58,6 @@
               <el-input size="medium" :value="detail.system_class.title" disabled></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="发票">
-              <el-radio :value="detail.has_ticket" disabled :label="true" border size="mini">有</el-radio>
-              <el-radio :value="detail.has_ticket" disabled :label="false" border size="mini">无</el-radio>
-            </el-form-item>
-          </el-col>
         </el-row>
 
         <h6 class="subtitle">销售信息</h6>
@@ -129,7 +123,12 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item v-if="!detail.is_gift" label="是否预售" prop="">
+            <el-form-item label="采购员" prop="buyer_id">
+              <my-select-buyer size="medium" :provinceCode="detail.province_code" v-model="detail.buyer_id" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item v-if="!detail.is_gift" label="是否预售">
               <el-radio v-model="detail.is_presale" :label="true" border size="mini">是</el-radio>
               <el-radio v-model="detail.is_presale" :label="false" border size="mini">否</el-radio>
             </el-form-item>
@@ -138,6 +137,7 @@
             <el-form-item v-if="!detail.is_gift && detail.is_presale" label="配送日期" prop="presale_date">
               <el-date-picker
                 style="width: 100%"
+                size="medium"
                 v-model="detail.presale_date"
                 type="daterange"
                 value-format="yyyy-MM-dd"
@@ -148,86 +148,87 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
-        </el-row>        
-        <el-row :gutter="10">
-          <el-col :span="16">
-            <el-form-item label="区域定价">
-              <ul>
-                <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center; justify-content: space-between;">
-                  <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <el-form-item
-                      :prop="'city_prices_temp.' + index + '.city_code'"
-                      :rules="[{ required: true, message: '请选择所在仓', trigger: 'change' }]"
-                    >
-                      <el-select v-model="item.city_code" placeholder="请选择所在仓" size="medium">
-                        <el-option
-                          v-for="city in cityList"
-                          :key="city.code"
-                          :label="city.title"
-                          :value="city.code"
-                          :disabled="detail.city_prices_temp.some(item => item.city_code === city.code)"
-                        >
-                        </el-option>
-                      </el-select>
-
-                    </el-form-item>
-
-                    <el-form-item
-                      :prop="'city_prices_temp.' + index + '.percent'"
-                      :rules="[
-                        { required: true, message: '请输入浮动比例', trigger: 'change' },
-                        { validator: validCityPercent, trigger: 'blur' },
-                      ]"
-                      style="margin-left: 10px;"
-                    >
-                      <el-input
-                        style="width: 230px;"
-                        v-model="item.percent"
-                        @input="changeCityPercent(index)"
-                        placeholder="浮动(-100% ~ 1000%)"
-                        size="medium"
-                      >
-                        <template slot="append">%</template>
-                      </el-input>
-                    </el-form-item>
-
-                    <el-form-item
-                      style="margin-left: 10px;"
-                      :prop="'city_prices_temp.' + index + '.price'"
-                      :rules="[
-                          { validator: validCityPrice, trigger: 'change' },
-                        ]"
-                    >
-                      <el-input
-                        disabled
-                        v-model="item.price"
-                        placeholder="0 - 1000000"
-                        style="width: 180px;"
-                        size="medium"
-                      >
-                        <template slot="append">元</template>
-                      </el-input>
-                    </el-form-item>
-                  </div>
-                  <i style="margin-left: 10px; cursor: pointer; position: relative; top: -13px;"
-                    class="el-icon-close icon-button" @click="handleRemoveCityPrice(index)"></i>
-                </li>
-              </ul>
-              <!-- 新增区域定价按钮 -->
-              <el-button plain size="medium" type="primary" @click="handleAddCityPrice">增加区域定价</el-button>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="商品标签" prop="tags">
-              <select-item-tags v-model="detail.tags"/>
-            </el-form-item>
-          </el-col>
         </el-row>
-        <h6 class="subtitle">采购信息</h6>
-        <el-form-item label="采购类型">{{supplierType[detail.sup_type]}}</el-form-item>
-        <el-form-item label="供应商">
-          <other-item-supplier :supplierType="detail.sup_type" :supplierBinds="detail.supplier_binds"/>
+
+        <el-form-item label="商品标签" prop="tags">
+          <select-item-tags v-model="detail.tags"/>
         </el-form-item>
+        
+        <el-form-item label="区域定价">
+          <ul>
+            <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <el-form-item
+                  :prop="'city_prices_temp.' + index + '.city_code'"
+                  :rules="[{ required: true, message: '请选择所在仓', trigger: 'change' }]"
+                >
+                  <el-select v-model="item.city_code" placeholder="请选择所在仓" size="medium">
+                    <el-option
+                      v-for="city in cityList"
+                      :key="city.code"
+                      :label="city.title"
+                      :value="city.code"
+                      :disabled="detail.city_prices_temp.some(item => item.city_code === city.code)"
+                    >
+                    </el-option>
+                  </el-select>
+
+                </el-form-item>
+
+                <el-form-item
+                  :prop="'city_prices_temp.' + index + '.percent'"
+                  :rules="[
+                    { required: true, message: '请输入浮动比例', trigger: 'change' },
+                    { validator: validCityPercent, trigger: 'blur' },
+                  ]"
+                  style="margin-left: 10px;"
+                >
+                  <el-input
+                    style="width: 230px;"
+                    v-model="item.percent"
+                    @input="changeCityPercent(index)"
+                    placeholder="浮动(-100% ~ 1000%)"
+                    size="medium"
+                  >
+                    <template slot="append">%</template>
+                  </el-input>
+                </el-form-item>
+
+                <el-form-item
+                  style="margin-left: 10px;"
+                  :prop="'city_prices_temp.' + index + '.price'"
+                  :rules="[
+                      { validator: validCityPrice, trigger: 'change' },
+                    ]"
+                >
+                  <el-input
+                    disabled
+                    v-model="item.price"
+                    placeholder="0 - 1000000"
+                    style="width: 180px;"
+                    size="medium"
+                  >
+                    <template slot="append">元</template>
+                  </el-input>
+                </el-form-item>
+              </div>
+              <i style="margin-left: 10px; cursor: pointer; position: relative; top: -13px;"
+                class="el-icon-close icon-button" @click="handleRemoveCityPrice(index)"></i>
+            </li>
+          </ul>
+          <!-- 新增区域定价按钮 -->
+          <el-button plain size="medium" type="primary" @click="handleAddCityPrice">增加区域定价</el-button>
+        </el-form-item>
+
+        <template v-if="supplierList.length > 0">
+          <h6 class="subtitle">供应商信息</h6>
+          <el-form-item label="全国">
+            <other-item-supplier supplierType="global_pur" :supplierBinds="supplierList"/>
+          </el-form-item>
+          <el-form-item label="区域">
+            <other-item-supplier supplierType="local_pur" :supplierBinds="supplierList"/>
+          </el-form-item>
+        </template>
         <h6 class="subtitle">其它信息</h6>
         <el-form-item label="商品详情">
           <div class="my-content-div" v-html="detail.content"></div>
@@ -271,7 +272,7 @@
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
 import { SelectDisplayClass, ImagePreview, InputNumber, InputPrice, InputWeight, SelectInnerTag, SelecItemTags } from '@/common';
-import { OtherItemSupplier } from '@/component';
+import { OtherItemSupplier, SelectBuyer } from '@/component';
 
 export default {
   name: "AddEditItemList",
@@ -284,7 +285,8 @@ export default {
     'select-item-tags': SelecItemTags,
     'my-select-display-class': SelectDisplayClass,
     'image-preview': ImagePreview,
-    'other-item-supplier': OtherItemSupplier
+    'other-item-supplier': OtherItemSupplier,
+    'my-select-buyer': SelectBuyer,
   },
   props: {
     page: { type: String, default: '' }, //after-sale-detail售后页面，不显示
@@ -413,7 +415,7 @@ export default {
       supplier_binds: []
     }
     return {
-      supplierType: Constant.SUPPLIER_TYPE(),
+      supplierList: [],
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       systemClassProps: {
@@ -451,6 +453,9 @@ export default {
           { pattern: Verification.testStrs.isNumber, message: '最大订货件数必须为整数', trigger: 'blur' },
           // { type: 'number', max: 3, message: '最大订货件数为999', trigger: 'blur' }
           { validator: validOrderNum, trigger: 'blur' },
+        ],
+        buyer_id: [
+          { required: true, message: '请选择采购员', trigger: 'change' }
         ],
         presale_date: [
           { validator: validPresaleDate, trigger: 'change' },
@@ -490,6 +495,7 @@ export default {
       this.baseCityList(); //获取城市列表
       if(data){
         this.itemDetail(data.id, type);
+        this.pItemGetSuppliers(data.id);
         this.$data.pageType = type;
       }else{
         this.$data.detail = this.copyJson(this.initDetail);
@@ -525,6 +531,13 @@ export default {
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
+      }
+    },
+    //获取供应商列表
+    async pItemGetSuppliers(id){
+      let res = Http.get(Config.api.pItemGetSuppliers, { id });
+      if(res.code === 0){
+        this.$data.supplierList = res.data;
       }
     },
     //新增区域价格

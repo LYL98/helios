@@ -26,7 +26,7 @@
               <!--名称-->
               <template v-if="item.key === 'title'">
                 <div class="td-item">
-                  <div class="link-item link-item add-dot2" @click="handleShowAddEdit('AddEditSupplierList', scope.row, 'detail')" v-if="auth.isAdmin || auth.SupplierListDetail">
+                  <div class="link-item link-item add-dot2" @click="handleShowDetail('DetailSupplierList', scope.row)" v-if="auth.isAdmin || auth.SupplierListDetail">
                     {{scope.row.title}}
                   </div>
                   <div class="add-dot2" v-else>{{scope.row.title}}</div>

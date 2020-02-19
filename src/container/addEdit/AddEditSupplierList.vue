@@ -3,9 +3,18 @@
     <add-edit-layout :title="returnPageTitles('供应商')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <h6 class="subtitle">基本信息</h6>
-        <el-form-item label="供应商类型" prop="supplier_type">
-          <el-radio v-model="detail.supplier_type" :label="key" :key="key" border size="mini" v-for="(value, key) in supplierType" @change="detail.bill_term = 0">{{value}}</el-radio>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="供应商类型" prop="supplier_type">
+              <el-radio v-model="detail.supplier_type" :label="key" :key="key" border size="medium" v-for="(value, key) in supplierType" @change="changeSupType">{{value}}</el-radio>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="detail.supplier_type === 'local_pur'">
+            <el-form-item label="区域" prop="province_code">
+              <select-province v-model="detail.province_code" size="medium" clearable/>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="供应商名称" prop="title">
@@ -17,25 +26,27 @@
               <el-input placeholder="10个字符以内" size="medium" :maxlength="10" v-model="detail.linkman"/>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
             <el-form-item label="联系电话" prop="contact_phone">
               <el-input placeholder="" size="medium" v-model="detail.contact_phone"/>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="pageType === 'add'">
             <el-form-item label="账号手机号" prop="phone">
               <el-input placeholder="" size="medium" v-model="detail.phone"/>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
             <el-form-item label="结款类型" prop="bill_term">
               <el-select size="medium" v-model="detail.bill_term" :disabled="detail.supplier_type === 'global_pur' ? true : false" style="width: 100%;">
                 <el-option v-for="(value, key) in supplierBillTerm" :value="Number(key)" :key="key" :label="value"></el-option>
               </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="发票" prop="has_ticket">
+              <el-radio v-model="detail.has_ticket" :label="true" border size="medium">有</el-radio>
+              <el-radio v-model="detail.has_ticket" :label="false" border size="medium">无</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
@@ -102,11 +113,13 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
+import { SelectProvince } from '@/common';
 
 export default {
   name: "AddEditSupplierList",
   mixins: [addEditMixin],
   components: {
+    'select-province': SelectProvince
   },
   created() {
   },
@@ -122,10 +135,11 @@ export default {
       }
     };
     let initDetail = {
-      province_code: this.$province.code,
+      province_code: 'nationwide', //全国要传nationwide
       title: '',
       phone: '',
       supplier_type: 'global_pur',
+      has_ticket: true,
       bill_term: 0,
       stall_code: '',
       bank_name: '',
@@ -140,6 +154,9 @@ export default {
       supplierType: Constant.SUPPLIER_TYPE(),
       supplierBillTerm: Constant.SUPPLIER_BILL_TERM(),
       rules: {
+        province_code: [
+          { required: true, message: '请选择区域', trigger: 'change' },
+        ],
         title: [
           { required: true, message: '供应商名称不能为空', trigger: 'change' },
           { max: 10, message: '供应商名称不能超过10个字符', trigger: 'blur' }
@@ -199,6 +216,17 @@ export default {
       }else{
         this.$message({message: res.message, type: 'error'});
       }
+    },
+    //修改类型
+    changeSupType(){
+      let { detail,  } = this;
+      detail.bill_term = 0;
+      if(detail.supplier_type === 'local_pur'){
+        detail.province_code = '';
+      }else{
+        detail.province_code = 'nationwide';
+      }
+      this.$data.detail = detail;
     },
     //提交数据
     async addEditData(){

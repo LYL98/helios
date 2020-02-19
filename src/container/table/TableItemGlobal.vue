@@ -48,8 +48,6 @@
               <div class="td-item" v-else-if="item.key === 'net_weight'">{{returnWeight(scope.row.net_weight)}}斤</div>
               <!--科学分类-->
               <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
-              <!--采购类型-->
-              <div class="td-item" v-else-if="item.key === 'sup_type'">{{supplierType[scope.row.sup_type]}}</div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
@@ -78,12 +76,12 @@
                   command: () => handleRecover(scope.row)
                 },
                 {
-                  title: '采购属性',
+                  title: '供应商',
                   isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalSupplierType),
                   command: () => handleShowForm('FormItemGlobalSupplierType', scope.row)
                 },
                 {
-                  title: '修改日志',
+                  title: '操作日志',
                   isDisplay: page === 'global' && (auth.isAdmin || auth.ItemGlobalEditRecord),
                   command: () => handleShowDetail('DetailItemGlobalEditRecord', scope.row)
                 }
@@ -121,13 +119,11 @@
     },
     data() {
       return {
-        supplierType: Constant.SUPPLIER_TYPE(),
         tableName: 'TableItemGlobal',
         tableColumn: [
           { label: '商品编号/名称', key: 'code_title', width: '2', isShow: true },
           { label: '商品参数', key: 'parameter', width: '2', isShow: true },
           { label: '筐', key: 'frame', width: '1', isShow: true },
-          { label: '采购类型', key: 'sup_type', width: '1', isShow: true },
           { label: '包装规格', key: 'package_spec', width: '1', isShow: false },
           { label: '净重', key: 'net_weight', width: '1', isShow: false },
           { label: '科学分类', key: 'system_class', width: '1', isShow: false },

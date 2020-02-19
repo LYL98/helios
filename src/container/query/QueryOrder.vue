@@ -33,7 +33,7 @@
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="订单号/门店名称" size="small" @search="changeQuery" @reset="resetQuery"/>
+          <query-search-input v-model="editQuery.condition" placeholder="订单号/门店名称" size="small" @search="changeQuery" @reset="resetQuery"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -45,7 +45,7 @@
             v-model="editQuery.city_code"
             placeholder="所在仓"
             clearable
-            :provinceCode="query.province_code"
+            :provinceCode="editQuery.province_code"
             @change="changeQuery"
           />
         </my-query-item>
