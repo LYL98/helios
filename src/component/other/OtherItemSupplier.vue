@@ -1,61 +1,30 @@
 <template>
   <div>
     <div v-if="supplierType === 'global_pur'">
-      <p v-for="(item, index) in supplierBinds" :key="index">{{index + 1}}、{{item.supplier_title}}</p>
+      <p v-for="(item, index) in supplierBinds" :key="index">{{index + 1}}、{{item.supplier.title}}</p>
     </div>
     <div v-else-if="supplierType === 'local_pur'">
-      <el-tabs>
-        <el-tab-pane v-for="(item, index) in supplierBindsData" :key="index" :label="item.province_title">
-          <p v-for="(s, i) in item.child" :key="i">
-            {{i + 1}}、{{s.supplier_title}}
-            <span v-if="s.is_main" class="main-span">主供应商</span>
-          </p>
-        </el-tab-pane>
-      </el-tabs>
+      <div v-for="(item, index) in supplierBinds" :key="index" class="local-pur-item">
+        <div class="title">{{item.province.title}}</div>
+        <p v-for="(s, i) in item.suppliers" :key="i">
+          {{i + 1}}、{{s.supplier.title}}
+          <span v-if="s.is_main" class="main-span">反采供应商</span>
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import { Tabs, TabPane } from 'element-ui';
   export default {
     name: "OtherItemSupplier",
     components: {
-      'el-tabs': Tabs,
-      'el-tab-pane': TabPane
     },
     props: {
       supplierType: { type: String, default: '' }, //global_pur 统采；local_pur 地采
       supplierBinds: { type: Array, default: [] }, //供应商列表
     },
     computed: {
-      //处理后分省数据
-      supplierBindsData() {
-        let datas = [];
-        this.supplierBinds.forEach(item => {
-          if(datas.length === 0){
-            datas.push({
-              province_title: item.province_title,
-              child: [item]
-            });
-          }else{
-            for(let i = 0; i < datas.length; i++){
-              if(datas[i].province_title === item.province_title){
-                datas[i].child.push(item);
-                break;
-              }
-              if(i === datas.length - 1){
-                datas.push({
-                  province_title: item.province_title,
-                  child: [item]
-                });
-                break;
-              }
-            }
-          }
-        });
-        return datas;
-      }
     },
     methods: {
       
@@ -64,6 +33,13 @@
 </script>
 
 <style lang="scss" scoped>
+  .local-pur-item{
+    margin-bottom: 20px;
+    >.title{
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+  }
   .main-span{
     background: #ff5252;
     color: #fff;

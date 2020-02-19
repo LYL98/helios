@@ -497,7 +497,6 @@ export default {
       this.baseCityList(); //获取城市列表
       if(data){
         this.itemDetail(data.id, type);
-        this.pItemGetSuppliers(data.id);
         this.$data.pageType = type;
       }else{
         this.$data.detail = this.copyJson(this.initDetail);
@@ -530,6 +529,7 @@ export default {
           return item;
         });
         this.$data.detail = rd;
+        this.pItemGetSuppliers();
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
@@ -538,9 +538,9 @@ export default {
     //返回商品的供应商
     async pItemGetSuppliers(){
       let { localSuppliers } = this;
-      let res = await Http.get(Config.api.pItemGetSuppliers, { p_item_id: this.detail.id });
+      let res = await Http.get(Config.api.pItemGetSuppliers, { p_item_id: this.detail.parent_item_id});
       if(res.code === 0){
-        this.$data.supplierData = rd.data;
+        this.$data.supplierData = res.data;
       }else{
         this.$message({message: res.message, type: 'error'});
       }
