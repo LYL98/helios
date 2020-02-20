@@ -14,7 +14,7 @@
           <el-button
             type="text"
             size="mini"
-            v-if="data.code.length < 8 && (auth.isAdmin || auth.BasicDataSystemClassListAdd)"
+            v-if="data.code.length < 6 && (auth.isAdmin || auth.BasicDataSystemClassListAdd)"
             @click="() => addSystemClass(data)">
             添加子分类
           </el-button>
