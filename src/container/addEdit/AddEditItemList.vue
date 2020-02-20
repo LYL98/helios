@@ -123,7 +123,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="采购员" prop="buyer_id">
+            <el-form-item label="采购员">
               <my-select-buyer size="medium" :provinceCode="detail.province_code" v-model="detail.buyer_id" />
             </el-form-item>
           </el-col>
@@ -447,9 +447,6 @@ export default {
           { pattern: Verification.testStrs.isNumber, message: '最大订货件数必须为整数', trigger: 'blur' },
           // { type: 'number', max: 3, message: '最大订货件数为999', trigger: 'blur' }
           { validator: validOrderNum, trigger: 'blur' },
-        ],
-        buyer_id: [
-          { required: true, message: '请选择采购员', trigger: 'change' }
         ],
         presale_date: [
           { validator: validPresaleDate, trigger: 'change' },

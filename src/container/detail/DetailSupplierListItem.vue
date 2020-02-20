@@ -150,7 +150,7 @@
         }else{
           dataItem.forEach(item => {
             data.bind_item_ids.push({
-              item_id: item.id,
+              p_item_id: item.id,
               is_main: item.is_main
             });
           });

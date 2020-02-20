@@ -76,7 +76,7 @@ const Config = (() => {
       fromSupplierOrderAdd: apiM + '/from_supplier/order/add', //订单新增
       fromSupplierOrderEdit: apiM + '/from_supplier/order/edit', //订单修改
       fromSupplierOrderAudit: apiM + '/from_supplier/order/audit', //预采采购单审核
-      fromSupplierOrderClose: apiM + '/from_supplier/order/void', //订单关闭
+      fromSupplierOrderClose: apiM + '/from_supplier/order/close', //订单关闭
       fromSupplierOrderDetail: apiM + '/from_supplier/order/detail', //反采购单详情
 
       //商品池

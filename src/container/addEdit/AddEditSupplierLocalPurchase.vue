@@ -183,16 +183,16 @@ export default {
     showAddEdit(data, type){
       this.$data.pageType = type || 'detail';
       if(data){
-        this.supplierLocalPurchaseDetail(data.id);
+        this.fromSupplierOrderDetail(data.id);
       }else{
         this.$data.detail = this.copyJson(this.initDetail);
         this.$data.isShow = true;
       }
     },
     //获取详情
-    async supplierLocalPurchaseDetail(id){
+    async fromSupplierOrderDetail(id){
       this.$loading({isShow: true});
-      let res = await Http.get(Config.api.supplierLocalPurchaseDetail, { id: id });
+      let res = await Http.get(Config.api.fromSupplierOrderDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$data.detail = res.data;

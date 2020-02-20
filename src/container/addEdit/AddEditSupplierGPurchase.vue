@@ -18,8 +18,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购日期" prop="purchase_date">
-              <el-date-picker size="medium" v-model="detail.purchase_date" value-format="yyyy-MM-dd" placeholder="采购日期" style="width: 100%;"/>
+            <el-form-item label="采购日期" prop="order_date">
+              <el-date-picker size="medium" v-model="detail.order_date" value-format="yyyy-MM-dd" placeholder="采购日期" style="width: 100%;"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -38,8 +38,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购价" prop="price">
-              <input-price size="medium" v-model="detail.price" placeholder="28（仅供参考）"/>
+            <el-form-item label="采购价" prop="price_buy">
+              <input-price size="medium" v-model="detail.price_buy" placeholder="28（仅供参考）"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -60,7 +60,7 @@
 
           <el-col :span="12">
             <el-form-item label="采购总金额">
-              <input-price size="medium" :value="detail.num * detail.price + detail.num * detail.frame_price" disabled/>
+              <input-price size="medium" :value="detail.num * detail.price_buy + detail.num * detail.frame_price" disabled/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -151,13 +151,13 @@ export default {
   },
   data(){
     let initDetail = {
-      purchase_date: '',
+      order_date: '',
       estimate_arrive_at: '',
       supplier_id: '',
       storehouse_id: '',
       item_id: '',
       num: '',
-      price: '',
+      price_buy: '',
       frame_price: 0,
       instocks: [],
       logs: []
@@ -169,7 +169,7 @@ export default {
       initDetail: initDetail,
       detail: JSON.parse(JSON.stringify(initDetail)),
       rules: {
-        purchase_date: [
+        order_date: [
           { required: true, message: '请选择采购日期', trigger: 'change' }
         ],
         estimate_arrive_at: [
@@ -184,7 +184,7 @@ export default {
         num: [
           { required: true, message: '请输入件数', trigger: 'change' },
         ],
-        price: [
+        price_buy: [
           { required: true, message: '请输入金额', trigger: 'change' },
         ],
         storehouse_id: [
