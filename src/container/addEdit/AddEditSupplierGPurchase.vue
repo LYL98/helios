@@ -9,8 +9,8 @@
         </div>
         <h6 class="subtitle">采购信息</h6>
         <el-row>
-          <el-form-item label="商品" prop="item_id">
-            <select-g-item v-model="detail.item_id" placeholder="商品编号/名称" size="medium" supType="global_pur" @change="selectGItem" :disabled="pageType !== 'add' ? true : false" filterable clearable></select-g-item>
+          <el-form-item label="商品" prop="p_item_id">
+            <select-g-item v-model="detail.p_item_id" placeholder="商品编号/名称" size="medium" supType="global_pur" @change="selectGItem" :disabled="pageType !== 'add' ? true : false" filterable clearable></select-g-item>
           </el-form-item>
           <el-col :span="12" v-if="pageType === 'detail'">
             <el-form-item label="预采单号">
@@ -29,7 +29,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="供应商" prop="supplier_id">
-              <select-supplier supplierType="global_pur" size="medium" :itemId="detail.item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false"/>
+              <select-supplier supplierType="global_pur" size="medium" :itemId="detail.p_item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false" @change="selectSupplier"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="采购价" prop="price_buy">
-              <input-price size="medium" v-model="detail.price_buy" placeholder="28（仅供参考）"/>
+              <input-price size="medium" v-model="detail.price_buy" :placeholder="supplierPrice ? '￥' + returnPrice(supplierPrice) + '（仅供参考）': ''"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -54,7 +54,7 @@
               <el-form-item label="筐金额"><input-price size="medium" :value="detail.num * detail.frame_price" disabled/></el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="采购商品金额"><input-price size="medium" :value="detail.num * detail.price" disabled/></el-form-item>
+              <el-form-item label="采购商品金额"><input-price size="medium" :value="detail.num * detail.price_buy" disabled/></el-form-item>
             </el-col>
           </template>
 
@@ -155,7 +155,7 @@ export default {
       estimate_arrive_at: '',
       supplier_id: '',
       storehouse_id: '',
-      item_id: '',
+      p_item_id: '',
       num: '',
       price_buy: '',
       frame_price: 0,
@@ -178,7 +178,7 @@ export default {
         supplier_id: [
           { required: true, message: '请选择供应商', trigger: 'change' }
         ],
-        item_id: [
+        p_item_id: [
           {required: true, message: '请选择商品', trigger: 'change'},
         ],
         num: [
@@ -196,7 +196,8 @@ export default {
         add: '新增',
         audit_suc: '审核通过',
         audit_fail: '审核不通过'
-      }
+      },
+      supplierPrice: 0, //供应商价格
     }
   },
   methods: {
@@ -224,12 +225,28 @@ export default {
     },
     //选择商品时
     selectGItem(data){
+      let { detail } = this;
       //如果有筐
       if(data.frame_code){
-        let { detail } = this;
         detail.frame_code = data.frame_code;
         detail.frame_price = data.frame.price;
-        this.$data.detail = detail;
+      }
+      detail.supplier_id = '';
+      this.$data.detail = detail;
+      this.supplierPrice = 0;
+      setTimeout(()=>{
+        if(this.$refs['ruleForm']) this.$refs['ruleForm'].clearValidate();
+      }, 0);
+    },
+    //选择供应商
+    async selectSupplier(e){
+      let { detail } = this;
+      let res = await Http.get(Config.api.fromSupplierPItemPriceBuy, {
+        p_item_id: detail.p_item_id,
+        supplier_id: e.id
+      });
+      if(res.code === 0){
+        this.$data.supplierPrice = res.data;
       }
     },
     //提交数据
