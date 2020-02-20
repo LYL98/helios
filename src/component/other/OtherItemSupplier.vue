@@ -21,7 +21,7 @@
     components: {
     },
     props: {
-      supplierType: { type: String, default: '' }, //global_pur 统采；local_pur 地采
+      supplierType: { type: String, default: '' }, //global_pur 预采；local_pur 反采
       supplierBinds: { type: Array, default: [] }, //供应商列表
     },
     computed: {

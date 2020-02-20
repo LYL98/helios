@@ -1,6 +1,6 @@
 <template>
   <div>
-    <add-edit-layout :title="returnPageTitles('地采订单')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <add-edit-layout :title="returnPageTitles('反采订单')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <div class="f-r" style="position: relative; right: -84px;" v-if="pageType === 'detail'">
           <el-tag size="small" :type="purchaseStatusType[detail.status]" disable-transitions>
@@ -13,7 +13,7 @@
             <select-item v-model="detail.item_id" placeholder="商品编号/名称" size="medium" supType="local_pur" :provinceCode="province.code" @change="selectGItem" :disabled="pageType !== 'add' ? true : false" filterable clearable></select-item>
           </el-form-item>
           <el-col :span="12">
-            <el-form-item label="地采单号" v-if="pageType === 'detail'">
+            <el-form-item label="反采单号" v-if="pageType === 'detail'">
               <el-input size="medium" :value="detail.code" disabled placeholder="系统自动生成"></el-input>
             </el-form-item>
           </el-col>
@@ -102,21 +102,8 @@
         </div>
       </template>
 
-      <!--库存页面-->
-      <div v-if="fromPage === 'Inventory'" class="bottom-btn">
+      <div class="bottom-btn">
         <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-      </div>
-      <!--其它-->
-      <div class="bottom-btn" v-else>
-        <template v-if="judgeOrs(pageType, ['add', 'edit'])">
-          <el-button size="medium" @click.native="handleCancel">取 消</el-button>
-          <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
-        </template>
-        <template v-else>
-          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'"
-            v-if="(auth.isAdmin || auth.SupplierLocalPurchaseEdit) && pageType === 'detail' && detail.status === 'init'">修改</el-button>
-          <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-        </template>
       </div>
     </add-edit-layout>
   </div>
@@ -194,11 +181,11 @@ export default {
   methods: {
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
-      this.$data.pageType = type || 'add';
+      this.$data.pageType = type || 'detail';
       if(data){
         this.supplierLocalPurchaseDetail(data.id);
       }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.detail = this.copyJson(this.initDetail);
         this.$data.isShow = true;
       }
     },
@@ -222,22 +209,6 @@ export default {
         detail.frame_code = data.frame_code;
         detail.frame_price = data.frame.price;
         this.$data.detail = detail;
-      }
-    },
-    //提交数据
-    async addEditData(){
-      let { detail, pageType } = this;
-      this.$loading({isShow: true});
-      let res = await Http.post(Config.api[pageType === 'edit' ? 'supplierLocalPurchaseEdit' : 'supplierLocalPurchaseAdd'], detail);
-      this.$loading({isShow: false});
-      if(res.code === 0){
-        this.$message({message: `地采订单${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
-        this.handleCancel(); //隐藏
-        //刷新数据(列表)
-        let pc = this.getPageComponents('TableSupplierLocalPurchase');
-        pc.getData(pc.query);
-      }else{
-        this.$message({message: res.message, type: 'error'});
       }
     },
     //返回备注

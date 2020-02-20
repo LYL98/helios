@@ -363,7 +363,7 @@ const Constant = {
     success: 'regular',
     fail: 'info'
   },
-  //采购订单状态（统采、地采）
+  //采购订单状态（预采、反采）
   PURCHASE_STATUS: (type)=>{
     let data = [
       { key: 'init', value: '待审核' },
@@ -415,8 +415,8 @@ const Constant = {
   //供应商流水类型
   SUPPLIER_BILL_REASON: (type)=>{
     let data = [
-      { key: 'local_buy', value: '货款' }, //地采采购
-      { key: 'distribution', value: '货款' }, //统采采购
+      { key: 'local_buy', value: '货款' }, //反采采购
+      { key: 'distribution', value: '货款' }, //预采采购
       { key: 'other', value: '其它' }, //其它（手动充值、扣款）
       { key: 'item_damage', value: '货损' } //货损
     ];
@@ -455,8 +455,8 @@ const Constant = {
   //入库类型
   INVENTORY_TYPES: (type)=>{
     let data = [
-      { key: 'global_pur', value: '统采入库' },
-      { key: 'local_pur', value: '地采入库' },
+      { key: 'global_pur', value: '预采入库' },
+      { key: 'local_pur', value: '反采入库' },
       { key: 'distribute', value: '调拨入库' },
       { key: 'allocate', value: '场地入库' }
     ];

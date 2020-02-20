@@ -6,7 +6,7 @@
         :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
       </div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseExport" @click.native="handleExport('supplierGPurchaseExport', query)" size="mini" type="primary" plain>导出统采单</el-button>
+        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseExport" @click.native="handleExport('supplierGPurchaseExport', query)" size="mini" type="primary" plain>导出预采单</el-button>
         <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAdd" @click="handleShowAddEdit('AddEditSupplierGPurchase')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
@@ -40,16 +40,13 @@
               <!--供应商-->
               <div class="td-item add-dot2" v-else-if="item.key === 'supplier'">{{scope.row.supplier.title}}</div>
               <!--商品名称-->
-              <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
+              <div class="td-item add-dot2" v-else-if="item.key === 'item'">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
               <!--价格-->
               <div class="td-item add-dot2" v-else-if="item.key === 'price'">&yen;{{returnPrice(scope.row.price)}}</div>
+              <!--数量-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'num'">&yen;{{returnUnit(scope.row.num, '件', '-')}}</div>
               <!--采购总金额-->
               <div class="td-item add-dot2" v-else-if="item.key === 'num_price'">&yen;{{returnPrice(scope.row.num * scope.row.price + scope.row.num * scope.row.frame_price)}}</div>
-              <!--采购人-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'purchaser'">
-                {{scope.row.creator.realname}}<br/>
-                {{scope.row.creator.phone}}
-              </div>
               <!--送达仓-->
               <div v-else-if="item.key === 'storehouse'">{{scope.row.storehouse.title}}</div>
               <!--状态-->
@@ -83,6 +80,11 @@
                   title: '审核',
                   isDisplay: (auth.isAdmin || auth.SupplierGPurchaseAudit) && scope.row.status === 'init',
                   command: () => handleShowForm('FormAudit', { ids: [scope.row.id] })
+                },
+                {
+                  title: '关闭',
+                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseClose) && scope.row.status === 'success',
+                  command: () => handleShowForm('FormClose', { ids: [scope.row.id] })
                 }
               ]"
             />
@@ -120,16 +122,15 @@
       return {
         tableName: 'TableSupplierGPurchase',
         tableColumn: [
-          { label: '统采单号', key: 'code', width: '2', isShow: true },
+          { label: '预采单号', key: 'code', width: '2', isShow: true },
           { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
           { label: '供应商', key: 'supplier', width: '3', isShow: true },
           { label: '采购价', key: 'price', width: '2', isShow: true },
           { label: '采购数量', key: 'num', width: '2', isShow: true },
-          { label: '采购总金额', key: 'num_price', width: '3', isShow: true },
-          { label: '采购人', key: 'purchaser', width: '2', isShow: false },
+          { label: '采购总金额', key: 'num_price', width: '3', isShow: false },
           { label: '送达仓', key: 'storehouse', width: '2', isShow: true },
           { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '采购日期', key: 'purchase_date', width: '3', isShow: true },
+          { label: '采购日期', key: 'order_date', width: '3', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
@@ -142,7 +143,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supplierGPurchaseQuery, query);
+        let res = await Http.get(Config.api.fromSupplierOrderQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

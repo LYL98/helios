@@ -36,12 +36,12 @@
                 <!--
                   2019-12-26
                   1、只能报今日的价格
-                  2、地采商品要等到供应商报价后方可报价
-                  3、统采商品要有可销售数据方可报价
+                  2、反采商品要等到供应商报价后方可报价
+                  3、预采商品要有可销售数据方可报价
                 -->
                 <!--如果不是今日 或 没有权限-->
                 <template v-if="query.opt_date !== today || (!auth.isAdmin && !auth.ItemPriceFix)"></template>
-                <!--如果地采供应商已报价、或统采有可销售数量-->
+                <!--如果反采供应商已报价、或预采有可销售数量-->
                 <template v-else-if="(scope.row.sup_type === 'local_pur' && scope.row.bd_status !== 'no_bd') || (scope.row.sup_type === 'global_pur' && scope.row.available_num > 0)">
                   <a href="javascript:void(0);" v-if="!scope.row.is_quoted" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'add')">报价</a>
                   <a href="javascript:void(0);" v-else-if="!scope.row.is_audited" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'edit')">修改</a>

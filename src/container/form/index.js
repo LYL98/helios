@@ -1,4 +1,5 @@
 export { default as FormAudit } from './FormAudit';
+export { default as FormClose } from './FormClose';
 export { default as FormMarketingCouponAdd } from './FormMarketingCouponAdd';
 export { default as FormMarketingCouponSend } from './FormMarketingCouponSend';
 export { default as FormMarketingScopePromotion } from './FormMarketingScopePromotion';

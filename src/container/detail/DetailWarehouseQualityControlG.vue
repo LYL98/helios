@@ -123,12 +123,12 @@
       //显示新增修改(重写mixin)
       showDetail(data){
         this.$data.id = data.id; //外部调用，要保存
-        this.supplierGPurchaseDetail();
+        this.fromSupplierOrderDetail();
       },
-      //统采详情
-      async supplierGPurchaseDetail(){
+      //预采详情
+      async fromSupplierOrderDetail(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supplierGPurchaseDetail, { id: this.id });
+        let res = await Http.get(Config.api.fromSupplierOrderDetail, { id: this.id });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;

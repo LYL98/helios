@@ -49,8 +49,8 @@
               </div>
               <!--审核状态-->
               <div class="td-item" v-else-if="item.key === 'is_audited'">
-                <el-tag v-if="!scope.row.is_audited" size="small" type="warning" disable-transitions>待审核</el-tag>
-                <el-tag v-else size="small" type="info" disable-transitions>已审核</el-tag>
+                <el-tag v-if="!scope.row.is_audited" size="small" type="primary" disable-transitions>待审核</el-tag>
+                <el-tag v-else size="small" type="regular" disable-transitions>已审核</el-tag>
               </div>
               <!--冻结状态-->
               <div class="td-item" v-else-if="item.key === 'is_freeze'">

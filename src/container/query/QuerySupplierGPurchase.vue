@@ -81,6 +81,7 @@
         picker_value: null,
         begin_date: '',
         end_date: '',
+        for_pre: 1, //1预采 0反采
       }
       return {
         purchaseStatus: Constant.PURCHASE_STATUS('value_key'),

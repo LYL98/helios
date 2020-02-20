@@ -31,7 +31,7 @@
     mixins: [selectMixin],
     props: {
       provinceCode: { type: String | Number, default: '' },
-      supplierType: { type: String, default: '' }, //global_pur 统采；local_pur 地采
+      supplierType: { type: String, default: '' }, //global_pur 预采；local_pur 反采
       billTerm: { type: String | Number, default: '' }, //账期
       placeholder: { type: String, default: '请选择供应商' },
       supplierIds: { type: Array }, //当前选择了的id

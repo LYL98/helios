@@ -125,7 +125,7 @@
         this.$data.id = data.id; //外部调用，要保存
         this.supplierLocalPurchaseDetail();
       },
-      //地采详情
+      //反采详情
       async supplierLocalPurchaseDetail(){
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supplierLocalPurchaseDetail, { id: this.id });

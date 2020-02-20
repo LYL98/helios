@@ -46,12 +46,12 @@ const Config = (() => {
       supplierExport: apiM + '/supplier/export', //供应商导出 supplier/export.  supplier/export_check. 
       supOutExport: apiM + '/sup_out/export', //出库记录 sup_out/export. sup_out/export_check 
       supModifyExport: apiM + '/sup_modify/export', //变动记录  sup_modify/export   sup_modify/export_check
-      fromSupplierOrderExport: apiM + '/from_supplier/order/export', //地采单  from_supplier/order/export. from_supplier/order/export_check
+      fromSupplierOrderExport: apiM + '/from_supplier/order/export', //反采单  from_supplier/order/export. from_supplier/order/export_check
       supBillExport: apiM + '/sup_bill/export', //对账单 sup_bill/export. sup_bill/export_check
       supStockExport: apiM + '/sup_stock/export', //库存 sup_stock/export   sup_stock/export_check
       supCheckExport: apiM + '/sup_check/export', //盘点记录  sup_check/export.   sup_check/export_check
       supMoveExport: apiM + '/sup_move/export', //移库记录 sup_move/export   sup_move/export_check
-      supplierGPurchaseExport: apiM + '/supplier/g_purchase/export', //统采单. supplier/g_purchase/export.   supplier/g_purchase/export_check
+      supplierGPurchaseExport: apiM + '/supplier/g_purchase/export', //预采单. supplier/g_purchase/export.   supplier/g_purchase/export_check
       supDeliveryLackHistoryItemExport: apiM + '/sup_delivery/lack_history/item/export', //缺货记录  sup_delivery/lack_history/item/export  sup_delivery/lack_history/item/export_check
       supDistributeExport: apiM + '/sup_distribute/export', //调拨单   sup_distribute/export   sup_distribute/export_check
       supPDistributeExport: apiM + '/sup_p_distribute/export', //调拨记录 sup_p_distribute/export  sup_p_distribute/export_check
@@ -71,19 +71,13 @@ const Config = (() => {
       supAccountFreeze: apiM + '/sup_account/freeze', //冻结供应商的某个账号
       supAccountUnFreeze: apiM + '/sup_account/unfreeze', //解冻供应商的某个账号
 
-      //统采
-      supplierGPurchaseQuery: apiM + '/supplier/g_purchase/query', //统采订单
-      supplierGPurchaseAdd: apiM + '/supplier/g_purchase/add', //新增统采订单， 同时会附带生成入库单
-      supplierGPurchaseEdit: apiM + '/supplier/g_purchase/edit', //新增统采订单， 同时会附带生成入库单
-      supplierGPurchaseAudit: apiM + '/supplier/g_purchase/audit', //统采采购单审核
-      supplierGPurchaseDetail: apiM + '/supplier/g_purchase/detail', //统采采购单详情
-      
-      //地采
-      supplierLocalPurchaseQuery: apiM + '/from_supplier/order/query', //地采订单
-      supplierLocalPurchaseDetail: apiM + '/from_supplier/order/detail', //地采购单详情
-      supplierLocalPurchaseAdd: apiM + '/from_supplier/order/add', //地采新增
-      supplierLocalPurchaseEdit: apiM + '/from_supplier/order/edit', //地采修改
-      supplierLocalPurchaseAudit: apiM + '/from_supplier/order/audit', //地采新增
+      //采购 预采 反采
+      fromSupplierOrderQuery: apiM + '/from_supplier/order/query', //订单列表
+      fromSupplierOrderAdd: apiM + '/from_supplier/order/add', //订单新增
+      fromSupplierOrderEdit: apiM + '/from_supplier/order/edit', //订单修改
+      fromSupplierOrderAudit: apiM + '/from_supplier/order/audit', //预采采购单审核
+      fromSupplierOrderClose: apiM + '/from_supplier/order/void', //订单关闭
+      fromSupplierOrderDetail: apiM + '/from_supplier/order/detail', //反采购单详情
 
       //商品池
       pItemAdd: apiM + '/p_item/add', //新商品资料添加
@@ -112,7 +106,7 @@ const Config = (() => {
       itemPriceList: apiM + '/item/price/query',//每日定价页面查询
       itemPriceFix: apiM + '/item/price/fix',//商品定价
       itemPriceAudit: apiM + '/item/price/audit', //商品定价审核
-      itemChgSupplier: apiM + '/item/chg_supplier', //修改地采商品的供应商
+      itemChgSupplier: apiM + '/item/chg_supplier', //修改反采商品的供应商
       itemPriceDetail: apiM + '/item/price/detail', //商品供应商报价列表
       itemPriceEditNum: apiM + '/item/price/edit_bidding', //报价修改供应商库存
 
@@ -219,13 +213,13 @@ const Config = (() => {
       supAcceptAdd: apiM + '/sup_accept/add', //场地收货
 
       //品控待入库、调拨单
-      supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括统采和地采订单
+      supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括预采和反采订单
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
       supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
       supDistributeDetail: apiM + '/sup_distribute/detail', //调拨单详情
       supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
-      supPurchaseInClose: apiM + '/sup_purchase/in_close', //统采购入库单关闭
-      supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //地采购入库单关闭
+      supPurchaseInClose: apiM + '/sup_purchase/in_close', //预采购入库单关闭
+      supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //反采购入库单关闭
       supInStockEditNum: apiM + '/sup_in_stock/edit_num', //修改品控入库数量
 
       //仓管待入库
@@ -249,7 +243,7 @@ const Config = (() => {
       supOutPlanQuery: apiM + '/sup_out_plan/query', //出库计划查询
 
       //场地
-      supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用地采订单查询
+      supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询
       supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
       supAllocateNeedItem: apiM + '/sup_allocate/need_item', //返回某个商品还有多少件需要分配
       supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息

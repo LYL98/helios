@@ -409,9 +409,7 @@ export default {
       system_class: {},
       first_grounder: {},
       last_updater: {},
-      city_prices_temp: [],
-      sup_type: 'global_pur', //采购类型（默认统采）
-      supplier_binds: []
+      city_prices_temp: []
     }
     return {
       supplierData: {

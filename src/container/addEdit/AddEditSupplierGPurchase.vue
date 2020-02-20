@@ -1,6 +1,6 @@
 <template>
   <div>
-    <add-edit-layout :title="returnPageTitles('统采订单')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+    <add-edit-layout :title="returnPageTitles('预采订单')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <div class="f-r" style="position: relative; right: -84px;" v-if="pageType === 'detail'">
           <el-tag size="small" :type="purchaseStatusType[detail.status]" disable-transitions>
@@ -13,7 +13,7 @@
             <select-g-item v-model="detail.item_id" placeholder="商品编号/名称" size="medium" supType="global_pur" @change="selectGItem" :disabled="pageType !== 'add' ? true : false" filterable clearable></select-g-item>
           </el-form-item>
           <el-col :span="12" v-if="pageType === 'detail'">
-            <el-form-item label="统采单号">
+            <el-form-item label="预采单号">
               <el-input size="medium" :value="detail.code" disabled placeholder="系统自动生成"></el-input>
             </el-form-item>
           </el-col>
@@ -204,16 +204,16 @@ export default {
     showAddEdit(data, type){
       this.$data.pageType = type || 'add';
       if(data){
-        this.supplierGPurchaseDetail(data.id);
+        this.fromSupplierOrderDetail(data.id);
       }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.detail = this.copyJson(this.initDetail);
         this.$data.isShow = true;
       }
     },
     //获取详情
-    async supplierGPurchaseDetail(id){
+    async fromSupplierOrderDetail(id){
       this.$loading({isShow: true});
-      let res = await Http.get(Config.api.supplierGPurchaseDetail, { id: id });
+      let res = await Http.get(Config.api.fromSupplierOrderDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$data.detail = res.data;
@@ -236,10 +236,10 @@ export default {
     async addEditData(){
       let { detail, pageType } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[pageType === 'edit' ? 'supplierGPurchaseEdit' : 'supplierGPurchaseAdd'], detail);
+      let res = await Http.post(Config.api[pageType === 'edit' ? 'fromSupplierOrderEdit' : 'fromSupplierOrderAdd'], detail);
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `统采订单${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
+        this.$message({message: `预采订单${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('TableSupplierGPurchase');

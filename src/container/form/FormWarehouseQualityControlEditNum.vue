@@ -124,7 +124,7 @@ export default {
         this.handleCancel(); //隐藏
         //刷新数据
         let pc = this.getPageComponents('DetailWarehouseQualityControlG');
-        if(pc && pc.isShow) pc.supplierGPurchaseDetail();
+        if(pc && pc.isShow) pc.fromSupplierOrderDetail();
 
         pc = this.getPageComponents('DetailWarehouseQualityControlL');
         if(pc && pc.isShow) pc.supplierLocalPurchaseDetail();

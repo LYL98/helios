@@ -71,7 +71,6 @@
     mixins: [queryMixin],
     data() {
       let initQuery = {
-        province_code: this.$province.code,
         supplier_type: '',
         bill_term: '',
         is_freeze: '',

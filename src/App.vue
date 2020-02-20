@@ -143,10 +143,10 @@
           icon: '&#xe736;',
           name: 'Purchase',
           children: [{
-            title: '统采订单',
+            title: '预采',
             name: 'SupplierGPurchase'
           },{
-            title: '地采订单',
+            title: '反采',
             name: 'SupplierLocalPurchase'
           }]
         },{
