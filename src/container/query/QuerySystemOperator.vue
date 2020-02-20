@@ -3,7 +3,7 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="角色">
-          <search-role size="small" style="width: 100%;" v-model="query.role_id" @change="handleQuery('TableSystemOperator')"></search-role>
+          <select-role size="small" clearable showAll v-model="query.role_id" @change="handleQuery('TableSystemOperator')"></select-role>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -58,15 +58,15 @@
 
 <script>
   import queryMixin from './query.mixin';
-  import SearchRole from './../search/SearchRole';
   import { SelectOption } from '@/common';
   import { Constant } from '@/util';
+  import { SelectRole } from '@/component';
 
   export default {
     name: "QuerySystemOperator",
     mixins: [queryMixin],
     components: {
-      'search-role': SearchRole,
+      'select-role': SelectRole,
       'select-option': SelectOption,
     },
     props: {
