@@ -14,12 +14,8 @@
       <el-row v-if="auth.isAdmin || auth.SupplierListItemEdit">
         <el-col :span="12">
           <el-form-item label="搜索">
-            <!--区域-->
-            <select-item v-if="isShow && detail.supplier_type === 'local_pur'" size="medium" placeholder="商品编号/名称"
-              v-model="selectItemId" supType="local_pur" :provinceCode="detail.province_code" @change="changeItem" :disabled="false" filterable clearable></select-item>
-            <!--全国-->
-            <select-g-item v-if="isShow && detail.supplier_type === 'global_pur'" size="medium" placeholder="商品编号/名称"
-              v-model="selectItemId" supType="global_pur" @change="changeItem" filterable clearable></select-g-item>
+            <select-g-item v-if="isShow" size="medium" placeholder="商品编号/名称"
+              v-model="selectItemId" @change="changeItem" filterable clearable></select-g-item>
             <div v-if="selectItemData.error" class="el-form-item__error">{{selectItemData.error}}</div>
           </el-form-item>
         </el-col>

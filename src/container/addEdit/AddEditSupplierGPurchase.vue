@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="采购价" prop="price">
-              <input-price size="medium" v-model="detail.price"/>
+              <input-price size="medium" v-model="detail.price" placeholder="28（仅供参考）"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">

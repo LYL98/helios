@@ -219,15 +219,9 @@
           <!-- 新增区域定价按钮 -->
           <el-button plain size="medium" type="primary" @click="handleAddCityPrice">增加区域定价</el-button>
         </el-form-item>
-        <template v-if="supplierData.global_supplier_binds.length > 0 || supplierData.local_suppliers.length > 0">
-          <h6 class="subtitle">供应商信息</h6>
-          <el-form-item label="全国" v-if="supplierData.global_supplier_binds.length > 0">
-            <other-item-supplier supplierType="global_pur" :supplierBinds="supplierData.global_supplier_binds"/>
-          </el-form-item>
-          <el-form-item label="区域" v-if="supplierData.local_suppliers.length > 0">
-            <other-item-supplier supplierType="local_pur" :supplierBinds="supplierData.local_suppliers"/>
-          </el-form-item>
-        </template>
+        <!--供应商信息-->
+        <other-item-supplier :supplierData="supplierData"/>
+
         <h6 class="subtitle">其它信息</h6>
         <el-form-item label="商品详情">
           <div class="my-content-div" v-html="detail.content"></div>
@@ -434,7 +428,7 @@ export default {
       validCityPercent: validCityPercent,
       validCityPrice: validCityPrice,
       rules: {
-        price_buy: [
+        /*price_buy: [
             { required: true, message: '请输入采购价', trigger: 'change' },
             { pattern: Verification.testStrs.isValidValue, message: '采购价必须为数字', trigger: 'blur' },
             { validator: validPriceBuy, trigger: 'blur' },
@@ -443,7 +437,7 @@ export default {
           { required: true, message: '请输入售价', trigger: 'change' },
           { pattern: Verification.testStrs.isValidValue, message: '售价必须为数字', trigger: 'blur' },
           { validator: validPriceSale, trigger: 'blur' },
-        ],
+        ],*/
         price_origin: [
           { pattern: Verification.testStrs.isValidValue, message: '原价必须为数字', trigger: 'change' },
           { validator: validPriceOrigin, trigger: 'blur' },

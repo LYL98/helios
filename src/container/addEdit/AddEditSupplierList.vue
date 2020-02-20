@@ -82,7 +82,7 @@
               <el-form-item label="创建人">{{detail.creator.realname}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="创建时间">{{detail.creator.created}}</el-form-item>
+              <el-form-item label="创建时间">{{detail.created}}</el-form-item>
             </el-col>
           </el-row>
           <el-row v-if="detail.auditor && detail.auditor.id">
@@ -90,7 +90,7 @@
               <el-form-item label="审核人">{{detail.auditor.realname}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="审核时间">{{detail.auditor.created}}</el-form-item>
+              <el-form-item label="审核时间">{{detail.audit_time}}</el-form-item>
             </el-col>
           </el-row>
         </template>
@@ -227,6 +227,9 @@ export default {
         detail.province_code = 'nationwide';
       }
       this.$data.detail = detail;
+      setTimeout(()=>{
+        if(this.$refs['ruleForm']) this.$refs['ruleForm'].clearValidate();
+      }, 0);
     },
     //提交数据
     async addEditData(){

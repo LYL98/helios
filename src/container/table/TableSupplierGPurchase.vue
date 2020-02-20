@@ -42,7 +42,7 @@
               <!--商品名称-->
               <div class="td-item add-dot2" v-else-if="item.key === 'item'">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
               <!--价格-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'price'">&yen;{{returnPrice(scope.row.price)}}</div>
+              <div class="td-item add-dot2" v-else-if="item.key === 'price_buy'">&yen;{{returnPrice(scope.row.price_buy)}}</div>
               <!--数量-->
               <div class="td-item add-dot2" v-else-if="item.key === 'num'">&yen;{{returnUnit(scope.row.num, '件', '-')}}</div>
               <!--采购总金额-->
@@ -125,7 +125,7 @@
           { label: '预采单号', key: 'code', width: '2', isShow: true },
           { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
           { label: '供应商', key: 'supplier', width: '3', isShow: true },
-          { label: '采购价', key: 'price', width: '2', isShow: true },
+          { label: '采购价', key: 'price_buy', width: '2', isShow: true },
           { label: '采购数量', key: 'num', width: '2', isShow: true },
           { label: '采购总金额', key: 'num_price', width: '3', isShow: false },
           { label: '送达仓', key: 'storehouse', width: '2', isShow: true },

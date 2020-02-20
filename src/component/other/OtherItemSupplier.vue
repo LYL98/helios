@@ -1,30 +1,42 @@
 <template>
-  <div>
-    <div v-if="supplierType === 'global_pur'">
-      <p v-for="(item, index) in supplierBinds" :key="index">{{index + 1}}、{{item.supplier.title}}</p>
-    </div>
-    <div v-else-if="supplierType === 'local_pur'">
-      <div v-for="(item, index) in supplierBinds" :key="index" class="local-pur-item">
-        <div class="title">{{item.province.title}}</div>
-        <p v-for="(s, i) in item.suppliers" :key="i">
-          {{i + 1}}、{{s.supplier.title}}
-          <span v-if="s.is_main" class="main-span">反采供应商</span>
-        </p>
-      </div>
-    </div>
+  <div v-if="supplierData.global_supplier_binds.length > 0 || isShowLocal">
+    <h6 class="subtitle">供应商信息</h6>
+    <el-form-item label="全国" v-if="supplierData.global_supplier_binds.length > 0">
+      <p v-for="(item, index) in supplierData.global_supplier_binds" :key="index">{{index + 1}}、{{item.supplier.title}}</p>
+    </el-form-item>
+    <el-form-item label="区域" v-if="isShowLocal">
+      <template v-for="(item, index) in supplierData.local_suppliers">
+        <div :key="index" class="local-pur-item" v-if="item.province_code === $province.code">
+          <div class="title">{{item.province.title}}</div>
+          <p v-for="(s, i) in item.suppliers" :key="i">
+            {{i + 1}}、{{s.supplier.title}}
+            <span v-if="s.is_main" class="main-span">反采供应商</span>
+          </p>
+        </div>
+      </template>
+    </el-form-item>
   </div>
 </template>
 
 <script>
+  import { FormItem } from 'element-ui';
+
   export default {
     name: "OtherItemSupplier",
     components: {
+      'el-form-item': FormItem
     },
     props: {
-      supplierType: { type: String, default: '' }, //global_pur 预采；local_pur 反采
-      supplierBinds: { type: Array, default: [] }, //供应商列表
+      supplierData: { type: Object, default: {} }, //供应商列表
     },
     computed: {
+      //是否显示反采供应商
+      isShowLocal(){
+        let d = this.supplierData;
+        let con = d.local_suppliers.filter(item => item.province_code === this.$province.code);
+        if(con.length > 0) return true;
+        return false;
+      }
     },
     methods: {
       

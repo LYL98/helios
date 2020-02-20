@@ -67,8 +67,8 @@ export default {
     //是否显示修改标准
     showQaStandard(){
       let { detail } = this;
-      if((detail.code && detail.code.length >= 8) ||
-        (detail.top_code && detail.top_code.length >= 5 && detail.is_top_add)){
+      if((detail.code && detail.code.length >= 6) ||
+        (detail.top_code && detail.top_code.length >= 4 && detail.is_top_add)){
           return true;
       }
       return false;  
