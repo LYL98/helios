@@ -1,9 +1,15 @@
 <template>
-  <form-layout title="修改供应商库存" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
+  <form-layout title="增加供应商库存" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" ref="ruleForm" :rules="rules">
-      <el-form-item label="供应商名称">{{detail.supplier.title}}</el-form-item>
-      <el-form-item label="库存数量" prop="num">
-        <input-number size="medium" v-model="detail.num" unit="件"/>
+      <el-form-item label="供应商名称">{{detail.title}}</el-form-item>
+      <el-form-item label="当前库存">
+        <input-number size="medium" disabled :value="detail.bidding.num" unit="件"/>
+      </el-form-item>
+      <el-form-item label="增加库存" prop="add_num">
+        <input-number size="medium" :min="1" v-model="detail.add_num" unit="件"/>
+      </el-form-item>
+      <el-form-item label="增加后库存">
+        <input-number size="medium" disabled :value="detail.add_num ? detail.bidding.num + detail.add_num : detail.bidding.num" unit="件"/>
       </el-form-item>
     </el-form>
     <div style="margin-left: 140px; margin-top: 20px;">
@@ -28,11 +34,12 @@ export default {
   },
   data(){
     let initDetail = {
-      supplier: {}
+      bidding: {},
+      add_num: ''
     }
     return{
       rules: {
-        num: { required: true, message: '请输入调入数量', trigger: 'change' }
+        add_num: { required: true, message: '请输入增加库存数量', trigger: 'change' }
       },
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -45,7 +52,7 @@ export default {
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.itemPriceEditNum, {
         id: detail.id,
-        num: detail.num
+        num: detail.add_num
       });
       this.$loading({isShow: false});
       if(res.code === 0){

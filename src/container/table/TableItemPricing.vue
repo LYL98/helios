@@ -36,9 +36,8 @@
               <!--价格-->
               <div v-else-if="judgeOrs(item.key, ['price_sale_last', 'price_buy'])">{{scope.row[item.key] ? '￥' + returnPrice(scope.row[item.key]) : '-'}}</div>
               <!--今日销售价-->
-              <div v-else-if="item.key === 'price_sale'">
-                <span v-if="query.opt_date !== today" style="margin-right: 10px;">{{scope.row.price_sale ? '￥' + returnPrice(scope.row.price_sale) : '-'}}</span>
-                <span v-else style="margin-right: 10px;">{{scope.row.price_sale ? '￥' + returnPrice(scope.row.price_sale) : ''}}</span>
+              <div v-else-if="item.key === 'price_sale'" :style="returnStyle(scope.row)">
+                {{scope.row.price_sale ? '￥' + returnPrice(scope.row.price_sale) : '-'}}
               </div>
               <!--今日加价率-->
               <div v-else-if="item.key === 'today_rise_rate'">{{returnRate(scope.row.price_buy, scope.row.price_sale)}}</div>
@@ -49,7 +48,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="76">
+        <el-table-column label="操作" width="90">
           <template slot-scope="scope">
             <!--如何日期不是今日-->
             <template v-if="query.opt_date > today">-</template>
@@ -59,17 +58,28 @@
                 1、只能报今日的价格
                 3、有可销售数量就可以报价
               -->
-              <!--如果反采供应商已报价、或预采有可销售数量-->
-              <template v-if="(auth.isAdmin || auth.ItemPriceFix) && scope.row.available_num > 0 && query.opt_date === today">
-                <a href="javascript:void(0);" v-if="!scope.row.is_quoted" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'add')">报价</a>
-                <a href="javascript:void(0);" v-else-if="!scope.row.is_audited" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'edit')">修改</a>
-              </template>
-              <div v-if="returnIsPricing(scope.row) && (auth.isAdmin || auth.ItemPriceAudit) && query.opt_date === today">
-                <el-button type="primary" size="mini" @click.native="audit([scope.row.item_id])">审核</el-button>
-              </div>
-              <div v-if="auth.isAdmin || auth.ItemPriceDetail">
-                <a href="javascript:void(0);" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'detail')">详情</a>
-              </div>
+              <my-table-operate
+                :width="120"
+                @command-click="handleCommandClick(scope.row)"
+                @command-visible="handleCommandVisible"
+                :list="[
+                  {
+                    title: '报价',
+                    isDisplay: (auth.isAdmin || auth.ItemPriceFix) && scope.row.available_num > 0 && query.opt_date === today && !scope.row.is_quoted,
+                    command: () => handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'add')
+                  },
+                  {
+                    title: '审核',
+                    isDisplay: returnIsPricing(scope.row) && (auth.isAdmin || auth.ItemPriceAudit) && query.opt_date === today,
+                    command: () => audit([scope.row.item_id])
+                  },
+                  {
+                    title: '详情',
+                    isDisplay: (auth.isAdmin || auth.ItemPriceDetail) && scope.row.is_quoted,
+                    command: () => handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'detail')
+                  }
+                ]"
+              />
             </template>
           </template>
         </el-table-column>
@@ -191,8 +201,25 @@
         let min = DataHandle.returnSuggestPrice(item.price_buy, item.rise_min);
         let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
         
-        if(min === '0' && max === '0') return '-';
+        if(min === 0 && max === 0) return '-';
         return `￥${this.returnPrice(min)} - ￥${this.returnPrice(max)}`;
+      },
+      //样式
+      returnStyle(item){
+        if(!item.price_sale){
+          return '';
+        }
+        let min = DataHandle.returnSuggestPrice(item.price_buy, item.rise_min);
+        let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
+        if(item.price_sale < min || item.price_sale > max){
+          return 'color: #ff5252; font-weight: bold;';
+        }
+        return '';
+      },
+      //今日建议价2
+      returnSuggestPriceMax(item){
+        let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
+        return max;
       },
       //返回加价率(询价，销售价)
       returnRate(p1, p2){

@@ -1,17 +1,24 @@
 <template>
   <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+    <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
       <h6 class="subtitle">商品报价</h6>
       <el-form-item label="商品编号/名称">
         {{detail.code}}/{{detail.title}}
       </el-form-item>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="10">
           <el-form-item label="今日销售价" prop="price_sale">
-            <input-price size="medium" v-model="detail.price_sale"/>
+            <input-price size="medium" v-model="detail.price_sale" :placeholder="'建议：' + returnSuggestPrice(detail)" :disabled="false"/>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="2" v-if="detail.opt_date === today && judgeOrs(pageType, ['detail', 'edit']) && (auth.isAdmin || auth.ItemPriceFix)  && detail.available_num > 0">
+          <a href="javascript:void(0);" class="edit-a" v-if="pageType === 'detail'" @click="showHideEdit('edit')">修改</a>
+          <template v-else>
+            <a href="javascript:void(0);" class="edit-a" @click="handleAddEdit">确认</a>
+            <a href="javascript:void(0);" class="edit-a" @click="showHideEdit('detail')">取消</a>
+          </template>
+        </el-col>
+        <el-col :span="10">
           <el-form-item label="可售数量">
             <input-number size="medium" disabled :value="detail.available_num" unit="件"/>
           </el-form-item>
@@ -22,19 +29,25 @@
           <el-collapse-item title="查看报价参考信息">
             <el-row>
               <el-col :span="12">
-                <el-form-item label="今日供货价">&yen;{{returnPrice(detail.price_buy)}}</el-form-item>
+                <el-form-item label="今日供货价">
+                  {{detail.price_buy ? '￥' + returnPrice(detail.price_buy) : '-'}}
+                </el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="今日建议价">{{returnSuggestPrice(detail)}}</el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="昨日供货价">&yen;{{returnPrice(detail.price_buy_last)}}</el-form-item>
+                <el-form-item label="昨日供货价">
+                  {{detail.price_buy_last ? '￥' + returnPrice(detail.price_buy_last) : '-'}}
+                </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="昨日销售价">&yen;{{returnPrice(detail.price_sale_last)}}</el-form-item>
+                <el-form-item label="昨日销售价">
+                  {{detail.price_sale_last ? '￥' + returnPrice(detail.price_sale_last) : '-'}}
+                </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="昨日销量">{{detail.price_sale_last}}件</el-form-item>
+                <el-form-item label="昨日销量">{{returnUnit(detail.price_sale_last, '件', '-')}}</el-form-item>
               </el-col>
             </el-row>
           </el-collapse-item>
@@ -44,14 +57,14 @@
       <div style="padding: 0 0 30px 30px;">
         <el-table :data="priceData.stocks" width="100%" size="mini" :row-class-name="highlightRowClassName">
           <el-table-column label="批次">
-            <template slot-scope="scope">{{scope.row.title}}</template>
+            <template slot-scope="scope">{{scope.row.batch_code}}</template>
           </el-table-column>
-          <el-table-column label="采购价" width="120">
+          <el-table-column label="采购价" width="240">
             <template slot-scope="scope">
-              &yen;{{returnPrice(scope.row.price)}}
+              &yen;{{returnPrice(scope.row.price_buy)}}
             </template>
           </el-table-column>
-          <el-table-column label="库存" width="100">
+          <el-table-column label="库存" width="180">
             <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
           </el-table-column>
         </el-table>
@@ -63,12 +76,12 @@
           <el-table-column label="调拨单号">
             <template slot-scope="scope">{{scope.row.code}}</template>
           </el-table-column>
-          <el-table-column label="采购价" width="120">
+          <el-table-column label="采购价" width="240">
             <template slot-scope="scope">
-              &yen;{{returnPrice(scope.row.price)}}
+              &yen;{{returnPrice(scope.row.price_buy)}}
             </template>
           </el-table-column>
-          <el-table-column label="调拨数量" width="100">
+          <el-table-column label="调拨数量" width="180">
             <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
           </el-table-column>
         </el-table>
@@ -80,19 +93,24 @@
           <el-table-column label="供应商名称">
             <template slot-scope="scope">{{scope.row.title}}</template>
           </el-table-column>
-          <el-table-column label="供应商报价" width="120">
+          <el-table-column label="供应商报价" width="240">
             <template slot-scope="scope">
-              &yen;{{returnPrice(scope.row.price)}}
+              &yen;{{returnPrice(scope.row.bidding.price)}}
             </template>
           </el-table-column>
-          <el-table-column label="供应商库存" width="100">
-            <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
+          <el-table-column label="供应商库存" width="180">
+            <template slot-scope="scope">
+              {{returnUnit(scope.row.bidding.num, '件', '-')}}
+              <a href="javascript:void(0);"
+                v-if="detail.opt_date === today && (auth.isAdmin || auth.ItemPriceEditNum)"
+                @click="handleShowForm('FormItemPricingEditNum', scope.row)">增加</a>
+            </template>
           </el-table-column>
         </el-table>
       </div>
     </el-form>
 
-    <div style="margin-left: 140px; margin-top: 20px;">
+    <div style="margin-left: 140px; margin-top: 20px;" v-if="pageType === 'add'">
       <el-button size="medium" @click.native="handleCancel">取 消</el-button>
       <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
     </div>
@@ -124,7 +142,6 @@ export default {
     };
 
     return {
-      weightScope: Constant.WEIGHT_SCOPE,//重量浮动范围
       initDetail: {},
       rules: {
         price_sale: [
@@ -141,6 +158,7 @@ export default {
       pageTitles: {
         add: '报价',
         edit: '修改报价',
+        detail: '报价详情'
       },
     }
   },
@@ -150,8 +168,16 @@ export default {
       this.$data.pageType = type;
       let d = this.copyJson(data);
       d.price_sale = d.price_sale || '';
+      d.price_sale_temp = d.price_sale; //修改时用到
       this.$data.detail = d;
       this.itemPriceDetail();
+    },
+    //详情时修改报价
+    showHideEdit(pageType){
+      this.$data.pageType = pageType;
+      if(pageType === 'detail'){
+        this.$data.detail.price_sale = this.detail.price_sale_temp;
+      }
     },
     //获取供应商列表
     async itemPriceDetail(){
@@ -179,8 +205,29 @@ export default {
     },
 
     //提交数据
-    async addEditData(){
-      let { detail } = this;
+    addEditData(){
+      let { detail, priceData, pageType } = this;
+      if(pageType === 'edit'){
+        this.priceFix();
+      }else{
+        let str = '反采供应商尚未报价，确认报价后供应商将不可报价，是否确认报价';
+        if(priceData.biddings.length > 0){
+          str = '确认报价后，供应商的报价将不可更改，系统将根据该价格直接下单采购';
+        }
+        this.$messageBox.confirm(str, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.priceFix();
+        }).catch(() => {
+          //console.log('取消');
+        });
+      }
+    },
+    //报价
+    async priceFix(){
+      let { detail, pageType } = this;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.itemPriceFix, {
         province_code: this.$province.code,
@@ -190,16 +237,15 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '商品已报价', type: 'success'});
-        //刷新详情数据
-        let pcd = this.getPageComponents('DetailItemPricing');
-        if(pcd && pcd.isShow){
-          pcd.$data.detail.price_sale = detail.price_sale;
-        }
         //刷新数据(列表)
         let pc = this.getPageComponents('TableItemPricing');
         pc.getData(pc.query);
         
-        this.handleCancel(); //隐藏
+        if(pageType === 'edit'){
+          this.$data.pageType = 'detail';
+        }else{
+          this.handleCancel(); //隐藏
+        }
       }else{
         this.$message({message: res.message, type: 'error'});
       }
@@ -211,4 +257,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import "./add.edit.scss";
+  .edit-a{
+    margin-left: 10px;
+    position: relative;
+    top: 4px;
+  }
 </style>

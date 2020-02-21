@@ -367,7 +367,7 @@ const Constant = {
   PURCHASE_STATUS: (type)=>{
     let data = [
       { key: 'init', value: '待审核' },
-      { key: 'success', value: '审核通过' },
+      { key: 'success', value: '待收货' },
       { key: 'fail', value: '作废' },
       { key: 'part_in', value: '部分收货' },
       { key: 'all_in', value: '已完成' },
