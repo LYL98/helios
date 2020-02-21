@@ -51,14 +51,15 @@ export default {
       let { detail } = this;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.itemPriceEditNum, {
-        id: detail.id,
+        id: detail.bidding.id,
         num: detail.add_num
       });
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '库存修改成功', type: 'success'});
         //刷新数据(列表)
-        let pc = this.getPageComponents('DetailItemPricing');
+        let pc = this.getPageComponents('AddEditItemPricing');
+        pc.$data.detail.available_num = Number(pc.detail.available_num) + Number(detail.add_num);
         pc.itemPriceDetail(pc.detail);
 
         //刷新列表
