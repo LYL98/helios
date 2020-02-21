@@ -29,7 +29,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="供应商" prop="supplier_id">
-              <select-supplier supplierType="global_pur" size="medium" :itemId="detail.p_item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false" @change="selectSupplier"/>
+              <select-supplier size="medium" :itemId="detail.p_item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false" @change="selectSupplier"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -44,7 +44,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="送达仓" prop="storehouse_id">
-              <select-storehouse size="medium" v-model="detail.storehouse_id" />
+              <select-storehouse size="medium" :provinceCode="storeProCode" v-model="detail.storehouse_id" />
             </el-form-item>
           </el-col>
 
@@ -147,6 +147,15 @@ export default {
   props: {
     fromPage: { type: String, defalut: '' }, //来自页面 fromPage：Inventory 库存
   },
+  computed: {
+    storeProCode(){
+      let { selectSupplierData } = this;
+      if(!selectSupplierData.province_code || selectSupplierData.province_code === 'nationwide'){
+        return '';
+      }
+      return selectSupplierData.province_code;
+    }
+  },
   created() {
   },
   data(){
@@ -195,9 +204,11 @@ export default {
         edit: '修改',
         add: '新增',
         audit_suc: '审核通过',
-        audit_fail: '审核不通过'
+        audit_fail: '审核不通过',
+        close: '关闭'
       },
       supplierPrice: 0, //供应商价格
+      selectSupplierData: {}
     }
   },
   methods: {
@@ -231,7 +242,9 @@ export default {
         detail.frame_code = data.frame_code;
         detail.frame_price = data.frame.price;
       }
+      detail.storehouse_id = '';
       detail.supplier_id = '';
+      this.$data.selectSupplierData = {};
       this.$data.detail = detail;
       this.supplierPrice = 0;
       setTimeout(()=>{
@@ -239,11 +252,13 @@ export default {
       }, 0);
     },
     //选择供应商
-    async selectSupplier(e){
+    async selectSupplier(data){
+      console.log(data);
       let { detail } = this;
+      this.$data.selectSupplierData = data;
       let res = await Http.get(Config.api.fromSupplierPItemPriceBuy, {
         p_item_id: detail.p_item_id,
-        supplier_id: e.id
+        supplier_id: data.id
       });
       if(res.code === 0){
         this.$data.supplierPrice = res.data;
@@ -268,7 +283,8 @@ export default {
     //返回备注
     returnRemark(data){
       if(data.remark) return data.remark;
-      if(data.after && data.after.audit_remark) return data.after.audit_remark;
+      if((data.category ==='audit_suc' || data.category ==='audit_fail') && data.after && data.after.audit_remark) return data.after.audit_remark;
+      if(data.category ==='close' && data.after && data.after.close_remark) return data.after.close_remark;
       return '';
     }
   },

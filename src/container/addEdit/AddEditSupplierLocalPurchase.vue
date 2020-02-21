@@ -174,7 +174,8 @@ export default {
         auto_add: '自动新增',
         manual_add: '手动新增',
         audit_suc: '审核通过',
-        audit_fail: '审核不通过'
+        audit_fail: '审核不通过',
+        close: '关闭'
       }
     }
   },
@@ -214,7 +215,8 @@ export default {
     //返回备注
     returnRemark(data){
       if(data.remark) return data.remark;
-      if(data.after && data.after.audit_remark) return data.after.audit_remark;
+      if((data.category ==='audit_suc' || data.category ==='audit_fail') && data.after && data.after.audit_remark) return data.after.audit_remark;
+      if(data.category ==='close' && data.after && data.after.close_remark) return data.after.close_remark;
       return '';
     }
   },

@@ -13,7 +13,7 @@
     <el-option v-if="showAll" key="" label="全部" value="">
     </el-option>
     <el-option
-      v-for="item in dataItem"
+      v-for="item in handleDataItem"
       :key="item.id"
       :label="item.title"
       :value="item.id"
@@ -31,16 +31,26 @@
     name: "SelectStorehouse",
     mixins: [selectMixin],
     props: {
+      provinceCode: { type: String | Number, default: '' },
       placeholder: { type: String, default: '选择仓' },
       isAuth: { type: Boolean, default: false }, //是否要求权限
       initCallBack:  { type: Function }, //获取数据时回调，方便外边控制
     },
+    computed: {
+      handleDataItem(){
+        let { dataItem, provinceCode } = this;
+        if(provinceCode){
+          let d = dataItem.filter(item => item.province_code === provinceCode);
+          return d;
+        }else{
+          return dataItem;
+        }
+      }
+    },
     methods: {
       //获取数据
       async getData(){
-        let res = await Http.get(this.isAuth ? Config.api.baseSupStorehouseList : Config.api.baseStorehouseList, {
-          ...this.query
-        });
+        let res = await Http.get(this.isAuth ? Config.api.baseSupStorehouseList : Config.api.baseStorehouseList, this.query);
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
