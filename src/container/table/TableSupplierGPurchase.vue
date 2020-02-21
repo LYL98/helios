@@ -44,7 +44,7 @@
               <!--价格-->
               <div class="td-item add-dot2" v-else-if="item.key === 'price_buy'">&yen;{{returnPrice(scope.row.price_buy)}}</div>
               <!--数量-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'num'">&yen;{{returnUnit(scope.row.num, '件', '-')}}</div>
+              <div class="td-item add-dot2" v-else-if="item.key === 'num'">{{returnUnit(scope.row.num, '件', '-')}}</div>
               <!--采购总金额-->
               <div class="td-item add-dot2" v-else-if="item.key === 'num_price'">&yen;{{returnPrice(scope.row.num * scope.row.price + scope.row.num * scope.row.frame_price)}}</div>
               <!--送达仓-->

@@ -54,7 +54,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="科学分类" prop="system_class_code">
-            <select-system-class size="medium" v-model="detail.system_class_codes" @change="selectSystemClass"/>
+            <select-system-class size="medium" v-model="detail.system_class_codes" @change="selectSystemClass" :disabled="pageType === 'add' ? false : true"/>
           </el-form-item>
         </el-col>
       </el-row>

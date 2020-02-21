@@ -39,20 +39,6 @@
               <div v-else-if="item.key === 'price_sale'">
                 <span v-if="query.opt_date !== today" style="margin-right: 10px;">{{scope.row.price_sale ? '￥' + returnPrice(scope.row.price_sale) : '-'}}</span>
                 <span v-else style="margin-right: 10px;">{{scope.row.price_sale ? '￥' + returnPrice(scope.row.price_sale) : ''}}</span>
-                <!--
-                  2019-12-26
-                  1、只能报今日的价格
-                  2、反采商品要等到供应商报价后方可报价
-                  3、预采商品要有可销售数据方可报价
-                -->
-                <!--如果不是今日 或 没有权限-->
-                <template v-if="query.opt_date !== today || (!auth.isAdmin && !auth.ItemPriceFix)"></template>
-                <!--如果反采供应商已报价、或预采有可销售数量-->
-                <template v-else-if="(scope.row.sup_type === 'local_pur' && scope.row.bd_status !== 'no_bd') || (scope.row.sup_type === 'global_pur' && scope.row.available_num > 0)">
-                  <a href="javascript:void(0);" v-if="!scope.row.is_quoted" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'add')">报价</a>
-                  <a href="javascript:void(0);" v-else-if="!scope.row.is_audited" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'edit')">修改</a>
-                </template>
-                <a href="javascript:void(0);" v-else @click="notBiddingHint(scope.row)">报价</a>
               </div>
               <!--今日加价率-->
               <div v-else-if="item.key === 'today_rise_rate'">{{returnRate(scope.row.price_buy, scope.row.price_sale)}}</div>
@@ -68,11 +54,21 @@
             <!--如何日期不是今日-->
             <template v-if="query.opt_date > today">-</template>
             <template v-else>
+              <!--
+                2019-12-26
+                1、只能报今日的价格
+                3、有可销售数量就可以报价
+              -->
+              <!--如果反采供应商已报价、或预采有可销售数量-->
+              <template v-if="(auth.isAdmin || auth.ItemPriceFix) && scope.row.available_num > 0 && query.opt_date === today">
+                <a href="javascript:void(0);" v-if="!scope.row.is_quoted" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'add')">报价</a>
+                <a href="javascript:void(0);" v-else-if="!scope.row.is_audited" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'edit')">修改</a>
+              </template>
               <div v-if="returnIsPricing(scope.row) && (auth.isAdmin || auth.ItemPriceAudit) && query.opt_date === today">
                 <el-button type="primary" size="mini" @click.native="audit([scope.row.item_id])">审核</el-button>
               </div>
               <div v-if="auth.isAdmin || auth.ItemPriceDetail">
-                <a href="javascript:void(0);" @click="handleShowDetail('DetailItemPricing', { ...scope.row, opt_date: query.opt_date })">详情</a>
+                <a href="javascript:void(0);" @click="handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'detail')">详情</a>
               </div>
             </template>
           </template>
@@ -80,7 +76,6 @@
         <!--table-column end-->
       </el-table>
     </div>
-
     <div class="pricing-bottom-wrapper">
       <div class="pricing-bottom">
         <div class="total"></div>
@@ -150,6 +145,7 @@
       },
       //获取数据
       async getData(query){
+        this.$data.query = query;
         let { tabValue } = this;
         let isQuoted = 0, isAudited = '';
         switch(tabValue){
@@ -196,7 +192,7 @@
         let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
         
         if(min === '0' && max === '0') return '-';
-        return `￥${min} - ￥${max}`;
+        return `￥${this.returnPrice(min)} - ￥${this.returnPrice(max)}`;
       },
       //返回加价率(询价，销售价)
       returnRate(p1, p2){
@@ -263,14 +259,6 @@
           //console.log('取消');
         });
       },
-      //未报价提示
-      notBiddingHint(data){
-        if(data.sup_type === 'local_pur'){
-          this.$message({message: '主供应商尚未报价，请联系主供应商报价', type: 'error'});
-        }else{
-          this.$message({message: '该商品今日暂无可售数量，暂不可报价', type: 'error'});
-        }
-      }
     }
   };
 </script>

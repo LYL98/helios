@@ -10,6 +10,7 @@
     placeholder="请选择科学分类"
     :value="value"
     popper-class="my-cascader"
+    :disabled="disabled"
   ></el-cascader>
 </template>
 
@@ -29,7 +30,8 @@ export default {
     value: {type: Array, default: []},
     size: {type: String, default: ''},
     hasAllSelection: { type: Boolean, default: false },
-    clearable: { type: Boolean, default: false }
+    clearable: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
   },
   model: {
     prop: 'value',

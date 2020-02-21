@@ -27,7 +27,9 @@ import {
   Slider,
   TimePicker,
   Drawer,
-  Switch
+  Switch,
+  Collapse,
+  CollapseItem,
 } from 'element-ui';
 import { DataHandle, Http, Config, Constant } from '@/util';
 
@@ -61,7 +63,9 @@ export default {
     'el-tree': Tree,
     'el-tooltip': Tooltip,
     'el-drawer': Drawer,
-    'el-switch': Switch
+    'el-switch': Switch,
+    'el-collapse': Collapse,
+    'el-collapse-item': CollapseItem
   },
   props: {
     getPageComponents: { type: Function, require: true }, //获取页面组件

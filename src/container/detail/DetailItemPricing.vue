@@ -131,7 +131,7 @@ export default {
       let min = DataHandle.returnSuggestPrice(item.price_buy, item.rise_min);
       let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
       if(min === '0' && max === '0') return '-';
-      return `￥${min} - ￥${max}`;
+      return `￥${this.returnPrice(min)} - ￥${this.returnPrice(max)}`;
     },
     //返回加价率(询价，销售价)
     returnRate(p1, p2){

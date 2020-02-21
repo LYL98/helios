@@ -191,30 +191,19 @@ export default {
     //提交
     async submitData(){
       let { globalSupplierBinds, localSuppliers } = this;
-      let con = true, conMain = true;
+      let con = true;
       globalSupplierBinds.forEach(item => {
         if(!item.supplier_id) con = false;
       });
       localSuppliers.forEach(item => {
-        let mainNum = 0;
         item.suppliers.forEach(s => {
           if(!s.supplier_id){
             con = false;
           }
-          if(s.is_main){
-            mainNum++;
-          }
         });
-        if(mainNum === 0 && item.suppliers.length > 0){
-          conMain = false;
-        }
       });
       if(!con){
         this.$message({message: '请选择供应商', type: 'error'});
-        return;
-      }
-      if(!conMain){
-        this.$message({message: '请选择反采供应商', type: 'error'});
         return;
       }
       this.$loading({isShow: true});
