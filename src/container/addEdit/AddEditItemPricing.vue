@@ -203,7 +203,7 @@ export default {
       let min = DataHandle.returnSuggestPrice(item.price_buy, item.rise_min);
       let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
       
-      if(min === '0' && max === '0') return '-';
+      if(min === 0 && max === 0) return '-';
       return `￥${this.returnPrice(min)} - ￥${this.returnPrice(max)}`;
     },
 
