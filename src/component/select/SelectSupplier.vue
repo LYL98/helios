@@ -35,7 +35,7 @@
       billTerm: { type: String | Number, default: '' }, //账期
       placeholder: { type: String, default: '请选择供应商' },
       supplierIds: { type: Array }, //当前选择了的id
-      itemId: { type: String | Number, default: '' }, //商品搜索供应商
+      pItemId: { type: String | Number, default: '' }, //商品搜索供应商
     },
     methods: {
       //获取数据
@@ -43,7 +43,7 @@
         let res = await Http.get(Config.api.baseSupplierList, {
           province_code: this.$props.provinceCode,
           condition: this.query.condition,
-          item_id: this.itemId,
+          p_item_id: this.pItemId,
           supplier_type: this.$props.supplierType,
           bill_term: this.$props.billTerm,
           is_audited: 1, // 是否审核通过？ 0 否 1 是 null 全部

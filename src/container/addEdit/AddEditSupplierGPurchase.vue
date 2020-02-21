@@ -29,7 +29,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="供应商" prop="supplier_id">
-              <select-supplier size="medium" :itemId="detail.p_item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false" @change="selectSupplier"/>
+              <select-supplier size="medium" :pItemId="detail.p_item_id" v-model="detail.supplier_id" :disabled="pageType !== 'add' ? true : false" @change="selectSupplier"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
