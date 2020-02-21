@@ -1,5 +1,11 @@
 <template>
   <div class="container-table">
+    <div class="table-top">
+      <div class="left">
+        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="queryTabsData"/>
+      </div>
+      <div class="right"></div>
+    </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
@@ -97,12 +103,14 @@
 </template>
 
 <script>
-  import { Http, Config, Constant, DataHandle } from '@/util';
+  import { Http, Config, DataHandle } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
+  import queryTabs from './QueryTabs';
 
   export default {
     name: 'TableItemPricing',
     components: {
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
@@ -111,6 +119,12 @@
     },
     data() {
       return {
+        tabValue: 'quoted_0',
+        queryTabsData: {
+          '未报价': 'quoted_0',
+          '已报价': 'quoted_1',
+          '已审核': 'audited_1'
+        },
         total1: 0,
         total2: 0,
         tableName: 'TableItemPricing',
@@ -120,18 +134,43 @@
           { label: '昨日销量', key: 'sale_num_last', width: '100', isShow: true },
           { label: '今日供货价', key: 'price_buy', width: '90', isShow: true },
           { label: '今日建议价', key: 'suggest_price', width: '120', isShow: true },
-          { label: '今日加价率', key: 'today_rise_rate', width: '100', isShow: true },
+          { label: '今日加价率', key: 'today_rise_rate', width: '100', isShow: false },
           { label: '今日销售价', key: 'price_sale', width: '90', isShow: true },
           { label: '可售数量', key: 'available_num', width: '80', isShow: true },
         ],
       }
     },
     methods: {
+      //切换记录tab
+      changeTab(){
+        let { tabValue } = this;
+        let pc = this.getPageComponents('QueryItemPricing');
+        pc.$data.query.page = 1;
+        this.getData(pc.query);
+      },
       //获取数据
       async getData(query){
-        this.$data.query = query; //赋值，minxin用
+        let { tabValue } = this;
+        let isQuoted = 0, isAudited = '';
+        switch(tabValue){
+          case 'quoted_0':
+            isQuoted = 0;
+            isAudited = '';
+            break;
+          case 'quoted_1':
+            isQuoted = 1;
+            isAudited = '';
+            break;
+          default:
+            isQuoted = '';
+            isAudited = 1;
+        }
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.itemPriceList, query);
+        let res = await Http.get(Config.api.itemPriceList, {
+          ...query,
+          is_quoted: isQuoted,
+          is_audited: isAudited,
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -155,6 +194,7 @@
       returnSuggestPrice(item){
         let min = DataHandle.returnSuggestPrice(item.price_buy, item.rise_min);
         let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
+        
         if(min === '0' && max === '0') return '-';
         return `￥${min} - ￥${max}`;
       },

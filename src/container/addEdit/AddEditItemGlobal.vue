@@ -131,6 +131,14 @@ export default {
         callback();
       }
     };
+    //科学分类
+    let validSystemClass = (rules, value, callback) => {
+      if(value.length >= 6){
+        callback('请选择至第三级分类');
+      }else{
+        callback();
+      }
+    }
     let initDetail = {
       title: '', //商品名称(必填项)
       images: [], //图片(必填项, 列表),
@@ -180,7 +188,7 @@ export default {
         ],
         system_class_code: [
           { required: true, message: '请选择科学分类', trigger: 'blur' },
-          { len: 8, message: '请选择至第三级分类', trigger: 'blur' }
+          { validator: validSystemClass, trigger: 'blur' }
         ],
       },
     }

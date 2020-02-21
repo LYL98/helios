@@ -123,8 +123,8 @@ const dataHandle = {
   //返回建议价(今日询价，加价率)
   returnSuggestPrice(priceBuy, markupRate){
     let v = priceBuy * (1 + markupRate / 1000);
-    let p = v.toFixed(2);
-    return this.returnPrice(p);
+    let p = parseInt(v);
+    return p; //返回分
   },
   //返回百分比
   returnPercentage(item_num, sun){

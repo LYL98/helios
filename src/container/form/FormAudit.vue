@@ -47,7 +47,7 @@ export default {
         remark: '',
       },
       rules: {
-        remark: { required: true, message: '备注不能为空', trigger: 'change' }
+        //remark: { required: true, message: '备注不能为空', trigger: 'change' } //确认先不必填
       },
       auditStatus: Constant.AUDIT_STATUS(),
       initDetail: initDetail,
