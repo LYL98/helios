@@ -77,7 +77,7 @@ const Config = (() => {
       fromSupplierOrderEdit: apiM + '/from_supplier/order/edit', //订单修改
       fromSupplierOrderAudit: apiM + '/from_supplier/order/audit', //预采采购单审核
       fromSupplierOrderClose: apiM + '/from_supplier/order/close', //订单关闭
-      fromSupplierOrderDetail: apiM + '/from_supplier/order/detail', //反采购单详情
+      fromSupplierOrderDetail: apiM + '/from_supplier/order/detail', //采购单详情
       fromSupplierPItemPriceBuy: apiM + '/from_supplier/p_item_price_buy', //获取最近一次该商品的报价
 
       //商品池

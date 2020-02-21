@@ -201,8 +201,9 @@ export default {
         ],
       },
       logTypes: {
-        edit: '修改',
         add: '新增',
+        edit: '修改',
+        manual_add: '新增',
         audit_suc: '审核通过',
         audit_fail: '审核不通过',
         close: '关闭'
@@ -252,8 +253,7 @@ export default {
       }, 0);
     },
     //选择供应商
-    async selectSupplier(data){
-      console.log(data);
+    async selectSupplier(data){ 
       let { detail } = this;
       this.$data.selectSupplierData = data;
       let res = await Http.get(Config.api.fromSupplierPItemPriceBuy, {

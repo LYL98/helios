@@ -82,7 +82,7 @@
           this.judgeDisabled();
         }
       },
-      itemId: {
+      pItemId: {
         deep: true,
         handler: function (a, b) {
           if(a){
