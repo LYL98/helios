@@ -35,7 +35,7 @@
               <!--供应商-->
               <div v-else-if="item.key === 'supplier'" class="td-item add-dot2">{{scope.row.supplier.title}}</div>
               <!--商品名称-->
-              <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item.code}}/{{scope.row.item.title}}</div>
+              <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
               <!--采购单价-->
               <div v-else-if="item.key === 'price_buy'" class="td-item add-dot2">&yen;{{returnPrice(scope.row.price_buy)}}</div>
               <!--数量-->

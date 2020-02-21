@@ -13,7 +13,7 @@
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="供应商名称/商品名称" size="small" @search="handleQuery('TableSupplierGPurchase')" @reset="handleClearQuery('TableSupplierGPurchase')"/>
+          <query-search-input v-model="query.condition" placeholder="采购单号/商品编号/名称" size="small" @search="handleQuery('TableSupplierGPurchase')" @reset="handleClearQuery('TableSupplierGPurchase')"/>
         </my-query-item>
       </el-col>
     </el-row>
