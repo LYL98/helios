@@ -133,7 +133,7 @@ export default {
     };
     //科学分类
     let validSystemClass = (rules, value, callback) => {
-      if(value.length >= 6){
+      if(value.length < 6){
         callback('请选择至第三级分类');
       }else{
         callback();
