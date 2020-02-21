@@ -6,19 +6,22 @@
         {{detail.code}}/{{detail.title}}
       </el-form-item>
       <el-row>
-        <el-col :span="10">
+        <el-col :span="11">
           <el-form-item label="今日销售价" prop="price_sale">
             <input-price size="medium" v-model="detail.price_sale" :placeholder="'建议：' + returnSuggestPrice(detail)" :disabled="false"/>
           </el-form-item>
         </el-col>
-        <el-col :span="2" v-if="detail.opt_date === today && judgeOrs(pageType, ['detail', 'edit']) && (auth.isAdmin || auth.ItemPriceFix)  && detail.available_num > 0">
-          <a href="javascript:void(0);" class="edit-a" v-if="pageType === 'detail'" @click="showHideEdit('edit')">修改</a>
-          <template v-else>
-            <a href="javascript:void(0);" class="edit-a" @click="handleAddEdit">确认</a>
-            <a href="javascript:void(0);" class="edit-a" @click="showHideEdit('detail')">取消</a>
+        <el-col :span="2">
+          <template v-if="detail.opt_date === today && judgeOrs(pageType, ['detail', 'edit']) && (auth.isAdmin || auth.ItemPriceFix)  && detail.available_num > 0">
+            <a href="javascript:void(0);" class="edit-a" v-if="pageType === 'detail'" @click="showHideEdit('edit')">修改</a>
+            <template v-else>
+              <a href="javascript:void(0);" class="edit-a" @click="handleAddEdit">确认</a>
+              <a href="javascript:void(0);" class="edit-a" @click="showHideEdit('detail')">取消</a>
+            </template>
           </template>
+          <template v-else>&nbsp;</template>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="11">
           <el-form-item label="可售数量">
             <input-number size="medium" disabled :value="detail.available_num" unit="件"/>
           </el-form-item>
@@ -95,14 +98,14 @@
           </el-table-column>
           <el-table-column label="供应商报价" width="240">
             <template slot-scope="scope">
-              &yen;{{returnPrice(scope.row.bidding.price)}}
+              {{scope.row.bidding.price ? '￥' + returnPrice(scope.row.bidding.price) : '-'}}
             </template>
           </el-table-column>
           <el-table-column label="供应商库存" width="180">
             <template slot-scope="scope">
               {{returnUnit(scope.row.bidding.num, '件', '-')}}
               <a href="javascript:void(0);"
-                v-if="detail.opt_date === today && (auth.isAdmin || auth.ItemPriceEditNum)"
+                v-if="detail.opt_date === today && (auth.isAdmin || auth.ItemPriceEditNum) && scope.row.bidding.id"
                 @click="handleShowForm('FormItemPricingEditNum', scope.row)">增加</a>
             </template>
           </el-table-column>
