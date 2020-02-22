@@ -42,7 +42,7 @@
     },
     data() {
       let initQuery = {
-        type: 'purchase',//'采购': 'purchase', '调拨': 'allot'
+        type: 'purchase',//'采购': 'purchase', '调拨': 'distribute'
         condition: '',
         storehouse_id: '',
         tar_storehouse_id: ''
@@ -56,7 +56,7 @@
       types(){
         return {
           '采购': 'purchase',
-          '调拨': 'allot'
+          '调拨': 'distribute'
         }
       }
     },

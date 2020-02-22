@@ -28,7 +28,7 @@ export { default as DetailWarehouseInventory } from './DetailWarehouseInventory'
 export { default as DetailWarehouseDistribute } from './DetailWarehouseDistribute';
 export { default as DetailWarehouseInventoryMoveCheck } from './DetailWarehouseInventoryMoveCheck';
 export { default as DetailWarehouseInventoryMoveVariation } from './DetailWarehouseInventoryMoveVariation';
-export { default as DetailWarehouseInventoryMoveAllot } from './DetailWarehouseInventoryMoveAllot';
+export { default as DetailWarehouseInventoryMoveDistribute } from './DetailWarehouseInventoryMoveDistribute';
 export { default as DetailWarehouseInventoryMoveMove } from './DetailWarehouseInventoryMoveMove';
 export { default as DetailWarehouseInventoryMoveOutStorage } from './DetailWarehouseInventoryMoveOutStorage';
 export { default as DetailWarehouseQualityControlD } from './DetailWarehouseQualityControlD';

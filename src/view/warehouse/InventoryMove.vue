@@ -4,7 +4,7 @@
     <table-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseInventoryMove"/>
     <detail-warehouse-inventory-move-check :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveCheck"/>
     <detail-warehouse-inventory-move-variation :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveVariation"/>
-    <detail-warehouse-inventory-move-allot :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveAllot"/>
+    <detail-warehouse-inventory-move-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveDistribute"/>
     <detail-warehouse-inventory-move-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveMove"/>
     <detail-warehouse-inventory-move-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveOutStorage"/>
   </div>
@@ -15,7 +15,7 @@
     TableWarehouseInventoryMove,
     DetailWarehouseInventoryMoveCheck,
     DetailWarehouseInventoryMoveVariation,
-    DetailWarehouseInventoryMoveAllot,
+    DetailWarehouseInventoryMoveDistribute,
     DetailWarehouseInventoryMoveMove,
     DetailWarehouseInventoryMoveOutStorage
   } from '@/container';
@@ -28,7 +28,7 @@
       'table-warehouse-inventory-move': TableWarehouseInventoryMove,
       'detail-warehouse-inventory-move-check': DetailWarehouseInventoryMoveCheck,
       'detail-warehouse-inventory-move-variation': DetailWarehouseInventoryMoveVariation,
-      'detail-warehouse-inventory-move-allot': DetailWarehouseInventoryMoveAllot,
+      'detail-warehouse-inventory-move-distribute': DetailWarehouseInventoryMoveDistribute,
       'detail-warehouse-inventory-move-move': DetailWarehouseInventoryMoveMove,
       'detail-warehouse-inventory-move-out-storage': DetailWarehouseInventoryMoveOutStorage,
     },

@@ -13,7 +13,7 @@
         :row-class-name="highlightRowClassName"
         class="list-table my-table-float"
         :highlight-current-row="true"
-        :row-key="getRowIdentifier"
+        :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
@@ -119,10 +119,6 @@
       }
     },
     methods: {
-      //key
-      getRowIdentifier(row){
-        return row.id + (row.order_type || '');
-      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用

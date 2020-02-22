@@ -10,7 +10,7 @@
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="分配方式">{{allotOptTypes[detail.opt_type]}}</el-form-item>
+          <el-form-item label="分配方式">{{distributeOptTypes[detail.opt_type]}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="入场数">{{detail.num ? detail.num + '件' : '-'}}</el-form-item>
@@ -87,7 +87,7 @@
       return {
         sortStatus: Constant.SORT_STATUS(),
         sortStatusType: Constant.SORT_STATUS_TYPE,
-        allotOptTypes: Constant.ALLOT_OPT_TYPES(),
+        distributeOptTypes: Constant.DISTRIBUTE_OPT_TYPES(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail),
         allocateNeed: {

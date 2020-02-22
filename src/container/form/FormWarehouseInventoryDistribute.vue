@@ -82,7 +82,7 @@ import { InputNumber, InputPrice } from '@/common';
 import { SelectStorehouse } from '@/component';
 
 export default {
-  name: "FormWarehouseInventoryAllot",
+  name: "FormWarehouseInventoryDistribute",
   mixins: [formMixin],
   created() {
   },

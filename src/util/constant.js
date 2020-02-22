@@ -500,7 +500,7 @@ const Constant = {
     sorted: 'info'
   },
   //分配方式
-  ALLOT_OPT_TYPES: (type)=>{
+  DISTRIBUTE_OPT_TYPES: (type)=>{
     let data = [
       { key: 'by_line', value: '按线路分配' },
       { key: 'by_od_time', value: '按下单时间分配' },
@@ -508,7 +508,7 @@ const Constant = {
     return handleKeyValue(type, data);
   },
   //分配方式状态(颜色)
-  ALLOT_OPT_TYPES_TYPE: {
+  DISTRIBUTE_OPT_TYPES_TYPE: {
     by_line: 'info',
     by_od_time: 'info'
   },

@@ -41,8 +41,8 @@
               },
               {
                 title: '调拨',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryAllot) && fromPage !== 'receiving' && scope.row.warehouse.ware_type === 'tmp',
-                command: () => handleShowForm('FormWarehouseInventoryAllot', scope.row)
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryDistribute) && fromPage !== 'receiving' && scope.row.warehouse.ware_type === 'tmp',
+                command: () => handleShowForm('FormWarehouseInventoryDistribute', scope.row)
               },
               {
                 title: '移库',

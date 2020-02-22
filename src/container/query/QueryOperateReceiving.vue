@@ -57,7 +57,7 @@
         province_code: this.$province.code,
       }
       return {
-        tabValue: 'purchase', //'采购': 'purchase', '调拨': 'allot', '出库计划': 'out_storage'
+        tabValue: 'purchase', //'采购': 'purchase', '调拨': 'distribute', '出库计划': 'out_storage'
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }

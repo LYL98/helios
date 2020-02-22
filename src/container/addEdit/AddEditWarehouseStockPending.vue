@@ -3,7 +3,7 @@
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="inventoryData" :rules="rules" ref="ruleForm">
         <!--采购、详情-->
-        <el-row v-if="judgeOrs(pageType, ['add_global_pur', 'add_local_pur', 'detail_global_pur', 'detail_local_pur'])">
+        <el-row v-if="judgeOrs(pageType, ['add_pur', 'detail_pur'])">
           <h6 class="subtitle">采购信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
           <el-col :span="12">
@@ -54,7 +54,7 @@
         </el-row>
 
         <!--入库信息详情-->
-        <template v-if="judgeOrs(pageType, ['detail_global_pur', 'detail_local_pur', 'detail_distribute', 'detail_allocate'])">
+        <template v-if="judgeOrs(pageType, ['detail_pur', 'detail_distribute', 'detail_allocate'])">
           <el-row>
             <h6 class="subtitle">入库信息</h6>
             <el-col :span="12">
@@ -99,14 +99,15 @@
             </el-col>
           </el-row>
 
+          <el-form-item label="入库数量">{{detail.num}}件</el-form-item>
           <el-row v-for="(item, index) in detail.trays" :key="index">
             <el-col :span="12">
-              <el-form-item label="入库">
+              <el-form-item label="上架">
                 {{item.storehouse.title}}/{{item.warehouse.title}}/{{item.tray.code}}
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="入库数量">{{item.num}}件</el-form-item>
+              <el-form-item label="上架数量">{{item.num}}件</el-form-item>
             </el-col>
           </el-row>
           
@@ -120,30 +121,31 @@
           </el-row>
         </template>
 
-        <template v-if="judgeOrs(pageType, ['add_global_pur', 'add_local_pur', 'add_distribute', 'add_allocate'])">
+        <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute', 'add_allocate'])">
           <el-form-item label="合格数量">{{detail.num}}件</el-form-item>
           <h6 class="subtitle">入库信息</h6>
+          <el-form-item label="说明">吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦, 添加托盘直接上架</el-form-item>
           <el-row v-for="(item, index) in inventoryData.trays" :key="index">
             <el-col :span="10">
-              <el-form-item label="入库">
+              <el-form-item label="上架" class="is-required">
                 <cascader-warehouse-tray v-if="isShow" size="medium" v-model="item.ids" :storehouseId="storehouseId" @change="(value) => changeTray(value, index)"/>
                 <div v-if="item.ids_error" class="el-form-item__error">{{item.ids_error}}</div>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="入库数量">
+              <el-form-item label="上架数量" class="is-required">
                 <input-number size="medium" v-model="item.num" unit="件" @change="inputNumChange(index)"/>
                 <div v-if="item.num_error" class="el-form-item__error">{{item.num_error}}</div>
               </el-form-item>
             </el-col>
-            <el-col :span="2" v-if="inventoryData.trays.length > 1">
+            <el-col :span="2">
               <a href="javascript:void(0);" class="d-b" @click="deleteTray(index)" style="margin: 3px 0 0 10px;">删除</a>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
               <el-form-item label="">
-                <el-button @click.native="addTray" size="mini" type="primary" plain>添加仓库</el-button>
+                <el-button @click.native="addTray" size="mini" type="primary" plain>添加托盘</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -151,7 +153,7 @@
       </el-form>
 
       <div class="bottom-btn">
-        <template v-if="judgeOrs(pageType, ['add_global_pur', 'add_local_pur', 'add_distribute', 'add_allocate'])">
+        <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute', 'add_allocate'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
@@ -189,7 +191,7 @@ export default {
     }
     let initInventoryData = {
       in_stock_id: '',
-      trays: [{
+      trays: [/*{
         ids: [],
         ids_error: '',
         storehouse_id: '',
@@ -197,7 +199,7 @@ export default {
         tray_id: '',
         num: '',
         num_error: ''
-      }]
+      }*/]
     }
     return {
       storehouseId: '', //页面搜索条件
@@ -208,11 +210,9 @@ export default {
       supOptTypes: Constant.SUP_OPT_TYPES(),
       rules: {},
       pageTitles: {
-        add_global_pur: '采购入库',
-        add_local_pur: '采购入库',
+        add_pur: '采购入库',
         add_distribute: '调拨入库',
-        detail_global_pur: '采购入库详情',
-        detail_local_pur: '采购入库详情',
+        detail_pur: '采购入库详情',
         detail_distribute: '调拨入库详情',
         add_allocate: '场地入库', //场地入库
         detail_allocate: '入库单详情', //场地入库
@@ -239,15 +239,7 @@ export default {
         this.$data.detail = rd;
         this.$data.inventoryData = {
           in_stock_id: rd.id,
-          trays: [{
-            ids: [],
-            ids_error: '',
-            storehouse_id: '',
-            warehouse_id: '',
-            tray_id: '',
-            num: rd.num - rd.num_in,
-            num_error: ''
-          }]
+          trays: []
         };
         this.$data.isShow = true;
       }else{

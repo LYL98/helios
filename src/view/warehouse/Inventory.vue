@@ -3,7 +3,7 @@
     <query-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseInventory"/>
     <table-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseInventory"/>
     <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory"/>
-    <form-warehouse-inventory-allot :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryAllot"/>
+    <form-warehouse-inventory-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryDistribute"/>
     <form-warehouse-inventory-check :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryCheck"/>
     <form-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryMove"/>
     <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage"/>
@@ -18,7 +18,7 @@
     QueryWarehouseInventory,
     TableWarehouseInventory,
     DetailWarehouseInventory,
-    FormWarehouseInventoryAllot,
+    FormWarehouseInventoryDistribute,
     FormWarehouseInventoryCheck,
     FormWarehouseInventoryMove,
     FormWarehouseInventoryOutStorage,
@@ -34,7 +34,7 @@
       'query-warehouse-inventory': QueryWarehouseInventory,
       'table-warehouse-inventory': TableWarehouseInventory,
       'detail-warehouse-inventory': DetailWarehouseInventory,
-      'form-warehouse-inventory-allot': FormWarehouseInventoryAllot,
+      'form-warehouse-inventory-distribute': FormWarehouseInventoryDistribute,
       'form-warehouse-inventory-check': FormWarehouseInventoryCheck,
       'form-warehouse-inventory-move': FormWarehouseInventoryMove,
       'form-warehouse-inventory-out-storage': FormWarehouseInventoryOutStorage,

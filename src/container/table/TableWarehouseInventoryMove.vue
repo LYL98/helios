@@ -111,7 +111,7 @@
         queryTabsData: {
           '盘点': 'check',
           '变动': 'variation',
-          '调拨': 'allot',
+          '调拨': 'distribute',
           '移库': 'move',
           '出库': 'out_storage',
         },
@@ -128,8 +128,8 @@
             export_api: 'supModifyExport',
             export_srt: '导出记录'
           },
-          allot: {
-            detail: 'DetailWarehouseInventoryMoveAllot',
+          distribute: {
+            detail: 'DetailWarehouseInventoryMoveDistribute',
             api: Config.api.supDistributeRecordQuery,
             export_api: 'supPDistributeExport',
             export_srt: '导出记录'
@@ -213,7 +213,7 @@
           ]);
         }
         //调拨
-        else if(tabValue === 'allot'){
+        else if(tabValue === 'distribute'){
           tableColumn = tableColumn.concat([
             { label: '调出仓', key: 'src_storehouse', width: '3', isShow: true },
             { label: '调拨数量', key: 'num', width: '2', isShow: true },

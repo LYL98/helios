@@ -149,16 +149,16 @@
     </add-edit-layout>
 
     <!--品控确认-->
-    <el-dialog title="品控确认" :visible="isShowAffirm" width="540px" :before-close="handleCancel">
+    <el-dialog title="品控确认" :visible="isShowAffirm" width="540px" :before-close="showHideAffirm">
       <div class="t-c">
-        <div>采购数量：300件，已收货：100件</div>
-        <div style="margin: 6px 0 20px; color: #ff5252;">本次收货数量：150件，请确认</div>
-        <el-radio v-model="detail.accept_type" label="after_no" border>后面不会来货了</el-radio>
-        <el-radio v-model="detail.accept_type" label="after_have" border>后面会来货</el-radio>
+        <div>采购数量：{{detail.num}}件，已收货：{{detail.num_in}}件</div>
+        <div style="margin: 6px 0 20px; color: #ff5252;">本次收货数量：{{inventoryData.num}}件，请确认</div>
+        <el-radio v-model="inventoryData.accept_type" label="after_no" border>后面不会来货了</el-radio>
+        <el-radio v-model="inventoryData.accept_type" label="after_have" border>后面会来货</el-radio>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click.native="handleCancel">取 消</el-button>
-        <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
+        <el-button @click.native="showHideAffirm">取 消</el-button>
+        <el-button type="primary" @click.native="supInStockAdd">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -277,7 +277,8 @@ export default {
         add_distribute: '品控',
         detail_purchase: '品控详情',
         detail_distribute: '品控详情',
-      }
+      },
+      isShowAffirm: false
     }
   },
   computed: {
@@ -356,12 +357,32 @@ export default {
         }
       }
     },
+    //显示或隐藏确认
+    showHideAffirm(){
+      this.$data.isShowAffirm = !this.isShowAffirm;
+    },
     //提交数据
     addEditData(){
-      this.supInStockAdd();
+      let { detail, inventoryData } = this;
+      if(detail.num !== inventoryData.num + detail.num_in){
+        this.$data.inventoryData.accept_type = 'after_have'; //后面会来货
+        this.showHideAffirm();
+      }else{
+        this.$messageBox.confirm(`采购数量:${detail.num}件、实际收货:${detail.num}件,确认收货后该采购单将 采购完成`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$data.inventoryData.accept_type = 'all_accept'; //全部收货
+          this.supInStockAdd();
+        }).catch(() => {
+          //console.log('取消');
+        });
+      }
     },
     //发送收货请求
     async supInStockAdd(){
+      this.$data.isShowAffirm = false; //隐藏确认提示
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.supInStockAdd, this.inventoryData);
       this.$loading({isShow: false});

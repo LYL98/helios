@@ -60,7 +60,7 @@
         queryTitles: {
           'check': '仓库',
           'variation': '仓库',
-          'allot': '调入仓库',
+          'distribute': '调入仓库',
           'move': '原仓库',
           'out_storage': '仓库'
         },

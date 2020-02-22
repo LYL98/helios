@@ -2,7 +2,7 @@
   <div class="container-table">
     <div class="table-top">
       <div class="left">
-        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="{'采购': 'purchase', '调拨': 'allot', '出库计划': 'out_storage'}"/>
+        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="{'采购': 'purchase', '调拨': 'distribute', '出库计划': 'out_storage'}"/>
       </div>
       <div class="right"></div>
     </div>
@@ -46,7 +46,7 @@
               <!--调出仓、调入仓-->
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--采购、调拨状态-->
-              <div class="td-item add-dot2" v-else-if="judgeOrs(item.key, ['purchase_status', 'allot_status'])">
+              <div class="td-item add-dot2" v-else-if="judgeOrs(item.key, ['purchase_status', 'distribute_status'])">
                 <el-tag size="small" :type="qCStatusType[scope.row.status]" disable-transitions>
                   {{qCStatus[scope.row.status]}}
                 </el-tag>
@@ -69,7 +69,7 @@
               :list="[
                 {
                   title: '收货',
-                  isDisplay: (auth.isAdmin || auth.OperateReceivingAdd) && scope.row.status !== 'all_in' && judgeOrs(tabValue, ['purchase', 'allot']),
+                  isDisplay: (auth.isAdmin || auth.OperateReceivingAdd) && scope.row.status !== 'all_in' && judgeOrs(tabValue, ['purchase', 'distribute']),
                   command: () => handleShowAddEdit('AddEditOperateReceiving', scope.row, 'add_' + tabValue)
                 },
                 {
@@ -116,7 +116,7 @@
     },
     data() {
       return {
-        tabValue: 'purchase', //'采购': 'purchase', '调拨': 'allot', '出库计划': 'out_storage'
+        tabValue: 'purchase', //'采购': 'purchase', '调拨': 'distribute', '出库计划': 'out_storage'
         qCStatus: Constant.Q_C_STATUS(),
         qCStatusType: Constant.Q_C_STATUS_TYPE,
         tableName: 'TableOperateReceiving',
@@ -147,7 +147,7 @@
         this.$data.query = query; //赋值，minxin用
         let apis = {
           purchase: Config.api.supPurchaseQueryForAccept,
-          allot: Config.api.supDistributeQuery,
+          distribute: Config.api.supDistributeQuery,
           out_storage: Config.api.supOutPlanQuery
         }
         this.$loading({isShow: true, isWhole: true});
@@ -189,7 +189,7 @@
           ]);
         }
         //调拨
-        else if(tabValue === 'allot'){
+        else if(tabValue === 'distribute'){
           tableColumn = tableColumn.concat([
             { label: '调拨单号', key: 'code', width: '3', isShow: true },
             { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
@@ -197,7 +197,7 @@
             { label: '应收货', key: 'num', width: '2', isShow: true },
             { label: '未收货', key: 'num_not_in', width: '2', isShow: true },
             { label: '缺货', key: 'stockout', width: '3', isShow: true },
-            { label: '状态', key: 'allot_status', width: '2', isShow: true },
+            { label: '状态', key: 'distribute_status', width: '2', isShow: true },
           ]);
         }
         //出库计划

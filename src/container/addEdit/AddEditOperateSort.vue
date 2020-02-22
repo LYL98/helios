@@ -3,7 +3,7 @@
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
       <el-form class="custom-form" style="width: 100%;" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="分配方式">
-          <button-group v-model="detail.opt_type" :options="allotOptTypes" buttonWidth="160" :disabled="allocateNeed.sorted"/>
+          <button-group v-model="detail.opt_type" :options="distributeOptTypes" buttonWidth="160" :disabled="allocateNeed.sorted"/>
         </el-form-item>
         <!--如果从修改进来-->
         <template v-if="pageType === 'edit'">
@@ -68,7 +68,7 @@ export default {
     return {
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
-      allotOptTypes: Constant.ALLOT_OPT_TYPES('value_key'),
+      distributeOptTypes: Constant.DISTRIBUTE_OPT_TYPES('value_key'),
       allocateNeed: {
         num: 0,
         cur_opt_type: '',

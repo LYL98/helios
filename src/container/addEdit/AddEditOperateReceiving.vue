@@ -24,7 +24,7 @@
         </el-row>
 
         <!--调拨、详情-->
-        <el-row v-else-if="judgeOrs(pageType, ['add_allot', 'detail_allot'])">
+        <el-row v-else-if="judgeOrs(pageType, ['add_distribute', 'detail_distribute'])">
           <h6 class="subtitle">调拨信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
           <el-col :span="12">
@@ -47,7 +47,7 @@
           </el-col>
         </el-row>
 
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_allot'])">
+        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_distribute'])">
           <h6 class="subtitle">品控信息</h6>
           <el-row>
             <el-col :span="12">
@@ -62,7 +62,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="合格数量" prop="num">
-                <input-number size="medium" :min="pageType === 'add_allot' ? 0 : 1" v-model="inventoryData.num" unit="件"/>
+                <input-number size="medium" :min="pageType === 'add_distribute' ? 0 : 1" v-model="inventoryData.num" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">
@@ -138,7 +138,7 @@
       </el-form>
 
       <div class="bottom-btn">
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_allot'])">
+        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_distribute'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit" data-status="part_in">部分收货</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit" data-status="all_in">全部收货</el-button>
@@ -263,9 +263,9 @@ export default {
       },
       pageTitles: {
         add_purchase: '品控',
-        add_allot: '品控',
+        add_distribute: '品控',
         detail_purchase: '品控详情',
-        detail_allot: '品控详情',
+        detail_distribute: '品控详情',
       }
     }
   },
@@ -287,7 +287,7 @@ export default {
     isShowNo(){
       let { inventoryData, detail, pageType } = this;
       //到货数量小于或等于可到货数量 && 到货数量大于合格数量
-      if(pageType === 'add_allot' &&
+      if(pageType === 'add_distribute' &&
         typeof inventoryData.num_arrive === 'number' && typeof inventoryData.num === 'number' &&
         inventoryData.num_arrive <= detail.num - detail.num_in &&
         inventoryData.num_arrive > inventoryData.num){

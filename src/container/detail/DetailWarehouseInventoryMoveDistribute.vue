@@ -46,7 +46,7 @@
   import { Http, Config, Constant } from '@/util';
 
   export default {
-    name: "DetailWarehouseInventoryMoveAllot",
+    name: "DetailWarehouseInventoryMoveDistribute",
     mixins: [detailMixin],
     components: {
     },
