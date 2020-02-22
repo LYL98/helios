@@ -10,7 +10,7 @@
             <el-form-item label="采购单号">{{detail.code}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购日期">{{detail.order_date || detail.purchase_date}}</el-form-item>
+            <el-form-item label="采购日期">{{detail.order_date}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>

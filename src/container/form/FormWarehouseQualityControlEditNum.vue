@@ -123,13 +123,10 @@ export default {
         this.$message({message: '已修改', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据
-        let pc = this.getPageComponents('DetailWarehouseQualityControlG');
+        let pc = this.getPageComponents('DetailWarehouseQualityControlP');
         if(pc && pc.isShow) pc.fromSupplierOrderDetail();
 
-        pc = this.getPageComponents('DetailWarehouseQualityControlL');
-        if(pc && pc.isShow) pc.supplierLocalPurchaseDetail();
-
-        pc = this.getPageComponents('DetailWarehouseQualityControlA');
+        pc = this.getPageComponents('DetailWarehouseQualityControlD');
         if(pc && pc.isShow) pc.supDistributeDetail();
 
         pc = this.getPageComponents('TableWarehouseQualityControl');

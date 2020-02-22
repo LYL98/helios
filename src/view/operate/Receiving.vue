@@ -5,9 +5,8 @@
     <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory" fromPage="receiving"/>
     <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage"/>
     <add-edit-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateReceiving"/>
-    <detail-warehouse-quality-control-a :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlA" fromPage="Receiving"/>
-    <detail-warehouse-quality-control-g :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlG" fromPage="Receiving"/>
-    <detail-warehouse-quality-control-l :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlL" fromPage="Receiving"/>
+    <detail-warehouse-quality-control-d :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlD" fromPage="Receiving"/>
+    <detail-warehouse-quality-control-p :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlP" fromPage="Receiving"/>
     <form-warehouse-quality-control-edit-num :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseQualityControlEditNum"/>
   </div>
 </template>
@@ -19,9 +18,8 @@
     DetailWarehouseInventory,
     FormWarehouseInventoryOutStorage,
     AddEditOperateReceiving,
-    DetailWarehouseQualityControlA,
-    DetailWarehouseQualityControlG,
-    DetailWarehouseQualityControlL,
+    DetailWarehouseQualityControlD,
+    DetailWarehouseQualityControlP,
     FormWarehouseQualityControlEditNum
   } from '@/container';
   import viewMixin from '@/view/view.mixin';
@@ -34,9 +32,8 @@
       'detail-warehouse-inventory': DetailWarehouseInventory,
       'form-warehouse-inventory-out-storage': FormWarehouseInventoryOutStorage,
       'add-edit-operate-receiving': AddEditOperateReceiving,
-      'detail-warehouse-quality-control-a': DetailWarehouseQualityControlA,
-      'detail-warehouse-quality-control-g': DetailWarehouseQualityControlG,
-      'detail-warehouse-quality-control-l': DetailWarehouseQualityControlL,
+      'detail-warehouse-quality-control-d': DetailWarehouseQualityControlD,
+      'detail-warehouse-quality-control-p': DetailWarehouseQualityControlP,
       'form-warehouse-quality-control-edit-num': FormWarehouseQualityControlEditNum
     },
     mixins: [viewMixin],

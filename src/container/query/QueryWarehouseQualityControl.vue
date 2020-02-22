@@ -7,19 +7,18 @@
         </my-query-item>
       </el-col>
       <el-col :span="7">
-        <my-query-item label="状态">
+        <my-query-item label="类型">
           <select-option
-            :options="qCStatus"
-            v-model="query.status"
+            :options="types"
+            v-model="query.type"
             @change="handleQuery('TableWarehouseQualityControl')"
             size="small"
-            clearable
           />
         </my-query-item>
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseQualityControl')" @reset="handleClearQuery('TableWarehouseQualityControl')"/>
+          <query-search-input v-model="query.condition" placeholder="商品编号/名称/供应商" size="small" @search="handleQuery('TableWarehouseQualityControl')" @reset="handleClearQuery('TableWarehouseQualityControl')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -43,11 +42,10 @@
     },
     data() {
       let initQuery = {
-        status: '',
+        type: 'purchase',//'采购': 'purchase', '调拨': 'allot'
         condition: '',
         storehouse_id: '',
-        tar_storehouse_id: '',
-        for_instock: 1, //该查询是否是用来 入库的 (调拨单)
+        tar_storehouse_id: ''
       }
       return {
         initQuery: initQuery,
@@ -55,10 +53,10 @@
       }
     },
     computed: {
-      qCStatus: {
-        get(){
-          let d = Constant.Q_C_STATUS('value_key');
-          return { '全部': '', ...d };
+      types(){
+        return {
+          '采购': 'purchase',
+          '调拨': 'allot'
         }
       }
     },

@@ -97,7 +97,7 @@
   import { Http, Config, Constant } from '@/util';
 
   export default {
-    name: "DetailWarehouseQualityControlL",
+    name: "DetailWarehouseQualityControlP",
     mixins: [detailMixin],
     components: {
     },
@@ -123,12 +123,12 @@
       //显示新增修改(重写mixin)
       showDetail(data){
         this.$data.id = data.id; //外部调用，要保存
-        this.supplierLocalPurchaseDetail();
+        this.fromSupplierOrderDetail();
       },
-      //反采详情
-      async supplierLocalPurchaseDetail(){
+      //预采详情
+      async fromSupplierOrderDetail(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supplierLocalPurchaseDetail, { id: this.id });
+        let res = await Http.get(Config.api.fromSupplierOrderDetail, { id: this.id });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;

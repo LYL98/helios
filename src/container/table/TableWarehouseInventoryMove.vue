@@ -48,7 +48,7 @@
               <div v-else-if="judgeOrs(item.key, ['amount'])" class="td-item add-dot2">{{returnPrice(scope.row[item.key])}}元</div>
               <!--日期-->
               <div v-else-if="item.key === 'date'" class="td-item add-dot2">
-                {{scope.row.purchase_date || scope.row.order_date || scope.row.available_date}}
+                {{scope.row.order_date || scope.row.available_date}}
               </div>
               <!--变动类型-->
               <div class="td-item add-dot2" v-else-if="item.key === 'opt_type'">

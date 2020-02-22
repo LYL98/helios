@@ -41,7 +41,7 @@
               <div v-else-if="item.key === 'stockout'" class="td-item add-dot2">{{returnStockout(scope.row)}}</div>
               <!--日期-->
               <div v-else-if="item.key === 'date'" class="td-item add-dot2">
-                {{scope.row.purchase_date || scope.row.order_date || scope.row.available_date}}
+                {{scope.row.order_date || scope.row.available_date}}
               </div>
               <!--调出仓、调入仓-->
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
@@ -219,9 +219,8 @@
       tableShowDetail(data){
         let orderType = data.order_type || 'distribute'; //'global_pur', 'local_pur', 'distribute'
         let detailPages = {
-          global_pur: 'DetailWarehouseQualityControlG',
-          local_pur: 'DetailWarehouseQualityControlL',
-          distribute: 'DetailWarehouseQualityControlA'
+          global_pur: 'DetailWarehouseQualityControlP',
+          distribute: 'DetailWarehouseQualityControlD'
         }
         let pc = this.getPageComponents(detailPages[orderType]);
         pc.showDetail(data);

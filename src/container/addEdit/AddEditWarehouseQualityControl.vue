@@ -10,7 +10,7 @@
             <el-form-item label="采购单号">{{detail.code}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购日期">{{detail.order_date || detail.purchase_date}}</el-form-item>
+            <el-form-item label="采购日期">{{detail.order_date}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
@@ -24,7 +24,7 @@
         </el-row>
 
         <!--调拨、详情-->
-        <el-row v-else-if="judgeOrs(pageType, ['add_allot', 'detail_allot'])">
+        <el-row v-else-if="judgeOrs(pageType, ['add_distribute', 'detail_distribute'])">
           <h6 class="subtitle">调拨信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
           <el-col :span="12">
@@ -47,7 +47,7 @@
           </el-col>
         </el-row>
 
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_allot'])">
+        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_distribute'])">
           <h6 class="subtitle">品控信息</h6>
           <el-row>
             <el-col :span="12">
@@ -62,7 +62,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="合格数量" prop="num">
-                <input-number size="medium" :min="pageType === 'add_allot' ? 0 : 1" v-model="inventoryData.num" unit="件"/>
+                <input-number size="medium" :min="pageType === 'add_distribute' ? 0 : 1" v-model="inventoryData.num" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">
@@ -138,16 +138,29 @@
       </el-form>
 
       <div class="bottom-btn">
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_allot'])">
+        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_distribute'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
-          <el-button size="medium" type="primary" @click.native="handleAddEdit" data-status="part_in">部分收货</el-button>
-          <el-button size="medium" type="primary" @click.native="handleAddEdit" data-status="all_in">全部收货</el-button>
+          <el-button size="medium" type="primary" @click.native="handleAddEdit">收 货</el-button>
         </template>
         <template v-else>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>
     </add-edit-layout>
+
+    <!--品控确认-->
+    <el-dialog title="品控确认" :visible="isShowAffirm" width="540px" :before-close="handleCancel">
+      <div class="t-c">
+        <div>采购数量：300件，已收货：100件</div>
+        <div style="margin: 6px 0 20px; color: #ff5252;">本次收货数量：150件，请确认</div>
+        <el-radio v-model="detail.accept_type" label="after_no" border>后面不会来货了</el-radio>
+        <el-radio v-model="detail.accept_type" label="after_have" border>后面会来货</el-radio>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click.native="handleCancel">取 消</el-button>
+        <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -173,11 +186,9 @@ export default {
     /*
       - province_code:
       - produce_date: 商品生产日期, 根据商品所属的1级分配字段 has_produce_date 来传递，has_produce_date 则让用户手动填写，否则传递当前日期
-      - in_type:
       - relate_order_id:
       - num_arrive: 到货数量
       - num: 收货数量
-      - status: part_in/all_in
 
       - qa_num: 品控数量
       - shelf_life: 保质期
@@ -186,13 +197,18 @@ export default {
       - un_qa_type: 不合格商品处理类型 damage/damage_sale/sale_offline
       - remark:
       - un_qa_amount:
+      in_type: 两种枚举类型:pur, distribute。其中 pur 表示采购，distribute表示调拨
+      accept_type:
+        * all_accept: 全部收货
+       * after_no: 后面不会来货了
+       * after_have:后面会来货
     */
     let initInventoryData = {
       province_code: this.$province.code,
       produce_date: '',
       produce_date_disabled: false,
-      status: '',
       in_type: '',
+      accept_type: '',
       relate_order_id: '',
       num_arrive: '',
       num: '',
@@ -258,9 +274,9 @@ export default {
       },
       pageTitles: {
         add_purchase: '品控',
-        add_allot: '品控',
+        add_distribute: '品控',
         detail_purchase: '品控详情',
-        detail_allot: '品控详情',
+        detail_distribute: '品控详情',
       }
     }
   },
@@ -282,7 +298,7 @@ export default {
     isShowNo(){
       let { inventoryData, detail, pageType } = this;
       //到货数量小于或等于可到货数量 && 到货数量大于合格数量
-      if(pageType === 'add_allot' &&
+      if(pageType === 'add_distribute' &&
         typeof inventoryData.num_arrive === 'number' && typeof inventoryData.num === 'number' &&
         inventoryData.num_arrive <= detail.num - detail.num_in &&
         inventoryData.num_arrive > inventoryData.num){
@@ -305,7 +321,12 @@ export default {
       this.$data.isShowNo = false;
       this.$data.pageType = type;
       this.$data.detail = data;
-      let orderType = data.order_type || 'distribute'; //'global_pur', 'local_pur', 'distribute'
+      let inTypes = {
+        add_purchase: 'pur',
+        add_distribute: 'distribute',
+        detail_purchase: 'pur',
+        detail_distribute: 'distribute',
+      }
       this.$data.inventoryData = this.copyJson({
         ...this.initInventoryData,
         relate_order_id: data.id,
@@ -313,7 +334,7 @@ export default {
         produce_date_disabled: data.produce_date ? true : false,
         shelf_life: data.shelf_life,
         stock_life: data.stock_life,
-        in_type: orderType
+        in_type: inTypes[type]
       });
       this.supPItemDetail();
       this.$data.isShow = true;
@@ -336,10 +357,13 @@ export default {
       }
     },
     //提交数据
-    async addEditData(e){
-      let { inventoryData } = this;
+    addEditData(){
+      this.supInStockAdd();
+    },
+    //发送收货请求
+    async supInStockAdd(){
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supInStockAdd, {...inventoryData, status: e.currentTarget.dataset.status});
+      let res = await Http.post(Config.api.supInStockAdd, this.inventoryData);
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '收货成功', type: 'success'});
@@ -350,7 +374,7 @@ export default {
       }else{
         this.$message({message: res.message, type: 'error'});
       }
-    },
+    }
   },
 };
 </script>

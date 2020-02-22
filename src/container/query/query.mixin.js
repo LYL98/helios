@@ -67,7 +67,7 @@ export default {
     handleClearQuery(pageComponent){
       let pc = this.getPageComponents(pageComponent);
       this.initQueryData();
-      pc.getData(this.query);
+      pc.getData(this.query, 'clear');
     },
     //显示高级筛选
     handleShowFiltrate(){

@@ -2,7 +2,7 @@
   <div class="container-table">
     <div class="table-top">
       <div class="left">
-        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="{'采购': 'purchase', '调拨': 'allot'}"/>
+        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="qCStatusTab"/>
       </div>
       <div class="right"></div>
     </div>
@@ -30,13 +30,16 @@
                 <div class="td-item add-dot2" v-else>
                   {{scope.row.code}}
                 </div>
+                <span v-if="scope.row.creator_id === 0" class="local-pur-label">反采</span>
               </div>
               <!--商品名称-->
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
               <!--采购、调拨数量-->
               <div v-else-if="item.key === 'num'" class="td-item add-dot2">{{scope.row.num}}件</div>
-              <!--合格数量-->
+              <!--已收货-->
               <div v-else-if="item.key === 'num_in'" class="td-item add-dot2">{{returnUnit(scope.row.num_in, '件', '-')}}</div>
+              <!--缺货-->
+              <div v-else-if="item.key === 'stockout'" class="td-item add-dot2">{{returnStockout(scope.row)}}</div>
               <!--调出仓、调入仓-->
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--状态-->
@@ -59,7 +62,7 @@
                 {
                   title: '品控',
                   isDisplay: (auth.isAdmin || auth.WarehouseQualityControlAdd) && judgeOrs(scope.row.status, ['success', 'part_in']),
-                  command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'add_' + tabValue)
+                  command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'add_' + query.type)
                 },
                 {
                   title: '详情',
@@ -68,7 +71,7 @@
                 },
                 {
                   title: '关闭',
-                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlClose) && tabValue === 'purchase' && judgeOrs(scope.row.status, ['success', 'part_in']),
+                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlClose) && query.type === 'purchase' && judgeOrs(scope.row.status, ['success', 'part_in']),
                   command: () => handleShowForm('FormWarehouseQualityControClose', scope.row)
                 },
                 {
@@ -112,11 +115,19 @@
     },
     data() {
       return {
-        tabValue: 'purchase', //'采购': 'purchase', '调拨': 'allot'
+        tabValue: 'success',
         qCStatus: Constant.Q_C_STATUS(),
         qCStatusType: Constant.Q_C_STATUS_TYPE,
         tableName: 'TableWarehouseQualityControl',
         tableColumn: [],
+      }
+    },
+    computed: {
+      //tab状态
+      qCStatusTab(){
+        let d = Constant.Q_C_STATUS('value_key');
+        if(this.query.type === 'distribute') delete d['关闭'];
+        return d;
       }
     },
     methods: {
@@ -124,15 +135,30 @@
       getRowIdentifier(row){
         return row.id + (row.order_type || '');
       },
+      //返回缺货
+      returnStockout(data){
+        if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_in <= 0 || data.num_in >= data.num){
+          return '-';
+        }
+        return (data.num - data.num_in) + '件';
+      },
       //获取数据
-      async getData(query){
-        this.$data.query = query; //赋值，minxin用
+      async getData(query, type){
+        if(query.type !== this.query.type || type === 'clear'){
+          this.$data.query = this.copyJson(query); //赋值，minxin用
+          this.handleTableColumn();
+        }else{
+          this.$data.query = this.copyJson(query); //赋值，minxin用
+        }
         let apis = {
           purchase: Config.api.supPurchaseQuery,
-          allot: Config.api.supDistributeQuery
+          distribute: Config.api.supDistributeQuery
         }
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(apis[this.tabValue], query);
+        let res = await Http.get(apis[query.type], {
+          ...query,
+          status: this.tabValue
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -142,29 +168,19 @@
       },
       //切换记录tab
       changeTab(){
-        this.handleTableColumn();
         let pc = this.getPageComponents('QueryWarehouseQualityControl');
         this.getData(pc.query);
       },
-      //处理表头
+      //处理表头(query组件也使用)
       handleTableColumn(){
-        let { tableColumn, tabValue } = this;
+        let { tableColumn, query } = this;
         this.$data.dataItem = {
           items: [],
           num: 0
         };
         tableColumn = [];
-        //采购
-        if(tabValue === 'purchase'){
-          tableColumn = tableColumn.concat([
-            { label: '采购单号', key: 'code', width: '3', isShow: true },
-            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-            { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
-            { label: '采购数量', key: 'num', width: '2', isShow: true },
-            { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
-          ]);
-        }else{
         //调拨
+        if(query.type === 'distribute'){
           tableColumn = tableColumn.concat([
             { label: '调拨单号', key: 'code', width: '3', isShow: true },
             { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
@@ -174,24 +190,34 @@
             { label: '可售日期', key: 'available_date', width: '2', isShow: true },
             { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
           ]);
+        }else{
+        //采购
+          tableColumn = tableColumn.concat([
+            { label: '采购单号', key: 'code', width: '3', isShow: true },
+            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+            { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
+            { label: '采购数量', key: 'num', width: '2', isShow: true },
+            { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
+          ]);
         }
         tableColumn = tableColumn.concat([
           { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '合格数量', key: 'num_in', width: '2', isShow: true },
+          { label: '已收货', key: 'num_in', width: '2', isShow: true },
+          { label: '缺货', key: 'stockout', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ]);
         this.$data.tableColumn = tableColumn;
+        this.$data.tabValue = 'success';
       },
       //查看详情
       tableShowDetail(data){
-        let orderType = data.order_type || 'distribute'; //'global_pur', 'local_pur', 'distribute'
+        let { query } = this;
         let detailPages = {
-          global_pur: 'DetailWarehouseQualityControlG',
-          local_pur: 'DetailWarehouseQualityControlL',
-          distribute: 'DetailWarehouseQualityControlA'
+          purchase: 'DetailWarehouseQualityControlP',
+          distribute: 'DetailWarehouseQualityControlD'
         }
-        let pc = this.getPageComponents(detailPages[orderType]);
+        let pc = this.getPageComponents(detailPages[query.type]);
         pc.showDetail(data);
       }
     }
@@ -201,6 +227,13 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './table.scss';
+  .local-pur-label{
+    background: #ff5252;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 3px;
+    padding: 0 2px;
+  }
 </style>
 <style lang="scss">
   @import './table.global.scss';
