@@ -32,7 +32,8 @@
     mixins: [selectMixin],
     props: {
       supplierId: { type: String | Number, default: '' },
-      supType: { type: String, default: '' }
+      supType: { type: String, default: '' },
+      isDeleted: { type: String | Number, default: '0' }, //''：全部，0：未删除，1：已删除
     },
     methods: {
       //获取数据
@@ -40,7 +41,8 @@
         let res = await Http.get(Config.api.baseGItemList, {
           ...this.query,
           supplier_id: this.supplierId,
-          sup_type: this.supType
+          sup_type: this.supType,
+          is_deleted: this.isDeleted
         });
         if(res.code === 0){
           let rd = res.data;

@@ -55,14 +55,11 @@
 <script>
   import detailMixin from './detail.mixin';
   import { Http, Config, Constant } from '@/util';
-  import { SelectItem, SelectGItem } from '@/component';
 
   export default {
     name: "DetailSupplierList",
     mixins: [detailMixin],
     components: {
-      'select-item': SelectItem,
-      'select-g-item': SelectGItem
     },
     data() {
       let initDetail = {
