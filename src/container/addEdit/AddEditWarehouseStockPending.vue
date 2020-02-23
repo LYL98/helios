@@ -124,7 +124,7 @@
         <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute', 'add_allocate'])">
           <el-form-item label="合格数量">{{detail.num}}件</el-form-item>
           <h6 class="subtitle">入库信息</h6>
-          <el-form-item label="说明">吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦吧啦, 添加托盘直接上架</el-form-item>
+          <el-form-item label="提示">入库同时可以上架到托盘，不上架的商品将直接入库到临时库</el-form-item>
           <el-row v-for="(item, index) in inventoryData.trays" :key="index">
             <el-col :span="10">
               <el-form-item label="上架" class="is-required">
@@ -145,7 +145,9 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="">
-                <el-button @click.native="addTray" size="mini" type="primary" plain>添加托盘</el-button>
+                <el-button @click.native="addTray" size="mini" type="primary" plain>
+                  {{inventoryData.trays.length > 0 ? '添加托盘' : '上架'}}
+                </el-button>
               </el-form-item>
             </el-col>
           </el-row>
