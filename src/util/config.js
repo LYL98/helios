@@ -211,17 +211,18 @@ const Config = (() => {
       supModifyAdd: apiM + '/sup_modify/add', //变动
       supDistributeAdd: apiM + '/sup_distribute/add', //调拨单
 
-      supAcceptAdd: apiM + '/sup_accept/add', //场地收货
-
       //品控待入库、调拨单
       supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括预采和反采订单
       supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
       supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
       supDistributeDetail: apiM + '/sup_distribute/detail', //调拨单详情
       supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
-      supPurchaseInClose: apiM + '/sup_purchase/in_close', //预采购入库单关闭
       supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //反采购入库单关闭
       supInStockEditNum: apiM + '/sup_in_stock/edit_num', //修改品控入库数量
+
+      supAcceptAdd: apiM + '/sup_accept/add', //场地收货
+      supOutStockEditNum: apiM + '/sup_out_stock/edit_num', //场地修改品控数量
+
 
       //仓管待入库
       supInStockShMonitorQuery: apiM + '/sup_in_stock/sh_monitor_query', //待入库

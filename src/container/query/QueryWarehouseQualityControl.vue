@@ -2,8 +2,21 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="仓库">
+        <!--仓库品控-->
+        <my-query-item label="仓库" v-if="fromPage === 'QualityControl'">
           <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
+        </my-query-item>
+        <!--场地品控-->
+        <my-query-item label="配送日期" v-else-if="fromPage === 'Receiving'">
+          <el-date-picker
+            size="small"
+            v-model="query.delivery_date"
+            value-format="yyyy-MM-dd"
+            @change="handleQuery('TableOperateReceiving')"
+            style="width: 100%;"
+            placeholder="配送日期"
+            :clearable="false"
+          />
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -39,9 +52,24 @@
     },
     mixins: [queryMixin],
     created() {
+      //来自场地
+      if(this.fromPage === 'Receiving'){
+        let { initQuery, query } = this;
+        initQuery.delivery_date = this.today;
+        query.delivery_date = this.today;
+        initQuery.province_code = this.$province.code;
+        query.province_code = this.$province.code;
+        this.$data.initQuery = initQuery;
+        this.$data.query = query;
+      }
+    },
+    props: {
+      fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
     },
     data() {
       let initQuery = {
+        province_code: '',
+        delivery_date: '',
         type: 'purchase',//'采购': 'purchase', '调拨': 'distribute'
         condition: '',
         storehouse_id: '',
@@ -61,7 +89,7 @@
       }
     },
     methods: {
-      //修改仓库
+      //选择仓库
       changeStorehouse(){
         let { initQuery, query } = this;
         initQuery.storehouse_id = initQuery.tar_storehouse_id;

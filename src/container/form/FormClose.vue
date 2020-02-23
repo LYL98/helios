@@ -1,6 +1,9 @@
 <template>
   <el-dialog :title="title" :visible="isShow" width="600px" :before-close="handleCancel">
     <el-form label-position="right" label-width="110px" :model="auditData" ref="ruleForm" :rules="rules">
+      <div style="padding: 0 0 20px 108px; color: #ff5252;" v-if="detail.close_hint">
+        {{detail.close_hint}}
+      </div>
       <el-form-item label="备注" prop="remark">
         <el-input
           v-model="auditData.remark"
@@ -54,6 +57,16 @@ export default {
           api: Config.api.fromSupplierOrderClose,
           table: 'TableSupplierLocalPurchase'
         },
+        //仓库品控
+        'WarehouseQualityControl': {
+          api: Config.api.supFromSupplierInClose,
+          table: 'TableWarehouseQualityControl'
+        },
+        //场地品控
+        'OperateReceiving': {
+          api: Config.api.supFromSupplierInClose,
+          table: 'TableWarehouseQualityControl'
+        },
       }
     }
   },
@@ -68,7 +81,7 @@ export default {
       });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: '已审核', type: 'success'});
+        this.$message({message: '已关闭', type: 'success'});
         this.$data.auditData = {
           remark: '',
         };

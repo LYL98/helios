@@ -169,6 +169,11 @@ const router = new Router({
       component: () => import('@/view/warehouse/InventoryMove')
     },
     {
+      path: '/warehouse/out/storage',
+      name: 'WarehouseOutStorage',
+      component: () => import('@/view/warehouse/OutStorage')
+    },
+    {
       path: '/warehouse/distribute',
       name: 'WarehouseDistribute',
       component: () => import('@/view/warehouse/Distribute')

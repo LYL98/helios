@@ -72,7 +72,10 @@
                 {
                   title: '关闭',
                   isDisplay: (auth.isAdmin || auth.WarehouseQualityControlClose) && query.type === 'purchase' && judgeOrs(scope.row.status, ['success', 'part_in']),
-                  command: () => handleShowForm('FormWarehouseQualityControClose', scope.row)
+                  command: () => handleShowForm('FormClose', {
+                    id: scope.row.id,
+                    close_hint: '是否确认关闭采购单，如是，请填写关闭采购单的原因'
+                  })
                 },
                 {
                   title: '打印',
@@ -111,7 +114,15 @@
     mixins: [tableMixin],
     created() {
       this.handleTableColumn();
-      //初始化在query组件
+      //来自场地
+      if(this.fromPage === 'Receiving'){
+        let pc = this.getPageComponents('QueryWarehouseQualityControl');
+        this.getData(pc.query);
+      }
+      //仓库品控 初始化在query组件
+    },
+    props: {
+      fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
     },
     data() {
       return {
@@ -153,6 +164,10 @@
         let apis = {
           purchase: Config.api.supPurchaseQuery,
           distribute: Config.api.supDistributeQuery
+        }
+        //来自场地页面
+        if(this.fromPage === 'Receiving'){
+          apis.purchase = Config.api.supPurchaseQueryForAccept;
         }
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(apis[query.type], {

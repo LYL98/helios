@@ -40,12 +40,15 @@ import { InputNumber, InputPrice, SelectOption } from '@/common';
 export default {
   name: "FormWarehouseQualityControlEditNum",
   mixins: [formMixin],
-  created() {
-  },
   components: {
     'input-number': InputNumber,
     'input-price': InputPrice,
     'select-option': SelectOption
+  },
+  created() {
+  },
+  props: {
+    fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
   },
   computed: {
     //处理类型
@@ -108,9 +111,13 @@ export default {
   methods: {
     //提交
     async submitData(){
-      let { detail } = this;
+      let { detail, fromPage } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supInStockEditNum, {
+      let apis = {
+        QualityControl: Config.api.supInStockEditNum,
+        Receiving: Config.api.supOutStockEditNum
+      }
+      let res = await Http.post(apis[fromPage], {
         id: detail.id,
         num: detail.num,
         un_qa_num: detail.un_qa_num,

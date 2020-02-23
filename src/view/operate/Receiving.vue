@@ -1,23 +1,23 @@
 <template>
   <div>
-    <query-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateReceiving"/>
-    <table-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateReceiving"/>
-    <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory" fromPage="receiving"/>
-    <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage"/>
-    <add-edit-operate-receiving :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateReceiving"/>
+    <query-warehouse-quality-control :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseQualityControl" fromPage="Receiving"/>
+    <table-warehouse-quality-control :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseQualityControl" fromPage="Receiving"/>
+    <print-warehouse-stock-pending :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintWarehouseStockPending" fromPage="Receiving"/>
+    <form-close :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormClose" page="OperateReceiving" title="关闭"/>
+    <add-edit-warehouse-quality-control :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditWarehouseQualityControl" fromPage="Receiving"/>
     <detail-warehouse-quality-control-d :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlD" fromPage="Receiving"/>
     <detail-warehouse-quality-control-p :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlP" fromPage="Receiving"/>
-    <form-warehouse-quality-control-edit-num :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseQualityControlEditNum"/>
+    <form-warehouse-quality-control-edit-num :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseQualityControlEditNum" fromPage="Receiving"/>
   </div>
 </template>
 
 <script>
   import {
-    QueryOperateReceiving,
-    TableOperateReceiving,
-    DetailWarehouseInventory,
-    FormWarehouseInventoryOutStorage,
-    AddEditOperateReceiving,
+    QueryWarehouseQualityControl,
+    TableWarehouseQualityControl,
+    AddEditWarehouseQualityControl,
+    PrintWarehouseStockPending,
+    FormClose,
     DetailWarehouseQualityControlD,
     DetailWarehouseQualityControlP,
     FormWarehouseQualityControlEditNum
@@ -27,11 +27,11 @@
   export default {
     name: 'Receiving',
     components: {
-      'query-operate-receiving': QueryOperateReceiving,
-      'table-operate-receiving': TableOperateReceiving,
-      'detail-warehouse-inventory': DetailWarehouseInventory,
-      'form-warehouse-inventory-out-storage': FormWarehouseInventoryOutStorage,
-      'add-edit-operate-receiving': AddEditOperateReceiving,
+      'query-warehouse-quality-control': QueryWarehouseQualityControl,
+      'table-warehouse-quality-control': TableWarehouseQualityControl,
+      'add-edit-warehouse-quality-control': AddEditWarehouseQualityControl,
+      'print-warehouse-stock-pending': PrintWarehouseStockPending,
+      'form-close': FormClose,
       'detail-warehouse-quality-control-d': DetailWarehouseQualityControlD,
       'detail-warehouse-quality-control-p': DetailWarehouseQualityControlP,
       'form-warehouse-quality-control-edit-num': FormWarehouseQualityControlEditNum

@@ -177,6 +177,9 @@ export default {
     'input-price': InputPrice,
     'select-option': SelectOption
   },
+  props: {
+    fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
+  },
   created() {
   },
   data(){
@@ -383,8 +386,16 @@ export default {
     //发送收货请求
     async supInStockAdd(){
       this.$data.isShowAffirm = false; //隐藏确认提示
+      let { inventoryData, fromPage } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supInStockAdd, this.inventoryData);
+      let apis = {
+        QualityControl: Config.api.supInStockAdd,
+        Receiving: Config.api.supAcceptAdd
+      }
+      let res = await Http.post(apis[fromPage], {
+        ...inventoryData,
+        order_type: inventoryData.in_type, //仓库用: in_type，场地用：order_type
+      });
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '收货成功', type: 'success'});
