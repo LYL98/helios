@@ -12,7 +12,7 @@
             size="small"
             v-model="query.delivery_date"
             value-format="yyyy-MM-dd"
-            @change="handleQuery('TableOperateReceiving')"
+            @change="handleQuery('TableWarehouseQualityControl')"
             style="width: 100%;"
             placeholder="配送日期"
             :clearable="false"

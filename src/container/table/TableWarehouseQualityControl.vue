@@ -23,7 +23,7 @@
             <div slot-scope="scope" class="my-td-item">
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
-                <div v-if="auth.isAdmin || auth.WarehouseQualityControlDetail"
+                <div v-if="pageAuth.detail"
                   class="td-item link-item add-dot2" @click="tableShowDetail(scope.row)">
                   {{scope.row.code}}
                 </div>
@@ -61,17 +61,17 @@
               :list="[
                 {
                   title: '品控',
-                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlAdd) && judgeOrs(scope.row.status, ['success', 'part_in']),
+                  isDisplay: pageAuth.add && judgeOrs(scope.row.status, ['success', 'part_in']),
                   command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'add_' + query.type)
                 },
                 {
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.WarehouseQualityControlDetail,
+                  isDisplay: pageAuth.detail,
                   command: () => tableShowDetail(scope.row)
                 },
                 {
                   title: '关闭',
-                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlClose) && query.type === 'purchase' && judgeOrs(scope.row.status, ['success', 'part_in']),
+                  isDisplay: pageAuth.close && query.type === 'purchase' && judgeOrs(scope.row.status, ['success', 'part_in']),
                   command: () => handleShowForm('FormClose', {
                     id: scope.row.id,
                     close_hint: '是否确认关闭采购单，如是，请填写关闭采购单的原因'
@@ -79,7 +79,7 @@
                 },
                 {
                   title: '打印',
-                  isDisplay: (auth.isAdmin || auth.WarehouseQualityControlPrint) && scope.row.status !== 'closed',
+                  isDisplay: pageAuth.print && scope.row.status !== 'closed',
                   command: () => handleShowPrint('PrintWarehouseStockPending', {
                     ...scope.row,
                     batch_code: scope.row.batch_code || scope.row.code
@@ -112,15 +112,6 @@
       'query-tabs': queryTabs
     },
     mixins: [tableMixin],
-    created() {
-      this.handleTableColumn();
-      //来自场地
-      if(this.fromPage === 'Receiving'){
-        let pc = this.getPageComponents('QueryWarehouseQualityControl');
-        this.getData(pc.query);
-      }
-      //仓库品控 初始化在query组件
-    },
     props: {
       fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
     },
@@ -131,6 +122,25 @@
         qCStatusType: Constant.Q_C_STATUS_TYPE,
         tableName: 'TableWarehouseQualityControl',
         tableColumn: [],
+        pageAuth: {}
+      }
+    },
+    created() {
+      this.handleTableColumn();
+      //来自场地
+      if(this.fromPage === 'Receiving'){
+        let pc = this.getPageComponents('QueryWarehouseQualityControl');
+        this.getData(pc.query);
+      }
+      //仓库品控 初始化在query组件
+
+      //处理权限
+      let { fromPage, auth, pageAuth } = this;
+      this.$data.pageAuth  = {
+          add: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlAdd)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingAdd)),
+          detail: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlDetail)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingDetail)),
+          close: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlClose)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingClose)),
+          print: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlPrint)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingPrint))
       }
     },
     computed: {
