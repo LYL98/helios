@@ -15,8 +15,8 @@
       </el-row>
       <el-row v-for="(item, index) in addData.trays" :key="index">
         <el-col :span="12">
-          <el-form-item :label="`${pageType === 'move' ? '移入' : '上架'}托盘`" class="is-required">
-            <cascader-warehouse-tray v-if="isShow" size="medium" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
+          <el-form-item :label="`${pageType === 'move' ? '移入仓库' : '上架托盘'}`" class="is-required">
+            <cascader-warehouse-tray v-if="isShow" size="medium" :isShowTmpWarehouse="pageType === 'move' ? true : false" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
             <div v-if="item.tray_ids_error" class="el-form-item__error">{{item.tray_ids_error}}</div>
           </el-form-item>
         </el-col>
@@ -29,7 +29,7 @@
         </el-col>
       </el-row>
       <el-form-item label="">
-        <el-button size="mini" type="primary" @click.native="addTray">增加托盘</el-button>
+        <el-button size="mini" type="primary" @click.native="addTray">{{pageType === 'move' ? '增加仓库' : '增加托盘'}}</el-button>
       </el-form-item>
       <el-form-item label="备注" class="is-required" v-if="pageType === 'move'">
         <el-input v-model="addData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
