@@ -39,7 +39,7 @@
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="仓库">
-          <select-storehouse size="small" v-model="query.storehouse_id" @change="handleQuery('TableWarehouseStockPending')" isAuth @initCallBack="storehouseInit"/>
+          <select-storehouse size="small" v-model="query.storehouse_id" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -73,6 +73,7 @@
       return {
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
+        selectStorehouseData: {}, //当前选择的仓（入库时用）
       }
     },
     computed: {
@@ -95,12 +96,19 @@
         if(d.length > 0){
           initQuery.storehouse_id = d[0].id;
           query.storehouse_id = d[0].id;
+          this.$data.selectStorehouseData = d[0];
         }else{
           initQuery.storehouse_id = dataItem[0].id;
           query.storehouse_id = dataItem[0].id;
+          this.$data.selectStorehouseData = dataItem[0];
         }
         this.$data.initQuery = initQuery;
         this.$data.query = query;
+        this.handleQuery('TableWarehouseStockPending');
+      },
+      //选择仓库
+      changeStorehouse(data){
+        this.$data.selectStorehouseData = data;
         this.handleQuery('TableWarehouseStockPending');
       },
       //搜索日期

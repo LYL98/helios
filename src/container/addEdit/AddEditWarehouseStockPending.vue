@@ -124,11 +124,14 @@
         <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute', 'add_allocate'])">
           <el-form-item label="合格数量">{{detail.num}}件</el-form-item>
           <h6 class="subtitle">入库信息</h6>
-          <el-form-item label="提示">入库同时可以上架到托盘，不上架的商品将直接入库到临时库</el-form-item>
+          <!--全国仓-->
+          <el-form-item label="提示" v-if="selectStorehouseData.province_code !== 'nationwide'">商品将直接入库到临时库</el-form-item>
+          <!--否则-->
+          <el-form-item label="提示" v-else>入库同时可以上架到托盘，不上架的商品将直接入库到临时库</el-form-item>
           <el-row v-for="(item, index) in inventoryData.trays" :key="index">
             <el-col :span="10">
               <el-form-item label="上架" class="is-required">
-                <cascader-warehouse-tray v-if="isShow" size="medium" v-model="item.ids" :storehouseId="storehouseId" @change="(value) => changeTray(value, index)"/>
+                <cascader-warehouse-tray v-if="isShow" size="medium" v-model="item.ids" :storehouseId="selectStorehouseData.id" @change="(value) => changeTray(value, index)"/>
                 <div v-if="item.ids_error" class="el-form-item__error">{{item.ids_error}}</div>
               </el-form-item>
             </el-col>
@@ -142,7 +145,8 @@
               <a href="javascript:void(0);" class="d-b" @click="deleteTray(index)" style="margin: 3px 0 0 10px;">删除</a>
             </el-col>
           </el-row>
-          <el-row>
+          <!--不是全国仓可以上到托盘-->
+          <el-row v-if="selectStorehouseData.province_code !== 'nationwide'">
             <el-col :span="12">
               <el-form-item label="">
                 <el-button @click.native="addTray" size="mini" type="primary" plain>
@@ -204,7 +208,7 @@ export default {
       }*/]
     }
     return {
-      storehouseId: '', //页面搜索条件
+      selectStorehouseData: {}, //页面搜索条件
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       initInventoryData: initInventoryData,
@@ -227,7 +231,7 @@ export default {
       this.$data.pageType = type;
       let pc = this.getPageComponents('QueryWarehouseStockPending');
       if(pc){
-        this.$data.storehouseId = pc.query.storehouse_id;
+        this.$data.selectStorehouseData = pc.selectStorehouseData;
       }
       this.supInStockDetail(data.id);
     },
