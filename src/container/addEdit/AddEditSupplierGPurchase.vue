@@ -263,6 +263,10 @@ export default {
       if(res.code === 0){
         this.$data.supplierPrice = res.data;
       }
+      this.$data.detail.storehouse_id = '';
+      setTimeout(()=>{
+        if(this.$refs['ruleForm']) this.$refs['ruleForm'].clearValidate();
+      }, 0);
     },
     //提交数据
     async addEditData(){
