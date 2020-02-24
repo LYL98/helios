@@ -20,7 +20,7 @@
         </el-table-column>
         <el-table-column label="仓库">
           <template slot-scope="scope">
-            {{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}/{{scope.row.tray.code}}
+            {{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}<span v-if="scope.row.warehouse.ware_type !== 'tmp'">/{{scope.row.tray.code}}</span>
           </template>
         </el-table-column>
         <el-table-column label="商品过期时间" prop="due_date"/>
@@ -35,6 +35,11 @@
                 command: () => handleShowForm('FormWarehouseInventoryCheck', scope.row)
               },
               {
+                title: scope.row.warehouse.ware_type === 'tmp' ? '上架' : '移库',
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryMoveOp) && fromPage !== 'OutStorage',
+                command: () => handleShowForm('FormWarehouseInventoryMove', scope.row)
+              },
+              {
                 title: '变动',
                 isDisplay: (auth.isAdmin || auth.WarehouseInventoryVariation) && fromPage !== 'OutStorage',
                 command: () => handleShowForm('FormWarehouseInventoryVariation', scope.row)
@@ -43,11 +48,6 @@
                 title: '调拨',
                 isDisplay: (auth.isAdmin || auth.WarehouseInventoryDistribute) && fromPage !== 'OutStorage' && scope.row.warehouse.ware_type === 'tmp',
                 command: () => handleShowForm('FormWarehouseInventoryDistribute', scope.row)
-              },
-              {
-                title: '移库',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryMoveOp) && fromPage !== 'OutStorage',
-                command: () => handleShowForm('FormWarehouseInventoryMove', scope.row)
               },
               {
                 title: '出库',

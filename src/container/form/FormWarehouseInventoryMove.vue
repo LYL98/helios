@@ -1,5 +1,5 @@
 <template>
-  <form-layout title="移库" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
+  <form-layout :title="pageType === 'move' ? '移库' : '上架'" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
     <el-form class="custom-form" size="mini" label-position="right" label-width="110px" :model="addData" ref="ruleForm" :rules="rules">
       <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
       <el-row>
@@ -15,13 +15,13 @@
       </el-row>
       <el-row v-for="(item, index) in addData.trays" :key="index">
         <el-col :span="12">
-          <el-form-item label="移入仓库" class="is-required">
+          <el-form-item :label="`${pageType === 'move' ? '移入' : '上架'}托盘`" class="is-required">
             <cascader-warehouse-tray v-if="isShow" size="medium" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
             <div v-if="item.tray_ids_error" class="el-form-item__error">{{item.tray_ids_error}}</div>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="移库数量" class="is-required">
+          <el-form-item :label="`${pageType === 'move' ? '移库' : '上架'}数量`" class="is-required">
             <input-number size="medium" v-model="item.num" unit="件" :min="1" @change="inputNum(index)"/>
             <div v-if="item.num_error" class="el-form-item__error">{{item.num_error}}</div>
           </el-form-item>
@@ -29,9 +29,9 @@
         </el-col>
       </el-row>
       <el-form-item label="">
-        <el-button size="mini" type="primary" @click.native="addTray">增加仓库</el-button>
+        <el-button size="mini" type="primary" @click.native="addTray">增加托盘</el-button>
       </el-form-item>
-      <el-form-item label="备注" class="is-required">
+      <el-form-item label="备注" class="is-required" v-if="pageType === 'move'">
         <el-input v-model="addData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
         <div v-if="addData.remark_error" class="el-form-item__error">{{addData.remark_error}}</div>
       </el-form-item>
@@ -72,6 +72,7 @@ export default {
       addData: this.copyJson(initAddData),
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
+      pageType: 'move', //move移库，putaway上架
     }
   },
   methods: {
@@ -87,11 +88,12 @@ export default {
         this.$data.storehouseId = pc.query.storehouse_id;
       }
       this.$data.addData = this.copyJson(this.initAddData);
+      this.$data.pageType = data.warehouse.ware_type === 'tmp' ? 'putaway' : 'move';
       this.$data.isShow = true;
     },
     //提交
     async submitData(){
-      let { detail, addData } = this;
+      let { detail, addData, pageType } = this;
       let con = true;
       for(let i = 0; i < addData.trays.length; i++){
         if(!addData.trays[i].tray_id){
@@ -103,7 +105,7 @@ export default {
           con = false;
         }
       }
-      if(!addData.remark){
+      if(!addData.remark && pageType === 'move'){
         addData.remark_error = '请输入备注';
         con = false;
       }
@@ -118,27 +120,26 @@ export default {
       });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: '已移库', type: 'success'});
+        this.$message({message: pageType === 'move' ? '已移库' : '已上架', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('DetailWarehouseInventory');
-        pc.$data.query.page = 1;
         pc.wareTrayItemQeruy();
       }else{
         this.$message({message: res.message, type: 'error'});
       }
     },
-    //添加仓库
+    //添加托盘
     addTray(){
       this.addData.trays.push({tray_id: '', num: '', tray_ids: []});
       this.$data.addData = this.copyJson(this.addData);
     },
-    //删除仓库
+    //删除托盘
     deleteTray(index){
       this.addData.trays.remove(index);
       this.$data.addData = this.copyJson(this.addData);
     },
-    //选择仓库
+    //选择托盘
     changeTray(value, index){
       let { addData } = this;
       addData.trays[index].tray_id = value[2];

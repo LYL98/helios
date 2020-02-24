@@ -27,7 +27,8 @@ export default {
   props: {
     placeholder: { type: String, default: '请选择仓/库/托盘' },
     isAuth: { type: Boolean, default: false }, //是否要求权限(仓)
-    storehouseId: { type: Number | String, default: '' }
+    storehouseId: { type: Number | String, default: '' },
+    isShowTmpWarehouse: { type: Boolean, default: false }, //是否显示临时库
   },
   data() {
     let that = this;
@@ -82,7 +83,11 @@ export default {
     async baseWarehouseList(storehouseId, callback){
       let res = await Http.get(Config.api.baseWarehouseList, {storehouse_id: storehouseId, need_num: 50});
       if(res.code === 0){
-        typeof callback === 'function' && callback(res.data);
+        let rd = res.data;
+        if(!this.isShowTmpWarehouse){
+          rd = rd.filter(item => item.ware_type !== 'tmp');
+        }
+        typeof callback === 'function' && callback(rd);
       }else{
         this.$messageBox.alert(res.message, '提示');
       }
