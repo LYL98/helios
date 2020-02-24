@@ -7,6 +7,7 @@
     <detail-warehouse-inventory-move-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveDistribute"/>
     <detail-warehouse-inventory-move-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveMove"/>
     <detail-warehouse-inventory-move-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveOutStorage"/>
+    <detail-warehouse-inventory-move-putaway :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMovePutaway"/>
   </div>
 </template>
 <script>
@@ -17,7 +18,8 @@
     DetailWarehouseInventoryMoveVariation,
     DetailWarehouseInventoryMoveDistribute,
     DetailWarehouseInventoryMoveMove,
-    DetailWarehouseInventoryMoveOutStorage
+    DetailWarehouseInventoryMoveOutStorage,
+    DetailWarehouseInventoryMovePutaway
   } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
@@ -31,6 +33,7 @@
       'detail-warehouse-inventory-move-distribute': DetailWarehouseInventoryMoveDistribute,
       'detail-warehouse-inventory-move-move': DetailWarehouseInventoryMoveMove,
       'detail-warehouse-inventory-move-out-storage': DetailWarehouseInventoryMoveOutStorage,
+      'detail-warehouse-inventory-move-putaway': DetailWarehouseInventoryMovePutaway
     },
     mixins: [viewMixin],
     created() {

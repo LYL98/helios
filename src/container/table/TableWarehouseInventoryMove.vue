@@ -39,11 +39,11 @@
               <!--仓/库-->
               <div v-else-if="item.key === 'storehouse_warehouse'">{{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}</div>
               <!--仓/库/托盘-->
-              <div v-else-if="item.key === 'storehouse_warehouse_tray'">{{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}{{scope.row.tray.code}}</div>
+              <div v-else-if="item.key === 'storehouse_warehouse_tray'">{{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}/{{scope.row.tray.code}}</div>
               <!--仓/库/托盘-->
-              <div v-else-if="item.key === 'src_storehouse_warehouse_tray'">{{scope.row.src_storehouse.title}}/{{scope.row.src_warehouse.title}}{{scope.row.src_tray.code}}</div>
+              <div v-else-if="item.key === 'src_storehouse_warehouse_tray'">{{scope.row.src_storehouse.title}}/{{scope.row.src_warehouse.title}}/{{scope.row.src_tray.code}}</div>
               <!--仓/库/托盘-->
-              <div v-else-if="item.key === 'tar_storehouse_warehouse_tray'">{{scope.row.tar_storehouse.title}}/{{scope.row.tar_warehouse.title}}{{scope.row.tar_tray.code}}</div>
+              <div v-else-if="item.key === 'tar_storehouse_warehouse_tray'">{{scope.row.tar_storehouse.title}}/{{scope.row.tar_warehouse.title}}/{{scope.row.tar_tray.code}}</div>
               <!--价格-->
               <div v-else-if="judgeOrs(item.key, ['amount'])" class="td-item add-dot2">{{returnPrice(scope.row[item.key])}}元</div>
               <!--日期-->
@@ -110,6 +110,7 @@
         tableColumn: [],
         queryTabsData: {
           '盘点': 'check',
+          '上架': 'putaway',
           '变动': 'variation',
           '调拨': 'distribute',
           '移库': 'move',
@@ -120,6 +121,12 @@
             detail: 'DetailWarehouseInventoryMoveCheck',
             api: Config.api.supCheckQuery,
             export_api: 'supCheckExport',
+            export_srt: '导出记录'
+          },
+          putaway: {
+            detail: 'DetailWarehouseInventoryMovePutaway',
+            api: Config.api.supInStockItemQuery,
+            export_api: 'supCheckExport', //待修改
             export_srt: '导出记录'
           },
           variation: {
@@ -201,6 +208,13 @@
             { label: '盘点类型', key: 'check_type', width: '3', isShow: true },
             { label: '盘点后库存', key: 'num_after', width: '2', isShow: true },
             { label: '盘点数量', key: 'num_check', width: '2', isShow: true },
+          ]);
+        }
+        //上架
+        else if(tabValue === 'putaway'){
+          tableColumn = tableColumn.concat([
+            { label: '上架托盘', key: 'storehouse_warehouse_tray', width: '3', isShow: true },
+            { label: '上架数量', key: 'num', width: '3', isShow: true }
           ]);
         }
         //变动

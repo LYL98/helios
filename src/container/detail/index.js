@@ -31,6 +31,7 @@ export { default as DetailWarehouseInventoryMoveVariation } from './DetailWareho
 export { default as DetailWarehouseInventoryMoveDistribute } from './DetailWarehouseInventoryMoveDistribute';
 export { default as DetailWarehouseInventoryMoveMove } from './DetailWarehouseInventoryMoveMove';
 export { default as DetailWarehouseInventoryMoveOutStorage } from './DetailWarehouseInventoryMoveOutStorage';
+export { default as DetailWarehouseInventoryMovePutaway } from './DetailWarehouseInventoryMovePutaway';
 export { default as DetailWarehouseQualityControlD } from './DetailWarehouseQualityControlD';
 export { default as DetailWarehouseQualityControlP } from './DetailWarehouseQualityControlP';
 

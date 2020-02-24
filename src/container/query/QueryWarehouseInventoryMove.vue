@@ -59,6 +59,7 @@
         tabValue: '', //由table控制
         queryTitles: {
           'check': '仓库',
+          'putaway': '仓库',
           'variation': '仓库',
           'distribute': '调入仓库',
           'move': '原仓库',

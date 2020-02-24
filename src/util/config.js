@@ -235,6 +235,7 @@ const Config = (() => {
       supDistributeRecordQuery: apiM + '/sup_p_distribute/query', //调拨单查询(变动记录)
       supMoveQuery: apiM + '/sup_move/query', //移库查询(变动记录)
       supOutQuery: apiM + '/sup_out/query', //出库单查询(变动记录)(场地)
+      supInStockItemQuery: apiM + '/sup_in_stock_item/query', //上架记录(变动记录)
 
       supCheckDetail: apiM + '/sup_check/detail', //盘点查询(变动记录详情)
       supModifyDetail: apiM + '/sup_modify/detail', //变动查询(变动记录详情)
