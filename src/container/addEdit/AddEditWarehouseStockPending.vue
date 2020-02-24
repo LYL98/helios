@@ -125,7 +125,7 @@
           <el-form-item label="合格数量">{{detail.num}}件</el-form-item>
           <h6 class="subtitle">入库信息</h6>
           <!--全国仓-->
-          <el-form-item label="提示" v-if="selectStorehouseData.province_code === 'nationwide'">商品将直接入库到临时库</el-form-item>
+          <el-form-item label="提示" v-if="selectStorehouseData.province_code === 'nationwide'">全国仓确认入库后，商品直接入库到临时库</el-form-item>
           <!--否则-->
           <el-form-item label="提示" v-else>入库同时可以上架到托盘，不上架的商品将直接入库到临时库</el-form-item>
           <el-row v-for="(item, index) in inventoryData.trays" :key="index">

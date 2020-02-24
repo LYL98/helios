@@ -125,7 +125,7 @@
           },
           putaway: {
             detail: 'DetailWarehouseInventoryMovePutaway',
-            api: Config.api.supInStockItemQuery,
+            api: Config.api.supOnGroundQuery,
             export_api: 'supCheckExport', //待修改
             export_srt: '导出记录'
           },

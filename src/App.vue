@@ -223,7 +223,7 @@
             title: '收货',
             name: 'OperateReceiving'
           },{
-            title: '分拣',
+            title: '装车',
             name: 'OperateSort'
           },{
             title: '发车',
