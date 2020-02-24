@@ -40,7 +40,6 @@ export { default as TableItemAuditInnerTag } from './TableItemAuditInnerTag';
 export { default as TableItemPricing } from './TableItemPricing';
 
 export { default as TableOperateLine } from './TableOperateLine';
-export { default as TableOperateReceiving } from './TableOperateReceiving';
 export { default as TableOperateSort } from './TableOperateSort';
 export { default as TableOperateDepart } from './TableOperateDepart';
 
@@ -54,6 +53,7 @@ export { default as TableSupplierList } from './TableSupplierList';
 export { default as TableSupplierGPurchase } from './TableSupplierGPurchase';
 export { default as TableSupplierLocalPurchase } from './TableSupplierLocalPurchase';
 
+export { default as TableWarehouseOutStorage } from './TableWarehouseOutStorage';
 export { default as TableWarehouseInventory } from './TableWarehouseInventory';
 export { default as TableWarehouseStockPending } from './TableWarehouseStockPending';
 export { default as TableWarehouseQualityControl } from './TableWarehouseQualityControl';

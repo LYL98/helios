@@ -7,7 +7,7 @@
             size="small"
             v-model="query.delivery_date"
             value-format="yyyy-MM-dd"
-            @change="handleQuery('TableOperateReceiving')"
+            @change="handleQuery('TableWarehouseOutStorage')"
             style="width: 100%;"
             placeholder="配送日期"
             :clearable="false"
@@ -19,7 +19,7 @@
           <select-option
             :options="statusData"
             v-model="query.status"
-            @change="handleQuery('TableOperateReceiving')"
+            @change="handleQuery('TableWarehouseOutStorage')"
             size="small"
             clearable
           />
@@ -27,7 +27,7 @@
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableOperateReceiving')" @reset="handleClearQuery('TableOperateReceiving')"/>
+          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableWarehouseOutStorage')" @reset="handleClearQuery('TableWarehouseOutStorage')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -40,7 +40,7 @@
   import { Constant } from '@/util';
 
   export default {
-    name: "QueryOperateReceiving",
+    name: "QueryWarehouseOutStorage",
     components: {
       'select-option': SelectOption
     },
@@ -57,19 +57,13 @@
         province_code: this.$province.code,
       }
       return {
-        tabValue: 'purchase', //'采购': 'purchase', '调拨': 'distribute', '出库计划': 'out_storage'
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }
     },
     computed: {
       statusData(){
-        //出库计划
-        if(this.tabValue === 'out_storage'){
-          return { '全部': '', '待出库': 'wait_out', '已出库': 'done_out'};
-        }
-        let d = Constant.Q_C_STATUS('value_key');
-        return { '全部': '', ...d };
+        return { '全部': '', '待出库': 'wait_out', '已出库': 'done_out'};
       }
     },
     methods: {

@@ -50,8 +50,6 @@
                 <span v-if="scope.row.frame_code">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
                 <span v-else>-</span>
               </div>
-              <!--毛重、净重-->
-              <div class="td-item" v-else-if="item.key === 'gross_weight' || item.key === 'net_weight'">{{returnWeight(scope.row[item.key])}}斤</div>
               <!--科学分类-->
               <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
               <!--展示分类-->
@@ -126,27 +124,33 @@
     props: {
       fromPage: { type: String, default: 'List' }, //List 在售商品， ListForSale 待售商品
     },
-    created() {
-      let pc = this.getPageComponents('QueryItemList');
-      this.getData(pc.query);
-    },
     data() {
-      return {
-        tableName: 'TableItemList',
-        tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '2', isShow: true },
-          { label: '商品参数', key: 'parameter', width: '2', isShow: true },
-          { label: '筐', key: 'frame', width: '1', isShow: true },
+      let tableColumn = [
+        { label: '商品编号/名称', key: 'code_title', width: '2', isShow: true },
+        { label: '商品参数', key: 'parameter', width: '2', isShow: true },
+        { label: '筐', key: 'frame', width: '1', isShow: true },
+        { label: '科学分类', key: 'system_class', width: '1', isShow: false }
+      ];
+      if(this.fromPage === 'List'){
+        tableColumn = tableColumn.concat([
           { label: '科学分类', key: 'system_class', width: '1', isShow: false },
           { label: '展示分类', key: 'display_class', width: '1', isShow: true },
           { label: '可售数量', key: 'item_stock', width: '1', isShow: true },
           { label: '已售数量', key: 'sale_already', width: '1', isShow: true },
-          { label: '净重', key: 'net_weight', width: '1', isShow: false },
-          { label: '包装规格', key: 'package_spec', width: '1', isShow: false },
-          { label: '创建时间', key: 'created', width: '1', isShow: false },
-          { label: '更新时间', key: 'updated', width: '1', isShow: false },
-        ]
+        ]);
       }
+      tableColumn = tableColumn.concat([
+        { label: '创建时间', key: 'created', width: '1', isShow: false },
+        { label: '更新时间', key: 'updated', width: '1', isShow: false }
+      ]);
+      return {
+        tableName: 'TableItemList',
+        tableColumn: tableColumn
+      }
+    },
+    created() {
+      let pc = this.getPageComponents('QueryItemList');
+      this.getData(pc.query);
     },
     methods: {
       //获取数据

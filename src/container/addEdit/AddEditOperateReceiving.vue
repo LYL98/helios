@@ -349,7 +349,7 @@ export default {
         this.$message({message: '收货成功', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableOperateReceiving');
+        let pc = this.getPageComponents('TableWarehouseOutStorage');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

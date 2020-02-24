@@ -137,10 +137,10 @@
       //处理权限
       let { fromPage, auth, pageAuth } = this;
       this.$data.pageAuth  = {
-          add: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlAdd)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingAdd)),
-          detail: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlDetail)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingDetail)),
-          close: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlClose)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingClose)),
-          print: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlPrint)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingPrint))
+        add: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlAdd)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingAdd)),
+        detail: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlDetail)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingDetail)),
+        close: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlClose)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingClose)),
+        print: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlPrint)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingPrint))
       }
     },
     computed: {

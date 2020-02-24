@@ -73,8 +73,8 @@ export default {
         pc = this.getPageComponents('TableWarehouseInventory');
         if(pc) pc.getData(pc.query);
 
-        //刷新场地收货列表
-        pc = this.getPageComponents('TableOperateReceiving');
+        //刷新仓库出库计划列表
+        pc = this.getPageComponents('TableWarehouseOutStorage');
         if(pc) pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

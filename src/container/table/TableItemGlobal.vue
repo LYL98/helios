@@ -27,10 +27,10 @@
               <template v-if="item.key === 'code_title'">
                 <div v-if="(page === 'global' && (auth.isAdmin || auth.ItemGlobalDetail)) || (page === 'recover' && (auth.isAdmin || auth.ItemRecoverDetail))"
                   class="td-item link-item add-dot2" @click="handleShowAddEdit('AddEditItemGlobal', scope.row, 'detail')">
-                  {{scope.row.code}}<br/>{{scope.row.title}}
+                  {{scope.row.code}}/{{scope.row.title}}
                 </div>
                 <div class="td-item add-dot2" v-else>
-                  {{scope.row.code}}<br/>{{scope.row.title}}
+                  {{scope.row.code}}/{{scope.row.title}}
                 </div>
               </template>
               <!--商品参数-->

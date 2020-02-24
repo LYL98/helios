@@ -1,5 +1,5 @@
 <template>
-  <detail-layout :title="fromPage === 'receiving' ? '出库' : '库存管理'" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <detail-layout :title="fromPage === 'OutStorage' ? '出库' : '库存管理'" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-row style="margin: 10px 20px;">
       <el-col :span="12">商品编号/名称：{{detail.item_code}}/{{detail.item_title}}</el-col>
       <el-col :span="12">总库存：{{detail.stock_num}}件</el-col>
@@ -31,27 +31,27 @@
             :list="[
               {
                 title: '盘点',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryCheck) && fromPage !== 'receiving',
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryCheck) && fromPage !== 'OutStorage',
                 command: () => handleShowForm('FormWarehouseInventoryCheck', scope.row)
               },
               {
                 title: '变动',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryVariation) && fromPage !== 'receiving',
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryVariation) && fromPage !== 'OutStorage',
                 command: () => handleShowForm('FormWarehouseInventoryVariation', scope.row)
               },
               {
                 title: '调拨',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryDistribute) && fromPage !== 'receiving' && scope.row.warehouse.ware_type === 'tmp',
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryDistribute) && fromPage !== 'OutStorage' && scope.row.warehouse.ware_type === 'tmp',
                 command: () => handleShowForm('FormWarehouseInventoryDistribute', scope.row)
               },
               {
                 title: '移库',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryMoveOp) && fromPage !== 'receiving',
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryMoveOp) && fromPage !== 'OutStorage',
                 command: () => handleShowForm('FormWarehouseInventoryMove', scope.row)
               },
               {
                 title: '出库',
-                isDisplay: auth.isAdmin || (auth.OperateReceivingOutStorage && fromPage === 'receiving') || (auth.WarehouseInventoryOutStorage && fromPage === 'inventory'),
+                isDisplay: auth.isAdmin || (auth.WarehouseOutStorageAdd && fromPage === 'OutStorage') || (auth.WarehouseInventoryOutStorage && fromPage === 'Inventory'),
                 command: () => handleShowForm('FormWarehouseInventoryOutStorage', {...scope.row, plan_out_id: detail.plan_out_id})
               }
             ]"
@@ -84,7 +84,7 @@
     name: "DetailWarehouseInventory",
     mixins: [detailMixin],
     props: {
-      fromPage: { type: String, default: 'inventory' }, //receiving 收货、inventory 库存
+      fromPage: { type: String, default: 'Inventory' }, //OutStorage 收货、Inventory 库存
     },
     components: {
       'my-table-operate': TableOperate
@@ -116,7 +116,7 @@
         let { query, detail } = this;
         query.page = 1;
         //如果来自 场地 - 收货
-        if(this.fromPage === 'receiving'){
+        if(this.fromPage === 'OutStorage'){
           query.sub_item_id = data.item_id;
           detail.item_title = data.item_title;
           detail.item_code = data.item_code;

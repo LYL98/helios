@@ -44,7 +44,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="送达仓" prop="storehouse_id">
-              <select-storehouse size="medium" :provinceCode="storeProCode" v-model="detail.storehouse_id" />
+              <select-storehouse size="medium" :provinceCode="storeProCode" v-model="detail.storehouse_id" :disabled="pageType !== 'add' ? true : false"/>
             </el-form-item>
           </el-col>
 

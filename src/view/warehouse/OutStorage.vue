@@ -1,12 +1,16 @@
 <template>
   <div>
-    <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory" fromPage="Receiving"/>
+    <query-warehouse-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseOutStorage"/>
+    <table-warehouse-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseOutStorage"/>
+    <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory" fromPage="OutStorage"/>
     <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage"/>
   </div>
 </template>
 
 <script>
   import {
+    QueryWarehouseOutStorage,
+    TableWarehouseOutStorage,
     DetailWarehouseInventory,
     FormWarehouseInventoryOutStorage
   } from '@/container';
@@ -15,6 +19,8 @@
   export default {
     name: 'OutStorage',
     components: {
+      'query-warehouse-out-storage': QueryWarehouseOutStorage,
+      'table-warehouse-out-storage': TableWarehouseOutStorage,
       'detail-warehouse-inventory': DetailWarehouseInventory,
       'form-warehouse-inventory-out-storage': FormWarehouseInventoryOutStorage
     },
