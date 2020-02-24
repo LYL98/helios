@@ -55,7 +55,6 @@
         sort_status: 'unsort',
         condition: '',
         province_code: this.$province.code,
-        for_allocate: 1, //特殊处理
       }
       return {
         initQuery: initQuery,

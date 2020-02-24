@@ -245,15 +245,19 @@ const Config = (() => {
 
       supOutPlanQuery: apiM + '/sup_out_plan/query', //出库计划查询
 
-      //场地
+      //场地收货
       supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询
-      supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
+      
       supAllocateNeedItem: apiM + '/sup_allocate/need_item', //返回某个商品还有多少件需要分配
       supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
       supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情
 
       supSortQuery: apiM + '/sup_sort/query', //分拣记录查询（包括待分拣和已分拣）
       supAllocateDoSort: apiM + '/sup_allocate/do_sort', //对待分拣的记录进行分拣
+
+      //分配
+      supOutAllocateQuery: apiM + '/sup_out/allocate_query', //待分配记录查询
+      supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
 
       //线路
       operateLineAdd: apiM + '/basicdata/line/add', //线路新增

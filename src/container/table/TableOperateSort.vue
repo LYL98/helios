@@ -14,18 +14,32 @@
         :row-class-name="highlightRowClassName"
         class="list-table my-table-float"
         :highlight-current-row="true"
-        :row-key="rowIdentifier"
-        @selection-change="handleSelectionChange"
-        :current-row-key="clickedRow[rowIdentifier]"
+        row-key="code"
+        :current-row-key="clickedRow['code']"
+        default-expand-all
       >
-        <el-table-column type="selection" :selectable="returnStatus" width="42" v-if="(auth.isAdmin || auth.OperateSortPrint)"></el-table-column>
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <div v-for="item in props.row.out_stocks" :key="item.id" class="out-stock-item">
+              <div class="select"></div>
+              <div>入场：30件</div>
+              <div>入场时间：10:10:10</div>
+              <div>分配人：-</div>
+              <div>分配时间：10:10:10</div>
+              <div>装车：30件</div>
+              <div class="option">
+                <a href="javascript:void(0);">分配</a>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
               <!--商品名称-->
-              <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
+              <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.code}}/{{scope.row.title}}</div>
               <!--数量-->
               <div v-else-if="item.key === 'num'" class="td-item add-dot2">
                 <template v-if="scope.row.allocated_time">{{returnUnit(scope.row.allocated_num, '件', '-')}}</template>
@@ -95,12 +109,10 @@
         tableName: 'TableOperateSort',
         tableColumn: [
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-          { label: '入场数', key: 'num', width: '2', isShow: true },
-          { label: '入场时间', key: 'created', width: '3', isShow: true },
-          { label: '分配时间', key: 'allocated_time', width: '3', isShow: true },
-          { label: '已分拣', key: 'sort_num', width: '2', isShow: true },
-          { label: '创建时间', key: 'created', width: '3', isShow: false },
-          { label: '更新时间', key: 'updated', width: '3', isShow: false }
+          { label: '应出', key: 'num', width: '2', isShow: true },
+          { label: '入场', key: 'created', width: '3', isShow: true },
+          { label: '分配', key: 'allocated_time', width: '3', isShow: true },
+          { label: '装车', key: 'sort_num', width: '2', isShow: true },
         ],
       }
     },
@@ -113,7 +125,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supOutQuery, query);
+        let res = await Http.get(Config.api.supOutAllocateQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -128,6 +140,19 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './table.scss';
+  .out-stock-item{
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    >div{
+      flex: 1;
+    }
+    >.option{
+      flex: initial !important;
+      width: 120px;
+      font-size: 12px;
+    }
+  }
 </style>
 <style lang="scss">
   @import './table.global.scss';
