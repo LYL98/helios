@@ -85,28 +85,6 @@ export default {
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
       this.$data.pageType = type;
-      this.supAllocateNeedItem(data);
-    },
-    //返回某个商品还有多少件需要分配
-    async supAllocateNeedItem(data){
-      this.$loading({isShow: true});
-      let res = await Http.get(Config.api.supAllocateNeedItem, {
-        sub_item_id: data.item_id,
-        delivery_date: data.delivery_date
-      });
-      this.$loading({isShow: false});
-      if(res.code === 0){
-        let rd = res.data;
-        this.$data.allocateNeed = rd;
-        this.$data.detail = this.copyJson({
-          num: data.num,
-          out_stock_id: this.pageType === 'add' ? data.id : data.out_stock.id,
-          opt_type: rd.cur_opt_type || 'by_line',
-        });
-        this.$data.isShow = true;
-      }else{
-        this.$message({message: res.message, type: 'error'});
-      }
     },
     //提交数据
     async addEditData(e){
@@ -124,7 +102,6 @@ export default {
         let detailPc = this.getPageComponents('DetailOperateSort');
         if(detailPc.isShow){
           detailPc.supAllocateDetail();
-          detailPc.supAllocateNeedItem();
         }
       }else{
         this.$message({message: res.message, type: 'error'});

@@ -4,8 +4,12 @@
       <el-table-column label="门店名称">
         <template slot-scope="scope">{{scope.row.store.title}}</template>
       </el-table-column>
-      <el-table-column label="数量" width="120">
-        <template slot-scope="scope">{{scope.row.num}}件</template>
+      <el-table-column label="分配/应出" width="120">
+        <template slot-scope="scope">
+          <span>{{scope.row.num}}</span>
+          <span>&nbsp;/&nbsp;</span>
+          <span>{{scope.row.count_real}}</span>
+        </template>
       </el-table-column>
     </el-table>
   </detail-layout>
@@ -21,10 +25,7 @@
     components: {
     },
     data() {
-      let initDetail = {
-        line: {},
-        city: {}
-      }
+      let initDetail = {}
       return {
         initDetail: initDetail,
         detail: this.copyJson(initDetail),
@@ -35,23 +36,24 @@
       //标题
       returnTitle(){
         let { detail } = this;
-        let t = (detail.line.title || '') + '/';
-        t += (detail.city.title || '') + '/';
-        t += (detail.store_title || '') + '分配信息';
+        let t = (detail.city_code || '') + '/';
+        t += (detail.city_title || '') + '-门店详情';
         return t;
       },
       //显示新增修改(重写mixin)
       showDetail(data){
         this.$data.dataItem = [];
         this.$data.detail = data;
-        this.supAllocateCityDetail(data);
+        this.supAllocateCityDetail();
       },
       //获取明细列表
-      async supAllocateCityDetail(data){
+      async supAllocateCityDetail(){
+        let { detail } = this;
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supAllocateCityDetail, {
-          parent_allocate_id: data.parent_id,
-          city_code: data.city_code
+          item_id: detail.item_id,
+          city_code: detail.city_code,
+          delivery_date: detail.delivery_date
         });
         this.$loading({isShow: false});
         if(res.code === 0){

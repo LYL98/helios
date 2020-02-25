@@ -7,16 +7,21 @@
             size="small"
             v-model="query.delivery_date"
             value-format="yyyy-MM-dd"
-            @change="handleQuery('TableOperateSort')"
+            @change="handleQuery('TableOperateTruckLoad')"
             style="width: 100%;"
             placeholder="配送日期"
             :clearable="false"
           />
         </my-query-item>
       </el-col>
+      <el-col :span="7">
+        <my-query-item label="线路">
+          
+        </my-query-item>
+      </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableOperateSort')" @reset="handleClearQuery('TableOperateSort')"/>
+          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableOperateTruckLoad')" @reset="handleClearQuery('TableOperateTruckLoad')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -29,7 +34,7 @@
   import { Constant } from '@/util';
 
   export default {
-    name: "QueryOperateSort",
+    name: "QueryOperateTruckLoad",
     components: {
       'select-option': SelectOption
     },

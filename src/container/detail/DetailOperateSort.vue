@@ -1,68 +1,83 @@
 <template>
-  <detail-layout title="分配详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <detail-layout title="商品分配详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <div class="f-r" style="position: relative; right: -84px;">
-        <el-tag size="small" :type="sortStatusType[detail.sort_status]" disable-transitions>{{sortStatus[detail.sort_status]}}</el-tag>
+        <span></span>
+        <span>表示有缺货</span>
       </div>
+      <el-form-item label="商品编号/名称">
+        {{detail.code}}/{{detail.title}}
+        <span class="label-hint" v-if="detail.after">还会来货</span>
+      </el-form-item>
       <el-row>
-        <h6 class="subtitle">商品信息</h6>
-        <el-col :span="12">
-          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
+        <el-col :span="6">
+          <el-form-item label="应出">{{returnUnit(detail.count_real, '件', '-')}}</el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="分配方式">{{distributeOptTypes[detail.opt_type]}}</el-form-item>
+        <el-col :span="6">
+          <el-form-item label="入场">{{returnUnit(detail.num, '件', '-')}}</el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="入场数">{{detail.num ? detail.num + '件' : '-'}}</el-form-item>
+        <el-col :span="6">
+          <el-form-item label="分配">{{returnUnit(detail.allocated_num, '件', '-')}}</el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="入场时间">{{detail.out_stock.created}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="分配人">{{detail.creator && detail.creator.realname}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="分配时间">{{detail.created}}</el-form-item>
+        <el-col :span="6">
+          <el-form-item label="装车">{{returnUnit(detail.sort_num, '件', '-')}}</el-form-item>
         </el-col>
       </el-row>
     </el-form>
-    <h6 class="subtitle">线路信息</h6>
+    
     <div style="padding: 0 30px;">
-      <el-table :data="detail.allocates" :row-class-name="highlightRowClassName">
-        <el-table-column label="线路">
-          <template slot-scope="scope">{{scope.row.line.title}}</template>
+      <el-table :data="dataItem" :row-class-name="highlightRowClassName" border>
+        <el-table-column label="线路" width="160">
+          <template slot-scope="scope">{{scope.row.line_code}}/{{scope.row.line_title}}</template>
         </el-table-column>
-        <el-table-column label="县域">
-          <template slot-scope="scope">{{scope.row.city.title}}</template>
-        </el-table-column>
-        <el-table-column label="数量">
-          <template slot-scope="scope">{{scope.row.num}}</template>
-        </el-table-column>
-        <el-table-column label="分拣员">
-          <template slot-scope="scope">{{scope.row.sorter.realname}}</template>
-        </el-table-column>
-        <el-table-column label="分拣时间">
-          <template slot-scope="scope">{{scope.row.sort_time}}</template>
-        </el-table-column>
-        <el-table-column label="操作" width="80">
+        <el-table-column label="县域" width="160">
           <template slot-scope="scope">
-            <my-table-operate
-              :list="[
-                {
-                  title: '查看门店',
-                  isDisplay: auth.isAdmin || auth.OperateSortDetailCity,
-                  command: () => handleShowDetail('DetailOperateSortCity', scope.row)
-                }
-              ]"
-            />
+            <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item add-dot">
+              {{item.city_code}}/{{item.city_title}}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="小计 装车/分配/应出" label-class-name="sort-subtotal-head" width="180">
+          <template slot-scope="scope">
+            <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item">
+              {{item.sort_num || '-'}} / {{item.num || '-'}} / {{item.count_real || '-'}}
+            </div>
+          </template>
+        </el-table-column>
+        <!--画横向批n-->
+        <template v-if="batchNum > 0">
+          <el-table-column :label="`批${index + 1} 装车/分配`" v-for="(item, index) in batchNum" :key="index">
+            <template slot-scope="scope">
+              <div v-for="c in scope.row.cities" :key="scope.row.line_code + c.city_code" class="citie-item">
+                {{c.out_stocks[index].sort_num || '-'}} / {{c.out_stocks[index].num || '-'}}
+              </div>
+            </template>
+          </el-table-column>
+        </template>
+        <!--占位-->
+        <el-table-column v-else></el-table-column>
+        
+        <el-table-column label="操作" width="60">
+          <template slot-scope="scope">
+            <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item">
+              <my-table-operate
+                :list="[
+                  {
+                    title: '详情',
+                    isDisplay: auth.isAdmin || auth.OperateSortDetailCity,
+                    command: () => handleShowDetail('DetailOperateSortCity', {
+                      ...item,
+                      item_id: detail.id,
+                      city_code: item.city_code,
+                      delivery_date: detail.delivery_date
+                    })
+                  }
+                ]"
+              />
+            </div>
           </template>
         </el-table-column>
       </el-table>
-    </div>
-    <div class="bottom-btn">
-      <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-      <el-button size="medium" v-if="(auth.isAdmin || auth.OperateSortAdd) && !allocateNeed.sorted" type="primary"
-        @click.native="handleShowAddEdit('AddEditOperateSort', detail, 'edit')">修改分配方式</el-button>
     </div>
   </detail-layout>
 </template>
@@ -85,47 +100,54 @@
         creator: {}
       }
       return {
-        sortStatus: Constant.SORT_STATUS(),
-        sortStatusType: Constant.SORT_STATUS_TYPE,
-        distributeOptTypes: Constant.DISTRIBUTE_OPT_TYPES(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail),
-        allocateNeed: {
-          num: 0,
-          cur_opt_type: '',
-          sorted: false
-        },
-        detailTemp: {}
+        dataItem: []
       }
+    },
+    computed: {
+      //批数量
+      batchNum(){
+        let { dataItem } = this;
+        if(dataItem.length === 0) return 0;
+        if(dataItem[0].cities.length === 0) return 0;
+        if(dataItem[0].cities[0].out_stocks.length === 0) return 0;
+        return dataItem[0].cities[0].out_stocks.length;
+      },
     },
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.$data.detailTemp = data;
+        this.$data.dataItem = [];
+        this.$data.detail = this.copyJson(data);
         this.supAllocateDetail();
-        this.supAllocateNeedItem();
-      },
-      //返回某个商品还有多少件需要分配
-      async supAllocateNeedItem(){
-        let { detailTemp } = this;
-        let res = await Http.get(Config.api.supAllocateNeedItem, {
-          sub_item_id: detailTemp.item_id,
-          delivery_date: detailTemp.delivery_date
-        });
-        if(res.code === 0){
-          this.$data.allocateNeed = res.data;
-        }else{
-          this.$message({message: res.message, type: 'error'});
-        }
       },
       //获取明细列表
       async supAllocateDetail(){
+        let { detail } = this;
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supAllocateDetail, { out_stock_id: this.detailTemp.id }); // id:6测试
+        let res = await Http.get(Config.api.supAllocateDetail, {
+          item_id: detail.id,
+          delivery_date: detail.delivery_date
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
-          this.$data.detail = res.data;
+          let rd = res.data;
+          //造数据start
+          /*rd[0].cities[0].out_stocks.push(rd[0].cities[0].out_stocks[0]);
+          rd[0].cities[0].out_stocks.push(rd[0].cities[0].out_stocks[0]);
+          rd[0].cities[0].out_stocks.push(rd[0].cities[0].out_stocks[0]);
+          rd[0].cities.push(rd[0].cities[0]);
+          rd[0].cities.push(rd[0].cities[0]);
+          rd[0].cities.push(rd[0].cities[0]);
+          rd.push(rd[0]);*/
+          //造数据end
+          this.$data.dataItem = rd;
           this.$data.isShow = true;
+          setTimeout(()=>{
+            let dom = document.getElementsByClassName('sort-subtotal-head');
+            //console.log(dom);
+          }, 0);
         }else{
           this.$message({message: res.message, type: 'error'});
         }
@@ -136,4 +158,29 @@
 
 <style lang="scss" scoped>
   @import "./detail.scss";
+  .label-hint{
+    border: 1px solid #ff5252;
+    color: #ff5252;
+    border-radius: 3px;
+    padding: 0 2px;
+    font-size: 12px;
+  }
+  .citie-item{
+    position: relative;
+    padding: 4px 0;
+    height: 36px;
+    &::after{
+      content: ' ';
+      border-bottom: 1px solid #ececec;
+      position: absolute;
+      left: -10px;
+      right: -10px;
+      bottom: 0;
+    }
+    &:last-child{
+      &::after{
+        border-bottom: 0;
+      }
+    }
+  }
 </style>

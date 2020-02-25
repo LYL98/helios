@@ -62,12 +62,14 @@ export default {
       this.$data.query.page_size = pageSize;
       this.$data.query.page = 1;
       this.getData(this.query);
+      this.handleSelectionChange([]); //清空选择
     },
     //翻页
     changePage(page) {
       this.$data.query.page = page;
       this.getData(this.query);
       window.scrollTo(0, 0);
+      this.handleSelectionChange([]); //清空选择
     },
     /**
      * 当鼠标在表格中移动时，解除当前行的锁定状态。 如果仅仅是在操作按钮上移动，则不做响应

@@ -9,11 +9,6 @@
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
-      <!--全选-->
-      <div class="all-select">
-        <el-checkbox @change="changeAllSelect" :value="judgeAllSelect"></el-checkbox>
-      </div>
-      
       <el-table :data="dataItem.items"
         row-class-name="stripe-row"
         class="list-table my-table-float"
@@ -27,13 +22,12 @@
             <div class="out-stock">
               <div v-for="(item, i) in props.row.out_stocks" :key="item.id" class="out-stock-item">
                 <div class="select">
-                  <el-checkbox :disabled="item.allocated_time ? false : true" :value="judgeSelect(item)"
-                    @change="(v)=>changeSelect(v, item)">批{{props.row.out_stocks.length - i}}</el-checkbox>
+                  <el-checkbox>批{{props.row.out_stocks.length - i}}</el-checkbox>
                 </div>
                 <div>入场：{{returnUnit(item.num, '件', '-')}}</div>
                 <div>入场时间：{{returnDateFormat(item.created, 'HH:mm:ss')}}</div>
-                <div>分配人：{{(item.allocator && item.allocator.realname) || '-'}}</div>
-                <div>分配时间：{{returnDateFormat(item.allocated_time, 'HH:mm:ss') || '-'}}</div>
+                <div>分配人：{{item.allocated && item.allocated}}</div>
+                <div>分配时间：{{returnDateFormat(item.allocated_time, 'HH:mm:ss')}}</div>
                 <div>装车：{{returnUnit(item.sort_num, '件', '-')}}</div>
                 <div class="option">
                   <my-table-operate
@@ -43,10 +37,10 @@
                       {
                         title: '分配',
                         isDisplay: (auth.isAdmin || auth.OperateSortAdd) && !item.allocated_time,
-                        command: () => handleAllocate(item)
+                        command: () => handleShowAddEdit('AddEditOperateSort', item, 'add')
                       },{
                         title: '打印',
-                        isDisplay: (auth.isAdmin || auth.OperateSortPrint) && item.allocated_time,
+                        isDisplay: (auth.isAdmin || auth.OperateSortPrint) && returnStatus(item),
                         command: () => handleShowPrint('PrintOperateSort', [item])
                       }
                     ]"
@@ -64,10 +58,10 @@
               <!--商品名称-->
               <div v-if="item.key === 'item'" class="td-item add-dot2">
                 {{scope.row.code}}/{{scope.row.title}}
-                <span class="label-hint" v-if="item.after">还会来货</span>
+                <span class="label-hint">还会来货</span>
               </div>
               <!--数量-->
-              <div v-else-if="judgeOrs(item.key, ['count_real', 'num', 'allocated_num', 'sort_num'])" class="td-item add-dot2">{{returnUnit(scope.row[item.key], '件', '-')}}</div>
+              <div v-else-if="judgeOrs(item.key, ['count_real', 'num', 'allocate_num', 'sort_num'])" class="td-item add-dot2">{{returnUnit(scope.row[item.key], '件', '-')}}</div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
@@ -80,11 +74,8 @@
               @command-visible="handleCommandVisible"
               :list="[{
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.OperateSortDetail,
-                  command: () => handleShowDetail('DetailOperateSort', {
-                    ...scope.row,
-                    delivery_date: query.delivery_date
-                  })
+                  isDisplay: (auth.isAdmin || auth.OperateSortDetail) && !scope.row.allocated_time,
+                  command: () => handleShowDetail('DetailOperateSort', scope.row)
                 }
               ]"
             />
@@ -93,10 +84,7 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left">
-        <el-button @click="handleShowPrint('PrintOperateSort', multipleSelection)" size="mini" type="primary"
-        :disabled="multipleSelection.length === 0 ? true : false" plain>批量打印</el-button>
-      </div>
+      <div class="left"></div>
       <div class="right">
         <pagination :pageComponent='this'/>
       </div>
@@ -111,7 +99,7 @@
   import queryTabs from './QueryTabs';
 
   export default {
-    name: 'TableOperateSort',
+    name: 'TableOperateTruckLoad',
     components: {
       'query-tabs': queryTabs
     },
@@ -122,38 +110,24 @@
     },
     data() {
       return {
-        tabValue: 'sort',
-        tableName: 'TableOperateSort',
+        tabValue: 'truck',
+        tableName: 'TableOperateTruckLoad',
         tableColumn: [
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
           { label: '应出', key: 'count_real', width: '1', isShow: true },
           { label: '入场', key: 'num', width: '1', isShow: true },
-          { label: '分配', key: 'allocated_num', width: '1', isShow: true },
+          { label: '分配', key: 'allocate_num', width: '1', isShow: true },
           { label: '装车', key: 'sort_num', width: '1', isShow: true },
         ],
         queryTabsData: Constant.TRUCK_LOADING_TAB('value_key'),
         routeTabsData: Constant.TRUCK_LOADING_TAB_ROUTE(),
       }
     },
-    computed: {
-      //判断是否全选
-      judgeAllSelect(){
-        let { multipleSelection, dataItem } = this;
-        if(multipleSelection.length === 0) return false;
-        let con = 0, disabled = 0;
-        dataItem.items.forEach(item => {
-          item.out_stocks.forEach(o => {
-            con++;
-            if(!o.allocated_time){
-              disabled++;
-            }
-          });
-        });
-        if(multipleSelection.length >= con - disabled) return true;
-        return false;
-      },
-    },
     methods: {
+      //返回是否可选中
+      returnStatus(d){
+        return d.allocated_time && d.allocate_num ? true : false;
+      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
@@ -166,66 +140,6 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
-      //判断单选是否已选择
-      judgeSelect(data){
-        let con = this.multipleSelection.filter(item => item.id === data.id);
-        if(con.length > 0) return true;
-        return false;
-      },
-      //全选
-      changeAllSelect(v){
-        let { multipleSelection, dataItem } = this;
-        multipleSelection = [];
-        if(v){
-          dataItem.items.forEach(item => {
-            item.out_stocks.forEach(o => {
-              if(o.allocated_time){
-                multipleSelection.push(o);
-              }
-            });
-          });
-        }
-        this.$data.multipleSelection = this.copyJson(multipleSelection);
-      },
-      //单选
-      changeSelect(v, data){
-        let { multipleSelection } = this;
-        if(v){
-          multipleSelection.push(data);
-        }else{
-          for(let i = 0; i < multipleSelection.length; i++){
-            if(multipleSelection[i].id === data.id){
-              multipleSelection.remove(i);
-              break;
-            }
-          }
-        }
-        this.$data.multipleSelection = this.copyJson(multipleSelection);
-      },
-      //分配
-      handleAllocate(data){
-        this.$messageBox.confirm(`是否确认该批商品分配数量为${data.num}件`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          (async ()=>{
-            this.$loading({isShow: true});
-            let res = await Http.post(Config.api.supAllocateAdd, {
-              out_stock_id: data.id
-            });
-            this.$loading({isShow: false});
-            if(res.code === 0){
-              this.$message({message: '已分配', type: 'success'});
-              this.getData(this.query);
-            }else{
-              this.$message({message: res.message, type: 'error'});
-            }
-          })();
-        }).catch(() => {
-          //console.log('取消');
-        });
-      },
     }
   };
 </script>
@@ -233,18 +147,11 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './table.scss';
-  .all-select{
-    position: absolute;
-    top: 14px;
-    left: 20px;
-    z-index: 3;
-  }
   .label-hint{
     border: 1px solid #ff5252;
     color: #ff5252;
     border-radius: 3px;
     padding: 0 2px;
-    font-size: 12px;
   }
   .out-stock{
     margin-bottom: 20px;

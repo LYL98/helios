@@ -25,7 +25,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle('场地 - 分拣');
+      documentTitle('场地 - 分配');
     }
   };
 </script>

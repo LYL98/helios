@@ -44,8 +44,9 @@ export { default as QueryItemAuditInnerTag } from './QueryItemAuditInnerTag';
 export { default as QueryItemPricing } from './QueryItemPricing';
 
 export { default as QueryOperateLine } from './QueryOperateLine';
-export { default as QueryWarehouseOutStorage } from './QueryWarehouseOutStorage';
 export { default as QueryOperateSort } from './QueryOperateSort';
+export { default as QueryOperateTruckLoad } from './QueryOperateTruckLoad';
+export { default as QueryOperateTruckLoadDelay } from './QueryOperateTruckLoadDelay';
 export { default as QueryOperateDepart } from './QueryOperateDepart';
 
 export { default as QuerySystemOperator } from './QuerySystemOperator';
@@ -54,6 +55,7 @@ export { default as QuerySupplierList } from './QuerySupplierList';
 export { default as QuerySupplierGPurchase } from './QuerySupplierGPurchase';
 export { default as QuerySupplierLocalPurchase } from './QuerySupplierLocalPurchase';
 
+export { default as QueryWarehouseOutStorage } from './QueryWarehouseOutStorage';
 export { default as QueryWarehouseInventory } from './QueryWarehouseInventory';
 export { default as QueryWarehouseStockPending } from './QueryWarehouseStockPending';
 export { default as QueryWarehouseQualityControl } from './QueryWarehouseQualityControl';

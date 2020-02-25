@@ -512,6 +512,24 @@ const Constant = {
     by_line: 'info',
     by_od_time: 'info'
   },
+  //装车tab切换
+  TRUCK_LOADING_TAB: (type)=>{
+    let data = [
+      { key: 'sort', value: '分配'},
+      { key: 'truck', value: '装车'},
+      { key: 'truck_delay', value: '装车延时'}
+    ];
+    return handleKeyValue(type, data);
+  },
+  //装车tab切换 路由
+  TRUCK_LOADING_TAB_ROUTE: (type)=>{
+    let data = [
+      { key: 'sort', value: 'OperateSort' },
+      { key: 'truck', value: 'OperateTruckLoad' },
+      { key: 'truck_delay', value: 'OperateTruckLoadDelay' }
+    ];
+    return handleKeyValue(type, data);
+  },
 };
 
 //处理key value

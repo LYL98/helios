@@ -248,7 +248,6 @@ const Config = (() => {
       //场地收货
       supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询
       
-      supAllocateNeedItem: apiM + '/sup_allocate/need_item', //返回某个商品还有多少件需要分配
       supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
       supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情
 
@@ -258,6 +257,9 @@ const Config = (() => {
       //分配
       supOutAllocateQuery: apiM + '/sup_out/allocate_query', //待分配记录查询
       supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
+
+      //装车延时
+      supAllocateDelaySortQuery: apiM + '/sup_allocate/delay_sort_query', //装车延时
 
       //线路
       operateLineAdd: apiM + '/basicdata/line/add', //线路新增

@@ -16,7 +16,9 @@
     },
     props: {
       value: [ String, Number, Boolean ],
-      tabPanes: { type: Object, default: {} }
+      tabPanes: { type: Object, default: {} },
+      type: { type: String, default: 'none' }, //none 普通；route 路由模式
+      routePanes: { type: Object, default: null },
     },
     model: {
       prop: 'value',
@@ -26,6 +28,13 @@
     },
     methods: {
       handleClick(e) {
+        let { type, tabPanes, routePanes, value } = this;
+        if(value === e.name) return;
+        if(type === 'route'){
+          this.$router.push({
+            name: routePanes[e.name]
+          });
+        }
         this.$emit('change', e.name);
       }
     }

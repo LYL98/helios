@@ -191,6 +191,16 @@ const router = new Router({
       component: () => import('@/view/operate/Sort')
     },
     {
+      path: '/operate/truck/load',
+      name: 'OperateTruckLoad',
+      component: () => import('@/view/operate/TruckLoad')
+    },
+    {
+      path: '/operate/truck/load/delay',
+      name: 'OperateTruckLoadDelay',
+      component: () => import('@/view/operate/TruckLoadDelay')
+    },
+    {
       path: '/operate/depart',
       name: 'OperateDepart',
       component: () => import('@/view/operate/Depart')
