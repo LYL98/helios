@@ -2,13 +2,12 @@
   <div>
     <query-operate-tuck-load :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateTruckLoad"/>
     <table-operate-tuck-load :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateTruckLoad"/>
-    <detail-operate-tuck-load :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateTruckLoad"/>
-    <add-edit-operate-tuck-load :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateTruckLoad"/>
+    <form-operate-tuck-load-affirm :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateTruckLoadAffirm"/>
   </div>
 </template>
 
 <script>
-  import { QueryOperateTruckLoad, TableOperateTruckLoad, DetailOperateTruckLoad, AddEditOperateTruckLoad } from '@/container';
+  import { QueryOperateTruckLoad, TableOperateTruckLoad, FormOperateTruckLoadAffirm } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
   export default {
@@ -16,8 +15,7 @@
     components: {
       'query-operate-tuck-load': QueryOperateTruckLoad,
       'table-operate-tuck-load': TableOperateTruckLoad,
-      'detail-operate-tuck-load': DetailOperateTruckLoad,
-      'add-edit-operate-tuck-load': AddEditOperateTruckLoad
+      'form-operate-tuck-load-affirm': FormOperateTruckLoadAffirm
     },
     mixins: [viewMixin],
     created() {

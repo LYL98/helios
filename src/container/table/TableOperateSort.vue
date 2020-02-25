@@ -1,6 +1,6 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.OperateSortPrint">
+    <div class="table-top">
       <div class="left">
         <query-tabs v-model="tabValue" :tab-panes="queryTabsData" type="route" :route-panes="routeTabsData"/>
       </div>
@@ -95,7 +95,7 @@
     <div class="table-bottom">
       <div class="left">
         <el-button @click="handleShowPrint('PrintOperateSort', multipleSelection)" size="mini" type="primary"
-        :disabled="multipleSelection.length === 0 ? true : false" plain>批量打印</el-button>
+        :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperateSortPrint">批量打印</el-button>
       </div>
       <div class="right">
         <pagination :pageComponent='this'/>

@@ -1,6 +1,6 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.OperateSortPrint">
+    <div class="table-top">
       <div class="left">
         <query-tabs v-model="tabValue" :tab-panes="queryTabsData" type="route" :route-panes="routeTabsData"/>
       </div>
@@ -13,43 +13,9 @@
         row-class-name="stripe-row"
         class="list-table my-table-float"
         :highlight-current-row="true"
-        row-key="code"
-        :current-row-key="clickedRow['code']"
-        default-expand-all
+        :row-key="rowIdentifier"
+        :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <div class="out-stock">
-              <div v-for="(item, i) in props.row.out_stocks" :key="item.id" class="out-stock-item">
-                <div class="select">
-                  <el-checkbox>批{{props.row.out_stocks.length - i}}</el-checkbox>
-                </div>
-                <div>入场：{{returnUnit(item.num, '件', '-')}}</div>
-                <div>入场时间：{{returnDateFormat(item.created, 'HH:mm:ss')}}</div>
-                <div>分配人：{{item.allocated && item.allocated}}</div>
-                <div>分配时间：{{returnDateFormat(item.allocated_time, 'HH:mm:ss')}}</div>
-                <div>装车：{{returnUnit(item.sort_num, '件', '-')}}</div>
-                <div class="option">
-                  <my-table-operate
-                    @command-click="handleCommandClick(item)"
-                    @command-visible="handleCommandVisible"
-                    :list="[
-                      {
-                        title: '分配',
-                        isDisplay: (auth.isAdmin || auth.OperateSortAdd) && !item.allocated_time,
-                        command: () => handleShowAddEdit('AddEditOperateSort', item, 'add')
-                      },{
-                        title: '打印',
-                        isDisplay: (auth.isAdmin || auth.OperateSortPrint) && returnStatus(item),
-                        command: () => handleShowPrint('PrintOperateSort', [item])
-                      }
-                    ]"
-                  />
-                </div>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
@@ -57,17 +23,22 @@
             <div slot-scope="scope" class="my-td-item">
               <!--商品名称-->
               <div v-if="item.key === 'item'" class="td-item add-dot2">
-                {{scope.row.code}}/{{scope.row.title}}
-                <span class="label-hint">还会来货</span>
+                {{scope.row.item_code}}/{{scope.row.item_title}}
               </div>
-              <!--数量-->
-              <div v-else-if="judgeOrs(item.key, ['count_real', 'num', 'allocate_num', 'sort_num'])" class="td-item add-dot2">{{returnUnit(scope.row[item.key], '件', '-')}}</div>
+              <!--小计-->
+              <div v-else-if="item.key === 'subtotal'" class="td-item add-dot2">
+                {{scope.row.sort_num || '-'}} / {{scope.row.allocate_num || '-'}} / {{scope.row.count_real || '-'}}
+              </div>
+              <!--各县-->
+              <div v-else-if="typeof item.key === 'number'" class="td-item add-dot2">
+                {{scope.row.citys[item.key].sort_num || '-'}} / {{scope.row.citys[item.key].allocate_num || '-'}} / {{scope.row.citys[item.key].count_real || '-'}}
+              </div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="96">
+        <el-table-column label="操作" width="60">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -83,10 +54,22 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="table-bottom">
-      <div class="left"></div>
+    <div class="table-bottom" v-if="dataItem.items.length > 0">
+      <div class="left">
+        <span>装车/分配/应出，共计：</span>
+        <span>{{dataItem.sort_num || '-'}}</span>
+        <span>&nbsp;/&nbsp;</span>
+        <span>{{dataItem.allocate_num || '-'}}</span>
+        <span>&nbsp;/&nbsp;</span>
+        <span>{{dataItem.count_real || '-'}}</span>
+      </div>
       <div class="right">
-        <pagination :pageComponent='this'/>
+        <el-button v-if="auth.isAdmin || auth.OperateTruckLoadAffirm"
+          @click.native="handleShowForm('FormOperateTruckLoadAffirm',{
+            delivery_date: query.delivery_date,
+            line_code: query.line_code,
+            ...dataItem
+          })" size="mini" type="primary">发车前确认</el-button>
       </div>
     </div>
     <!-- 表格end -->
@@ -105,8 +88,7 @@
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryOperateSort');
-      this.getData(pc.query);
+      //在QueryOperateTruckLoad组件里初始化
     },
     data() {
       return {
@@ -114,31 +96,44 @@
         tableName: 'TableOperateTruckLoad',
         tableColumn: [
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-          { label: '应出', key: 'count_real', width: '1', isShow: true },
-          { label: '入场', key: 'num', width: '1', isShow: true },
-          { label: '分配', key: 'allocate_num', width: '1', isShow: true },
-          { label: '装车', key: 'sort_num', width: '1', isShow: true },
+          { label: '小计 装车/分配/应出', key: 'subtotal', width: '2', isShow: true },
         ],
         queryTabsData: Constant.TRUCK_LOADING_TAB('value_key'),
         routeTabsData: Constant.TRUCK_LOADING_TAB_ROUTE(),
       }
     },
     methods: {
-      //返回是否可选中
-      returnStatus(d){
-        return d.allocated_time && d.allocate_num ? true : false;
-      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supOutAllocateQuery, query);
+        let res = await Http.get(Config.api.supDeliveryLineDetail, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
+          this.handleTableColumn();
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
+      },
+      //处理表头(query组件也使用)
+      handleTableColumn(){
+        let { tableColumn, dataItem } = this;
+        tableColumn = [
+          { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+          { label: '小计 装车/分配/应出', key: 'subtotal', width: '2', isShow: true },
+        ];
+        if(dataItem.items.length > 0){
+          dataItem.items[0].citys.forEach((item, index) => {
+            tableColumn.push({
+              label: `${item.city_title} 装车/分配/应出`,
+              key: index,
+              width: '2',
+              isShow: true
+            });
+          });
+        }
+        this.$data.tableColumn = tableColumn;
       },
     }
   };

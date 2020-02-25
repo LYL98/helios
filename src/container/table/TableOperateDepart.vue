@@ -63,14 +63,6 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '发车前确认',
-                  isDisplay: (auth.isAdmin || auth.OperateDepartAffirm) && !scope.row.assign_confirm_time,
-                  command: () => handleShowForm('FormOperateDepartAffirm', {
-                    delivery_date: query.delivery_date,
-                    line_code: scope.row.line.code,
-                    ...scope.row
-                  })
-                },{
                   title: '详情',
                   isDisplay: (auth.isAdmin || auth.OperateDepartDetail) && scope.row.assign_confirm_time,
                   command: () => handleShowDetail('DetailOperateDepart', {

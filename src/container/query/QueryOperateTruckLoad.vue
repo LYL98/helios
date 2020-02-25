@@ -16,7 +16,14 @@
       </el-col>
       <el-col :span="7">
         <my-query-item label="线路">
-          
+          <select-line
+            :provinceCode="province.code"
+            v-model="query.line_code"
+            size="small"
+            :clearable="false"
+            @initCallBack="lineInit"
+            @change="handleQuery('TableOperateTruckLoad')"
+          />
         </my-query-item>
       </el-col>
       <el-col :span="10">
@@ -30,13 +37,15 @@
 
 <script>
   import { SelectOption } from '@/common';
+  import { SelectLine } from '@/container';
   import queryMixin from './query.mixin';
   import { Constant } from '@/util';
 
   export default {
     name: "QueryOperateTruckLoad",
     components: {
-      'select-option': SelectOption
+      'select-option': SelectOption,
+      'select-line': SelectLine,
     },
     mixins: [queryMixin],
     created() {
@@ -47,6 +56,7 @@
       let initQuery = {
         delivery_date: '',
         condition: '',
+        line_code: '',
         province_code: this.$province.code,
       }
       return {
@@ -55,6 +65,15 @@
       }
     },
     methods: {
+      //线路初始化默认选择
+      lineInit(rd){
+        if(rd.length > 0){
+          this.$data.initQuery.line_code = rd[0].code;
+          this.$data.query.line_code = rd[0].code;
+          let pc = this.getPageComponents('TableOperateTruckLoad');
+          pc.getData(this.query);
+        }
+      }
     }
   }
 </script>

@@ -33,6 +33,7 @@
       disabled: { type: Boolean, default: false },
       provinceCode: { type: String | Number, required: true },
       lineCode: { type: String | Number, required: true },
+      initCallBack:  { type: Function }, //获取数据时回调，方便外边控制
     },
     model: {
       prop: 'lineCode',
@@ -67,6 +68,7 @@
           if(res.code === 0){
             let rd = res.data;
             this.$data.listItem = rd;
+            this.$emit('initCallBack', rd);
           }else{
             MessageBox.alert(res.message, '提示');
           }

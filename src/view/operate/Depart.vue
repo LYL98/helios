@@ -5,7 +5,6 @@
     <detail-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepart"/>
     <detail-operate-depart-store :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStore"/>
     <detail-operate-depart-store-item :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStoreItem"/>
-    <form-operate-depart-affirm :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateDepartAffirm"/>
     <detail-operate-depart-driver-track :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartDriverTrack"/>
     <detail-operate-depart-stockout :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStockout"/>
     <detail-operate-depart-stockout-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStockoutDetail"/>
@@ -20,7 +19,6 @@
     DetailOperateDepart,
     DetailOperateDepartStore,
     DetailOperateDepartStoreItem,
-    FormOperateDepartAffirm,
     DetailOperateDepartDriverTrack,
     DetailOperateDepartStockout,
     DetailOperateDepartStockoutDetail,
@@ -36,7 +34,6 @@
       'detail-operate-depart': DetailOperateDepart,
       'detail-operate-depart-store': DetailOperateDepartStore,
       'detail-operate-depart-store-item': DetailOperateDepartStoreItem,
-      'form-operate-depart-affirm': FormOperateDepartAffirm,
       'detail-operate-depart-driver-track': DetailOperateDepartDriverTrack,
       'detail-operate-depart-stockout': DetailOperateDepartStockout,
       'detail-operate-depart-stockout-detail': DetailOperateDepartStockoutDetail,

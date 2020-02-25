@@ -38,7 +38,7 @@ import formMixin from './form.mixin';
 import { Http, Config } from '@/util';
 
 export default {
-  name: "FormOperateDepartAffirm",
+  name: "FormOperateTruckLoadAffirm",
   mixins: [formMixin],
   created() {
   },

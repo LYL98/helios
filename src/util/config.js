@@ -261,6 +261,20 @@ const Config = (() => {
       //装车延时
       supAllocateDelaySortQuery: apiM + '/sup_allocate/delay_sort_query', //装车延时
 
+      //装车
+      supDeliveryLineDetail: apiM + '/sup_delivery/line_detail', //返回某条线路在指定日期的应出，分配，装车的 总览（也就是目前的装车首页）
+
+      //发车
+      supConfirmWait: apiM + '/sup_confirm/wait', //待确认分配查询列表（也就是运营中心的发车列表）
+      supConfirmStoreLack: apiM + '/sup_confirm/store_lack', //门店商品缺货列表
+      supSend: apiM + '/sup_send', //一键确认线路商品分配
+      supDeliveryCityDetail: apiM + '/sup_delivery/city_detail', //确认分配之后用于查看各个县域分配的详情
+      supDeliveryStoreDetail: apiM + '/sup_delivery/store_detail', //确认分配之后用于查看某个县域各个门店分配的详情
+      supDeliveryItemDetail: apiM + '/sup_delivery/item_detail', //确认分配之后用于查看某个门店各种商品的详情
+      supDeliveryLackHistoryItem: apiM + '/sup_delivery/lack_history/item', //商品缺货缺货历史记录
+      supDeliveryLackHistoryStore: apiM + '/sup_delivery/lack_history/store', //确认分配之后用于查看缺货记录中某个商品在各个门店分配的详情
+      lineOrderExport: apiM + '/line_order/export', //导出
+
       //线路
       operateLineAdd: apiM + '/basicdata/line/add', //线路新增
       operateLineEdit: apiM + '/basicdata/line/edit', //线路修改
@@ -278,17 +292,6 @@ const Config = (() => {
       operateRefundFrameApprove: apiM + '/frame/return/check', //退筐记录审核
       operateRefundFrameReject: apiM + '/frame/return/reject', //退筐记录驳回
       operateRefundFrameExport: apiM + '/frame/return/export', //退筐记录导出
-
-      //发车
-      supConfirmWait: apiM + '/sup_confirm/wait', //待确认分配查询列表（也就是运营中心的发车列表）
-      supConfirmStoreLack: apiM + '/sup_confirm/store_lack', //门店商品缺货列表
-      supSend: apiM + '/sup_send', //一键确认线路商品分配
-      supDeliveryCityDetail: apiM + '/sup_delivery/city_detail', //确认分配之后用于查看各个县域分配的详情
-      supDeliveryStoreDetail: apiM + '/sup_delivery/store_detail', //确认分配之后用于查看某个县域各个门店分配的详情
-      supDeliveryItemDetail: apiM + '/sup_delivery/item_detail', //确认分配之后用于查看某个门店各种商品的详情
-      supDeliveryLackHistoryItem: apiM + '/sup_delivery/lack_history/item', //商品缺货缺货历史记录
-      supDeliveryLackHistoryStore: apiM + '/sup_delivery/lack_history/store', //确认分配之后用于查看缺货记录中某个商品在各个门店分配的详情
-      lineOrderExport: apiM + '/line_order/export', //导出
 
       //banner管理
       groupBannerAdd: apiM + '/gb_basicdata/banner/add', //banner新增
