@@ -2,6 +2,11 @@
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="inventoryData" :rules="rules" ref="ruleForm">
+        <div class="f-r" style="position: relative; right: -84px;">
+          <el-tag size="small" :type="inventoryStatusType[detail.status]" disable-transitions>
+            {{inventoryStatus[detail.status]}}
+          </el-tag>
+        </div>
         <!--采购、详情-->
         <el-row v-if="judgeOrs(pageType, ['add_pur', 'detail_pur'])">
           <h6 class="subtitle">采购信息</h6>
@@ -208,6 +213,8 @@ export default {
       }*/]
     }
     return {
+      inventoryStatus: Constant.INVENTORY_STATUS(),
+      inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
       selectStorehouseData: {}, //页面搜索条件
       initDetail: initDetail,
       detail: this.copyJson(initDetail),

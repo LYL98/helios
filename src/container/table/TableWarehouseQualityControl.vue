@@ -25,12 +25,13 @@
               <div v-if="item.key === 'code'" class="td-item add-dot2">
                 <div v-if="pageAuth.detail"
                   class="td-item link-item add-dot2" @click="tableShowDetail(scope.row)">
-                  {{scope.row.code}}
+                  <span>{{scope.row.code}}</span>
+                  <span v-if="scope.row.creator_id === 0" class="local-pur-label">反采</span>
                 </div>
                 <div class="td-item add-dot2" v-else>
-                  {{scope.row.code}}
+                  <span>{{scope.row.code}}</span>
+                  <span v-if="scope.row.creator_id === 0" class="local-pur-label">反采</span>
                 </div>
-                <span v-if="scope.row.creator_id === 0" class="local-pur-label">反采</span>
               </div>
               <!--商品名称-->
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
@@ -258,6 +259,8 @@
     font-size: 12px;
     border-radius: 3px;
     padding: 0 2px;
+    text-decoration: none !important;
+    margin-left: 5px;
   }
 </style>
 <style lang="scss">

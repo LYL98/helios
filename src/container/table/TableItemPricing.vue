@@ -124,11 +124,11 @@
     },
     data() {
       return {
-        tabValue: 'quoted_0',
+        tabValue: 'init',
         queryTabsData: {
-          '未报价': 'quoted_0',
-          '待审核': 'quoted_1',
-          '已审核': 'audited_1'
+          '未报价': 'init',
+          '待审核': 'wait',
+          '已审核': 'done'
         },
         total1: 0,
         total2: 0,
@@ -157,25 +157,10 @@
       async getData(query){
         this.$data.query = query;
         let { tabValue } = this;
-        let isQuoted = 0, isAudited = 0;
-        switch(tabValue){
-          case 'quoted_0':
-            isQuoted = 0;
-            isAudited = 0;
-            break;
-          case 'quoted_1':
-            isQuoted = 1;
-            isAudited = 0;
-            break;
-          default:
-            isQuoted = 1;
-            isAudited = 1;
-        }
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.itemPriceList, {
           ...query,
-          is_quoted: isQuoted,
-          is_audited: isAudited,
+          status: tabValue
         });
         this.$loading({isShow: false});
         if(res.code === 0){
