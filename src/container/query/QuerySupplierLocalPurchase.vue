@@ -71,6 +71,7 @@
       purchaseStatus(){
         let d = Constant.PURCHASE_STATUS('value_key');
         delete d['待审核'];
+        delete d['作废'];
         return { '全部': '', ...d};
       }
     },

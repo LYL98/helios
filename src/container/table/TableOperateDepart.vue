@@ -1,10 +1,7 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.OperateDepartPrint  || auth.OperateDepartStockout">
-      <div class="left">
-        <el-button @click="handleShowPrint('PrintOperateDepart', multipleSelection)" size="mini" type="primary"
-        :disabled="multipleSelection.length === 0 ? true : false" plain v-if="auth.isAdmin || auth.OperateDepartPrint">批量打印</el-button>
-      </div>
+    <div class="table-top" v-if="auth.isAdmin || auth.OperateDepartStockout">
+      <div class="left"></div>
       <div class="right" v-if="auth.isAdmin || auth.OperateDepartStockout">
         <el-button @click="handleShowDetail('DetailOperateDepartStockout', { delivery_date: query.delivery_date })" size="mini" type="primary" plain>缺货记录</el-button>
       </div>
@@ -17,10 +14,8 @@
         class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
-        @selection-change="handleSelectionChange"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="selection" :selectable="returnStatus" width="42" v-if="(auth.isAdmin || auth.OperateDepartPrint || auth.OperateDepartAffirm)"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
