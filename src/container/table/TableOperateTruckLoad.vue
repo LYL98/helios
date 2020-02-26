@@ -8,44 +8,52 @@
     </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
-      <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem.items"
-        row-class-name="stripe-row"
+        :row-class-name="highlightRowClassName"
         class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
+        border
       >
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
-        <!--table-column start-->
-        <template v-for="(item, index, key) in tableColumn">
-          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-            <div slot-scope="scope" class="my-td-item">
-              <!--商品名称-->
-              <div v-if="item.key === 'item'" class="td-item add-dot2">
-                {{scope.row.item_code}}/{{scope.row.item_title}}
-              </div>
-              <!--小计-->
-              <div v-else-if="item.key === 'subtotal'" :class="`td-item add-dot2 ${returnTotalClass(scope.row)}`">
-                <span class="sort-num">{{scope.row.sort_num || '-'}}</span>
-                <span>&nbsp;/&nbsp;</span>
-                <span class="allocate-num">{{scope.row.allocate_num || '-'}}</span>
-                <span>&nbsp;/&nbsp;</span>
-                <span class="count-real">{{scope.row.count_real || '-'}}</span>
-              </div>
-              <!--各县-->
-              <div v-else-if="typeof item.key === 'number'" :class="`td-item add-dot2 ${returnClass(scope.row)}`">
-                <span class="sort-num">{{scope.row.citys[item.key].sort_num || '-'}}</span>
-                <span>&nbsp;/&nbsp;</span>
-                <span class="allocate-num">{{scope.row.citys[item.key].allocate_num || '-'}}</span>
-                <span>&nbsp;/&nbsp;</span>
-                <span class="count-real">{{scope.row.citys[item.key].count_real || '-'}}</span>
-              </div>
-              <!--正常情况-->
-              <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
+        <el-table-column label="商品编号/名称">
+          <template slot-scope="scope">
+            <div class="td-item add-dot2">
+              {{scope.row.item_code}}/{{scope.row.item_title}}
             </div>
+          </template>
+        </el-table-column>
+        <!--小计-->
+        <el-table-column label="小计" label-class-name="sort-head">
+            <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head">
+              <template slot-scope="scope">
+                <div :class="`td-item add-dot2 ${returnTotalClass(scope.row)}`">
+                  <span class="sort-num">{{scope.row.sort_num || '-'}}</span>
+                  <span>&nbsp;/&nbsp;</span>
+                  <span class="allocate-num">{{scope.row.allocate_num || '-'}}</span>
+                  <span>&nbsp;/&nbsp;</span>
+                  <span class="count-real">{{scope.row.count_real || '-'}}</span>
+                </div>
+              </template>
+            </el-table-column>
+        </el-table-column>
+
+        <!--画横向县-->
+        <el-table-column :label="item.city_title" v-for="(item, index) in getCitys" :key="index" label-class-name="sort-head">
+          <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head">
+            <template slot-scope="scope">
+              <div :class="`td-item add-dot2 ${returnClass(scope.row)}`">
+                <span class="sort-num">{{scope.row.citys[index].sort_num || '-'}}</span>
+                <span>&nbsp;/&nbsp;</span>
+                <span class="allocate-num">{{scope.row.citys[index].allocate_num || '-'}}</span>
+                <span>&nbsp;/&nbsp;</span>
+                <span class="count-real">{{scope.row.citys[index].count_real || '-'}}</span>
+              </div>
+            </template>
           </el-table-column>
-        </template>
+        </el-table-column>
+
         <el-table-column label="操作" width="60">
           <template slot-scope="scope">
             <my-table-operate
@@ -105,11 +113,6 @@
     data() {
       return {
         tabValue: 'truck',
-        tableName: 'TableOperateTruckLoad',
-        tableColumn: [
-          { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-          { label: '小计 装车/分配/应出', key: 'subtotal', width: '2', isShow: true },
-        ],
         routeTabsData: Constant.TRUCK_LOADING_TAB_ROUTE(),
       }
     },
@@ -123,6 +126,13 @@
         if(!auth.OperateTruckLoadDelay) delete d['装车延时'];
         return d;
       },
+      //横向县
+      getCitys(){
+        let { dataItem } = this;
+        if(dataItem.items.length === 0) return [];
+        if(dataItem.items[0].citys.length === 0) return [];
+        return dataItem.items[0].citys;
+      }
     },
     methods: {
       //返回提醒样式
@@ -165,29 +175,9 @@
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
-          this.handleTableColumn();
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
-      },
-      //处理表头(query组件也使用)
-      handleTableColumn(){
-        let { tableColumn, dataItem } = this;
-        tableColumn = [
-          { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-          { label: '小计 装车/分配/应出', key: 'subtotal', width: '2', isShow: true },
-        ];
-        if(dataItem.items.length > 0){
-          dataItem.items[0].citys.forEach((item, index) => {
-            tableColumn.push({
-              label: `${item.city_title} 装车/分配/应出`,
-              key: index,
-              width: '2',
-              isShow: true
-            });
-          });
-        }
-        this.$data.tableColumn = tableColumn;
       },
     }
   };
@@ -226,4 +216,7 @@
 </style>
 <style lang="scss">
   @import './table.global.scss';
+  .el-table th.sort-head{
+    padding: 2px 0;
+  }
 </style>

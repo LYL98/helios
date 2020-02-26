@@ -26,29 +26,32 @@
         <el-table-column label="线路" width="160">
           <template slot-scope="scope">{{scope.row.line_code}}/{{scope.row.line_title}}</template>
         </el-table-column>
-        <el-table-column label="县域" width="160">
+        <el-table-column label="县域">
           <template slot-scope="scope">
             <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item add-dot">
               {{item.city_code}}/{{item.city_title}}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="小计 装车/分配/应出" label-class-name="sort-subtotal-head" width="180">
-          <template slot-scope="scope">
-            <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item">
-              <div :class="returnTotalClass(item)">
-                <span class="sort-num">{{item.sort_num || '-'}}</span>
-                <span>&nbsp;/&nbsp;</span>
-                <span class="allocate-num">{{item.num || '-'}}</span>
-                <span>&nbsp;/&nbsp;</span>
-                <span class="count-real">{{item.count_real || '-'}}</span>
+        <el-table-column label="小计" label-class-name="sort-head">
+          <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head">
+            <template slot-scope="scope">
+              <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item">
+                <div :class="returnTotalClass(item)">
+                  <span class="sort-num">{{item.sort_num || '-'}}</span>
+                  <span>&nbsp;/&nbsp;</span>
+                  <span class="allocate-num">{{item.num || '-'}}</span>
+                  <span>&nbsp;/&nbsp;</span>
+                  <span class="count-real">{{item.count_real || '-'}}</span>
+                </div>
               </div>
-            </div>
-          </template>
+            </template>
+          </el-table-column>
         </el-table-column>
+        
         <!--画横向批n-->
-        <template v-if="batchNum > 0">
-          <el-table-column :label="`批${index + 1} 装车/分配`" v-for="(item, index) in batchNum" :key="index">
+        <el-table-column :label="`批${index + 1}`" v-for="(item, index) in batchNum" :key="index" label-class-name="sort-head">
+          <el-table-column label="装车 / 分配" width="160" label-class-name="sort-head">
             <template slot-scope="scope">
               <div v-for="c in scope.row.cities" :key="scope.row.line_code + c.city_code" class="citie-item">
                 <div>
@@ -59,9 +62,7 @@
               </div>
             </template>
           </el-table-column>
-        </template>
-        <!--占位-->
-        <el-table-column v-else></el-table-column>
+        </el-table-column>
         
         <el-table-column label="操作" width="60">
           <template slot-scope="scope">
@@ -85,6 +86,8 @@
         </el-table-column>
       </el-table>
     </div>
+    <!---->
+    <div></div>
   </detail-layout>
 </template>
 
@@ -160,10 +163,6 @@
           //造数据end
           this.$data.dataItem = rd;
           this.$data.isShow = true;
-          setTimeout(()=>{
-            let dom = document.getElementsByClassName('sort-subtotal-head');
-            //console.log(dom);
-          }, 0);
         }else{
           this.$message({message: res.message, type: 'error'});
         }
@@ -224,5 +223,10 @@
       color: #ff5252;
       font-weight: bold;
     }
+  }
+</style>
+<style lang="scss">
+  .el-table th.sort-head{
+    padding: 2px 0;
   }
 </style>
