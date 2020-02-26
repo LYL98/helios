@@ -2,7 +2,7 @@
   <div class="container-table">
     <div class="table-top">
       <div class="left">
-        <query-tabs v-model="tabValue" :tab-panes="queryTabsData" type="route" :route-panes="routeTabsData"/>
+        <query-tabs v-model="tabValue" :tab-panes="queryTabsData" type="route" :route-panes="routeTabsData" :query="{delivery_date: query.delivery_date}"/>
       </div>
       <div class="right"></div>
     </div>

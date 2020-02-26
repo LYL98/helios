@@ -17,7 +17,7 @@
       <el-col :span="7">
         <my-query-item label="状态">
           <select-option
-            :options="statusData"
+            :options="outStorageStatus"
             v-model="query.status"
             @change="handleQuery('TableWarehouseOutStorage')"
             size="small"
@@ -62,8 +62,9 @@
       }
     },
     computed: {
-      statusData(){
-        return { '全部': '', '待出库': 'wait_out', '已出库': 'done_out'};
+      outStorageStatus(){
+        let d = Constant.OUT_STORAGE_STATUS('value_key');
+        return { '全部': '', ...d};
       }
     },
     methods: {

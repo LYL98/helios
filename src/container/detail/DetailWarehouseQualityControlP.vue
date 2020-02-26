@@ -50,9 +50,11 @@
           <el-col :span="12">
             <el-form-item label="合格数量">{{detail.num_in}}件</el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">
             <el-form-item label="生产日期">{{detail.produce_date}}</el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item label="保质期">{{detail.shelf_life}}天</el-form-item>
           </el-col>
@@ -116,14 +118,19 @@
         supOptTypes: Constant.SUP_OPT_TYPES(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail),
-        id: null
+        id: null,
+        itemData: {
+          fisrt_system_class: {}
+        }
       }
     },
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
         this.$data.id = data.id; //外部调用，要保存
+        this.$data.itemData = {};
         this.fromSupplierOrderDetail();
+        this.supPItemDetail(data.item_code);
       },
       //预采详情
       async fromSupplierOrderDetail(){
@@ -135,6 +142,15 @@
           this.$data.isShow = true;
         }else{
           this.$message({message: res.message, type: 'error'});
+        }
+      },
+      //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
+      async supPItemDetail(itemCode){
+        let res = await Http.get(Config.api.supPItemDetail, {
+          item_code: itemCode
+        });
+        if(res.code === 0){
+          this.$data.itemData = res.data;
         }
       },
       //修改权限

@@ -18,7 +18,8 @@
       value: [ String, Number, Boolean ],
       tabPanes: { type: Object, default: {} },
       type: { type: String, default: 'none' }, //none 普通；route 路由模式
-      routePanes: { type: Object, default: null },
+      routePanes: { type: Object, default: null }, //route 路由模式 传
+      query: { type: Object, default: null }, //route 路由模式 传
     },
     model: {
       prop: 'value',
@@ -28,11 +29,12 @@
     },
     methods: {
       handleClick(e) {
-        let { type, tabPanes, routePanes, value } = this;
+        let { type, tabPanes, routePanes, value, query } = this;
         if(value === e.name) return;
         if(type === 'route'){
           this.$router.push({
-            name: routePanes[e.name]
+            name: routePanes[e.name],
+            query: query
           });
         }
         this.$emit('change', e.name);

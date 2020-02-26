@@ -3,7 +3,7 @@
     <query-warehouse-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseOutStorage"/>
     <table-warehouse-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseOutStorage"/>
     <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory" fromPage="OutStorage"/>
-    <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage"/>
+    <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage" fromPage="OutStorage"/>
   </div>
 </template>
 

@@ -122,6 +122,7 @@ export default {
       if(pc){
         this.$data.storehouseId = pc.query.storehouse_id;
       }
+      this.$data.isShowMove = false;
       this.$data.moveTrays = [];
       this.$data.isShow = true;
     },

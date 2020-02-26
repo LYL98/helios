@@ -28,8 +28,9 @@
     },
     mixins: [queryMixin],
     created() {
+      let deliveryDate = this.$route.query.delivery_date;
       this.$data.initQuery.delivery_date = this.today;
-      this.$data.query.delivery_date = this.today;
+      this.$data.query.delivery_date = deliveryDate || this.today;
     },
     data() {
       let initQuery = {

@@ -50,7 +50,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="昨日销量">{{returnUnit(detail.price_sale_last, '件', '-')}}</el-form-item>
+                <el-form-item label="昨日销量">{{returnUnit(detail.sale_num_last, '件', '-')}}</el-form-item>
               </el-col>
             </el-row>
           </el-collapse-item>

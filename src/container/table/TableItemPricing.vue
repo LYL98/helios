@@ -127,7 +127,7 @@
         tabValue: 'quoted_0',
         queryTabsData: {
           '未报价': 'quoted_0',
-          '已报价': 'quoted_1',
+          '待审核': 'quoted_1',
           '已审核': 'audited_1'
         },
         total1: 0,
@@ -157,18 +157,18 @@
       async getData(query){
         this.$data.query = query;
         let { tabValue } = this;
-        let isQuoted = 0, isAudited = '';
+        let isQuoted = 0, isAudited = 0;
         switch(tabValue){
           case 'quoted_0':
             isQuoted = 0;
-            isAudited = '';
+            isAudited = 0;
             break;
           case 'quoted_1':
             isQuoted = 1;
-            isAudited = '';
+            isAudited = 0;
             break;
           default:
-            isQuoted = '';
+            isQuoted = 1;
             isAudited = 1;
         }
         this.$loading({isShow: true, isWhole: true});

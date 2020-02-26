@@ -2,7 +2,11 @@
   <detail-layout :title="fromPage === 'OutStorage' ? '出库' : '库存管理'" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-row style="margin: 10px 20px;">
       <el-col :span="12">商品编号/名称：{{detail.item_code}}/{{detail.item_title}}</el-col>
-      <el-col :span="12">总库存：{{detail.stock_num}}件</el-col>
+      <el-col :span="4">总库存：{{detail.stock_num}}件</el-col>
+      <template v-if="fromPage === 'OutStorage'">
+        <el-col :span="4">应出库：{{detail.o_num}}件</el-col>
+        <el-col :span="4">已出库：{{detail.o_num_out}}件</el-col>
+      </template>
     </el-row>
     <div style="margin: 0 20px;">
       <el-table :data="dataItem.items" width="100%">
@@ -52,7 +56,7 @@
               {
                 title: '出库',
                 isDisplay: auth.isAdmin || (auth.WarehouseOutStorageAdd && fromPage === 'OutStorage') || (auth.WarehouseInventoryOutStorage && fromPage === 'Inventory'),
-                command: () => handleShowForm('FormWarehouseInventoryOutStorage', {...scope.row, plan_out_id: detail.plan_out_id})
+                command: () => handleShowForm('FormWarehouseInventoryOutStorage', {...scope.row, plan_out_id: detail.plan_out_id, o_num: detail.o_num, o_num_out: detail.o_num_out})
               }
             ]"
           />
@@ -84,7 +88,7 @@
     name: "DetailWarehouseInventory",
     mixins: [detailMixin],
     props: {
-      fromPage: { type: String, default: 'Inventory' }, //OutStorage 收货、Inventory 库存
+      fromPage: { type: String, default: 'Inventory' }, //OutStorage 出库计划、Inventory 库存
     },
     components: {
       'my-table-operate': TableOperate
@@ -121,6 +125,8 @@
           detail.item_title = data.item_title;
           detail.item_code = data.item_code;
           detail.plan_out_id = data.id; //根据出库计划出库的时候，传递这个参数
+          detail.o_num = data.num; //应出库
+          detail.o_num_out = data.num_out; //已出库
         }else{
           query.p_item_id = data.p_item.id;
           query.storehouse_id = data.storehouse_id;

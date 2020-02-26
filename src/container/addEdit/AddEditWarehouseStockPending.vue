@@ -7,7 +7,7 @@
           <h6 class="subtitle">采购信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
           <el-col :span="12">
-            <el-form-item label="采购单号">{{detail.code}}</el-form-item>
+            <el-form-item label="采购单号">{{detail.batch_code}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="采购日期">{{detail.relate_order.order_date}}</el-form-item>
@@ -28,7 +28,7 @@
           <h6 class="subtitle">调拨信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
           <el-col :span="12">
-            <el-form-item label="调拨单号">{{detail.code}}</el-form-item>
+            <el-form-item label="调拨单号">{{detail.batch_code}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
@@ -99,7 +99,7 @@
             </el-col>
           </el-row>
 
-          <el-form-item label="入库数量">{{detail.num}}件</el-form-item>
+          <el-form-item label="入库数量" v-if="detail.num_in">{{detail.num_in}}件</el-form-item>
           <el-row v-for="(item, index) in detail.trays" :key="index">
             <el-col :span="12">
               <el-form-item label="上架">

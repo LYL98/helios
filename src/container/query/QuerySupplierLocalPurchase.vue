@@ -9,7 +9,7 @@
       <el-col :span="7">
         <my-query-item label="状态">
           <select-option
-            :options="{'全部': '', ...purchaseStatus}"
+            :options="purchaseStatus"
             v-model="query.status"
             @change="handleQuery('TableSupplierLocalPurchase')"
             size="small"
@@ -63,9 +63,15 @@
         for_pre: 0, //1预采 0反采
       }
       return {
-        purchaseStatus: Constant.PURCHASE_STATUS('value_key'),
         initQuery: initQuery,
         query: this.copyJson(initQuery),
+      }
+    },
+    computed: {
+      purchaseStatus(){
+        let d = Constant.PURCHASE_STATUS('value_key');
+        delete d['待审核'];
+        return { '全部': '', ...d};
       }
     },
     methods: {

@@ -530,6 +530,21 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
+  //出库状态
+  OUT_STORAGE_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待出库'},
+      { key: 'part', value: '部分出库'},
+      { key: 'all', value: '已出库'}
+    ];
+    return handleKeyValue(type, data);
+  },
+  //出库状态(颜色)
+  OUT_STORAGE_STATUS_TYPE: {
+    init: 'primary',
+    part: 'warning',
+    all: 'regular'
+  },
 };
 
 //处理key value

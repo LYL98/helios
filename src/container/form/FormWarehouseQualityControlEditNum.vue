@@ -111,13 +111,13 @@ export default {
   methods: {
     //提交
     async submitData(){
-      let { detail, fromPage } = this;
+      let { detail } = this;
       this.$loading({isShow: true});
       let apis = {
-        QualityControl: Config.api.supInStockEditNum,
-        Receiving: Config.api.supOutStockEditNum
+        'in_stock': Config.api.supInStockEditNum,
+        'accept': Config.api.supOutStockEditNum
       }
-      let res = await Http.post(apis[fromPage], {
+      let res = await Http.post(apis[detail.qa_event], {
         id: detail.id,
         num: detail.num,
         un_qa_num: detail.un_qa_num,

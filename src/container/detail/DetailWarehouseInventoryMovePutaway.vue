@@ -21,7 +21,7 @@
       <h6 class="subtitle">上架信息</h6>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="上架托盘">{{detail.storehouse.title}}/{{detail.storehouse.title}}/{{detail.storehouse.code}}</el-form-item>
+          <el-form-item label="上架托盘">{{detail.storehouse.title}}/{{detail.warehouse.title}}/{{detail.tray.code}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="上架数量">{{detail.num}}件</el-form-item>
@@ -50,6 +50,8 @@
     data() {
       let initDetail = {
         storehouse: {},
+        warehouse: {},
+        tray: {},
         creator: {}
       }
       return {

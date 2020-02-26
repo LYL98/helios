@@ -211,7 +211,7 @@
             { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
             { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
             { label: '调拨数量', key: 'num', width: '2', isShow: true },
-            { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: true },
+            { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: false },
             { label: '可售日期', key: 'available_date', width: '2', isShow: true },
             { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
           ]);

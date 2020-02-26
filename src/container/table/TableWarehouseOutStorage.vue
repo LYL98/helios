@@ -18,11 +18,12 @@
               <!--商品名称-->
               <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
               <!--采购、调拨数量、入库数量-->
-              <div v-else-if="judgeOrs(item.key, ['num_out'])" class="td-item add-dot2">{{scope.row[item.key] ? scope.row[item.key] + '件' : '-'}}</div>
+              <div v-else-if="judgeOrs(item.key, ['num', 'num_out'])" class="td-item add-dot2">{{scope.row[item.key] ? scope.row[item.key] + '件' : '-'}}</div>
               <!--出库计划状态-->
               <div class="td-item add-dot2" v-else-if="item.key === 'out_storage_status'">
-                <el-tag size="small" type="info" disable-transitions v-if="scope.row.num_out > 0">已出库</el-tag>
-                <el-tag size="small" type="info" disable-transitions v-else>未出库</el-tag>
+                <el-tag size="small" :type="outStorageStatusType[returnStatus(scope.row)]" disable-transitions>
+                  {{outStorageStatus[returnStatus(scope.row)]}}
+                </el-tag>
               </div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
@@ -87,9 +88,17 @@
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ],
+        outStorageStatus: Constant.OUT_STORAGE_STATUS(),
+        outStorageStatusType: Constant.OUT_STORAGE_STATUS_TYPE
       }
     },
     methods: {
+      //返回状态
+      returnStatus(data){
+        if(data.num_out === 0) return 'init';
+        if(data.num_out >= data.num) return 'all';
+        return 'part';
+      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
