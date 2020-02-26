@@ -45,8 +45,12 @@
               @command-visible="handleCommandVisible"
               :list="[{
                   title: '详情',
-                  isDisplay: (auth.isAdmin || auth.OperateSortDetail) && !scope.row.allocated_time,
-                  command: () => handleShowDetail('DetailOperateSort', scope.row)
+                  isDisplay: (auth.isAdmin || auth.OperateTruckLoadDetail) && !scope.row.allocated_time,
+                  command: () => handleShowDetail('DetailOperateTruckLoad', {
+                    ...scope.row,
+                    delivery_date: query.delivery_date,
+                    line_code: query.line_code
+                  })
                 }
               ]"
             />
@@ -65,7 +69,7 @@
       </div>
       <div class="right">
         <el-button v-if="auth.isAdmin || auth.OperateTruckLoadAffirm"
-          @click.native="handleShowForm('FormOperateTruckLoadAffirm',{
+          @click.native="handleShowForm('FormOperateTruckLoadAffirm', {
             delivery_date: query.delivery_date,
             line_code: query.line_code,
             ...dataItem

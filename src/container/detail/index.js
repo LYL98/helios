@@ -44,3 +44,4 @@ export { default as DetailOperateDepart } from './DetailOperateDepart';
 export { default as DetailOperateDepartDriverTrack } from './DetailOperateDepartDriverTrack';
 export { default as DetailOperateDepartStockout } from './DetailOperateDepartStockout';
 export { default as DetailOperateDepartStockoutDetail } from './DetailOperateDepartStockoutDetail';
+export { default as DetailOperateTruckLoad } from './DetailOperateTruckLoad';

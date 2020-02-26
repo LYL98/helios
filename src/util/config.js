@@ -263,6 +263,8 @@ const Config = (() => {
 
       //装车
       supDeliveryLineDetail: apiM + '/sup_delivery/line_detail', //返回某条线路在指定日期的应出，分配，装车的 总览（也就是目前的装车首页）
+      supDeliveryItemStoreDetail: apiM + '/sup_delivery/item_store_detail', //某个商品在指定线路的县域下各个门店的分配详情
+      supDeliveryEditItemStoreDetail: apiM + '/sup_delivery/edit_item_store_detail', //修改某个门店商品分配数量
 
       //发车
       supConfirmWait: apiM + '/sup_confirm/wait', //待确认分配查询列表（也就是运营中心的发车列表）

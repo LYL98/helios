@@ -21,4 +21,5 @@ export { default as FormWarehouseInventoryMove } from './FormWarehouseInventoryM
 export { default as FormWarehouseInventoryOutStorage } from './FormWarehouseInventoryOutStorage';
 export { default as FormWarehouseInventoryVariation } from './FormWarehouseInventoryVariation';
 export { default as FormOperateTruckLoadAffirm } from './FormOperateTruckLoadAffirm';
+export { default as FormOperateTruckLoadEditNum } from './FormOperateTruckLoadEditNum';
 export { default as FormWarehouseQualityControlEditNum } from './FormWarehouseQualityControlEditNum';
