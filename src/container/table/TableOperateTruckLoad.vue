@@ -26,12 +26,20 @@
                 {{scope.row.item_code}}/{{scope.row.item_title}}
               </div>
               <!--小计-->
-              <div v-else-if="item.key === 'subtotal'" class="td-item add-dot2">
-                {{scope.row.sort_num || '-'}} / {{scope.row.allocate_num || '-'}} / {{scope.row.count_real || '-'}}
+              <div v-else-if="item.key === 'subtotal'" :class="`td-item add-dot2 ${returnTotalClass(scope.row)}`">
+                <span class="sort-num">{{scope.row.sort_num || '-'}}</span>
+                <span>&nbsp;/&nbsp;</span>
+                <span class="allocate-num">{{scope.row.allocate_num || '-'}}</span>
+                <span>&nbsp;/&nbsp;</span>
+                <span class="count-real">{{scope.row.count_real || '-'}}</span>
               </div>
               <!--各县-->
-              <div v-else-if="typeof item.key === 'number'" class="td-item add-dot2">
-                {{scope.row.citys[item.key].sort_num || '-'}} / {{scope.row.citys[item.key].allocate_num || '-'}} / {{scope.row.citys[item.key].count_real || '-'}}
+              <div v-else-if="typeof item.key === 'number'" :class="`td-item add-dot2 ${returnClass(scope.row)}`">
+                <span class="sort-num">{{scope.row.citys[item.key].sort_num || '-'}}</span>
+                <span>&nbsp;/&nbsp;</span>
+                <span class="allocate-num">{{scope.row.citys[item.key].allocate_num || '-'}}</span>
+                <span>&nbsp;/&nbsp;</span>
+                <span class="count-real">{{scope.row.citys[item.key].count_real || '-'}}</span>
               </div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
@@ -59,13 +67,13 @@
       </el-table>
     </div>
     <div class="table-bottom" v-if="dataItem.items.length > 0">
-      <div class="left">
+      <div :class="`left ${returnTotalClass(dataItem)}`">
         <span>装车/分配/应出，共计：</span>
-        <span>{{dataItem.sort_num || '-'}}</span>
+        <span class="sort-num">{{dataItem.sort_num || '-'}}</span>
         <span>&nbsp;/&nbsp;</span>
-        <span>{{dataItem.allocate_num || '-'}}</span>
+        <span class="allocate-num">{{dataItem.allocate_num || '-'}}</span>
         <span>&nbsp;/&nbsp;</span>
-        <span>{{dataItem.count_real || '-'}}</span>
+        <span class="count-real">{{dataItem.count_real || '-'}}</span>
       </div>
       <div class="right">
         <el-button v-if="auth.isAdmin || auth.OperateTruckLoadAffirm"
@@ -102,11 +110,53 @@
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
           { label: '小计 装车/分配/应出', key: 'subtotal', width: '2', isShow: true },
         ],
-        queryTabsData: Constant.TRUCK_LOADING_TAB('value_key'),
         routeTabsData: Constant.TRUCK_LOADING_TAB_ROUTE(),
       }
     },
+    computed: {
+      //tab
+      queryTabsData(){
+        let { auth } = this;
+        let d = Constant.TRUCK_LOADING_TAB('value_key');
+        if(auth.isAdmin) return d;
+        if(!auth.OperateTruckLoad) delete d['装车'];
+        if(!auth.OperateTruckLoadDelay) delete d['装车延时'];
+        return d;
+      },
+    },
     methods: {
+      //返回提醒样式
+      returnTotalClass(data){
+        let cr = Number(data.count_real); //应出
+        let an = Number(data.allocate_num); //分配
+        let sn = Number(data.sort_num); //装车
+        if(cr > an && an === sn){
+          return 'allocate-num-warn';
+        }
+        if(cr > an && an > sn){
+          return 'allocate-num-warn sort-num-warn';
+        }
+        if(cr === an && an > sn){
+          return 'sort-num-warn';
+        }
+        return '';
+      },
+      //返回提醒样式
+      returnClass(data){
+        let cr = Number(data.count_real); //应出
+        let an = Number(data.allocate_num); //分配
+        let sn = Number(data.sort_num); //装车
+        if(cr > an && an === sn){
+          return 'allocate-num-warn stockout-warn';
+        }
+        if(cr > an && an > sn){
+          return 'allocate-num-warn sort-num-warn stockout-warn';
+        }
+        if(cr === an && an > sn){
+          return 'sort-num-warn';
+        }
+        return '';
+      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
@@ -146,33 +196,33 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './table.scss';
-  .label-hint{
-    border: 1px solid #ff5252;
-    color: #ff5252;
-    border-radius: 3px;
-    padding: 0 2px;
-  }
-  .out-stock{
-    margin-bottom: 20px;
-  }
-  .out-stock-item{
-    display: flex;
-    align-items: center;
-    padding: 4px;
-    &:hover{
-      background: #FBFBFD;
-    }
-    >div{
-      flex: 1;
-    }
-    >.select{
-      flex: initial !important;
-      padding-right: 20px;
-    }
-    >.option{
-      flex: initial !important;
+  //缺货
+  .stockout-warn{
+    &::after{
+      content: '缺货';
+      background: #ff5252;
+      color: #fff;
+      font-size: 12px;
+      padding: 0 2px;
+      border-radius: 3px;
+      margin-left: 10px;
     }
   }
+  //装车数量变动
+  .sort-num-warn{
+    >.sort-num{
+      color: #ff5252;
+      font-weight: bold;
+    }
+  }
+  //分配数量变动
+  .allocate-num-warn{
+    >.allocate-num{
+      color: #ff5252;
+      font-weight: bold;
+    }
+  }
+  
 </style>
 <style lang="scss">
   @import './table.global.scss';

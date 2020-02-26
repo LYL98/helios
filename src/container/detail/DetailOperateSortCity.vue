@@ -6,7 +6,7 @@
       </el-table-column>
       <el-table-column label="分配/应出" width="120">
         <template slot-scope="scope">
-          <span>{{scope.row.num}}</span>
+          <span :style="returnStyle(scope.row)">{{scope.row.num}}</span>
           <span>&nbsp;/&nbsp;</span>
           <span>{{scope.row.count_real}}</span>
         </template>
@@ -39,6 +39,13 @@
         let t = (detail.city_code || '') + '/';
         t += (detail.city_title || '') + '-门店详情';
         return t;
+      },
+      //返回提醒样式
+      returnStyle(data){
+        if(data.num !== data.count_real){
+          return 'color: #ff5252;font-weight: bold;';
+        }
+        return '';
       },
       //显示新增修改(重写mixin)
       showDetail(data){

@@ -13,8 +13,8 @@
         row-class-name="stripe-row"
         class="list-table my-table-float"
         :highlight-current-row="true"
-        :row-key="rowIdentifier"
-        :current-row-key="clickedRow[rowIdentifier]"
+        :row-key="returnTableKey"
+        :current-row-key="clickedRow[returnTableKey]"
       >
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
@@ -68,11 +68,25 @@
           { label: '线路', key: 'line', width: '1', isShow: true },
           { label: '分配时间', key: 'minutes', width: '1', isShow: true }
         ],
-        queryTabsData: Constant.TRUCK_LOADING_TAB('value_key'),
         routeTabsData: Constant.TRUCK_LOADING_TAB_ROUTE(),
       }
     },
+    computed: {
+      //tab
+      queryTabsData(){
+        let { auth } = this;
+        let d = Constant.TRUCK_LOADING_TAB('value_key');
+        if(auth.isAdmin) return d;
+        if(!auth.OperateTruckLoad) delete d['装车'];
+        if(!auth.OperateTruckLoadDelay) delete d['装车延时'];
+        return d;
+      },
+    },
     methods: {
+      //返回tabile key
+      returnTableKey(d){
+        return `${d.id}${d.line.code}`;
+      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用

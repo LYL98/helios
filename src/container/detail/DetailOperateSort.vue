@@ -1,10 +1,6 @@
 <template>
   <detail-layout title="商品分配详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
-      <div class="f-r" style="position: relative; right: -84px;">
-        <span></span>
-        <span>表示有缺货</span>
-      </div>
       <el-form-item label="商品编号/名称">
         {{detail.code}}/{{detail.title}}
         <span class="label-hint" v-if="detail.after">还会来货</span>
@@ -40,7 +36,13 @@
         <el-table-column label="小计 装车/分配/应出" label-class-name="sort-subtotal-head" width="180">
           <template slot-scope="scope">
             <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item">
-              {{item.sort_num || '-'}} / {{item.num || '-'}} / {{item.count_real || '-'}}
+              <div :class="returnTotalClass(item)">
+                <span class="sort-num">{{item.sort_num || '-'}}</span>
+                <span>&nbsp;/&nbsp;</span>
+                <span class="allocate-num">{{item.num || '-'}}</span>
+                <span>&nbsp;/&nbsp;</span>
+                <span class="count-real">{{item.count_real || '-'}}</span>
+              </div>
             </div>
           </template>
         </el-table-column>
@@ -49,7 +51,11 @@
           <el-table-column :label="`批${index + 1} 装车/分配`" v-for="(item, index) in batchNum" :key="index">
             <template slot-scope="scope">
               <div v-for="c in scope.row.cities" :key="scope.row.line_code + c.city_code" class="citie-item">
-                {{c.out_stocks[index].sort_num || '-'}} / {{c.out_stocks[index].num || '-'}}
+                <div>
+                  <span class="sort-num">{{c.out_stocks[index].sort_num || '-'}}</span>
+                  <span>&nbsp;/&nbsp;</span>
+                  <span class="allocate-num">{{c.out_stocks[index].num || '-'}}</span>
+                </div>
               </div>
             </template>
           </el-table-column>
@@ -116,6 +122,16 @@
       },
     },
     methods: {
+      //返回提醒样式
+      returnTotalClass(data){
+        let cr = Number(data.count_real);//应出
+        let an = Number(data.num); //分配
+        let sn = Number(data.sort_num); //装车
+        if(cr > an){
+          return 'sort-num-warn stockout-warn';
+        }
+        return '';
+      },
       //显示新增修改(重写mixin)
       showDetail(data){
         this.$data.dataItem = [];
@@ -181,6 +197,32 @@
       &::after{
         border-bottom: 0;
       }
+    }
+  }
+  //缺货
+  .stockout-warn{
+    &::after{
+      content: '缺货';
+      background: #ff5252;
+      color: #fff;
+      font-size: 12px;
+      padding: 0 2px;
+      border-radius: 3px;
+      margin-left: 10px;
+    }
+  }
+  //装车数量变动
+  .sort-num-warn{
+    >.sort-num{
+      color: #ff5252;
+      font-weight: bold;
+    }
+  }
+  //分配数量变动
+  .allocate-num-warn{
+    >.allocate-num{
+      color: #ff5252;
+      font-weight: bold;
     }
   }
 </style>

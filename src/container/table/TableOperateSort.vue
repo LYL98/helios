@@ -131,7 +131,6 @@
           { label: '分配', key: 'allocated_num', width: '1', isShow: true },
           { label: '装车', key: 'sort_num', width: '1', isShow: true },
         ],
-        queryTabsData: Constant.TRUCK_LOADING_TAB('value_key'),
         routeTabsData: Constant.TRUCK_LOADING_TAB_ROUTE(),
       }
     },
@@ -151,6 +150,15 @@
         });
         if(multipleSelection.length >= con - disabled) return true;
         return false;
+      },
+      //tab
+      queryTabsData(){
+        let { auth } = this;
+        let d = Constant.TRUCK_LOADING_TAB('value_key');
+        if(auth.isAdmin) return d;
+        if(!auth.OperateTruckLoad) delete d['装车'];
+        if(!auth.OperateTruckLoadDelay) delete d['装车延时'];
+        return d;
       },
     },
     methods: {

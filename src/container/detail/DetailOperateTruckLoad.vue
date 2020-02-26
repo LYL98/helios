@@ -57,7 +57,7 @@
       //返回提醒样式
       returnStyle(data){
         if(data.allocated_num !== data.count_real){
-          return 'color: #ff5252;';
+          return 'color: #ff5252;font-weight: bold;';
         }
         return '';
       },
