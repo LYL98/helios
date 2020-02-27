@@ -229,7 +229,15 @@ export default {
       let res = await Http.get(Config.api.fromSupplierOrderDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$data.detail = res.data;
+        let rd = res.data;
+        //场地收货的记录不显示关联入库单
+        for(let i = 0; i < rd.instocks.length; i++){
+          if(rd.instocks[i].qa_event === 'accept'){
+            rd.instocks.remove(i);
+            i = i - 1;
+          }
+        }
+        this.$data.detail = rd;
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});

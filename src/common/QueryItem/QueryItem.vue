@@ -1,10 +1,12 @@
 <template>
   <div class="common-query-item">
-    <div v-if="label" class="label">
+    <div v-if="label" class="query-label">
       <span class="align-right" v-if="align !== 'left'">{{ label }}</span>
       <span v-if="align === 'left'">{{ label }}</span>
     </div>
-    <slot></slot>
+    <div class="query-main">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -23,12 +25,15 @@
     display: flex;
     align-items: center;
   }
-  .label {
+  .query-label {
     display: flex;
     height: 32px;
     font-size: 12px;
     align-items: center;
     margin-right: 12px;
+  }
+  .query-main{
+    flex: 1;
   }
 
   .align-right {

@@ -33,8 +33,8 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="小计" label-class-name="sort-head">
-          <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head">
+        <el-table-column label="小计" label-class-name="sort-head" header-align="center">
+          <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head" header-align="center" align="center">
             <template slot-scope="scope">
               <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item">
                 <div :class="returnTotalClass(item)">
@@ -50,8 +50,8 @@
         </el-table-column>
         
         <!--画横向批n-->
-        <el-table-column :label="`批${index + 1}`" v-for="(item, index) in batchNum" :key="index" label-class-name="sort-head">
-          <el-table-column label="装车 / 分配" width="160" label-class-name="sort-head">
+        <el-table-column :label="`批${index + 1}`" v-for="(item, index) in batchNum" :key="index" label-class-name="sort-head" header-align="center">
+          <el-table-column label="装车 / 分配" width="160" label-class-name="sort-head" header-align="center" align="center">
             <template slot-scope="scope">
               <div v-for="c in scope.row.cities" :key="scope.row.line_code + c.city_code" class="citie-item">
                 <div>
@@ -200,7 +200,9 @@
   }
   //缺货
   .stockout-warn{
+    position: relative;
     &::after{
+      position: absolute;
       content: '缺货';
       background: #ff5252;
       color: #fff;
@@ -208,6 +210,8 @@
       padding: 0 2px;
       border-radius: 3px;
       margin-left: 10px;
+      height: 16px;
+      line-height: 16px;
     }
   }
   //装车数量变动

@@ -25,8 +25,8 @@
           </template>
         </el-table-column>
         <!--小计-->
-        <el-table-column label="小计" label-class-name="sort-head">
-            <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head">
+        <el-table-column label="小计" label-class-name="sort-head" header-align="center">
+            <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head" header-align="center" align="center">
               <template slot-scope="scope">
                 <div :class="`td-item add-dot2 ${returnTotalClass(scope.row)}`">
                   <span class="sort-num">{{scope.row.sort_num || '-'}}</span>
@@ -40,10 +40,10 @@
         </el-table-column>
 
         <!--画横向县-->
-        <el-table-column :label="item.city_title" v-for="(item, index) in getCitys" :key="index" label-class-name="sort-head">
-          <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head">
+        <el-table-column :label="item.city_title" v-for="(item, index) in getCitys" :key="index" label-class-name="sort-head" header-align="center">
+          <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head" header-align="center" align="center">
             <template slot-scope="scope">
-              <div :class="`td-item add-dot2 ${returnClass(scope.row)}`">
+              <div :class="`td-item add-dot2 ${returnClass(scope.row.citys[index])}`">
                 <span class="sort-num">{{scope.row.citys[index].sort_num || '-'}}</span>
                 <span>&nbsp;/&nbsp;</span>
                 <span class="allocate-num">{{scope.row.citys[index].allocate_num || '-'}}</span>
@@ -89,7 +89,7 @@
             delivery_date: query.delivery_date,
             line_code: query.line_code,
             ...dataItem
-          })" size="mini" type="primary">发车前确认</el-button>
+          })" size="mini" type="primary" :disabled="dataItem.confirmed">发车前确认</el-button>
       </div>
     </div>
     <!-- 表格end -->
@@ -137,9 +137,9 @@
     methods: {
       //返回提醒样式
       returnTotalClass(data){
-        let cr = Number(data.count_real); //应出
-        let an = Number(data.allocate_num); //分配
         let sn = Number(data.sort_num); //装车
+        let an = Number(data.allocate_num); //分配
+        let cr = Number(data.count_real); //应出
         if(cr > an && an === sn){
           return 'allocate-num-warn';
         }
@@ -153,9 +153,9 @@
       },
       //返回提醒样式
       returnClass(data){
-        let cr = Number(data.count_real); //应出
-        let an = Number(data.allocate_num); //分配
         let sn = Number(data.sort_num); //装车
+        let an = Number(data.allocate_num); //分配
+        let cr = Number(data.count_real); //应出
         if(cr > an && an === sn){
           return 'allocate-num-warn stockout-warn';
         }
@@ -188,7 +188,9 @@
   @import './table.scss';
   //缺货
   .stockout-warn{
+    position: relative;
     &::after{
+      position: absolute;
       content: '缺货';
       background: #ff5252;
       color: #fff;
@@ -196,6 +198,8 @@
       padding: 0 2px;
       border-radius: 3px;
       margin-left: 10px;
+      height: 16px;
+      line-height: 16px;
     }
   }
   //装车数量变动

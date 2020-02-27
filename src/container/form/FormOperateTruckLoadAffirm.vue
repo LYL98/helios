@@ -110,7 +110,7 @@ export default {
         this.$message({message: '已确认', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableOperateDepart');
+        let pc = this.getPageComponents('TableOperateTruckLoad');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

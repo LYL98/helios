@@ -21,11 +21,12 @@
       </el-col>
       <el-col :span="7">
         <my-query-item label="类型">
-          <select-option
+          <button-group
             :options="types"
             v-model="query.type"
             @change="handleQuery('TableWarehouseQualityControl')"
             size="small"
+            width="100%"
           />
         </my-query-item>
       </el-col>
@@ -39,7 +40,7 @@
 </template>
 
 <script>
-  import { SelectOption } from '@/common';
+  import { SelectOption, ButtonGroup } from '@/common';
   import queryMixin from './query.mixin';
   import { Constant } from '@/util';
   import { SelectStorehouse } from '@/component';
@@ -48,6 +49,7 @@
     name: "QueryWarehouseQualityControl",
     components: {
       'select-option': SelectOption,
+      'button-group': ButtonGroup,
       'select-storehouse': SelectStorehouse
     },
     mixins: [queryMixin],
@@ -59,6 +61,8 @@
         query.delivery_date = this.today;
         initQuery.province_code = this.$province.code;
         query.province_code = this.$province.code;
+        initQuery.for_accept = 1; //特殊 调拨
+        query.for_accept = 1; //特殊 调拨
         this.$data.initQuery = initQuery;
         this.$data.query = query;
       }
