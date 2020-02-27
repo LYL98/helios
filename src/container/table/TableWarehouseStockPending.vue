@@ -35,8 +35,8 @@
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
               <!--采购、调拨数量-->
               <div v-else-if="item.key === 'order_num'" class="td-item add-dot2">{{scope.row.relate_order.num}}件</div>
-              <!--已入库数量-->
-              <div v-else-if="judgeOrs(item.key, ['num', 'num_in'])" class="td-item add-dot2">{{returnUnit(scope.row[item.key], '件', '-')}}</div>
+              <!--入库数量-->
+              <div v-else-if="judgeOrs(item.key, ['num'])" class="td-item add-dot2">{{returnUnit(scope.row[item.key], '件', '-')}}</div>
               <!--调出仓、调入仓-->
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row.relate_order[item.key].title}}</div>
               <!--状态-->
@@ -111,7 +111,7 @@
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
           { label: '批次', key: 'batch_code', width: '3', isShow: true },
           { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
-          { label: '入库数量', key: 'num_in', width: '2', isShow: true },
+          { label: '入库数量', key: 'num', width: '2', isShow: true },
           { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }

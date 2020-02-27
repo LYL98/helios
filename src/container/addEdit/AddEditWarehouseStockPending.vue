@@ -97,7 +97,7 @@
           </template>
           <el-row v-if="pageType !== 'detail_allocate'">
             <el-col :span="12">
-              <el-form-item label="品控人">{{detail.creator.realname}}</el-form-item>
+              <el-form-item label="品控人">{{detail.creator.realname || '系统'}}</el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="品控时间">{{detail.created}}</el-form-item>
