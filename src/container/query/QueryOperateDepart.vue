@@ -14,11 +14,6 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :span="10">
-        <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableOperateDepart')" @reset="handleClearQuery('TableOperateDepart')"/>
-        </my-query-item>
-      </el-col>
     </el-row>
   </div>
 </template>
@@ -39,7 +34,6 @@
     },
     data() {
       let initQuery = {
-        condition: '',
         delivery_date: '',
         province_code: this.$province.code,
       }
