@@ -28,7 +28,7 @@
                     delivery_date: query.delivery_date,
                     line_code: scope.row.line.code,
                     ...scope.row
-                  })" v-if="auth.isAdmin || auth.OperateDepartDetail">
+                  })" v-if="(auth.isAdmin || auth.OperateDepartDetail) && scope.row.assign_confirm_time">
                     {{scope.row.line.code}}/{{scope.row.line.title}}
                   </div>
                   <div class="add-dot" v-else>
@@ -42,9 +42,9 @@
               <div v-else-if="item.key === 'stockout'" class="td-item add-dot2">
                 {{scope.row.count_real - scope.row.allocate_num === 0 ? '-' : (scope.row.count_real - scope.row.allocate_num) + '件'}}
               </div>
-              <!--分拣状态-->
-              <div v-else-if="item.key === 'sort_status'" class="td-item add-dot2">
-                <el-tag size="small" :type="sortStatusType[scope.row.sort_status]" disable-transitions>{{sortStatus[scope.row.sort_status]}}</el-tag>
+              <!--状态-->
+              <div v-else-if="item.key === 'status'" class="td-item add-dot2">
+                <el-tag size="small" :type="departStatusType[scope.row.status]" disable-transitions>{{departStatus[scope.row.status]}}</el-tag>
               </div>
               <!--正常情况-->
               <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
@@ -106,15 +106,15 @@
     },
     data() {
       return {
-        sortStatus: Constant.SORT_STATUS(),
-        sortStatusType: Constant.SORT_STATUS_TYPE,
+        departStatus: Constant.DEPART_STATUS(),
+        departStatusType: Constant.DEPART_STATUS_TYPE,
         tableName: 'TableOperateDepart',
         tableColumn: [
           { label: '线路', key: 'line', width: '4', isShow: true },
           { label: '应出库', key: 'count_real', width: '2', isShow: true },
           { label: '实际出库', key: 'allocate_num', width: '3', isShow: true },
           { label: '缺货', key: 'stockout', width: '3', isShow: true },
-          /*{ label: '状态', key: 'sort_status', width: '2', isShow: true },*/
+          { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ],

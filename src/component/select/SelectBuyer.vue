@@ -56,14 +56,6 @@ export default {
       if(res.code === 0){
         let rd = res.data;
         that.$data.dataItem = rd;
-        //如果只有一个采购员，默认选择
-        if(rd.length === 1){
-          that.changeBuyer(rd[0].id, true);
-        }else{
-          //如果当前选择的采购员不存在这列表
-          let judge = rd.filter(item => item.id === that.value);
-          if(judge.length === 0) that.changeBuyer('', true);
-        }
       }else{
         MessageBox.alert(res.message, '提示');
       }

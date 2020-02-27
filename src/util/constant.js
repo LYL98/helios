@@ -486,18 +486,22 @@ const Constant = {
     sale_offline: 'info',
     refund: 'info'
   },
-  //分拣状态
-  SORT_STATUS: (type)=>{
+  //发车状态
+  DEPART_STATUS: (type)=>{
     let data = [
-      { key: 'unsort', value: '待分拣' },
-      { key: 'sorted', value: '已分拣' },
+      { key: 'wait_confirm', value: '待确认' },
+      { key: 'wait_delivery', value: '待发车' },
+      { key: 'delivering', value: '配送中' },
+      { key: 'done', value: '已完成' }
     ];
     return handleKeyValue(type, data);
   },
-  //分拣状态(颜色)
-  SORT_STATUS_TYPE: {
-    unsort: 'info',
-    sorted: 'info'
+  //发车状态(颜色)
+  DEPART_STATUS_TYPE: {
+    wait_confirm: 'primary',
+    wait_delivery: 'primary',
+    delivering: 'warning',
+    done: 'refund'
   },
   //分配方式
   DISTRIBUTE_OPT_TYPES: (type)=>{
