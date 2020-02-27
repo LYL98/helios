@@ -70,7 +70,7 @@
 
         <!--县市列表（多选） 如果级别 == 4-->
         <el-form-item label="县域列表" prop="data_value" v-else-if="detail.data_level == '4'">
-          <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" />
+          <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" isClearDisabledData />
         </el-form-item>
 
         <!--线路列表（多选） 如果级别 == 5-->

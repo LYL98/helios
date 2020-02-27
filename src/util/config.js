@@ -283,8 +283,8 @@ const Config = (() => {
       operateLineList: apiM + '/basicdata/line/list', //线路列表
       operateLineDelete: apiM + '/basicdata/line/delete', //线路删除
       operateLineConfirm: apiM + '/sup_cap_pool/confirm', //一键确认今日所有线路的司机
-      operateLineDriverList: apiM + '/sup_cap_pool/list', //待分配司机列表
-      operateLineDriverDelete: apiM + '/sup_lined/delete', //删除待分配司机
+      operateLineDriverList: apiM + '/sup_cap_pool/list', //签到司机列表
+      operateLineDriverDelete: apiM + '/sup_lined/delete', //删除签到司机
       operateLineUnDriver: apiM + '/sup_ldeliver/un_confirm', //解绑司机
 
       // 线路退筐
@@ -496,6 +496,7 @@ const Config = (() => {
       financeSupBDetailDetail: apiM + '/sup_bdetail/detail', //账单明细详情
       financeSupBDetailAdd: apiM + '/sup_bdetail/add', //财务人员手动添加账单变更明细
       financeSupBDetailAudit: apiM + '/sup_bdetail/audit', //供应流水审核
+      financeSupBDetailPay: apiM + '/sup_bdetail/pay', //手动结款
 
       //统计
       statisticalOrderClassSum: apiM + '/statistical/order/class_sum', //统计分析 - 商品销售统计 - 分类别统计

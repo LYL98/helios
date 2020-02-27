@@ -1,5 +1,5 @@
 <template>
-  <detail-layout title="待分配司机" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <detail-layout title="签到司机" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <div style="padding: 0 16px;">
       <el-table :data="dataItem" :row-class-name="highlightRowClassName">
         <el-table-column label="姓名">
@@ -59,7 +59,7 @@
         this.$data.detail = data;
         this.operateLineDriverList();
       },
-      //获取待分配司机列表
+      //获取签到司机列表
       async operateLineDriverList(){
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.operateLineDriverList, {
@@ -73,9 +73,9 @@
           this.$message({message: res.message, type: 'error'});
         }
       },
-      //删除待分配司机
+      //删除签到司机
       operateLineDriverDelete(data){
-        this.$messageBox.confirm('确认删除待分配司机？', '提示', {
+        this.$messageBox.confirm('确认删除签到司机？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

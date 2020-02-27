@@ -19,7 +19,8 @@ export default {
     provinceCode: { type: String | Number, default: '' },
     filterable: { type: Boolean, default: false },
     forCreateLine: { type: Boolean, default: false },
-    connectData: { type: Array, default: null}
+    connectData: { type: Array, default: null},
+    isClearDisabledData: { type: Boolean, default: false}, //是否清除失效的数据
   },
   model: {
     prop: 'value',
@@ -35,6 +36,16 @@ export default {
   methods: {
     //县市改变
     changeCity(v){
+      //清除失效数据
+      if(this.isClearDisabledData){
+        for(let i = 0; i < v.length; i++){
+          let con = this.dataItem.filter(item => item.key === v[i]);
+          if(con.length === 0){
+            v.remove(i);
+            i--;
+          }
+        }
+      }
       this.$emit('ev', v);
       this.$emit('change', v);
     },

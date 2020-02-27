@@ -92,10 +92,15 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '已出库', type: 'success'});
-        this.handleCancel(); //隐藏
+        
         //刷新数据(列表)
         let pc = this.getPageComponents('DetailWarehouseInventory');
-        if(pc) pc.wareTrayItemQeruy();
+        if(pc){
+          pc.$data.detail.o_num_out = pc.detail.o_num_out + detail.num_out;
+          pc.wareTrayItemQeruy();
+        }
+
+        this.handleCancel(); //隐藏(先算num_out)
 
         //刷新库存列表
         pc = this.getPageComponents('TableWarehouseInventory');

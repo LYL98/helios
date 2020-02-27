@@ -1,12 +1,16 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.FinanceSBDetailAdd">
+    <div class="table-top" v-if="(page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailAdd)) || (page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailExport)) || returnSelectionAuth">
       <div class="left">
-        <el-button v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAudit)"
+        <el-button v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit)"
           @click="handleShowForm('FormAudit', returnListKeyList('id', multipleSelection))" size="mini" type="primary"
           :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
+        <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailPay)"
+          @click="handlePay(returnListKeyList('id', multipleSelection))" size="mini" type="primary"
+          :disabled="multipleSelection.length === 0 ? true : false">批量结款</el-button>
       </div>
       <div class="right">
+        <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailExport)" @click.native="handleExport('xxxExport', query)" size="mini" type="primary" plain>导出流水</el-button>
         <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailAdd)" @click="handleShowAddEdit('AddEditFinanceSBDetail')" size="mini" type="primary">手动新增</el-button>
       </div>
     </div>
@@ -22,7 +26,7 @@
         @selection-change="handleSelectionChange"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="selection" :selectable="returnAuditStatus" width="42" v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAudit)"></el-table-column>
+        <el-table-column type="selection" :selectable="returnAuditStatus" width="42" v-if="returnSelectionAuth"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
@@ -41,6 +45,10 @@
                   <div class="up" v-else-if="scope.row.bill_amount > 0">&yen;{{returnPrice(scope.row.bill_amount)}}</div>
                   <div class="down" v-else>&yen;{{returnPrice(Math.abs(scope.row.bill_amount))}}</div>
                 </div>
+              </div>
+              <!--状态-->
+              <div v-else-if="item.key === 'paid_status'" class="td-item">
+                <el-tag size="small" :type="paidStatusType[scope.row.paid_status]" disable-transitions>{{paidStatus[scope.row.paid_status]}}</el-tag>
               </div>
               <!--创建人-->
               <div v-else-if="item.key === 'creator'" class="td-item">{{scope.row.creator.realname || '系统'}}</div>
@@ -65,6 +73,11 @@
                   command: () => handleShowAddEdit('AddEditFinanceSBDetail', scope.row, 'detail')
                 },
                 {
+                  title: '结款',
+                  isDisplay: page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailAuditPay) && scope.row.bill_term === 0 && scope.row.paid_status === 'init',
+                  command: () => handlePay([scope.row.id])
+                },
+                {
                   title: '审核',
                   isDisplay: page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit) && scope.row.audit_status === 'init',
                   command: () => handleShowForm('FormAudit', [scope.row.id])
@@ -77,9 +90,12 @@
     </div>
     <div class="table-bottom">
       <div class="left">
-        <el-button v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAudit)"
+        <el-button v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit)"
           @click="handleShowForm('FormAudit', returnListKeyList('id', multipleSelection))" size="mini" type="primary"
           :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
+        <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailPay)"
+          @click="handlePay(returnListKeyList('id', multipleSelection))" size="mini" type="primary"
+          :disabled="multipleSelection.length === 0 ? true : false">批量结款</el-button>
       </div>
       <div class="right">
         <pagination :pageComponent='this'/>
@@ -108,10 +124,11 @@
     data() {
       let tableColumn = [
         { label: '供应商名称', key: 'supplier', width: '3', isShow: true },
-        { label: '结算类型', key: 'bill_term', width: '3', isShow: true },
-        { label: '流水类型', key: 'bill_reason', width: '3', isShow: true },
+        { label: '结算类型', key: 'bill_term', width: '2', isShow: true },
+        { label: '流水类型', key: 'bill_reason', width: '2', isShow: true },
         { label: '金额', key: 'bill_amount', width: '2', isShow: true },
-        { label: '创建人', key: 'creator', width: '3', isShow: true },
+        { label: '状态', key: 'paid_status', width: '2', isShow: true },
+        { label: '创建人', key: 'creator', width: '2', isShow: true },
       ];
 
       //审核页面
@@ -130,11 +147,22 @@
       return {
         tableName: 'TableFinanceSBDetail',
         tableColumn: tableColumn,
+        paidStatus: Constant.S_STATEMENT_PAID_STATUS(),
+        paidStatusType: Constant.S_STATEMENT_PAID_STATUS_TYPE,
         supplierBillTerm: Constant.SUPPLIER_BILL_TERM2(),
         billReason: Constant.SUPPLIER_BILL_REASON(),
         auditStatus: Constant.AUDIT_STATUS(),
         auditStatusType: Constant.AUDIT_STATUS_TYPE,
       }
+    },
+    computed: {
+      //批量选择权限
+      returnSelectionAuth(){
+        let { page, auth } = this;
+        if(page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit)) return true;
+        if(page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailPay)) return true;
+        return false;
+      },
     },
     methods: {
       //获取数据
@@ -151,7 +179,36 @@
       },
       //返回是否可选择
       returnAuditStatus(d){
-        return d.audit_status === 'init' ? true : false;
+        let { page } = this;
+        if(page === 'sBDetailAudit' && d.audit_status === 'init'){
+          return true;
+        }
+        if(page === 'sBDetail' && d.bill_term === 0 && d.paid_status === 'init'){
+          return true;
+        }
+        return false;
+      },
+      //结款
+      handlePay(ids){
+        this.$messageBox.confirm('确认已给选择的供应商结款？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          (async ()=>{
+            this.$loading({isShow: true});
+            let res = await Http.post(Config.api.financeSupBDetailPay, { ids });
+            this.$loading({isShow: false});
+            if(res.code === 0){
+              this.$message({message: '已结款', type: 'success'});
+              this.getData(this.query);
+            }else{
+              this.$message({message: res.message, type: 'error'});
+            }
+          })();
+        }).catch(() => {
+          //console.log('取消');
+        });
       }
     }
   };

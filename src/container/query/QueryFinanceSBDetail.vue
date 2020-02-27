@@ -77,6 +77,16 @@
           />
         </my-query-item>
       </el-col>
+      <el-col :span="7">
+        <my-query-item label="结款状态">
+          <select-option
+            :options="{'全部': '', ...paidStatus}"
+            v-model="query.paid_status"
+            @change="handleQuery('TableFinanceSBDetail')"
+            size="small"
+          />
+        </my-query-item>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -104,6 +114,7 @@
         end_date: '',
         bill_reason: '',
         bill_term: '',
+        paid_status: '',
         condition: '',
       }
       return {
@@ -112,6 +123,7 @@
         billReason: Constant.SUPPLIER_BILL_REASON('value_key'),
         billTerm: Constant.SUPPLIER_BILL_TERM2('value_key'),
         auditStatus: Constant.AUDIT_STATUS('value_key'),
+        paidStatus: Constant.S_STATEMENT_PAID_STATUS('value_key'),
       }
     },
     methods: {
