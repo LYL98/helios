@@ -191,7 +191,7 @@
     position: relative;
     &::after{
       position: absolute;
-      content: '缺货';
+      content: '缺';
       background: #ff5252;
       color: #fff;
       font-size: 12px;
