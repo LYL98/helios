@@ -1,6 +1,6 @@
 <template>
   <el-input v-model="changeValue" :placeholder="placeholder" :disabled="disabled" :size="size">
-    <template slot="append">元</template>
+    <template slot="append">{{unit || '元'}}</template>
   </el-input>
 </template>
 <script>

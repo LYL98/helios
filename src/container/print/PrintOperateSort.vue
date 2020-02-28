@@ -1,20 +1,20 @@
 <template>
   <print-layout title="打印分拣码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <!--批量-->
-    <div v-for="(item, index) in dataItem" :key="index">
+    <div v-for="(item, index) in dataItem" :key="index" class="line-item">
       <div class="line-top">
-        <div>{{item.line_code}}/{{item.line_title}}</div>
-        <div>{{item.num}}件</div>
-        <div>{{item.item_code}}</div>
+        <div class="line-title">{{item.line_code}}/{{item.line_title}}</div>
+        <div class="line-num">{{item.num}}件</div>
+        <div class="item-code">{{item.item_code}}</div>
       </div>
       <div v-for="(s, i) in item.stores" :key="i">
-        <div v-for="n in  s.num" :key="n">
-          <div>
+        <div v-for="n in s.num" :key="n" class="item">
+          <div class="indexs">
             <span>{{item.line_index}}</span>
             <span>-</span>
             <span>{{item.city_index}}</span>
             <span>-</span>
-            <span>{{item.city_index}}</span>
+            <span>{{item.store_index}}</span>
           </div>
           <div>
             <div>
@@ -80,10 +80,12 @@ export default {
         let rd = res.data;
         rd = [{
           line_code: '123456',
+          line_index: '12',
           line_title: '普哥的线路',
-          item_code: 'xxx12345',
+          item_code: '1011223344',
           item_title: '普哥的货',
-          city_code: 'ccc123',
+          city_index: '34',
+          store_index: '56',
           city_title: '普哥的县',
           out_stock_id: 12,
           num: 5,
