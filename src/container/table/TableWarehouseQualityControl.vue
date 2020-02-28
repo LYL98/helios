@@ -83,7 +83,8 @@
                   isDisplay: pageAuth.print && scope.row.status !== 'closed',
                   command: () => handleShowPrint('PrintWarehouseStockPending', {
                     ...scope.row,
-                    batch_code: scope.row.batch_code || scope.row.code
+                    batch_code: scope.row.batch_code || scope.row.code,
+                    order_type: query.type === 'purchase' ? 'pur' : 'distribute'
                   })
                 },
               ]"

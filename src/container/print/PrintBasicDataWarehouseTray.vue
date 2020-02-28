@@ -19,7 +19,7 @@ import { Http, Config } from '@/util';
 import { QrCode } from '@/common';
 
 export default {
-  name: "PrintWarehouseStockPending",
+  name: "PrintBasicDataWarehouseTray",
   mixins: [printMixin],
   components: {
     'qr-code': QrCode
