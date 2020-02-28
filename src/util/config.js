@@ -259,6 +259,8 @@ const Config = (() => {
       supOutAllocateQuery: apiM + '/sup_out/allocate_query', //待分配记录查询
       supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
 
+      supAllocateDetailPrint: apiM + '/sup_allocate/detail_print', //打印
+
       //装车延时
       supAllocateDelaySortQuery: apiM + '/sup_allocate/delay_sort_query', //装车延时
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-drawer :title="title" append-to-body :visible.sync="isShow" direction="ttb" :before-close="beforeClose" size="100%" custom-class="my-print-drawer">
+    <el-drawer :title="title" append-to-body :visible.sync="isShow" direction="ttb" :before-close="beforeClose" custom-class="my-print-drawer">
       <slot></slot>
     </el-drawer>
   </div>
@@ -39,6 +39,11 @@ export default {
       height: 100% !important;
       outline: none;
       background: #fff;
+      overflow: auto;
+      //不出滚动条，打印不显示
+      &::-webkit-scrollbar{
+        display: none;
+      }
       >.el-drawer__header{
           font-size: 18px;
           border-bottom: 1px solid #ececec;
@@ -54,7 +59,7 @@ export default {
   }
   /* 执行打印命令时，非打印区域隐藏（不会被打印出来） */
   @media print{
-      .el-drawer__header {
+      .el-drawer__header, #app-body {
           display: none;
       }
   }

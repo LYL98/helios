@@ -10,9 +10,9 @@
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <!--全选-->
-      <!--<div class="all-select">
+      <div class="all-select">
         <el-checkbox @change="changeAllSelect" :value="judgeAllSelect"></el-checkbox>
-      </div>-->
+      </div>
       
       <el-table :data="dataItem.items"
         row-class-name="stripe-row"
@@ -27,8 +27,8 @@
             <div class="out-stock">
               <div v-for="(item, i) in props.row.out_stocks" :key="item.id" class="out-stock-item">
                 <div class="select">
-                  <!--<el-checkbox :disabled="item.allocated_time ? false : true" :value="judgeSelect(item)"
-                    @change="(v)=>changeSelect(v, item)">批{{props.row.out_stocks.length - i}}</el-checkbox>-->
+                  <el-checkbox :disabled="item.allocated_time ? false : true" :value="judgeSelect(item)"
+                    @change="(v)=>changeSelect(v, item)">批{{props.row.out_stocks.length - i}}</el-checkbox>
                     批{{props.row.out_stocks.length - i}}
                 </div>
                 <div>入场：{{returnUnit(item.num, '件', '-')}}</div>
@@ -48,11 +48,7 @@
                       },{
                         title: '打印',
                         isDisplay: (auth.isAdmin || auth.OperateSortPrint) && item.allocated_time,
-                        command: () => handleShowPrint('PrintOperateSort', {
-                          id: props.row.id,
-                          delivery_date: query.delivery_date,
-                          print_data: item
-                        })
+                        command: () => handleShowPrint('PrintOperateSort', {delivery_date: query.delivery_date, ids: [item.id]})
                       }
                     ]"
                   />
@@ -99,8 +95,8 @@
     </div>
     <div class="table-bottom">
       <div class="left">
-        <!--<el-button @click="handleShowPrint('PrintOperateSort', multipleSelection)" size="mini" type="primary"
-        :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperateSortPrint">批量打印</el-button>-->
+        <el-button @click="handleShowPrint('PrintOperateSort', {delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
+        :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperateSortPrint">批量打印</el-button>
       </div>
       <div class="right">
         <pagination :pageComponent='this'/>
