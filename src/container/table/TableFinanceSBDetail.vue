@@ -80,7 +80,7 @@
                 {
                   title: '审核',
                   isDisplay: page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit) && scope.row.audit_status === 'init',
-                  command: () => handleShowForm('FormAudit', {ids: scope.row.id})
+                  command: () => handleShowForm('FormAudit', {ids: [scope.row.id]})
                 }
               ]"
             />

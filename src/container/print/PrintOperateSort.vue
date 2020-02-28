@@ -109,7 +109,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './print.scss';
-  
   .line-item{
     width: 708px;
     background: #eee;
