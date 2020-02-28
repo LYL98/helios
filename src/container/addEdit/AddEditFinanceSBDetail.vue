@@ -5,7 +5,7 @@
         <!--新增-->
         <el-form v-if="pageType === 'add'" class="custom-form" label-position="right" label-width="140px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
           <el-form-item label="供应商" prop="supplier_id">
-            <select-supplier size="medium" v-model="detail.supplier_id" :provinceCode="province.code" style="width: 320px;"/>
+            <select-supplier size="medium" v-model="detail.supplier_id" :provinceCode="province.code" style="width: 320px;" filterable/>
           </el-form-item>
           <el-form-item label="操作类型" prop="type">
             <el-radio v-model="detail.type" label="top_up" border size="mini" @change="detail.bill_reason = 'other'">充值</el-radio>

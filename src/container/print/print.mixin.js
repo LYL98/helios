@@ -1,10 +1,10 @@
 import baseMixin from '@/container/base.mixin';
-import LayoutOverall from './../layout/LayoutOverall';
+import LayoutPrint from './../layout/LayoutPrint';
 
 export default {
   mixins: [baseMixin],
   components: {
-    'print-layout': LayoutOverall,
+    'print-layout': LayoutPrint,
   },
   data() {
     return {

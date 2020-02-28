@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-drawer :title="title" append-to-body :visible.sync="isShow" direction="ttb" :before-close="beforeClose" custom-class="my-print-drawer">
+    <el-drawer :title="title" append-to-body :visible.sync="isShow" direction="ttb" :before-close="beforeClose" size="100%" custom-class="my-print-drawer">
       <slot></slot>
     </el-drawer>
   </div>
@@ -10,7 +10,7 @@
 import { Drawer } from 'element-ui';
 
 export default {
-  name: "LayoutOverall",
+  name: "LayoutPrint",
   components: {
     'el-drawer': Drawer
   },
@@ -24,6 +24,20 @@ export default {
 
     }
   },
+  methods: {
+    
+  },
+  watch:{
+    isShow(a, b){
+      let dom = document.getElementById('app-body');
+      //如显示打印
+      if(a){
+        dom.style.display = 'none';
+      }else{
+        dom.style.display = 'block';
+      }
+    }
+  }
 };
 </script>
 

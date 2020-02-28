@@ -36,7 +36,7 @@
       </el-col>
       <el-col :span="7">
         <my-query-item label="供应商">
-          <select-supplier size="small" v-model="query.supplier_id" :provinceCode="query.province_code" @change="handleQuery('TableSupplierLocalPurchase')"/>
+          <select-supplier size="small" v-model="query.supplier_id" :provinceCode="query.province_code" @change="handleQuery('TableSupplierLocalPurchase')" filterable/>
         </my-query-item>
       </el-col>
     </el-row>

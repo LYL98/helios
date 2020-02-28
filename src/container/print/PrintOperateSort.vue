@@ -100,6 +100,7 @@ export default {
   
   .line-item{
     width: 780 * $multiple + px;
+    font-weight: bold;
     >.line-top{
       width: 780 * $multiple + px;
       height: 472 * $multiple + px;
@@ -135,11 +136,13 @@ export default {
               line-height: 64 * $multiple + px;
               height:  128 * $multiple + px;
               margin-bottom: 14 * $multiple + px;
+              font-weight: bold;
             }
             >.item-code{
               font-size: 60 * $multiple + px;
               line-height: 60 * $multiple + px;
               margin-bottom: 20 * $multiple + px;
+              font-weight: bold;
             }
             >.page-date{
               display: flex;

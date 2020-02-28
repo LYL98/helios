@@ -6,7 +6,7 @@
         <!--全国-->
         <div style="margin-bottom: 8px;">全国</div>
         <div v-for="(item, index) in globalSupplierBinds" :key="'g' + index" style="margin-bottom: 10px;">
-          <select-supplier v-model="item.supplier_id" size="medium" supplierType="global_pur" :supplierIds="gSupplierIds" style="width: 360px;"/>
+          <select-supplier v-model="item.supplier_id" size="medium" supplierType="global_pur" :supplierIds="gSupplierIds" style="width: 360px;" filterable/>
           <i style="margin-left: 10px; cursor: pointer;" class="el-icon-close icon-button" @click="deleteGSupplier(index)"></i>
         </div>
         <a href="javascript: void(0);" @click="addGSupplier" style="font-size: 12px;">增加供应商</a>
@@ -15,7 +15,7 @@
         <div v-for="(item, index) in localSuppliers" :key="'l' + index" style="margin-bottom: 20px;">
           <div style="margin-bottom: 8px;">{{item.title}}</div>
           <div v-for="(s, i) in item.suppliers" :key="i" class="select-supplier">
-            <div class="select"><select-supplier v-model="s.supplier_id" size="medium" supplierType="local_pur" :provinceCode="item.province_code" :supplierIds="supplierIds(index)"/></div>
+            <div class="select"><select-supplier v-model="s.supplier_id" size="medium" supplierType="local_pur" :provinceCode="item.province_code" :supplierIds="supplierIds(index)" filterable/></div>
             <div class="move">
               <a href="javascript: void(0);" v-if="i !== 0" @click="upMove(index, i)">上移</a>
               <a href="javascript: void(0);" v-if="i !== item.suppliers.length - 1" @click="downMove(index, i)">下移</a>

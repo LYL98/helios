@@ -30,7 +30,7 @@
       </el-col>
       <el-col :span="7">
         <my-query-item label="供应商">
-          <select-supplier supplierType="global_pur" size="small" v-model="query.supplier_id" @change="handleQuery('TableSupplierGPurchase')"/>
+          <select-supplier supplierType="global_pur" size="small" v-model="query.supplier_id" @change="handleQuery('TableSupplierGPurchase')" filterable/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
