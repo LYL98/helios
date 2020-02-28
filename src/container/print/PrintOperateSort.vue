@@ -10,11 +10,7 @@
       <div v-for="(s, i) in item.stores" :key="i">
         <div v-for="n in s.num" :key="n" class="item">
           <div class="indexs">
-            <span>{{item.line_index}}</span>
-            <span>-</span>
-            <span>{{item.city_index}}</span>
-            <span>-</span>
-            <span>{{item.store_index}}</span>
+            {{item.line_index}}-{{item.city_index}}-{{item.store_index}}
           </div>
           <div>
             <div>
@@ -113,4 +109,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './print.scss';
+  
+  .line-item{
+    width: 708px;
+    background: #eee;
+    >.line-top{
+      text-align: center;
+      height: 472px;
+    }
+  }
 </style>

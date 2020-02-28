@@ -3,7 +3,7 @@
     <div class="table-top" v-if="(page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailAdd)) || (page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailExport)) || returnSelectionAuth">
       <div class="left">
         <el-button v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit)"
-          @click="handleShowForm('FormAudit', returnListKeyList('id', multipleSelection))" size="mini" type="primary"
+          @click="handleShowForm('FormAudit', {ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
           :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
         <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailPay)"
           @click="handlePay(returnListKeyList('id', multipleSelection))" size="mini" type="primary"
@@ -80,7 +80,7 @@
                 {
                   title: '审核',
                   isDisplay: page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit) && scope.row.audit_status === 'init',
-                  command: () => handleShowForm('FormAudit', [scope.row.id])
+                  command: () => handleShowForm('FormAudit', {ids: scope.row.id})
                 }
               ]"
             />
@@ -91,7 +91,7 @@
     <div class="table-bottom">
       <div class="left">
         <el-button v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit)"
-          @click="handleShowForm('FormAudit', returnListKeyList('id', multipleSelection))" size="mini" type="primary"
+          @click="handleShowForm('FormAudit', {ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
           :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
         <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailPay)"
           @click="handlePay(returnListKeyList('id', multipleSelection))" size="mini" type="primary"
