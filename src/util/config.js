@@ -54,6 +54,8 @@ const Config = (() => {
       supDeliveryLackHistoryItemExport: apiM + '/sup_delivery/lack_history/item/export', //缺货记录  sup_delivery/lack_history/item/export  sup_delivery/lack_history/item/export_check
       supDistributeExport: apiM + '/sup_distribute/export', //调拨单   sup_distribute/export   sup_distribute/export_check
       supPDistributeExport: apiM + '/sup_p_distribute/export', //调拨记录 sup_p_distribute/export  sup_p_distribute/export_check
+      supBdetailExport: apiM + '/sup_bdetail/export', //供应商流水导出
+      supOnGroundExport: apiM + '/sup_on_ground/export', //导出上架记录
 
       //供应商
       supplierDetail: apiM + '/supplier/detail', //供应商详情

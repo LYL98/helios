@@ -10,7 +10,7 @@
           :disabled="multipleSelection.length === 0 ? true : false">批量结款</el-button>
       </div>
       <div class="right">
-        <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailExport)" @click.native="handleExport('xxxExport', query)" size="mini" type="primary" plain>导出流水</el-button>
+        <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailExport)" @click.native="handleExport('supBdetailExport', query)" size="mini" type="primary" plain>导出流水</el-button>
         <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailAdd)" @click="handleShowAddEdit('AddEditFinanceSBDetail')" size="mini" type="primary">手动新增</el-button>
       </div>
     </div>

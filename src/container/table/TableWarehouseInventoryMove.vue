@@ -126,7 +126,7 @@
           putaway: {
             detail: 'DetailWarehouseInventoryMovePutaway',
             api: Config.api.supOnGroundQuery,
-            export_api: 'supCheckExport', //待修改
+            export_api: 'supOnGroundExport',
             export_srt: '导出记录'
           },
           variation: {
