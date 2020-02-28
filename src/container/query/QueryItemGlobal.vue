@@ -6,16 +6,6 @@
           <select-system-class v-model="query.system_class_codes" @change="selectSystemClass" :clearable="false" size="small"/>
         </my-query-item>
       </el-col>
-      <el-col :span="7">
-        <my-query-item label="采购类型">
-          <select-option
-            :options="{'全部': '', ...supplierType}"
-            v-model="query.sup_type"
-            @change="handleQuery('TableItemGlobal')"
-            size="small"
-          />
-        </my-query-item>
-      </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
           <query-search-input v-model="query.condition" placeholder="请输入商品编号/名称" size="small" @search="handleQuery('TableItemGlobal')" @reset="handleClearQuery('TableItemGlobal')"/>
@@ -50,7 +40,6 @@
       let initQuery = {
         system_class_code: '',
         system_class_codes: [],
-        sup_type: '',
         condition: '',
         province_code: '',
         is_deleted: '0'
@@ -58,7 +47,6 @@
       return {
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
-        supplierType: Constant.SUPPLIER_TYPE('value_key'),
       }
     },
     methods: {
