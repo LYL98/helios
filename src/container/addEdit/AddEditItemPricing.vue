@@ -193,6 +193,7 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$data.priceData = res.data;
+        this.$data.detail.price_buy = res.data.price_buy; //今日供价
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
