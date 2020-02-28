@@ -62,6 +62,7 @@
     data() {
       let initQuery = {
         province_code: this.$province.code,
+        tar_storehouse_id: '',
         order_date: '',
         supplier_id: '',
         status: '',
