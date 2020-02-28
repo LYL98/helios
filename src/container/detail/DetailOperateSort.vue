@@ -28,8 +28,8 @@
         </el-table-column>
         <el-table-column label="县域">
           <template slot-scope="scope">
-            <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item add-dot">
-              {{item.city_code}}/{{item.city_title}}
+            <div v-for="item in scope.row.cities" :key="scope.row.line_code + item.city_code" class="citie-item">
+              <div class="add-dot">{{item.city_code}}/{{item.city_title}}</div>
             </div>
           </template>
         </el-table-column>
@@ -152,15 +152,6 @@
         this.$loading({isShow: false});
         if(res.code === 0){
           let rd = res.data;
-          //造数据start
-          /*rd[0].cities[0].out_stocks.push(rd[0].cities[0].out_stocks[0]);
-          rd[0].cities[0].out_stocks.push(rd[0].cities[0].out_stocks[0]);
-          rd[0].cities[0].out_stocks.push(rd[0].cities[0].out_stocks[0]);
-          rd[0].cities.push(rd[0].cities[0]);
-          rd[0].cities.push(rd[0].cities[0]);
-          rd[0].cities.push(rd[0].cities[0]);
-          rd.push(rd[0]);*/
-          //造数据end
           this.$data.dataItem = rd;
           this.$data.isShow = true;
         }else{
@@ -182,8 +173,8 @@
   }
   .citie-item{
     position: relative;
-    padding: 4px 0;
-    height: 36px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
     &::after{
       content: ' ';
       border-bottom: 1px solid #ececec;
@@ -193,6 +184,8 @@
       bottom: 0;
     }
     &:last-child{
+      margin-bottom: 0;
+      padding-bottom: 0;
       &::after{
         border-bottom: 0;
       }

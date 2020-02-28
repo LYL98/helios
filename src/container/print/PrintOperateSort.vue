@@ -1,11 +1,13 @@
 <template>
   <print-layout title="打印分拣码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <div>
-      <div>1/上饶线路</div>
-      <div>100件</div>
-      <div>1000108266</div>
-    </div>
+    <!--批量-->
     <div v-for="(item, index) in dataItem" :key="index">
+      <div>
+        <div>1/上饶线路</div>
+        <div>100件</div>
+        <div>1000108266</div>
+      </div>
+
       <div>
         <span>18</span>
         <span>-</span>
@@ -51,8 +53,27 @@ export default {
   methods: {
     //显示打印(供外部也调用)
     showPrint(data){
+      console.log(data);
+      this.$data.detail = data;
       this.$data.dataItem = data;
       this.$data.isShow = true;
+    },
+    //获取明细列表
+    async supAllocateDetail(){
+      let { detail } = this;
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.get(Config.api.supAllocateDetail, {
+        item_id: detail.id,
+        delivery_date: detail.delivery_date
+      });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        let rd = res.data;
+        this.$data.dataItem = rd;
+        this.$data.isShow = true;
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
     },
     qrCodeContent(item){
       return `{"type":"sort","out_stock_id":${item.id}}`;

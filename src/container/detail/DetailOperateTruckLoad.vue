@@ -18,7 +18,7 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: auth.isAdmin || auth.OperateTruckLoadDetailEditNum,
+                  isDisplay: !detail.confirmed && (auth.isAdmin || auth.OperateTruckLoadDetailEditNum),
                   command: () => handleShowForm('FormOperateTruckLoadEditNum', {
                     ...scope.row,
                     delivery_date: detail.delivery_date,

@@ -65,7 +65,8 @@
                   command: () => handleShowDetail('DetailOperateTruckLoad', {
                     ...scope.row,
                     delivery_date: query.delivery_date,
-                    line_code: query.line_code
+                    line_code: query.line_code,
+                    confirmed: dataItem.confirmed
                   })
                 }
               ]"
