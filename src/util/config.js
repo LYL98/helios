@@ -46,12 +46,11 @@ const Config = (() => {
       supplierExport: apiM + '/supplier/export', //供应商导出 supplier/export.  supplier/export_check. 
       supOutExport: apiM + '/sup_out/export', //出库记录 sup_out/export. sup_out/export_check 
       supModifyExport: apiM + '/sup_modify/export', //变动记录  sup_modify/export   sup_modify/export_check
-      fromSupplierOrderExport: apiM + '/from_supplier/order/export', //反采单  from_supplier/order/export. from_supplier/order/export_check
+      fromSupplierOrderExport: apiM + '/from_supplier/order/export', //采购单  from_supplier/order/export. from_supplier/order/export_check
       supBillExport: apiM + '/sup_bill/export', //对账单 sup_bill/export. sup_bill/export_check
       supStockExport: apiM + '/sup_stock/export', //库存 sup_stock/export   sup_stock/export_check
       supCheckExport: apiM + '/sup_check/export', //盘点记录  sup_check/export.   sup_check/export_check
       supMoveExport: apiM + '/sup_move/export', //移库记录 sup_move/export   sup_move/export_check
-      supplierGPurchaseExport: apiM + '/supplier/g_purchase/export', //预采单. supplier/g_purchase/export.   supplier/g_purchase/export_check
       supDeliveryLackHistoryItemExport: apiM + '/sup_delivery/lack_history/item/export', //缺货记录  sup_delivery/lack_history/item/export  sup_delivery/lack_history/item/export_check
       supDistributeExport: apiM + '/sup_distribute/export', //调拨单   sup_distribute/export   sup_distribute/export_check
       supPDistributeExport: apiM + '/sup_p_distribute/export', //调拨记录 sup_p_distribute/export  sup_p_distribute/export_check

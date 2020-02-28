@@ -2,23 +2,32 @@
   <print-layout title="打印分拣码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <!--批量-->
     <div v-for="(item, index) in dataItem" :key="index">
-      <div>
-        <div>1/上饶线路</div>
-        <div>100件</div>
-        <div>1000108266</div>
+      <div class="line-top">
+        <div>{{item.line_code}}/{{item.line_title}}</div>
+        <div>{{item.num}}件</div>
+        <div>{{item.item_code}}</div>
       </div>
-
-      <div>
-        <span>18</span>
-        <span>-</span>
-        <span>12</span>
-        <span>-</span>
-        <span>10</span>
+      <div v-for="(s, i) in item.stores" :key="i">
+        <div v-for="n in  s.num" :key="n">
+          <div>
+            <span>{{item.line_index}}</span>
+            <span>-</span>
+            <span>{{item.city_index}}</span>
+            <span>-</span>
+            <span>{{item.city_index}}</span>
+          </div>
+          <div>
+            <div>
+              <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="120" :height="120"/>
+            </div>
+            <div>
+              <div style="font-size: 16px;">{{s.store_title}}</div>
+              <div>{{item.item_code}}</div>
+              <div>{{n + 1}}/{{item.stores.length}} 蒲公英 {{detail.delivery_date}}</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="120" :height="120"/>
-      <div style="font-size: 16px;">都昌百润超市</div>
-      <div>1000108266</div>
-      <div>2/3 蒲公英 2020-01-12</div>
     </div>
     <div class="bottom-btn-body">
       <div class="bottom-btn">
@@ -43,7 +52,9 @@ export default {
   created(){
   },
   data() {
-    let initDetail = {}
+    let initDetail = {
+      print_data: {}
+    }
     return {
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -53,10 +64,8 @@ export default {
   methods: {
     //显示打印(供外部也调用)
     showPrint(data){
-      console.log(data);
       this.$data.detail = data;
-      this.$data.dataItem = data;
-      this.$data.isShow = true;
+      this.supAllocateDetail();
     },
     //获取明细列表
     async supAllocateDetail(){
@@ -69,6 +78,23 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
+        rd = [{
+          line_code: '123456',
+          line_title: '普哥的线路',
+          item_code: 'xxx12345',
+          item_title: '普哥的货',
+          city_code: 'ccc123',
+          city_title: '普哥的县',
+          out_stock_id: 12,
+          num: 5,
+          stores: [{
+            store_title: '普哥的店',
+            num: 2
+          },{
+            store_title: '普哥的店2',
+            num: 3
+          }]
+        }];
         this.$data.dataItem = rd;
         this.$data.isShow = true;
       }else{
