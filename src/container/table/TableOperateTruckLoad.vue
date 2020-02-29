@@ -171,6 +171,9 @@
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
+        //如不满足条件
+        if(!query.delivery_date || !query.line_code) return;
+        
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supDeliveryLineDetail, query);
         this.$loading({isShow: false});

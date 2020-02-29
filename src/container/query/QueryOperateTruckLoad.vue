@@ -71,9 +71,9 @@
         if(rd.length > 0){
           this.$data.initQuery.line_code = rd[0].code;
           this.$data.query.line_code = rd[0].code;
-          let pc = this.getPageComponents('TableOperateTruckLoad');
-          pc.getData(this.query);
         }
+        let pc = this.getPageComponents('TableOperateTruckLoad');
+        pc.getData(this.query);
       }
     }
   }
