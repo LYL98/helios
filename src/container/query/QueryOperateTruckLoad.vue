@@ -45,7 +45,7 @@
     name: "QueryOperateTruckLoad",
     components: {
       'select-option': SelectOption,
-      'select-line': SelectLine,
+      'select-line': SelectLine
     },
     mixins: [queryMixin],
     created() {

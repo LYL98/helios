@@ -2,13 +2,13 @@
   <!-- 如果只有一项操作，则列出单项 -->
   <div>
     <a
-      class="single-item"
+      class="single-item no-pre"
       v-if="displayItemList.length >= 1"
       href="javascript:void(0);"
       @click.prevent="handleCommand(displayItemList[0].command)"
     >{{ displayItemList[0].title }}</a>
     <a
-      class="single-item"
+      class="single-item no-pre"
       v-if="displayItemList.length >= 2"
       href="javascript:void(0);"
       @click.prevent="handleCommand(displayItemList[1].command)"

@@ -15,7 +15,7 @@ const router = new Router({
     {
       path: '/',
       name: 'Login',
-      component: () => import('@/Login')
+      component: () => import('@/view/Login')
     },
 
     /*供应商*/
