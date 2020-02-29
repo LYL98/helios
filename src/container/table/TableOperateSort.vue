@@ -29,7 +29,6 @@
                 <div class="select">
                   <el-checkbox :disabled="item.allocated_time ? false : true" :value="judgeSelect(item)"
                     @change="(v)=>changeSelect(v, item)">批{{props.row.out_stocks.length - i}}</el-checkbox>
-                    批{{props.row.out_stocks.length - i}}
                 </div>
                 <div>入场：{{returnUnit(item.num, '件', '-')}}</div>
                 <div>入场时间：{{returnDateFormat(item.created, 'HH:mm:ss')}}</div>
