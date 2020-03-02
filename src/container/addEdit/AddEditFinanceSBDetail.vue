@@ -37,7 +37,20 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="金额">
+              <el-form-item label="商品编号/名称">改改改</el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="入库数量">改改改</el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="采购价">改改改</el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="入库金额">
                 <div class="amount">
                   <div v-if="detail.bill_amount === 0">&yen;{{returnPrice(detail.bill_amount)}}</div>
                   <div class="up" v-else-if="detail.bill_amount > 0">&yen;{{returnPrice(detail.bill_amount)}}</div>

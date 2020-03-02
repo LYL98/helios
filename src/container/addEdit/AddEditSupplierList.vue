@@ -44,37 +44,41 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="档口号">
+              <el-input placeholder="30个字符以内" size="medium" :maxlength="30" v-model="detail.stall_code"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="发票" prop="has_ticket">
               <el-radio v-model="detail.has_ticket" :label="true" border size="medium">有</el-radio>
               <el-radio v-model="detail.has_ticket" :label="false" border size="medium">无</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
-        <h6 class="subtitle">银行账户信息</h6>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="档口号" prop="stall_code">
-              <el-input placeholder="30个字符以内" size="medium" :maxlength="30" v-model="detail.stall_code"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="开户行" prop="bank_name">
-              <el-input placeholder="10个字符以内" size="medium" :maxlength="10" v-model="detail.bank_name"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="账户名称" prop="bank_account_name">
-              <el-input placeholder="10个字符以内" size="medium" :maxlength="10" v-model="detail.bank_account_name"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="银行账户号" prop="bank_account">
-              <el-input placeholder="25个字符以内" size="medium" :maxlength="25" v-model="detail.bank_account"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
+
+        <template v-if="auth.isAdmin || auth.SupplierListEditBank">
+          <h6 class="subtitle">银行账户信息</h6>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="开户行" prop="bank_name">
+                <el-input placeholder="10个字符以内" size="medium" :maxlength="10" v-model="detail.bank_name"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="账户名称" prop="bank_account_name">
+                <el-input placeholder="10个字符以内" size="medium" :maxlength="10" v-model="detail.bank_account_name"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="银行账户号" prop="bank_account">
+                <el-input placeholder="25个字符以内" size="medium" :maxlength="25" v-model="detail.bank_account"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </template>
+        
         <template v-if="pageType === 'detail'">
           <h6 class="subtitle">操作记录</h6>
           <el-row v-if="detail.creator && detail.creator.id">
@@ -138,10 +142,10 @@ export default {
       province_code: 'nationwide', //全国要传nationwide
       title: '',
       phone: '',
+      stall_code: '',
       supplier_type: 'global_pur',
       has_ticket: true,
       bill_term: 0,
-      stall_code: '',
       bank_name: '',
       bank_account_name: '',
       bank_account: '',
@@ -172,10 +176,6 @@ export default {
         phone: [
           { required: true, message: '登录手机号不能为空', trigger: 'change' },
           { pattern: Verification.testStrs.checkMobile, message: '请输入11位的手机号', trigger: 'blur' }
-        ],
-        stall_code: [
-          { required: true, message: '档口号不能为空', trigger: 'change' },
-          { max: 30, message: '请输入30个以内的字符', trigger: 'blur' }
         ],
         bank_name: [
           { required: true, message: '开户行不能为空', trigger: 'change' },

@@ -1,6 +1,6 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="(page === 'supplierList' && (auth.isAdmin || auth.SupplierListAdd || auth.SupplierListExport))">
+    <div class="table-top" v-if="auth.isAdmin || auth.SupplierListAdd || auth.SupplierListExport">
       <div class="left"></div>
       <div class="right">
         <el-button v-if="auth.isAdmin || auth.SupplierListExport" @click.native="handleExport('supplierExport', query)" size="mini" type="primary" plain>导出供应商</el-button>
@@ -59,7 +59,7 @@
                   :value="scope.row.is_freeze"
                   :active-value="true"
                   :inactive-value="false"
-                  :disabled="(auth.isAdmin || auth.SupplierListFreeze) && page === 'supplierList' ? false : true"
+                  :disabled="auth.isAdmin || auth.SupplierListFreeze ? false : true"
                 />
               </div>
               <!--正常情况-->
@@ -74,18 +74,13 @@
               @command-visible="handleCommandVisible"
               :list="[
                 {
-                  title: '修改',
-                  isDisplay: (auth.isAdmin || auth.SupplierListEdit) && page === 'supplierList',
-                  command: () => handleShowAddEdit('AddEditSupplierList', scope.row, 'edit')
-                },
-                {
                   title: '审核',
-                  isDisplay: (auth.isAdmin || auth.SupplierListAudit) && !scope.row.is_audited && page === 'supplierList',
+                  isDisplay: (auth.isAdmin || auth.SupplierListAudit) && !scope.row.is_audited,
                   command: () => supplierAudit(scope.row)
                 },
                 {
                   title: '供应商品',
-                  isDisplay: (auth.isAdmin || auth.SupplierListItem) && scope.row.is_audited && page === 'supplierList',
+                  isDisplay: (auth.isAdmin || auth.SupplierListItem) && scope.row.is_audited,
                   command: () => handleShowDetail('DetailSupplierListItem', scope.row)
                 },
               ]"
@@ -113,9 +108,6 @@
     components: {
     },
     mixins: [tableMixin],
-    props: {
-      page: { type: String, default: '' }, //来自页面
-    },
     created() {
       let pc = this.getPageComponents('QuerySupplierList');
       this.getData(pc.query);

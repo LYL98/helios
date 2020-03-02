@@ -3,7 +3,7 @@
     <add-edit-layout :title="returnPageTitles('线路')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-form-item label="编号">
-          <el-input v-model="detail.code" size="medium" placeholder="系统自动生成" disabled></el-input>
+          <el-input v-model="detail.line_id" size="medium" placeholder="系统自动生成" disabled></el-input>
         </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" size="medium" :maxlength="10" placeholder="请输入名称"></el-input>

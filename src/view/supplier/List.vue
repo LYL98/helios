@@ -1,7 +1,7 @@
 <template>
   <div>
     <query-supplier-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QuerySupplierList"/>
-    <table-supplier-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableSupplierList" page="supplierList"/>
+    <table-supplier-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableSupplierList"/>
     <add-edit-supplier-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditSupplierList"/>
     <detail-supplier-list-item :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailSupplierListItem"/>
     <detail-supplier-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailSupplierList"/>

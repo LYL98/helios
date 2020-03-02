@@ -56,6 +56,13 @@
           </my-query-item>
         </el-col>
       </el-row>
+      <el-row :gutter="32" style="margin-top: 16px;">
+        <el-col :span="7">
+          <my-query-item label="采购员">
+            <select-buyer size="small" :provinceCode="query.province_code" v-model="query.buyer_id" @change="handleQuery('TableItemList')" />
+          </my-query-item>
+        </el-col>
+      </el-row>
     </template>
 
     <!--未上架-->
@@ -83,6 +90,7 @@
 <script>
   import { Collapse, CollapseItem } from 'element-ui';
   import { SelectOption, SelectDisplayClass, SelectInnerTag, SelectSystemClass } from '@/common';
+  import { SelectBuyer } from '@/component';
   import queryMixin from './query.mixin';
   import { Constant } from '@/util';
 
@@ -94,7 +102,8 @@
       'select-display-class': SelectDisplayClass,
       'select-option': SelectOption,
       'select-inner-tag': SelectInnerTag,
-      'select-system-class': SelectSystemClass
+      'select-system-class': SelectSystemClass,
+      'select-buyer': SelectBuyer,
     },
     mixins: [queryMixin],
     props: {
@@ -118,6 +127,7 @@
         inner_tag_id: '',
         is_presale: '',
         is_gift: '',
+        buyer_id: '',
         system_class_code: '',
         system_class_codes: []
       }
