@@ -97,8 +97,7 @@ export default {
         this.$data.detail = JSON.parse(JSON.stringify({
           ...data,
           weight: this.returnWeight(data.weight),
-          price: this.returnPrice(data.price),
-          id: true,
+          price: this.returnPrice(data.price)
         }));
       }else{
         this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
