@@ -4,7 +4,7 @@
       <el-row :gutter="32">
         <el-col :span="7">
           <my-query-item label="审核状态">
-            <el-select v-model="query.status" size="small" class="query-item-select" clearable @change="selectByCondition">
+            <el-select v-model="query.status" size="small" clearable @change="selectByCondition" style="width: 100%;">
               <el-option label="全部" value=""></el-option>
               <el-option label="未审核" value="init"></el-option>
               <el-option label="审核通过" value="checked"></el-option>
@@ -18,7 +18,7 @@
               size="small"
               clearable
               :provinceCode="province.code"
-              v-model="query.line_code"
+              v-model="query.line_id"
               @change="selectByCondition"
             />
           </my-query-item>
@@ -62,9 +62,8 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               @change="changePicker"
-              class="query-item-date"
+              style="width: 100%;"
             />
-            <el-button size="small" type="primary" class="query-item-reset" plain @click="clearQueryCondition">重置</el-button>
           </my-query-item>
         </el-col>
       </el-row>
@@ -285,7 +284,7 @@
         pickerValue: null,
         query: {
           province_code: '',
-          line_code: '',
+          line_id: '',
           city_code: '',
           store_title: '',
           status: '',
@@ -356,7 +355,7 @@
 
       clearQueryCondition() {
         this.$data.query = Object.assign({}, this.$data.query, {
-          line_code: '',
+          line_id: '',
           city_code: '',
           store_title: '',
           status: '',
@@ -372,9 +371,9 @@
 
       async returnFrameListExport() {
         let api = Config.api.operateRefundFrameExport;
-        let {line_code, city_code, store_title, status, begin_date, end_date} = this.query;
+        let {line_id, city_code, store_title, status, begin_date, end_date} = this.query;
         let query = {
-          line_code,
+          line_id,
           city_code,
           store_title,
           status,

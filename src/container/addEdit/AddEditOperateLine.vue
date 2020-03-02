@@ -2,8 +2,8 @@
   <div>
     <add-edit-layout :title="returnPageTitles('线路')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
-        <el-form-item label="编号" prop="code">
-          <el-input v-model="detail.code" size="medium" :maxlength="2" placeholder="请输入编号" :disabled="pageType === 'edit'"></el-input>
+        <el-form-item label="编号">
+          <el-input v-model="detail.code" size="medium" placeholder="系统自动生成" disabled></el-input>
         </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" size="medium" :maxlength="10" placeholder="请输入名称"></el-input>
@@ -41,17 +41,12 @@ export default {
     };
     return{
       initDetail: {
-        code: '',
         title: '',
         city_codes: [],
         province_code: this.$province.code
       },
       connectData: [],
       rules: {
-        code: [
-            { required: true, message: '编号不能为空', trigger: 'change' },
-            { validator: validCode, trigger: 'blur' }
-        ],
         title: [
             { required: true, message: '名称不能为空', trigger: 'change' },
             { max: 10, message: '请输入10个以内的字符', trigger: 'blur' }
@@ -67,7 +62,9 @@ export default {
     showAddEdit(data, type){
       this.$data.pageType = type;
       if(type === 'edit'){
-        this.$data.detail = this.copyJson(data);
+        let d = this.copyJson(data);
+        d.id = d.line_id;
+        this.$data.detail = d;
         this.$data.connectData = data.citys;
       }else{
         this.$data.detail = this.copyJson(this.initDetail);

@@ -65,7 +65,7 @@
                   command: () => handleShowDetail('DetailOperateTruckLoad', {
                     ...scope.row,
                     delivery_date: query.delivery_date,
-                    line_code: query.line_code,
+                    line_id: query.line_id,
                     confirmed: dataItem.confirmed
                   })
                 }
@@ -88,7 +88,7 @@
         <el-button v-if="auth.isAdmin || auth.OperateTruckLoadAffirm"
           @click.native="handleShowForm('FormOperateTruckLoadAffirm', {
             delivery_date: query.delivery_date,
-            line_code: query.line_code,
+            line_id: query.line_id,
             ...dataItem
           })" size="mini" type="primary" :disabled="dataItem.confirmed">发车前确认</el-button>
       </div>
@@ -172,7 +172,7 @@
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         //如不满足条件
-        if(!query.delivery_date || !query.line_code) return;
+        if(!query.delivery_date || !query.line_id) return;
         
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supDeliveryLineDetail, query);

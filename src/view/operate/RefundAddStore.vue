@@ -5,7 +5,7 @@
         <my-query-item>
           <my-select-line
             :provinceCode="province.code"
-            v-model="query.line_code"
+            v-model="query.line_id"
             style="width: 180px;"
             size="small"
             @change="selectByCondition"
@@ -15,7 +15,7 @@
           <my-select-city
             size="small"
             :provinceCode="province.code"
-            :lineCode="query.line_code"
+            :lineCode="query.line_id"
             v-model="query.city_code"
             style="width: 180px; margin-left: 20px;"
             @change="selectByCondition"
@@ -182,7 +182,7 @@
       initQuery() {
         this.$data.query = Object.assign(this.$data.query, {
           province_code: this.province.code,
-          line_code: '',
+          line_id: '',
           city_code: '',
           store_title: ''
         });
@@ -257,7 +257,7 @@
        */
       selectByCondition() {
         // 如果查询列表没有搜索参数，则初始化状态。
-        if (!this.$data.query.line_code
+        if (!this.$data.query.line_id
             && !this.$data.query.city_code
             && !this.$data.query.store_title) {
           this.$data.storeList = [];

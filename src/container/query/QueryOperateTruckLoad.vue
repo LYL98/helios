@@ -18,7 +18,7 @@
         <my-query-item label="线路">
           <select-line
             :provinceCode="province.code"
-            v-model="query.line_code"
+            v-model="query.line_id"
             size="small"
             :clearable="false"
             @initCallBack="lineInit"
@@ -57,7 +57,7 @@
       let initQuery = {
         delivery_date: '',
         condition: '',
-        line_code: '',
+        line_id: '',
         province_code: this.$province.code,
       }
       return {
@@ -69,8 +69,8 @@
       //线路初始化默认选择
       lineInit(rd){
         if(rd.length > 0){
-          this.$data.initQuery.line_code = rd[0].code;
-          this.$data.query.line_code = rd[0].code;
+          this.$data.initQuery.line_id = rd[0].code;
+          this.$data.query.line_id = rd[0].code;
         }
         let pc = this.getPageComponents('TableOperateTruckLoad');
         pc.getData(this.query);

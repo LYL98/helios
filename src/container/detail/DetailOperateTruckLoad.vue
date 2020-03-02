@@ -72,7 +72,7 @@
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supDeliveryItemStoreDetail, {
           delivery_date: detail.delivery_date,
-          line_code: detail.line_code,
+          line_id: detail.line_id,
           item_id: detail.item_id
         });
         this.$loading({isShow: false});

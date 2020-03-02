@@ -96,7 +96,7 @@
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.$data.layoutTitle = `${data.line_code}/${data.line.title}`;
+        this.$data.layoutTitle = `${data.line_id}/${data.line.title}`;
         this.supDeliveryCityDetail(data);
       },
       //获取明细列表
@@ -104,7 +104,7 @@
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supDeliveryCityDetail, {
           delivery_date: data.delivery_date,
-          line_code: data.line_code,
+          line_id: data.line_id,
         });
         this.$loading({isShow: false});
         if(res.code === 0){

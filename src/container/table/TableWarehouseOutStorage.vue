@@ -82,6 +82,7 @@
         tableName: 'TableWarehouseOutStorage',
         tableColumn: [
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+          { label: '仓库', key: 'warehouse_titles', width: '4', isShow: true },
           { label: '应出库', key: 'num', width: '3', isShow: true },
           { label: '状态', key: 'out_storage_status', width: '2', isShow: true },
           { label: '已出库', key: 'num_out', width: '3', isShow: true },

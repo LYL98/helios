@@ -70,7 +70,7 @@ export default {
       this.$loading({isShow: true, isWhole: true});
       let res = await Http.get(Config.api.supConfirmStoreLack, {
         delivery_date: detail.delivery_date,
-        line_code: detail.line_code,
+        line_id: detail.line_id,
       });
       this.$loading({isShow: false});
       if(res.code === 0){
@@ -102,7 +102,7 @@ export default {
       let { detail } = this;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.supSend, {
-        line_code: detail.line_code,
+        line_id: detail.line_id,
         delivery_date: detail.delivery_date
       });
       this.$loading({isShow: false});
