@@ -43,7 +43,7 @@
             </el-form-item>
           </el-col>
           <!--含筐-->
-          <template v-if="detail.frame_code">
+          <template v-if="detail.frame_id">
             <el-col :span="12">
               <el-form-item label="筐金额"><input-price size="medium" :value="detail.num * detail.frame_price" disabled/></el-form-item>
             </el-col>
@@ -213,9 +213,9 @@ export default {
     //选择商品时
     selectGItem(data){
       //如果有筐
-      if(data.frame_code){
+      if(data.frame_id){
         let { detail } = this;
-        detail.frame_code = data.frame_code;
+        detail.frame_id = data.frame_id;
         detail.frame_price = data.frame.price;
         this.$data.detail = detail;
       }

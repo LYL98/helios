@@ -2,9 +2,9 @@
   <el-select v-model="frameCode" filterable clearable placeholder="请选择筐" style="width:100%;" @change="changeFrame" :size="size">
     <el-option
       v-for="item in dataItem"
-      :key="item.code"
+      :key="item.id"
       :label="`${item.title}（￥${returnPrice(item.price)}）`"
-      :value="item.code">
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
@@ -55,7 +55,7 @@ export default {
         that.$data.dataItem = rd;
         //如果只有一个筐，默认选择，页面不显示
         if(rd.length === 1){
-          that.changeFrame(rd[0].code, true);
+          that.changeFrame(rd[0].id, true);
         }
       }else{
         MessageBox.alert(res.message, '提示');

@@ -2,9 +2,6 @@
   <div class="user-reset-password">
     <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}商品筐`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">
-        <el-form-item label="编号" prop="code">
-          <el-input v-model="detail.code" :disabled="detail.id" placeholder="请输入12位以内的字母和数字组合" :maxlength="12"></el-input>
-        </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
@@ -39,23 +36,6 @@ export default {
     'input-price': InputPrice
   },
   data(){
-    //判断是否是重量
-    let isWeight = (rule, value, callback) => {
-      if (!Verification.isWeight(value)) {
-        callback(new Error('请输入正确的商品筐重量'));
-      } else {
-        callback();
-      }
-    }
-
-     //判断是否是金额
-    let isPrice = (rule, value, callback) => {
-      if (!Verification.isPrice(value)) {
-        callback(new Error('请输入正确的商品筐价格'));
-      } else {
-        callback();
-      }
-    };
 
     let validWeight = function (rules, value, callback) {
       let num = Number(value);
@@ -90,46 +70,10 @@ export default {
       }
     };
 
-    let that = this;
-
-    let validCode = function (rules, value, callback) {
-      let asyncValid = () => {
-        Http.get(Config.api.baseFrameList, {
-          code: value
-        }).then(res => {
-          if (res.data && res.data.length > 0) {
-            callback(new Error('编号重复，请重新输入'))
-          } else {
-            callback()
-          }
-        }).catch(e => {
-          callback();
-        })
-      };
-
-      let { detail } = that;
-      if (detail.id) {
-        //编辑模式
-        if (value === detail.code) {
-          //没有修改编号
-          callback();
-        } else {
-          asyncValid()
-        }
-      } else {
-        asyncValid()
-      }
-    };
-
     return{
       initDetail: {
       },
       rules: {
-        code: [
-            { required: true, message: '编号不能为空', trigger: 'blur' },
-          { pattern: Verification.testStrs.isNumberOrAlpha, message: '请输入12位以内的字母和数字组合', trigger: 'blur' },
-          { validator: validCode, trigger: 'blur' },
-        ],
         title: [
             { required: true, message: '名称不能为空', trigger: 'blur' }
         ],

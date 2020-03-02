@@ -47,7 +47,7 @@
               </div>
               <!--筐-->
               <div class="td-item" v-else-if="item.key === 'frame'">
-                <span v-if="scope.row.frame_code">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
+                <span v-if="scope.row.frame_id">{{scope.row.frame.title}}&nbsp;(&yen;{{returnPrice(scope.row.frame.price)}})</span>
                 <span v-else>-</span>
               </div>
               <!--科学分类-->

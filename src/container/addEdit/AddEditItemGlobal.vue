@@ -19,7 +19,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="筐">
-            <select-frame size="medium" v-model="detail.frame_code"/>
+            <select-frame size="medium" v-model="detail.frame_id"/>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -150,7 +150,7 @@ export default {
       system_class_code: '', //科学分类编号
       system_class_codes: [], //科学分类编号s
       supplier_ids: [], //供应商
-      frame_code: '', //筐code
+      frame_id: '', //筐code
       content: '', //详细信息
       creator: {},
       last_updater: {},

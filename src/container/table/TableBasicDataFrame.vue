@@ -19,13 +19,7 @@
         :current-row-key="clickedRow[rowIdentifier]"
       >
         <el-table-column width="20"/>
-        <el-table-column prop="code" label="编号" min-width="150">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.code }}
-            </div>
-          </template>
-        </el-table-column>
+        <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="title" label="名称" min-width="150">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
@@ -97,8 +91,7 @@
     },
     data() {
       return {
-        dataItem: [],
-        rowIdentifier: 'code'
+        dataItem: []
       }
     },
     methods: {
@@ -117,7 +110,7 @@
       async deleteData(data) {
         this.$loading({ isShow: true });
         let res = await Http.post(Config.api.basicdataFrameDelete, {
-          code: data.code
+          id: data.id
         });
         this.$loading({ isShow: false });
         if(res.code === 0){

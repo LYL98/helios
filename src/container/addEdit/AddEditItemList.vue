@@ -19,7 +19,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="筐">
-              <el-input size="medium" v-if="detail.frame_code" :value="`${detail.frame.title} (￥${returnPrice(detail.frame.price)})`" disabled></el-input>
+              <el-input size="medium" v-if="detail.frame_id" :value="`${detail.frame.title} (￥${returnPrice(detail.frame.price)})`" disabled></el-input>
               <el-input size="medium" v-else value="-" disabled></el-input>
             </el-form-item>
           </el-col>
@@ -114,7 +114,7 @@
               <input-number size="medium" v-model="detail.rank"/>
             </el-form-item>
           </el-col>
-          <el-col :span="8" v-if="!detail.frame_code">
+          <el-col :span="8" v-if="!detail.frame_id">
             <el-form-item label="是否赠品" prop="order_is_gift">
               <el-radio v-model="detail.is_gift" :label="true" border size="mini">是</el-radio>
               <el-radio v-model="detail.is_gift" :label="false" border size="mini">否</el-radio>
