@@ -7,7 +7,7 @@
         >
           客户订单统计
         </el-breadcrumb-item>
-        <el-breadcrumb-item>{{ query.zone_code === '' ? '全部片区' : query.zone_title }}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ query.zone_id === '' ? '全部片区' : query.zone_title }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="query" style="margin-bottom: 20px;">
@@ -34,7 +34,7 @@
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="片区">
             <my-select-zone
-              :value="query.zone_code"
+              :value="query.zone_id"
               :provinceCode="query.province_code"
               :clearable="false"
               size="small"
@@ -213,12 +213,12 @@
       },
 
       initBreadcrumb() {
-        let zone_code = this.$route.query.zone_code;
+        let zone_id = this.$route.query.zone_id;
         let zone_title = this.$route.query.zone_title;
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
-          zone_code: zone_code,
+          zone_id: zone_id,
           zone_title: zone_title,
           begin_date: begin_date,
           end_date: end_date
@@ -237,7 +237,7 @@
           begin_date: begin_date,
           end_date: end_date,
           sort: '-gmv',
-          zone_code: this.$route.query.zone_code,
+          zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -258,7 +258,7 @@
       changeZone(data, isInit) {
         if (!isInit) {
           // console.log("改变片区", data);
-          this.$data.query.zone_code = data;
+          this.$data.query.zone_id = data;
           this.zoneCityOrderList();
         }
       },
@@ -301,7 +301,7 @@
           query: {
             city_code: item.city_code,
             city_title: item.city_title,
-            zone_code: this.$data.query.zone_code,
+            zone_id: this.$data.query.zone_id,
             zone_title: this.$data.query.zone_title,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date

@@ -307,7 +307,7 @@
             data.push({
               value: that.returnPrice(orderClassSumData[i].gmv),
               name: (areaType === 'zone' ? orderClassSumData[i].zone_title : orderClassSumData[i].city_title),
-              code: (areaType === 'zone' ? orderClassSumData[i].zone_code : orderClassSumData[i].city_code)
+              code: (areaType === 'zone' ? orderClassSumData[i].zone_id : orderClassSumData[i].city_code)
             });
           }else{
             dataTemp.value += orderClassSumData[i].gmv;
@@ -391,7 +391,7 @@
             that.$router.push({
               path: '/statistic/client/zone',
               query: {
-                zone_code: params.data.code,
+                zone_id: params.data.code,
                 zone_title: params.data.name,
                 begin_date: that.$data.query.begin_date,
                 end_date: that.$data.query.end_date
@@ -402,12 +402,12 @@
         });
       },
       handleShowZoneDetail(item) {
-        let zone_code = item.zone_code;
+        let zone_id = item.zone_id;
         let zone_title = item.zone_title;
         this.$router.push({
           path: '/statistic/client/zone',
           query: {
-            zone_code: zone_code,
+            zone_id: zone_id,
             zone_title: zone_title,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date

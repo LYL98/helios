@@ -15,7 +15,7 @@
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="片区">
-          <my-select-zone v-model="editQuery.zone_code"
+          <my-select-zone v-model="editQuery.zone_id"
                           :provinceCode="editQuery.province_code"
                           clearable
                           size="small"
@@ -119,7 +119,7 @@
             page: 1,
             page_size: 20,
             province_code: '',
-            zone_code: '',
+            zone_id: '',
             city_code: '',
             begin_date: '',
             end_date: '',
@@ -177,7 +177,7 @@
           page: 1,
           page_size: 20,
           province_code: this.province.code,
-          zone_code: '',
+          zone_id: '',
           city_code: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,

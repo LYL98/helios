@@ -149,7 +149,7 @@ export default {
         page: 1,
         page_size: 20,
         province_code: '',
-        zone_code: '',
+        zone_id: '',
         city_code: '',
         begin_date: '',
         end_date: '',
@@ -222,7 +222,7 @@ export default {
       // this.$data.query = {
       //   page: 1,
       //   page_size: 20,
-      //   zone_code: '',
+      //   zone_id: '',
       //   city_code: '',
       //   begin_date: '',
       //   end_date: '',

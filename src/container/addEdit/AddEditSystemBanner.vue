@@ -28,7 +28,7 @@
         <my-select-tag :tag="tagName" @change="selectTag"></my-select-tag>
       </el-form-item>
       <el-form-item label="选择展示分类" v-if="bannerType === 'displayClass'">
-        <my-select-display-class style="width: 200px" v-model="displayCode" @change="selectDisplayUrl"/>
+        <my-select-display-class style="width: 200px" v-model="displayId" @change="selectDisplayUrl"/>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -92,7 +92,7 @@ export default {
       urlName: '',
       tagName: '',
       displayClassUrl: '',
-      displayCode: '',
+      displayId: '',
       bannerType: 'nolink',
       itemName: ''
     }
@@ -131,7 +131,7 @@ export default {
       let that = this;
       that.$data.urlName = '';
       that.$data.itemName = '';
-      that.$data.displayCode = '';
+      that.$data.displayId = '';
 
       let bannerType = '';
 
@@ -153,7 +153,7 @@ export default {
         } else {
           codeStr = '' + id
         }
-        that.$data.displayCode = codeStr;
+        that.$data.displayId = codeStr;
         callback(bannerType);
       } else if (url.includes("/pages/itemLabel")) {
         bannerType = 'category';

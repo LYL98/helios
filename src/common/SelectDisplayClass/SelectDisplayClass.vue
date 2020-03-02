@@ -3,9 +3,9 @@
     <el-option v-if="hasAllSelection" label="全部" value=""></el-option>
     <el-option
       v-for="item in dataItem"
-      :key="item.code"
+      :key="item.id"
       :label="item.title"
-      :value="useName?item.title:item.code">
+      :value="useName?item.title:item.id">
     </el-option>
   </el-select>
 </template>
@@ -52,7 +52,7 @@ export default {
         that.$data.dataItem = rd;
         //如果只有一个展示分类，默认选择
         if(rd.length === 1){
-          that.changeDisplayClass(rd[0].code, true);
+          that.changeDisplayClass(rd[0].id, true);
         }
       }else{
         MessageBox.alert(res.message, '提示');

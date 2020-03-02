@@ -117,7 +117,7 @@
           title: '',
           images: [],
           province_code: '',
-          zone_code: '',
+          zone_id: '',
           city_code: '',
           address: '',
           linkman: '',

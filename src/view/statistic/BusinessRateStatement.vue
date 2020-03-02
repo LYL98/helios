@@ -224,7 +224,7 @@ export default {
         page: 1,
         page_size: 20,
         province_code: '',
-        zone_code: '',
+        zone_id: '',
         begin_date: '',
         end_date: '',
         sort: ''
@@ -313,7 +313,7 @@ export default {
       // this.$data.query = {
       //   page: 1,
       //   page_size: 20,
-      //   zone_code: '',
+      //   zone_id: '',
       //   province_code: this.province.code,
       //   sort: this.$data.resetSort,
       //   begin_date: this.$data.resetBeginDate,

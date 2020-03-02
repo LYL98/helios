@@ -7,7 +7,7 @@
       @close="onCancel"
       :before-close="cancelStatistic">
       <div style="border-bottom: #F7F7F8 solid 10px; padding-bottom: 16px">
-        <my-select-zone v-model="query.zone_code"
+        <my-select-zone v-model="query.zone_id"
                         :provinceCode="province.code"
                         clearable
                         size="small"
@@ -18,7 +18,7 @@
                         ref="mySelectCity"
                         clearable
                         size="small"
-                        :zoneCode="query.zone_code"
+                        :zoneId="query.zone_id"
                         @change="changeCity"
                         style="width: 180px;margin-left: 20px"/>
         <el-input placeholder="请输入门店名称/电话"
@@ -126,7 +126,7 @@ export default {
         condition: '',
         item_id: '',
         province_code: '',
-        zone_code: '',
+        zone_id: '',
         city_code: '',
         sort: ''
       },
@@ -170,7 +170,7 @@ export default {
       this.loadItemSalesList();
     },
     changeZone() {
-      if (this.query.zone_code === '') {
+      if (this.query.zone_id === '') {
         this.query.city_code = '';
       }
       this.loadItemSalesListWithFirstPage()
@@ -203,7 +203,7 @@ export default {
         condition: '',
         item_id: '',
         province_code: '',
-        zone_code: '',
+        zone_id: '',
         city_code: '',
         sort: ''
       };

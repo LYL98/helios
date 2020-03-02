@@ -5,7 +5,7 @@
       <my-select-zone
         style="width: 200px"
         :provinceCode="provinceCode"
-        v-model="query.zone_code"
+        v-model="query.zone_id"
         @change="selectByCondition"
         clearable
       ></my-select-zone>
@@ -83,7 +83,7 @@
       return {
         query: {
           province_code: this.$props.provinceCode,
-          zone_code: '', // 片区code
+          zone_id: '', // 片区code
         },
         cityTitle: '',
         // 搜索完毕后，获取搜索到的列表itemList，
@@ -115,7 +115,7 @@
        */
       selectByCondition() {
         // 如果查询列表没有搜索参数，则初始化状态。
-        if (!this.$data.query.zone_code
+        if (!this.$data.query.zone_id
           && !this.$data.cityTitle) {
           this.$data.itemList = [];
           this.$data.multipleSelection = [];
@@ -139,7 +139,7 @@
       clearQueryCondition() {
         this.$data.query = Object.assign({}, this.$data.query, {
           province_code: this.$props.provinceCode,
-          zone_code: ''
+          zone_id: ''
         })
         this.$data.cityTitle = '';
         this.$data.itemList = [];
@@ -204,7 +204,7 @@
        */
       handleRemoveItem(item) {
         // 从编辑列表删除
-        this.$data.editList = this.$data.editList.filter(t => t.code !== item.code);
+        this.$data.editList = this.$data.editList.filter(t => t.id !== item.id);
         this.$emit('change', this.$data.editList);
       },
 

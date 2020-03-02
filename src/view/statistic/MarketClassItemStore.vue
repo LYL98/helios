@@ -43,7 +43,7 @@
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="片区">
             <my-select-zone
-              v-model="query.zone_code"
+              v-model="query.zone_id"
               :provinceCode="query.province_code"
               clearable
               size="small"
@@ -61,7 +61,7 @@
               clearable
               v-model="query.city_code"
               :provinceCode="query.province_code"
-              :zoneCode="query.zone_code"
+              :zoneId="query.zone_id"
               @change="changeQuery"
               class="query-item-select"
               :showAll="true"
@@ -230,7 +230,7 @@
           system_class_code2: q.system_class_code2,
           system_class3: q.system_class3,
           system_class_code3: q.system_class_code3,
-          zone_code: '',
+          zone_id: '',
           city_code: '',
           condition: '',
           page: 1,

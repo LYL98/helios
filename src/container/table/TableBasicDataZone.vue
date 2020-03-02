@@ -19,14 +19,7 @@
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column width="20"/>
-        <el-table-column prop="code" label="编号" min-width="160">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              {{ scope.row.code }}
-            </div>
-          </template>
-        </el-table-column>
+        <el-table-column type="index" label="序号" min-width="150"></el-table-column>
         <el-table-column label="所属省份" min-width="160">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">

@@ -30,7 +30,7 @@
       'el-select': Select,
       'el-option': Option
     },
-    props: ['value', 'provinceCode', 'zoneCode' ,'showAll', 'clearable', 'placeholder', 'disabled', 'size'],
+    props: ['value', 'provinceCode', 'zoneId' ,'showAll', 'clearable', 'placeholder', 'disabled', 'size'],
     model: {
       prop: 'value',
       event: 'change'
@@ -63,7 +63,7 @@
           this.baseCityList();
         }
       },
-      zoneCode: {
+      zoneId: {
         deep: true,
         immediate: true,
         handler: function (next, pre) {
@@ -88,7 +88,7 @@
       async baseCityList(){
         let res = await Http.get(Config.api.baseCityList, {
           province_code: this.$props.provinceCode || '',
-          zone_code: this.$props.zoneCode || ''
+          zone_id: this.$props.zoneId || ''
         });
         if(res.code === 0){
           let rd = res.data;

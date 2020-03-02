@@ -5,14 +5,14 @@
       <my-select-zone
         style="width: 200px"
         :provinceCode="provinceCode"
-        v-model="query.zone_code"
+        v-model="query.zone_id"
         @change="selectByCondition"
         clearable
       ></my-select-zone>
       <my-select-city
         style="width: 200px; margin-left: 10px"
         :provinceCode="provinceCode"
-        :zoneCode="query.zone_code"
+        :zoneId="query.zone_id"
         v-model="query.city_code"
         @change="selectByCondition"
       >
@@ -93,7 +93,7 @@
       return {
         query: {
           province_code: this.$props.provinceCode,
-          zone_code: '', // 片区code
+          zone_id: '', // 片区code
           city_code: '', // 县域code
           condition: '',
         },
@@ -127,7 +127,7 @@
        */
       selectByCondition() {
         // 如果查询列表没有搜索参数，则初始化状态。
-        if (!this.$data.query.zone_code
+        if (!this.$data.query.zone_id
           && !this.$data.query.city_code
           && !this.$data.query.condition) {
           this.$data.itemList = [];
@@ -152,7 +152,7 @@
       clearQueryCondition() {
         this.$data.query = Object.assign({}, this.$data.query, {
           province_code: this.$props.provinceCode,
-          zone_code: '',
+          zone_id: '',
           city_code: '',
           condition: ''
         })

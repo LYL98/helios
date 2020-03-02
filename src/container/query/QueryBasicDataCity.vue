@@ -15,7 +15,7 @@
       </el-col>
       <el-col :span="7">
         <my-query-item label="片区">
-          <el-select size="small" v-model="query.zone_codes" clearable filterable placeholder="选择片区" style="width: 100%;" @change="changeZone">
+          <el-select size="small" v-model="query.zone_ids" clearable filterable placeholder="选择片区" style="width: 100%;" @change="changeZone">
             <el-option
               v-for="item in zoneList"
               :key="item.code"
@@ -45,7 +45,7 @@
     data() {
       let initQuery = {
         province_code: '',
-        zone_codes: ''
+        zone_ids: ''
       }
       return {
         initQuery: initQuery,
@@ -58,7 +58,7 @@
       //省改变
       changeProvince(v, isInit) {
         this.page = 1;
-        this.$data.query.zone_codes = '';
+        this.$data.query.zone_ids = '';
         this.baseZoneList();
         if (!isInit) this.handleQuery('TableBasicDataCity');
       },

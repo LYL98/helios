@@ -29,7 +29,7 @@
       'el-select': Select,
       'el-option': Option
     },
-    // props: ['value', 'size', 'provinceCode', 'zoneCode' , 'filterable', 'clearable', 'placeholder', 'disabled'],
+    // props: ['value', 'size', 'provinceCode', 'zoneId' , 'filterable', 'clearable', 'placeholder', 'disabled'],
     props: {
       showAll: { type: Boolean, default: false },
       value: { type: String | Number },

@@ -9,9 +9,9 @@
         </el-breadcrumb-item>
 
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client/zone', query: { zone_code: breadcrumb.zone_code, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client/zone', query: { zone_id: breadcrumb.zone_id, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
         >
-          {{ breadcrumb.zone_code === '' ? '全部片区' : breadcrumb.zone_title }}
+          {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
 
         <el-breadcrumb-item
@@ -19,7 +19,7 @@
             query: {
               city_code: breadcrumb.city_code,
               city_title: breadcrumb.city_title,
-              zone_code: breadcrumb.zone_code,
+              zone_id: breadcrumb.zone_id,
               zone_title: breadcrumb.zone_title,
               begin_date: breadcrumb.begin_date,
               end_date: breadcrumb.end_date }
@@ -201,7 +201,7 @@
           store_title: this.$route.query.store_title,
           city_code: this.$route.query.city_code,
           city_title: this.$route.query.city_title,
-          zone_code: this.$route.query.zone_code,
+          zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
           begin_date: this.$route.query.begin_date,
           end_date: this.$route.query.end_date
@@ -221,7 +221,7 @@
           sort: '-amount_real',
           store_id: this.$route.query.store_id,
           store_title: this.$route.query.store_title,
-          zone_code: this.$route.query.zone_code,
+          zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
           city_code: this.$route.query.city_code,
           city_title: this.$route.query.city_title,

@@ -93,8 +93,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="展示分类" prop="display_class_code">
-              <my-select-display-class size="medium" v-model="detail.display_class_code"/>
+            <el-form-item label="展示分类" prop="display_class_id">
+              <my-select-display-class size="medium" v-model="detail.display_class_id"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -452,7 +452,7 @@ export default {
           { validator: validPresaleDate, trigger: 'change' },
           { required: true, message: '请选择配送日期', trigger: 'change' }
         ],
-        display_class_code: [
+        display_class_id: [
           { required: true, message: '请选择展示分类', trigger: 'change' }
         ],
         inner_tag_id: [
@@ -472,7 +472,7 @@ export default {
     async baseCityList(){
       let res = await Http.get(Config.api.baseCityList, {
         province_code: this.$province.code || '',
-        zone_code: ''
+        zone_id: ''
       });
       if(res.code === 0){
         let rd = res.data;

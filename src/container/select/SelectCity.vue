@@ -29,13 +29,13 @@
       'el-select': Select,
       'el-option': Option
     },
-    // props: ['value', 'size', 'provinceCode', 'zoneCode' , 'filterable', 'clearable', 'placeholder', 'disabled'],
+    // props: ['value', 'size', 'provinceCode', 'zoneId' , 'filterable', 'clearable', 'placeholder', 'disabled'],
     props: {
       showAll: { type: Boolean, default: false },
       value: { type: String | Number },
       size: { type: String, default: '' },
       provinceCode: { type: String | Number },
-      zoneCode: { type: String | Number },
+      zoneId: { type: String | Number },
       filterable: { type: Boolean, default: true },
       clearable: { type: Boolean, default: true},
       placeholder: { type: String, default: '所在仓' },
@@ -74,7 +74,7 @@
         }
       },
 
-      zoneCode: {
+      zoneId: {
         deep: true,
         immediate: true,
         handler: function (next, pre) {
@@ -92,7 +92,7 @@
       async baseCityList(){
         let res = await Http.get(Config.api.baseCityList, {
           province_code: this.$props.provinceCode || '',
-          zone_code: this.$props.zoneCode || ''
+          zone_id: this.$props.zoneId || ''
         });
         if(res.code === 0){
           let rd = res.data;

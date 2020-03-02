@@ -11,8 +11,8 @@
         <el-form-item label="所属省份" prop="province_code">
           <my-select-province :value="detail.province_code" @change="changeProvince"/>
         </el-form-item>
-        <el-form-item label="所属片区" prop="zone_code">
-          <my-select-zone :provinceCode="detail.province_code" :value="detail.zone_code" @change="changeZone"/>
+        <el-form-item label="所属片区" prop="zone_id">
+          <my-select-zone :provinceCode="detail.province_code" :value="detail.zone_id" @change="changeZone"/>
         </el-form-item>
         <el-form-item label="排序" prop="rank">
           <el-input v-model="detail.rank" :maxlength="3" placeholder="0 - 999"></el-input>
@@ -51,7 +51,7 @@ export default {
         province_code: [
             { required: true, message: '请选择所属省份', trigger: 'change' }
         ],
-        zone_code: [
+        zone_id: [
             { required: true, message: '请选择所属片区', trigger: 'change' }
         ],
         rank: [
@@ -79,7 +79,7 @@ export default {
     // 如果不一致，则清空city选择
     changeProvince(v) {
       if (v !== this.detail.province_code) { // 和当前的省份不同
-        this.$set(this.detail, 'zone_code', '');
+        this.$set(this.detail, 'zone_id', '');
         this.$set(this.detail, 'province_code', v);
       }
     },
@@ -88,8 +88,8 @@ export default {
       if (!v) {
         return;
       }
-      if (v !== this.detail.zone_code) {
-        this.$set(this.detail, 'zone_code', v);
+      if (v !== this.detail.zone_id) {
+        this.$set(this.detail, 'zone_id', v);
       }
 
     },

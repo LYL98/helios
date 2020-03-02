@@ -12,7 +12,7 @@
           <my-query-item label="展示分类">
             <select-display-class
               size="small"
-              v-model="query.display_class_code"
+              v-model="query.display_class_id"
               v-on:change="handleQuery('TableItemList')"
             />
           </my-query-item>
@@ -122,7 +122,7 @@
     data() {
       let initQuery = {
         is_on_sale: 1, //在售1、待售0
-        display_class_code: '',
+        display_class_id: '',
         condition: '',
         inner_tag_id: '',
         is_presale: '',

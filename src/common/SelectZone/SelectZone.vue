@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="zoneCode" @clear="onClear"
+  <el-select v-model="zoneId" @clear="onClear"
              :clearable="clearable" :size="size"
              filterable placeholder="请选择片区"
              style="width: 100%;"
@@ -35,7 +35,7 @@ export default {
   data() {
     return {
       pCode: this.provinceCode || '',
-      zoneCode: this.value || '',
+      zoneId: this.value || '',
       dataItem: []
     };
   },
@@ -92,7 +92,7 @@ export default {
     value: {
       deep: true,
       handler: function (a, b) {
-        this.$data.zoneCode = a || '';
+        this.$data.zoneId = a || '';
       }
     }
   }

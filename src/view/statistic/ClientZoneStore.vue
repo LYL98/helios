@@ -9,9 +9,9 @@
         </el-breadcrumb-item>
 
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client/zone', query: { zone_code: breadcrumb.zone_code, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client/zone', query: { zone_id: breadcrumb.zone_id, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
         >
-          {{ breadcrumb.zone_code === '' ? '全部片区' : breadcrumb.zone_title }}
+          {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
 
         <el-breadcrumb-item>{{ query.city_code === '' ? '全部县域' : query.city_title }}</el-breadcrumb-item>
@@ -41,7 +41,7 @@
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="片区">
             <my-select-zone
-              :value="query.zone_code"
+              :value="query.zone_id"
               :provinceCode="query.province_code"
               :clearable="false"
               size="small"
@@ -56,7 +56,7 @@
           <my-query-item label="县域">
             <my-select-city
               :value="query.city_code"
-              :zoneCode="query.zone_code"
+              :zoneId="query.zone_id"
               :provinceCode="query.province_code"
               :clearable="false"
               size="small"
@@ -246,7 +246,7 @@
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
           city_code: this.$route.query.city_code,
           city_title: this.$route.query.city_title,
-          zone_code: this.$route.query.zone_code,
+          zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
           begin_date: this.$route.query.begin_date,
           end_date: this.$route.query.end_date
@@ -265,7 +265,7 @@
           begin_date: begin_date,
           end_date: end_date,
           sort: '-gmv',
-          zone_code: this.$route.query.zone_code,
+          zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
           city_code: this.$route.query.city_code,
           city_title: this.$route.query.city_title,
@@ -288,9 +288,9 @@
       changeZone(data, isInit) {
         if (!isInit) {
           // console.log("改变片区", data);
-          this.$data.query.zone_code = data;
+          this.$data.query.zone_id = data;
           this.$data.query.city_code = '';
-          this.$data.breadcrumb.zone_code = data;
+          this.$data.breadcrumb.zone_id = data;
           this.statisticalOrderMerchantSum();
         }
       },
@@ -360,7 +360,7 @@
             store_title: item.store_title,
             city_code: this.$data.query.city_code,
             city_title: this.$data.query.city_title,
-            zone_code: this.$data.query.zone_code,
+            zone_id: this.$data.query.zone_id,
             zone_title: this.$data.query.zone_title,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date

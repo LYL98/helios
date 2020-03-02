@@ -1,5 +1,5 @@
 <template>
-  <el-transfer v-model="zoneCodes" :data="dataItem" :titles="['未选片区','已选片区']" @change="changeZone"></el-transfer>
+  <el-transfer v-model="zoneIds" :data="dataItem" :titles="['未选片区','已选片区']" @change="changeZone"></el-transfer>
 </template>
 
 <script>
@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       pCode: this.provinceCode || '',
-      zoneCodes: this.value || [],
+      zoneIds: this.value || [],
       dataItem: []
     };
   },
@@ -68,7 +68,7 @@ export default {
     value: {
       deep: true,
       handler: function (a, b) {
-        this.$data.zoneCodes = a || [];
+        this.$data.zoneIds = a || [];
       }
     }
   }
