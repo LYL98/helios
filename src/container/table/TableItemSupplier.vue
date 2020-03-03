@@ -1,10 +1,10 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.SupplierListAdd || auth.SupplierListExport">
+    <div class="table-top" v-if="auth.isAdmin || auth.ItemSupplierAdd || auth.ItemSupplierExport">
       <div class="left"></div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.SupplierListExport" @click.native="handleExport('supplierExport', query)" size="mini" type="primary" plain>导出供应商</el-button>
-        <el-button v-if="auth.isAdmin || auth.SupplierListAdd" @click="handleShowAddEdit('AddEditSupplierList')" size="mini" type="primary">新增</el-button>
+        <el-button v-if="auth.isAdmin || auth.ItemSupplierExport" @click.native="handleExport('supplierExport', query)" size="mini" type="primary" plain>导出供应商</el-button>
+        <el-button v-if="auth.isAdmin || auth.ItemSupplierAdd" @click="handleShowAddEdit('AddEditItemSupplier')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -26,7 +26,7 @@
               <!--名称-->
               <template v-if="item.key === 'title'">
                 <div class="td-item">
-                  <div class="link-item link-item add-dot2" @click="handleShowDetail('DetailSupplierList', scope.row)" v-if="auth.isAdmin || auth.SupplierListDetail">
+                  <div class="link-item link-item add-dot2" @click="handleShowDetail('DetailItemSupplier', scope.row)" v-if="auth.isAdmin || auth.ItemSupplierDetail">
                     {{scope.row.title}}
                   </div>
                   <div class="add-dot2" v-else>{{scope.row.title}}</div>
@@ -59,7 +59,7 @@
                   :value="scope.row.is_freeze"
                   :active-value="true"
                   :inactive-value="false"
-                  :disabled="auth.isAdmin || auth.SupplierListFreeze ? false : true"
+                  :disabled="auth.isAdmin || auth.ItemSupplierFreeze ? false : true"
                 />
               </div>
               <!--正常情况-->
@@ -75,13 +75,13 @@
               :list="[
                 {
                   title: '审核',
-                  isDisplay: (auth.isAdmin || auth.SupplierListAudit) && !scope.row.is_audited,
+                  isDisplay: (auth.isAdmin || auth.ItemSupplierAudit) && !scope.row.is_audited,
                   command: () => supplierAudit(scope.row)
                 },
                 {
                   title: '供应商品',
-                  isDisplay: (auth.isAdmin || auth.SupplierListItem) && scope.row.is_audited,
-                  command: () => handleShowDetail('DetailSupplierListItem', scope.row)
+                  isDisplay: (auth.isAdmin || auth.ItemSupplierItem) && scope.row.is_audited,
+                  command: () => handleShowDetail('DetailItemSupplierItem', scope.row)
                 },
               ]"
             />
@@ -104,17 +104,17 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableSupplierList',
+    name: 'TableItemSupplier',
     components: {
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QuerySupplierList');
+      let pc = this.getPageComponents('QueryItemSupplier');
       this.getData(pc.query);
     },
     data() {
       return {
-        tableName: 'TableSupplierList',
+        tableName: 'TableItemSupplier',
         tableColumn: [
           { label: '名称', key: 'title', width: '3', isShow: true },
           { label: '联系人', key: 'linkman_contact_phone', width: '3', isShow: true },

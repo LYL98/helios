@@ -80,7 +80,7 @@
         },
         {
           "title": "供应商",
-          "name": "SupplierList"
+          "name": "ItemSupplier"
         },
         {
           "title": "采购",

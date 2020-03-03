@@ -6,7 +6,7 @@
           <select-option
             :options="{'全部': '', ...supplierType}"
             v-model="query.supplier_type"
-            @change="handleQuery('TableSupplierList')"
+            @change="handleQuery('TableItemSupplier')"
             size="small"
           />
         </my-query-item>
@@ -16,7 +16,7 @@
           <select-option
             :options="{'全部': '', ...supplierBillTerm}"
             v-model="query.bill_term"
-            @change="handleQuery('TableSupplierList')"
+            @change="handleQuery('TableItemSupplier')"
             size="small"
           />
         </my-query-item>
@@ -27,8 +27,8 @@
             size="small"
             placeholder="供应商名称/联系人姓名/电话"
             v-model="query.condition"
-            @search="handleQuery('TableSupplierList')"
-            @reset="handleClearQuery('TableSupplierList')"
+            @search="handleQuery('TableItemSupplier')"
+            @reset="handleClearQuery('TableItemSupplier')"
           />
         </my-query-item>
       </el-col>
@@ -39,7 +39,7 @@
           <select-option
             :options="{'全部': '', '已冻结': 1, '未冻结': 0}"
             v-model="query.is_freeze"
-            @change="handleQuery('TableSupplierList')"
+            @change="handleQuery('TableItemSupplier')"
             size="small"
           />
         </my-query-item>
@@ -49,7 +49,7 @@
           <select-option
             :options="{'全部': '', '待审核': 0, '已审核': 1}"
             v-model="query.is_audited"
-            @change="handleQuery('TableSupplierList')"
+            @change="handleQuery('TableItemSupplier')"
             size="small"
           />
         </my-query-item>
@@ -64,7 +64,7 @@
   import { Constant } from '@/util';
 
   export default {
-    name: "QuerySupplierList",
+    name: "QueryItemSupplier",
     components: {
       'select-option': SelectOption
     },

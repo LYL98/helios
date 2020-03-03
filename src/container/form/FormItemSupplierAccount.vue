@@ -20,7 +20,7 @@ import formMixin from './form.mixin';
 import { Http, Config, Verification } from '@/util';
 
 export default {
-  name: "FormSupplierAccount",
+  name: "FormItemSupplierAccount",
   mixins: [formMixin],
   components: {
   },
@@ -61,7 +61,7 @@ export default {
       if(res.code === 0){
         this.$message({message: '用户新增成功', type: 'success'});
         //刷新数据
-        let pc = this.getPageComponents('DetailSupplierList');
+        let pc = this.getPageComponents('DetailItemSupplier');
         pc.getDetail(pc.detail.id);
         this.handleCancel(); //隐藏
       }else{

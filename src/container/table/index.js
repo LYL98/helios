@@ -38,6 +38,7 @@ export { default as TableItemGlobal } from './TableItemGlobal';
 export { default as TableItemList } from './TableItemList';
 export { default as TableItemAuditInnerTag } from './TableItemAuditInnerTag';
 export { default as TableItemPricing } from './TableItemPricing';
+export { default as TableItemSupplier } from './TableItemSupplier';
 
 export { default as TableOperateLine } from './TableOperateLine';
 export { default as TableOperateSort } from './TableOperateSort';
@@ -51,7 +52,6 @@ export { default as TableSystemOperator } from './TableSystemOperator';
 export { default as TableMerchantList } from './TableMerchantList';
 export { default as TableMerchantRefund } from './TableMerchantRefund';
 
-export { default as TableSupplierList } from './TableSupplierList';
 export { default as TableSupplierGPurchase } from './TableSupplierGPurchase';
 export { default as TableSupplierLocalPurchase } from './TableSupplierLocalPurchase';
 

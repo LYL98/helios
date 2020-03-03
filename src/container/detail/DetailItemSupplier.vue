@@ -5,7 +5,7 @@
       <el-table :data="[detail]" :row-class-name="highlightRowClassName">
         <el-table-column prop="title" label="供应商名称">
           <template slot-scope="scope">
-            <span class="link-item" @click="handleShowAddEdit('AddEditSupplierList', scope.row, 'detail')">{{scope.row.title}}</span>
+            <span class="link-item" @click="handleShowAddEdit('AddEditItemSupplier', scope.row, 'detail')">{{scope.row.title}}</span>
           </template>
         </el-table-column>
         <el-table-column label="类型">
@@ -16,9 +16,9 @@
         <el-table-column label="结款类型">
           <template slot-scope="scope">{{supplierBillTerm[scope.row.bill_term]}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="80" v-if="auth.isAdmin || auth.SupplierListEdit">
+        <el-table-column label="操作" width="80" v-if="auth.isAdmin || auth.ItemSupplierEdit">
           <template slot-scope="scope">
-            <a href="javascript:void(0);" @click="handleShowAddEdit('AddEditSupplierList', scope.row, 'edit')">修改</a>
+            <a href="javascript:void(0);" @click="handleShowAddEdit('AddEditItemSupplier', scope.row, 'edit')">修改</a>
           </template>
         </el-table-column>
       </el-table>
@@ -27,8 +27,8 @@
       <el-col :span="12">
         <h6 class="subtitle">用户账号</h6>
       </el-col>
-      <el-col :span="12" v-if="auth.isAdmin || auth.SupplierListAccountAdd">
-        <el-button class="f-r" size="mini" style="margin-right: 30px;" type="primary" @click.native="handleShowForm('FormSupplierAccount', detail)">新增用户</el-button>
+      <el-col :span="12" v-if="auth.isAdmin || auth.ItemSupplierAccountAdd">
+        <el-button class="f-r" size="mini" style="margin-right: 30px;" type="primary" @click.native="handleShowForm('FormItemSupplierAccount', detail)">新增用户</el-button>
       </el-col>
     </el-row>
     <div style="padding: 0 30px;">
@@ -40,7 +40,7 @@
           <template slot-scope="scope">
             <el-switch
               @change="(v)=>supplierFreeze(v, scope.row)"
-              :disabled="(auth.isAdmin || auth.SupplierListAccountFreeze) ? false : true"
+              :disabled="(auth.isAdmin || auth.ItemSupplierAccountFreeze) ? false : true"
               :value="scope.row.is_freeze"
               :active-value="true"
               :inactive-value="false"/>
@@ -57,7 +57,7 @@
   import { Http, Config, Constant } from '@/util';
 
   export default {
-    name: "DetailSupplierList",
+    name: "DetailItemSupplier",
     mixins: [detailMixin],
     components: {
     },

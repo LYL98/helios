@@ -19,11 +19,7 @@ const router = new Router({
     },
 
     /*供应商*/
-    {
-      path: '/supplier/list',
-      name: 'SupplierList',
-      component: () => import('@/view/supplier/List')
-    },
+    
     {
       path: '/supplier/gpurchase',
       name: 'SupplierGPurchase',
@@ -76,6 +72,11 @@ const router = new Router({
       path: '/item/pricing',
       name: 'ItemPricing',
       component: () => import('@/view/item/Pricing')
+    },
+    {
+      path: '/item/supplier',
+      name: 'ItemSupplier',
+      component: () => import('@/view/item/Supplier')
     },
     /*营销*/
     {

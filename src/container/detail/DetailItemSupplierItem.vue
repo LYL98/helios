@@ -11,7 +11,7 @@
         </el-col>
       </el-row>
       <h6 class="subtitle">商品信息</h6>
-      <el-row v-if="auth.isAdmin || auth.SupplierListItemEdit">
+      <el-row v-if="auth.isAdmin || auth.ItemSupplierItemEdit">
         <el-col :span="12">
           <el-form-item label="搜索">
             <select-g-item v-if="isShow" size="medium" placeholder="商品编号/名称"
@@ -37,12 +37,12 @@
         <template v-if="detail.supplier_type === 'local_pur'">
           <el-table-column prop="is_main" label="反采供应商">
             <template slot-scope="scope">
-              <el-switch :disabled="(auth.isAdmin || auth.SupplierListItemEdit) ? false : true" v-model="scope.row.is_main" :active-value="true" :inactive-value="false">
+              <el-switch :disabled="(auth.isAdmin || auth.ItemSupplierItemEdit) ? false : true" v-model="scope.row.is_main" :active-value="true" :inactive-value="false">
               </el-switch>
             </template>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="80" v-if="auth.isAdmin || auth.SupplierListItemEdit">
+        <el-table-column label="操作" width="80" v-if="auth.isAdmin || auth.ItemSupplierItemEdit">
           <template slot-scope="scope">
             <a href="javascript:void(0);" @click="deleteItem(scope.$index)">移除</a>
           </template>
@@ -50,7 +50,7 @@
       </el-table>
     </div>
     <div style="margin: 30px 0 0 140px;">
-      <template v-if="auth.isAdmin || auth.SupplierListItemEdit">
+      <template v-if="auth.isAdmin || auth.ItemSupplierItemEdit">
         <el-button size="medium" @click.native="handleCancel">取 消</el-button>
         <el-button size="medium" type="primary" @click.native="editBindItems">确 定</el-button>
       </template>
@@ -67,7 +67,7 @@
   import { SelectItem, SelectGItem } from '@/component';
 
   export default {
-    name: "DetailSupplierListItem",
+    name: "DetailItemSupplierItem",
     mixins: [detailMixin],
     components: {
       'select-item': SelectItem,

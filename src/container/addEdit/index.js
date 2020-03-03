@@ -16,6 +16,7 @@ export { default as AddEditBasicDataWarehouseTray } from './AddEditBasicDataWare
 export { default as AddEditItemGlobal } from './AddEditItemGlobal';
 export { default as AddEditItemList } from './AddEditItemList';
 export { default as AddEditItemPricing } from './AddEditItemPricing';
+export { default as AddEditItemSupplier } from './AddEditItemSupplier';
 
 export { default as AddEditOperateLine } from './AddEditOperateLine';
 
@@ -27,7 +28,6 @@ export { default as AddEditGroupItem } from './AddEditGroupItem';
 export { default as AddEditGroupActivity } from './AddEditGroupActivity';
 export { default as AddEditGroupItemClass } from './AddEditGroupItemClass';
 
-export { default as AddEditSupplierList } from './AddEditSupplierList';
 export { default as AddEditSupplierGPurchase } from './AddEditSupplierGPurchase';
 export { default as AddEditSupplierLocalPurchase } from './AddEditSupplierLocalPurchase';
 
