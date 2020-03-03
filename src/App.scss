@@ -270,6 +270,16 @@
     }
   }
 
+  /*三级菜单*/
+  .my-sub-menu{
+    margin-bottom: 16px !important;
+    >.el-menu-item{
+      height: 48px !important;
+      line-height: 50px !important;
+      padding: 0 26px;
+    }
+  }
+
   /*页面容器*/
   #router-view-div {
     padding: 16px;

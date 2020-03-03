@@ -44,9 +44,11 @@ export default {
       //表格表头滚动时固定
       let domQuery = document.querySelector('.container-query');
       let domTableTop = document.querySelector('.container-table > .table-top');
+      let domSubMenu = document.querySelector('app-my-sub-menu');
       let topHeight = 16;
       if(domQuery && domQuery.clientHeight) topHeight += domQuery.clientHeight + 16;
       if(domTableTop && domTableTop.clientHeight) topHeight += domTableTop.clientHeight + 16;
+      if(domSubMenu && domSubMenu.clientHeight) topHeight += domSubMenu.clientHeight + 16;
 
       if(scrollTop >= topHeight){
         let dom2 = document.querySelector('.my-table-float > .el-table__header-wrapper');

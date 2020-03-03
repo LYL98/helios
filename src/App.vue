@@ -1,11 +1,11 @@
 <template>
   <div id="app-body">
-    <div id="app" v-if="pageName !== 'Login'" style="min-width: 1000px;">
+    <div id="app" v-if="pageData.name !== 'Login'" style="min-width: 1000px;">
       <div id="head-div">
         <div id="logo-div" class="ellipsis">
           {{brand.brand_name + '运营中心'}}
         </div>
-        <div class="global-province" v-if="pageName !== 'Login'">
+        <div class="global-province" v-if="pageData.name !== 'Login'">
           <my-global-province/>
         </div>
         <el-dropdown trigger="click" placement="bottom" class="f-r login-username" @command="clickDropdown">
@@ -24,16 +24,17 @@
       <div id="nav-menu-div">
         <div id="menu-div">
           <el-menu
-            router
+            :router="false"
             unique-opened
-            :default-active="pageName"
+            :default-active="getMenuIndex"
             menu-trigger="click"
             background-color="#262626"
             style="border-right: 0"
             text-color="#bbb"
             active-text-color="#00ADE7"
           >
-            <el-menu-item class="home" index="Home" :route="{name: 'Home'}" v-if="auth.isAdmin || auth.Home">
+            <!--:route="{name: 'Home'}"-->
+            <el-menu-item class="home" index="Home" v-if="auth.isAdmin || auth.Home" @click="(e) => selectMenu(e, { name: 'Home' })">
               <i class="iconfont menu-icon">&#xe751;</i>
               <span>首页</span>
             </el-menu-item>
@@ -46,7 +47,7 @@
                   <span>{{item.title}}</span>
                 </template>
                 <template v-for="(m, i) in item.children">
-                  <el-menu-item :index="m.name" :key="i" :route="{name: m.name}" v-if="auth.isAdmin || auth[m.name]"><span>{{m.title}}</span></el-menu-item>
+                  <el-menu-item :index="m.name" :key="i" v-if="auth.isAdmin || auth[m.name]" @click="(e) => selectMenu(e, m)"><span>{{m.title}}</span></el-menu-item>
                 </template>
               </el-submenu>
             </template>
@@ -55,6 +56,14 @@
         </div>
       </div>
       <div id="router-view-div" style="min-width: 1000px;">
+        <div v-if="getSubMenuData.length > 0" class="app-my-sub-menu">
+          <el-menu class="my-sub-menu" mode="horizontal" router>
+            <template v-for="(item, index) in getSubMenuData">
+              <el-menu-item :route="{name: item.name}" :index="item.name" :key="index" class="is-active" style="border-bottom-color: #00ADE7;" v-if="pageData.name === item.name">{{item.title}}</el-menu-item>
+              <el-menu-item :route="{name: item.name}" :index="item.name" :key="index" v-else>{{item.title}}</el-menu-item>
+            </template>
+          </el-menu>
+        </div>
         <router-view/>
       </div>
     </div>
@@ -67,7 +76,7 @@
 </template>
 
 <script>
-  import { Menu, Submenu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Backtop } from 'element-ui';
+  import { Menu, Submenu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Backtop, Form } from 'element-ui';
   import { Http, Config, Method, DataHandle } from '@/util';
   import { GlobalProvince, PwdModify } from '@/component';
   import AppJson from './App.json';
@@ -75,7 +84,6 @@
   export default {
     name: 'app',
     data() {
-      let name = this.$router.history.current.name;
       return {
         isDev: Config.isDev,
         brand: {
@@ -84,7 +92,9 @@
         },
         tencentPath: Config.tencentPath,
         menus: AppJson.menus,
-        pageName: 'Login',
+        pageData: {
+          name: 'Login'
+        },
         auth: {}, //用户权限,
         myInfo: {}, //当前登录信息
       }
@@ -104,7 +114,65 @@
         this.$data.brand = res;
       });
     },
+    computed: {
+      //index
+      getMenuIndex: {
+        get(){
+          let { pageData, menus } = this;
+          let data = {};
+          const fun = (item) =>{
+            for(let i = 0; i < item.length; i++){
+              if(item[i].name === pageData.name){
+                data = item[i];
+                break;
+              }
+              if(item[i].children && item[i].children.length > 0){
+                fun(item[i].children);
+              }
+            }
+          }
+          fun(menus);
+          if(data.upName) return data.upName;
+          return pageData.name;
+        }
+      },
+      //subMenuData
+      getSubMenuData: {
+        get(){
+          let { pageData, menus } = this;
+          let upMenu = [];
+          const fun = (item) =>{
+            for(let i = 0; i < item.length; i++){
+              if(item[i].name === pageData.name){
+                item[i].upName ? upMenu = item : [];
+                break;
+              }
+              if(item[i].children && item[i].children.length > 0){
+                fun(item[i].children);
+              }
+            }
+          }
+          fun(menus);
+          return upMenu;
+        }
+      }
+    },
     methods: {
+      //选择菜单
+      selectMenu(e, item){
+        let { auth, pageData } = this;
+        let name = item.name;
+        if(item.children){
+          for(let i = 0; i < item.children.length; i++){
+            if(auth.isAdmin || auth[item.children[i].name]){
+              name = item.children[i].name;
+              break;
+            }
+          }
+        }
+        if(pageData.name === name) return; //如果跳同一个页面，停止
+        this.$router.push({ name });
+      },
       //下拉菜单
       clickDropdown(command) {
         let that = this;
@@ -153,7 +221,7 @@
     watch: {
       //监听路由变化
       $route(a, b){
-        this.$data.pageName = a.name;
+        this.$data.pageData = a;
         this.$data.auth = this.$auth || {};
         this.$data.myInfo = this.$myInfo || {};
       },
