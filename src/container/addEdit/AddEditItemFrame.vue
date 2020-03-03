@@ -29,7 +29,7 @@ import { Http, Config, Verification } from '@/util';
 import { InputWeight, InputPrice } from '@/common';
 
 export default {
-  name: "AddEditBasicDataFrame",
+  name: "AddEditItemFrame",
   mixins: [addEditMixin],
   components: {
     'input-weight': InputWeight,
@@ -118,7 +118,7 @@ export default {
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableBasicDataFrame');
+        let pc = this.getPageComponents('TableItemFrame');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

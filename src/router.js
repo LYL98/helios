@@ -54,6 +54,16 @@ const router = new Router({
       component: () => import('@/view/item/Recover')
     },
     {
+      path: '/item/system/class',
+      name: 'ItemSystemClass',
+      component: () => import('@/view/item/SystemClass')
+    },
+    {
+      path: '/item/frame',
+      name: 'ItemFrame',
+      component: () => import('@/view/item/Frame')
+    },
+    {
       path: '/item/list',
       name: 'ItemList',
       component: () => import('@/view/item/List')
@@ -318,19 +328,9 @@ const router = new Router({
 
     /*基础信息*/
     {
-      path: '/basicdata/system/class/list',
-      name: 'BasicDataSystemClassList',
-      component: () => import('@/view/basicdata/SystemClassList')
-    },
-    {
       path: '/basicdata/display/class/list',
       name: 'BasicDataDisplayClassList',
       component: () => import('@/view/basicdata/DisplayClassList')
-    },
-    {
-      path: '/basicdata/frame/list',
-      name: 'BasicDataFrameList',
-      component: () => import('@/view/basicdata/FrameList')
     },
     {
       path: '/basicdata/item/tags/list',

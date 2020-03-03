@@ -26,14 +26,12 @@ export { default as QueryGroupBuyMemberStatistics } from './QueryGroupBuyMemberS
 
 export { default as QueryBasicDataCity } from './QueryBasicDataCity';
 export { default as QueryBasicDataDisplayClass } from './QueryBasicDataDisplayClass';
-export { default as QueryBasicDataFrame } from './QueryBasicDataFrame';
 export { default as QueryBasicDataGrade } from './QueryBasicDataGrade';
 export { default as QueryBasicDataItemTags } from './QueryBasicDataItemTags';
 export { default as QueryBasicDataItemInnerTags } from './QueryBasicDataItemInnerTags';
 export { default as QueryBasicDataMerchantInnerTags } from './QueryBasicDataMerchantInnerTags';
 export { default as QueryBasicDataMerchantOuterTags } from './QueryBasicDataMerchantOuterTags';
 export { default as QueryBasicDataProvince } from './QueryBasicDataProvince';
-export { default as QueryBasicDataSystemClass } from './QueryBasicDataSystemClass';
 export { default as QueryBasicDataZone } from './QueryBasicDataZone';
 export { default as QueryBasicDataStorehouse } from './QueryBasicDataStorehouse';
 export { default as QueryBasicDataWarehouse } from './QueryBasicDataWarehouse';
@@ -43,6 +41,8 @@ export { default as QueryItemList } from './QueryItemList';
 export { default as QueryItemAuditInnerTag } from './QueryItemAuditInnerTag';
 export { default as QueryItemPricing } from './QueryItemPricing';
 export { default as QueryItemSupplier } from './QueryItemSupplier';
+export { default as QueryItemSystemClass } from './QueryItemSystemClass';
+export { default as QueryItemFrame } from './QueryItemFrame';
 
 export { default as QueryOperateLine } from './QueryOperateLine';
 export { default as QueryOperateSort } from './QueryOperateSort';

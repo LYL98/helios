@@ -76,7 +76,7 @@
 </template>
 
 <script>
-  import { Menu, Submenu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Backtop, Form } from 'element-ui';
+  import { Menu, Submenu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Backtop, Form, Notification } from 'element-ui';
   import { Http, Config, Method, DataHandle } from '@/util';
   import { GlobalProvince, PwdModify } from '@/component';
   import AppJson from './App.json';
@@ -139,7 +139,7 @@
       //subMenuData
       getSubMenuData: {
         get(){
-          let { pageData, menus } = this;
+          let { pageData, menus, auth } = this;
           let upMenu = [];
           const fun = (item) =>{
             for(let i = 0; i < item.length; i++){
@@ -153,6 +153,10 @@
             }
           }
           fun(menus);
+          //判断权限
+          if(!auth.isAdmin){
+            upMenu = upMenu.filter(item => auth[item.name]);
+          }
           return upMenu;
         }
       }
@@ -162,15 +166,26 @@
       selectMenu(e, item){
         let { auth, pageData } = this;
         let name = item.name;
+        let type = item.type;
         if(item.children){
           for(let i = 0; i < item.children.length; i++){
             if(auth.isAdmin || auth[item.children[i].name]){
               name = item.children[i].name;
+              type = item.children[i].name;
               break;
             }
           }
         }
         if(pageData.name === name) return; //如果跳同一个页面，停止
+        //如果是二级主菜单，未找到有权限的子菜单
+        if(type === 'main'){
+          Notification.error({
+            title: '提示',
+            message: '您没有权限访问',
+            offset: 50
+          });
+          return;
+        }
         this.$router.push({ name });
       },
       //下拉菜单

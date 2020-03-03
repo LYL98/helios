@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataSystemClassListAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.ItemSystemClassAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataSystemClass', null, 'add')" size="mini" type="primary">新增(第一层)</el-button>
+        <el-button @click="handleShowAddEdit('AddEditItemSystemClass', null, 'add')" size="mini" type="primary">新增(第一层)</el-button>
       </div>
     </div>
     <!-- 树型start -->
@@ -14,21 +14,21 @@
           <el-button
             type="text"
             size="mini"
-            v-if="data.code.length < 6 && (auth.isAdmin || auth.BasicDataSystemClassListAdd)"
+            v-if="data.code.length < 6 && (auth.isAdmin || auth.ItemSystemClassAdd)"
             @click="() => addSystemClass(data)">
             添加子分类
           </el-button>
           <el-button
             type="text"
             size="mini"
-            v-if="auth.isAdmin || auth.BasicDataSystemClassListUpdate"
+            v-if="auth.isAdmin || auth.ItemSystemClassEdit"
             @click="() => editSystemClass(data)">
             编辑
           </el-button>
           <el-button
             type="text"
             size="mini"
-            v-if="auth.isAdmin || auth.BasicDataSystemClassListDelete"
+            v-if="auth.isAdmin || auth.ItemSystemClassDelete"
             @click="() => handleDelete(data)">
             删除
           </el-button>
@@ -45,7 +45,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataSystemClass',
+    name: 'TableItemSystemClass',
     components: {
       'my-table-operate': TableOperate
     },
@@ -85,14 +85,14 @@
       },
       //添加子分类
       addSystemClass(data){
-        this.handleShowAddEdit('AddEditBasicDataSystemClass', {
+        this.handleShowAddEdit('AddEditItemSystemClass', {
           ...data,
           is_top_add: true
         }, 'add');
       },
       //编辑子分类
       editSystemClass(data){
-        this.handleShowAddEdit('AddEditBasicDataSystemClass', data, 'edit');
+        this.handleShowAddEdit('AddEditItemSystemClass', data, 'edit');
       },
       //删除数据
       async deleteData(data) {

@@ -25,7 +25,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("供应商 - 供应商列表");
+      documentTitle("商品 - 供应商");
     },
   };
 </script>

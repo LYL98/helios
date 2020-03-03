@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataFrameListAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.ItemFrameAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataFrame')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEditItemFrame')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -57,12 +57,12 @@
               :list="[
               {
                 title: '修改',
-                isDisplay: auth.isAdmin || auth.BasicDataFrameListUpdate,
-                command: () => handleShowAddEdit('AddEditBasicDataFrame', scope.row)
+                isDisplay: auth.isAdmin || auth.ItemFrameEdit,
+                command: () => handleShowAddEdit('AddEditItemFrame', scope.row)
               },
               {
                 title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataFrameListDelete,
+                isDisplay: auth.isAdmin || auth.ItemFrameDelete,
                 command: () => handleDelete(scope.row)
               }
             ]"
@@ -81,7 +81,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataFrame',
+    name: 'TableItemFrame',
     components: {
       'my-table-operate': TableOperate
     },

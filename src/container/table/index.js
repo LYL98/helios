@@ -22,14 +22,12 @@ export { default as TableGroupHeadDetailList } from './TableGroupHeadDetailList'
 
 export { default as TableBasicDataCity } from './TableBasicDataCity';
 export { default as TableBasicDataDisplayClass } from './TableBasicDataDisplayClass';
-export { default as TableBasicDataFrame } from './TableBasicDataFrame';
 export { default as TableBasicDataGrade } from './TableBasicDataGrade';
 export { default as TableBasicDataItemTags } from './TableBasicDataItemTags';
 export { default as TableBasicDataItemInnerTags } from './TableBasicDataItemInnerTags';
 export { default as TableBasicDataMerchantInnerTags } from './TableBasicDataMerchantInnerTags';
 export { default as TableBasicDataMerchantOuterTags } from './TableBasicDataMerchantOuterTags';
 export { default as TableBasicDataProvince } from './TableBasicDataProvince';
-export { default as TableBasicDataSystemClass } from './TableBasicDataSystemClass';
 export { default as TableBasicDataZone } from './TableBasicDataZone';
 export { default as TableBasicDataStorehouse } from './TableBasicDataStorehouse';
 export { default as TableBasicDataWarehouse } from './TableBasicDataWarehouse';
@@ -39,6 +37,8 @@ export { default as TableItemList } from './TableItemList';
 export { default as TableItemAuditInnerTag } from './TableItemAuditInnerTag';
 export { default as TableItemPricing } from './TableItemPricing';
 export { default as TableItemSupplier } from './TableItemSupplier';
+export { default as TableItemSystemClass } from './TableItemSystemClass';
+export { default as TableItemFrame } from './TableItemFrame';
 
 export { default as TableOperateLine } from './TableOperateLine';
 export { default as TableOperateSort } from './TableOperateSort';

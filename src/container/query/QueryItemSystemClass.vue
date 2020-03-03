@@ -6,7 +6,7 @@
   import queryMixin from './query.mixin';
 
   export default {
-    name: "QueryBasicDataSystemClass",
+    name: "QueryItemSystemClass",
     mixins: [queryMixin],
     components: {
     },
