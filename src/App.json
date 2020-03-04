@@ -159,22 +159,22 @@
         },
         {
           "title": "营销",
-          "name": "BusinessMarketMain",
+          "name": "MarketMain",
           "type": "main",
           "children": [
             {
               "title": "全场营销",
-              "upName": "BusinessMarketMain",
+              "upName": "MarketMain",
               "name": "MarketingScopePromotionQuery"
             },
             {
               "title": "优惠券",
-              "upName": "BusinessMarketMain",
+              "upName": "MarketMain",
               "name": "MarketingCouponQuery"
             },
             {
               "title": "Banner",
-              "upName": "BusinessMarketMain",
+              "upName": "MarketMain",
               "name": "SystemBannerList"
             }
           ]

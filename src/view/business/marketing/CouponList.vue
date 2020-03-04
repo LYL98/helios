@@ -499,8 +499,8 @@
 </script>
 
 <style lang="scss" scoped>
-  @import './../../container/table/table.scss';
+  @import '@/container/table/table.scss';
 </style>
 <style lang="scss">
-  @import './../../container/table/table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>
