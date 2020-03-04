@@ -33,15 +33,24 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="净重" prop="net_weight">
-            <input-weight size="medium" v-model="detail.net_weight" placeholder="0.1 - 100000" unit="斤"/>
-          </el-form-item>
+          <el-row>
+            <el-col :span="14">
+              <el-form-item label="重量" prop="weight_s">
+                <input-weight size="medium" v-model="detail.weight_s" placeholder="最小重量" unit="斤"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label-width="10px" prop="weight_e">
+                <input-weight size="medium" v-model="detail.weight_e" placeholder="最大重量" unit="斤"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="毛重" prop="gross_weight">
-            <input-weight size="medium" v-model="detail.gross_weight" placeholder="0.1 - 100000" unit="斤"/>
-          </el-form-item>
-        </el-col>
+<!--        <el-col :span="6">-->
+<!--          <el-form-item prop="gross_weight">-->
+<!--            <input-weight size="medium" v-model="detail.gross_weight" placeholder="0.1 - 100000" unit="斤"/>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
         <el-col :span="12">
           <el-form-item label="保质期" prop="shelf_life">
             <input-number size="medium" v-model="detail.shelf_life" :min="1" unit="天"/>
@@ -116,37 +125,38 @@ export default {
   },
   data(){
     //毛重
-    let validGrossWeight = function (rules, value, callback) {
-      if(value < 1){
-        callback('毛重不能小于0.1斤');
-      }else{
-        callback();
-      }
-    };
+    // let validGrossWeight = function (rules, value, callback) {
+    //   console.log("this: ", this.$data);
+    //   if(value < 1){
+    //     callback('毛重不能小于0.1斤');
+    //   }else{
+    //     callback();
+    //   }
+    // };
     //净重
-    let validNetWeight = function (rules, value, callback) {
-      if(value < 1){
-        callback('净重不能小于0.1斤');
-      }else{
-        callback();
-      }
-    };
+    // let validNetWeight = function (rules, value, callback) {
+    //   if(value < 1){
+    //     callback('净重不能小于0.1斤');
+    //   }else{
+    //     callback();
+    //   }
+    // };
     //科学分类
-    let validSystemClass = (rules, value, callback) => {
-      if(value.length < 6){
-        callback('请选择至第三级分类');
-      }else{
-        callback();
-      }
-    }
+    // let validSystemClass = (rules, value, callback) => {
+    //   if(value.length < 6){
+    //     callback('请选择至第三级分类');
+    //   }else{
+    //     callback();
+    //   }
+    // }
     let initDetail = {
       title: '', //商品名称(必填项)
       images: [], //图片(必填项, 列表),
       package_spec: '', //包装规格
       item_spec: '', //商品规格
       origin_place: '', //产地
-      gross_weight: '', //毛重
-      net_weight: '', //净重
+      weight_e: '', //最大重量
+      weight_s: '', //最小重量
       system_class_code: '', //科学分类编号
       system_class_codes: [], //科学分类编号s
       supplier_ids: [], //供应商
@@ -178,22 +188,48 @@ export default {
         origin_place: [
           { required: true, message: '产地不能为空', trigger: 'change' },
         ],
-        gross_weight : [
-          { required: true, message: '请输入毛重', trigger: 'change' },
-          { validator: validGrossWeight, trigger: 'blur' },
-        ],
-        net_weight: [
+        weight_s: [
           { required: true, message: '请输入净重', trigger: 'change' },
-          { validator: validNetWeight, trigger: 'blur' },
+          { validator: this.validWeightS, trigger: 'blur' },
+        ],
+        weight_e : [
+          { validator: this.validWeightE, trigger: 'change' },
         ],
         system_class_code: [
           { required: true, message: '请选择科学分类', trigger: 'blur' },
-          { validator: validSystemClass, trigger: 'blur' }
+          { validator: this.validSystemClass, trigger: 'blur' }
         ],
       },
     }
   },
   methods: {
+    validWeightS (rules, value, callback) {
+      if(value < 1) {
+        callback('重量不能小于0.1斤');
+      } else {
+        this.$data.detail.weight_e && this.$refs['ruleForm'].validateField('weight_e');
+        callback();
+      }
+    },
+    validWeightE (rules, value, callback) {
+      if (!value) {
+        return callback();
+      }
+      if(value < 1) {
+        callback('重量不能小于0.1斤');
+      } else if (value < this.$data.detail.weight_s) {
+        callback('最大重量不能小于最小重量');
+      } else{
+        callback();
+      }
+    },
+    validSystemClass (rules, value, callback) {
+      if(value.length < 6){
+        callback('请选择至第三级分类');
+      }else{
+        callback();
+      }
+    },
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
       if(data){
