@@ -1,8 +1,8 @@
 <template>
   <print-layout title="打印线路码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <div>
-      <qr-code :content="qrCodeContent" v-if="isShow" :width="240" :height="240"/>
-      <div style="font-size: 16px;">{{detail.title}}</div>
+    <div class="flex-coliumn-center" style="width: 210mm; height: 297mm;">
+      <qr-code :content="qrCodeContent" v-if="isShow" :width="500" :height="500"/>
+      <div style="font-size: 50px; font-weight: 600; margin-top: 20px;">{{detail.title}}</div>
     </div>
     <div class="bottom-btn-body">
       <div class="bottom-btn">
@@ -44,9 +44,9 @@ export default {
     }
   },
   methods: {
-    
+
   },
-  
+
 };
 </script>
 

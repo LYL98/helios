@@ -1,8 +1,8 @@
 <template>
   <print-layout title="打印托盘码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <div v-for="(item, index) in dataItem" :key="index">
-      <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="240" :height="240"/>
-      <div style="font-size: 16px;">{{item.code}}</div>
+    <div v-for="(item, index) in dataItem" :key="index" class="flex-coliumn-center" style="width: 60mm; height: 40mm;">
+      <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="100" :height="100"/>
+      <div style="font-size: 16px; font-weight: 600;">{{item.code}}</div>
     </div>
     <div class="bottom-btn-body">
       <div class="bottom-btn">

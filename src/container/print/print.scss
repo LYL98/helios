@@ -1,3 +1,10 @@
+.flex-coliumn-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .bottom-btn-body{
     background: #fff;
     height: 64px;
