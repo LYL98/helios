@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <sub-menu>
     <add-edit-group-banner :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditGroupBanner"/>
     <query-group-banner :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryGroupBanner"/>
     <table-group-banner :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableGroupBanner"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

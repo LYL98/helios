@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <!-- 查询 -->
     <div class="query" style="margin-bottom: 16px;">
       <my-query-item label="时间">
@@ -111,7 +111,7 @@
         </el-table>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <sub-menu>
     <query-merchant-refund :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryMerchantRefund"/>
     <table-merchant-refund :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableMerchantRefund"/>
     <add-edit-merchant-refund :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditMerchantRefund"/>
     <detail-merchant-refund-log :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailMerchantRefundLog"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

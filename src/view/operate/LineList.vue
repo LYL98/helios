@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <sub-menu>
     <query-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateLine"/>
     <table-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateLine"/>
     <add-edit-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateLine"/>
     <print-operate-line :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintOperateLine"/>
     <detail-operate-line-driver :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateLineDriver"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

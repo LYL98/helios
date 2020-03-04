@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <sub-menu>
     <query-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemGlobal" page="recover"/>
     <table-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemGlobal" page="recover"/>
     <addEdit-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemGlobal" page="recover"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

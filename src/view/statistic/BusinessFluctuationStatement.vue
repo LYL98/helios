@@ -2,7 +2,7 @@
   业务波动表
 -->
 <template>
-    <div>
+    <sub-menu>
       <query-business-fluctuation
         v-model="query"
         @change="changeQuery"
@@ -73,7 +73,7 @@
 
 
       <my-business-fluctuation-chart :data="chartData" :callback="cancelFluctuationChart"></my-business-fluctuation-chart>
-    </div>
+    </sub-menu>
 </template>
 
 <script>

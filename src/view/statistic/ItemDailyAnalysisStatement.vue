@@ -2,7 +2,7 @@
   商品每日分析
 -->
 <template>
-  <div>
+  <sub-menu>
     <query-item-daily-analysis
       v-model="query"
       @change="changeQuery"
@@ -138,7 +138,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

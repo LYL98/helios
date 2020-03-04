@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <sub-menu>
     <query-item-g-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemGPurchase"/>
     <table-item-g-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemGPurchase"/>
     <add-edit-item-g-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemGPurchase"/>
     <form-audit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormAudit" page="ItemGPurchase" title="预采订单审核"/>
     <form-close :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormClose" page="ItemGPurchase" title="关闭"/>
     <detail-warehouse-stock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditWarehouseStockPending"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <sub-menu>
     <query-item-local-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemLocalPurchase"/>
     <table-item-local-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemLocalPurchase"/>
     <add-edit-item-local-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemLocalPurchase"/>
     <form-close :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormClose" page="ItemLocalPurchase" title="关闭"/>
     <detail-warehouse-stock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditWarehouseStockPending"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

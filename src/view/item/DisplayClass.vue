@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <sub-menu>
     <query-item-display-class :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemDisplayClass"/>
     <table-item-display-class :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemDisplayClass"/>
     <add-edit-item-display-class :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemDisplayClass"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

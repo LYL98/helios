@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-group-buy-captain-statistics
     v-model="query"
     @change="changeQuery"
@@ -111,7 +111,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

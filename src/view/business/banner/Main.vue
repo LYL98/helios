@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <sub-menu>
     <table-view :getPageComponents="viewGetPageComponents" ref="Table"/>
     <add-edit-view :getPageComponents="viewGetPageComponents" ref="AddEdit"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

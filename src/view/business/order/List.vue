@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-order v-model="query" @change="changeQuery" :reset="resetQuery"></query-order>
     <div class="container-table">
       <div class="table-top" v-if="auth.isAdmin || auth.OrderListExport || auth.OrderItemExport">
@@ -152,7 +152,7 @@
     <detail-order-after-sale :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="DetailOrderAfterSale"/>
     <!--订单修改价格-->
     <!--<order-price-update :callback="myCallBack" />-->
-  </div>
+  </sub-menu>
 </template>
 
 <script>

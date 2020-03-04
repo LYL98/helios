@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <div class="container-query">
       <el-row :gutter="32">
         <el-col :span="7">
@@ -229,7 +229,7 @@
       />
     </el-dialog>
 
-  </div>
+  </sub-menu>
 </template>
 
 <script>

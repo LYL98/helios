@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <sub-menu>
     <query-finance-s-b-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryFinanceSBDetail" page="sBDetailAudit"/>
     <table-finance-s-b-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableFinanceSBDetail" page="sBDetailAudit"/>
     <add-edit-finance-s-b-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditFinanceSBDetail"/>
     <form-audit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormAudit" page="FinanceSBDetail" title="供应商流水审核"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

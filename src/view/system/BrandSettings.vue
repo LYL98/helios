@@ -1,4 +1,5 @@
 <template>
+  <sub-menu>
   <div style="background-color: #fff; padding: 16px 20px;">
     <div :style="{ overflowY: 'auto', overflowX: 'auto', height: viewWindowHeight - 100 + 'px'}">
       <el-form label-position="right" label-width="160px" style="width: 700px;" :model="ruleForm" :rules="rules"
@@ -31,6 +32,7 @@
       </el-form>
     </div>
   </div>
+  </sub-menu>
 </template>
 <script>
   import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from 'element-ui';

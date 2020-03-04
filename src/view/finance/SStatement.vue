@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <sub-menu>
     <query-finance-s-statement :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryFinanceSStatement"/>
     <table-finance-s-statement :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableFinanceSStatement"/>
     <detail-finance-s-statement :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailFinanceSStatement"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

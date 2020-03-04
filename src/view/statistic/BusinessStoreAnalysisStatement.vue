@@ -2,7 +2,7 @@
   客户分析表
 -->
 <template>
-  <div>
+  <sub-menu>
     <query-business-store
       v-model="query"
       @change="changeQuery"
@@ -111,7 +111,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

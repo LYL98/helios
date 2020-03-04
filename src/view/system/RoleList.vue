@@ -1,4 +1,5 @@
 <template>
+  <sub-menu>
   <div class="role-list-body" style="background-color: #fff;">
     <div class="role-list">
       <!--角色列表start-->
@@ -63,6 +64,7 @@
     </div>
     <add-edit-system-role :callback="myCallBack" ref="AddEditSystemRole" />
   </div>
+  </sub-menu>
 </template>
 
 <script>
