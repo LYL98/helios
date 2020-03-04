@@ -25,8 +25,6 @@ export { default as QueryGroupBuyCaptainStatistics } from './QueryGroupBuyCaptai
 export { default as QueryGroupBuyMemberStatistics } from './QueryGroupBuyMemberStatistics';
 
 export { default as QueryBasicDataCity } from './QueryBasicDataCity';
-export { default as QueryBasicDataMerchantInnerTags } from './QueryBasicDataMerchantInnerTags';
-export { default as QueryBasicDataMerchantOuterTags } from './QueryBasicDataMerchantOuterTags';
 export { default as QueryBasicDataProvince } from './QueryBasicDataProvince';
 export { default as QueryBasicDataZone } from './QueryBasicDataZone';
 export { default as QueryBasicDataStorehouse } from './QueryBasicDataStorehouse';

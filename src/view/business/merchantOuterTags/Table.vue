@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataMerchantOuterTagsListAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.MerchantOuterTagsAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataMerchantOuterTags')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEdit')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -48,12 +48,12 @@
               :list="[
               {
                 title: '修改',
-                isDisplay: auth.isAdmin || auth.BasicDataMerchantOuterTagsListUpdate,
-                command: () => handleShowAddEdit('AddEditBasicDataMerchantOuterTags', scope.row)
+                isDisplay: auth.isAdmin || auth.MerchantOuterTagsEdit,
+                command: () => handleShowAddEdit('AddEdit', scope.row)
               },
               {
                 title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataMerchantOuterTagsListDelete,
+                isDisplay: auth.isAdmin || auth.MerchantOuterTagsDelete,
                 command: () => handleDelete(scope.row)
               }
             ]"
@@ -72,21 +72,17 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataMerchantOuterTags',
+    name: 'Table',
     components: {
       'my-table-operate': TableOperate
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.BasicDataMerchantOuterTagsListAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT
-      }
-      let pc = this.getPageComponents('QueryBasicDataMerchantOuterTags'); //获取query组件
+      let pc = this.getPageComponents('Query'); //获取query组件
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE,
         dataItem: [],
         rowIdentifier: 'code'
       }
@@ -124,8 +120,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/container/table/table.scss';
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>

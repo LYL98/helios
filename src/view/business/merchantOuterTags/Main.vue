@@ -1,21 +1,23 @@
 <template>
   <div>
-    <query-merchant-outer-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryBasicDataMerchantOuterTags"/>
-    <table-merchant-outer-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableBasicDataMerchantOuterTags"/>
-    <add-edit-merchant-outer-tags :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditBasicDataMerchantOuterTags"/>
+    <query-view :getPageComponents="viewGetPageComponents" ref="Query"/>
+    <table-view :getPageComponents="viewGetPageComponents" ref="Table"/>
+    <add-edit-view :getPageComponents="viewGetPageComponents" ref="AddEdit"/>
   </div>
 </template>
 
 <script>
-  import { QueryBasicDataMerchantOuterTags, TableBasicDataMerchantOuterTags, AddEditBasicDataMerchantOuterTags } from '@/container';
+  import Query from './Query';
+  import Table from './Table';
+  import AddEdit from './AddEdit';
   import viewMixin from '@/view/view.mixin';
 
   export default {
     name: 'MerchantOuterTagsList',
     components: {
-      'query-merchant-outer-tags': QueryBasicDataMerchantOuterTags,
-      'table-merchant-outer-tags': TableBasicDataMerchantOuterTags,
-      'add-edit-merchant-outer-tags': AddEditBasicDataMerchantOuterTags,
+      'query-view': Query,
+      'table-view': Table,
+      'add-edit-view': AddEdit,
     },
     mixins: [viewMixin],
     created() {

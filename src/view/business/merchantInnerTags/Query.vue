@@ -3,10 +3,10 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/container/query/query.mixin';
 
   export default {
-    name: "QueryBasicDataMerchantOuterTags",
+    name: "Query",
     mixins: [queryMixin],
     components: {
     },

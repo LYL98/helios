@@ -21,8 +21,6 @@ export { default as TableGroupHeadDetail } from './TableGroupHeadDetail';
 export { default as TableGroupHeadDetailList } from './TableGroupHeadDetailList';
 
 export { default as TableBasicDataCity } from './TableBasicDataCity';
-export { default as TableBasicDataMerchantInnerTags } from './TableBasicDataMerchantInnerTags';
-export { default as TableBasicDataMerchantOuterTags } from './TableBasicDataMerchantOuterTags';
 export { default as TableBasicDataProvince } from './TableBasicDataProvince';
 export { default as TableBasicDataZone } from './TableBasicDataZone';
 export { default as TableBasicDataStorehouse } from './TableBasicDataStorehouse';

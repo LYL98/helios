@@ -1,6 +1,4 @@
 export { default as AddEditBasicDataCity } from './AddEditBasicDataCity';
-export { default as AddEditBasicDataMerchantInnerTags } from './AddEditBasicDataMerchantInnerTags';
-export { default as AddEditBasicDataMerchantOuterTags } from './AddEditBasicDataMerchantOuterTags';
 export { default as AddEditBasicDataProvince } from './AddEditBasicDataProvince';
 export { default as AddEditBasicDataZone } from './AddEditBasicDataZone';
 export { default as AddEditBasicDataStorehouse } from './AddEditBasicDataStorehouse';
