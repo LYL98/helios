@@ -66,7 +66,7 @@
             <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
               <el-table-column prop="code" label="入库单号">
                 <template slot-scope="scope">
-                  <span v-if="(auth.isAdmin || auth.SupplierLocalPurchaseDetailStock) && fromPage !== 'Inventory'" class="link-item"
+                  <span v-if="(auth.isAdmin || auth.ItemLocalPurchaseDetailStock) && fromPage !== 'Inventory'" class="link-item"
                     @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)">{{scope.row.code}}</span>
                   <span v-else>{{scope.row.code}}</span>
                 </template>
@@ -116,7 +116,7 @@ import { InputNumber, InputPrice } from '@/common';
 import { SelectSupplier, SelectItem, LogModifiedDetail } from '@/component';
 
 export default {
-  name: "AddEditSupplierLocalPurchase",
+  name: "AddEditItemLocalPurchase",
   mixins: [addEditMixin],
   components: {
     'select-supplier': SelectSupplier,

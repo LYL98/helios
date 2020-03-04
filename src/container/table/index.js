@@ -21,10 +21,7 @@ export { default as TableGroupHeadDetail } from './TableGroupHeadDetail';
 export { default as TableGroupHeadDetailList } from './TableGroupHeadDetailList';
 
 export { default as TableBasicDataCity } from './TableBasicDataCity';
-export { default as TableBasicDataDisplayClass } from './TableBasicDataDisplayClass';
 export { default as TableBasicDataGrade } from './TableBasicDataGrade';
-export { default as TableBasicDataItemTags } from './TableBasicDataItemTags';
-export { default as TableBasicDataItemInnerTags } from './TableBasicDataItemInnerTags';
 export { default as TableBasicDataMerchantInnerTags } from './TableBasicDataMerchantInnerTags';
 export { default as TableBasicDataMerchantOuterTags } from './TableBasicDataMerchantOuterTags';
 export { default as TableBasicDataProvince } from './TableBasicDataProvince';
@@ -34,11 +31,15 @@ export { default as TableBasicDataWarehouse } from './TableBasicDataWarehouse';
 
 export { default as TableItemGlobal } from './TableItemGlobal';
 export { default as TableItemList } from './TableItemList';
-export { default as TableItemAuditInnerTag } from './TableItemAuditInnerTag';
 export { default as TableItemPricing } from './TableItemPricing';
 export { default as TableItemSupplier } from './TableItemSupplier';
 export { default as TableItemSystemClass } from './TableItemSystemClass';
 export { default as TableItemFrame } from './TableItemFrame';
+export { default as TableItemTagsPrice } from './TableItemTagsPrice';
+export { default as TableItemTags } from './TableItemTags';
+export { default as TableItemDisplayClass } from './TableItemDisplayClass';
+export { default as TableItemGPurchase } from './TableItemGPurchase';
+export { default as TableItemLocalPurchase } from './TableItemLocalPurchase';
 
 export { default as TableOperateLine } from './TableOperateLine';
 export { default as TableOperateSort } from './TableOperateSort';
@@ -51,9 +52,6 @@ export { default as TableSystemOperator } from './TableSystemOperator';
 
 export { default as TableMerchantList } from './TableMerchantList';
 export { default as TableMerchantRefund } from './TableMerchantRefund';
-
-export { default as TableSupplierGPurchase } from './TableSupplierGPurchase';
-export { default as TableSupplierLocalPurchase } from './TableSupplierLocalPurchase';
 
 export { default as TableWarehouseOutStorage } from './TableWarehouseOutStorage';
 export { default as TableWarehouseInventory } from './TableWarehouseInventory';

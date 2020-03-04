@@ -18,19 +18,6 @@ const router = new Router({
       component: () => import('@/view/Login')
     },
 
-    /*供应商*/
-    
-    {
-      path: '/supplier/gpurchase',
-      name: 'SupplierGPurchase',
-      component: () => import('@/view/supplier/GPurchase')
-    },
-    {
-      path: '/supplier/localpurchase',
-      name: 'SupplierLocalPurchase',
-      component: () => import('@/view/supplier/LocalPurchase')
-    },
-
     /*客户*/
     {
       path: '/merchant/store/query',
@@ -74,11 +61,6 @@ const router = new Router({
       component: () => import('@/view/item/ListForSale')
     },
     {
-      path: '/item/audit/inner/tag',
-      name: 'ItemAuditInnerTag',
-      component: () => import('@/view/item/AuditInnerTag')
-    },
-    {
       path: '/item/pricing',
       name: 'ItemPricing',
       component: () => import('@/view/item/Pricing')
@@ -88,6 +70,32 @@ const router = new Router({
       name: 'ItemSupplier',
       component: () => import('@/view/item/Supplier')
     },
+    {
+      path: '/item/tags/price',
+      name: 'ItemTagsPrice',
+      component: () => import('@/view/item/TagsPrice')
+    },
+    {
+      path: '/item/tags',
+      name: 'ItemTags',
+      component: () => import('@/view/item/Tags')
+    },
+    {
+      path: '/item/display/class',
+      name: 'ItemDisplayClass',
+      component: () => import('@/view/item/DisplayClass')
+    },
+    {
+      path: '/item/gpurchase',
+      name: 'ItemGPurchase',
+      component: () => import('@/view/item/GPurchase')
+    },
+    {
+      path: '/item/localpurchase',
+      name: 'ItemLocalPurchase',
+      component: () => import('@/view/item/LocalPurchase')
+    },
+    
     /*营销*/
     {
       path: '/marketing/scope/promotion/query',
@@ -327,21 +335,8 @@ const router = new Router({
     },
 
     /*基础信息*/
-    {
-      path: '/basicdata/display/class/list',
-      name: 'BasicDataDisplayClassList',
-      component: () => import('@/view/basicdata/DisplayClassList')
-    },
-    {
-      path: '/basicdata/item/tags/list',
-      name: 'BasicDataItemTagsList',
-      component: () => import('@/view/basicdata/ItemTagsList')
-    },
-    {
-      path: '/basicdata/item/inner/tags/list',
-      name: 'BasicDataItemInnerTagsList',
-      component: () => import('@/view/basicdata/ItemInnerTagsList')
-    },
+    
+    
     {
       path: '/basicdata/province/list',
       name: 'BasicDataProvinceList',

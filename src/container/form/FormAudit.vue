@@ -54,9 +54,9 @@ export default {
       detail: this.copyJson(initDetail),
       pages: {
         //预采订单
-        'SupplierGPurchase': {
+        'ItemGPurchase': {
           api: Config.api.fromSupplierOrderAudit,
-          table: 'TableSupplierGPurchase'
+          table: 'TableItemGPurchase'
         },
         //供应商流水审核
         'FinanceSBDetail': {

@@ -35,7 +35,7 @@ import { Http, Config, Verification } from '@/util';
 import { InputPercent, InputPrice } from '@/common';
 
 export default {
-  name: "AddEditBasicDataItemInnerTags",
+  name: "AddEditItemTagsPrice",
   mixins: [addEditMixin],
   components: {
     'input-percent': InputPercent
@@ -86,7 +86,7 @@ export default {
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableBasicDataItemInnerTags');
+        let pc = this.getPageComponents('TableItemTagsPrice');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

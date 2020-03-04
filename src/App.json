@@ -64,17 +64,17 @@
             {
               "title": "商品价格标签",
               "upName": "ItemListPropertyMain",
-              "name": "ItemAuditInnerTag"
+              "name": "ItemTagsPrice"
             },
             {
               "title": "商品运营标签",
               "upName": "ItemListPropertyMain",
-              "name": "BasicDataItemTagsList"
+              "name": "ItemTags"
             },
             {
               "title": "展示分类",
               "upName": "ItemListPropertyMain",
-              "name": "BasicDataDisplayClassList"
+              "name": "ItemDisplayClass"
             }
           ]
         },
@@ -94,12 +94,12 @@
             {
               "title": "预采",
               "upName": "ItemPurchaseMain",
-              "name": "SupplierGPurchase"
+              "name": "ItemGPurchase"
             },
             {
               "title": "反采",
               "upName": "ItemPurchaseMain",
-              "name": "SupplierLocalPurchase"
+              "name": "ItemLocalPurchase"
             }
           ]
         }

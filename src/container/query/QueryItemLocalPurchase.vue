@@ -3,12 +3,12 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="采购日期">
-          <el-date-picker size="small" v-model="query.order_date" value-format="yyyy-MM-dd" style="width: 100%;" placeholder="采购日期" @change="handleQuery('TableSupplierLocalPurchase')"/>
+          <el-date-picker size="small" v-model="query.order_date" value-format="yyyy-MM-dd" style="width: 100%;" placeholder="采购日期" @change="handleQuery('TableItemLocalPurchase')"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
         <my-query-item label="送达仓">
-          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="handleQuery('TableSupplierLocalPurchase')"/>
+          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="handleQuery('TableItemLocalPurchase')"/>
         </my-query-item>
       </el-col>
       <el-col :span="10">
@@ -17,8 +17,8 @@
             size="small"
             placeholder="反采单号/商品编号/名称/供应商名称"
             v-model="query.condition"
-            @search="handleQuery('TableSupplierLocalPurchase')"
-            @reset="handleClearQuery('TableSupplierLocalPurchase')"
+            @search="handleQuery('TableItemLocalPurchase')"
+            @reset="handleClearQuery('TableItemLocalPurchase')"
           />
         </my-query-item>
       </el-col>
@@ -29,14 +29,14 @@
           <select-option
             :options="purchaseStatus"
             v-model="query.status"
-            @change="handleQuery('TableSupplierLocalPurchase')"
+            @change="handleQuery('TableItemLocalPurchase')"
             size="small"
           />
         </my-query-item>
       </el-col>
       <el-col :span="7">
         <my-query-item label="供应商">
-          <select-supplier size="small" v-model="query.supplier_id" :provinceCode="query.province_code" @change="handleQuery('TableSupplierLocalPurchase')" filterable/>
+          <select-supplier size="small" v-model="query.supplier_id" :provinceCode="query.province_code" @change="handleQuery('TableItemLocalPurchase')" filterable/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -50,7 +50,7 @@
   import { SelectSupplier, SelectStorehouse } from '@/component';
 
   export default {
-    name: "QuerySupplierLocalPurchase",
+    name: "QueryItemLocalPurchase",
     components: {
       'select-option': SelectOption,
       'select-supplier': SelectSupplier,

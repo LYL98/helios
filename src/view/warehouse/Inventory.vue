@@ -8,8 +8,8 @@
     <form-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryMove"/>
     <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage" fromPage="Inventory"/>
     <form-warehouse-inventory-variation :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryVariation"/>
-    <detail-supplier-g-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditSupplierGPurchase" fromPage="Inventory"/>
-    <detail-supplier-local-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditSupplierLocalPurchase" fromPage="Inventory"/>
+    <detail-item-g-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemGPurchase" fromPage="Inventory"/>
+    <detail-item-local-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemLocalPurchase" fromPage="Inventory"/>
   </div>
 </template>
 
@@ -23,8 +23,8 @@
     FormWarehouseInventoryMove,
     FormWarehouseInventoryOutStorage,
     FormWarehouseInventoryVariation,
-    AddEditSupplierGPurchase,
-    AddEditSupplierLocalPurchase
+    AddEditItemGPurchase,
+    AddEditItemLocalPurchase
   } from '@/container';
   import viewMixin from '@/view/view.mixin';
 
@@ -39,8 +39,8 @@
       'form-warehouse-inventory-move': FormWarehouseInventoryMove,
       'form-warehouse-inventory-out-storage': FormWarehouseInventoryOutStorage,
       'form-warehouse-inventory-variation': FormWarehouseInventoryVariation,
-      'detail-supplier-g-purchase': AddEditSupplierGPurchase,
-      'detail-supplier-local-purchase': AddEditSupplierLocalPurchase
+      'detail-item-g-purchase': AddEditItemGPurchase,
+      'detail-item-local-purchase': AddEditItemLocalPurchase
     },
     mixins: [viewMixin],
     created() {

@@ -172,11 +172,11 @@
       //显示详情采购
       handleShowBuyDetail(data){
         if(data.purchase_order_type === 'global_pur'){
-          this.handleShowAddEdit('AddEditSupplierGPurchase', {
+          this.handleShowAddEdit('AddEditItemGPurchase', {
             id: data.purchase_order_id
           }, 'detail');
         }else{
-          this.handleShowAddEdit('AddEditSupplierLocalPurchase', {
+          this.handleShowAddEdit('AddEditItemLocalPurchase', {
             id: data.purchase_order_id
           }, 'detail');
         }

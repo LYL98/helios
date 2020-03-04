@@ -48,14 +48,14 @@ export default {
       detail: this.copyJson(initDetail),
       pages: {
         //预采订单
-        'SupplierGPurchase': {
+        'ItemGPurchase': {
           api: Config.api.fromSupplierOrderClose,
-          table: 'TableSupplierGPurchase'
+          table: 'TableItemGPurchase'
         },
         //反采采订单
-        'SupplierLocalPurchase': {
+        'ItemLocalPurchase': {
           api: Config.api.fromSupplierOrderClose,
-          table: 'TableSupplierLocalPurchase'
+          table: 'TableItemLocalPurchase'
         },
         //仓库品控
         'WarehouseQualityControl': {

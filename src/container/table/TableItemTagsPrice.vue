@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataItemInnerTagsAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.ItemTagsPriceAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataItemInnerTags')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEditItemTagsPrice')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -42,12 +42,12 @@
               :list="[
               {
                 title: '修改',
-                isDisplay: auth.isAdmin || auth.BasicDataItemInnerTagsEdit,
-                command: () => handleShowAddEdit('AddEditBasicDataItemInnerTags', scope.row)
+                isDisplay: auth.isAdmin || auth.ItemTagsPriceEdit,
+                command: () => handleShowAddEdit('AddEditItemTagsPrice', scope.row)
               },
               {
                 title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataItemInnerTagsDelete,
+                isDisplay: auth.isAdmin || auth.ItemTagsPriceDelete,
                 command: () => handleDelete(scope.row)
               }
             ]"
@@ -65,18 +65,18 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataItemInnerTags',
+    name: 'TableItemTagsPrice',
     components: {
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryBasicDataItemInnerTags'); //获取query组件
+      let pc = this.getPageComponents('QueryItemTagsPrice'); //获取query组件
       this.getData(pc.query);
     },
     data() {
       return {
         dataItem: [],
-        tableName: 'TableBasicDataItemInnerTags',
+        tableName: 'TableItemTagsPrice',
         tableColumn: [
           { label: '名称', key: 'title', width: '200', isShow: true },
           { label: '加价率', key: 'percent', width: '200', isShow: true },

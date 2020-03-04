@@ -72,7 +72,7 @@
             <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
               <el-table-column prop="code" label="入库单号">
                 <template slot-scope="scope">
-                  <span v-if="(auth.isAdmin || auth.SupplierGPurchaseDetailStock) && fromPage !== 'Inventory'" class="link-item"
+                  <span v-if="(auth.isAdmin || auth.ItemGPurchaseDetailStock) && fromPage !== 'Inventory'" class="link-item"
                     @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)">{{scope.row.code}}</span>
                   <span v-else>{{scope.row.code}}</span>
                 </template>
@@ -119,7 +119,7 @@
         </template>
         <template v-else>
           <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'"
-            v-if="(auth.isAdmin || auth.SupplierGPurchaseEdit) && pageType === 'detail' && detail.status === 'init'">修改</el-button>
+            v-if="(auth.isAdmin || auth.ItemGPurchaseEdit) && pageType === 'detail' && detail.status === 'init'">修改</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>
@@ -134,7 +134,7 @@ import { InputNumber, InputPrice } from '@/common';
 import { SelectSupplier, SelectGItem, LogModifiedDetail, SelectStorehouse } from '@/component';
 
 export default {
-  name: "AddEditSupplierGPurchase",
+  name: "AddEditItemGPurchase",
   mixins: [addEditMixin],
   components: {
     'select-supplier': SelectSupplier,
@@ -286,7 +286,7 @@ export default {
         this.$message({message: `预采订单${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableSupplierGPurchase');
+        let pc = this.getPageComponents('TableItemGPurchase');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

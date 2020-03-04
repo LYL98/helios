@@ -6,7 +6,7 @@
   import queryMixin from './query.mixin';
 
   export default {
-    name: "QueryBasicDataDisplayClass",
+    name: "QueryItemDisplayClass",
     mixins: [queryMixin],
     components: {
     },

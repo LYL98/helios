@@ -6,7 +6,7 @@
   import queryMixin from './query.mixin';
 
   export default {
-    name: "QueryBasicDataItemInnerTags",
+    name: "QueryItemTags",
     mixins: [queryMixin],
     components: {
     },

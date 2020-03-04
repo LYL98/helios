@@ -1,13 +1,10 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.SupplierGPurchaseAdd || auth.SupplierGPurchaseAudit || auth.SupplierGPurchaseExport">
-      <div class="left">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAudit" @click="handleShowForm('FormAudit', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
-        :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
-      </div>
+    <!--头部-->
+    <div class="table-top" v-if="auth.isAdmin || auth.ItemLocalPurchaseExport">
+      <div class="left"></div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseExport" @click.native="handleExport('fromSupplierOrderExport', query)" size="mini" type="primary" plain>导出预采单</el-button>
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAdd" @click="handleShowAddEdit('AddEditSupplierGPurchase')" size="mini" type="primary">新增</el-button>
+        <el-button @click.native="handleExport('fromSupplierOrderExport', query)" size="mini" type="primary" plain>导出反采单</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -19,10 +16,8 @@
         class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
-        @selection-change="handleSelectionChange"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="selection" :selectable="returnAuditStatus" width="42" v-if="(auth.isAdmin || auth.SupplierGPurchaseAudit)"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
@@ -31,24 +26,22 @@
               <!--编号-->
               <template v-if="item.key === 'code'">
                 <div class="td-item">
-                  <div class="link-item link-item add-dot2" @click="handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'detail')" v-if="auth.isAdmin || auth.SupplierGPurchaseDetail">
+                  <div class="link-item link-item add-dot2" @click="handleShowAddEdit('AddEditItemLocalPurchase', scope.row, 'detail')" v-if="auth.isAdmin || auth.ItemLocalPurchaseDetail">
                     {{scope.row.code}}
                   </div>
                   <div class="add-dot2" v-else>{{scope.row.code}}</div>
                 </div>
               </template>
               <!--供应商-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'supplier'">{{scope.row.supplier.title}}</div>
+              <div v-else-if="item.key === 'supplier'" class="td-item add-dot2">{{scope.row.supplier.title}}</div>
               <!--商品名称-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'item'">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
-              <!--价格-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'price_buy'">&yen;{{returnPrice(scope.row.price_buy)}}</div>
+              <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
+              <!--采购单价-->
+              <div v-else-if="item.key === 'price_buy'" class="td-item add-dot2">&yen;{{returnPrice(scope.row.price_buy)}}</div>
               <!--数量-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'num'">{{returnUnit(scope.row.num, '件', '-')}}</div>
+              <div v-else-if="item.key === 'num'" class="td-item add-dot2">{{returnUnit(scope.row.num, '件', '-')}}</div>
               <!--采购总金额-->
-              <div class="td-item add-dot2" v-else-if="item.key === 'num_price'">&yen;{{returnPrice(scope.row.num * scope.row.price + scope.row.num * scope.row.frame_price)}}</div>
-              <!--送达仓-->
-              <div v-else-if="item.key === 'storehouse'">{{scope.row.storehouse.title}}</div>
+              <div v-else-if="item.key === 'num_price'" class="td-item add-dot2">&yen;{{returnPrice(scope.row.num * scope.row.price_buy + scope.row.num * scope.row.frame_price)}}</div>
               <!--状态-->
               <div class="td-item" v-else-if="item.key === 'status'">
                 <el-tag size="small" :type="purchaseStatusType[scope.row.status]" disable-transitions>
@@ -68,22 +61,12 @@
               :list="[
                 {
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.SupplierGPurchaseDetail,
-                  command: () => handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'detail')
-                },
-                {
-                  title: '修改',
-                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseEdit) && scope.row.status === 'init',
-                  command: () => handleShowAddEdit('AddEditSupplierGPurchase', scope.row, 'edit')
-                },
-                {
-                  title: '审核',
-                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseAudit) && scope.row.status === 'init',
-                  command: () => handleShowForm('FormAudit', { ids: [scope.row.id] })
+                  isDisplay: auth.isAdmin || auth.ItemLocalPurchaseDetail,
+                  command: () => handleShowAddEdit('AddEditItemLocalPurchase', scope.row, 'detail')
                 },
                 {
                   title: '关闭',
-                  isDisplay: (auth.isAdmin || auth.SupplierGPurchaseClose) && scope.row.status === 'success',
+                  isDisplay: (auth.isAdmin || auth.ItemLocalPurchaseClose) && scope.row.status === 'success',
                   command: () => handleShowForm('FormClose', { ids: [scope.row.id] })
                 }
               ]"
@@ -93,10 +76,7 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left">
-        <el-button v-if="auth.isAdmin || auth.SupplierGPurchaseAudit" @click="handleShowForm('FormAudit', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
-        :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
-      </div>
+      <div class="left"></div>
       <div class="right">
         <pagination :pageComponent='this'/>
       </div>
@@ -110,27 +90,26 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableSupplierGPurchase',
+    name: 'TableItemLocalPurchase',
     components: {
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QuerySupplierGPurchase');
+      let pc = this.getPageComponents('QueryItemLocalPurchase');
       this.getData(pc.query);
     },
     data() {
       return {
-        tableName: 'TableSupplierGPurchase',
+        tableName: 'TableItemLocalPurchase',
         tableColumn: [
-          { label: '预采单号', key: 'code', width: '2', isShow: true },
+          { label: '反采单号', key: 'code', width: '2', isShow: true },
           { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
           { label: '供应商', key: 'supplier', width: '3', isShow: true },
           { label: '采购价', key: 'price_buy', width: '2', isShow: true },
           { label: '采购数量', key: 'num', width: '2', isShow: true },
           { label: '采购总金额', key: 'num_price', width: '3', isShow: false },
-          { label: '送达仓', key: 'storehouse', width: '2', isShow: true },
           { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '采购日期', key: 'order_date', width: '3', isShow: true },
+          { label: '采购日期', key: 'order_date', width: '3', isShow: false },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
@@ -151,10 +130,6 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
-      //返回是否可选择
-      returnAuditStatus(d){
-        return d.status === 'init' ? true : false;
-      }
     }
   };
 </script>

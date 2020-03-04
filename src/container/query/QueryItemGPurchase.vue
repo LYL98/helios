@@ -3,17 +3,17 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="采购日期">
-          <el-date-picker size="small" v-model="query.order_date" value-format="yyyy-MM-dd" style="width: 100%;" placeholder="采购日期" @change="handleQuery('TableSupplierGPurchase')"/>
+          <el-date-picker size="small" v-model="query.order_date" value-format="yyyy-MM-dd" style="width: 100%;" placeholder="采购日期" @change="handleQuery('TableItemGPurchase')"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
         <my-query-item label="送达仓">
-          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="handleQuery('TableSupplierGPurchase')"/>
+          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="handleQuery('TableItemGPurchase')"/>
         </my-query-item>
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="采购单号/商品编号/名称" size="small" @search="handleQuery('TableSupplierGPurchase')" @reset="handleClearQuery('TableSupplierGPurchase')"/>
+          <query-search-input v-model="query.condition" placeholder="采购单号/商品编号/名称" size="small" @search="handleQuery('TableItemGPurchase')" @reset="handleClearQuery('TableItemGPurchase')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -23,14 +23,14 @@
           <select-option
             :options="{'全部': '', ...purchaseStatus}"
             v-model="query.status"
-            @change="handleQuery('TableSupplierGPurchase')"
+            @change="handleQuery('TableItemGPurchase')"
             size="small"
           />
         </my-query-item>
       </el-col>
       <el-col :span="7">
         <my-query-item label="供应商">
-          <select-supplier supplierType="global_pur" size="small" v-model="query.supplier_id" @change="handleQuery('TableSupplierGPurchase')" filterable/>
+          <select-supplier supplierType="global_pur" size="small" v-model="query.supplier_id" @change="handleQuery('TableItemGPurchase')" filterable/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -62,7 +62,7 @@
   import { Constant } from '@/util';
 
   export default {
-    name: "QuerySupplierGPurchase",
+    name: "QueryItemGPurchase",
     components: {
       'select-option': SelectOption,
       'select-supplier': SelectSupplier,
@@ -100,7 +100,7 @@
           this.query.end_date = '';
         }
         this.$data.query = this.query;
-        this.handleQuery('TableSupplierGPurchase');
+        this.handleQuery('TableItemGPurchase');
       },
     }
   }

@@ -97,8 +97,6 @@ const Config = (() => {
       // 商品管理
       itemEdit: apiM + '/item/edit', //商品编辑
       itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品加价标签修改
-      itemInnerTagAudit: apiM + '/item/inner_tag/audit', //内标签审核审核
-      itemInnerTagLogQuery: apiM + '/item/inner_tag/log_query', //商品加价标签修改申请查询
       itemQuery: apiM + '/item/query',//商品列表
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）

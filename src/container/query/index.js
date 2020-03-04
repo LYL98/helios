@@ -25,10 +25,7 @@ export { default as QueryGroupBuyCaptainStatistics } from './QueryGroupBuyCaptai
 export { default as QueryGroupBuyMemberStatistics } from './QueryGroupBuyMemberStatistics';
 
 export { default as QueryBasicDataCity } from './QueryBasicDataCity';
-export { default as QueryBasicDataDisplayClass } from './QueryBasicDataDisplayClass';
 export { default as QueryBasicDataGrade } from './QueryBasicDataGrade';
-export { default as QueryBasicDataItemTags } from './QueryBasicDataItemTags';
-export { default as QueryBasicDataItemInnerTags } from './QueryBasicDataItemInnerTags';
 export { default as QueryBasicDataMerchantInnerTags } from './QueryBasicDataMerchantInnerTags';
 export { default as QueryBasicDataMerchantOuterTags } from './QueryBasicDataMerchantOuterTags';
 export { default as QueryBasicDataProvince } from './QueryBasicDataProvince';
@@ -38,11 +35,15 @@ export { default as QueryBasicDataWarehouse } from './QueryBasicDataWarehouse';
 
 export { default as QueryItemGlobal } from './QueryItemGlobal';
 export { default as QueryItemList } from './QueryItemList';
-export { default as QueryItemAuditInnerTag } from './QueryItemAuditInnerTag';
 export { default as QueryItemPricing } from './QueryItemPricing';
 export { default as QueryItemSupplier } from './QueryItemSupplier';
 export { default as QueryItemSystemClass } from './QueryItemSystemClass';
 export { default as QueryItemFrame } from './QueryItemFrame';
+export { default as QueryItemTagsPrice } from './QueryItemTagsPrice';
+export { default as QueryItemTags } from './QueryItemTags';
+export { default as QueryItemDisplayClass } from './QueryItemDisplayClass';
+export { default as QueryItemGPurchase } from './QueryItemGPurchase';
+export { default as QueryItemLocalPurchase } from './QueryItemLocalPurchase';
 
 export { default as QueryOperateLine } from './QueryOperateLine';
 export { default as QueryOperateSort } from './QueryOperateSort';
@@ -51,9 +52,6 @@ export { default as QueryOperateTruckLoadDelay } from './QueryOperateTruckLoadDe
 export { default as QueryOperateDepart } from './QueryOperateDepart';
 
 export { default as QuerySystemOperator } from './QuerySystemOperator';
-
-export { default as QuerySupplierGPurchase } from './QuerySupplierGPurchase';
-export { default as QuerySupplierLocalPurchase } from './QuerySupplierLocalPurchase';
 
 export { default as QueryWarehouseOutStorage } from './QueryWarehouseOutStorage';
 export { default as QueryWarehouseInventory } from './QueryWarehouseInventory';

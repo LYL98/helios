@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataDisplayClassListAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.ItemDisplayClassAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataDisplayClass')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEditItemDisplayClass')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -51,12 +51,12 @@
               :list="[
               {
                 title: '修改',
-                isDisplay: auth.isAdmin || auth.BasicDataDisplayClassListUpdate,
-                command: () => handleShowAddEdit('AddEditBasicDataDisplayClass', scope.row)
+                isDisplay: auth.isAdmin || auth.ItemDisplayClassEdit,
+                command: () => handleShowAddEdit('AddEditItemDisplayClass', scope.row)
               },
               {
                 title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataDisplayClassListDelete,
+                isDisplay: auth.isAdmin || auth.ItemDisplayClassDelete,
                 command: () => handleDelete(scope.row)
               }
             ]"
@@ -75,13 +75,13 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataDisplayClass',
+    name: 'TableItemDisplayClass',
     components: {
       'my-table-operate': TableOperate
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryBasicDataDisplayClass'); //获取query组件
+      let pc = this.getPageComponents('QueryItemDisplayClass'); //获取query组件
       this.getData(pc.query);
     },
     data() {
