@@ -18,7 +18,7 @@
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
         <template v-else>
-          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="auth.isAdmin || auth.BasicDataStorehouseEdit">修改</el-button>
+          <el-button size="medium" type="text" style="margin-right: 20px;" @click.native="pageType = 'edit'" v-if="auth.isAdmin || auth.StorehouseEdit">修改</el-button>
           <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
         </template>
       </div>
@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import addEditMixin from './add.edit.mixin';
+import addEditMixin from '@/container/addEdit/add.edit.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
 import { SelectProvince } from '@/common';
 
 export default {
-  name: "AddEditBasicDataStorehouse",
+  name: "AddEdit",
   mixins: [addEditMixin],
   components: {
     'my-select-province': SelectProvince
@@ -64,7 +64,7 @@ export default {
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableBasicDataStorehouse');
+        let pc = this.getPageComponents('Table');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

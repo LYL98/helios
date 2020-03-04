@@ -1,10 +1,10 @@
 <template>
   <div class="container-table">
     <!-- 头部end -->
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataStorehouseAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.StorehouseAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataStorehouse', null, 'add')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEdit', null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -25,7 +25,7 @@
               <!--名称-->
               <template v-if="item.key === 'title'">
                 <div class="td-item add-dot">
-                  <div class="link-item add-dot" @click="handleShowAddEdit('AddEditBasicDataStorehouse', scope.row, 'detail')" v-if="auth.isAdmin || auth.BasicDataStorehouseDetail">
+                  <div class="link-item add-dot" @click="handleShowAddEdit('AddEdit', scope.row, 'detail')" v-if="auth.isAdmin || auth.StorehouseDetail">
                     {{scope.row.title}}
                   </div>
                   <div class="add-dot" v-else>
@@ -51,12 +51,12 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: auth.isAdmin || auth.BasicDataStorehouseEdit,
-                  command: () => handleShowAddEdit('AddEditBasicDataStorehouse', scope.row, 'edit')
+                  isDisplay: auth.isAdmin || auth.StorehouseEdit,
+                  command: () => handleShowAddEdit('AddEdit', scope.row, 'edit')
                 },
                 {
                   title: '删除',
-                  isDisplay: auth.isAdmin || auth.BasicDataStorehouseDelete,
+                  isDisplay: auth.isAdmin || auth.StorehouseDelete,
                   command: () => handleDelete(scope.row)
                 }
               ]"
@@ -80,17 +80,17 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataStorehouse',
+    name: 'Table',
     components: {
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryBasicDataStorehouse'); //获取query组件
+      let pc = this.getPageComponents('Query'); //获取query组件
       this.getData(pc.query);
     },
     data() {
       return {
-        tableName: 'TableBasicDataStorehouse',
+        tableName: 'Storehouse',
         tableColumn: [
           { label: '仓', key: 'title', width: '2', isShow: true },
           { label: '所属省份', key: 'province', width: '2', isShow: true },
@@ -133,8 +133,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/container/table/table.scss';
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>

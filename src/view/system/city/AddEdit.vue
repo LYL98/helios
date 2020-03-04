@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import addEditMixin from './add.edit.mixin';
+import addEditMixin from '@/container/addEdit/add.edit.mixin';
 import { Http, Config, Verification } from '@/util';
 import { SelectProvince, SelectZone } from '@/common';
 
@@ -105,7 +105,7 @@ export default {
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableBasicDataCity');
+        let pc = this.getPageComponents('Table');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

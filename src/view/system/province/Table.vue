@@ -1,10 +1,9 @@
 <template>
   <div>
-    <!-- 头部end -->
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataZoneListAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.ProvinceAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataZone')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEdit')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -19,29 +18,29 @@
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="index" label="序号" min-width="150"></el-table-column>
-        <el-table-column label="所属省份" min-width="160">
+        <el-table-column width="20"/>
+        <el-table-column prop="code" label="编号" min-width="200">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
-              {{ scope.row.province && scope.row.province.title }}
+              {{ scope.row.code }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="title" label="片区名称" min-width="160">
+        <el-table-column prop="title" label="名称" min-width="200">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="rank" label="排序" min-width="160">
+        <el-table-column prop="rank" label="排序" min-width="200">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.rank }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="created" label="创建时间" min-width="160">
+        <el-table-column prop="created" label="创建时间" min-width="200">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.created }}
@@ -56,12 +55,12 @@
               :list="[
               {
                 title: '修改',
-                isDisplay: auth.isAdmin || auth.BasicDataZoneListUpdate,
-                command: () => handleShowAddEdit('AddEditBasicDataZone', scope.row)
+                isDisplay: auth.isAdmin || auth.ProvinceEdit,
+                command: () => handleShowAddEdit('AddEdit', scope.row)
               },
               {
                 title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataZoneListDelete,
+                isDisplay: auth.isAdmin || auth.ProvinceDelete,
                 command: () => handleDelete(scope.row)
               }
             ]"
@@ -80,14 +79,13 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataZone',
+    name: 'Table',
     components: {
       'my-table-operate': TableOperate
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryBasicDataZone'); //获取query组件
-      this.getData(pc.query);
+      this.getData();
     },
     data() {
       return {
@@ -97,10 +95,9 @@
     },
     methods: {
       //获取数据
-      async getData(query){
-        this.$data.query = query; //赋值，minxin用
+      async getData(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.basicdataZoneList, query);
+        let res = await Http.get(Config.api.basicdataProvinceList, {});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -111,7 +108,7 @@
       //删除数据
       async deleteData(data) {
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.basicdataZoneDelete, {
+        let res = await Http.post(Config.api.basicdataProvinceDelete, {
           code: data.code
         });
         this.$loading({ isShow: false });
@@ -128,8 +125,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/container/table/table.scss';
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>

@@ -1,7 +1,3 @@
-export { default as AddEditBasicDataCity } from './AddEditBasicDataCity';
-export { default as AddEditBasicDataProvince } from './AddEditBasicDataProvince';
-export { default as AddEditBasicDataZone } from './AddEditBasicDataZone';
-export { default as AddEditBasicDataStorehouse } from './AddEditBasicDataStorehouse';
 export { default as AddEditBasicDataWarehouse } from './AddEditBasicDataWarehouse';
 export { default as AddEditBasicDataWarehouseTray } from './AddEditBasicDataWarehouseTray';
 
