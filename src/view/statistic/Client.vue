@@ -307,7 +307,7 @@
             data.push({
               value: that.returnPrice(orderClassSumData[i].gmv),
               name: (areaType === 'zone' ? orderClassSumData[i].zone_title : orderClassSumData[i].city_title),
-              code: (areaType === 'zone' ? orderClassSumData[i].zone_id : orderClassSumData[i].city_code)
+              code: (areaType === 'zone' ? orderClassSumData[i].zone_id : orderClassSumData[i].city_id)
             });
           }else{
             dataTemp.value += orderClassSumData[i].gmv;

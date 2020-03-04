@@ -59,7 +59,7 @@
               size="small"
               placeholder="所在仓"
               clearable
-              v-model="query.city_code"
+              v-model="query.city_id"
               :provinceCode="query.province_code"
               :zoneId="query.zone_id"
               @change="changeQuery"
@@ -231,7 +231,7 @@
           system_class3: q.system_class3,
           system_class_code3: q.system_class_code3,
           zone_id: '',
-          city_code: '',
+          city_id: '',
           condition: '',
           page: 1,
           page_size: Constant.PAGE_SIZE

@@ -98,7 +98,7 @@
           is_post_pay: '',
           gb_included: '',
           province_code: '',
-          city_code: '',
+          city_id: '',
           condition: '',
           page: 1,
           page_size: Constant.PAGE_SIZE,
@@ -185,7 +185,7 @@
           is_post_pay: '',
           gb_included: '',
           province_code: this.province.code,
-          city_code: '',
+          city_id: '',
           condition: '',
           page: 1,
           page_size: page_size
@@ -221,13 +221,13 @@
       //商户列表导出
       async merchantListExport() {
         let api = Config.api.merchantExport;
-        let {is_audited, is_freeze, is_post_pay, gb_included, city_code, condition, begin_date, end_date} = this.query;
+        let {is_audited, is_freeze, is_post_pay, gb_included, city_id, condition, begin_date, end_date} = this.query;
         let query = {
           is_audited,
           is_freeze,
           is_post_pay,
           gb_included,
-          city_code,
+          city_id,
           condition,
           begin_date,
           end_date

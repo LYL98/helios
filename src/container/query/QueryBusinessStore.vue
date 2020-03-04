@@ -12,7 +12,7 @@
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="县域">
-          <my-select-city v-model="editQuery.city_code"
+          <my-select-city v-model="editQuery.city_id"
                           :provinceCode="editQuery.province_code"
                           ref="mySelectCity"
                           clearable
@@ -153,7 +153,7 @@
       },
       changeZone(v, isInit) {
         if (!isInit) {
-          this.editQuery.city_code = '';
+          this.editQuery.city_id = '';
           this.changeQuery()
         }
       },
@@ -171,7 +171,7 @@
           page_size: 20,
           province_code: this.province.code,
           zone_id: '',
-          city_code: '',
+          city_id: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,
           sort: this.backupSort

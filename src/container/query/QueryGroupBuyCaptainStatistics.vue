@@ -23,7 +23,7 @@
             size="small"
             placeholder="所在仓"
             clearable
-            v-model="editQuery.city_code"
+            v-model="editQuery.city_id"
             :provinceCode="editQuery.province_code"
             @change="changeQuery"
           />
@@ -180,7 +180,7 @@
           province_code: this.province.code,
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,
-          city_code: '',
+          city_id: '',
           sort: this.backupSort,
           condition: '',
           is_group: 1

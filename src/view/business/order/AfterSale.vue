@@ -162,7 +162,7 @@ export default {
     initQuery() {
       this.$data.query = Object.assign({}, this.$data.query, {
         province_code: this.province.code,
-        city_code: '',
+        city_id: '',
         condition: '',
         item: '',
         status: '',
@@ -205,9 +205,9 @@ export default {
     //导出
     async afterSaleListExport() {
       let api = Config.api.afterSaleListExport;
-      let {city_code, status, opt_type, condition, item, begin_date, end_date} = this.query;
+      let {city_id, status, opt_type, condition, item, begin_date, end_date} = this.query;
       let query = {
-        city_code,
+        city_id,
         status,
         opt_type,
         condition,

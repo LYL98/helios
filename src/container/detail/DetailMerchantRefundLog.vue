@@ -6,7 +6,7 @@
           size="small"
           clearable
           style="width: 180px;"
-          v-model="query.city_code"
+          v-model="query.city_id"
           :provinceCode="query.province_code"
           @change="selectMerchantByCondition"
         />
@@ -146,7 +146,7 @@
     data() {
       let initQuery = {
         province_code: this.$province.code,
-        city_code: '',
+        city_id: '',
         store_title: '',
         reason: '',
         begin_date: '',

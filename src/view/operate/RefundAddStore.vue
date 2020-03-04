@@ -16,7 +16,7 @@
             size="small"
             :provinceCode="province.code"
             :lineCode="query.line_id"
-            v-model="query.city_code"
+            v-model="query.city_id"
             style="width: 180px; margin-left: 20px;"
             @change="selectByCondition"
           />
@@ -183,7 +183,7 @@
         this.$data.query = Object.assign(this.$data.query, {
           province_code: this.province.code,
           line_id: '',
-          city_code: '',
+          city_id: '',
           store_title: ''
         });
       },
@@ -258,7 +258,7 @@
       selectByCondition() {
         // 如果查询列表没有搜索参数，则初始化状态。
         if (!this.$data.query.line_id
-            && !this.$data.query.city_code
+            && !this.$data.query.city_id
             && !this.$data.query.store_title) {
           this.$data.storeList = [];
           this.$data.multipleSelection = [];

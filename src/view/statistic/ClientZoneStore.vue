@@ -14,7 +14,7 @@
           {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
 
-        <el-breadcrumb-item>{{ query.city_code === '' ? '全部县域' : query.city_title }}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ query.city_id === '' ? '全部县域' : query.city_title }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="query" style="margin-bottom: 20px;">
@@ -55,7 +55,7 @@
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="县域">
             <my-select-city
-              :value="query.city_code"
+              :value="query.city_id"
               :zoneId="query.zone_id"
               :provinceCode="query.province_code"
               :clearable="false"
@@ -244,7 +244,7 @@
         // console.log('store_title', this.$route.query)
 
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
-          city_code: this.$route.query.city_code,
+          city_id: this.$route.query.city_id,
           city_title: this.$route.query.city_title,
           zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
@@ -267,7 +267,7 @@
           sort: '-gmv',
           zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
-          city_code: this.$route.query.city_code,
+          city_id: this.$route.query.city_id,
           city_title: this.$route.query.city_title,
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -289,7 +289,7 @@
         if (!isInit) {
           // console.log("改变片区", data);
           this.$data.query.zone_id = data;
-          this.$data.query.city_code = '';
+          this.$data.query.city_id = '';
           this.$data.breadcrumb.zone_id = data;
           this.statisticalOrderMerchantSum();
         }
@@ -304,7 +304,7 @@
       changeCity(data, isInit) {
         if (!isInit) {
           // console.log("改变县域", data);
-          this.$data.query.city_code = data;
+          this.$data.query.city_id = data;
           this.statisticalOrderMerchantSum();
         }
       },
@@ -358,7 +358,7 @@
           query: {
             store_id: item.store_id,
             store_title: item.store_title,
-            city_code: this.$data.query.city_code,
+            city_id: this.$data.query.city_id,
             city_title: this.$data.query.city_title,
             zone_id: this.$data.query.zone_id,
             zone_title: this.$data.query.zone_title,

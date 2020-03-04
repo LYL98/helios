@@ -17,7 +17,7 @@
         <el-breadcrumb-item
           :to="{ path: '/statistic/client/zone/store',
             query: {
-              city_code: breadcrumb.city_code,
+              city_id: breadcrumb.city_id,
               city_title: breadcrumb.city_title,
               zone_id: breadcrumb.zone_id,
               zone_title: breadcrumb.zone_title,
@@ -25,7 +25,7 @@
               end_date: breadcrumb.end_date }
             }"
         >
-          {{ breadcrumb.city_code === '' ? '全部县域' : breadcrumb.city_title }}
+          {{ breadcrumb.city_id === '' ? '全部县域' : breadcrumb.city_title }}
         </el-breadcrumb-item>
 
         <el-breadcrumb-item>{{ query.store_title }}</el-breadcrumb-item>
@@ -199,7 +199,7 @@
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
           store_id: this.$route.query.store_id,
           store_title: this.$route.query.store_title,
-          city_code: this.$route.query.city_code,
+          city_id: this.$route.query.city_id,
           city_title: this.$route.query.city_title,
           zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
@@ -223,7 +223,7 @@
           store_title: this.$route.query.store_title,
           zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
-          city_code: this.$route.query.city_code,
+          city_id: this.$route.query.city_id,
           city_title: this.$route.query.city_title,
           system_class: '',
           system_class_codes: [],

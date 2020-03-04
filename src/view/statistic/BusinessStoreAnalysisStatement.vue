@@ -150,7 +150,7 @@ export default {
         page_size: 20,
         province_code: '',
         zone_id: '',
-        city_code: '',
+        city_id: '',
         begin_date: '',
         end_date: '',
         sort: ''
@@ -223,7 +223,7 @@ export default {
       //   page: 1,
       //   page_size: 20,
       //   zone_id: '',
-      //   city_code: '',
+      //   city_id: '',
       //   begin_date: '',
       //   end_date: '',
       // };

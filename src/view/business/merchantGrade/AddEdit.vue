@@ -79,15 +79,6 @@ export default {
     }
   },
   methods: {
-    //显示新增修改(重写)
-    showAddEdit(data){
-      if(data){
-        this.$data.detail = JSON.parse(JSON.stringify({ ...data, id: true }));
-      }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
-      }
-      this.$data.isShow = true;
-    },
     //提交数据
     async addEditData(){
       let { detail } = this;

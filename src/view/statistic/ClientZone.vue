@@ -299,7 +299,7 @@
         this.$router.push({
           path: '/statistic/client/zone/store',
           query: {
-            city_code: item.city_code,
+            city_id: item.city_id,
             city_title: item.city_title,
             zone_id: this.$data.query.zone_id,
             zone_title: this.$data.query.zone_title,

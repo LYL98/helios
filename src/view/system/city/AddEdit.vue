@@ -65,16 +65,6 @@ export default {
   },
   methods: {
 
-    //显示新增修改(重写)
-    showAddEdit(data){
-      if(data){
-        this.$data.detail = JSON.parse(JSON.stringify({ ...data, id: true }));
-      }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
-      }
-      this.$data.isShow = true;
-    },
-
     // 切换省份时，所选省份，是否和当前省份一致！
     // 如果不一致，则清空city选择
     changeProvince(v) {
