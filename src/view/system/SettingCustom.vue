@@ -1,4 +1,5 @@
 <template>
+  <sub-menu>
   <div style="overflow: hidden; background: #fff;">
     <div class="top">
       <div class="setting-item" v-if="auth.isAdmin || auth.SystemSettingOperating">
@@ -14,6 +15,7 @@
       </div>
     </div>
   </div>
+  </sub-menu>
 </template>
 
 <script>

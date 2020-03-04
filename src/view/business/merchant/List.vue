@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-merchant-store v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <div class="table-top" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
@@ -49,7 +49,7 @@
     <el-dialog title="新增商户" width="808px" :close-on-click-modal="false" :visible.sync="addMerchantDialogVisible" append-to-body>
       <add-edit-merchant-list v-if="addMerchantDialogVisible" :editMerchantSuccess="addMerchantSuccess" :editMerchantCancel="addMerchantCancel"/>
     </el-dialog>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

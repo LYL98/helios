@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <sub-menu>
     <query-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QuerySystemOperator" page="global"/>
     <table-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableSystemOperator" page="global"/>
     <add-edit-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditSystemOperator"/>
     <detail-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailSystemOperator" page="global"/>
     <from-system-operator-reset-pwd :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormSystemOperatorResetPwd"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <sub-menu>
     <add-edit-group-item-class :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditGroupItemClass"/>
     <table-group-item-class :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableGroupItemClass"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

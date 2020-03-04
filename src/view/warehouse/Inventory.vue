@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseInventory"/>
     <table-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseInventory"/>
     <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory"/>
@@ -10,7 +10,7 @@
     <form-warehouse-inventory-variation :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryVariation"/>
     <detail-item-g-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemGPurchase" fromPage="Inventory"/>
     <detail-item-local-purchase :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemLocalPurchase" fromPage="Inventory"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

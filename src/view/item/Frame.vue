@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <sub-menu>
     <table-item-frame :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemFrame"/>
     <add-edit-item-frame :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemFrame"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

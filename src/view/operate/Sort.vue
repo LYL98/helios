@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <sub-menu>
     <query-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateSort"/>
     <table-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateSort"/>
     <detail-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateSort"/>
     <add-edit-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateSort"/>
     <detail-operate-sort-city :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateSortCity"/>
     <print-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintOperateSort"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

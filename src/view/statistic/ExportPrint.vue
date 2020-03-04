@@ -1,118 +1,120 @@
 <template>
-  <div :style="`margin: 6px; background: white; height: ${viewWindowHeight - 90}px`">
-    <div style="padding: 20px;">
-      <h6 style="font-size: 14px">商户表</h6>
-      <div style="margin-top: 18px; margin-left: 20px">
-        <el-button v-if="(auth.isAdmin || auth[item.auth]) && (item.key === '5' || item.key === '7' || item.key === '8')" @click.native="show(index)" v-for="(item, index, key) in titleStrs" :key="key" style="margin-bottom: 10px;margin-left:0; margin-right:10px">
-          {{item.title}}
-          <i class="el-icon-download" v-if="titleStrs[selectIndex].key !== 'print'"></i>
-          <i class="el-icon-printer" v-else></i>
-        </el-button>
-      </div>
-    </div>
-    <div style="padding: 20px; margin-top: 15px">
-      <h6 style="font-size: 14px">订单表</h6>
-      <div style="margin-top: 18px; margin-left: 20px">
-        <el-button v-if="(auth.isAdmin || auth[item.auth]) && (item.key === '1' || item.key === '9' || item.key === '10' || item.key === '2')" @click.native="show(index)" v-for="(item, index, key) in titleStrs" :key="key" style="margin-bottom: 10px;margin-left:0; margin-right:10px">
-          {{item.title}}
-          <i class="el-icon-download" v-if="item.key !== 'print'"></i>
-          <i class="el-icon-printer" v-else></i>
-        </el-button>
-      </div>
-    </div>
-    <div style="padding: 20px; margin-top: 15px">
-      <h6 style="font-size: 14px">打印</h6>
-      <div style="margin-top: 18px; margin-left: 20px">
-        <el-button v-if="(auth.isAdmin || auth[item.auth]) && item.key === 'print'" @click.native="show(index)" v-for="(item, index, key) in titleStrs" :key="key" style="margin-bottom: 10px;margin-left:0; margin-right:10px">
-          {{item.title}}
-          <i class="el-icon-download" v-if="item.key !== 'print'"></i>
-          <i class="el-icon-printer" v-else></i>
-        </el-button>
-      </div>
-    </div>
-
-
-    <el-dialog :title="titleStrs[selectIndex].title" :visible="isShow" :before-close="cancel" :width="isPreview ? '1000px' : '540px'">
-      <div v-if="isPreview">
-        <div style="display: flex; flex-wrap: wrap;">
-          <p v-if="titleStrs[selectIndex].key !== '7'"><span style="color: #73767D;">当前省份</span><span style="margin-left: 12px;color: #3B3D42;">{{province.title}}</span></p>
-          <p v-if="titleStrs[selectIndex].key !== '7'" style="margin-left: 70px;"><span style="color: #73767D;">日期</span><span style="margin-left: 12px;color: #3B3D42;">{{previewDate()}}</span></p>
-          <p v-if="titleStrs[selectIndex].key === '2' || titleStrs[selectIndex].key === 'print'" style="margin-left: 70px;"><span style="color: #73767D;">县市</span><span style="margin-left: 12px;color: #3B3D42;">{{cityName}}</span></p>
+  <sub-menu>
+    <div :style="`margin: 6px; background: white; height: ${viewWindowHeight - 90}px`">
+      <div style="padding: 20px;">
+        <h6 style="font-size: 14px">商户表</h6>
+        <div style="margin-top: 18px; margin-left: 20px">
+          <el-button v-if="(auth.isAdmin || auth[item.auth]) && (item.key === '5' || item.key === '7' || item.key === '8')" @click.native="show(index)" v-for="(item, index, key) in titleStrs" :key="key" style="margin-bottom: 10px;margin-left:0; margin-right:10px">
+            {{item.title}}
+            <i class="el-icon-download" v-if="titleStrs[selectIndex].key !== 'print'"></i>
+            <i class="el-icon-printer" v-else></i>
+          </el-button>
         </div>
-        <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px">
-          <img v-if="titleStrs[selectIndex].key === '1'" src="@/assets/img/export_preview_city.png" style="width: 800px; height: 450px"/>
-          <img v-else-if="titleStrs[selectIndex].key === '2'" src="@/assets/img/export_preview_merchant.png" style="width: 800px; height: 450px"/>
-          <img v-else-if="titleStrs[selectIndex].key === '5'" src="@/assets/img/export_preview_short_list.jpg" style="width: 800px; height: 450px"/>
-          <img v-else-if="titleStrs[selectIndex].key === '7'" src="@/assets/img/export_preview_banlance.jpg" style="width: 800px; height: 450px"/>
-          <img v-else-if="titleStrs[selectIndex].key === '8'" src="@/assets/img/export_preview_balance_log.png" style="width: 800px; height: 450px"/>
-          <img v-else-if="titleStrs[selectIndex].key === '9'" src="@/assets/img/export_preview_route.png" style="width: 800px; height: 450px"/>
-          <img v-else-if="titleStrs[selectIndex].key === '10'" src="@/assets/img/export_preview_store.png" style="width: 800px; height: 450px"/>
-          <img v-else-if="titleStrs[selectIndex].key === 'print'" src="@/assets/img/export_preview_print.png" style="width: 800px; height: 450px"/>
-        </div>
-
       </div>
-      <el-form label-position="right" label-width="100px" style="width: 540px; margin-top: -10px;" :rules="rules" ref="ruleForm" v-else-if="titleStrs[selectIndex].key !== '7'">
-        <el-form-item label="当前省份">
-          {{ province.title }}
-        </el-form-item>
-        <el-form-item  label="选择日期" v-if="titleStrs[selectIndex].key !== '2' && titleStrs[selectIndex].key !== 'print'">
-          <el-date-picker
-            v-model="pickerValue"
-            value-format="yyyy-MM-dd"
-            type="daterange"
-            :picker-options="fixDateOptions"
-            @change="changePicker"
-            :clearable="false"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"/>
-            <div v-if="titleStrs[selectIndex].key === '1' || titleStrs[selectIndex].key === '5' || titleStrs[selectIndex].key === '9'|| titleStrs[selectIndex].key === '10' " style="color: #7f1305;">注：选择配送日期</div>
-            <div v-else-if="titleStrs[selectIndex].key === '6'" style="color: #7f1305;">注：选择售后申请日期</div>
-            <div v-else-if="titleStrs[selectIndex].key === '8' " style="color: #7f1305;">注：选择查询日期</div>
-            <div v-else style="color: #7f1305;">注：选择下单日期</div>
-        </el-form-item>
-        <el-form-item label="选择日期" v-else>
-          <el-date-picker
-            v-model="query.date"
-            value-format="yyyy-MM-dd"
-            type="date"
-            :clearable="false"
-            placeholder="选择日期" style="width: 320px;"/>
-            <div style="color: #7f1305;">注：选择配送日期</div>
-        </el-form-item>
-        <el-form-item label="选择县域" v-if="titleStrs[selectIndex].key === '2'">
-          <my-select-city :provinceCode="province.code"
-                          v-model="query.city_id"
-                          :clearable="titleStrs[selectIndex].key === '2'"
-                          style="width: 320px;"
-                          @changeCityName="onChangeCityName"/>
-        </el-form-item>
-        <!--打印(暂时)-->
-        <template v-if="titleStrs[selectIndex].key === 'print'">
-          <el-form-item label="">
-            <el-radio label="city" v-model="printType" >以县域维度打印</el-radio>
-            <el-radio label="item" v-model="printType">以商品维度打印</el-radio>
+      <div style="padding: 20px; margin-top: 15px">
+        <h6 style="font-size: 14px">订单表</h6>
+        <div style="margin-top: 18px; margin-left: 20px">
+          <el-button v-if="(auth.isAdmin || auth[item.auth]) && (item.key === '1' || item.key === '9' || item.key === '10' || item.key === '2')" @click.native="show(index)" v-for="(item, index, key) in titleStrs" :key="key" style="margin-bottom: 10px;margin-left:0; margin-right:10px">
+            {{item.title}}
+            <i class="el-icon-download" v-if="item.key !== 'print'"></i>
+            <i class="el-icon-printer" v-else></i>
+          </el-button>
+        </div>
+      </div>
+      <div style="padding: 20px; margin-top: 15px">
+        <h6 style="font-size: 14px">打印</h6>
+        <div style="margin-top: 18px; margin-left: 20px">
+          <el-button v-if="(auth.isAdmin || auth[item.auth]) && item.key === 'print'" @click.native="show(index)" v-for="(item, index, key) in titleStrs" :key="key" style="margin-bottom: 10px;margin-left:0; margin-right:10px">
+            {{item.title}}
+            <i class="el-icon-download" v-if="item.key !== 'print'"></i>
+            <i class="el-icon-printer" v-else></i>
+          </el-button>
+        </div>
+      </div>
+
+
+      <el-dialog :title="titleStrs[selectIndex].title" :visible="isShow" :before-close="cancel" :width="isPreview ? '1000px' : '540px'">
+        <div v-if="isPreview">
+          <div style="display: flex; flex-wrap: wrap;">
+            <p v-if="titleStrs[selectIndex].key !== '7'"><span style="color: #73767D;">当前省份</span><span style="margin-left: 12px;color: #3B3D42;">{{province.title}}</span></p>
+            <p v-if="titleStrs[selectIndex].key !== '7'" style="margin-left: 70px;"><span style="color: #73767D;">日期</span><span style="margin-left: 12px;color: #3B3D42;">{{previewDate()}}</span></p>
+            <p v-if="titleStrs[selectIndex].key === '2' || titleStrs[selectIndex].key === 'print'" style="margin-left: 70px;"><span style="color: #73767D;">县市</span><span style="margin-left: 12px;color: #3B3D42;">{{cityName}}</span></p>
+          </div>
+          <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px">
+            <img v-if="titleStrs[selectIndex].key === '1'" src="@/assets/img/export_preview_city.png" style="width: 800px; height: 450px"/>
+            <img v-else-if="titleStrs[selectIndex].key === '2'" src="@/assets/img/export_preview_merchant.png" style="width: 800px; height: 450px"/>
+            <img v-else-if="titleStrs[selectIndex].key === '5'" src="@/assets/img/export_preview_short_list.jpg" style="width: 800px; height: 450px"/>
+            <img v-else-if="titleStrs[selectIndex].key === '7'" src="@/assets/img/export_preview_banlance.jpg" style="width: 800px; height: 450px"/>
+            <img v-else-if="titleStrs[selectIndex].key === '8'" src="@/assets/img/export_preview_balance_log.png" style="width: 800px; height: 450px"/>
+            <img v-else-if="titleStrs[selectIndex].key === '9'" src="@/assets/img/export_preview_route.png" style="width: 800px; height: 450px"/>
+            <img v-else-if="titleStrs[selectIndex].key === '10'" src="@/assets/img/export_preview_store.png" style="width: 800px; height: 450px"/>
+            <img v-else-if="titleStrs[selectIndex].key === 'print'" src="@/assets/img/export_preview_print.png" style="width: 800px; height: 450px"/>
+          </div>
+
+        </div>
+        <el-form label-position="right" label-width="100px" style="width: 540px; margin-top: -10px;" :rules="rules" ref="ruleForm" v-else-if="titleStrs[selectIndex].key !== '7'">
+          <el-form-item label="当前省份">
+            {{ province.title }}
           </el-form-item>
-          <el-form-item label="选择县域" v-if="printType === 'city'">
+          <el-form-item  label="选择日期" v-if="titleStrs[selectIndex].key !== '2' && titleStrs[selectIndex].key !== 'print'">
+            <el-date-picker
+              v-model="pickerValue"
+              value-format="yyyy-MM-dd"
+              type="daterange"
+              :picker-options="fixDateOptions"
+              @change="changePicker"
+              :clearable="false"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"/>
+              <div v-if="titleStrs[selectIndex].key === '1' || titleStrs[selectIndex].key === '5' || titleStrs[selectIndex].key === '9'|| titleStrs[selectIndex].key === '10' " style="color: #7f1305;">注：选择配送日期</div>
+              <div v-else-if="titleStrs[selectIndex].key === '6'" style="color: #7f1305;">注：选择售后申请日期</div>
+              <div v-else-if="titleStrs[selectIndex].key === '8' " style="color: #7f1305;">注：选择查询日期</div>
+              <div v-else style="color: #7f1305;">注：选择下单日期</div>
+          </el-form-item>
+          <el-form-item label="选择日期" v-else>
+            <el-date-picker
+              v-model="query.date"
+              value-format="yyyy-MM-dd"
+              type="date"
+              :clearable="false"
+              placeholder="选择日期" style="width: 320px;"/>
+              <div style="color: #7f1305;">注：选择配送日期</div>
+          </el-form-item>
+          <el-form-item label="选择县域" v-if="titleStrs[selectIndex].key === '2'">
             <my-select-city :provinceCode="province.code"
                             v-model="query.city_id"
-                            clearable
+                            :clearable="titleStrs[selectIndex].key === '2'"
                             style="width: 320px;"
                             @changeCityName="onChangeCityName"/>
           </el-form-item>
-          <el-form-item label="选择商品" v-else>
-            <search-item v-model="itemData" style="width: 320px;"/>
-          </el-form-item>
-        </template>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click.native="preview" style="float: left" v-if="!isPreview">预 览</el-button>
-        <el-button @click.native="preStep" v-if="isPreview">上一步</el-button>
-        <el-button @click.native="cancel" v-else>取 消</el-button>
-        <el-button type="primary" @click.native="submitExport">{{ titleStrs[selectIndex].key === 'print' ? '打 印' : '导 出' }}</el-button>
-      </span>
-    </el-dialog>
-  </div>
+          <!--打印(暂时)-->
+          <template v-if="titleStrs[selectIndex].key === 'print'">
+            <el-form-item label="">
+              <el-radio label="city" v-model="printType" >以县域维度打印</el-radio>
+              <el-radio label="item" v-model="printType">以商品维度打印</el-radio>
+            </el-form-item>
+            <el-form-item label="选择县域" v-if="printType === 'city'">
+              <my-select-city :provinceCode="province.code"
+                              v-model="query.city_id"
+                              clearable
+                              style="width: 320px;"
+                              @changeCityName="onChangeCityName"/>
+            </el-form-item>
+            <el-form-item label="选择商品" v-else>
+              <search-item v-model="itemData" style="width: 320px;"/>
+            </el-form-item>
+          </template>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click.native="preview" style="float: left" v-if="!isPreview">预 览</el-button>
+          <el-button @click.native="preStep" v-if="isPreview">上一步</el-button>
+          <el-button @click.native="cancel" v-else>取 消</el-button>
+          <el-button type="primary" @click.native="submitExport">{{ titleStrs[selectIndex].key === 'print' ? '打 印' : '导 出' }}</el-button>
+        </span>
+      </el-dialog>
+    </div>
+  </sub-menu>
 </template>
 
 <script>

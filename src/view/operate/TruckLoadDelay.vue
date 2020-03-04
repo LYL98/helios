@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <sub-menu>
     <query-operate-truck-load-delay :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateTruckLoadDelay"/>
     <table-operate-truck-load-delay :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateTruckLoadDelay"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

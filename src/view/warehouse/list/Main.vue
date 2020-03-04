@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <sub-menu>
     <query-warehouse :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="Query"/>
     <table-warehouse :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="Table"/>
     <detail-warehouse :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="Detail"/>
     <add-edit-warehouse :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEdit"/>
     <add-edit-warehouse-tray :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditTray"/>
     <print-warehouse-tray :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintTray"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

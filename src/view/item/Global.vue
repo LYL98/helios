@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <sub-menu>
     <query-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemGlobal" page="global"/>
     <table-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemGlobal" page="global"/>
     <add-edit-item-global :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemGlobal" page="global"/>
     <detail-item-global-edit-record :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemGlobalEditRecord" page="global"/>
     <form-item-global-supplier-type :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemGlobalSupplierType" page="global"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

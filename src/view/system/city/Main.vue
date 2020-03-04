@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <sub-menu>
     <query-view :getPageComponents="viewGetPageComponents" ref="Query"/>
     <table-view :getPageComponents="viewGetPageComponents" ref="Table"/>
     <add-edit-view :getPageComponents="viewGetPageComponents" ref="AddEdit"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-finance-balance
       v-model="query"
       @change="changeQuery"
@@ -118,7 +118,7 @@
         :close="handleClose"
       />
     </el-dialog>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

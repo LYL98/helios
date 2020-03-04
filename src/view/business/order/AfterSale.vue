@@ -1,5 +1,5 @@
 <template>
-  <div class="after-sale">
+  <sub-menu class="after-sale">
     <query-order-aftersale v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <!-- 头部end -->
@@ -110,7 +110,7 @@
     <!--商品详情-->
     <add-edit-item-detail :getPageComponents="viewGetPageComponents" ref="AddEditItemList" page="after-sale-detail"/>
     <form-order-after-sale-close :getPageComponents="viewGetPageComponents" ref="FormOrderAfterSaleClose" />
-  </div>
+  </sub-menu>
 </template>
 
 <script>

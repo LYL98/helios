@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <sub-menu>
     <query-item-supplier :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemSupplier"/>
     <table-item-supplier :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemSupplier"/>
     <add-edit-item-supplier :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemSupplier"/>
     <detail-item-supplier-item :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemSupplierItem"/>
     <detail-item-supplier :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemSupplier"/>
     <form-item-supplier-accont :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemSupplierAccount"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

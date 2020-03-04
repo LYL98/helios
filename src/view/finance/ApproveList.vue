@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-finance-approve v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <table-finance-approve :data="dataItem.items" :windowHeight="viewWindowHeight" :page="query.page" :pageSize="query.page_size" :offset-height="offsetHeight" :itemEdit="handleItemEdit"/>
     <div class="footer">
@@ -31,7 +31,7 @@
         :close="handleClose"
       />
     </el-dialog>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

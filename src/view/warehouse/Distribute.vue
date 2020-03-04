@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <sub-menu>
     <query-warehouse-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseDistribute"/>
     <table-warehouse-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseDistribute"/>
     <detail-warehouse-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseDistribute"/>
     <detail-warehouse-stock :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditWarehouseStockPending"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

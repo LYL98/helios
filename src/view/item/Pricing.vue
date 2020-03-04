@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <sub-menu>
     <query-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemPricing"/>
     <table-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemPricing"/>
     <add-edit-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemPricing"/>
     <form-item-pricing-edit-num :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemPricingEditNum"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

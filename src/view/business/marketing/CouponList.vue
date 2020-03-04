@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-marketing-coupon v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <div class="table-top" v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
@@ -139,7 +139,7 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

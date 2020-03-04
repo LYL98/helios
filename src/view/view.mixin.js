@@ -1,4 +1,9 @@
+import SubMenu from '@/view/layout/SubMenu';
+
 export default {
+  components: {
+    'sub-menu': SubMenu
+  },
   data() {
     return {
       province: this.$province,

@@ -1,6 +1,6 @@
 <!--运营统计-->
 <template>
-  <div>
+  <sub-menu>
     <div class="query" style="margin-bottom: 20px">
       <el-row>
         <el-col :xl="6" :lg="7" :span="7">
@@ -74,7 +74,7 @@
       </div>
 
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

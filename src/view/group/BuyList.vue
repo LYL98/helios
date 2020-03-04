@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-group-buy v-model="query" @change="changeQuery" :reset="resetQuery"></query-group-buy>
     <div class="operate" v-if="auth.isAdmin || auth.GroupBuyAdd">
       <el-button
@@ -271,7 +271,7 @@
         </div>
       </div>
     </el-dialog>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

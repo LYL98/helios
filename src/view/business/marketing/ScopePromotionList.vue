@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-marketing-scope-promotion
       v-model="query"
       @change="changeQuery"
@@ -50,8 +50,7 @@
         :sending="formSending"
       ></form-marketing-scope-promotion>
     </el-dialog>
-  </div>
-
+  </sub-menu>
 </template>
 
 <script>

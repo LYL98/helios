@@ -2,7 +2,7 @@
   业务四率表
 -->
 <template>
-  <div>
+  <sub-menu>
     <query-business-four-rate
       v-model="query"
       @change="changeQuery"
@@ -187,7 +187,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

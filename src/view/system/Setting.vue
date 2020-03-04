@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <div style="overflow: hidden; background: #fff;">
 
       <div class="settingItem" v-for="(settingItem, index) in settingItems" :key="index" v-if="index === 0 && (auth.isAdmin || auth.SystemSettingBrandInfo)">
@@ -177,7 +177,7 @@
       </el-dialog>
 
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

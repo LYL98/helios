@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
         <el-breadcrumb-item
@@ -160,7 +160,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

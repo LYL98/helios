@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseInventoryMove"/>
     <table-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseInventoryMove"/>
     <detail-warehouse-inventory-move-check :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveCheck"/>
@@ -8,7 +8,7 @@
     <detail-warehouse-inventory-move-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveMove"/>
     <detail-warehouse-inventory-move-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveOutStorage"/>
     <detail-warehouse-inventory-move-putaway :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMovePutaway"/>
-  </div>
+  </sub-menu>
 </template>
 <script>
   import {

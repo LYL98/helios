@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateDepart"/>
     <table-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateDepart"/>
     <detail-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepart"/>
@@ -9,7 +9,7 @@
     <detail-operate-depart-stockout :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStockout"/>
     <detail-operate-depart-stockout-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateDepartStockoutDetail"/>
     <print-operate-depart :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintOperateDepart"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

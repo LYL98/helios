@@ -56,13 +56,6 @@
         </div>
       </div>
       <div id="router-view-div" style="min-width: 1000px;">
-        <div v-if="getSubMenuData.length > 0" class="app-my-sub-menu">
-          <el-menu class="my-sub-menu" mode="horizontal" :default-active="pageData.name" router>
-            <template v-for="(item, index) in getSubMenuData">
-              <el-menu-item v-if="isShowSubMenu" :route="{name: item.name}" :index="item.name" :key="index">{{item.title}}</el-menu-item>
-            </template>
-          </el-menu>
-        </div>
         <router-view/>
       </div>
     </div>
@@ -82,23 +75,6 @@
 
   export default {
     name: 'app',
-    data() {
-      return {
-        isDev: Config.isDev,
-        brand: {
-          brand_name: '',
-          brand_icon: ''
-        },
-        tencentPath: Config.tencentPath,
-        menus: AppJson.menus,
-        isShowSubMenu: false,
-        pageData: {
-          name: 'Login'
-        },
-        auth: {}, //用户权限,
-        myInfo: {}, //当前登录信息
-      }
-    },
     components: {
       'el-menu': Menu,
       'el-submenu': Submenu,
@@ -108,6 +84,22 @@
       'el-dropdown-item': DropdownItem,
       'el-backtop': Backtop,
       'my-global-province': GlobalProvince,
+    },
+    data() {
+      return {
+        isDev: Config.isDev,
+        brand: {
+          brand_name: '',
+          brand_icon: ''
+        },
+        tencentPath: Config.tencentPath,
+        menus: AppJson.menus,
+        pageData: {
+          name: 'Login'
+        },
+        auth: {}, //用户权限,
+        myInfo: {}, //当前登录信息
+      }
     },
     created() {
       this.$getBrand().then(res => {
@@ -136,11 +128,13 @@
           return pageData.name;
         }
       },
-      //subMenuData
-      getSubMenuData: {
-        get(){
-          this.$data.isShowSubMenu = false;
-          let { pageData, menus, auth } = this;
+    },
+    provide(){
+      let that = this;
+      return {
+        //获取三级菜单
+        getSubMenuData(){
+          let { pageData, menus, auth } = that;
           let upMenu = [];
           const fun = (item) =>{
             for(let i = 0; i < item.length; i++){
@@ -158,11 +152,10 @@
           if(!auth.isAdmin){
             upMenu = upMenu.filter(item => auth[item.name]);
           }
-          setTimeout(()=>{
-            this.$data.isShowSubMenu = true;
-          }, 0);
           return upMenu;
-        }
+        },
+        //当前页面信息
+        pageData: that.pageData
       }
     },
     methods: {

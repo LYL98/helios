@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <sub-menu>
+    <template slot="left-query">sbb</template>
     <query-operate-tuck-load :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateTruckLoad"/>
     <table-operate-tuck-load :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateTruckLoad"/>
     <form-operate-tuck-load-affirm :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateTruckLoadAffirm"/>
     <detail-operate-tuck-load :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateTruckLoad"/>
     <form-operate-tuck-load-edit-num :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormOperateTruckLoadEditNum"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

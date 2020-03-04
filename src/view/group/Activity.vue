@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-group-activity :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryGroupActivity"/>
     <table-group-activity :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableGroupActivity"/>
     <detail-group-activity :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailGroupActivity"/>
@@ -7,7 +7,7 @@
     <detail-group-activity-edit-log :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailGroupActivityEditLog"/>
     <detail-group-activity-item :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailGroupActivityItem"/>
     <add-edit-group-item :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditGroupItem" page="activity"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

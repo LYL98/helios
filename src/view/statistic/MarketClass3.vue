@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
         <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { begin_date: query.begin_date, end_date: query.end_date } }">
@@ -108,7 +108,7 @@
         </el-table-column>
       </el-table>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
