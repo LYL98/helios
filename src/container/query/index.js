@@ -24,8 +24,6 @@ export { default as QueryGroupBuyItemStatistics } from './QueryGroupBuyItemStati
 export { default as QueryGroupBuyCaptainStatistics } from './QueryGroupBuyCaptainStatistics';
 export { default as QueryGroupBuyMemberStatistics } from './QueryGroupBuyMemberStatistics';
 
-export { default as QueryBasicDataWarehouse } from './QueryBasicDataWarehouse';
-
 export { default as QueryItemGlobal } from './QueryItemGlobal';
 export { default as QueryItemList } from './QueryItemList';
 export { default as QueryItemPricing } from './QueryItemPricing';

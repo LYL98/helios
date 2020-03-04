@@ -1,6 +1,3 @@
-export { default as AddEditBasicDataWarehouse } from './AddEditBasicDataWarehouse';
-export { default as AddEditBasicDataWarehouseTray } from './AddEditBasicDataWarehouseTray';
-
 export { default as AddEditItemGlobal } from './AddEditItemGlobal';
 export { default as AddEditItemList } from './AddEditItemList';
 export { default as AddEditItemPricing } from './AddEditItemPricing';

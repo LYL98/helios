@@ -212,7 +212,7 @@
         },
         {
           "title": "库",
-          "name": "BasicDataWarehouseList"
+          "name": "WarehouseList"
         }
       ]
     },

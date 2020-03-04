@@ -10,8 +10,8 @@
         <el-table-column prop="created" label="创建时间"/>
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
-            <a href="javascript: void(0);" @click="operate(scope.row, 'edit')" style="margin-right: 10px;" v-if="auth.isAdmin || auth.BasicDataWarehouseEdit">修改</a>
-            <a href="javascript: void(0);" @click="operate(scope.row, 'delete')" v-if="auth.isAdmin || auth.BasicDataWarehouseDelete">删除</a>
+            <a href="javascript: void(0);" @click="operate(scope.row, 'edit')" style="margin-right: 10px;" v-if="auth.isAdmin || auth.WarehouseListEdit">修改</a>
+            <a href="javascript: void(0);" @click="operate(scope.row, 'delete')" v-if="auth.isAdmin || auth.WarehouseListDelete">删除</a>
           </template>
         </el-table-column>
       </el-table>
@@ -19,23 +19,23 @@
       <h6 class="subtitle" style="margin-top: 20px;">托盘信息</h6>
       <div class="tray-top">
         <div class="left">
-          <el-button size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint"
-            @click.native="handleShowPrint('PrintBasicDataWarehouseTray', multipleSelection)" :disabled="multipleSelection.length > 0 ? false : true">批量打印</el-button>
+          <el-button size="mini" type="primary" v-if="auth.isAdmin || auth.WarehouseListTrayPrint"
+            @click.native="handleShowPrint('PrintTray', multipleSelection)" :disabled="multipleSelection.length > 0 ? false : true">批量打印</el-button>
         </div>
         <div class="right">
-          <el-button @click="operate({}, 'add_tray')" size="mini" type="primary" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayAdd">增加拖盘</el-button>
+          <el-button @click="operate({}, 'add_tray')" size="mini" type="primary" v-if="auth.isAdmin || auth.WarehouseListTrayAdd">增加拖盘</el-button>
         </div>
       </div>
       <el-table :data="dataItem.items" :row-class-name="highlightRowClassName" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="42" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint"></el-table-column>
+        <el-table-column type="selection" width="42" v-if="auth.isAdmin || auth.WarehouseListTrayPrint"></el-table-column>
         <el-table-column type="index" label="序号" :index="indexMethod"/>
         <el-table-column prop="code" label="托盘编号"/>
         <el-table-column prop="created" label="创建时间"/>
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
-            <a href="javascript: void(0);" style="margin-right: 10px;" @click="operate(scope.row, 'edit_tray')" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayEdit">修改</a>
-            <a href="javascript: void(0);" style="margin-right: 10px;" @click="handleShowPrint('PrintBasicDataWarehouseTray', [scope.row])" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayPrint">打印</a>
-            <a href="javascript: void(0);" @click="operate(scope.row, 'delete_tray')" v-if="auth.isAdmin || auth.BasicDataWarehouseTrayDelete">删除</a>
+            <a href="javascript: void(0);" style="margin-right: 10px;" @click="operate(scope.row, 'edit_tray')" v-if="auth.isAdmin || auth.WarehouseListTrayEdit">修改</a>
+            <a href="javascript: void(0);" style="margin-right: 10px;" @click="handleShowPrint('PrintTray', [scope.row])" v-if="auth.isAdmin || auth.WarehouseListTrayPrint">打印</a>
+            <a href="javascript: void(0);" @click="operate(scope.row, 'delete_tray')" v-if="auth.isAdmin || auth.WarehouseListTrayDelete">删除</a>
           </template>
         </el-table-column>
       </el-table>
@@ -50,12 +50,12 @@
 </template>
 
 <script>
-  import detailMixin from './detail.mixin';
+  import detailMixin from '@/container/detail/detail.mixin';
   import { Http, Config, Constant } from '@/util';
-  import Pagination from './../layout/Pagination';
+  import Pagination from '@/container/layout/Pagination';
 
   export default {
-    name: "DetailBasicDataWarehouse",
+    name: "Detail",
     mixins: [detailMixin],
     components: {
       'pagination': Pagination
@@ -100,7 +100,7 @@
       },
       //操作
       operate(data, type) {
-        let pc = this.getPageComponents('TableBasicDataWarehouse');
+        let pc = this.getPageComponents('Table');
         //删除库
         if(type === 'delete'){
           pc.handleDelete(data);
@@ -109,7 +109,7 @@
 
         //修改库
         if(type === 'edit'){
-          pc.handleShowAddEdit('AddEditBasicDataWarehouse', data, 'edit');
+          pc.handleShowAddEdit('AddEdit', data, 'edit');
           return;
         }
 
@@ -120,13 +120,13 @@
         };
         //新增托盘
         if(type === 'add_tray'){
-          pc.handleShowAddEdit('AddEditBasicDataWarehouseTray', data, 'add');
+          pc.handleShowAddEdit('AddEditTray', data, 'add');
           return;
         }
 
         //修改托盘
         if(type === 'edit_tray'){
-          pc.handleShowAddEdit('AddEditBasicDataWarehouseTray', data, 'edit');
+          pc.handleShowAddEdit('AddEditTray', data, 'edit');
           return;
         }
 
@@ -173,7 +173,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "./detail.scss";
+  @import "@/container/detail/detail.scss";
   .tray-top, .tray-bottom{
     display: flex;
     align-items: center;
