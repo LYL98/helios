@@ -18,17 +18,6 @@ const router = new Router({
       component: () => import('@/view/Login')
     },
 
-    /*客户*/
-    {
-      path: '/merchant/store/query',
-      name: 'MerchantStoreQuery',
-      component: () => import('@/view/merchant/List')
-    },
-    {
-      path: '/merchant/refund/query',
-      name: 'MerchantRefundQuery',
-      component: () => import('@/view/merchant/Refund')
-    },
     /*商品*/
     {
       path: '/item/global',
@@ -94,6 +83,33 @@ const router = new Router({
       path: '/item/localpurchase',
       name: 'ItemLocalPurchase',
       component: () => import('@/view/item/LocalPurchase')
+    },
+
+    /*业务*/
+    {
+      path: '/business/merchant/store/query',
+      name: 'MerchantStoreQuery',
+      component: () => import('@/view/business/merchant/List')
+    },
+    {
+      path: '/business/merchant/refund/query',
+      name: 'MerchantRefundQuery',
+      component: () => import('@/view/business/merchant/Refund')
+    },
+    {
+      path: '/business/merchant/grade',
+      name: 'MerchantGrade',
+      component: () => import('@/view/business/merchantGrade/Main')
+    },
+    {
+      path: '/business/merchant/inner/tag',
+      name: 'MerchantInnerTags',
+      component: () => import('@/view/business/merchantInnerTags/Main')
+    },
+    {
+      path: '/business/merchant/outer/tag',
+      name: 'MerchantOuterTags',
+      component: () => import('@/view/business/merchantOuterTags/Main')
     },
     
     /*营销*/
@@ -351,21 +367,6 @@ const router = new Router({
       path: '/basicdata/city/list',
       name: 'BasicDataCityList',
       component: () => import('@/view/basicdata/CityList')
-    },
-    {
-      path: '/basicdata/grade/list',
-      name: 'BasicDataGradeList',
-      component: () => import('@/view/basicdata/GradeList')
-    },
-    {
-      path: '/basicdata/merchant/inner/tag/list',
-      name: 'BasicDataMerchantInnerTagsList',
-      component: () => import('@/view/basicdata/MerchantInnerTagsList')
-    },
-    {
-      path: '/basicdata/merchant/outer/tag/list',
-      name: 'BasicDataMerchantOuterTagsList',
-      component: () => import('@/view/basicdata/MerchantOuterTagsList')
     },
     {
       path: '/basicdata/storehouse/list',

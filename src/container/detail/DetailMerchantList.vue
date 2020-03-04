@@ -169,12 +169,12 @@
 <script>
   import detailMixin from './detail.mixin';
   import {TableOperate, ToPrice, OmissionText} from '@/common';
-  import TagsEdit from '@/view/merchant/TagsEdit';
-  import MerchantStore from '@/view/merchant/Store';
-  import MerchantMember from '@/view/merchant/Member';
-  import MerchantEdit from '@/view/merchant/Edit';
-  import MemberAddEdit from '@/view/merchant/MemberAddEdit';
-  import StoreAddEdit from '@/view/merchant/StoreAddEdit';
+  import TagsEdit from '@/view/business/merchant/TagsEdit';
+  import MerchantStore from '@/view/business/merchant/Store';
+  import MerchantMember from '@/view/business/merchant/Member';
+  import MerchantEdit from '@/view/business/merchant/Edit';
+  import MemberAddEdit from '@/view/business/merchant/MemberAddEdit';
+  import StoreAddEdit from '@/view/business/merchant/StoreAddEdit';
   import { Http, Config, DataHandle } from '@/util';
 
   export default {

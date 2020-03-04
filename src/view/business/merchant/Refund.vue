@@ -21,7 +21,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("门店 - 门店筐信息");
+      documentTitle("业务 - 门店筐信息");
     },
   };
 </script>

@@ -78,7 +78,7 @@
     mixins: [viewMixin],
     created() {
       let that = this;
-      documentTitle('门店 - 门店列表');
+      documentTitle('业务 - 门店');
       let p = that.province;
       if (p.code) {
         that.$data.query.province_code = p.code;
@@ -610,8 +610,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './../../container/table/table.scss';
+  @import './../../../container/table/table.scss';
 </style>
 <style lang="scss">
-  @import './../../container/table/table.global.scss';
+  @import './../../../container/table/table.global.scss';
 </style>

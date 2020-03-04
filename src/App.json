@@ -112,40 +112,40 @@
       "children": [
         {
           "title": "商户",
-          "name": "BusinessMerchantMain",
+          "name": "MerchantMain",
           "type": "main",
           "children": [
             {
               "title": "门店",
-              "upName": "BusinessMerchantMain",
+              "upName": "MerchantMain",
               "name": "MerchantStoreQuery"
             },
             {
               "title": "门店筐",
-              "upName": "BusinessMerchantMain",
+              "upName": "MerchantMain",
               "name": "MerchantRefundQuery"
             }
           ]
         },
         {
           "title": "商户属性",
-          "name": "BusinessMerchantPropertyMain",
+          "name": "MerchantPropertyMain",
           "type": "main",
           "children": [
             {
               "title": "商户等级",
-              "upName": "BusinessMerchantPropertyMain",
-              "name": "BasicDataGradeList"
+              "upName": "MerchantPropertyMain",
+              "name": "MerchantGrade"
             },
             {
               "title": "商户内标签",
-              "upName": "BusinessMerchantPropertyMain",
-              "name": "BasicDataMerchantInnerTagsList"
+              "upName": "MerchantPropertyMain",
+              "name": "MerchantInnerTags"
             },
             {
               "title": "商户外标签",
-              "upName": "BusinessMerchantPropertyMain",
-              "name": "BasicDataMerchantOuterTagsList"
+              "upName": "MerchantPropertyMain",
+              "name": "MerchantOuterTags"
             }
           ]
         },
