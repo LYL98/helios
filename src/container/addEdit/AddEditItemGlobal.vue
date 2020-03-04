@@ -34,12 +34,15 @@
         </el-col>
         <el-col :span="12">
           <el-row>
-            <el-col :span="14">
+            <el-col :span="13">
               <el-form-item label="重量" prop="weight_s">
                 <input-weight size="medium" v-model="detail.weight_s" placeholder="最小重量" unit="斤"/>
               </el-form-item>
             </el-col>
-            <el-col :span="10">
+            <el-col :span="2">
+              <div style="text-align: center; padding-left: 10px; line-height: 30px;"> — </div>
+            </el-col>
+            <el-col :span="9">
               <el-form-item label-width="10px" prop="weight_e">
                 <input-weight size="medium" v-model="detail.weight_e" placeholder="最大重量" unit="斤"/>
               </el-form-item>
@@ -252,6 +255,10 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
+        if (!rd.weight_e) {
+          rd.weight_e = '';
+        }
+        console.log("rd: ", rd);
         rd.system_class_codes = [];
         for(let i = 0; i < rd.system_classes.length; i++){
           rd.system_class_codes.push(rd.system_classes[i].code);
