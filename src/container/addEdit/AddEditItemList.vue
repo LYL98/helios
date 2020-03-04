@@ -34,14 +34,18 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="净重">
-              <input-weight size="medium" :value="detail.net_weight" disabled unit="斤"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="毛重">
-              <input-weight size="medium" :value="detail.gross_weight" disabled unit="斤"/>
-            </el-form-item>
+            <el-row>
+              <el-col :span="14">
+                <el-form-item label="重量" prop="weight_s">
+                  <input-weight size="medium" v-model="detail.weight_s" disabled placeholder="最小重量" unit="斤"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item label-width="10px" prop="weight_e">
+                  <input-weight size="medium" v-model="detail.weight_e" disabled placeholder="最大重量" unit="斤"/>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-col>
           <el-col :span="12">
             <el-form-item label="保质期">
@@ -77,12 +81,6 @@
           <el-col :span="8">
             <el-form-item label="销售价" prop="price_sale">
               <input-price size="medium" :value="detail.price_sale" disabled/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8" v-if="page !== 'after-sale-detail'">
-            <el-form-item label="单价" prop="markup_rate">
-              <!--销售价 / 毛重-->
-              <input-price size="medium" disabled :value="detail.price_sale / (detail.gross_weight / 10)"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -153,7 +151,7 @@
         <el-form-item label="商品标签" prop="tags">
           <select-item-tags v-model="detail.tags"/>
         </el-form-item>
-        
+
         <el-form-item label="区域定价">
           <ul>
             <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center;">
