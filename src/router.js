@@ -111,18 +111,17 @@ const router = new Router({
       name: 'MerchantOuterTags',
       component: () => import('@/view/business/merchantOuterTags/Main')
     },
-    
-    /*营销*/
     {
-      path: '/marketing/scope/promotion/query',
+      path: '/business/marketing/scope/promotion/query',
       name: 'MarketingScopePromotionQuery',
-      component: () => import('@/view/marketing/ScopePromotionList')
+      component: () => import('@/view/business/marketing/ScopePromotionList')
     },
     {
-      path: '/marketing/coupon/query',
+      path: '/business/marketing/coupon/query',
       name: 'MarketingCouponQuery',
-      component: () => import('@/view/marketing/CouponList')
+      component: () => import('@/view/business/marketing/CouponList')
     },
+    
     /*团购*/
     {
       path: '/group/activity',
