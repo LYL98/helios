@@ -19,7 +19,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("信息 - 商户内标签列表");
+      documentTitle("业务 - 商户内标签");
     },
   };
 </script>

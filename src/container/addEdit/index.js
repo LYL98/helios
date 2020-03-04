@@ -1,5 +1,4 @@
 export { default as AddEditBasicDataCity } from './AddEditBasicDataCity';
-export { default as AddEditBasicDataGrade } from './AddEditBasicDataGrade';
 export { default as AddEditBasicDataMerchantInnerTags } from './AddEditBasicDataMerchantInnerTags';
 export { default as AddEditBasicDataMerchantOuterTags } from './AddEditBasicDataMerchantOuterTags';
 export { default as AddEditBasicDataProvince } from './AddEditBasicDataProvince';

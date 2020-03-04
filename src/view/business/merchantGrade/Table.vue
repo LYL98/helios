@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataGradeListAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.MerchantGradeAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataGrade')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEdit')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -55,12 +55,12 @@
               :list="[
               {
                 title: '修改',
-                isDisplay: auth.isAdmin || auth.BasicDataGradeListUpdate,
-                command: () => handleShowAddEdit('AddEditBasicDataGrade', scope.row)
+                isDisplay: auth.isAdmin || auth.MerchantGradeEdit,
+                command: () => handleShowAddEdit('AddEdit', scope.row)
               },
               {
                 title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataGradeListDelete,
+                isDisplay: auth.isAdmin || auth.MerchantGradeDelete,
                 command: () => handleDelete(scope.row)
               }
             ]"
@@ -79,7 +79,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataGrade',
+    name: 'Table',
     components: {
       'my-table-operate': TableOperate
     },
@@ -125,8 +125,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/container/table/table.scss';
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>
