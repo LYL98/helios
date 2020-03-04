@@ -30,11 +30,11 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/container/query/query.mixin';
   import { Http, Config } from '@/util';
 
   export default {
-    name: "QueryBasicDataCity",
+    name: "Query",
     mixins: [queryMixin],
     components: {
     },
@@ -60,7 +60,7 @@
         this.page = 1;
         this.$data.query.zone_ids = '';
         this.baseZoneList();
-        if (!isInit) this.handleQuery('TableBasicDataCity');
+        if (!isInit) this.handleQuery('Table');
       },
       //获取所有省
       async baseProvinceList(){
@@ -80,7 +80,7 @@
       //片区改变
       changeZone(v, isInit) {
         this.page = 1;
-        if (!isInit) this.handleQuery('TableBasicDataCity');
+        if (!isInit) this.handleQuery('Table');
       },
       //获取所有片区
       async baseZoneList(){

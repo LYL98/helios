@@ -20,10 +20,6 @@ export { default as TableGroupBuyDetail } from './TableGroupBuyDetail';
 export { default as TableGroupHeadDetail } from './TableGroupHeadDetail';
 export { default as TableGroupHeadDetailList } from './TableGroupHeadDetailList';
 
-export { default as TableBasicDataCity } from './TableBasicDataCity';
-export { default as TableBasicDataProvince } from './TableBasicDataProvince';
-export { default as TableBasicDataZone } from './TableBasicDataZone';
-export { default as TableBasicDataStorehouse } from './TableBasicDataStorehouse';
 export { default as TableBasicDataWarehouse } from './TableBasicDataWarehouse';
 
 export { default as TableItemGlobal } from './TableItemGlobal';

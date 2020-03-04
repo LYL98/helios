@@ -372,7 +372,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './../../container/table/table.scss';
+  @import '@/container/table/table.scss';
   .order-no {
     color: inherit;
     padding: 5px 10px 5px 0;
@@ -422,5 +422,5 @@
   }
 </style>
 <style lang="scss">
-  @import './../../container/table/table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>

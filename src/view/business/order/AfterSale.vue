@@ -255,7 +255,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-  @import './../../container/table/table.scss';
+  @import '@/container/table/table.scss';
   .after-sale {
     .form-search {
       display: flex;
@@ -306,5 +306,5 @@ export default {
 
 </style>
 <style lang="scss">
-  @import './../../container/table/table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>

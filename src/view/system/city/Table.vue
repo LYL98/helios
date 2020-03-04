@@ -1,9 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataCityListAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.CityAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataCity')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEdit')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -76,12 +76,12 @@
               :list="[
               {
                 title: '修改',
-                isDisplay: auth.isAdmin || auth.BasicDataCityListUpdate,
-                command: () => handleShowAddEdit('AddEditBasicDataCity', scope.row)
+                isDisplay: auth.isAdmin || auth.CityEdit,
+                command: () => handleShowAddEdit('AddEdit', scope.row)
               },
               {
                 title: '删除',
-                isDisplay: auth.isAdmin || auth.BasicDataCityListDelete,
+                isDisplay: auth.isAdmin || auth.CityDelete,
                 command: () => handleDelete(scope.row)
               }
             ]"
@@ -106,13 +106,13 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataCity',
+    name: 'Table',
     components: {
       'my-table-operate': TableOperate
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryBasicDataCity'); //获取query组件
+      let pc = this.getPageComponents('Query'); //获取query组件
       this.getData(pc.query);
     },
     data() {
@@ -193,8 +193,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/container/table/table.scss';
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>

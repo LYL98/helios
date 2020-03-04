@@ -342,17 +342,17 @@
           {
             "title": "省",
             "upName": "SystemSettingMain",
-            "name": "BasicDataProvinceList"
+            "name": "Province"
           },
           {
             "title": "仓",
             "upName": "SystemSettingMain",
-            "name": "BasicDataStorehouseList"
+            "name": "Storehouse"
           },
           {
             "title": "运营配置",
             "upName": "SystemSettingMain",
-            "name": "SystemSetting"
+            "name": "Setting"
           }
         ]
       },{
@@ -360,18 +360,18 @@
         "name": "SystemSettingCustom"
       },{
         "title": "区域配置",
-        "name": "SystemBannerListMain",
+        "name": "SystemAreaMain",
         "type": "main",
         "children": [
           {
             "title": "片区",
-            "upName": "SystemBannerListMain",
-            "name": "BasicDataZoneList"
+            "upName": "SystemAreaMain",
+            "name": "Zone"
           },
           {
             "title": "县域",
-            "upName": "SystemBannerListMain",
-            "name": "BasicDataCityList"
+            "upName": "SystemAreaMain",
+            "name": "City"
           }
         ]
       }]

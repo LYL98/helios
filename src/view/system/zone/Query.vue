@@ -20,10 +20,10 @@
 
 <script>
   import { Http, Config } from '@/util';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/container/query/query.mixin';
 
   export default {
-    name: "QueryBasicDataZone",
+    name: "Query",
     mixins: [queryMixin],
     components: {
     },
@@ -43,7 +43,7 @@
     methods: {
       //省改变
       changeProvince(v, isInit) {
-        if (!isInit) this.handleQuery('TableBasicDataZone');
+        if (!isInit) this.handleQuery('Table');
       },
       //获取所有省
       async baseProvinceList(){

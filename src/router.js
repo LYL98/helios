@@ -112,6 +112,16 @@ const router = new Router({
       component: () => import('@/view/business/merchantOuterTags/Main')
     },
     {
+      path: '/business/order/list',
+      name: 'OrderList',
+      component: () => import('@/view/business/order/List')
+    },
+    {
+      path: '/business/order/after_sale',
+      name: 'OrderAfterSale',
+      component: () => import('@/view/business/order/AfterSale')
+    },
+    {
       path: '/business/marketing/scope/promotion/query',
       name: 'MarketingScopePromotionQuery',
       component: () => import('@/view/business/marketing/ScopePromotionList')
@@ -172,18 +182,6 @@ const router = new Router({
       path: '/group/banner',
       name: 'GroupBanner',
       component: () => import('@/view/group/Banner')
-    },
-    
-    /*订单*/
-    {
-      path: '/order/list',
-      name: 'OrderList',
-      component: () => import('@/view/order/List')
-    },
-    {
-      path: '/order/after_sale',
-      name: 'OrderAfterSale',
-      component: () => import('@/view/order/AfterSale')
     },
 
     /*仓库*/
@@ -356,27 +354,6 @@ const router = new Router({
 
     /*基础信息*/
     
-    
-    {
-      path: '/basicdata/province/list',
-      name: 'BasicDataProvinceList',
-      component: () => import('@/view/basicdata/ProvinceList')
-    },
-    {
-      path: '/basicdata/zone/list',
-      name: 'BasicDataZoneList',
-      component: () => import('@/view/basicdata/ZoneList')
-    },
-    {
-      path: '/basicdata/city/list',
-      name: 'BasicDataCityList',
-      component: () => import('@/view/basicdata/CityList')
-    },
-    {
-      path: '/basicdata/storehouse/list',
-      name: 'BasicDataStorehouseList',
-      component: () => import('@/view/basicdata/StorehouseList')
-    },
     {
       path: '/basicdata/warehouse/list',
       name: 'BasicDataWarehouseList',
@@ -394,9 +371,29 @@ const router = new Router({
       component: () => import('@/view/system/OperatorList')
     },
     {
+      path: '/system/province',
+      name: 'Province',
+      component: () => import('@/view/system/province/Main')
+    },
+    {
+      path: '/system/storehouse',
+      name: 'Storehouse',
+      component: () => import('@/view/system/storehouse/Main')
+    },
+    {
       path: '/system/setting',
-      name: 'SystemSetting',
+      name: 'Setting',
       component: () => import('@/view/system/Setting')
+    },
+    {
+      path: '/system/zone',
+      name: 'Zone',
+      component: () => import('@/view/system/zone/Main')
+    },
+    {
+      path: '/system/city',
+      name: 'City',
+      component: () => import('@/view/system/city/Main')
     },
     {
       path: '/system/setting/custom',
