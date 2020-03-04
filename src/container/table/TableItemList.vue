@@ -33,17 +33,17 @@
                   </div>
                   <div class="add-dot" v-if="query.is_on_sale">
                     <span>&yen;{{returnPrice(scope.row.price_sale)}}/件</span>
-                    <!--销售价 / 毛重-->
-                    <span>（单价：{{returnPrice(scope.row.price_sale / (scope.row.gross_weight / 10))}}元/斤）</span>
                     <span class="is-presale" v-if="scope.row.is_presale">预</span>
                   </div>
                 </div>
               </template>
               <!--商品参数-->
               <div class="td-item add-dot2" v-else-if="item.key === 'parameter'">
-                <span>{{scope.row.origin_place}}、</span>
-                <span v-if="scope.row.item_spec">{{scope.row.item_spec}}、</span>
-                <span>{{returnWeight(scope.row.gross_weight)}}斤</span>
+                <span>{{scope.row.origin_place}}</span>
+                <span v-if="scope.row.item_spec">、{{scope.row.item_spec}}</span>
+                <span v-if="!!scope.row.weight_s">、{{returnWeight(scope.row.weight_s)}}
+                  <span v-if="!!scope.row.weight_e"> - {{returnWeight(scope.row.weight_e)}}</span> 斤
+                </span>
               </div>
               <!--筐-->
               <div class="td-item" v-else-if="item.key === 'frame'">

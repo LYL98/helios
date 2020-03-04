@@ -22,6 +22,9 @@
         <el-form-item label="备注">
           <el-input v-model="detail.remark" type="textarea" :maxlength="200" placeholder="请输入200位以内的字符"></el-input>
         </el-form-item>
+        <el-form-item label="抽检率" prop="qa_rate" v-if="showQaStandard()">
+          <input-percent size="medium" min="0" max="100" v-model="detail.qa_rate" placeholder="请输入抽检率" unit="%"/>
+        </el-form-item>
         <el-form-item label="品控标准" prop="qa_standard" v-if="showQaStandard()">
           <quill-editor mainClass="sys-class-quill-editor" v-model="detail.qa_standard" module="systemClass" height="200"></quill-editor>
         </el-form-item>
@@ -37,12 +40,13 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
-import { QuillEditor } from '@/common';
+import { QuillEditor, InputPercent } from '@/common';
 
 export default {
   name: "AddEditSystemClass",
   mixins: [addEditMixin],
   components: {
+    'input-percent': InputPercent,
     'quill-editor': QuillEditor,
   },
   data(){
@@ -56,6 +60,9 @@ export default {
         ],
         rank: [
           { pattern: Verification.testStrs.isNumber, message: '排序必须为正整数数字', trigger: 'blur' },
+        ],
+        qa_rate: [
+          { required: true, message: '抽检率不能为空', trigger: 'change' },
         ],
         qa_standard: [
           { required: true, message: '品控标准不能为空', trigger: 'change' }
@@ -71,7 +78,7 @@ export default {
         (detail.top_code && detail.top_code.length >= 4 && detail.is_top_add)){
           return true;
       }
-      return false;  
+      return false;
     },
     //显示新增修改(重写)
     showAddEdit(data, type){
