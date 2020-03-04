@@ -44,7 +44,6 @@ export { default as TableOperateTruckLoad } from './TableOperateTruckLoad';
 export { default as TableOperateTruckLoadDelay } from './TableOperateTruckLoadDelay';
 export { default as TableOperateDepart } from './TableOperateDepart';
 
-export { default as TableSystemBanner } from './TableSystemBanner';
 export { default as TableSystemOperator } from './TableSystemOperator';
 
 export { default as TableMerchantList } from './TableMerchantList';

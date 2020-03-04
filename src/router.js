@@ -121,6 +121,11 @@ const router = new Router({
       name: 'MarketingCouponQuery',
       component: () => import('@/view/business/marketing/CouponList')
     },
+    {
+      path: '/business/banner',
+      name: 'Banner',
+      component: () => import('@/view/business/banner/Main')
+    },
     
     /*团购*/
     {
@@ -397,11 +402,6 @@ const router = new Router({
       path: '/system/setting/custom',
       name: 'SystemSettingCustom',
       component: () => import('@/view/system/SettingCustom')
-    },
-    {
-      path: '/system/banner/list',
-      name: 'SystemBannerList',
-      component: () => import('@/view/system/BannerList')
     },
     {
       path: '/system/brand/settings',

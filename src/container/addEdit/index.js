@@ -29,7 +29,6 @@ export { default as AddEditGroupItemClass } from './AddEditGroupItemClass';
 
 export { default as AddEditSystemRole } from './AddEditSystemRole';
 export { default as AddEditSystemOperator } from './AddEditSystemOperator';
-export { default as AddEditSystemBanner } from './AddEditSystemBanner';
 
 export { default as AddEditFinanceSBDetail } from './AddEditFinanceSBDetail';
 

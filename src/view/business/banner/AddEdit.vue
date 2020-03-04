@@ -39,12 +39,12 @@
 </template>
 
 <script>
-import addEditMixin from './add.edit.mixin';
+import addEditMixin from '@/container/addEdit/add.edit.mixin';
 import { Config, Verification, Http } from '@/util';
 import { SearchItem, UploadImg, SelectDisplayClass, SelectTag } from '@/common'
 
 export default {
-  name: "AddEditSystemBanner",
+  name: "AddEdit",
   mixins: [addEditMixin],
   components: {
     'my-select-display-class': SelectDisplayClass,
@@ -205,7 +205,7 @@ export default {
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableSystemBanner');
+        let pc = this.getPageComponents('Table');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});
