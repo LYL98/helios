@@ -1,12 +1,12 @@
 <template>
   <div class="container-table">
     <!-- 头部start -->
-    <div class="table-top" v-if="auth.isAdmin || auth.SystemBannerDelete || auth.SystemBannerAdd">
-      <div class="left" v-if="auth.isAdmin || auth.SystemBannerDelete">
+    <div class="table-top" v-if="auth.isAdmin || auth.BannerDelete || auth.BannerAdd">
+      <div class="left" v-if="auth.isAdmin || auth.BannerDelete">
         <el-button :disabled="multipleSelection.length > 0 ? false : true" size="mini" type="primary" plain @click.native="handleDelete('multiple')">批量删除</el-button>
       </div>
-      <div class="right" v-if="auth.isAdmin || auth.SystemBannerAdd">
-        <el-button @click="handleShowAddEdit('AddEditSystemBanner')" size="mini" type="primary">新增</el-button>
+      <div class="right" v-if="auth.isAdmin || auth.BannerAdd">
+        <el-button @click="handleShowAddEdit('AddEdit')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!--头部end-->
@@ -45,12 +45,12 @@
               :list="[
                 {
                   title: '修改',
-                  isDisplay: auth.isAdmin || auth.SystemBannerEdit,
-                  command: () => handleShowAddEdit('AddEditSystemBanner', scope.row)
+                  isDisplay: auth.isAdmin || auth.BannerEdit,
+                  command: () => handleShowAddEdit('AddEdit', scope.row)
                 },
                 {
                   title: '删除',
-                  isDisplay: auth.isAdmin || auth.SystemBannerDelete,
+                  isDisplay: auth.isAdmin || auth.BannerDelete,
                   command: () => handleDelete(scope.row)
                 }
               ]"
@@ -69,7 +69,7 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableSystemBanner',
+    name: 'Table',
     components: {
       'my-image-preview': ImagePreview,
     },
@@ -137,8 +137,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/container/table/table.scss';
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>
