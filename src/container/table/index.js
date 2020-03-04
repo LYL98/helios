@@ -20,8 +20,6 @@ export { default as TableGroupBuyDetail } from './TableGroupBuyDetail';
 export { default as TableGroupHeadDetail } from './TableGroupHeadDetail';
 export { default as TableGroupHeadDetailList } from './TableGroupHeadDetailList';
 
-export { default as TableBasicDataWarehouse } from './TableBasicDataWarehouse';
-
 export { default as TableItemGlobal } from './TableItemGlobal';
 export { default as TableItemList } from './TableItemList';
 export { default as TableItemPricing } from './TableItemPricing';

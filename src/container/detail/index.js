@@ -1,4 +1,3 @@
-export { default as DetailBasicDataWarehouse } from './DetailBasicDataWarehouse';
 export { default as DetailFinanceSStatement } from './DetailFinanceSStatement';
 export { default as DetailItemGlobalEditRecord } from './DetailItemGlobalEditRecord';
 export { default as DetailItemListEditRecord } from './DetailItemListEditRecord';

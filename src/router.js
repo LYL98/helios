@@ -215,6 +215,11 @@ const router = new Router({
       name: 'WarehouseDistribute',
       component: () => import('@/view/warehouse/Distribute')
     },
+    {
+      path: '/warehouse/list',
+      name: 'WarehouseList',
+      component: () => import('@/view/warehouse/list/Main')
+    },
 
     /*场地*/
     {
@@ -352,13 +357,6 @@ const router = new Router({
       component: () => import('@/view/statistic/GroupBuyStatement')
     },
 
-    /*基础信息*/
-    
-    {
-      path: '/basicdata/warehouse/list',
-      name: 'BasicDataWarehouseList',
-      component: () => import('@/view/basicdata/WarehouseList')
-    },
     /*系统设置*/
     {
       path: '/system/role/list',

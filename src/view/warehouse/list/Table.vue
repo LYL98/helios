@@ -1,10 +1,10 @@
 <template>
   <div class="container-table">
     <!-- 头部end -->
-    <div class="table-top" v-if="auth.isAdmin || auth.BasicDataWarehouseAdd">
+    <div class="table-top" v-if="auth.isAdmin || auth.WarehouseListAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEditBasicDataWarehouse', null, 'add')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEdit', null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -25,7 +25,7 @@
               <!--编号名称-->
               <template v-if="item.key === 'title'">
                 <div class="td-item add-dot">
-                  <div class="link-item add-dot" @click="handleShowDetail('DetailBasicDataWarehouse', scope.row)" v-if="auth.isAdmin || auth.BasicDataWarehouseDetail">
+                  <div class="link-item add-dot" @click="handleShowDetail('Detail', scope.row)" v-if="auth.isAdmin || auth.WarehouseListDetail">
                     {{scope.row.title}}
                   </div>
                   <div class="add-dot" v-else>
@@ -51,17 +51,17 @@
               :list="[
                 {
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.BasicDataWarehouseDetail,
-                  command: () => handleShowDetail('DetailBasicDataWarehouse', scope.row)
+                  isDisplay: auth.isAdmin || auth.WarehouseListDetail,
+                  command: () => handleShowDetail('Detail', scope.row)
                 },
                 {
                   title: '修改',
-                  isDisplay: auth.isAdmin || auth.BasicDataWarehouseEdit,
-                  command: () => handleShowAddEdit('AddEditBasicDataWarehouse', scope.row, 'edit')
+                  isDisplay: auth.isAdmin || auth.WarehouseListEdit,
+                  command: () => handleShowAddEdit('AddEdit', scope.row, 'edit')
                 },
                 {
                   title: '删除',
-                  isDisplay: auth.isAdmin || auth.BasicDataWarehouseDelete,
+                  isDisplay: auth.isAdmin || auth.WarehouseListDelete,
                   command: () => handleDelete(scope.row)
                 }
               ]"
@@ -85,17 +85,17 @@
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
-    name: 'TableBasicDataWarehouse',
+    name: 'Table',
     components: {
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryBasicDataWarehouse'); //获取query组件
+      let pc = this.getPageComponents('Query'); //获取query组件
       this.getData(pc.query);
     },
     data() {
       return {
-        tableName: 'TableBasicDataWarehouse',
+        tableName: 'TableWarehouse',
         tableColumn: [
           { label: '库', key: 'title', width: '2', isShow: true },
           { label: '所属仓', key: 'storehouse', width: '2', isShow: true },
@@ -129,7 +129,7 @@
           this.getData(this.query);
           this.$message({message: '已删除', type: 'success'});
           //如果详情显示
-          let pc = this.getPageComponents('DetailBasicDataWarehouse');
+          let pc = this.getPageComponents('Detail');
           if(pc.isShow) pc.$data.isShow = false;
           
         }else{
@@ -142,8 +142,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/container/table/table.scss';
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/container/table/table.global.scss';
 </style>
