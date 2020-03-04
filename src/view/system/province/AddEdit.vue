@@ -83,9 +83,9 @@ export default {
     //显示新增修改(重写)
     showAddEdit(data){
       if(data){
-        this.$data.detail = JSON.parse(JSON.stringify({ ...data, id: true }));
+        this.$data.detail = this.copyJson({ ...data, id: true }); //id只是为了区分修改
       }else{
-        this.$data.detail = JSON.parse(JSON.stringify(this.initDetail));
+        this.$data.detail = this.copyJson(this.initDetail);
       }
       this.$data.isShow = true;
     },

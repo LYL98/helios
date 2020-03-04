@@ -89,8 +89,7 @@
     },
     data() {
       return {
-        dataItem: [],
-        rowIdentifier: 'code'
+        dataItem: []
       }
     },
     methods: {
@@ -109,7 +108,7 @@
       async deleteData(data) {
         this.$loading({ isShow: true });
         let res = await Http.post(Config.api.basicdataGradeDelete, {
-          code: data.code
+          id: data.id
         });
         this.$loading({ isShow: false });
         if(res.code === 0){

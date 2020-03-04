@@ -43,7 +43,7 @@
       </el-col>
       <el-col :span="7">
         <my-query-item label="所在仓">
-          <my-select-city size="small" v-model="editQuery.city_code" placeholder="所在仓" clearable
+          <my-select-city size="small" v-model="editQuery.city_id" placeholder="所在仓" clearable
                           :provinceCode="editQuery.province_code" @change="changeQuery"/>
         </my-query-item>
       </el-col>

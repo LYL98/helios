@@ -114,7 +114,7 @@ export default {
         page_size: 20,
         province_code: '',
         zone_id: '',
-        city_code: '',
+        city_id: '',
         begin_date: '',
         end_date: '',
         selectType: 'merchant'

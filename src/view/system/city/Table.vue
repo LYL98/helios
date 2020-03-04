@@ -117,7 +117,6 @@
     },
     data() {
       return {
-        rowIdentifier: 'code',
         dataList: [],
       }
     },
@@ -168,7 +167,7 @@
       async deleteData(data) {
         this.$loading({ isShow: true });
         let res = await Http.post(Config.api.basicdataCityDelete, {
-          code: data.code
+          id: data.id
         });
         this.$loading({ isShow: false });
         if(res.code === 0){

@@ -36,7 +36,7 @@
       //标题
       returnTitle(){
         let { detail } = this;
-        let t = (detail.city_code || '') + '/';
+        let t = (detail.city_id || '') + '/';
         t += (detail.city_title || '') + '-门店详情';
         return t;
       },
@@ -59,7 +59,7 @@
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supAllocateCityDetail, {
           item_id: detail.item_id,
-          city_code: detail.city_code,
+          city_id: detail.city_id,
           delivery_date: detail.delivery_date
         });
         this.$loading({isShow: false});

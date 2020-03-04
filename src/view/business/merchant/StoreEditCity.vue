@@ -6,7 +6,7 @@
     </el-form-item>
     <el-form-item label="所在仓" prop="province" class="required">
       <my-select-province style="width: 150px;" :value="addEditData.province_code" disabled/>
-      <my-select-city style="width: 200px;" v-model="addEditData.city_code" :provinceCode="addEditData.province_code" @change="changeCity"/>
+      <my-select-city style="width: 200px;" v-model="addEditData.city_id" :provinceCode="addEditData.province_code" @change="changeCity"/>
     </el-form-item>
 
     <el-form-item style="text-align: right;">
@@ -48,7 +48,7 @@
         addEditData: {
           title: '',
           province_code: '',
-          city_code: ''
+          city_id: ''
         }
       }
     },
@@ -92,12 +92,12 @@
             // 判断是否只有 provice 规则出现问题。
             let result = Object.keys(failProps);
             if (result.length === 1) {
-              if (result.includes('province') && addEditData.city_code && addEditData.city_code !== '') { // 只有province 存在问题
+              if (result.includes('province') && addEditData.city_id && addEditData.city_id !== '') { // 只有province 存在问题
                 that.$refs['ruleForm'].clearValidate(['province']);
                 valid = true;
               }
             } else if (result.length > 1) { // 其他存在问题
-              if (result.includes('province') && addEditData.city_code && addEditData.city_code !== '') { // 包含 province
+              if (result.includes('province') && addEditData.city_id && addEditData.city_id !== '') { // 包含 province
                 that.$refs['ruleForm'].clearValidate(['province']);
                 return;
               } else {
@@ -111,7 +111,7 @@
             let res = await Http.post(Config.api['storeEditCity'], {
               id: store_id,
               province_code: addEditData.province_code,
-              city_code: addEditData.city_code
+              city_id: addEditData.city_id
             });
             that.isSending = false;
             if (res.code === 0) {

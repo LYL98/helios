@@ -7,7 +7,7 @@
             <my-select-city
               size="small"
               :provinceCode="province.code"
-              v-model="query.city_code"
+              v-model="query.city_id"
               clearable
               placeholder="所在仓"
               @change="changeQuery"
@@ -196,7 +196,7 @@
       initQuery() {
         this.$data.query = {
           province_code: this.province.code,
-          city_code: '',
+          city_id: '',
           is_freeze_header: '',
           condition: '',
           page: 1,

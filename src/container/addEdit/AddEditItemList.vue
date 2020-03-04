@@ -160,16 +160,16 @@
             <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center;">
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <el-form-item
-                  :prop="'city_prices_temp.' + index + '.city_code'"
+                  :prop="'city_prices_temp.' + index + '.city_id'"
                   :rules="[{ required: true, message: '请选择所在仓', trigger: 'change' }]"
                 >
-                  <el-select v-model="item.city_code" placeholder="请选择所在仓" size="medium">
+                  <el-select v-model="item.city_id" placeholder="请选择所在仓" size="medium">
                     <el-option
                       v-for="city in cityList"
                       :key="city.code"
                       :label="city.title"
                       :value="city.code"
-                      :disabled="detail.city_prices_temp.some(item => item.city_code === city.code)"
+                      :disabled="detail.city_prices_temp.some(item => item.city_id === city.code)"
                     >
                     </el-option>
                   </el-select>
@@ -541,7 +541,7 @@ export default {
     //新增区域价格
     handleAddCityPrice() {
       let city_prices_temp = this.$data.detail.city_prices_temp;
-      city_prices_temp.push({ city_code: '', percent: '', price: '' });
+      city_prices_temp.push({ city_id: '', percent: '', price: '' });
       this.$data.detail.city_prices_temp = city_prices_temp;
     },
     //删除区域价格
@@ -636,7 +636,7 @@ export default {
         city_prices: detail.city_prices_temp.map(item => {
           let city = {...item};
           city.percent = this.handleMarkup(city.percent);
-          return { city_code: city.city_code, percent: city.percent };
+          return { city_id: city.city_id, percent: city.percent };
         }),
       });
       this.$loading({isShow: false});

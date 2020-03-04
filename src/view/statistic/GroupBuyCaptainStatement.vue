@@ -135,7 +135,7 @@ export default {
       /*
       begin_date: 开始日期
       end_date: 结束日期
-      city_code: 县code(所在仓code) 来源于 县列表
+      city_id: 县code(所在仓code) 来源于 县列表
       condition:
       sort: 排序字段指定 参团人数(member_num)/销售件数(sale_num)/下单金额(pay_amount)/收入金额(profit)
       page:
@@ -146,7 +146,7 @@ export default {
         begin_date: '',
         end_date: '',
         province_code: '',
-        city_code: '',
+        city_id: '',
         sort: '',
         condition: '',
         is_group: 1
@@ -255,14 +255,14 @@ export default {
       let queryStrGroup = Config.api.statisticalSumGroupBuyHeadExport;
       let queryStrNoGroup = Config.api.statisticalSumGroupBuyHeadExportNoGroup;
 
-      let {condition, sort, is_group, begin_date, end_date, city_code } = this.query;
+      let {condition, sort, is_group, begin_date, end_date, city_id } = this.query;
       let query = {
         condition,
         sort,
         is_group,
         begin_date,
         end_date,
-        city_code
+        city_id
       };
 
       let api = is_group === 1 ? queryStrGroup : queryStrNoGroup

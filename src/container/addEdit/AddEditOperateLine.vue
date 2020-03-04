@@ -9,7 +9,7 @@
           <el-input v-model="detail.title" size="medium" :maxlength="10" placeholder="请输入名称"></el-input>
         </el-form-item>
         <el-form-item label="包含县域">
-          <select-city-multi v-if="isShow" filterable forCreateLine :connectData="connectData" :provinceCode="detail.province_code" v-model="detail.city_codes" />
+          <select-city-multi v-if="isShow" filterable forCreateLine :connectData="connectData" :provinceCode="detail.province_code" v-model="detail.city_ids" />
         </el-form-item>
       </el-form>
       
@@ -42,7 +42,7 @@ export default {
     return{
       initDetail: {
         title: '',
-        city_codes: [],
+        city_ids: [],
         province_code: this.$province.code
       },
       connectData: [],

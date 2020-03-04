@@ -3,7 +3,7 @@
     <div style="padding: 0 30px;">
       <el-table :data="dataItem" :row-class-name="highlightRowClassName">
         <el-table-column label="门店名称">
-          <template slot-scope="scope">{{scope.row.store.city_code}}/{{scope.row.store.title}}</template>
+          <template slot-scope="scope">{{scope.row.store.city_id}}/{{scope.row.store.title}}</template>
         </el-table-column>
         <el-table-column label="分配/应出">
           <template slot-scope="scope">

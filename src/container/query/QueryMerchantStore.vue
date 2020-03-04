@@ -7,7 +7,7 @@
             size="small"
             placeholder="所在仓"
             clearable
-            v-model="editQuery.city_code"
+            v-model="editQuery.city_id"
             :provinceCode="editQuery.province_code"
             @change="changeQuery"
           />

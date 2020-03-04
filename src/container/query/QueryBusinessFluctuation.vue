@@ -120,7 +120,7 @@
             page_size: 20,
             province_code: '',
             zone_id: '',
-            city_code: '',
+            city_id: '',
             begin_date: '',
             end_date: '',
             selectType: 'merchant'
@@ -178,7 +178,7 @@
           page_size: 20,
           province_code: this.province.code,
           zone_id: '',
-          city_code: '',
+          city_id: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,
           selectType: 'merchant'

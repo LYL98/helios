@@ -31,7 +31,7 @@
         </el-form-item>
         <el-form-item label="所在仓" prop="province">
           <my-select-province style="width: 110px;" :value="province.code" :disabled="true"/>
-          <my-select-city style="width: 140px; margin-left: 6px;" v-model="detail.city_code" :provinceCode="province.code"
+          <my-select-city style="width: 140px; margin-left: 6px;" v-model="detail.city_id" :provinceCode="province.code"
                           placeholder="请选择所在仓" @change="changCity"/>
         </el-form-item>
       </div>
@@ -224,12 +224,12 @@
             // 判断是否只有 provice 规则出现问题。
             let result = Object.keys(failProps);
             if (result.length === 1) {
-              if (result.includes('province') && detail.city_code && detail.city_code !== '') { // 只有province 存在问题
+              if (result.includes('province') && detail.city_id && detail.city_id !== '') { // 只有province 存在问题
                 that.$refs['ruleForm'].clearValidate(['province']);
                 valid = true;
               }
             } else if (result.length > 1) { // 其他存在问题
-              if (result.includes('province') && detail.city_code && detail.city_code !== '') { // 包含 province
+              if (result.includes('province') && detail.city_id && detail.city_id !== '') { // 包含 province
                 that.$refs['ruleForm'].clearValidate(['province']);
                 return;
               } else {

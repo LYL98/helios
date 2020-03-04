@@ -226,7 +226,7 @@
       initQuery() {
         this.$data.query = Object.assign({}, this.$data.query, {
           province_code: this.province.code,
-          city_code: '',
+          city_id: '',
           status: '',
           pay_status: '',
           order_type: '',
@@ -259,9 +259,9 @@
       // 默认不导出详情
       async orderListExport(hasItemDetail = false) {
         let api = hasItemDetail ? Config.api.orderItemExport : Config.api.orderListExport;
-        let {city_code, status, pay_status, order_type, to_be_canceled, condition, begin_date, end_date, is_init} = this.query;
+        let {city_id, status, pay_status, order_type, to_be_canceled, condition, begin_date, end_date, is_init} = this.query;
         let query = {
-          city_code,
+          city_id,
           status,
           pay_status,
           order_type,

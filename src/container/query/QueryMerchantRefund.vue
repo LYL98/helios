@@ -6,7 +6,7 @@
           <select-city
             size="small"
             clearable
-            v-model="query.city_code"
+            v-model="query.city_id"
             :provinceCode="query.province_code"
             @change="handleQuery('TableMerchantRefund')"
           />
@@ -43,7 +43,7 @@
     data() {
       let initQuery = {
         province_code: this.$province.code,
-        city_code: '',
+        city_id: '',
         condition: '',
         page: 1,
         page_size: Constant.PAGE_SIZE

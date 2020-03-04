@@ -28,15 +28,15 @@
         </el-table-column>
         <el-table-column label="县域">
           <template slot-scope="scope">
-            <div v-for="item in scope.row.cities" :key="scope.row.line_id + item.city_code" class="citie-item">
-              <div class="add-dot">{{item.city_code}}/{{item.city_title}}</div>
+            <div v-for="item in scope.row.cities" :key="scope.row.line_id + item.city_id" class="citie-item">
+              <div class="add-dot">{{item.city_id}}/{{item.city_title}}</div>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="小计" label-class-name="sort-head" header-align="center">
           <el-table-column label="装车 / 分配 / 应出" width="160" label-class-name="sort-head" header-align="center" align="center">
             <template slot-scope="scope">
-              <div v-for="item in scope.row.cities" :key="scope.row.line_id + item.city_code" class="citie-item">
+              <div v-for="item in scope.row.cities" :key="scope.row.line_id + item.city_id" class="citie-item">
                 <div :class="returnTotalClass(item)">
                   <span class="sort-num">{{item.sort_num || '-'}}</span>
                   <span>&nbsp;/&nbsp;</span>
@@ -53,7 +53,7 @@
         <el-table-column :label="`批${index + 1}`" v-for="(item, index) in batchNum" :key="index" label-class-name="sort-head" header-align="center">
           <el-table-column label="装车 / 分配" width="160" label-class-name="sort-head" header-align="center" align="center">
             <template slot-scope="scope">
-              <div v-for="c in scope.row.cities" :key="scope.row.line_id + c.city_code" class="citie-item">
+              <div v-for="c in scope.row.cities" :key="scope.row.line_id + c.city_id" class="citie-item">
                 <div>
                   <span class="sort-num">{{c.out_stocks[index].sort_num || '-'}}</span>
                   <span>&nbsp;/&nbsp;</span>
@@ -66,7 +66,7 @@
         
         <el-table-column label="操作" width="60">
           <template slot-scope="scope">
-            <div v-for="item in scope.row.cities" :key="scope.row.line_id + item.city_code" class="citie-item">
+            <div v-for="item in scope.row.cities" :key="scope.row.line_id + item.city_id" class="citie-item">
               <my-table-operate
                 :list="[
                   {
@@ -75,7 +75,7 @@
                     command: () => handleShowDetail('DetailOperateSortCity', {
                       ...item,
                       item_id: detail.id,
-                      city_code: item.city_code,
+                      city_id: item.city_id,
                       delivery_date: detail.delivery_date
                     })
                   }

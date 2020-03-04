@@ -82,7 +82,7 @@
         </el-form-item>
         <el-form-item label="选择县域" v-if="titleStrs[selectIndex].key === '2'">
           <my-select-city :provinceCode="province.code"
-                          v-model="query.city_code"
+                          v-model="query.city_id"
                           :clearable="titleStrs[selectIndex].key === '2'"
                           style="width: 320px;"
                           @changeCityName="onChangeCityName"/>
@@ -95,7 +95,7 @@
           </el-form-item>
           <el-form-item label="选择县域" v-if="printType === 'city'">
             <my-select-city :provinceCode="province.code"
-                            v-model="query.city_code"
+                            v-model="query.city_id"
                             clearable
                             style="width: 320px;"
                             @changeCityName="onChangeCityName"/>
@@ -227,7 +227,7 @@ export default {
       printType: 'city', //city 县域；item 商品
       itemData: {},
       query: {
-        city_code: "",
+        city_id: "",
         date: nowDate,
         begin_date: nowDate,
         end_date: nowDate
@@ -302,8 +302,8 @@ export default {
         case "1": // 县域订货单导出 params: province_code, begin_date, end_date
           queryStr += `&begin_date=${query.begin_date}&end_date=${query.end_date}`;
           break;
-        case "2": // 客户收货单导出 params: province_code, [city_codes, item_ids, date]
-          queryStr += `&date=${query.date}&city_codes=${query.city_code}`;
+        case "2": // 客户收货单导出 params: province_code, [city_ids, item_ids, date]
+          queryStr += `&date=${query.date}&city_ids=${query.city_id}`;
           break;
         case "3": // 订单列表导出 params: province_code, begin_date, end_date
           queryStr += `&begin_date=${query.begin_date}&end_date=${query.end_date}`;

@@ -42,7 +42,7 @@
               clearable
               size="small"
               placeholder="所在仓"
-              v-model="query.city_code"
+              v-model="query.city_id"
               :provinceCode="query.province_code"
               @change="selectByCondition"
             />
@@ -285,7 +285,7 @@
         query: {
           province_code: '',
           line_id: '',
-          city_code: '',
+          city_id: '',
           store_title: '',
           status: '',
           page: 1,
@@ -356,7 +356,7 @@
       clearQueryCondition() {
         this.$data.query = Object.assign({}, this.$data.query, {
           line_id: '',
-          city_code: '',
+          city_id: '',
           store_title: '',
           status: '',
           begin_date: '',
@@ -371,10 +371,10 @@
 
       async returnFrameListExport() {
         let api = Config.api.operateRefundFrameExport;
-        let {line_id, city_code, store_title, status, begin_date, end_date} = this.query;
+        let {line_id, city_id, store_title, status, begin_date, end_date} = this.query;
         let query = {
           line_id,
-          city_code,
+          city_id,
           store_title,
           status,
           begin_date,

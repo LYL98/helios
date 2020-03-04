@@ -13,7 +13,7 @@
                         size="small"
                         @change="changeZone"
                         style="width: 180px;"/>
-        <my-select-city v-model="query.city_code"
+        <my-select-city v-model="query.city_id"
                         :provinceCode="province.code"
                         ref="mySelectCity"
                         clearable
@@ -127,7 +127,7 @@ export default {
         item_id: '',
         province_code: '',
         zone_id: '',
-        city_code: '',
+        city_id: '',
         sort: ''
       },
       currentRow: {}
@@ -171,7 +171,7 @@ export default {
     },
     changeZone() {
       if (this.query.zone_id === '') {
-        this.query.city_code = '';
+        this.query.city_id = '';
       }
       this.loadItemSalesListWithFirstPage()
     },
@@ -204,7 +204,7 @@ export default {
         item_id: '',
         province_code: '',
         zone_id: '',
-        city_code: '',
+        city_id: '',
         sort: ''
       };
       this.loadItemSalesListWithFirstPage()

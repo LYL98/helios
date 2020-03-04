@@ -416,7 +416,7 @@
           title: item.title,
           type: 'grade', // handle发放优惠券的类型， 默认为grade
           grade_codes: [],
-          city_codes: [],
+          city_ids: [],
           merchant_ids: []
         });
         this.$data.dialog.isShowSend = true;
@@ -444,15 +444,15 @@
       },
       handleSendSubmit() {
         this.$data.formSending = true;
-        let { id, type, grade_codes, city_codes, merchant_ids } = this.$data.send;
+        let { id, type, grade_codes, city_ids, merchant_ids } = this.$data.send;
         let data = { coupon_id: id };
         switch (type) {
           case 'grade':
             data.grade_codes = grade_codes.map(item => item.code);
-            data.city_codes = city_codes.map(item => item.code);
+            data.city_ids = city_ids.map(item => item.code);
             break;
           case 'city':
-            data.city_codes = city_codes.map(item => item.code);
+            data.city_ids = city_ids.map(item => item.code);
             break;
           case 'merchant':
             data.merchant_ids = merchant_ids.map(item => item.code);
