@@ -17,8 +17,8 @@
             <my-table-operate
               :list="[
                 {
-                  title: '修改',
-                  isDisplay: !detail.confirmed && (auth.isAdmin || auth.OperateTruckLoadDetailEditNum),
+                  title: '退货',
+                  isDisplay: !detail.confirmed && (auth.isAdmin || auth.OperateTruckLoadDetailEditNum) && scope.row.allocated_num > 0,
                   command: () => handleShowForm('FormOperateTruckLoadEditNum', {
                     ...scope.row,
                     delivery_date: detail.delivery_date,
