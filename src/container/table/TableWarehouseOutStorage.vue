@@ -17,6 +17,10 @@
             <div slot-scope="scope" class="my-td-item">
               <!--商品名称-->
               <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
+              <!--仓库-->
+              <div v-if="item.key === 'warehouse_titles'" class="td-item add-dot2">
+                {{scope.row.warehouse_titles && scope.row.warehouse_titles.join('，')}}
+              </div>
               <!--采购、调拨数量、入库数量-->
               <div v-else-if="judgeOrs(item.key, ['num', 'num_out'])" class="td-item add-dot2">{{scope.row[item.key] ? scope.row[item.key] + '件' : '-'}}</div>
               <!--出库计划状态-->
