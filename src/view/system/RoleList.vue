@@ -8,16 +8,23 @@
           角色列表
           <el-button class="btn" icon="el-icon-plus" size="mini" @click.native="showAddEdit('add')" v-if="auth.isAdmin || auth.SystemRoleAdd" >新增</el-button>
         </div>
-        <div class="content" :style="`height:${viewWindowHeight - 118}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
-          <div v-for="(item,index) in dataItem" :class="`role-item ${detail.id === item.id && 'active'}`" @click="selectRoleItem(item, detail.id === item.id)" :key="index">
-            <div class="add-dot" :title="item.title">
-              {{item.title}}
+        <div class="select">
+          <el-select v-model="selectRoleType" placeholder="请选择权限级别" clearable filterable style="width: 100%;" size="mini">
+            <el-option v-for="(value, key) in roleAuthLevel" :key="key" :label="value" :value="key"></el-option>
+          </el-select>
+        </div>
+        <div class="content" :style="`height:${viewWindowHeight - 166}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
+          <template v-for="(item,index) in dataItem">
+            <div :class="`role-item ${detail.id === item.id && 'active'}`" @click="selectRoleItem(item, detail.id === item.id)" :key="index" v-if="selectRoleType === '' || selectRoleType === item.role_type">
+              <div class="add-dot" :title="item.title">
+                {{item.title}}
+              </div>
+              <div class="option">
+                <i class="el-icon-delete" v-if="auth.isAdmin || auth.SystemRoleDelete" @click="deleteData(item)"></i>
+                <i class="el-icon-edit-outline" v-if="auth.isAdmin || auth.SystemRoleEdit" @click="showAddEdit(item)"></i>
+              </div>
             </div>
-            <div class="option">
-              <i class="el-icon-delete" v-if="auth.isAdmin || auth.SystemRoleDelete" @click="deleteData(item)"></i>
-              <i class="el-icon-edit-outline" v-if="auth.isAdmin || auth.SystemRoleEdit" @click="showAddEdit(item)"></i>
-            </div>
-          </div>
+          </template>
         </div>
       </div>
       <!--角色列表end-->
@@ -32,7 +39,7 @@
             </el-radio-group>
           </span>
           <span class="f-r">
-            <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin">超级管理员</el-checkbox>
+            <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin" :disabled="detail.role_type === 'globel' ? false : true">超级管理员</el-checkbox>
           </span>
         </div>
         <div class="content" :style="`height:${viewWindowHeight - 166}px;`">
@@ -69,7 +76,7 @@
 
 <script>
 import viewMixin from './../view.mixin';
-import { Button, Checkbox, Tree, RadioGroup, RadioButton } from 'element-ui';
+import { Button, Checkbox, Tree, RadioGroup, RadioButton, Select, Option } from 'element-ui';
 import { Config, Constant, DataHandle, Http } from '@/util';
 import { AddEditSystemRole } from '@/container';
 
@@ -83,6 +90,8 @@ export default {
     'el-tree': Tree,
     'el-radio-group': RadioGroup,
     'el-radio-button': RadioButton,
+    'el-select': Select,
+    'el-option': Option,
   },
   created(){
     documentTitle("设置 - 角色列表");
@@ -100,6 +109,7 @@ export default {
   data(){
     return {
       auth: this.$auth,
+      roleAuthLevel: Constant.ROLE_AUTH_LEVEL(),
       windowHeight: 0,
       isChange: false,
       dataItem: [],
@@ -114,6 +124,7 @@ export default {
         children: 'childs',
         label: 'title'
       },
+      selectRoleType: '', //搜索权限级别
     }
   },
   methods: {
@@ -360,6 +371,10 @@ export default {
           float: right;
           margin-top: 6px;
         }
+      }
+      >.select{
+        padding: 10px;
+        border-bottom: 1px solid #e5e5e5;
       }
       > .content{
         overflow-y: auto;
