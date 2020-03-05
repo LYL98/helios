@@ -7,9 +7,9 @@
     <el-option v-if="typeof showAll !== 'undefined'" key="" label="全部" value=""></el-option>
     <el-option
       v-for="item in dataItem"
-      :key="item.code"
+      :key="item.id"
       :label="item.title"
-      :value="item.code">
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
@@ -47,7 +47,7 @@ export default {
 
       let title = ''
       this.dataItem.map(item => {
-        if (item.code === v) {
+        if (item.id === v) {
           title = item.title
         }
       });
@@ -72,7 +72,7 @@ export default {
         that.$data.dataItem = rd;
         //如果只有一个片区，默认选择，页面不显示
         if(rd.length === 1){
-          that.changeZone(rd[0].code, true);
+          that.changeZone(rd[0].id, true);
         }else{
           that.changeZone('', true);
         }

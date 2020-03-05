@@ -1,12 +1,12 @@
 <template>
-  <form-layout title="修改数量" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
+  <form-layout title="退货" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" ref="ruleForm" :rules="rules">
       <el-form-item label="门店名称">{{detail.store.title}}</el-form-item>
       <el-form-item label="原分配数量">
         <input-number size="medium" disabled :value="detail.allocated_num" unit="件"/>
       </el-form-item>
-      <el-form-item label="分配数量" prop="num">
-        <input-number size="medium" v-model="detail.num" unit="件"/>
+      <el-form-item label="退货数量" prop="num">
+        <input-number size="medium" v-model="detail.num" :min="1" :max="detail.allocated_num" unit="件"/>
       </el-form-item>
     </el-form>
     <div style="margin-left: 140px; margin-top: 20px;">
@@ -51,7 +51,7 @@ export default {
         store_id: detail.store.id,
         item_id: detail.item_id,
         delivery_date: detail.delivery_date,
-        num: detail.num
+        num: detail.allocated_num - detail.num
       });
       this.$loading({isShow: false});
       if(res.code === 0){

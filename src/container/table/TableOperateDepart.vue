@@ -26,13 +26,13 @@
                 <div class="td-item add-dot">
                   <div class="link-item add-dot" @click="handleShowDetail('DetailOperateDepart', {
                     delivery_date: query.delivery_date,
-                    line_id: scope.row.line.code,
+                    line_id: scope.row.line.id,
                     ...scope.row
                   })" v-if="(auth.isAdmin || auth.OperateDepartDetail) && scope.row.assign_confirm_time">
-                    {{scope.row.line.code}}/{{scope.row.line.title}}
+                    {{scope.row.line.title}}
                   </div>
                   <div class="add-dot" v-else>
-                    {{scope.row.line.code}}/{{scope.row.line.title}}
+                    {{scope.row.line.title}}
                   </div>
                 </div>
               </template>
@@ -62,7 +62,7 @@
                   isDisplay: (auth.isAdmin || auth.OperateDepartDetail) && scope.row.assign_confirm_time,
                   command: () => handleShowDetail('DetailOperateDepart', {
                     delivery_date: query.delivery_date,
-                    line_id: scope.row.line.code,
+                    line_id: scope.row.line.id,
                     ...scope.row
                   })
                 },{
@@ -143,7 +143,7 @@
       handleOrderExport(data){
         let url = Config.api.lineOrderExport + '?';
         url += `&date=${this.query.delivery_date}`;
-        url += `&line_id=${data.line.code}`;
+        url += `&line_id=${data.line.id}`;
         window.open(url, '_blank');
       }
     }

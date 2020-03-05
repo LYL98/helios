@@ -1,11 +1,5 @@
 <template>
   <div class="container-table">
-    <div class="table-top">
-      <div class="left">
-        <query-tabs v-model="tabValue" :tab-panes="queryTabsData" type="route" :route-panes="routeTabsData" :query="{delivery_date: query.delivery_date}"/>
-      </div>
-      <div class="right"></div>
-    </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <el-table :data="dataItem.items"
@@ -113,20 +107,10 @@
     },
     data() {
       return {
-        tabValue: 'truck',
-        routeTabsData: Constant.TRUCK_LOADING_TAB_ROUTE(),
+        tabValue: 'truck'
       }
     },
     computed: {
-      //tab
-      queryTabsData(){
-        let { auth } = this;
-        let d = Constant.TRUCK_LOADING_TAB('value_key');
-        if(auth.isAdmin) return d;
-        if(!auth.OperateTruckLoad) delete d['装车'];
-        if(!auth.OperateTruckLoadDelay) delete d['装车延时'];
-        return d;
-      },
       //横向县
       getCitys(){
         let { dataItem } = this;
@@ -170,6 +154,10 @@
       },
       //获取数据
       async getData(query){
+        //从MenuQuery组件取数据
+        let pc = this.getPageComponents('MenuQuery');
+        if(pc) query.delivery_date = pc.query.delivery_date;
+
         this.$data.query = query; //赋值，minxin用
         //如不满足条件
         if(!query.delivery_date || !query.line_id) return;

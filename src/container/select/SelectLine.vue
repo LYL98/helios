@@ -9,9 +9,9 @@
     :disabled="disabled">
     <el-option
       v-for="item in listItem"
-      :key="item.code"
+      :key="item.id"
       :label="item.title"
-      :value="item.code">
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
@@ -32,17 +32,17 @@
       placeholder: { type: String, default: '选择线路' },
       disabled: { type: Boolean, default: false },
       provinceCode: { type: String | Number, required: true },
-      lineCode: { type: String | Number, required: true },
+      lineId: { type: String | Number, required: true },
       initCallBack:  { type: Function }, //获取数据时回调，方便外边控制
     },
     model: {
-      prop: 'lineCode',
+      prop: 'lineId',
       event: 'change'
     },
     computed: {
       selectedLineCode: {
         get() {
-          return this.$props.lineCode;
+          return this.$props.lineId;
         },
         set(v) {
           this.$emit('change', v)

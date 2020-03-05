@@ -48,7 +48,7 @@ export default {
         rd.forEach(item => {
           d.push({
             label: item.title,
-            key: item.code,
+            key: item.id,
           });
         });
         that.$data.dataItem = d;

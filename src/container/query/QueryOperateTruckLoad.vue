@@ -2,19 +2,6 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="配送日期">
-          <el-date-picker
-            size="small"
-            v-model="query.delivery_date"
-            value-format="yyyy-MM-dd"
-            @change="handleQuery('TableOperateTruckLoad')"
-            style="width: 100%;"
-            placeholder="配送日期"
-            :clearable="false"
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
         <my-query-item label="线路">
           <select-line
             :provinceCode="province.code"
@@ -39,7 +26,6 @@
   import { SelectOption } from '@/common';
   import { SelectLine } from '@/container';
   import queryMixin from './query.mixin';
-  import { Constant } from '@/util';
 
   export default {
     name: "QueryOperateTruckLoad",
@@ -49,13 +35,9 @@
     },
     mixins: [queryMixin],
     created() {
-      let deliveryDate = this.$route.query.delivery_date;
-      this.$data.initQuery.delivery_date = this.today;
-      this.$data.query.delivery_date = deliveryDate || this.today;
     },
     data() {
       let initQuery = {
-        delivery_date: '',
         condition: '',
         line_id: '',
         province_code: this.$province.code,
@@ -69,8 +51,8 @@
       //线路初始化默认选择
       lineInit(rd){
         if(rd.length > 0){
-          this.$data.initQuery.line_id = rd[0].code;
-          this.$data.query.line_id = rd[0].code;
+          this.$data.initQuery.line_id = rd[0].id;
+          this.$data.query.line_id = rd[0].id;
         }
         let pc = this.getPageComponents('TableOperateTruckLoad');
         pc.getData(this.query);
