@@ -106,11 +106,10 @@ export default {
   },
   created() {
     this.getRoleList();
-    console.log("this.$myInfo: ", this.$myInfo);
   },
   data() {
     let initDetail = {
-      opt_type: 'global', // global | local，根据当前登录人员来判断
+      opt_type: this.$myInfo.opt_type || 'global', // global | local，根据当前登录人员来判断
       province_code: '', // 区域
       realname: '', // 姓名
       employee_no: '', // 工号
