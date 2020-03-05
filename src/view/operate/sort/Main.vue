@@ -1,5 +1,8 @@
 <template>
   <sub-menu>
+    <template slot="left-query">
+      <menu-query :getPageComponents="viewGetPageComponents" ref="MenuQuery" fromPage="Sort"/>
+    </template>
     <query-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateSort"/>
     <table-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateSort"/>
     <detail-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateSort"/>
@@ -12,10 +15,12 @@
 <script>
   import { QueryOperateSort, TableOperateSort, DetailOperateSort, AddEditOperateSort, DetailOperateSortCity, PrintOperateSort } from '@/container';
   import viewMixin from '@/view/view.mixin';
+  import MenuQuery from './MenuQuery';
 
   export default {
-    name: 'Sort',
+    name: 'Main',
     components: {
+      'menu-query': MenuQuery,
       'query-operate-sort': QueryOperateSort,
       'table-operate-sort': TableOperateSort,
       'detail-operate-sort': DetailOperateSort,

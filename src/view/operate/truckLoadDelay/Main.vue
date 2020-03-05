@@ -1,5 +1,8 @@
 <template>
   <sub-menu>
+    <template slot="left-query">
+      <menu-query :getPageComponents="viewGetPageComponents" ref="MenuQuery" fromPage="TruckLoadDelay"/>
+    </template>
     <query-operate-truck-load-delay :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateTruckLoadDelay"/>
     <table-operate-truck-load-delay :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateTruckLoadDelay"/>
   </sub-menu>
@@ -8,10 +11,12 @@
 <script>
   import { QueryOperateTruckLoadDelay, TableOperateTruckLoadDelay } from '@/container';
   import viewMixin from '@/view/view.mixin';
+  import MenuQuery from './../sort/MenuQuery';
 
   export default {
-    name: 'TruckLoadDelay',
+    name: 'Main',
     components: {
+      'menu-query': MenuQuery,
       'query-operate-truck-load-delay': QueryOperateTruckLoadDelay,
       'table-operate-truck-load-delay': TableOperateTruckLoadDelay
     },

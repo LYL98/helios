@@ -1,10 +1,10 @@
 <template>
-  <el-select v-model="lineCode" :size="size" :filterable="filterable" :clearable="clearable" style="width: 100%;" placeholder="请选择线路" @change="changeLine">
+  <el-select v-model="lineId" :size="size" :filterable="filterable" :clearable="clearable" style="width: 100%;" placeholder="请选择线路" @change="changeLine">
     <el-option
       v-for="item in dataItem"
-      :key="item.code"
+      :key="item.id"
       :label="item.title"
-      :value="item.code">
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
@@ -31,7 +31,7 @@ export default {
     return {
       pCode: this.provinceCode || '',
       dataItem: [],
-      lineCode: this.value || ''
+      lineId: this.value || ''
     };
   },
   methods: {
@@ -39,7 +39,7 @@ export default {
     changeLine(v, isInit){
       let title = '';
       this.$data.dataItem.some(item => {
-        if (item.code === v) {
+        if (item.id === v) {
           title = item.title;
           return true;
         }
@@ -59,7 +59,7 @@ export default {
         let rd = res.data;
         //如果只有一个省，默认选择，页面不显示
         if(rd.length > 0){
-          that.changeLine(rd[0].code, true);
+          that.changeLine(rd[0].id, true);
         }
         that.$data.dataItem = rd;
       }else{
@@ -78,7 +78,7 @@ export default {
     value: {
       deep: true,
       handler: function (a, b) {
-        this.$data.lineCode = a || '';
+        this.$data.lineId = a || '';
       }
     }
   }

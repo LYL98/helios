@@ -33,11 +33,7 @@
       this.$data.pageName = this.$route.name;
     },
     methods: {
-      onExpandChange() {
-        this.isExpand = !this.isExpand;
-        this.$emit('expandChange', this.isExpand)
-      }
-    }
+    },
   }
 </script>
 

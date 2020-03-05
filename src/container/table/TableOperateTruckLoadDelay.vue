@@ -67,10 +67,14 @@
     methods: {
       //返回tabile key
       returnTableKey(d){
-        return `${d.id}${d.line.code}`;
+        return `${d.id}${d.line.id}`;
       },
       //获取数据
       async getData(query){
+        //从MenuQuery组件取数据
+        let pc = this.getPageComponents('MenuQuery');
+        if(pc) query.delivery_date = pc.query.delivery_date;
+
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supAllocateDelaySortQuery, query);

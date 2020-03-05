@@ -15,7 +15,7 @@
           <my-select-city
             size="small"
             :provinceCode="province.code"
-            :lineCode="query.line_id"
+            :lineId="query.line_id"
             v-model="query.city_id"
             style="width: 180px; margin-left: 20px;"
             @change="selectByCondition"
