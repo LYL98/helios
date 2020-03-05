@@ -6,7 +6,7 @@
           <el-input v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
         <el-form-item label="所属省份" prop="province_code">
-          <my-select-province v-model="detail.province_code" />
+          <my-select-province v-model="detail.province_code" :disabled="detail.id ? true: false" />
         </el-form-item>
         <el-form-item label="排序" prop="rank">
           <el-input v-model="detail.rank" :maxlength="3" placeholder="0 - 999"></el-input>

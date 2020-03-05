@@ -53,13 +53,13 @@
         </el-row>
 
         <!--场地入库-->
-        <el-row v-else-if="judgeOrs(pageType, ['add_allocate', 'detail_allocate'])">
+        <el-row v-else-if="judgeOrs(pageType, ['add_allocate', 'detail_allocate', 'add_refund', 'detail_refund'])">
           <h6 class="subtitle">商品信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
         </el-row>
 
         <!--入库信息详情-->
-        <template v-if="judgeOrs(pageType, ['detail_pur', 'detail_distribute', 'detail_allocate'])">
+        <template v-if="judgeOrs(pageType, ['detail_pur', 'detail_distribute', 'detail_allocate', 'detail_refund'])">
           <el-row>
             <h6 class="subtitle">入库信息</h6>
             <el-col :span="12">
@@ -95,7 +95,7 @@
             </el-row>
             <el-form-item label="备注">{{detail.remark || '-'}}</el-form-item>
           </template>
-          <el-row v-if="pageType !== 'detail_allocate'">
+          <el-row v-if="pageType !== 'detail_allocate' || pageType !== 'detail_refund'">
             <el-col :span="12">
               <el-form-item label="品控人">{{detail.creator.realname || '系统'}}</el-form-item>
             </el-col>
@@ -126,7 +126,7 @@
           </el-row>
         </template>
 
-        <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute', 'add_allocate'])">
+        <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute', 'add_allocate', 'add_refund'])">
           <el-form-item label="合格数量">{{detail.num}}件</el-form-item>
           <h6 class="subtitle">入库信息</h6>
           <!--全国仓-->
@@ -164,7 +164,7 @@
       </el-form>
 
       <div class="bottom-btn">
-        <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute', 'add_allocate'])">
+        <template v-if="judgeOrs(pageType, ['add_pur', 'add_distribute', 'add_allocate', 'add_refund'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">确 定</el-button>
         </template>
@@ -229,6 +229,8 @@ export default {
         detail_distribute: '调拨入库详情',
         add_allocate: '场地入库', //场地入库
         detail_allocate: '入库单详情', //场地入库
+        add_refund: '分配退货入库', //分配退货入库
+        detail_refund: '入库单详情', //分配退货入库
       }
     }
   },
