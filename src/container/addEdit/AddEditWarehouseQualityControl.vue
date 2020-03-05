@@ -56,8 +56,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="品控抽检" prop="qa_num">
-                <input-number size="medium" :min="1" v-model="inventoryData.qa_num" unit="件"/>
+              <el-form-item label="品控抽检">
+                <input-number
+                  size="medium"
+                  disabled
+                  :value="!!inventoryData.num_arrive ? Math.floor(inventoryData.num_arrive * ((itemData.system_class && itemData.system_class.qa_rate) || 0) / 1000) : ''"
+                  unit="件"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -193,7 +198,6 @@ export default {
       - num_arrive: 到货数量
       - num: 收货数量
 
-      - qa_num: 品控数量
       - shelf_life: 保质期
       - stock_life: 库存期
       - un_qa_num: 不合格处理数量
@@ -215,7 +219,6 @@ export default {
       relate_order_id: '',
       num_arrive: '',
       num: '',
-      qa_num: null,
       shelf_life: null,
       stock_life: null,
       un_qa_num: 0,
@@ -247,9 +250,11 @@ export default {
       inventoryData: this.copyJson(initInventoryData),
       itemData: {
         fisrt_system_class: {
+          qa_rate: 0,
           has_produce_date: false
         },
         system_class: {
+          qa_rate: 0,
           qa_standard: ''
         }
       },
@@ -260,10 +265,6 @@ export default {
         num_arrive: [
           { required: true, message: '请输入到货数量', trigger: 'change' },
           { validator: validNumArrive, trigger: 'blur' }
-        ],
-        qa_num: [
-          { required: true, message: '请选择品控数量', trigger: 'change' },
-          { validator: validNum, trigger: 'blur' }
         ],
         num: [
           { required: true, message: '请选择采购日期', trigger: 'change' },
