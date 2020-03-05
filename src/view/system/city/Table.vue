@@ -19,10 +19,10 @@
         :current-row-key="clickedRow[rowIdentifier]"
       >
         <el-table-column type="index" min-width="140" label="序号" :index="indexMethod"/>
-        <el-table-column prop="title" label="县域编号 / 名称" min-width="200">
+        <el-table-column prop="title" label="县域名称" min-width="200">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
-              {{ scope.row.code }} / {{ scope.row.title }}
+              {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>

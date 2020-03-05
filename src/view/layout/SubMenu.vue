@@ -1,37 +1,36 @@
 <template>
   <div>
     <div v-if="subMenus.length > 0" class="app-my-sub-menu">
-      <el-menu class="my-sub-menu" mode="horizontal" :default-active="pageData.name" router>
-        <template v-for="(item, index) in subMenus">
-          <el-menu-item :route="{name: item.name}" :index="item.name" :key="index">{{item.title}}</el-menu-item>
-        </template>
-      </el-menu>
+      <div class="my-sub-menu">
+        <div class="left"><slot name="left-query"></slot></div>
+        <div class="menu">
+          <router-link :class="`menu-item ${pageName === item.name && 'active'}`" v-for="(item, index) in subMenus" :to="{name: item.name}" :key="index">{{item.title}}</router-link>
+        </div>
+        <div class="right"><slot name="right-query"></slot></div>
+      </div>
     </div>
-    <slot name="left-query"></slot>
-    <slot name="right-query"></slot>
     <slot></slot>
   </div>
 </template>
 
 <script>
-  import { Menu, MenuItem } from 'element-ui';
   export default {
     name: "SubMenu",
     components: {
-      'el-menu': Menu,
-      'el-menu-item': MenuItem,
     },
-    inject: ['getSubMenuData', 'pageData'],
+    inject: ['getSubMenuData'],
     props: {
       
     },
     data() {
       return {
-        subMenus: []
+        subMenus: [],
+        pageName: ''
       }
     },
     created() {
       this.$data.subMenus = this.getSubMenuData();
+      this.$data.pageName = this.$route.name;
     },
     methods: {
       onExpandChange() {
@@ -42,16 +41,41 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   /*三级菜单*/
   .my-sub-menu{
     margin-bottom: 16px !important;
     height: 48px;
     overflow: hidden;
-    >.el-menu-item{
-      height: 48px !important;
-      line-height: 50px !important;
-      padding: 0 26px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    padding: 0 10px;
+    >.menu{
+      flex: 1;
+      display: flex;
+      >.menu-item{
+        padding: 0 20px;
+        height: 48px;
+        line-height: 48px;
+        position: relative;
+        color: #73767D;
+        font-size: 14px;
+        &.active{
+          color: #00ADE7;
+          font-weight: bold;
+          font-size: 16px;
+          &::after{
+            content: ' ';
+            border-bottom: 2px solid #00ADE7;
+            position: absolute;
+            left: 25px;
+            bottom: 0;
+            right: 25px;
+          }
+        }
+      }
     }
   }
 </style>

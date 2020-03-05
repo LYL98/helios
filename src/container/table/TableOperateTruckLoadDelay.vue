@@ -1,11 +1,5 @@
 <template>
   <div class="container-table">
-    <div class="table-top">
-      <div class="left">
-        <query-tabs v-model="tabValue" :tab-panes="queryTabsData" type="route" :route-panes="routeTabsData" :query="{delivery_date: query.delivery_date}"/>
-      </div>
-      <div class="right"></div>
-    </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
@@ -67,20 +61,8 @@
           { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
           { label: '线路', key: 'line', width: '1', isShow: true },
           { label: '分配时间', key: 'minutes', width: '1', isShow: true }
-        ],
-        routeTabsData: Constant.TRUCK_LOADING_TAB_ROUTE(),
+        ]
       }
-    },
-    computed: {
-      //tab
-      queryTabsData(){
-        let { auth } = this;
-        let d = Constant.TRUCK_LOADING_TAB('value_key');
-        if(auth.isAdmin) return d;
-        if(!auth.OperateTruckLoad) delete d['装车'];
-        if(!auth.OperateTruckLoadDelay) delete d['装车延时'];
-        return d;
-      },
     },
     methods: {
       //返回tabile key
