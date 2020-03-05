@@ -136,7 +136,7 @@ const router = new Router({
       name: 'Banner',
       component: () => import('@/view/business/banner/Main')
     },
-    
+
     /*团购*/
     {
       path: '/group/activity',
@@ -251,6 +251,11 @@ const router = new Router({
       path: '/operate/line/list',
       name: 'OperateLineList',
       component: () => import('@/view/operate/LineList')
+    },
+    {
+      path: '/operate/deliver',
+      name: 'OperateDeliver',
+      component: () => import('@/view/operate/deliver/deliver')
     },
     {
       path: '/operate/refund/frame',

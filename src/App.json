@@ -257,25 +257,7 @@
         },
         {
           "title": "配送人员",
-          "name": "OperateDeliveryMain",
-          "type": "main",
-          "children": [
-            {
-              "title": "司机",
-              "upName": "OperateDeliveryMain",
-              "name": "OperateDeliveryDriver"
-            },
-            {
-              "title": "装车员",
-              "upName": "OperateDeliveryMain",
-              "name": "OperateDeliveryTruck"
-            },
-            {
-              "title": "配送员",
-              "upName": "OperateDeliveryMain",
-              "name": "OperateDeliveryDelivery"
-            }
-          ]
+          "name": "OperateDeliver"
         },{
           "title": "退筐",
           "name": "OperateRefundFrame"
