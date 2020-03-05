@@ -5,6 +5,21 @@
       <el-form v-if="isShow" class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-row>
           <el-col :span="12">
+            <el-form-item label="权限级别" required>
+              <el-radio-group value="上海" size="medium">
+                <el-radio-button label="全国"></el-radio-button>
+                <el-radio-button label="区域"></el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="区域" required>
+              <my-select-province size="medium" v-model="detail.province_code" @change="changeProvince" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
             <el-form-item label="姓名" prop="realname">
               <el-input v-model="detail.realname" size="medium" placeholder="请输入10位以内字符" :maxlength="10"></el-input>
             </el-form-item>
@@ -25,7 +40,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        
+
          <el-form-item label="上传头像">
           <my-avatar style="height:64px;" :avatar="true" ref="upload" :limit="size" module="system" v-model="detail.avatar"></my-avatar>
         </el-form-item>
@@ -109,6 +124,7 @@ export default {
   },
   created(){
     this.getRoleList();
+    console.log("this.$myInfo: ", this.$myInfo);
   },
   data(){
     let initDetail = {
