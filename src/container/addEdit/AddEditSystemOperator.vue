@@ -13,7 +13,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="detail.opt_type === 'local'">
-            <el-form-item label="区域" required prop="province_code">
+            <el-form-item
+              label="区域"
+              required
+              prop="province_code"
+              :rules="[
+                { required: true, message: '区域不能为空', trigger: 'change' }
+              ]"
+            >
               <my-select-province size="medium" v-model="detail.province_code" @change="changeProvince" />
             </el-form-item>
           </el-col>
@@ -35,7 +42,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="密码" v-show="!detail.id" prop="password">
+            <el-form-item
+              label="密码"
+              v-if="!detail.id"
+              prop="password"
+              :rules="[{ required: true, message: '密码不能为空', trigger: 'blur' }]"
+            >
               <el-input v-model="detail.password" size="medium" type="password" placeholder="区分英文大小写，可输入数字与特殊符号限定为6-15个字符" autocomplete="new-password"></el-input>
             </el-form-item>
           </el-col>
@@ -48,7 +60,7 @@
           <el-radio v-model="detail.post" @change="handleChangePost" v-for="(value, key) in operatorPost" :key="key" :label="key">{{value}}</el-radio>
         </el-form-item>
         <el-form-item label="角色" prop="role_ids">
-          <el-transfer v-model="detail.role_ids" :data="roleList" :titles="['未选角色','已选角色']"></el-transfer>
+          <el-transfer v-model="detail.role_ids" :data="roles" :titles="['未选角色','已选角色']" @change="handleChangeRole"></el-transfer>
         </el-form-item>
 
         <el-form-item
@@ -64,13 +76,23 @@
         </el-form-item>
 
         <!--片区列表（多选） 如果级别 == 3-->
-        <el-form-item label="片区列表" prop="data_value" v-if="detail.data_level == '3'">
-          <my-select-zone-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
+        <el-form-item
+          label="片区列表"
+          prop="data_value"
+          v-if="detail.data_level == '3'"
+          :rules="[{ type: 'array', required: true, message: '请选择数据列表', trigger: 'blur' }]"
+        >
+          <my-select-zone-multi :provinceCode="detail.province_code" v-model="detail.data_value" @change="handleChangeDataValue"/>
         </el-form-item>
 
         <!--县市列表（多选） 如果级别 == 4-->
-        <el-form-item label="县域列表" prop="data_value" v-else-if="detail.data_level == '4'">
-          <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" isClearDisabledData />
+        <el-form-item
+          label="县域列表"
+          prop="data_value"
+          v-else-if="detail.data_level == '4'"
+          :rules="[{ type: 'array', required: true, message: '请选择数据列表', trigger: 'blur' }]"
+        >
+          <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" isClearDisabledData @change="handleChangeDataValue"/>
         </el-form-item>
 
         <el-form-item label="备注">
@@ -122,7 +144,7 @@ export default {
       data_value: [], //  数据权限范围 1:空白 2:province_codes 3:zone_ids 4:city_ids
       remark: ''
     }
-    return{
+    return {
       operatorPost: Constant.OPERATOR_POST(),
       dataLevel: Constant.OPERATOR_DATA_LEVEL,
       roleList: [],
@@ -131,9 +153,6 @@ export default {
       size:1,
       current:'',
       rules: {
-        province_code: [
-          { required: true, message: '区域不能为空', trigger: 'change' }
-        ],
         employee_no: [
           {max: 10, message: '工号不能超过10个字符', trigger: 'blur'}
         ],
@@ -144,20 +163,16 @@ export default {
             { required: true, message: '手机号不能为空', trigger: 'blur' },
             { pattern: Verification.testStrs.checkMobile, message: '请输入11位的手机号', trigger: 'blur' }
         ],
-        password: [
-          { required: true, message: '密码不能为空', trigger: 'blur' },
-        ],
         role_ids: [
           { type: 'array', required: true, message: '请选择角色', trigger: 'blur' }
-        ],
-        driver_car_num: [
-          { required: true, message: '车牌不能为空', trigger: 'change' }
-        ],
-        driver_car_type: [
-          { required: true, message: '车型不能为空', trigger: 'change' }
-        ],
-        data_value: []
+        ]
       }
+    }
+  },
+  computed: {
+    roles() {
+      return this.$data.roleList;
+      // return this.$data.roleList.filter(item => item.role_type === this.detail.opt_type);
     }
   },
   methods: {
@@ -204,21 +219,6 @@ export default {
         return;
       }
       this.$data.detail.data_value = [];
-      this.judgeAddRules(this.detail);
-    },
-    //判断添加校验
-    judgeAddRules(detail){
-      if(detail && detail.data_level !== '1'){
-        this.rules.data_value = [{ type: 'array', required: true, message: '请选择数据列表', trigger: 'click' }];
-      }else{
-        this.rules.data_value = [];
-      }
-
-      if(detail && detail.id){
-        this.rules.password = [];
-      }else{
-        this.rules.password = [{ required: true, message: '请输入密码', trigger: 'change' }];
-      }
     },
     //获取角色列表
     getRoleList(){
@@ -237,6 +237,12 @@ export default {
         }
       });
     },
+    handleChangeRole() {
+      this.$refs['ruleForm'].validateField('role_ids');
+    },
+    handleChangeDataValue() {
+      this.$refs['ruleForm'].validateField('data_value');
+    },
     //显示新增修改(重写)
     showAddEdit(data, type){
       this.$data.pageType = type;
@@ -250,13 +256,13 @@ export default {
       }else{
         d = this.copyJson(this.initDetail);
       }
-      this.judgeAddRules(data);
       this.$data.detail = d;
       this.$data.isShow = true;
     },
     //提交数据
     async addEditData(){
       let { detail } = this;
+      console.log("detail: ", detail);
       if(!detail.id){
         detail.password = md5(detail.password);
       }
