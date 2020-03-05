@@ -2,7 +2,7 @@
   <div>
     <div style="margin-top: 20px; font-weight: bold; background-color: #fff; padding:0 20px;">编辑商品统一描述</div>
     <div style="background-color: #fff; padding: 16px 20px;">
-      <div style="max-width: 960px;">
+      <div>
         <el-form :model="item" :rules="rules" ref="ruleForm">
           <el-form-item prop="content">
             <div :style="{ overflowY: 'auto', overflowX: 'auto', maxHeight: '500px'}">
@@ -24,7 +24,7 @@
   import { Constant, Config, Http } from '@/util';
 
   export default {
-    name: "FormSystemSettingItemCommonDes",
+    name: "ItemCommonDes",
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
@@ -52,7 +52,7 @@
 
     methods: {
       async getItemCommon() {
-        let res = await Http.get(Config.api.basicdataGetCommonDescription, {
+        let res = await Http.get(Config.api.basicdataCommonDescription, {
           province_code: this.province.code
         });
         if (res.code === 0) {
@@ -63,7 +63,7 @@
       },
 
       async setItemCommon(unified_description) {
-        let res = await Http.post(Config.api.basicdataSetCommonDescription, {
+        let res = await Http.post(Config.api.basicdataCommonDescription, {
           province_code: this.province.code,
           unified_description: unified_description
         });

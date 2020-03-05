@@ -405,10 +405,6 @@ const Config = (() => {
       basicdataWarehouseTrayEdit: apiM + '/sup_ware_tray/edit', //托盘新增
       basicdataWarehouseTrayDelete: apiM + '/sup_ware_tray/delete', //删除
 
-      // 商品统一描述
-      basicdataGetCommonDescription: apiM + '/basicdata/constant/unified_description', // 获取商品统一描述
-      basicdataSetCommonDescription: apiM + '/basicdata/constant/unified_description', // 设置商品统一描述
-
       // 商户管理
       merchantList: apiM + '/merchant/list', //商户列表
       merchantAdd: apiM + '/merchant/add', //新增商户
@@ -470,8 +466,8 @@ const Config = (() => {
       basicdataConfirmTime: apiM + '/basicdata/constant/confirm/time', //截单时间 GET获取，POST设置
       basicdataOrderTime: apiM + '/basicdata/constant/order/time', //下单时间 GET获取，POST设置
       basicdataDeliveryInfo: apiM + '/basicdata/constant/delivery', //运费信息 GET获取，POST设置
-      basicdataShipType: apiM + '/basicdata/constant/ship_type', //发货方式 GET获取，POST设置
       basicdataAd: apiM + '/basicdata/constant/ad', //设置广告语 GET获取，POST设置
+      basicdataCommonDescription: apiM + '/basicdata/constant/unified_description', // 获取商品统一描述
 
 
       //品牌信息配置

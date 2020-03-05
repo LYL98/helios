@@ -357,7 +357,7 @@
         ]
       },{
         "title": "区域运营配置",
-        "name": "SystemSettingCustom"
+        "name": "SettingCustom"
       },{
         "title": "区域配置",
         "name": "SystemAreaMain",

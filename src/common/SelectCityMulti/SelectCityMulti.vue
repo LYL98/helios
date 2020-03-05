@@ -1,5 +1,5 @@
 <template>
-  <el-transfer v-model="cityCodes" :data="dataItem" :filterable="filterable" :titles="['未选县域','已选县域']" @change="changeCity"></el-transfer>
+  <el-transfer v-model="cityIds" :data="dataItem" :filterable="filterable" :titles="['未选县域','已选县域']" @change="changeCity"></el-transfer>
 </template>
 
 <script>
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       pCode: this.provinceCode || '',
-      cityCodes: this.value || [],
+      cityIds: this.value || [],
       dataItem: []
     };
   },
@@ -88,7 +88,7 @@ export default {
     value: {
       deep: true,
       handler: function (a, b) {
-        this.$data.cityCodes = a || [];
+        this.$data.cityIds = a || [];
       }
     }
   }
