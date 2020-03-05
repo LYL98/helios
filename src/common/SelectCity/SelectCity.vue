@@ -76,7 +76,7 @@
         let cityName = '';
         for (let i = 0; i < this.dataItem.length; i++) {
           let item = this.dataItem[i];
-          if (item.code === cityId) {
+          if (item.id === cityId) {
             cityName = item.title;
             break;
           }

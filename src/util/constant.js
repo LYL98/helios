@@ -458,7 +458,8 @@ const Constant = {
       { key: 'global_pur', value: '预采入库' },
       { key: 'local_pur', value: '反采入库' },
       { key: 'distribute', value: '调拨入库' },
-      { key: 'allocate', value: '场地入库' }
+      { key: 'allocate', value: '场地入库' },
+      { key: 'refund', value: '场地入库' }
     ];
     return handleKeyValue(type, data);
   },
@@ -467,7 +468,8 @@ const Constant = {
     global_pur: 'info',
     local_pur: 'info',
     distribute: 'info',
-    allocate: 'info'
+    allocate: 'info',
+    refund: 'info'
   },
   //变动类型
   SUP_OPT_TYPES: (type)=>{

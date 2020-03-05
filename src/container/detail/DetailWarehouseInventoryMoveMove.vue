@@ -64,7 +64,6 @@
         creator: {}
       }
       return {
-        inventoryType: Constant.INVENTORY_TYPES(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail)
       }
