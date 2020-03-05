@@ -6,14 +6,14 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="权限级别" required prop="opt_type">
-              <el-radio-group value="上海" size="medium" v-model="detail.opt_type">
+              <el-radio-group value="上海" size="medium" v-model="detail.opt_type" @change="handleChangeOptType">
                 <el-radio label="global" border>全国</el-radio>
                 <el-radio label="local" border>区域</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="detail.opt_type === 'local'">
-            <el-form-item label="区域" required>
+            <el-form-item label="区域" required prop="province_code">
               <my-select-province size="medium" v-model="detail.province_code" @change="changeProvince" />
             </el-form-item>
           </el-col>
@@ -132,6 +132,9 @@ export default {
       size:1,
       current:'',
       rules: {
+        province_code: [
+          { required: true, message: '区域不能为空', trigger: 'change' }
+        ],
         employee_no: [
           {max: 10, message: '工号不能超过10个字符', trigger: 'blur'}
         ],
@@ -159,20 +162,50 @@ export default {
     }
   },
   methods: {
-    //改变权限等级
-    changeDataLevel(v) {
-       if(v === '1' || v === '2'){
-        this.$delete(this.detail, 'province_code');
+    handleChangeOptType(opt_type) {
+      switch (opt_type) {
+        case 'global':
+          this.$data.detail.province_code = '';
+          this.$data.detail.data_level = '1', // 数据权限 1:总部 2:区域 3:片区 4:县域
+          this.$data.detail.data_value = [];
+          break;
+        case 'local':
+          this.handleChangePost(this.$data.detail.post);
+          break;
       }
-      this.$set(this.detail, 'data_value', []);
-      this.judgeAddRules(this.detail);
     },
     //省份改变
-    changeProvince(v){
-      if (v !== this.detail.province_code) {
-        this.detail.data_value = [];
-        this.$set(this.detail, 'province_code', v);
+    changeProvince() {
+      this.handleChangePost(this.$data.detail.post);
+    },
+    handleChangePost(post) {
+      if (!this.$data.detail.province_code) return;
+      switch (post) {
+        case 'buyer':
+          this.$data.detail.data_level = '2';
+          this.$data.detail.data_value = [this.$data.detail.province_code];
+          break;
+        case 'salesman':
+          this.$data.detail.data_level = '3';
+          this.$data.detail.data_value = [];
+          break;
+        case 'supply':
+          this.$data.detail.data_level = '2';
+          this.$data.detail.data_value = [this.$data.detail.province_code];
+          break;
+        case 'other':
+          this.$data.detail.data_level = '2';
+          this.$data.detail.data_value = [this.$data.detail.province_code];
+          break;
       }
+    },
+    handleChangeDataLevel(level) {
+      if (level === '2') {
+        this.$data.detail.data_value = [this.$data.detail.province_code];
+        return;
+      }
+      this.$data.detail.data_value = [];
+      this.judgeAddRules(this.detail);
     },
     //判断添加校验
     judgeAddRules(detail){
@@ -204,28 +237,6 @@ export default {
           that.$data.roleList = d;
         }
       });
-    },
-    handleChangePost(post) {
-      if (!this.$data.detail.province_code) return;
-      switch (post) {
-        case 'buyer':
-          this.$data.detail.data_value = [this.$data.detail.province_code];
-          break;
-        case 'salesman':
-          this.$data.detail.data_level = '3';
-          this.$data.detail.data_value = [];
-          break;
-        case 'supply':
-          this.$data.detail.data_value = [this.$data.detail.province_code];
-          break;
-        case 'other':
-          this.$data.detail.data_level = '2';
-          this.$data.detail.data_value = [this.$data.detail.province_code];
-          break;
-      }
-    },
-    handleChangeDataLevel(level) {
-      this.$data.detail.data_value = [];
     },
     //显示新增修改(重写)
     showAddEdit(data, type){
