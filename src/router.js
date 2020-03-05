@@ -386,7 +386,7 @@ const router = new Router({
     {
       path: '/system/setting',
       name: 'Setting',
-      component: () => import('@/view/system/Setting')
+      component: () => import('@/view/system/setting/Main')
     },
     {
       path: '/system/zone',
@@ -400,8 +400,8 @@ const router = new Router({
     },
     {
       path: '/system/setting/custom',
-      name: 'SystemSettingCustom',
-      component: () => import('@/view/system/SettingCustom')
+      name: 'SettingCustom',
+      component: () => import('@/view/system/settingCustom/Main')
     },
     {
       path: '/system/brand/settings',

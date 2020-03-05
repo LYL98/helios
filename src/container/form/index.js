@@ -9,9 +9,6 @@ export { default as FormItemGlobalSupplierType } from './FormItemGlobalSupplierT
 export { default as FormItemPricingEditNum } from './FormItemPricingEditNum';
 export { default as FormFinanceApproveEdit } from './FormFinanceApproveEdit';
 export { default as FormItemSupplierAccount } from './FormItemSupplierAccount';
-export { default as FormSystemSettingAd } from './FormSystemSettingAd';
-export { default as FormSystemSettingOperating } from './FormSystemSettingOperating';
-export { default as FormSystemSettingItemCommonDes } from './FormSystemSettingItemCommonDes';
 export { default as FormSystemOperatorResetPwd } from './FormSystemOperatorResetPwd';
 export { default as FormItemListEditInnerTag } from './FormItemListEditInnerTag';
 export { default as FormOrderAfterSaleClose } from './FormOrderAfterSaleClose';
