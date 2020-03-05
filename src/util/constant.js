@@ -399,7 +399,7 @@ const Constant = {
     part_in: 'warning',
     all_in: 'regular'
   },
-  //财务对财表状态
+  //财务结款状态
   S_STATEMENT_PAID_STATUS: (type)=>{
     let data = [
       { key: 'init', value: '待结款' },
@@ -407,10 +407,25 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
-  //财务对财表状态(颜色)
+  //财务结款状态(颜色)
   S_STATEMENT_PAID_STATUS_TYPE: {
     init: 'warning',
     paid: 'info'
+  },
+  //财务对财单状态
+  S_STATEMENT_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待确认' },
+      { key: 'confirmed', value: '待结款' },
+      { key: 'paid', value: '已结款' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //财务对财表状态(颜色)
+  S_STATEMENT_STATUS_TYPE: {
+    init: 'primary',
+    confirmed: 'warning',
+    paid: 'regular'
   },
   //供应商流水类型
   SUPPLIER_BILL_REASON: (type)=>{

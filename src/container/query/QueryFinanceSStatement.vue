@@ -22,8 +22,8 @@
       <el-col :span="7">
         <my-query-item label="状态">
           <select-option
-            :options="{'全部': '', ...paidStatus}"
-            v-model="query.paid_status"
+            :options="{'全部': '', ...status}"
+            v-model="query.status"
             @change="handleQuery('TableFinanceSStatement')"
             size="small"
           />
@@ -61,13 +61,13 @@
         picker_value: null,
         begin_date: '',
         end_date: '',
-        paid_status: '',
+        status: '',
         condition: '',
       }
       return {
         initQuery: initQuery,
         query: this.copyJson(initQuery), //只有一层，可以用Object.assign深拷贝
-        paidStatus: Constant.S_STATEMENT_PAID_STATUS('value_key'),
+        status: Constant.S_STATEMENT_STATUS('value_key'),
       }
     },
     methods: {

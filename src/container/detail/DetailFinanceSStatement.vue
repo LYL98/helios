@@ -8,7 +8,7 @@
         账单金额：&yen;&nbsp;{{returnPrice(detail.bill_amount)}}
       </el-col>
       <el-col :span="2">
-        <el-tag size="small" :type="paidStatusType[detail.paid_status]" disable-transitions>{{paidStatus[detail.paid_status]}}</el-tag>
+        <el-tag size="small" :type="statusType[detail.status]" disable-transitions>{{status[detail.status]}}</el-tag>
       </el-col>
     </el-row>
     <div class="" style="border-bottom: 8px solid #eee; margin: 0 16px 16px;"></div>
@@ -53,8 +53,8 @@
         bill_details: []
       }
       return {
-        paidStatus: Constant.S_STATEMENT_PAID_STATUS(),
-        paidStatusType: Constant.S_STATEMENT_PAID_STATUS_TYPE,
+        status: Constant.S_STATEMENT_STATUS(),
+        statusType: Constant.S_STATEMENT_STATUS_TYPE,
         detail: this.copyJson(initDetail),
         initDetail: initDetail,
         billReason: Constant.SUPPLIER_BILL_REASON()
