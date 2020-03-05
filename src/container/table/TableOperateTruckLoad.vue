@@ -154,6 +154,10 @@
       },
       //获取数据
       async getData(query){
+        //从MenuQuery组件取数据
+        let pc = this.getPageComponents('MenuQuery');
+        if(pc) query.delivery_date = pc.query.delivery_date;
+
         this.$data.query = query; //赋值，minxin用
         //如不满足条件
         if(!query.delivery_date || !query.line_id) return;

@@ -230,17 +230,17 @@ const router = new Router({
     {
       path: '/operate/sort',
       name: 'OperateSort',
-      component: () => import('@/view/operate/Sort')
+      component: () => import('@/view/operate/sort/Main')
     },
     {
       path: '/operate/truck/load',
       name: 'OperateTruckLoad',
-      component: () => import('@/view/operate/TruckLoad')
+      component: () => import('@/view/operate/truckLoad/Main')
     },
     {
       path: '/operate/truck/load/delay',
       name: 'OperateTruckLoadDelay',
-      component: () => import('@/view/operate/TruckLoadDelay')
+      component: () => import('@/view/operate/truckLoadDelay/Main')
     },
     {
       path: '/operate/depart',
