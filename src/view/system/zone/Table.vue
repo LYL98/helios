@@ -112,7 +112,7 @@
       async deleteData(data) {
         this.$loading({ isShow: true });
         let res = await Http.post(Config.api.basicdataZoneDelete, {
-          code: data.code
+          id: data.id
         });
         this.$loading({ isShow: false });
         if(res.code === 0){

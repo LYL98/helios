@@ -1,6 +1,6 @@
 <template>
   <el-select
-    v-model="selectedCityCode"
+    v-model="selectedCityId"
     :size="size"
     :filterable="filterable"
     :clearable="clearable"
@@ -52,7 +52,7 @@
     },
     computed: {
       //县市改变
-      selectedCityCode: {
+      selectedCityId: {
         get() {
           return this.$props.value;
         },

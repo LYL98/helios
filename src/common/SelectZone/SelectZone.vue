@@ -1,16 +1,18 @@
 <template>
-  <el-select v-model="zoneId" @clear="onClear"
-             :clearable="clearable" :size="size"
-             filterable placeholder="请选择片区"
-             style="width: 100%;"
-             @change="changeZone">
-    <el-option v-if="typeof showAll !== 'undefined'" key="" label="全部" value=""></el-option>
-    <el-option
-      v-for="item in dataItem"
-      :key="item.id"
-      :label="item.title"
-      :value="item.id">
-    </el-option>
+  <el-select
+    v-model="zoneId" @clear="onClear"
+    :clearable="clearable" :size="size"
+    :disabled="disabled"
+    filterable placeholder="请选择片区"
+    style="width: 100%;"
+    @change="changeZone">
+      <el-option v-if="typeof showAll !== 'undefined'" key="" label="全部" value=""></el-option>
+      <el-option
+        v-for="item in dataItem"
+        :key="item.id"
+        :label="item.title"
+        :value="item.id">
+      </el-option>
   </el-select>
 </template>
 
@@ -27,7 +29,7 @@ export default {
   created(){
     this.baseZoneList();
   },
-  props: ['value', 'provinceCode', 'showAll', 'size', 'clearable'],
+  props: ['value', 'provinceCode', 'showAll', 'size', 'clearable', 'disabled'],
   model: {
     prop: 'value',
     event: 'ev'

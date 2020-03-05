@@ -35,8 +35,8 @@
                 &yen;{{returnPrice(scope.row.bill_amount)}}
               </div>
               <!--状态-->
-              <div class="td-item" v-else-if="item.key === 'paid_status'">
-                <el-tag size="small" :type="paidStatusType[scope.row.paid_status]" disable-transitions>{{paidStatus[scope.row.paid_status]}}</el-tag>
+              <div class="td-item" v-else-if="item.key === 'status'">
+                <el-tag size="small" :type="statusType[scope.row.status]" disable-transitions>{{status[scope.row.status]}}</el-tag>
               </div>
               <!--生成日期-->
               <div class="td-item" v-else-if="item.key === 'created_date'">{{returnDateFormat(scope.row.created, 'yyyy-MM-dd')}}</div>
@@ -53,7 +53,7 @@
               :list="[
                 {
                   title: '结款',
-                  isDisplay: (auth.isAdmin || auth.FinanceSStatementPay) && scope.row.paid_status === 'init',
+                  isDisplay: (auth.isAdmin || auth.FinanceSStatementPay) && scope.row.status === 'confirmed',
                   command: () => supplierStatementPay(scope.row)
                 },
                 {
@@ -100,19 +100,19 @@
           { label: '账单时间', key: 'term', width: '4', isShow: true },
           { label: '账单金额', key: 'bill_amount', width: '2', isShow: true },
           { label: '结款日期', key: 'bill_date', width: '2', isShow: true },
-          { label: '状态', key: 'paid_status', width: '2', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true },
           { label: '账期生成日期', key: 'created_date', width: '2', isShow: true },
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false },
         ],
-        paidStatus: Constant.S_STATEMENT_PAID_STATUS(),
-        paidStatusType: Constant.S_STATEMENT_PAID_STATUS_TYPE,
+        status: Constant.S_STATEMENT_STATUS(),
+        statusType: Constant.S_STATEMENT_STATUS_TYPE,
       }
     },
     methods: {
       //返回是否禁用多选
       returnPaidStatus(d){
-        return d.paid_status === 'paid' ? false : true
+        return d.status === 'paid' ? false : true
       },
       //获取数据
       async getData(query){

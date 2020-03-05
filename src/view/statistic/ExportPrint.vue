@@ -21,7 +21,8 @@
           </el-button>
         </div>
       </div>
-      <div style="padding: 20px; margin-top: 15px">
+      <!--暂时删除-->
+      <div style="padding: 20px; margin-top: 15px" v-if="false">
         <h6 style="font-size: 14px">打印</h6>
         <div style="margin-top: 18px; margin-left: 20px">
           <el-button v-if="(auth.isAdmin || auth[item.auth]) && item.key === 'print'" @click.native="show(index)" v-for="(item, index, key) in titleStrs" :key="key" style="margin-bottom: 10px;margin-left:0; margin-right:10px">
@@ -174,7 +175,6 @@ export default {
         "item_code": "160172",
         "item_title": "测试商品",
         "date": "2018-09-29",
-        "ad": "我是广告语abdcde",
         "num": 2,
     },{
         "order_code": "00118101108835",
@@ -183,7 +183,6 @@ export default {
         "item_code": "160172",
         "item_title": "测试商品",
         "date": "2018-09-29",
-        "ad": "我是广告语abdcde",
         "num": 1,
     },{
         "order_code": "00118101108835",
@@ -192,7 +191,6 @@ export default {
         "item_code": "160172",
         "item_title": "测试商品门店很长的情况下有两行的情况下",
         "date": "2018-09-29",
-        "ad": "我是广告语abdcde",
         "num": 1,
     },{
         "order_code": "00118101108835",
@@ -201,7 +199,6 @@ export default {
         "item_code": "160172",
         "item_title": "测试商品门店很长的情况下有两行的情况下",
         "date": "2018-09-29",
-        "ad": "我是广告语abdcde",
         "num": 1,
     }];
     that.printTemplate(data);*/
@@ -395,7 +392,7 @@ export default {
                     ${item.item_code}
                     <span>${item.item_title}</span>
                   </div>
-                  <div class="item-ad">${item.ad}</div>
+                  <div class="item-ad">蒲公英</div>
                 </div>
                 <div class="bottom">
                   <div class="left">

@@ -2,17 +2,14 @@
   <div class="zone-add-eidt">
     <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}县域`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="120px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">
-        <el-form-item label="编号">
-          <el-input v-model="detail.code" disabled placeholder="系统自动生成"></el-input>
-        </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
         <el-form-item label="所属省份" prop="province_code">
-          <my-select-province :value="detail.province_code" @change="changeProvince"/>
+          <my-select-province :value="detail.province_code" @change="changeProvince" :disabled="detail.id ? true: false"/>
         </el-form-item>
         <el-form-item label="所属片区" prop="zone_id">
-          <my-select-zone :provinceCode="detail.province_code" :value="detail.zone_id" @change="changeZone"/>
+          <my-select-zone :provinceCode="detail.province_code" :value="detail.zone_id" @change="changeZone" :disabled="detail.id ? true: false"/>
         </el-form-item>
         <el-form-item label="排序" prop="rank">
           <el-input v-model="detail.rank" :maxlength="3" placeholder="0 - 999"></el-input>
