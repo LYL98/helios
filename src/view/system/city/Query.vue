@@ -18,9 +18,9 @@
           <el-select size="small" v-model="query.zone_ids" clearable filterable placeholder="选择片区" style="width: 100%;" @change="changeZone">
             <el-option
               v-for="item in zoneList"
-              :key="item.code"
+              :key="item.id"
               :label="item.title"
-              :value="item.code">
+              :value="item.id">
             </el-option>
           </el-select>
         </my-query-item>

@@ -99,6 +99,7 @@
         },
         auth: {}, //用户权限,
         myInfo: {}, //当前登录信息
+        subMenuQuery: {}, //三级菜单专用query保持
       }
     },
     created() {
@@ -154,8 +155,6 @@
           }
           return upMenu;
         },
-        //当前页面信息
-        pageData: that.pageData
       }
     },
     methods: {
