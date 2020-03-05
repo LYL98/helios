@@ -540,6 +540,19 @@ const Constant = {
     part: 'warning',
     all: 'regular'
   },
+  //权限级别
+  ROLE_AUTH_LEVEL: (type)=>{
+    let data = [
+      { key: 'globel', value: '全国' },
+      { key: 'local', value: '区域' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //权限级别(颜色)
+  ROLE_AUTH_LEVEL_TYPE: {
+    globel: 'info',
+    local: 'info'
+  },
 };
 
 //处理key value

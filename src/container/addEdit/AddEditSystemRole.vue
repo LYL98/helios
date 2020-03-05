@@ -3,16 +3,21 @@
     <el-dialog :close-on-click-modal="false" title="修改角色" :visible="isShow" width="540px" :before-close="cancelAddEdit">
       <!--isShow防止渲染问题-->
       <el-form v-if="isShow" label-position="right" label-width="120px" style="width: 400px;" :model="detail" :rules="rules" ref="ruleForm">
+        <el-form-item label="权限级别" class="is-required">
+          <el-radio v-model="detail.role_type" v-for="(value, key) in roleAuthLevel" :label="key" :key="key" @change="changeRoleType">{{value}}</el-radio>
+        </el-form-item>
         <el-form-item label="角色名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入角色名称" :maxLength="10"></el-input>
         </el-form-item>
         <el-form-item label="继承角色">
           <el-select v-model="selectRoleVal" placeholder="请选择现有角色" clearable filterable @change="selectRole" style="width: 100%;">
-            <el-option v-for="(item, index) in dataItem" :key="item.id" :label="item.title" :value="index"></el-option>
+            <template v-for="(item, index) in dataItem">
+              <el-option :key="item.id" :label="item.title" :value="index" v-if="item.role_type === detail.role_type"></el-option>
+            </template>
           </el-select>
           <div style="color: #7f1305;">注：可快速复制现有角色的功能</div>
         </el-form-item>
-        <el-form-item label="超级管理员">
+        <el-form-item label="超级管理员" v-if="detail.role_type === 'globel'" class="is-required">
           <el-radio v-model="detail.is_super_admin" :label="true">是</el-radio>
           <el-radio v-model="detail.is_super_admin" :label="false">否</el-radio>
         </el-form-item>
@@ -48,6 +53,7 @@ export default {
     return{
       isShow: false,
       selectRoleVal: '',
+      roleAuthLevel: Constant.ROLE_AUTH_LEVEL(),
       dataItem: [],
       detail: {
         is_super_admin: false
@@ -63,8 +69,11 @@ export default {
     //显示
     showAddEdit(dataItem, roleDetail){
       this.$data.dataItem = dataItem;
-      this.$data.detail = JSON.parse( JSON.stringify( roleDetail ) );
-      this.selectRoleVal = '';
+      this.$data.detail = JSON.parse(JSON.stringify({
+        ...roleDetail,
+        role_type: roleDetail.role_type || 'globel'
+      }));
+      this.$data.selectRoleVal = '';
       this.$data.isShow = true;
     },
     //取消
@@ -83,6 +92,11 @@ export default {
         detail.permission_codes = dataItem[index].permission_codes;
       }
       this.$data.detail = detail;
+    },
+    //选择类别
+    changeRoleType(){
+      this.$data.detail.is_super_admin = false;
+      this.$data.selectRoleVal = '';
     },
     //确认提交
     submitAddEdit(e){
