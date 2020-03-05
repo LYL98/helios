@@ -5,14 +5,14 @@
       <el-form v-if="isShow" class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="权限级别" required>
-              <el-radio-group value="上海" size="medium">
-                <el-radio-button label="全国"></el-radio-button>
-                <el-radio-button label="区域"></el-radio-button>
+            <el-form-item label="权限级别" required prop="opt_type">
+              <el-radio-group value="上海" size="medium" v-model="detail.opt_type">
+                <el-radio label="global" border>全国</el-radio>
+                <el-radio label="local" border>区域</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="detail.opt_type === 'local'">
             <el-form-item label="区域" required>
               <my-select-province size="medium" v-model="detail.province_code" @change="changeProvince" />
             </el-form-item>
@@ -45,52 +45,32 @@
           <my-avatar style="height:64px;" :avatar="true" ref="upload" :limit="size" module="system" v-model="detail.avatar"></my-avatar>
         </el-form-item>
         <el-form-item label="职务">
-          <el-radio v-model="detail.post" @change="handleChange" label="">无</el-radio>
-          <el-radio v-model="detail.post" @change="handleChange" v-for="(value, key) in operatorPost" :key="key" :label="key">{{value}}</el-radio>
+          <el-radio v-model="detail.post" @change="handleChangePost" v-for="(value, key) in operatorPost" :key="key" :label="key">{{value}}</el-radio>
         </el-form-item>
         <el-form-item label="角色" prop="role_ids">
           <el-transfer v-model="detail.role_ids" :data="roleList" :titles="['未选角色','已选角色']"></el-transfer>
         </el-form-item>
 
-        <!--司机-->
-        <el-row v-if="detail.post === 'deliver'">
-          <el-col :span="12">
-            <el-form-item label="车牌" prop="driver_car_num">
-              <el-input v-model="detail.driver_car_num" size="medium" :maxlength="10" placeholder="请输入10位以内字符"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="车型" prop="driver_car_type">
-              <el-input v-model="detail.driver_car_type" size="medium" :maxlength="20" placeholder="请输入20位以内字符"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-form-item label="权限级别">
-          <el-radio v-for="(item, key) in dataLevel" :disabled="detail.data_level != 1 && (current.length>0 && key != current)" :key="key" v-model="detail.data_level" :label="key" @change="changeDataLevel">{{item}}</el-radio>
-        </el-form-item>
-        <!--如果级别 == 3、4、5 片区、县市、线路-->
-        <el-form-item label="选择省份" prop="province_code" v-if="detail.data_level == '3' || detail.data_level === '4' || detail.data_level === '5'">
-          <my-select-province size="medium" v-model="detail.province_code" @change="changeProvince" />
-        </el-form-item>
-        <!--省份列表（多选） 如果级别 == 2-->
-        <el-form-item label="省份列表" prop="data_value" v-if="detail.data_level == '2'">
-          <my-select-province-multi size="medium" v-model="detail.data_value"/>
+        <el-form-item
+          label="权限级别"
+          v-if="detail.opt_type === 'local' && detail.province_code && ['salesman', 'other'].includes(detail.post)"
+          required
+        >
+          <el-radio-group v-model="detail.data_level" @change="handleChangeDataLevel">
+            <el-radio label="2" v-if="detail.post === 'other'">区域</el-radio>
+            <el-radio label="3">片区</el-radio>
+            <el-radio label="4">县域</el-radio>
+          </el-radio-group>
         </el-form-item>
 
         <!--片区列表（多选） 如果级别 == 3-->
-        <el-form-item label="片区列表" prop="data_value" v-else-if="detail.data_level == '3'">
+        <el-form-item label="片区列表" prop="data_value" v-if="detail.data_level == '3'">
           <my-select-zone-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
         </el-form-item>
 
         <!--县市列表（多选） 如果级别 == 4-->
         <el-form-item label="县域列表" prop="data_value" v-else-if="detail.data_level == '4'">
           <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" isClearDisabledData />
-        </el-form-item>
-
-        <!--线路列表（多选） 如果级别 == 5-->
-        <el-form-item label="线路列表" prop="data_value" v-else-if="detail.data_level == '5'">
-          <my-select-line-multi :provinceCode="detail.province_code" v-model="detail.data_value"/>
         </el-form-item>
 
         <el-form-item label="备注">
@@ -106,6 +86,7 @@
 </template>
 
 <script>
+import { Radio } from 'element-ui';
 import addEditMixin from './add.edit.mixin';
 import { Config, Constant, Verification, Http } from '@/util';
 import { SelectProvince, SelectProvinceMulti, SelectZoneMulti, SelectCityMulti, SelectLineMulti, Avatar } from '@/common';
@@ -115,6 +96,7 @@ export default {
   name: "AddEditSystemOperator",
   mixins: [addEditMixin],
   components: {
+    'el-radio': Radio,
     'my-select-province': SelectProvince,
     'my-select-city-multi': SelectCityMulti,
     'my-select-province-multi': SelectProvinceMulti,
@@ -122,19 +104,24 @@ export default {
     'my-select-line-multi': SelectLineMulti,
     'my-avatar': Avatar
   },
-  created(){
+  created() {
     this.getRoleList();
     console.log("this.$myInfo: ", this.$myInfo);
   },
-  data(){
+  data() {
     let initDetail = {
-      data_level: '1',
-      data_value: [],
+      opt_type: 'global', // global | local，根据当前登录人员来判断
+      province_code: '', // 区域
+      realname: '', // 姓名
+      employee_no: '', // 工号
+      phone: '', // 手机号
+      password: '', // 密码
+      avatar: [], // 头像
+      post: 'buyer', // 职务 buyer(商品) salesman(业务) supply(供应链) other(其他)
       role_ids: [],
-      post: '',
-      avatar: [],
-      driver_car_num: '',
-      driver_car_type: ''
+      data_level: '1', // 数据权限 1:总部 2:区域 3:片区 4:县域
+      data_value: [], //  数据权限范围 1:空白 2:province_codes 3:zone_ids 4:city_ids
+      remark: ''
     }
     return{
       operatorPost: Constant.OPERATOR_POST(),
@@ -218,21 +205,27 @@ export default {
         }
       });
     },
-    handleChange(e) {
-      this.current = ''
-      if(e == 'salesman') {
-        this.detail.data_level = '4'
-        this.current = '4'
-      }else if(e == 'buyer') {
-        this.detail.data_level = '2'
-        this.current = '2'
-      }else if(e == 'deliver') {
-        this.detail.data_level = '5'
-        this.current = '5'
-      }else{
-        this.detail.data_level = '1'
+    handleChangePost(post) {
+      if (!this.$data.detail.province_code) return;
+      switch (post) {
+        case 'buyer':
+          this.$data.detail.data_value = [this.$data.detail.province_code];
+          break;
+        case 'salesman':
+          this.$data.detail.data_level = '3';
+          this.$data.detail.data_value = [];
+          break;
+        case 'supply':
+          this.$data.detail.data_value = [this.$data.detail.province_code];
+          break;
+        case 'other':
+          this.$data.detail.data_level = '2';
+          this.$data.detail.data_value = [this.$data.detail.province_code];
+          break;
       }
-      this.changeDataLevel(this.detail.data_level)
+    },
+    handleChangeDataLevel(level) {
+      this.$data.detail.data_value = [];
     },
     //显示新增修改(重写)
     showAddEdit(data, type){

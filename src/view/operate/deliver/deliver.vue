@@ -50,7 +50,7 @@
       </el-row>
     </div>
     <div class="container-table">
-      <div class="table-top display-flex justify-content-end">
+      <div class="display-flex justify-content-end">
         <el-button type="primary" plain size="mini">导出配送人员</el-button>
         <el-button class="right" type="primary" size="mini" @click="handleAddItem">新增</el-button>
       </div>
@@ -164,6 +164,9 @@
           item: null
         }
       }
+    },
+    created() {
+      document.title = '场地 - 配送人员';
     },
     methods: {
       changeQuery() {

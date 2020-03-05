@@ -230,7 +230,7 @@ const Constant = {
     ];
     return handleKeyValue(type, data);
   },
-  
+
   //售后单处理结果
   AFTER_SALE_RESULT: {
     init: '商家提交售后申请，待处理', //正在处理
@@ -247,22 +247,20 @@ const Constant = {
     cancel_order_refund: '订单取消退款',
     after_sale_refund: '售后退款'
   },
-  //运营人员数据权限级别1:全国 2:省 3:片区 4:县市 5:线路
+  //运营人员数据权限级别1:总部 2:区域 3:片区 4:县域
   OPERATOR_DATA_LEVEL: {
-    '1': '全国',
-    '2': '省',
+    '1': '总部',
+    '2': '区域',
     '3': '片区',
-    '4': '县域',
-    '5': '线路'
+    '4': '县域'
   },
   //运营人员职务
   OPERATOR_POST: (type) => {
     let data = [
-      { key: 'salesman', value: '业务员' },
-      { key: 'buyer', value: '采购员' },
-      { key: 'deliver', value: '司机' },
-      { key: 'sorter', value: '分拣员' },
-      { key: 'local_distributor', value: '落地配送员' }
+      { key: 'buyer', value: '商品' },
+      { key: 'salesman', value: '业务' },
+      { key: 'supply', value: '供应链' },
+      { key: 'other', value: '其他' },
     ];
     return handleKeyValue(type, data);
   },
@@ -581,13 +579,13 @@ const handleKeyValue = (type, data) => {
   let d = {};
   //value_key
   if(type === 'value_key'){
-    data.map(item => { 
+    data.map(item => {
       d[item.value] = item.key;
     });
     return d;
   }
   //key_value
-  data.map(item => { 
+  data.map(item => {
     d[item.key] = item.value;
   });
   return d;

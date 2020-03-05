@@ -23,10 +23,10 @@
       <el-input placeholder="请输入车型"></el-input>
     </el-form-item>
     <el-form-item label="账号手机号" required>
-      <el-input placeholder="请输入账号手机号"></el-input>
+      <el-input placeholder="请输入账号手机号" :maxlength="11"></el-input>
     </el-form-item>
     <el-form-item label="密码" required>
-      <el-input placeholder="请输入密码"></el-input>
+      <el-input placeholder="请输入密码" autocomplete="new-password"></el-input>
     </el-form-item>
     <div class="display-flex justify-content-end">
       <el-button size="medium" @click.native="handleCancel">取 消</el-button>
