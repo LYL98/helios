@@ -43,6 +43,12 @@
             <input-price size="medium" v-model="detail.amount" />
           </el-form-item>
         </el-col>
+        <!--退货给供应商 (确认暂时不显示)-->
+        <!---<el-col :span="12" v-if="detail.opt_type === 'refund_to_supplier'">
+          <el-form-item label="退货金额" prop="amount">
+            <input-price size="medium" v-model="detail.amount" disabled/>
+          </el-form-item>
+        </el-col>-->
       </el-row>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="detail.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
