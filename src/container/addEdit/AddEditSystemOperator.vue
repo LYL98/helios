@@ -171,11 +171,7 @@ export default {
   },
   computed: {
     roles() {
-      return this.$data.roleList;
-      // if (this.detail.opt_type === 'global') {
-      //   return this.$data.roleList.filter(item => ['global', 'globel'].includes(item.role_type));
-      // }
-      // return this.$data.roleList.filter(item => item.role_type === 'local');
+      return this.$data.roleList.filter(item => item.role_type === this.detail.opt_type);
     }
   },
   methods: {
@@ -234,6 +230,7 @@ export default {
             d.push({
               label: rd[i].title,
               key: rd[i].id,
+              role_type: rd[i].role_type,
             });
           }
           that.$data.roleList = d;
