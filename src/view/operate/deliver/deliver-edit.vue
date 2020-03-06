@@ -130,7 +130,7 @@
               this.$message({message: `${this.$props.type === 'add' ? '新增' : '修改'}成功`, type: 'success'});
               this.$emit('submit');
             } else {
-              this.$message({message: res.message, type: 'error'});
+              this.$message({title: '提示', message: res.message, type: 'error'});
             }
           })
         })
