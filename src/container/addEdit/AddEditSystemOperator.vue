@@ -79,7 +79,7 @@
         <el-form-item
           label="片区列表"
           prop="data_value"
-          v-if="detail.data_level == '3'"
+          v-if="detail.opt_type === 'local' && detail.province_code && detail.data_level == '3'"
           :rules="[{ type: 'array', required: true, message: '请选择数据列表', trigger: 'blur' }]"
         >
           <my-select-zone-multi :provinceCode="detail.province_code" v-model="detail.data_value" @change="handleChangeDataValue"/>
@@ -89,7 +89,7 @@
         <el-form-item
           label="县域列表"
           prop="data_value"
-          v-else-if="detail.data_level == '4'"
+          v-if="detail.opt_type === 'local' && detail.province_code && detail.data_level == '4'"
           :rules="[{ type: 'array', required: true, message: '请选择数据列表', trigger: 'blur' }]"
         >
           <my-select-city-multi :provinceCode="detail.province_code" v-model="detail.data_value" isClearDisabledData @change="handleChangeDataValue"/>
@@ -172,7 +172,10 @@ export default {
   computed: {
     roles() {
       return this.$data.roleList;
-      // return this.$data.roleList.filter(item => item.role_type === this.detail.opt_type);
+      // if (this.detail.opt_type === 'global') {
+      //   return this.$data.roleList.filter(item => ['global', 'globel'].includes(item.role_type));
+      // }
+      // return this.$data.roleList.filter(item => item.role_type === 'local');
     }
   },
   methods: {
@@ -262,7 +265,6 @@ export default {
     //提交数据
     async addEditData(){
       let { detail } = this;
-      console.log("detail: ", detail);
       if(!detail.id){
         detail.password = md5(detail.password);
       }
