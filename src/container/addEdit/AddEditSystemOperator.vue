@@ -208,8 +208,10 @@ export default {
           this.$data.detail.province_code = '';
           this.$data.detail.data_level = '1', // 数据权限 1:总部 2:区域 3:片区 4:县域
           this.$data.detail.data_value = [];
+          this.$data.detail.role_ids = [];
           break;
         case 'local':
+          this.$data.detail.role_ids = [];
           this.handleChangePost(this.$data.detail.post);
           break;
       }
