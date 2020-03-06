@@ -39,7 +39,7 @@ export default {
     qrCodeContent: {
       get(){
         let { detail } = this;
-        return `{"type":"line","code":"${detail.code}"}`;
+        return `{"type":"line","id":${detail.id}}`;
       }
     }
   },
