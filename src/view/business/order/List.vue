@@ -119,11 +119,6 @@
                     title: '取消订单',
                     isDisplay: (auth.isAdmin || auth.OrderCancel) && orderStatus[scope.row.status] === '待确认',
                     command: () => handleOrderCancel(scope.row.id)
-                  },
-                  {
-                    title: '确认订单',
-                    isDisplay: (auth.isAdmin || auth.OrderManualConfirm) && orderStatus[scope.row.status] === '待确认',
-                    command: () => handleOrderConfirm(scope.row.id)
                   }
                 ]"
               ></my-table-operate>
@@ -308,24 +303,6 @@
         })
       },
 
-      //确认订单
-      handleOrderConfirm(id) {
-        let {orderConfirm, getOrderGetList, query} = this;
-        this.$messageBox.confirm('确认该订单?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          orderConfirm({
-            id: id,
-            callback: function () {
-              getOrderGetList(query);
-            }
-          })
-        }).catch(() => {
-
-        })
-      },
       //获取订单列表
       async getOrderGetList() {
         this.$loading({isShow: true, isWhole: true});
@@ -341,18 +318,6 @@
       orderShowHideDetail(id){
         let pc = this.viewGetPageComponents('DetailOrderList');
         pc.orderShowHideDetail(id);
-      },
-      //确认订单
-      async orderConfirm({id, callback}) {
-        this.$loading({isShow: true, isWhole: true});
-        let res = await Http.post(Config.api.orderConfirm, { id: id });
-        this.$loading({isShow: false});
-        if(res.code === 0){
-          this.$message({title: '提示', message: '订单确认成功！', type: 'success'});
-          callback && callback();
-        }else{
-          this.$message({title: '提示', message: res.message, type: 'error'});
-        }
       },
       //取消订单
       async orderCancel({id, callback}) {
