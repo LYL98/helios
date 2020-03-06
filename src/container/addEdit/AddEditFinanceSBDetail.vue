@@ -3,7 +3,7 @@
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       
         <!--新增-->
-        <el-form v-if="pageType === 'add'" class="custom-form" label-position="right" label-width="140px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
+        <el-form v-if="pageType === 'add'" class="custom-form" size="mini" label-position="right" label-width="140px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
           <el-form-item label="供应商" prop="supplier_id">
             <select-supplier size="medium" v-model="detail.supplier_id" style="width: 320px;" filterable/>
           </el-form-item>
@@ -36,7 +36,7 @@
             </el-col>
           </el-row>
           <!--手动新增没有商品-->
-          <template v-if="!detail.creator_id">
+          <template v-if="detail.bill_reason !== 'other' && detail.bill_reason !== 'item_damage'">
             <el-row>
               <el-col :span="24">
                 <el-form-item label="商品编号/名称">{{detail.item_code}} / {{detail.item_title}}</el-form-item>
@@ -44,7 +44,7 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="入库数量">{{detail.item_num}}件</el-form-item>
+                <el-form-item label="数量">{{detail.item_num}}件</el-form-item>
               </el-col>
               <el-col :span="12">
                 <el-form-item label="采购价">&yen;{{returnPrice(detail.item_price_buy)}}</el-form-item>
@@ -53,7 +53,7 @@
           </template>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="入库金额">
+              <el-form-item label="金额">
                 <div class="amount">
                   <div v-if="detail.bill_amount === 0">&yen;{{returnPrice(detail.bill_amount)}}</div>
                   <div class="up" v-else-if="detail.bill_amount > 0">&yen;{{returnPrice(detail.bill_amount)}}</div>
