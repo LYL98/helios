@@ -4,7 +4,7 @@
       <el-row :gutter="32">
         <el-col :span="8">
           <my-query-item label="职务">
-            <el-select size="small" v-model="query.progress_status" clearable class="query-item-select" @change="changeQuery">
+            <el-select size="small" v-model="query.post" clearable class="query-item-select" @change="changeQuery">
               <el-option label="全部" value=""></el-option>
               <el-option label="司机" value="pre"></el-option>
               <el-option label="装车员" value="ing"></el-option>
@@ -14,19 +14,19 @@
         </el-col>
         <el-col :span="8">
           <my-query-item label="审核状态">
-            <el-select size="small" v-model="query.type" clearable class="query-item-select" @change="changeQuery">
+            <el-select size="small" v-model="query.is_audited" clearable class="query-item-select" @change="changeQuery">
               <el-option label="全部" value=""></el-option>
-              <el-option label="待审核" value="pre"></el-option>
-              <el-option label="已审核" value="ing"></el-option>
+              <el-option label="待审核" :value="0"></el-option>
+              <el-option label="已审核" :value="1"></el-option>
             </el-select>
           </my-query-item>
         </el-col>
         <el-col :span="8">
           <my-query-item label="冻结状态">
-            <el-select size="small" v-model="query.status" clearable class="query-item-select" @change="changeQuery">
+            <el-select size="small" v-model="query.is_freeze" clearable class="query-item-select" @change="changeQuery">
               <el-option label="全部" value=""></el-option>
-              <el-option label="未冻结" value="pre"></el-option>
-              <el-option label="已冻结" value="ing"></el-option>
+              <el-option label="未冻结" :value="0"></el-option>
+              <el-option label="已冻结" :value="1"></el-option>
             </el-select>
           </my-query-item>
         </el-col>
@@ -43,16 +43,16 @@
                 @change="changeQuery"
               />
             </my-query-item>
-            <el-button size="small" type="primary" style="margin-left: 10px" @click="changeQuery">搜索</el-button>
+            <el-button size="small" type="primary" style="margin-left: 10px" @click.native="changeQuery">搜索</el-button>
             <el-button size="small" type="primary" plain @click.navtive="resetQuery">重置</el-button>
           </div>
         </el-col>
       </el-row>
     </div>
     <div class="container-table">
-      <div class="display-flex justify-content-end">
-        <el-button type="primary" plain size="mini">导出配送人员</el-button>
-        <el-button class="right" type="primary" size="mini" @click="handleAddItem">新增</el-button>
+      <div class="display-flex justify-content-end" v-if="$auth.isAdmin || $auth.operateDeliverAdd || $auth.operateDeliverExport">
+        <el-button type="primary" plain size="mini" @click.native="handleExport" v-if="$auth.isAdmin || $auth.operateDeliverExport">导出配送人员</el-button>
+        <el-button class="right" type="primary" size="mini" @click.native="handleAddItem" v-if="$auth.isAdmin || $auth.operateDeliverAdd">新增</el-button>
       </div>
       <div class="mt-16">
         <el-table :data="list.items">
@@ -117,7 +117,7 @@
                 :value="scope.row.is_freeze"
                 :active-value="true"
                 :inactive-value="false"
-                :disabled="false"
+                :disabled="$auth.isAdmin || $auth.operateDeliverFreeze"
               />
             </template>
           </el-table-column>
@@ -130,22 +130,22 @@
                 :list="[
                   {
                     title: '审核',
-                    isDisplay: !scope.row.is_audited,
+                    isDisplay: !scope.row.is_audited && ($auth.isAdmin || $auth.operateDeliverAudit),
                     command: () => handleAuditItem(scope.row)
                   },
                   {
                     title: '修改',
-                    isDisplay: true,
+                    isDisplay: $auth.isAdmin || $auth.operateDeliverEdit,
                     command: () => handleModifyItem(scope.row)
                   },
                   {
                     title: '详情',
-                    isDisplay: true,
+                    isDisplay: $auth.isAdmin || $auth.operateDeliverDetail,
                     command: () => handleDetailItem(scope.row)
                   },
                   {
                     title: '重置密码',
-                    isDisplay: true,
+                    isDisplay: $auth.isAdmin || $auth.operateDeliverResetPassword,
                     command: () => handleResetPassword(scope.row)
                   },
                 ]"
@@ -280,6 +280,7 @@
           page: 1,
           page_size: Constant.PAGE_SIZE,
         };
+        this.deliverQuery();
       },
       indexMethod(index) {
         return (this.query.page - 1) * this.query.page_size + index + 1;
@@ -297,9 +298,8 @@
           .then(res => {
             if (res.code === 0) {
               this.$data.list = res.data;
-              console.log("res.data: ", res.data);
             } else {
-              this.$message({message: res.message, type: 'error'});
+              this.$message({title: '提示', message: res.message, type: 'error'});
             }
           });
       },
@@ -307,10 +307,10 @@
         Http.post(Config.api.operateDeliverAudit, { id: item.id })
           .then(res => {
              if (res.code === 0) {
-               this.$message({message: '审核通过', type: 'success'});
+               this.$message({title: '提示', message: '审核通过', type: 'success'});
                this.deliverQuery();
              } else {
-               this.$message({message: res.message, type: 'error'});
+               this.$message({title: '提示', message: res.message, type: 'error'});
              }
           });
       },
@@ -325,18 +325,10 @@
             id: item.id
           });
           if(res.code === 0){
-            this.$message({
-              title: '提示',
-              message: `已${str}`,
-              type: 'success'
-            });
+            this.$message({ title: '提示', message: `已${str}`, type: 'success'});
             this.deliverQuery();
           }else{
-            this.$message({
-              title: '提示',
-              message: res.message,
-              type: 'error'
-            });
+            this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
           // console.log('取消');
@@ -380,7 +372,7 @@
                 item: res.data,
               };
             } else {
-              this.$message({message: res.message, type: 'error'});
+              this.$message({title: '提示', message: res.message, type: 'error'});
             }
         });
       },
@@ -395,6 +387,22 @@
           visible: false,
           item: null,
         }
+      },
+      async handleExport() {
+        //判断是否可导出
+        this.$loading({ isShow: true });
+        let res = await Http.get(Config.api.operateDeliverExport, this.query);
+        if(res.code === 0){
+          let queryStr = `${Config.api.operateDeliverExport}?time=${new Date().getTime()}`;
+          for(let key in this.query){
+            queryStr += `&${key}=${this.query[key]}`;
+          }
+          queryStr = queryStr.substring(0, queryStr.length - 1);
+          window.open(queryStr);
+        }else{
+          this.$message({ title: '提示', message: res.message, type: 'error' });
+        }
+        this.$loading({ isShow: false });
       },
     }
   };

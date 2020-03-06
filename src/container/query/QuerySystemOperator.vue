@@ -3,7 +3,21 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="权限级别">
-          <el-select :value="query.opt_type === '' ? '全部' : query.opt_type === 'global' ? query.opt_type : provinceName" placeholder="请选择" style="width: 100%;" size="small" @change="handleChangeQuery">
+          <!--
+            如果用户是local类型：
+              1、只显示他所在权限级别的区域
+              2、默认选中该区域
+              3、不可清除
+              4、重置时，也默认选中该区域
+          -->
+          <el-select
+            :value="query.opt_type === '' ? '全部' : (query.opt_type === 'global' ? query.opt_type : provinceName)"
+            placeholder="请选择"
+            :clearable="query.opt_type === 'global' || !query.opt_type"
+            style="width: 100%;"
+            size="small"
+            @change="handleChangeQuery"
+          >
             <el-option label="全部" value="">全部</el-option>
             <el-option label="总部" value="global">总部</el-option>
             <el-option v-for="item in provinceList" :label="item.title" value="local" :key="item.code" @click.native="handleChangeProvince(item.code)"></el-option>
@@ -42,6 +56,7 @@
       <el-col :span="7">
         <my-query-item label="状态">
           <select-option
+            clearable
             :options="{'全部': '', '已冻结': 1, '未冻结': 0}"
             v-model="query.is_freeze"
             @change="handleQuery('TableSystemOperator')"
@@ -84,8 +99,8 @@
     },
     data() {
       let initQuery = {
-        opt_type: '',
-        province_code: '',
+        opt_type: this.$myInfo.opt_type === 'local' ? 'local' : '',
+        province_code: this.$myInfo.opt_type === 'local' ? this.$myInfo.province_code : '',
         condition: '',
         is_freeze: '',
         post: '',
@@ -99,10 +114,26 @@
       }
     },
     methods: {
+      initQueryData() {
+        this.$data.query = {
+          opt_type: this.$myInfo.opt_type === 'local' ? 'local' : '',
+          province_code: this.$myInfo.opt_type === 'local' ? this.$myInfo.province_code : '',
+          condition: '',
+          is_freeze: '',
+          post: '',
+          role_id: '',
+          page: 1,
+          page_size: Constant.PAGE_SIZE,
+        };
+      },
       async baseProvinceList(){
         let res = await Http.get(Config.api.baseProvinceList, {});
-        if(res.code === 0){
-          this.$data.provinceList = res.data || [];
+        if(res.code === 0) {
+          let list = res.data || [];
+          if (this.$myInfo.opt_type === 'local') {
+            list = list.filter(item => item.code === this.$myInfo.province_code);
+          }
+          this.$data.provinceList = list;
         }
       },
       handleChangeQuery(type) {

@@ -58,10 +58,10 @@
           formData.password = md5(formData.password);
           Http.post(Config.api.operateDeliverResetPassword, formData).then(res => {
             if (res.code === 0) {
-              this.$message({message: '密码重置成功', type: 'success'});
+              this.$message({title: '提示', message: '密码重置成功', type: 'success'});
               this.$emit('cancel');
             } else {
-              this.$message({message: res.message, type: 'error'});
+              this.$message({title: '提示', message: res.message, type: 'error'});
             }
           });
         })
