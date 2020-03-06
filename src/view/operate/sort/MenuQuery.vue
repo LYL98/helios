@@ -19,14 +19,19 @@
   export default {
     name: "MenuQuery",
     mixins: [subMenuQueryMixin],
+    inject: ['setGlobalQuery', 'getGlobalQuery'],
     props: {
       fromPage: { type: String, default: '' }, //Sort、TruckLoad、TruckLoadDelay
     },
     components: {
     },
     created() {
-      let deliveryDate = this.$route.query.delivery_date;
-      this.$data.query.delivery_date = deliveryDate || this.today;
+      let q = this.getGlobalQuery();
+      let deliveryDate = q.delivery_date || this.today;
+      this.$data.query.delivery_date = deliveryDate;
+      if(!q.delivery_date){
+        this.setGlobalQuery({ delivery_date: deliveryDate });
+      }
     },
     data() {
       return {
@@ -38,6 +43,7 @@
     methods: {
       //搜索
       handleQuery(){
+        this.setGlobalQuery(this.query);
         let { fromPage } = this;
         let pages = {
           Sort: 'TableOperateSort',

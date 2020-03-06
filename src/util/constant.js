@@ -430,8 +430,9 @@ const Constant = {
     let data = [
       { key: 'local_buy', value: '货款' }, //反采采购
       { key: 'distribution', value: '货款' }, //预采采购
+      { key: 'item_damage', value: '货损' }, //货损
+      { key: 'refund', value: '退货' }, //退货
       { key: 'other', value: '其它' }, //其它（手动充值、扣款）
-      { key: 'item_damage', value: '货损' } //货损
     ];
     return handleKeyValue(type, data);
   },

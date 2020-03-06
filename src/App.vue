@@ -99,7 +99,7 @@
         },
         auth: {}, //用户权限,
         myInfo: {}, //当前登录信息
-        subMenuQuery: {}, //三级菜单专用query保持
+        globalQuery: {}, //三级菜单专用query保持
       }
     },
     created() {
@@ -155,11 +155,24 @@
           }
           return upMenu;
         },
+        //保持搜索条件
+        setGlobalQuery(query){
+          that.$data.globalQuery = query;
+        },
+        //获取保持搜索条件
+        getGlobalQuery(){
+          return that.globalQuery;
+        }
       }
     },
     methods: {
       //选择菜单
       selectMenu(e, item){
+        //临时解决
+        if(item.name === 'OperateTruckLoadMain'){
+          this.$data.globalQuery = {};
+        }
+        
         let { auth, pageData } = this;
         let name = item.name;
         let type = item.type;
