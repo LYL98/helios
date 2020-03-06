@@ -289,7 +289,7 @@ const Config = (() => {
       operateDeliverDetail: apiM + '/sup_member/detail', //详情
       operateDeliverAdd: apiM + '/sup_member/add', //新增
       operateDeliverEdit: apiM + '/sup_member/edit', //修改
-      operateDeliverResetPassword: apiM + '/sup_member/password_reset', //修改
+      operateDeliverResetPassword: apiM + '/sup_member/password_reset', //重置密码
       operateDeliverAudit: apiM + '/sup_member/audit', // 审核
       operateDeliverFreeze: apiM + '/sup_member/freeze', // 冻结
       operateDeliverUnFreeze: apiM + '/sup_member/unfreeze', // 解冻

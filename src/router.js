@@ -254,7 +254,7 @@ const router = new Router({
     },
     {
       path: '/operate/deliver',
-      name: 'OperateDeliver',
+      name: 'Deliver',
       component: () => import('@/view/operate/deliver/deliver')
     },
     {
