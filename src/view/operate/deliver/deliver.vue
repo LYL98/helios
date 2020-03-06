@@ -184,6 +184,31 @@
         @cancel="handleCancelEdit"
       />
     </el-dialog>
+    <el-dialog
+      title="重置密码"
+      :close-on-click-modal="false"
+      :visible.sync="resetPassword.visible"
+      width="600px"
+      append-to-body
+    >
+      <reset-password
+        v-if="resetPassword.visible"
+        :item="resetPassword.item"
+        @cancel="handleCancelResetPassword"
+      />
+    </el-dialog>
+    <el-dialog
+      title="详情"
+      :close-on-click-modal="true"
+      :visible.sync="detail.visible"
+      width="500px"
+      append-to-body
+    >
+      <deliver-detail
+        v-if="detail.visible"
+        :item="detail.item"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -192,6 +217,8 @@
   import { Constant, Http, Config } from '@/util';
   import { QueryItem, QuerySearchInput, TableOperate } from '@/common';
   import DeliverEdit from './deliver-edit';
+  import DeliverDetail from './deliver-detail';
+  import ResetPassword from './reset-password';
   export default {
     name: 'deliver',
     components: {
@@ -210,7 +237,9 @@
       'my-query-item': QueryItem,
       'my-query-search-input': QuerySearchInput,
       'my-table-operate': TableOperate,
-      'deliver-edit': DeliverEdit
+      'deliver-edit': DeliverEdit,
+      'deliver-detail': DeliverDetail,
+      'reset-password': ResetPassword,
     },
     data() {
       return {
@@ -227,6 +256,14 @@
           visible: false,
           type: 'add',
           item: null
+        },
+        detail: {
+          visible: false,
+          item: null,
+        },
+        resetPassword: {
+          visible: false,
+          item: null,
         }
       }
     },
@@ -335,12 +372,30 @@
         };
       },
       handleDetailItem(item) {
-        console.log("detail: ", item);
-        this.$data.detail = item;
+        Http.get(Config.api.operateDeliverDetail, { id: item.id })
+          .then(res => {
+            if (res.code === 0) {
+              this.$data.detail = {
+                visible: true,
+                item: res.data,
+              };
+            } else {
+              this.$message({message: res.message, type: 'error'});
+            }
+        });
       },
       handleResetPassword(item) {
-        console.log("handleResetPassword: ", item);
-      }
+        this.$data.resetPassword = {
+          visible: true,
+          item: item,
+        }
+      },
+      handleCancelResetPassword() {
+        this.$data.resetPassword = {
+          visible: false,
+          item: null,
+        }
+      },
     }
   };
 </script>
