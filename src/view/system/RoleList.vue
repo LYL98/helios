@@ -39,7 +39,7 @@
             </el-radio-group>
           </span>
           <span class="f-r">
-            <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin" :disabled="detail.role_type === 'globel' ? false : true">超级管理员</el-checkbox>
+            <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin" :disabled="detail.role_type === 'global' ? false : true">超级管理员</el-checkbox>
           </span>
         </div>
         <div class="content" :style="`height:${viewWindowHeight - 166}px;`">

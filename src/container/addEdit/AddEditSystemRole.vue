@@ -17,7 +17,7 @@
           </el-select>
           <div style="color: #7f1305;">注：可快速复制现有角色的功能</div>
         </el-form-item>
-        <el-form-item label="超级管理员" v-if="detail.role_type === 'globel'" class="is-required">
+        <el-form-item label="超级管理员" v-if="detail.role_type === 'global'" class="is-required">
           <el-radio v-model="detail.is_super_admin" :label="true">是</el-radio>
           <el-radio v-model="detail.is_super_admin" :label="false">否</el-radio>
         </el-form-item>
@@ -71,7 +71,7 @@ export default {
       this.$data.dataItem = dataItem;
       this.$data.detail = JSON.parse(JSON.stringify({
         ...roleDetail,
-        role_type: roleDetail.role_type || 'globel'
+        role_type: roleDetail.role_type || 'global'
       }));
       this.$data.selectRoleVal = '';
       this.$data.isShow = true;

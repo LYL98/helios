@@ -493,7 +493,8 @@ const Constant = {
       { key: 'damage', value: '报损' },
       { key: 'damage_sale', value: '报损销售' },
       { key: 'sale_offline', value: '线下销售' },
-      { key: 'refund', value: '退货' }
+      { key: 'refund', value: '退货入库' },
+      { key: 'refund_to_supplier', value: '退货给供应商' }
     ];
     return handleKeyValue(type, data);
   },
@@ -502,7 +503,8 @@ const Constant = {
     damage: 'info',
     damage_sale: 'info',
     sale_offline: 'info',
-    refund: 'info'
+    refund: 'info',
+    refund_to_supplier: 'info'
   },
   //发车状态
   DEPART_STATUS: (type)=>{
@@ -561,14 +563,14 @@ const Constant = {
   //权限级别
   ROLE_AUTH_LEVEL: (type)=>{
     let data = [
-      { key: 'globel', value: '全国' },
+      { key: 'global', value: '全国' },
       { key: 'local', value: '区域' }
     ];
     return handleKeyValue(type, data);
   },
   //权限级别(颜色)
   ROLE_AUTH_LEVEL_TYPE: {
-    globel: 'info',
+    global: 'info',
     local: 'info'
   },
 };
