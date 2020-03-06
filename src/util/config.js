@@ -43,8 +43,8 @@ const Config = (() => {
       aftersaleAppend: apiM + '/aftersale/append', //售后单回复
 
       //导出相关接口
-      supplierExport: apiM + '/supplier/export', //供应商导出 supplier/export.  supplier/export_check. 
-      supOutExport: apiM + '/sup_out/export', //出库记录 sup_out/export. sup_out/export_check 
+      supplierExport: apiM + '/supplier/export', //供应商导出 supplier/export.  supplier/export_check.
+      supOutExport: apiM + '/sup_out/export', //出库记录 sup_out/export. sup_out/export_check
       supModifyExport: apiM + '/sup_modify/export', //变动记录  sup_modify/export   sup_modify/export_check
       fromSupplierOrderExport: apiM + '/from_supplier/order/export', //采购单  from_supplier/order/export. from_supplier/order/export_check
       supBillExport: apiM + '/sup_bill/export', //对账单 sup_bill/export. sup_bill/export_check
@@ -246,7 +246,7 @@ const Config = (() => {
 
       //场地收货
       supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询
-      
+
       supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
       supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情
 
@@ -284,6 +284,16 @@ const Config = (() => {
       operateLineDriverList: apiM + '/sup_cap_pool/list', //签到司机列表
       operateLineDriverDelete: apiM + '/sup_lined/delete', //删除签到司机
       operateLineUnDriver: apiM + '/sup_ldeliver/un_confirm', //解绑司机
+
+      // 配送人员
+      operateDeliverQuery: apiM + '/sup_member/query', //查询
+      operateDeliverDetail: apiM + '/sup_member/detail', //详情
+      operateDeliverAdd: apiM + '/sup_member/add', //新增
+      operateDeliverEdit: apiM + '/sup_member/edit', //修改
+      operateDeliverAudit: apiM + '/sup_member/audit', // 审核
+      operateDeliverFreeze: apiM + '/sup_member/freeze', // 冻结
+      operateDeliverUnFreeze: apiM + '/sup_member/unfreeze', // 解冻
+      operateDeliverExport: apiM + '/sup_member/export', // 导出
 
       // 线路退筐
       operateRefundQuery: apiM + '/frame/return/query', // 线路的退筐查询

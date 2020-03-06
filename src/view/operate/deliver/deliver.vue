@@ -43,8 +43,8 @@
                 @change="changeQuery"
               />
             </my-query-item>
-            <el-button size="small" type="primary" style="margin-left: 10px">搜索</el-button>
-            <el-button size="small" type="primary" plain>重置</el-button>
+            <el-button size="small" type="primary" style="margin-left: 10px" @click="changeQuery">搜索</el-button>
+            <el-button size="small" type="primary" plain @click.navtive="resetQuery">重置</el-button>
           </div>
         </el-col>
       </el-row>
@@ -65,35 +65,93 @@
           <el-table-column
             min-width="100"
             label="姓名"
+            prop="realname"
           />
           <el-table-column
             min-width="100"
             label="账号手机号"
+            prop="phone"
           />
           <el-table-column
             min-width="100"
             label="职务"
-          />
+          >
+            <template slot-scope="scope">
+              {{ deliver_post[scope.row.post] }}
+            </template>
+          </el-table-column>
           <el-table-column
             min-width="100"
             label="车牌"
-          />
+            prop="driver_car_num"
+          >
+            <template slot-scope="scope">
+              {{ scope.row.driver_car_num || '-' }}
+            </template>
+          </el-table-column>
           <el-table-column
             min-width="100"
             label="车型"
-          />
+            prop="driver_car_type"
+          >
+            <template slot-scope="scope">
+              {{ scope.row.driver_car_type || '-' }}
+            </template>
+          </el-table-column>
           <el-table-column
             min-width="100"
             label="审核状态"
-          />
+          >
+            <template slot-scope="scope">
+              <el-tag v-if="!scope.row.is_audited" size="small" type="primary" disable-transitions>待审核</el-tag>
+              <el-tag v-else size="small" type="regular" disable-transitions>已审核</el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             min-width="100"
             label="冻结状态"
-          />
+          >
+            <template slot-scope="scope">
+              <el-switch
+                @change="(v)=>handleFreezeItem(v, scope.row)"
+                :value="scope.row.is_freeze"
+                :active-value="true"
+                :inactive-value="false"
+                :disabled="false"
+              />
+            </template>
+          </el-table-column>
           <el-table-column
             min-width="100"
             label="操作"
-          />
+          >
+            <template slot-scope="scope">
+              <my-table-operate
+                :list="[
+                  {
+                    title: '审核',
+                    isDisplay: !scope.row.is_audited,
+                    command: () => handleAuditItem(scope.row)
+                  },
+                  {
+                    title: '修改',
+                    isDisplay: true,
+                    command: () => handleModifyItem(scope.row)
+                  },
+                  {
+                    title: '详情',
+                    isDisplay: true,
+                    command: () => handleDetailItem(scope.row)
+                  },
+                  {
+                    title: '重置密码',
+                    isDisplay: true,
+                    command: () => handleResetPassword(scope.row)
+                  },
+                ]"
+              />
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </div>
@@ -119,17 +177,20 @@
       append-to-body
     >
       <deliver-edit
+        v-if="dialog.visible"
         :type="dialog.type"
         :item="dialog.item"
+        @submit="handleSubmitEdit"
+        @cancel="handleCancelEdit"
       />
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import { Row, Col, Button, Input, Select, Option, Table, TableColumn, Pagination, Dialog } from 'element-ui';
-  import { Constant } from '@/util';
-  import { QueryItem, QuerySearchInput } from '@/common';
+  import { Row, Col, Button, Input, Select, Option, Table, TableColumn, Pagination, Dialog, Switch, Tag } from 'element-ui';
+  import { Constant, Http, Config } from '@/util';
+  import { QueryItem, QuerySearchInput, TableOperate } from '@/common';
   import DeliverEdit from './deliver-edit';
   export default {
     name: 'deliver',
@@ -144,12 +205,16 @@
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
       'el-dialog': Dialog,
+      'el-switch': Switch,
+      'el-tag': Tag,
       'my-query-item': QueryItem,
       'my-query-search-input': QuerySearchInput,
+      'my-table-operate': TableOperate,
       'deliver-edit': DeliverEdit
     },
     data() {
       return {
+        deliver_post: Constant.DELIVER_POST(),
         query: {
           page: 1,
           page_size: Constant.PAGE_SIZE,
@@ -167,19 +232,78 @@
     },
     created() {
       document.title = '场地 - 配送人员';
+      this.deliverQuery();
     },
     methods: {
       changeQuery() {
-        console.log("this.$data.query: ", this.$data.query);
+        this.deliverQuery();
+      },
+      resetQuery() {
+        this.$data.query = {
+          page: 1,
+          page_size: Constant.PAGE_SIZE,
+        };
       },
       indexMethod(index) {
         return (this.query.page - 1) * this.query.page_size + index + 1;
       },
       changePage(page) {
         this.$data.query.page = page;
+        this.deliverQuery();
       },
       changePageSize(page_size) {
         this.$data.query.page_size = page_size;
+        this.deliverQuery();
+      },
+      deliverQuery() {
+        Http.get(Config.api.operateDeliverQuery, this.$data.query)
+          .then(res => {
+            if (res.code === 0) {
+              this.$data.list = res.data;
+              console.log("res.data: ", res.data);
+            } else {
+              this.$message({message: res.message, type: 'error'});
+            }
+          });
+      },
+      handleAuditItem(item) {
+        Http.post(Config.api.operateDeliverAudit, { id: item.id })
+          .then(res => {
+             if (res.code === 0) {
+               this.$message({message: '审核通过', type: 'success'});
+               this.deliverQuery();
+             } else {
+               this.$message({message: res.message, type: 'error'});
+             }
+          });
+      },
+      handleFreezeItem(value, item) {
+        let str = value ? '冻结' : '解冻';
+        this.$messageBox.confirm(`确认${str}该配送人员?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          let res = await Http.post(Config.api[value ? 'operateDeliverFreeze' : 'operateDeliverUnFreeze'], {
+            id: item.id
+          });
+          if(res.code === 0){
+            this.$message({
+              title: '提示',
+              message: `已${str}`,
+              type: 'success'
+            });
+            this.deliverQuery();
+          }else{
+            this.$message({
+              title: '提示',
+              message: res.message,
+              type: 'error'
+            });
+          }
+        }).catch(() => {
+          // console.log('取消');
+        });
       },
       handleAddItem() {
         this.$data.dialog = {
@@ -187,6 +311,35 @@
           type: 'add',
           item: null
         }
+      },
+      handleModifyItem(item) {
+        this.$data.dialog = {
+          visible: true,
+          type: 'modify',
+          item: item,
+        }
+      },
+      handleSubmitEdit() {
+        this.$data.dialog = {
+          visible: false,
+          type: 'add',
+          item: null,
+        };
+        this.deliverQuery();
+      },
+      handleCancelEdit() {
+        this.$data.dialog = {
+          visible: false,
+          type: 'add',
+          item: null,
+        };
+      },
+      handleDetailItem(item) {
+        console.log("detail: ", item);
+        this.$data.detail = item;
+      },
+      handleResetPassword(item) {
+        console.log("handleResetPassword: ", item);
       }
     }
   };

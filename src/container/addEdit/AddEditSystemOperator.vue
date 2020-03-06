@@ -3,6 +3,13 @@
     <add-edit-layout :title="returnPageTitles('运营人员')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <!--isShow解决渲染问题-->
       <el-form v-if="isShow" class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
+        <!--
+          1、如果是登录人员为总部：
+              可以选择操作 运营人员类型 和 选择所有区域
+          2、如果登录人员为区域：
+              不允许编辑权限级别，
+              在新增或编辑时，只能选择本人所在的区域（此处不做禁用，是需要兼容部分老数据中 区域运营人员没有省份code的情况）
+        -->
         <el-row>
           <el-col :span="12">
             <el-form-item label="权限级别" required prop="opt_type">

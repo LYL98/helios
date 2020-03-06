@@ -254,6 +254,15 @@ const Constant = {
     '3': '片区',
     '4': '县域'
   },
+  // 配送人员职务
+  DELIVER_POST: (type) => {
+    let data = [
+      { key: 'deliver', value: '司机' },
+      { key: 'sorter', value: '装车员' },
+      { key: 'local_distributor', value: '配送员' },
+    ];
+    return handleKeyValue(type, data);
+  },
   //运营人员职务
   OPERATOR_POST: (type) => {
     let data = [
