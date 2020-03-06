@@ -37,6 +37,7 @@
             <template v-else>{{detail.num - detail.chg_num}}件</template>
           </el-form-item>
         </el-col>
+        <!--报损销售、线下销售-->
         <el-col :span="12" v-if="detail.opt_type === 'damage_sale' || detail.opt_type === 'sale_offline'">
           <el-form-item label="处理金额" prop="amount">
             <input-price size="medium" v-model="detail.amount" />
