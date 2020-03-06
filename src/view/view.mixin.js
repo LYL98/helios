@@ -52,7 +52,7 @@ export default {
       let domSubMenu = document.querySelector('app-my-sub-menu');
       let topHeight = 16;
       if(domQuery && domQuery.clientHeight) topHeight += domQuery.clientHeight + 16;
-      if(domTableTop && domTableTop.clientHeight) topHeight += domTableTop.clientHeight + 16;
+      if(domTableTop && domTableTop.clientHeight) topHeight += domTableTop.clientHeight + 48;
       if(domSubMenu && domSubMenu.clientHeight) topHeight += domSubMenu.clientHeight + 16;
 
       if(scrollTop >= topHeight){

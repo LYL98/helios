@@ -40,7 +40,6 @@
 <style lang="scss" scoped>
   /*三级菜单*/
   .my-sub-menu{
-    margin-bottom: 16px !important;
     height: 48px;
     overflow: hidden;
     display: flex;

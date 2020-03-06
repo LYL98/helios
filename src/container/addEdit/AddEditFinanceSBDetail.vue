@@ -5,7 +5,7 @@
         <!--新增-->
         <el-form v-if="pageType === 'add'" class="custom-form" label-position="right" label-width="140px" style="width: 98%; max-width: 1400px; margin-top: 20px;" :model="detail" :rules="rules" ref="ruleForm">
           <el-form-item label="供应商" prop="supplier_id">
-            <select-supplier size="medium" v-model="detail.supplier_id" :provinceCode="province.code" style="width: 320px;" filterable/>
+            <select-supplier size="medium" v-model="detail.supplier_id" style="width: 320px;" filterable/>
           </el-form-item>
           <el-form-item label="操作类型" prop="type">
             <el-radio v-model="detail.type" label="top_up" border size="mini" @change="detail.bill_reason = 'other'">充值</el-radio>
@@ -35,19 +35,22 @@
               <el-form-item label="流水类型">{{billReason[detail.bill_reason]}}</el-form-item>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="商品编号/名称">{{detail.item_code}} / {{detail.item_title}}</el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="入库数量">{{detail.item_num}}件</el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="采购价">&yen;{{returnPrice(detail.item_price_buy)}}</el-form-item>
-            </el-col>
-          </el-row>
+          <!--手动新增没有商品-->
+          <template v-if="!detail.creator_id">
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="商品编号/名称">{{detail.item_code}} / {{detail.item_title}}</el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="入库数量">{{detail.item_num}}件</el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="采购价">&yen;{{returnPrice(detail.item_price_buy)}}</el-form-item>
+              </el-col>
+            </el-row>
+          </template>
           <el-row>
             <el-col :span="12">
               <el-form-item label="入库金额">
@@ -64,10 +67,10 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="创建人">{{detail.creator.realname}}</el-form-item>
+              <el-form-item label="创建人">{{detail.creator.realname || '系统'}}</el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="创建时间">{{detail.creator.created}}</el-form-item>
+              <el-form-item label="创建时间">{{detail.creator.created || detail.created}}</el-form-item>
             </el-col>
           </el-row>
           <el-row v-if="detail.auditor.id">
