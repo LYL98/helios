@@ -6,7 +6,12 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="权限级别" required prop="opt_type">
-              <el-radio-group value="上海" size="medium" v-model="detail.opt_type" @change="handleChangeOptType">
+              <el-radio-group
+                size="medium"
+                v-model="detail.opt_type"
+                @change="handleChangeOptType"
+                :disabled="$myInfo.opt_type === 'local'"
+              >
                 <el-radio label="global" border>全国</el-radio>
                 <el-radio label="local" border>区域</el-radio>
               </el-radio-group>
@@ -21,7 +26,14 @@
                 { required: true, message: '区域不能为空', trigger: 'change' }
               ]"
             >
-              <my-select-province size="medium" v-model="detail.province_code" @change="changeProvince" />
+              <el-select style="width: 100%;" size="medium" v-model="detail.province_code" @change="changeProvince">
+                <el-option
+                  v-for="item in provinces"
+                  :label="item.title"
+                  :value="item.code"
+                  :key="item.code"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -128,11 +140,12 @@ export default {
   },
   created() {
     this.getRoleList();
+    this.baseProvinceList();
   },
   data() {
     let initDetail = {
       opt_type: this.$myInfo.opt_type || 'global', // global | local，根据当前登录人员来判断
-      province_code: '', // 区域
+      province_code: this.$myInfo.opt_type === 'local' ? this.$myInfo.province_code: '', // 区域
       realname: '', // 姓名
       employee_no: '', // 工号
       phone: '', // 手机号
@@ -147,6 +160,7 @@ export default {
     return {
       operatorPost: Constant.OPERATOR_POST(),
       dataLevel: Constant.OPERATOR_DATA_LEVEL,
+      provinceList: [],
       roleList: [],
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -172,6 +186,12 @@ export default {
   computed: {
     roles() {
       return this.$data.roleList.filter(item => item.role_type === this.detail.opt_type);
+    },
+    provinces() {
+      if (this.$myInfo.opt_type === 'local') {
+        return this.$data.provinceList.filter(item => item.code === this.$myInfo.province_code);
+      }
+      return this.$data.provinceList;
     }
   },
   methods: {
@@ -236,6 +256,15 @@ export default {
           that.$data.roleList = d;
         }
       });
+    },
+    //获取所有省
+    async baseProvinceList(){
+      let res = await Http.get(Config.api.baseProvinceList, {});
+      if(res.code === 0){
+        this.$data.provinceList = res.data || [];
+      }else{
+        MessageBox.alert(res.message, '提示');
+      }
     },
     handleChangeRole() {
       this.$refs['ruleForm'].validateField('role_ids');
