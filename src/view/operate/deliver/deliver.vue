@@ -72,17 +72,23 @@
             :index="indexMethod"
           />
           <el-table-column
-            min-width="100"
+            min-width="140"
             label="姓名"
             prop="realname"
-          />
+          >
+            <div
+              slot-scope="scope"
+              :class="`td-item link-item ${isEllipsis(scope.row)}`"
+              @click.prevent="handleDetailItem(scope.row)"
+            >{{scope.row.realname}}</div>
+          </el-table-column>
           <el-table-column
-            min-width="100"
+            min-width="110"
             label="账号手机号"
             prop="phone"
           />
           <el-table-column
-            min-width="100"
+            min-width="80"
             label="职务"
           >
             <template slot-scope="scope">
@@ -90,7 +96,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            min-width="100"
+            min-width="120"
             label="车牌"
             prop="driver_car_num"
           >
@@ -99,7 +105,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            min-width="100"
+            min-width="120"
             label="车型"
             prop="driver_car_type"
           >
@@ -108,7 +114,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            min-width="100"
+            min-width="90"
             label="审核状态"
           >
             <template slot-scope="scope">
@@ -117,7 +123,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            min-width="100"
+            min-width="90"
             label="冻结状态"
           >
             <template slot-scope="scope">
@@ -126,7 +132,7 @@
                 :value="scope.row.is_freeze"
                 :active-value="true"
                 :inactive-value="false"
-                :disabled="$auth.isAdmin || $auth.DeliverFreeze"
+                :disabled="!$auth.isAdmin && !$auth.DeliverFreeze"
               />
             </template>
           </el-table-column>
@@ -403,20 +409,11 @@
         }
       },
       async handleExport() {
-        //判断是否可导出
-        this.$loading({ isShow: true });
-        let res = await Http.get(Config.api.operateDeliverExport, this.query);
-        if(res.code === 0){
-          let queryStr = `${Config.api.operateDeliverExport}?time=${new Date().getTime()}`;
-          for(let key in this.query){
-            queryStr += `&${key}=${this.query[key]}`;
-          }
-          queryStr = queryStr.substring(0, queryStr.length - 1);
-          window.open(queryStr);
-        }else{
-          this.$message({ title: '提示', message: res.message, type: 'error' });
+        let queryStr = `${Config.api.operateDeliverExport}?time=${new Date().getTime()}`;
+        for(let key in this.query){
+          queryStr += `&${key}=${this.query[key]}`;
         }
-        this.$loading({ isShow: false });
+        window.open(queryStr);
       },
 
       highlightRowClassName({ row, rowIndex }) {
@@ -432,6 +429,17 @@
 </script>
 
 <style lang="scss" scoped>
+  .td-item{
+    &.link-item, .link-item{
+      text-decoration: underline;
+      //font-weight: bold;
+      &:hover{
+        cursor: pointer;
+        //font-weight: bold;
+        opacity: .7;
+      }
+    }
+  }
   .mt-16 {
     margin-top: 16px;
   }

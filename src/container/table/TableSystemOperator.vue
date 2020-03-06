@@ -44,11 +44,6 @@
             <div :class="isEllipsis(scope.row)">{{formatRoles(scope.row.roles)}}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="data_level" label="权限级别" min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatDataLevel(scope.row.data_level)}}</div>
-          </template>
-        </el-table-column>
         <el-table-column label="状态" min-width="100">
           <template slot-scope="scope">
             <el-tag disable-transitions size="mini" type="info" v-if="scope.row.is_freeze">已冻结</el-tag>
