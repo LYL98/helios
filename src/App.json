@@ -257,7 +257,7 @@
         },
         {
           "title": "配送人员",
-          "name": "OperateDeliver"
+          "name": "Deliver"
         },{
           "title": "退筐",
           "name": "OperateRefundFrame"

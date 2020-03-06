@@ -50,12 +50,21 @@
       </el-row>
     </div>
     <div class="container-table">
-      <div class="display-flex justify-content-end" v-if="$auth.isAdmin || $auth.operateDeliverAdd || $auth.operateDeliverExport">
-        <el-button type="primary" plain size="mini" @click.native="handleExport" v-if="$auth.isAdmin || $auth.operateDeliverExport">导出配送人员</el-button>
-        <el-button class="right" type="primary" size="mini" @click.native="handleAddItem" v-if="$auth.isAdmin || $auth.operateDeliverAdd">新增</el-button>
+      <div class="display-flex justify-content-end" v-if="$auth.isAdmin || $auth.DeliverAdd || $auth.DeliverExport">
+        <el-button type="primary" plain size="mini" @click.native="handleExport" v-if="$auth.isAdmin || $auth.DeliverExport">导出配送人员</el-button>
+        <el-button class="right" type="primary" size="mini" @click.native="handleAddItem" v-if="$auth.isAdmin || $auth.DeliverAdd">新增</el-button>
       </div>
-      <div class="mt-16">
-        <el-table :data="list.items">
+      <div class="mt-16 table-conter" @mousemove="handleTableMouseMove">
+        <el-table
+          :data="list.items"
+          :row-class-name="highlightRowClassName"
+          class="list-table my-table-float"
+          :highlight-current-row="true"
+          @cell-mouse-enter="cellMouseEnter"
+          @cell-mouse-leave="cellMouseLeave"
+          :row-key="rowIdentifier"
+          :current-row-key="clickedRow[rowIdentifier]"
+        >
           <el-table-column
             type="index"
             :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
@@ -117,7 +126,7 @@
                 :value="scope.row.is_freeze"
                 :active-value="true"
                 :inactive-value="false"
-                :disabled="$auth.isAdmin || $auth.operateDeliverFreeze"
+                :disabled="$auth.isAdmin || $auth.DeliverFreeze"
               />
             </template>
           </el-table-column>
@@ -127,25 +136,27 @@
           >
             <template slot-scope="scope">
               <my-table-operate
+                @command-click="handleCommandClick(scope.row)"
+                @command-visible="handleCommandVisible"
                 :list="[
                   {
                     title: '审核',
-                    isDisplay: !scope.row.is_audited && ($auth.isAdmin || $auth.operateDeliverAudit),
+                    isDisplay: !scope.row.is_audited && ($auth.isAdmin || $auth.DeliverAudit),
                     command: () => handleAuditItem(scope.row)
                   },
                   {
                     title: '修改',
-                    isDisplay: $auth.isAdmin || $auth.operateDeliverEdit,
+                    isDisplay: $auth.isAdmin || $auth.DeliverEdit,
                     command: () => handleModifyItem(scope.row)
                   },
                   {
                     title: '详情',
-                    isDisplay: $auth.isAdmin || $auth.operateDeliverDetail,
+                    isDisplay: $auth.isAdmin || $auth.DeliverDetail,
                     command: () => handleDetailItem(scope.row)
                   },
                   {
                     title: '重置密码',
-                    isDisplay: $auth.isAdmin || $auth.operateDeliverResetPassword,
+                    isDisplay: $auth.isAdmin || $auth.DeliverResetPassword,
                     command: () => handleResetPassword(scope.row)
                   },
                 ]"
@@ -188,7 +199,7 @@
       title="重置密码"
       :close-on-click-modal="false"
       :visible.sync="resetPassword.visible"
-      width="600px"
+      width="500px"
       append-to-body
     >
       <reset-password
@@ -216,11 +227,13 @@
   import { Row, Col, Button, Input, Select, Option, Table, TableColumn, Pagination, Dialog, Switch, Tag } from 'element-ui';
   import { Constant, Http, Config } from '@/util';
   import { QueryItem, QuerySearchInput, TableOperate } from '@/common';
+  import tableMixin from '@/container/table/table.mixin';
   import DeliverEdit from './deliver-edit';
   import DeliverDetail from './deliver-detail';
   import ResetPassword from './reset-password';
   export default {
     name: 'deliver',
+    mixins: [tableMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -243,6 +256,7 @@
     },
     data() {
       return {
+        rowIdentifier: "id",
         deliver_post: Constant.DELIVER_POST(),
         query: {
           page: 1,
@@ -403,6 +417,15 @@
           this.$message({ title: '提示', message: res.message, type: 'error' });
         }
         this.$loading({ isShow: false });
+      },
+
+      highlightRowClassName({ row, rowIndex }) {
+        if (rowIndex % 2 == 0) {
+          return "stripe-row";
+        } else if (rowIndex % 2 != 0) {
+          return "default-row";
+        }
+        return "";
       },
     }
   };
