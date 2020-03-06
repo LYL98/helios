@@ -9,7 +9,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click.native="handleCancel">取 消</el-button>
-      <el-button type="primary" @click.native="handleFormSubmit">提交审核</el-button>
+      <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
     </span>
   </el-dialog>
 </template>

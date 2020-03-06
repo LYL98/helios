@@ -108,7 +108,7 @@ export default {
       that.$refs['ruleForm'].resetFields();
       that.orderShowHideAfterSaleClose();
     },
-    //提交审核结果
+    //提交结果
     submit(){
       let that = this;
       that.$refs['ruleForm'].validate((valid) => {

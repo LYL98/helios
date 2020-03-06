@@ -15,10 +15,11 @@
 
 .table-top{
     text-align: right;
-    margin-bottom: 16px;
+    padding: 16px;
     display: flex;
     align-items: center;
     position: relative;
+    background: #fff;
     >.left{
         text-align: left;
         flex: 1;

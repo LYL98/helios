@@ -8,6 +8,7 @@
     :placeholder="placeholder"
     style="width:100%;"
     @change="handleChange"
+    :filter-method="searchMethod"
   >
     <el-option v-if="showAll" key="" label="全部" value="">
     </el-option>
@@ -47,7 +48,7 @@
           supplier_type: this.$props.supplierType,
           bill_term: this.$props.billTerm,
           is_audited: 1, // 是否审核通过？ 0 否 1 是 null 全部
-          is_freeze: 0 // 是否冻结？ 0 否 1 是 null 全部
+          is_freeze: 0, // 是否冻结？ 0 否 1 是 null 全部
         });
         if(res.code === 0){
           let rd = res.data;
