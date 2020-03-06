@@ -33,7 +33,6 @@ const Config = (() => {
       orderQuery: apiM + '/order/query', //订单列表
       orderPriceUpdate: apiM + '/order/price/update', //修改订单价格
       orderDetail: apiM + '/order/detail', //订单详情
-      orderConfirm: apiM + '/order/manual_confirm', // 手动确认订单
       orderCancel: apiM + '/order/cancel', //取消订单
 
       afterSaleQuery: apiM + '/aftersale/query', //获取负责处理的售后单
