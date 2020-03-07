@@ -116,7 +116,7 @@
       async deleteData(data) {
         this.$loading({ isShow: true });
         let res = await Http.post(Config.api.operateLineDelete, {
-          code: data.code
+          id: data.id
         });
         this.$loading({ isShow: false });
         if(res.code === 0){
@@ -136,7 +136,7 @@
           (async ()=>{
             this.$loading({isShow: true});
             let res = await Http.post(Config.api.operateLineUnDriver, {
-              line_id: data.code,
+              line_id: data.id,
               delivery_date: this.query.delivery_date
             });
             this.$loading({isShow: false});
