@@ -1,33 +1,12 @@
-const os = require('os');
-
 const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const configBase = require('./configBase');
 
-const HappyPack = require('happypack');
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
-
 module.exports = {
   outputDir: configBase.BuildOutputDir || 'dist',
   productionSourceMap: false,
-  chainWebpack: config => {
-    config.module.rule('js').uses.clear();
-    config.module.rule('js')
-      .test(/(\.js?$)|(\.jsx?$)/)
-      .use('happypack/loader?id=happy-babel')
-      .loader('happypack/loader?id=happy-babel');
-    config.module.rule('vue')
-      .use('vue-loader')
-      .loader('vue-loader')
-      .tap(options => {
-        options.loaders = {
-          js: 'happypack/loader?id=happy-babel'
-        }
-        return options
-      })
-  },
   configureWebpack: {
     resolve: {
       mainFields: ['main'], // 只采用main字段作为入口文件描述字段，减少搜索步骤
@@ -48,21 +27,21 @@ module.exports = {
             priority: -20, // 优先级
             reuseExistingChunk: true, // 默认使用已有的模块
           },
-          vendors: {
-            name: "chunk.vendors",
-            test: /[\/]node_modules[\/]/, // 表示默认拆分node_modules中的模块
-            priority: -10
-          },
-          element: {
-            name: "chunk.element", // 单独将 elementUI 拆包
-            priority: 15, // 权重需大于其它缓存组
-            test: /[\/]node_modules[\/]element-ui[\/]/
-          },
-          echarts: {
-            name: "chunk.echarts",
-            priority: 15,
-            test: /([\/]node_modules[\/]echarts[\/]lib)|([\/]node_modules[\/]zrender[\/]lib)/
-          },
+          // vendors: {
+          //   name: "chunk.vendors",
+          //   test: /[\/]node_modules[\/]/, // 表示默认拆分node_modules中的模块
+          //   priority: -10
+          // },
+          // element: {
+          //   name: "chunk.element", // 单独将 elementUI 拆包
+          //   priority: 15, // 权重需大于其它缓存组
+          //   test: /[\/]node_modules[\/]element-ui[\/]/
+          // },
+          // echarts: {
+          //   name: "chunk.echarts",
+          //   priority: 15,
+          //   test: /([\/]node_modules[\/]echarts[\/]lib)|([\/]node_modules[\/]zrender[\/]lib)/
+          // },
         }
       }
     },
@@ -85,20 +64,6 @@ module.exports = {
       new HtmlIncludeAssetsPlugin({
         assets: ['dll/dll.core.js'], // 添加的资源相对html的路径
         append: false // false 在其他资源的之前添加 true 在其他资源之后添加
-      }),
-
-      // 使用happypack 加速 babel-loader打包速度
-      new HappyPack({
-        id: 'happy-babel',
-        loaders: [{
-          loader: 'babel-loader',
-          options: {
-            babelrc: true,
-            cacheDirectory: true // 启用缓存
-          }
-        }],
-        threadPool: happyThreadPool,
-        verbose: false
       }),
     ]
   },
