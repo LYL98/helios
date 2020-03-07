@@ -116,7 +116,7 @@
                   />
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="12" v-if="judgeOrs(inventoryData.un_qa_type, ['damage_sale', 'sale_offline'])">
                 <el-form-item label="处理金额" prop="un_qa_amount">
                   <input-price size="medium" v-model="inventoryData.un_qa_amount" />
                 </el-form-item>
@@ -289,7 +289,8 @@ export default {
     //处理类型
     supOptTypes(){
       let d = Constant.SUP_OPT_TYPES('value_key');
-      delete d['退货']; //删除退货
+      delete d['退货入库']; //删除退货入库
+      delete d['退货给供应商']; //删除退货给供应商
       return d;
     },
     //库存期、保质期禁用

@@ -54,7 +54,8 @@ export default {
     //处理类型
     supOptTypes(){
       let d = Constant.SUP_OPT_TYPES('value_key');
-      delete d['退货']; //删除退货
+      delete d['退货入库']; //删除退货入库
+      delete d['退货给供应商']; //删除退货给供应商
       return d;
     },
     //是否显示不合格处理
