@@ -59,9 +59,15 @@ export default {
 
     //数量校验
     const validNum = (rules, value, callback)=>{
-      let { detail } = this;
-      if (Number(value) > detail.o_num - detail.o_num_out) {
+      let { detail, fromPage } = this;
+      if(fromPage === 'OutStorage' && Number(value) > detail.num) {
+        return callback(new Error('出库数量不能大于库存'));
+      }
+      if(fromPage === 'OutStorage' && Number(value) > detail.o_num - detail.o_num_out) {
         return callback(new Error('出库数量不能大于应出库数量'));
+      }
+      if(fromPage === 'Inventory' && Number(value) > detail.num){
+        return callback(new Error('出库数量不能大于库存'));
       }
       callback();
     }
