@@ -222,11 +222,11 @@
       "name": "Operate",
       "children": [
         {
-          "title": "收货",
+          "title": "品控收货",
           "name": "OperateReceiving"
         },
         {
-          "title": "装车",
+          "title": "分配装车",
           "name": "OperateTruckLoadMain",
           "type": "main",
           "children": [

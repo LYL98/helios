@@ -19,7 +19,7 @@
                 @change="handleChangeOptType"
                 :disabled="$myInfo.opt_type === 'local'"
               >
-                <el-radio label="global" border>全国</el-radio>
+                <el-radio label="global" border>总部</el-radio>
                 <el-radio label="local" border>区域</el-radio>
               </el-radio-group>
             </el-form-item>

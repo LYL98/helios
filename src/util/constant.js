@@ -570,7 +570,7 @@ const Constant = {
   //权限级别
   ROLE_AUTH_LEVEL: (type)=>{
     let data = [
-      { key: 'global', value: '全国' },
+      { key: 'global', value: '总部' },
       { key: 'local', value: '区域' }
     ];
     return handleKeyValue(type, data);
