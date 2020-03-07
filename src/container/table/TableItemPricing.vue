@@ -11,7 +11,6 @@
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
-        style="width: 100%; margin-top: 16px;"
         class="list-table my-table-float"
         @sort-change="onSort"
         :highlight-current-row="true"
