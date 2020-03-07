@@ -29,17 +29,6 @@
             />
           </my-query-item>
         </el-col>
-        <el-col :span="7">
-          <my-query-item label="类型">
-            <button-group
-              :options="types"
-              v-model="query.type"
-              @change="handleQuery('TableWarehouseQualityControl')"
-              size="small"
-              width="100%"
-            />
-          </my-query-item>
-        </el-col>
         <el-col :span="10">
           <my-query-item label="搜索">
             <query-search-input v-model="query.condition" placeholder="商品编号/名称/供应商" size="small" @search="handleQuery('TableWarehouseQualityControl')" @reset="handleClearQuery('TableWarehouseQualityControl')"/>
