@@ -66,19 +66,6 @@ Vue.use({
     //全局省份
     let province = Method.getLocalStorage('heliosGlobalProvince');
     Vue.prototype.$province = province;
-
-    //全局品牌 refresh (true,false)
-    Vue.prototype.$getBrand = async (refresh)=>{
-      if(globalBrand && globalBrand.brand_name && !refresh){
-        return globalBrand;
-      }
-      let res = await Http.get(Config.api.getBrand, {});
-      if(res.code === 0){
-        globalBrand = res.data;
-        return globalBrand;
-      }
-      return { brand_name: '', brand_icon: ''};
-    }
   }
 });
 

@@ -1,41 +1,52 @@
 <template>
-  <div class="container-query">
-    <el-row :gutter="32">
-      <el-col :span="7">
-        <!--仓库品控-->
-        <my-query-item label="仓库" v-if="fromPage === 'QualityControl'">
-          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
-        </my-query-item>
-        <!--场地品控-->
-        <my-query-item label="配送日期" v-else-if="fromPage === 'Receiving'">
-          <el-date-picker
-            size="small"
-            v-model="query.delivery_date"
-            value-format="yyyy-MM-dd"
-            @change="handleQuery('TableWarehouseQualityControl')"
-            style="width: 100%;"
-            placeholder="配送日期"
-            :clearable="false"
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
-        <my-query-item label="类型">
-          <button-group
-            :options="types"
-            v-model="query.type"
-            @change="handleQuery('TableWarehouseQualityControl')"
-            size="small"
-            width="100%"
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="10">
-        <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="商品编号/名称/供应商" size="small" @search="handleQuery('TableWarehouseQualityControl')" @reset="handleClearQuery('TableWarehouseQualityControl')"/>
-        </my-query-item>
-      </el-col>
-    </el-row>
+  <div>
+    <div class="app-my-sub-menu">
+      <div class="my-sub-menu">
+        <div class="left"></div>
+        <div class="menu">
+          <div :class="`menu-item ${query.type === key && 'active'}`" v-for="(value, key) in types" :key="key" @click="changeType(key)">{{value}}</div>
+        </div>
+        <div class="right"></div>
+      </div>
+    </div>
+    <div class="container-query">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <!--仓库品控-->
+          <my-query-item label="仓库" v-if="fromPage === 'QualityControl'">
+            <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
+          </my-query-item>
+          <!--场地品控-->
+          <my-query-item label="配送日期" v-else-if="fromPage === 'Receiving'">
+            <el-date-picker
+              size="small"
+              v-model="query.delivery_date"
+              value-format="yyyy-MM-dd"
+              @change="handleQuery('TableWarehouseQualityControl')"
+              style="width: 100%;"
+              placeholder="配送日期"
+              :clearable="false"
+            />
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <my-query-item label="类型">
+            <button-group
+              :options="types"
+              v-model="query.type"
+              @change="handleQuery('TableWarehouseQualityControl')"
+              size="small"
+              width="100%"
+            />
+          </my-query-item>
+        </el-col>
+        <el-col :span="10">
+          <my-query-item label="搜索">
+            <query-search-input v-model="query.condition" placeholder="商品编号/名称/供应商" size="small" @search="handleQuery('TableWarehouseQualityControl')" @reset="handleClearQuery('TableWarehouseQualityControl')"/>
+          </my-query-item>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
 
@@ -87,12 +98,17 @@
     computed: {
       types(){
         return {
-          '采购': 'purchase',
-          '调拨': 'distribute'
+          'purchase': '采购',
+          'distribute': '调拨'
         }
       }
     },
     methods: {
+      //选择类型
+      changeType(type){
+        this.$data.query.type = type;
+        this.handleQuery('TableWarehouseQualityControl');
+      },
       //选择仓库
       changeStorehouse(){
         let { initQuery, query } = this;
@@ -121,6 +137,41 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  /*三级菜单*/
+  .my-sub-menu{
+    height: 48px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    padding: 0 10px;
+    >.menu{
+      flex: 1;
+      display: flex;
+      >.menu-item{
+        padding: 0 20px;
+        height: 48px;
+        line-height: 48px;
+        position: relative;
+        color: #73767D;
+        font-size: 14px;
+        cursor: pointer;
+        &.active{
+          color: #00ADE7;
+          font-weight: bold;
+          font-size: 16px;
+          &::after{
+            content: ' ';
+            border-bottom: 2px solid #00ADE7;
+            position: absolute;
+            left: 25px;
+            bottom: 0;
+            right: 25px;
+          }
+        }
+      }
+    }
+  }
 </style>

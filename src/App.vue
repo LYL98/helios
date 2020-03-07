@@ -2,9 +2,7 @@
   <div id="app-body">
     <div id="app" v-if="pageData.name !== 'Login'" style="min-width: 1000px;">
       <div id="head-div">
-        <div id="logo-div" class="ellipsis">
-          {{brand.brand_name + '运营中心'}}
-        </div>
+        <div id="logo-div" class="ellipsis">蒲公英运营中心</div>
         <div class="global-province" v-if="pageData.name !== 'Login'">
           <my-global-province/>
         </div>
@@ -88,10 +86,6 @@
     data() {
       return {
         isDev: Config.isDev,
-        brand: {
-          brand_name: '',
-          brand_icon: ''
-        },
         tencentPath: Config.tencentPath,
         menus: AppJson.menus,
         pageData: {
@@ -103,9 +97,7 @@
       }
     },
     created() {
-      this.$getBrand().then(res => {
-        this.$data.brand = res;
-      });
+      
     },
     computed: {
       //index

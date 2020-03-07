@@ -2,8 +2,8 @@
   <div class="login-body b-b-b">
     <div class="login-div">
       <div class="login-logo">
-        <img :src="tencentPath+ brand.brand_icon" alt=""/>
-        <span style="margin-left:10px">{{ brand.brand_name}}运营中心</span>
+        <img src="@/assets/img/logo.png" alt="蒲公英" />
+        <span style="margin-left:10px">蒲公英运营中心</span>
       </div>
       <div class="login-form">
         <el-form label-position="right" :model="loginData" :rules="rules" ref="ruleForm">
@@ -42,19 +42,11 @@ export default {
   },
   created() {
     documentTitle('登录');
-    this.$getBrand().then(res => {
-      this.$data.brand = res;
-    });
   },
   data(){
     return{
       isDev: Config.isDev,
       loading: false,
-      brand: {
-        brand_name: '',
-        brand_icon: ''
-      },
-      tencentPath: Config.tencentPath,
       loginData: {
         login_name: '',
         password: '',

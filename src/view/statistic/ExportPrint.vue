@@ -358,70 +358,64 @@ export default {
     },
     //打印模板
     printTemplate(data) {
-      //打印
-      const fun = (brandName) =>{
-        let tagTemplate = "", dataTemp = [];
-        //处理数据
-        data.forEach(item => {
-          if (item.num === 1) {
+      
+      let tagTemplate = "", dataTemp = [];
+      //处理数据
+      data.forEach(item => {
+        if (item.num === 1) {
+          let d = {
+            rank: 1,
+            ...item
+          };
+          d.rank = 1;
+          dataTemp.push(d);
+        } else {
+          for (let i = 0; i < item.num; i++) {
             let d = {
-              rank: 1,
+              rank: i + 1,
               ...item
             };
-            d.rank = 1;
             dataTemp.push(d);
-          } else {
-            for (let i = 0; i < item.num; i++) {
-              let d = {
-                rank: i + 1,
-                ...item
-              };
-              dataTemp.push(d);
-            }
           }
-        });
-        dataTemp.map(item => {
-          tagTemplate += `
-            <div class="item-div">
-              <div class="item">
-                <div class="top">
-                  ${item.store_title}
+        }
+      });
+      dataTemp.map(item => {
+        tagTemplate += `
+          <div class="item-div">
+            <div class="item">
+              <div class="top">
+                ${item.store_title}
+              </div>
+              <div class="centre">
+                <div class="item-code">
+                  ${item.item_code}
+                  <span>${item.item_title}</span>
                 </div>
-                <div class="centre">
-                  <div class="item-code">
-                    ${item.item_code}
-                    <span>${item.item_title}</span>
-                  </div>
-                  <div class="item-ad">蒲公英</div>
+                <div class="item-ad">蒲公英</div>
+              </div>
+              <div class="bottom">
+                <div class="left">
+                  <div class="num-rank">${item.rank} / ${item.num}</div>
                 </div>
-                <div class="bottom">
-                  <div class="left">
-                    <div class="num-rank">${item.rank} / ${item.num}</div>
-                  </div>
-                  <div class="right">
-                    <div class="date" style="color: #000;">
-                      <span class="logo">${brandName}</span>${item.date}
-                    </div>
+                <div class="right">
+                  <div class="date" style="color: #000;">
+                    <span class="logo">蒲公英</span>${item.date}
                   </div>
                 </div>
               </div>
             </div>
-          `;
-        });
-        document.getElementById("app").innerHTML = `
-          <div class="order-label-print">
-            ${tagTemplate}
           </div>
         `;
-        window.onafterprint = function() {
-          document.location.reload();
-        };
-        window.print();
-      }
-      //获取品牌
-      this.$getBrand().then(res => {
-        fun(res.brand_name);
       });
+      document.getElementById("app").innerHTML = `
+        <div class="order-label-print">
+          ${tagTemplate}
+        </div>
+      `;
+      window.onafterprint = function() {
+        document.location.reload();
+      };
+      window.print();
     },
   }
 };

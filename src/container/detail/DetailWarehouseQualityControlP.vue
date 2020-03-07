@@ -158,7 +158,7 @@
       //修改权限
       editAuth(data){
         let { fromPage, auth } = this;
-        if(fromPage === 'Receiving' && data.status === 'success' && (auth.isAdmin || auth.OperateReceivingEditNum)){
+        if(fromPage === 'Receiving' && data.allocator_id === 0 && (auth.isAdmin || auth.OperateReceivingEditNum)){
           return true;
         }
         if(fromPage === 'QualityControl' && data.status === 'success' && (auth.isAdmin || auth.WarehouseQualityControlEditNum)){
