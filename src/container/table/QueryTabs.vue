@@ -46,8 +46,8 @@
 <style lang="scss" scoped>
   .tabs{
     position: absolute;
-    top: 1px;
-    left: 0;
+    top: 16px;
+    left: 16px;
     right: 0;
   }
 </style>

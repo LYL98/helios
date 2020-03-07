@@ -28,7 +28,7 @@
         <h6 class="subtitle">用户账号</h6>
       </el-col>
       <el-col :span="12" v-if="auth.isAdmin || auth.ItemSupplierAccountAdd">
-        <el-button class="f-r" size="mini" style="margin-right: 30px;" type="primary" @click.native="handleShowForm('FormItemSupplierAccount', detail)">新增用户</el-button>
+        <el-button class="f-r" size="mini" style="margin-right: 30px;" type="primary" @click.native="handleShowForm('FormItemSupplierAccount', detail)">新增子账号</el-button>
       </el-col>
     </el-row>
     <div style="padding: 0 30px;">
