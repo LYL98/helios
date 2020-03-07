@@ -2,50 +2,54 @@
   <div>
     <div class="query">
       <el-row :gutter="32">
-        <el-col :span="8">
+        <el-col :span="7">
           <my-query-item label="职务">
-            <el-select size="small" v-model="query.post" clearable class="query-item-select" @change="changeQuery">
-              <el-option label="全部" value=""></el-option>
-              <el-option label="司机" value="pre"></el-option>
-              <el-option label="装车员" value="ing"></el-option>
-              <el-option label="配送员" value="post"></el-option>
-            </el-select>
+            <my-select-option
+              :options="{'全部': '', ...query_deliver_post}"
+              v-model="query.post"
+              @change="changeQuery"
+              size="small"
+              clearable
+              placeholder="全部"
+            />
           </my-query-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="7">
           <my-query-item label="审核状态">
-            <el-select size="small" v-model="query.is_audited" clearable class="query-item-select" @change="changeQuery">
-              <el-option label="全部" value=""></el-option>
-              <el-option label="待审核" :value="0"></el-option>
-              <el-option label="已审核" :value="1"></el-option>
-            </el-select>
+            <my-select-option
+              :options="{'全部': '', '待审核': 0, '已审核': 1}"
+              v-model="query.is_audited"
+              @change="changeQuery"
+              size="small"
+              clearable
+              placeholder="全部"
+            />
           </my-query-item>
         </el-col>
-        <el-col :span="8">
-          <my-query-item label="冻结状态">
-            <el-select size="small" v-model="query.is_freeze" clearable class="query-item-select" @change="changeQuery">
-              <el-option label="全部" value=""></el-option>
-              <el-option label="未冻结" :value="0"></el-option>
-              <el-option label="已冻结" :value="1"></el-option>
-            </el-select>
+        <el-col :span="10">
+          <my-query-item label="搜索">
+            <my-query-search-input
+              size="small"
+              placeholder="用户名/手机号"
+              v-model="query.condition"
+              @search="changeQuery"
+              @reset="resetQuery"
+            />
           </my-query-item>
         </el-col>
       </el-row>
       <el-row :gutter="32" style="margin-top: 16px">
-        <el-col :span="8">
-          <div class="display-flex align-items-center">
-            <my-query-item label="搜索">
-              <el-input
-                class="query-item-select"
-                size="small"
-                placeholder="请输入姓名/手机号"
-                v-model="query.condition"
-                @change="changeQuery"
-              />
-            </my-query-item>
-            <el-button size="small" type="primary" style="margin-left: 10px" @click.native="changeQuery">搜索</el-button>
-            <el-button size="small" type="primary" plain @click.navtive="resetQuery">重置</el-button>
-          </div>
+        <el-col :span="7">
+          <my-query-item label="冻结状态">
+            <my-select-option
+              :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
+              v-model="query.is_freeze"
+              @change="changeQuery"
+              size="small"
+              clearable
+              placeholder="全部"
+            />
+          </my-query-item>
         </el-col>
       </el-row>
     </div>
@@ -232,7 +236,7 @@
 <script>
   import { Row, Col, Button, Input, Select, Option, Table, TableColumn, Pagination, Dialog, Switch, Tag } from 'element-ui';
   import { Constant, Http, Config } from '@/util';
-  import { QueryItem, QuerySearchInput, TableOperate } from '@/common';
+  import { QueryItem, QuerySearchInput, TableOperate, SelectOption } from '@/common';
   import tableMixin from '@/container/table/table.mixin';
   import DeliverEdit from './deliver-edit';
   import DeliverDetail from './deliver-detail';
@@ -256,6 +260,7 @@
       'my-query-item': QueryItem,
       'my-query-search-input': QuerySearchInput,
       'my-table-operate': TableOperate,
+      'my-select-option': SelectOption,
       'deliver-edit': DeliverEdit,
       'deliver-detail': DeliverDetail,
       'reset-password': ResetPassword,
@@ -264,6 +269,7 @@
       return {
         rowIdentifier: "id",
         deliver_post: Constant.DELIVER_POST(),
+        query_deliver_post: Constant.DELIVER_POST('value_key'),
         query: {
           page: 1,
           page_size: Constant.PAGE_SIZE,
