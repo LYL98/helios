@@ -56,7 +56,6 @@
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="科学分类">
           <select-system-class size="small" v-model="editQuery.system_class_codes" @change="selectSystemClass" style="max-width: 224px;"/>
-          <el-button size="small" type="primary" class="query-item-reset" plain @click="resetQuery">重置</el-button>
         </my-query-item>
       </el-col>
     </el-row>
