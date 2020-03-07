@@ -166,10 +166,10 @@
                   <el-select v-model="item.city_id" placeholder="请选择所在仓" size="medium">
                     <el-option
                       v-for="city in cityList"
-                      :key="city.code"
+                      :key="city.id"
                       :label="city.title"
-                      :value="city.code"
-                      :disabled="detail.city_prices_temp.some(item => item.city_id === city.code)"
+                      :value="city.id"
+                      :disabled="detail.city_prices_temp.some(item => item.city_id === city.id)"
                     >
                     </el-option>
                   </el-select>
