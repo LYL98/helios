@@ -15,15 +15,20 @@
             </div>
             <div class="content">
               <div class="left">
-                <div class="store-title">{{s.store.title}}</div>
-                <div class="item-code">{{ditem.item_code}}</div>
+                <div>
+                  <div class="store-title">{{s.store.title}}</div>
+                  <div class="item-code">
+                    {{ditem.item_code}}
+                    <span class="item-title">/{{ditem.item_title}}</span>
+                  </div>
+                </div>
                 <div class="page-date">
                   <div class="page">{{n}}/{{s.num}}</div>
-                  <div class="date">蒲公英{{detail.delivery_date}}</div>
+                  <div class="date">蒲公英{{(detail.delivery_date || '').slice(5, 10)}}</div>
                 </div>
               </div>
               <div class="right">
-                <qr-code :content="qrCodeContent(ditem)" v-if="isShow" :width="130" :height="130"/>
+                <qr-code :content="qrCodeContent(ditem)" v-if="isShow" :width="76" :height="76"/>
               </div>
             </div>
           </div>
@@ -96,14 +101,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './print.scss';
-  $multiple: 0.5;
-  
+  $multiple: 0.30;
+
   .line-item{
-    width: 780 * $multiple + px;
+    width: 750 * $multiple + px;
     font-weight: bold;
     >.line-top{
-      width: 780 * $multiple + px;
-      height: 472 * $multiple + px;
+      width: 750 * $multiple + px;
+      height: 500 * $multiple + px;
       font-size: 100 * $multiple + px;
       line-height: 100 * $multiple + px;
       text-align: center;
@@ -116,8 +121,8 @@ export default {
     }
     >.item-body{
       >.item{
-        width: 780 * $multiple + px;
-        height: 472 * $multiple + px;
+        width: 750 * $multiple + px;
+        height: 500 * $multiple + px;
         >.indexs{
           font-size: 130 * $multiple + px;
           line-height: 130 * $multiple + px;
@@ -130,25 +135,33 @@ export default {
           align-items: center;
           margin: 0 25 * $multiple + px;
           >.left{
+            height: 250 * $multiple + px;
             flex: 1;
-            >.store-title{
-              font-size: 52 * $multiple + px;
-              line-height: 64 * $multiple + px;
-              height:  128 * $multiple + px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .store-title{
+              font-size: 40 * $multiple + px;
+              line-height: 50 * $multiple + px;
+              height:  50 * $multiple + px;
               margin-bottom: 14 * $multiple + px;
               font-weight: bold;
             }
-            >.item-code{
-              font-size: 60 * $multiple + px;
-              line-height: 60 * $multiple + px;
-              margin-bottom: 20 * $multiple + px;
+            .item-code{
+              font-size: 50 * $multiple + px;
+              line-height: 50 * $multiple + px;
+              margin-bottom: 10 * $multiple + px;
               font-weight: bold;
             }
-            >.page-date{
+            .item-title {
+              font-size: 32 * $multiple + px;
+              line-height: 36 * $multiple + px;
+            }
+            .page-date{
               display: flex;
               align-items: center;
-              font-size: 26 * $multiple + px;
-              line-height: 26 * $multiple + px;
+              font-size: 24 * $multiple + px;
+              line-height: 24 * $multiple + px;
               >.page{
                 flex: 1
               }
