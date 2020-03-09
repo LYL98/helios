@@ -27,6 +27,19 @@ export default {
   },
   created(){
   },
+  mounted() {
+    this.link = document.createElement('link');
+    this.link.rel = 'stylesheet';
+    this.link.href = './size-60-40.css';
+    let head = document.getElementsByTagName('head')[0];
+    head && head.appendChild(this.link);
+  },
+  beforeDestroy() {
+    if (this.link) {
+      let head = document.getElementsByTagName('head')[0];
+      head && head.removeChild(this.link);
+    }
+  },
   data() {
     let initDetail = {
     }
@@ -54,13 +67,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import './print.scss';
-
-  @media print {
-    @page {
-      size: 60mm 40mm;
-      margin: 0;
-    }
-  }
 
   .overflow-ellipsis {
     width: 100%;
