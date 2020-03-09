@@ -23,7 +23,7 @@
           <el-checkbox-group v-model="multipleSelection" @change="handleCheckedItemsChange">
             <ul style="padding: 0 10px;">
               <li v-for="item in showList">
-                <el-checkbox :label="item" :key="item.code">{{item.title}}</el-checkbox>
+                <el-checkbox :label="item" :key="item.id">{{item.title}}</el-checkbox>
               </li>
             </ul>
           </el-checkbox-group>
@@ -75,7 +75,7 @@
       showList: {
         // 如果筛选到的itemList不在右侧编辑中的列表中editList，则填充在showList中显示出来。
         get() {
-          return this.$data.itemList.filter(item => !this.$data.editList.some(editItem => editItem.code === item.code));
+          return this.$data.itemList.filter(item => !this.$data.editList.some(editItem => editItem.id === item.id));
         }
       }
     },
