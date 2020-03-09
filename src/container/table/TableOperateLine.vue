@@ -22,7 +22,7 @@
       >
         <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod"/>
         <el-table-column prop="title" label="线路编号 / 名称" min-width="200">
-          <template slot-scope="scope">{{ scope.row.line_id }} / {{ scope.row.title }}</template>
+          <template slot-scope="scope">{{ scope.row.line_index }} / {{ scope.row.title }}</template>
         </el-table-column>
         <el-table-column prop="item_num" label="线路总数量" min-width="100">
           <template slot-scope="scope">{{ scope.row.item_num }}件</template>
