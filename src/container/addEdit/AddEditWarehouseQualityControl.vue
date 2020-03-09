@@ -310,7 +310,7 @@ export default {
         inventoryData.num_arrive > inventoryData.num){
           inventoryData.un_qa_num = inventoryData.num_arrive - inventoryData.num;
           inventoryData.un_qa_type = '';
-          inventoryData.un_qa_amount = '';
+          inventoryData.un_qa_amount = null;
           this.$data.inventoryData = inventoryData;
         return true;
       }

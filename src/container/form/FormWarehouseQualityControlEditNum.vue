@@ -17,7 +17,7 @@
             :options="supOptTypes"
           />
         </el-form-item>
-        <el-form-item label="处理金额" prop="un_qa_amount">
+        <el-form-item label="处理金额" prop="un_qa_amount" v-if="judgeOrs(detail.un_qa_type, ['damage_sale', 'sale_offline'])">
           <input-price size="medium" v-model="detail.un_qa_amount" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
@@ -67,7 +67,7 @@ export default {
         detail.num_arrive > detail.num){
           detail.un_qa_num = detail.num_arrive - detail.num;
           detail.un_qa_type = '';
-          detail.un_qa_amount = '';
+          detail.un_qa_amount = null;
           this.$data.detail = detail;
         return true;
       }
