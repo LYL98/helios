@@ -1,6 +1,6 @@
 <template>
   <print-layout title="打印托盘码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <div v-for="(item, index) in dataItem" :key="index" style="width: 58mm; height: 39mm; overflow: hidden;">
+    <div v-for="(item, index) in dataItem" :key="index" style="width: 225px; height: 150px; overflow: hidden;">
       <div class="flex-column-center">
         <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="90" :height="90"/>
         <div style="font-size: 16px; font-weight: 600; line-height: 20px">{{item.code}}</div>
@@ -67,7 +67,7 @@ export default {
 <style lang="scss" scoped>
   @import '@/container/print/print.scss';
   .flex-column-center {
-    height: 39mm;
+    height: 150px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
