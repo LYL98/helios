@@ -29,6 +29,7 @@ export default {
   mounted() {
     this.link = document.createElement('link');
     this.link.rel = 'stylesheet';
+    this.link.media = 'print';
     this.link.href = './size-210-297.css';
     let head = document.getElementsByTagName('head')[0];
     head && head.appendChild(this.link);
