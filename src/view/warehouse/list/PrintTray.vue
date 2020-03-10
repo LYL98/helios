@@ -1,6 +1,6 @@
 <template>
   <print-layout title="打印托盘码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <div v-for="(item, index) in dataItem" :key="index" class="flex-coliumn-center" style="width: 60mm; height: 40mm;">
+    <div v-for="(item, index) in dataItem" :key="index" class="flex-coliumn-center" style="width: 58mm; height: 39mm;">
       <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="100" :height="100"/>
       <div style="font-size: 16px; font-weight: 600;">{{item.code}}</div>
     </div>
@@ -25,6 +25,19 @@ export default {
     'qr-code': QrCode
   },
   created(){
+  },
+  mounted() {
+    this.link = document.createElement('link');
+    this.link.rel = 'stylesheet';
+    this.link.href = './size-60-40.css';
+    let head = document.getElementsByTagName('head')[0];
+    head && head.appendChild(this.link);
+  },
+  beforeDestroy() {
+    if (this.link) {
+      let head = document.getElementsByTagName('head')[0];
+      head && head.removeChild(this.link);
+    }
   },
   data() {
     let initDetail = {}
