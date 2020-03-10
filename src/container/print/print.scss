@@ -15,12 +15,12 @@
     }
 }
 
-/* 执行打印命令时，非打印区域隐藏（不会被打印出来） */
-@media print{
-    .bottom-btn-body{
-        display: none;
-    }
-    #app-body{
-        display: none;
-    }
-}
+///* 执行打印命令时，非打印区域隐藏（不会被打印出来） */
+//@media print{
+//    .bottom-btn-body{
+//        display: none;
+//    }
+//    #app-body{
+//        display: none;
+//    }
+//}
