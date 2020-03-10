@@ -1,8 +1,11 @@
 <template>
   <print-layout title="打印托盘码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
-    <div v-for="(item, index) in dataItem" :key="index" class="flex-coliumn-center" style="width: 58mm; height: 39mm;">
-      <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="100" :height="100"/>
-      <div style="font-size: 16px; font-weight: 600;">{{item.code}}</div>
+    <div v-for="(item, index) in dataItem" :key="index" style="width: 58mm; height: 39mm;">
+      <div class="flex-column-center">
+        <qr-code :content="qrCodeContent(item)" v-if="isShow" :width="90" :height="90"/>
+        <div style="font-size: 16px; font-weight: 600; line-height: 20px">{{item.code}}</div>
+      </div>
+      <div style="page-break-after: always;" v-if="index < dataItem.length - 1"></div>
     </div>
     <div class="bottom-btn-body">
       <div class="bottom-btn">
@@ -63,4 +66,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import '@/container/print/print.scss';
+  .flex-column-center {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
 </style>
