@@ -73,7 +73,7 @@ export default {
   /* 执行打印命令时，非打印区域隐藏（不会被打印出来） */
   @media print{
       .el-drawer__header, #app-body {
-          display: none;
+        display: none;
      }
       .el-drawer__wrapper{
         position: relative;
