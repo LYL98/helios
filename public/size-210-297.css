@@ -4,6 +4,13 @@
         margin: 0;
     }
 
+    .el-drawer__header, #app-body {
+        display: none;
+    }
+    .el-drawer__wrapper{
+        position: relative;
+    }
+
     .bottom-btn-body{
         display: none;
     }
