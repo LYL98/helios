@@ -4,17 +4,17 @@
         margin: 0;
     }
 
-    .el-drawer__header, #app-body {
-        display: none;
+    .el-drawer__header {
+        display: none !important;
     }
     .el-drawer__wrapper{
-        position: relative;
+        position: relative !important;
     }
 
     .bottom-btn-body{
-        display: none;
+        display: none !important;
     }
     #app-body{
-        display: none;
+        display: none !important;
     }
 }
