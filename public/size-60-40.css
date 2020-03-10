@@ -1,20 +1,4 @@
-@media print {
-    @page {
-        size: 60mm 40mm;
-        margin: 0;
-    }
-
-    .el-drawer__header {
-        display: none !important;
-    }
-    .el-drawer__wrapper{
-        position: relative !important;
-    }
-
-    .bottom-btn-body{
-        display: none !important;
-    }
-    #app-body{
-        display: none !important;
-    }
+@page {
+    size: 60mm 40mm;
+    margin: 0;
 }
