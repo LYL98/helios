@@ -272,7 +272,7 @@ export default {
     //查看商品详情
     showItemDetail(item) {
       let pc = this.getPageComponents('AddEditItemList');
-      pc.showAddEdit(item, 'detail');
+      pc.showAddEdit({ id: item.item_id }, 'detail');
     },
     //组件回调
     myCallBack(res){

@@ -28,7 +28,7 @@
     </div>
     <div class="query" style="margin-bottom: 20px;">
       <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item label="时间">
             <el-date-picker
               size="small"
@@ -47,7 +47,7 @@
             />
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item label="三级分类">
             <select-system-class-list
               v-model="query.system_class_code"
@@ -56,8 +56,10 @@
               :clearable="false"
               :topCode="query.system_class_code2"
             />
-            <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
           </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
         </el-col>
       </el-row>
     </div>
