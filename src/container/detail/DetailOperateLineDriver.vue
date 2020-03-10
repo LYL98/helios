@@ -63,6 +63,7 @@
       async operateLineDriverList(){
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.operateLineDriverList, {
+          province_code: this.$province.code,
           delivery_date: this.detail.delivery_date
         });
         this.$loading({isShow: false});

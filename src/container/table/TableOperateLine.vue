@@ -161,6 +161,7 @@
           (async ()=>{
             this.$loading({isShow: true});
             let res = await Http.post(Config.api.operateLineConfirm, {
+              province_code: this.$province.code,
               delivery_date: this.query.delivery_date
             });
             this.$loading({isShow: false});
