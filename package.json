@@ -29,6 +29,7 @@
     "@vue/cli-service": "^3.3.0",
     "babel-plugin-component": "^1.1.1",
     "clean-webpack-plugin": "^1.0.1",
+    "happypack": "^5.0.1",
     "html-webpack-include-assets-plugin": "^1.0.7",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
