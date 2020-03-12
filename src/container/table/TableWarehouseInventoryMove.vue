@@ -174,7 +174,10 @@
         this.$data.query = query; //赋值，minxin用
         let { types } = this;
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(this.types[this.tabValue].api, query);
+        let res = await Http.get(this.types[this.tabValue].api, {
+          ...query,
+          src_storehouse_id: query.src_storehouse //调拨记录用
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
