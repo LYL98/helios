@@ -97,13 +97,8 @@
         let d = dataItem.filter(item => item.province_code === this.$province.code);
         let storehouseId = null;
         d.length > 0 ? storehouseId = d[0].id : storehouseId = dataItem[0].id;
-        if(this.tabValue === 'distribute'){
-          this.$data.initQuery.src_storehouse_id = storehouseId;
-          this.$data.query.src_storehouse_id = storehouseId;
-        }else{
-          this.$data.initQuery.storehouse_id = storehouseId;
+        this.$data.initQuery.storehouse_id = storehouseId;
           this.$data.query.storehouse_id = storehouseId;
-        }
         this.handleQuery('TableWarehouseInventoryMove');
       }
     }
