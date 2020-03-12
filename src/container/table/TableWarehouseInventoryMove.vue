@@ -176,7 +176,7 @@
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(this.types[this.tabValue].api, {
           ...query,
-          src_storehouse_id: query.src_storehouse //调拨记录用
+          src_storehouse_id: query.storehouse_id //调拨记录用
         });
         this.$loading({isShow: false});
         if(res.code === 0){
