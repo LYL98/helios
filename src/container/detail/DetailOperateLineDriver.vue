@@ -8,8 +8,8 @@
         <el-table-column label="手机号">
           <template slot-scope="scope">{{scope.row.deliver.phone}}</template>
         </el-table-column>
-        <el-table-column label="签到线路">
-          <template slot-scope="scope">{{scope.row.line.title}}</template>
+        <el-table-column label="签到线路编号/名称">
+          <template slot-scope="scope">{{scope.row.line.line_index}} / {{scope.row.line.title}}</template>
         </el-table-column>
         <el-table-column label="签到时间">
           <template slot-scope="scope">{{scope.row.created}}</template>
