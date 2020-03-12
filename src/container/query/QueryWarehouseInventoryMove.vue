@@ -30,6 +30,13 @@
         </my-query-item>
       </el-col>
     </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;" v-if="tabValue === 'distribute'">
+      <el-col :span="7">
+        <my-query-item label="调入仓库">
+          <select-storehouse v-model="query.tar_storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" clearable />
+        </my-query-item>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -51,6 +58,8 @@
         begin_date: '',
         end_date: '',
         storehouse_id: '',
+        src_storehouse_id: '', //调拨记录用
+        tar_storehouse_id: '', //调拨记录用
         condition: '',
         picker_value: null,
         //province_code: this.$province.code,
@@ -61,7 +70,7 @@
           'check': '仓库',
           'putaway': '仓库',
           'variation': '仓库',
-          'distribute': '调入仓库',
+          'distribute': '调出仓库',
           'move': '原仓库',
           'out_storage': '仓库'
         },
@@ -86,12 +95,14 @@
       //初始化选择仓库时
       storehouseInit(dataItem){
         let d = dataItem.filter(item => item.province_code === this.$province.code);
-        if(d.length > 0){
-          this.$data.initQuery.storehouse_id = d[0].id;
-          this.$data.query.storehouse_id = d[0].id;
+        let storehouseId = null;
+        d.length > 0 ? storehouseId = d[0].id : storehouseId = dataItem[0].id;
+        if(this.tabValue === 'distribute'){
+          this.$data.initQuery.src_storehouse_id = storehouseId;
+          this.$data.query.src_storehouse_id = storehouseId;
         }else{
-          this.$data.initQuery.storehouse_id = dataItem[0].id;
-          this.$data.query.storehouse_id = dataItem[0].id;
+          this.$data.initQuery.storehouse_id = storehouseId;
+          this.$data.query.storehouse_id = storehouseId;
         }
         this.handleQuery('TableWarehouseInventoryMove');
       }
