@@ -199,7 +199,7 @@ export default {
         return false
       }
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[detail.id ? 'systemBannerUpdate' : 'systemBannerAdd'], detail);
+      let res = await Http.post(Config.api[detail.id ? 'systemBannerEdit' : 'systemBannerAdd'], detail);
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
