@@ -79,18 +79,18 @@
           <el-table-column label="调拨单号">
             <template slot-scope="scope">{{scope.row.code}}</template>
           </el-table-column>
-          <el-table-column label="采购价" width="240">
+          <el-table-column label="采购价" width="140">
             <template slot-scope="scope">
               &yen;{{returnPrice(scope.row.price)}}
             </template>
           </el-table-column>
-          <el-table-column label="调拨数量" width="180">
+          <el-table-column label="调拨数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="品控数量" width="180">
+          <el-table-column label="品控数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num_in, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="入库数量" width="180">
+          <el-table-column label="入库数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num_in_stock, '件', '-')}}</template>
           </el-table-column>
           <el-table-column label="状态" width="100">
@@ -109,18 +109,18 @@
           <el-table-column label="采购单号">
             <template slot-scope="scope">{{scope.row.code}}</template>
           </el-table-column>
-          <el-table-column label="采购价" width="240">
+          <el-table-column label="采购价" width="140">
             <template slot-scope="scope">
               &yen;{{returnPrice(scope.row.price)}}
             </template>
           </el-table-column>
-          <el-table-column label="采购数量" width="180">
+          <el-table-column label="采购数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="品控数量" width="180">
+          <el-table-column label="品控数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num_in, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="入库数量" width="180">
+          <el-table-column label="入库数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num_in_stock, '件', '-')}}</template>
           </el-table-column>
           <el-table-column label="状态" width="100">
