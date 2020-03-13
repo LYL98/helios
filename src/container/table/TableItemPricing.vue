@@ -140,7 +140,7 @@
           { label: '今日建议价', key: 'suggest_price', width: '120', isShow: true },
           { label: '今日加价率', key: 'today_rise_rate', width: '100', isShow: false },
           { label: '今日销售价', key: 'price_sale', width: '90', isShow: true },
-          { label: '可售数量', key: 'available_num', width: '80', isShow: true },
+          { label: '总库存', key: 'available_num', width: '80', isShow: true },
         ],
       }
     },

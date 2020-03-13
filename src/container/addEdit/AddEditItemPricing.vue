@@ -22,7 +22,7 @@
           <template v-else>&nbsp;</template>
         </el-col>
         <el-col :span="11">
-          <el-form-item label="可售数量">
+          <el-form-item label="总库存">
             <input-number size="medium" disabled :value="detail.available_num" unit="件"/>
           </el-form-item>
         </el-col>
@@ -86,6 +86,35 @@
           </el-table-column>
           <el-table-column label="调拨数量" width="180">
             <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
+          </el-table-column>
+          <el-table-column label="品控数量" width="180">
+            <template slot-scope="scope">{{returnUnit(scope.row.num_in, '件', '-')}}</template>
+          </el-table-column>
+          <el-table-column label="入库数量" width="180">
+            <template slot-scope="scope">{{returnUnit(scope.row.num_in_stock, '件', '-')}}</template>
+          </el-table-column>
+        </el-table>
+      </div>
+
+      <h6 class="subtitle">采购信息</h6>
+      <div style="padding: 0 0 30px 30px;">
+        <el-table :data="priceData.p_orders" width="100%" size="mini" :row-class-name="highlightRowClassName">
+          <el-table-column label="采购单号">
+            <template slot-scope="scope">{{scope.row.code}}</template>
+          </el-table-column>
+          <el-table-column label="采购价" width="240">
+            <template slot-scope="scope">
+              &yen;{{returnPrice(scope.row.price)}}
+            </template>
+          </el-table-column>
+          <el-table-column label="采购数量" width="180">
+            <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
+          </el-table-column>
+          <el-table-column label="品控数量" width="180">
+            <template slot-scope="scope">{{returnUnit(scope.row.num_in, '件', '-')}}</template>
+          </el-table-column>
+          <el-table-column label="入库数量" width="180">
+            <template slot-scope="scope">{{returnUnit(scope.row.num_in_stock, '件', '-')}}</template>
           </el-table-column>
         </el-table>
       </div>
@@ -156,6 +185,7 @@ export default {
       priceData: {
         stocks: [],
         distributes: [],
+        p_orders: [],
         biddings: []
       },
       pageTitles: {

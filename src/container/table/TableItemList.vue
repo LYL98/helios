@@ -54,7 +54,7 @@
               <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
               <!--展示分类-->
               <div class="td-item" v-else-if="item.key === 'display_class'">{{scope.row.display_class.title || '-'}}</div>
-              <!--可售数量-->
+              <!--总库存-->
               <div class="td-item" v-else-if="item.key === 'item_stock'">{{query.is_on_sale ? scope.row.item_stock + '件' : '-'}}</div>
               <!--已售数量-->
               <div class="td-item" v-else-if="item.key === 'sale_already'">{{query.is_on_sale ? scope.row.sale_already + '件' : '-'}}</div>
@@ -135,7 +135,7 @@
         tableColumn = tableColumn.concat([
           { label: '科学分类', key: 'system_class', width: '1', isShow: false },
           { label: '展示分类', key: 'display_class', width: '1', isShow: true },
-          { label: '可售数量', key: 'item_stock', width: '1', isShow: true },
+          { label: '总库存', key: 'item_stock', width: '1', isShow: true },
           { label: '已售数量', key: 'sale_already', width: '1', isShow: true },
         ]);
       }

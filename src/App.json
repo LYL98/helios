@@ -191,7 +191,7 @@
           "name": "WarehouseInventory"
         },
         {
-          "title": "品控",
+          "title": "品控收货",
           "name": "WarehouseQualityControl"
         },
         {

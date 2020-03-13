@@ -3,6 +3,15 @@
 #### 更新记录
 
 ### 版本 （最新 - 旧）
+
+### 3.3.6
+```
+更新注意事项：
+修改sys_permission表
+修改：code WarehouseQualityControl 的 title 改成 品控收货
+
+```
+
 ### 3.0.0 (重排版本)
 ```
 更新注意事项：

@@ -106,7 +106,7 @@
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
-            <el-form-item label="可售数量" prop="item_stock">
+            <el-form-item label="总库存" prop="item_stock">
               <input-number size="medium" disabled :value="detail.item_stock" unit="件" />
             </el-form-item>
           </el-col>

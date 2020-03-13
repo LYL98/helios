@@ -235,7 +235,7 @@
             { label: '调出仓', key: 'src_storehouse', width: '3', isShow: true },
             { label: '调拨数量', key: 'num', width: '2', isShow: true },
             { label: '调入仓', key: 'tar_storehouse', width: '3', isShow: true },
-            { label: '可售日期', key: 'date', width: '3', isShow: true }
+            { label: '销售日期', key: 'date', width: '3', isShow: true }
           ]);
         }
         //移库

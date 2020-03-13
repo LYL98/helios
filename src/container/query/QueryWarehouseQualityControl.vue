@@ -16,18 +16,6 @@
           <my-query-item label="仓库" v-if="fromPage === 'QualityControl'">
             <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
           </my-query-item>
-          <!--场地品控-->
-          <my-query-item label="配送日期" v-else-if="fromPage === 'Receiving'">
-            <el-date-picker
-              size="small"
-              v-model="query.delivery_date"
-              value-format="yyyy-MM-dd"
-              @change="handleQuery('TableWarehouseQualityControl')"
-              style="width: 100%;"
-              placeholder="配送日期"
-              :clearable="false"
-            />
-          </my-query-item>
         </el-col>
         <el-col :span="10">
           <my-query-item label="搜索">
@@ -57,8 +45,6 @@
       //来自场地
       if(this.fromPage === 'Receiving'){
         let { initQuery, query } = this;
-        initQuery.delivery_date = this.today;
-        query.delivery_date = this.today;
         initQuery.province_code = this.$province.code;
         query.province_code = this.$province.code;
         initQuery.for_accept = 1; //特殊 调拨
@@ -73,7 +59,6 @@
     data() {
       let initQuery = {
         province_code: '',
-        delivery_date: '',
         type: 'purchase',//'采购': 'purchase', '调拨': 'distribute'
         condition: '',
         storehouse_id: '',

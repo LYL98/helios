@@ -45,7 +45,7 @@
             <el-form-item label="调拨数量">{{detail.relate_order.num}}件</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="可售日期">{{detail.relate_order.available_date}}</el-form-item>
+            <el-form-item label="销售日期">{{detail.relate_order.available_date}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="预计到货">{{detail.relate_order.estimate_arrive_at}}</el-form-item>

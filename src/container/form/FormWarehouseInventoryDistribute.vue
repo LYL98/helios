@@ -25,11 +25,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="可售日期" prop="available_date">
+          <el-form-item label="销售日期" prop="available_date">
             <el-date-picker
               size="medium"
               style="width: 100%;"
-              placeholder="可售日期"
+              placeholder="销售日期"
               v-model="detail.available_date"
               type="date"
               value-format="yyyy-MM-dd"
@@ -97,7 +97,7 @@ export default {
       rules: {
         num_in: { required: true, message: '请输入调入数量', trigger: 'change' },
         tar_storehouse_id: { required: true, message: '请选择调入仓', trigger: 'change' },
-        available_date: { required: true, message: '请选择可售日期', trigger: 'change' },
+        available_date: { required: true, message: '请选择销售日期', trigger: 'change' },
         estimate_arrive_at: [
           { required: true, message: '请选择预计到达时间', trigger: 'change' }
         ],
