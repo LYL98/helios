@@ -93,6 +93,13 @@
           <el-table-column label="入库数量" width="180">
             <template slot-scope="scope">{{returnUnit(scope.row.num_in_stock, '件', '-')}}</template>
           </el-table-column>
+          <el-table-column label="状态" width="100">
+            <template slot-scope="scope">
+              <el-tag size="small" :type="distributeStatusType[scope.row.status]" disable-transitions>
+                {{distributeStatus[scope.row.status]}}
+              </el-tag>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
 
@@ -115,6 +122,13 @@
           </el-table-column>
           <el-table-column label="入库数量" width="180">
             <template slot-scope="scope">{{returnUnit(scope.row.num_in_stock, '件', '-')}}</template>
+          </el-table-column>
+          <el-table-column label="状态" width="100">
+            <template slot-scope="scope">
+              <el-tag size="small" :type="purchaseStatusType[scope.row.status]" disable-transitions>
+                {{purchaseStatus[scope.row.status]}}
+              </el-tag>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -169,6 +183,10 @@ export default {
     };
 
     return {
+      distributeStatus: Constant.DISTRIBUTE_STATUS(),
+      distributeStatusType: Constant.DISTRIBUTE_STATUS_TYPE,
+      purchaseStatus: Constant.PURCHASE_STATUS(),
+      purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
       initDetail: {},
       rules: {
         price_sale: [
