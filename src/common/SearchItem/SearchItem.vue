@@ -21,16 +21,23 @@ export default {
     'el-button': Button
   },
   props: ['value', 'size', 'provinceCode'],
-  // watch: {
-  //   inputValue: function (after, before) {
-  //     // 把变化后的值发送到父组件
-  //     this.$emit('input', after)
-  //   }
-  // },
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
   data() {
     return {
-      itemList: [],
-      inputValue: this.value
+      itemList: []
+    }
+  },
+  computed: {
+    inputValue: {
+      get() {
+        return this.$props.value;
+      },
+      set(v) {
+        this.$emit('change', v);
+      }
     }
   },
   methods: {
