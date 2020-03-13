@@ -24,7 +24,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="销售日期" prop="available_date">
-              <el-date-picker size="medium" type="datetime" v-model="detail.available_date" value-format="yyyy-MM-dd" placeholder="销售日期" style="width: 100%;"/>
+              <el-date-picker size="medium" v-model="detail.available_date" value-format="yyyy-MM-dd" placeholder="销售日期" style="width: 100%;"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
