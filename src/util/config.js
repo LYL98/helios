@@ -30,7 +30,6 @@ const Config = (() => {
       orderStoreExport: apiM + '/order/store/export', //门店分货表
 
       orderQuery: apiM + '/order/query', //订单列表
-      orderPriceUpdate: apiM + '/order/price/update', //修改订单价格
       orderDetail: apiM + '/order/detail', //订单详情
       orderCancel: apiM + '/order/cancel', //取消订单
 

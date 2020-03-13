@@ -6,7 +6,7 @@
         <el-button :disabled="multipleSelection.length > 0 ? false : true" size="mini" type="primary" plain @click.native="handleDelete('multiple')">批量删除</el-button>
       </div>
       <div class="right" v-if="auth.isAdmin || auth.BannerAdd">
-        <el-button @click="handleShowAddEdit('AddEdit')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEdit', null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!--头部end-->
@@ -46,7 +46,7 @@
                 {
                   title: '修改',
                   isDisplay: auth.isAdmin || auth.BannerEdit,
-                  command: () => handleShowAddEdit('AddEdit', scope.row)
+                  command: () => handleShowAddEdit('AddEdit', scope.row, 'edit')
                 },
                 {
                   title: '删除',

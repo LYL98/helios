@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}Banner`" :visible="isShow" width="840px" :before-close="handleCancel">
+  <el-dialog :close-on-click-modal="false" :title="`${pageTitles[pageType]}Banner`" :visible="isShow" width="840px" :before-close="handleCancel">
     <el-form label-position="right" label-width="120px" style="width: 700px;" :model="detail" :rules="rules" ref="ruleForm">
       <el-form-item label="图片" prop="images">
         <my-upload-img v-model="detail.images" module="banner" :limit="1"></my-upload-img>
@@ -56,32 +56,24 @@ export default {
 
   },
   data(){
-    let validImages = function(rules, value, callback) {
-      // console.log('value: ' + JSON.stringify(value));
-      if (value.length && value.length > 0) {
-        callback();
-      } else {
-        callback(new Error('请上传图片'));
-      }
+    let initDetail = {
+      province_code: '',
+      images: [],
+      url: '',
+      is_usable: true,
+      type: '',
+      province_code: ''
     };
-
     return{
       upData: {
         domain: '',
         token: '',
         key: ''
       },
-      initDetail: {
-        province_code: '',
-        images: [],
-        url: '',
-        is_usable: true,
-        type: ''
-      },
-
+      initDetail: initDetail,
+      detail: this.copyJson(initDetail),
       rules: {
         images: [
-          //{ validator: validImages, trigger: 'change' },
           { required: true, type: 'array', message: '请上传图片', trigger: 'change' }
         ],
         rank: [
@@ -99,19 +91,15 @@ export default {
   },
   methods: {
     //显示新增修改(重写)
-    showAddEdit(data){
-      if(data){
-        let detail = JSON.parse(JSON.stringify(data));
-        let d = JSON.parse( JSON.stringify( detail ) );
-        this.linkName(d.url, type => this.bannerType = type);
-        if (d.id && d.image && d.image !== '') {
-          detail.images = [d.image];
-        }else{
-          detail.images = [];
-        }
+    showAddEdit(data, type){
+      this.$data.pageType = type;
+      if(type === 'edit'){
+        let detail = this.copyJson(data);
+        this.linkName(detail.url, type => this.bannerType = type);
+        detail.images = detail.image !== '' ? [detail.image] : [];
         this.$data.detail = detail;
       }else{
-        this.$data.detail = JSON.parse(JSON.stringify({ ...this.initDetail, province_code: this.province.code }));
+        this.$data.detail = this.copyJson(this.initDetail);
       }
       this.$data.isShow = true;
     },
@@ -123,9 +111,9 @@ export default {
       let { detail } = this;
       detail.url = '/pages/itemLabel/itemLabel?tag=' + tag;
     },
-    selectDisplayUrl(code) {
+    selectDisplayUrl(id) {
       let { detail } = this;
-      detail.url = "app://itemList/" + parseInt(code);
+      detail.url = "app://itemList/" + id;
     },
     linkName(url, callback) {
       let that = this;
@@ -147,13 +135,7 @@ export default {
         //展示分类
         bannerType = 'displayClass';
         let id = parseInt(String(url.match(/\d+/)));
-        let codeStr = '';
-        if (id < 10) {
-          codeStr = '0' + id
-        } else {
-          codeStr = '' + id
-        }
-        that.$data.displayId = codeStr;
+        that.$data.displayId = id;
         callback(bannerType);
       } else if (url.includes("/pages/itemLabel")) {
         bannerType = 'category';
@@ -188,7 +170,7 @@ export default {
     // },
     //提交数据
     async addEditData(){
-      let { detail } = this;
+      let { detail, pageType } = this;
       if (this.bannerType === 'nolink') {
         detail.url = ''
       }
@@ -199,10 +181,13 @@ export default {
         return false
       }
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api[detail.id ? 'systemBannerEdit' : 'systemBannerAdd'], detail);
+      let res = await Http.post(Config.api[pageType === 'edit' ? 'systemBannerEdit' : 'systemBannerAdd'], {
+        ...detail,
+        province_code: this.$province.code
+      });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.$message({message: `${pageType === 'edit' ? '修改' : '新增'}成功`, type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('Table');
