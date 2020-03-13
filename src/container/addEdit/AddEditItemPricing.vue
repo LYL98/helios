@@ -111,7 +111,7 @@
           </el-table-column>
           <el-table-column label="采购价" width="140">
             <template slot-scope="scope">
-              &yen;{{returnPrice(scope.row.price)}}
+              &yen;{{returnPrice(scope.row.price_buy)}}
             </template>
           </el-table-column>
           <el-table-column label="采购数量" width="140">
