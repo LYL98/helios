@@ -9,7 +9,7 @@
 更新注意事项：
 修改sys_permission表
 修改：code WarehouseQualityControl 的 title 改成 品控收货
-
+删除：code ItemPriceEditNum
 ```
 
 ### 3.0.0 (重排版本)

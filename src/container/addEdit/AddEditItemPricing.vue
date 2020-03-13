@@ -131,12 +131,7 @@
             </template>
           </el-table-column>
           <el-table-column label="供应商库存" width="180">
-            <template slot-scope="scope">
-              {{returnUnit(scope.row.bidding.num, '件', '-')}}
-              <a href="javascript:void(0);"
-                v-if="detail.opt_date === today && (auth.isAdmin || auth.ItemPriceEditNum) && scope.row.bidding.id"
-                @click="handleShowForm('FormItemPricingEditNum', scope.row)">增加</a>
-            </template>
+            <template slot-scope="scope">{{returnUnit(scope.row.bidding.num, '件', '-')}}</template>
           </el-table-column>
         </el-table>
       </div>

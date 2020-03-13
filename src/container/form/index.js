@@ -6,7 +6,6 @@ export { default as FormMarketingScopePromotion } from './FormMarketingScopeProm
 export { default as FormFinanceBalanceEdit } from './FormFinanceBalanceEdit';
 export { default as FormFinanceBalanceMerchantLogExport } from './FormFinanceBalanceMerchantLogExport';
 export { default as FormItemGlobalSupplierType } from './FormItemGlobalSupplierType';
-export { default as FormItemPricingEditNum } from './FormItemPricingEditNum';
 export { default as FormFinanceApproveEdit } from './FormFinanceApproveEdit';
 export { default as FormItemSupplierAccount } from './FormItemSupplierAccount';
 export { default as FormSystemOperatorResetPwd } from './FormSystemOperatorResetPwd';
