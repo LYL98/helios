@@ -13,6 +13,12 @@
             <el-form-item label="采购日期">{{detail.order_date}}</el-form-item>
           </el-col>
           <el-col :span="12">
+            <el-form-item label="销售日期">{{detail.available_date}}</el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="预计送达">{{detail.estimate_arrive_at}}</el-form-item>
+          </el-col>
+          <el-col :span="12">
             <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
           </el-col>
           <el-col :span="12">
@@ -41,6 +47,9 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="销售日期">{{detail.available_date}}</el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="预计送达">{{detail.estimate_arrive_at}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="可收货数量">{{detail.num - detail.num_in}}件</el-form-item>
