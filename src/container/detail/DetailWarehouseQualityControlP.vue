@@ -16,6 +16,9 @@
           <el-form-item label="采购日期">{{detail.order_date}}</el-form-item>
         </el-col>
         <el-col :span="12">
+          <el-form-item label="销售日期">{{detail.available_date}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="预计送达">{{detail.estimate_arrive_at}}</el-form-item>
         </el-col>
         <el-col :span="12">

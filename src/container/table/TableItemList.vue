@@ -54,8 +54,8 @@
               <div class="td-item" v-else-if="item.key === 'system_class'">{{scope.row.system_class.title}}</div>
               <!--展示分类-->
               <div class="td-item" v-else-if="item.key === 'display_class'">{{scope.row.display_class.title || '-'}}</div>
-              <!--总库存-->
-              <div class="td-item" v-else-if="item.key === 'item_stock'">{{query.is_on_sale ? scope.row.item_stock + '件' : '-'}}</div>
+              <!--总库存 item_stock + sale_already-->
+              <div class="td-item" v-else-if="item.key === 'item_stock'">{{query.is_on_sale ? (scope.row.item_stock + scope.row.sale_already) + '件' : '-'}}</div>
               <!--已售数量-->
               <div class="td-item" v-else-if="item.key === 'sale_already'">{{query.is_on_sale ? scope.row.sale_already + '件' : '-'}}</div>
               <!--正常情况-->
