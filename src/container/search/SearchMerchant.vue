@@ -5,15 +5,15 @@
       <my-select-zone
         style="width: 200px"
         :provinceCode="provinceCode"
-        v-model="query.zone_code"
+        v-model="query.zone_id"
         @change="selectByCondition"
         clearable
       ></my-select-zone>
       <my-select-city
         style="width: 200px; margin-left: 10px"
         :provinceCode="provinceCode"
-        :zoneCode="query.zone_code"
-        v-model="query.city_code"
+        :zoneId="query.zone_id"
+        v-model="query.city_id"
         @change="selectByCondition"
       >
       </my-select-city>
@@ -58,7 +58,7 @@
   import { Table, TableColumn, Input, Button, Pagination, Checkbox, CheckboxGroup, Message } from 'element-ui';
   import { SelectCity } from '@/container/select';
   import { SelectZone } from '@/common';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
   export default {
     name: "SearchMerchant",
     components: {
@@ -93,8 +93,8 @@
       return {
         query: {
           province_code: this.$props.provinceCode,
-          zone_code: '', // 片区code
-          city_code: '', // 县域code
+          zone_id: '', // 片区code
+          city_id: '', // 县域code
           condition: '',
         },
         // 搜索完毕后，获取搜索到的列表itemList，
@@ -127,8 +127,8 @@
        */
       selectByCondition() {
         // 如果查询列表没有搜索参数，则初始化状态。
-        if (!this.$data.query.zone_code
-          && !this.$data.query.city_code
+        if (!this.$data.query.zone_id
+          && !this.$data.query.city_id
           && !this.$data.query.condition) {
           this.$data.itemList = [];
           this.$data.multipleSelection = [];
@@ -152,8 +152,8 @@
       clearQueryCondition() {
         this.$data.query = Object.assign({}, this.$data.query, {
           province_code: this.$props.provinceCode,
-          zone_code: '',
-          city_code: '',
+          zone_id: '',
+          city_id: '',
           condition: ''
         })
         this.$data.itemList = [];
@@ -223,7 +223,7 @@
       },
 
       async queryMerchant() {
-        let res = await Base.baseMerchantList(this.$data.query);
+        let res = await Http.get(Config.api.baseMerchantList, this.$data.query);
         if (res.code === 0) {
           // console.log('res.data', res.data);
           this.$data.itemList = res.data.map(item => ({ code: item.id, title: item.title }));

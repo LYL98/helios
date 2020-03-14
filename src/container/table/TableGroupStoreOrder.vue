@@ -1,5 +1,5 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.GroupStoreOrderDelivery || auth.GroupStoreOrderDeliveryAll || auth.GroupStoreOrderExport">
       <div class="left">
         <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelivery('multi')" plain v-if="auth.isAdmin || auth.GroupStoreOrderDelivery">批量发货</el-button>
@@ -15,14 +15,13 @@
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
+        class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="30" :selectable="selectable" v-if="auth.isAdmin || auth.GroupStoreOrderDelivery"></el-table-column>
+        <el-table-column type="selection" width="42" :selectable="selectable" v-if="auth.isAdmin || auth.GroupStoreOrderDelivery"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
@@ -51,9 +50,7 @@
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
         </el-table-column>
-        <!--table-column end 操作占位-->
-        <el-table-column label min-width="1"/>
-        <el-table-column label="操作" width="100" fixed="right" align="center">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -76,19 +73,12 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left"></div>
+      <div class="left">
+        <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelivery('multi')" plain v-if="auth.isAdmin || auth.GroupStoreOrderDelivery">批量发货</el-button>
+        <el-button size="mini" @click.native="handleDeliveryAll" type="primary" v-if="auth.isAdmin || auth.GroupStoreOrderDeliveryAll">一键发货</el-button>
+      </div>
       <div class="right">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-          @selection-change="handleSelectionChange"
-        />
+        <pagination :pageComponent='this'/>
       </div>
     </div>
     <!-- 表格end -->
@@ -105,26 +95,22 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.GroupStoreOrderDelivery && !this.auth.GroupStoreOrderDeliveryAll && !this.auth.GroupStoreOrderExport) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION;
-      }
       let pc = this.getPageComponents('QueryGroupStoreOrder');
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableGroupStoreOrder',
         tableColumn: [
           { label: '门店名称', key: 'store_title', width: '160', isShow: true },
           { label: '门店地址', key: 'store_address', width: '160', isShow: true },
-          { label: '联系方式', key: 'linkman', width: '160', isShow: true },
+          { label: '联系方式', key: 'linkman', width: '120', isShow: true },
           { label: '所在仓', key: 'city_title', width: '100', isShow: true },
           { label: '实付金额', key: 'amount', width: '100', isShow: true },
           { label: '状态', key: 'status', width: '80', isShow: true },
-          { label: '发货日期', key: 'delivery_date', width: '160', isShow: true },
-          { label: '创建时间', key: 'created', width: '160', isShow: false },
-          { label: '更新时间', key: 'updated', width: '160', isShow: false },
+          { label: '发货日期', key: 'delivery_date', width: '120', isShow: true },
+          { label: '创建时间', key: 'created', width: '120', isShow: false },
+          { label: '更新时间', key: 'updated', width: '120', isShow: false },
         ],
         groupStoreOrderStatus: Constant.GROUP_STORE_ORDER_STATUS,
         groupStoreOrderStatusType: Constant.GROUP_STORE_ORDER_STATUS_TYPE,

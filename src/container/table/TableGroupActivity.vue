@@ -1,5 +1,5 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.GroupActivityEditLog || auth.GroupActivityAdd">
       <div class="left"></div>
       <div class="right">
@@ -12,9 +12,7 @@
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
-        style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
+        class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -50,9 +48,7 @@
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
         </el-table-column>
-        <!--table-column end 操作占位-->
-        <el-table-column label min-width="1"/>
-        <el-table-column label="操作" width="100" fixed="right" align="center">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -92,17 +88,7 @@
     <div class="table-bottom">
       <div class="left"></div>
       <div class="right">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-          @selection-change="handleSelectionChange"
-        />
+        <pagination :pageComponent='this'/>
       </div>
     </div>
     <!-- 表格end -->
@@ -119,26 +105,22 @@
     },
     mixins: [tableMixin],
     created() {
-      if (!this.auth.isAdmin && !this.auth.GroupActivityEditLog && !this.auth.GroupActivityAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION
-      }
       let pc = this.getPageComponents('QueryGroupActivity');
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableGroupActivity',
         tableColumn: [
-          { label: '团购编号/名称', key: 'tid_title', width: '360', isShow: true },
-          { label: '开始时间', key: 'start_time', width: '160', isShow: true },
-          { label: '结束时间', key: 'end_time', width: '160', isShow: true },
-          { label: '商品数量', key: 'sku_num', width: '120', isShow: true },
+          { label: '团购编号/名称', key: 'tid_title', width: '240', isShow: true },
+          { label: '开始时间', key: 'start_time', width: '120', isShow: true },
+          { label: '结束时间', key: 'end_time', width: '120', isShow: true },
+          { label: '商品数量', key: 'sku_num', width: '80', isShow: true },
           { label: '团购状态', key: 'progress_status', width: '100', isShow: true },
           { label: '上架状态', key: 'status', width: '100', isShow: true },
           { label: '发货时间', key: 'delivery_date', width: '120', isShow: true },
-          { label: '创建时间', key: 'created', width: '160', isShow: false },
-          { label: '更新时间', key: 'updated', width: '160', isShow: false },
+          { label: '创建时间', key: 'created', width: '120', isShow: false },
+          { label: '更新时间', key: 'updated', width: '120', isShow: false },
         ],
         activityStatus: Constant.GROUP_ACTIVITY_STATUS,
         progressStatus: Constant.GROUP_ACTIVITY_PROGRESS_STATUS,

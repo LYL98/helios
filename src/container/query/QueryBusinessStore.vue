@@ -3,24 +3,22 @@
     <el-row>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="片区">
-          <my-select-zone v-model="editQuery.zone_code"
+          <my-select-zone v-model="editQuery.zone_id"
                           :provinceCode="editQuery.province_code"
                           clearable
                           size="small"
-                          @change="changeZone"
-                          :isUseToQuery="true"/>
+                          @change="changeZone"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="县域">
-          <my-select-city v-model="editQuery.city_code"
+          <my-select-city v-model="editQuery.city_id"
                           :provinceCode="editQuery.province_code"
                           ref="mySelectCity"
                           clearable
                           size="small"
-                          :zoneCode="editQuery.zone_code"
-                          @change="changeQuery"
-                          :isUseToQuery="true"/>
+                          :zoneId="editQuery.zone_id"
+                          @change="changeQuery"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
@@ -47,7 +45,6 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { mapGetters } from 'vuex';
   import {QueryItem, SelectZone, SelectCity} from '@/common';
   import { DataHandle } from '@/util';
   import Constant from "../../util/constant";
@@ -82,6 +79,7 @@
     },
     data() {
       return {
+        province: this.$province,
         currentDateRange: [],
         beforeDateRange: [],
         resetBeginDate: '',
@@ -121,8 +119,7 @@
         set(v) {
           this.$emit('change', v);
         }
-      },
-      ...mapGetters({province: 'globalProvince'})
+      }
     },
     methods: {
       //搜索日期
@@ -156,7 +153,7 @@
       },
       changeZone(v, isInit) {
         if (!isInit) {
-          this.editQuery.city_code = '';
+          this.editQuery.city_id = '';
           this.changeQuery()
         }
       },
@@ -173,8 +170,8 @@
           page: 1,
           page_size: 20,
           province_code: this.province.code,
-          zone_code: '',
-          city_code: '',
+          zone_id: '',
+          city_id: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,
           sort: this.backupSort

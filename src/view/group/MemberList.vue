@@ -4,7 +4,7 @@
       <el-row>
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="团员状态">
-            <my-button-group
+            <select-option
               :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
               v-model="query.is_freeze"
               @change="changeQuery"
@@ -46,12 +46,11 @@
 
     <div @mousemove="handleTableMouseMove">
       <el-table
-        class="list-table"
+        class="list-table my-table-float"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -156,7 +155,7 @@
    */
 
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
-  import { ButtonGroup, QueryItem, TableOperate, ImagePreview } from '@/common';
+  import { SelectOption, QueryItem, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
   import viewMixin from '@/view/view.mixin';
@@ -172,7 +171,7 @@
       'el-table-column': TableColumn,
       'el-tag': Tag,
       'el-pagination': Pagination,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'my-image-preview': ImagePreview

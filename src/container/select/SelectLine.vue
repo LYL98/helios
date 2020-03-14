@@ -5,20 +5,20 @@
     :filterable="filterable"
     :clearable="clearable"
     :placeholder="placeholder"
-    :class="isUseToQuery ? 'query-item-select' : 'default'"
+    style="width: 100%;"
     :disabled="disabled">
     <el-option
       v-for="item in listItem"
-      :key="item.code"
+      :key="item.id"
       :label="item.title"
-      :value="item.code">
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
 
 <script>
   import { Select, Option, MessageBox } from 'element-ui';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
   export default {
     name: "SelectLine",
     components: {
@@ -32,17 +32,17 @@
       placeholder: { type: String, default: '选择线路' },
       disabled: { type: Boolean, default: false },
       provinceCode: { type: String | Number, required: true },
-      lineCode: { type: String | Number, required: true },
-      isUseToQuery: {type: Boolean, default: false}
+      lineId: { type: String | Number, required: true },
+      initCallBack:  { type: Function }, //获取数据时回调，方便外边控制
     },
     model: {
-      prop: 'lineCode',
+      prop: 'lineId',
       event: 'change'
     },
     computed: {
       selectedLineCode: {
         get() {
-          return this.$props.lineCode;
+          return this.$props.lineId;
         },
         set(v) {
           this.$emit('change', v)
@@ -62,12 +62,13 @@
       // 获取所有线路的列表
       async baseLineList(){
         try {
-          let res = await Base.baseLineList({
+          let res = await Http.get(Config.api.baseLineList, {
             province_code: this.$props.provinceCode
           });
           if(res.code === 0){
             let rd = res.data;
             this.$data.listItem = rd;
+            this.$emit('initCallBack', rd);
           }else{
             MessageBox.alert(res.message, '提示');
           }

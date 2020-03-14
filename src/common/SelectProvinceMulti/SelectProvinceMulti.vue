@@ -4,7 +4,7 @@
 
 <script>
 import { Transfer, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectProvinceMulti",
@@ -34,7 +34,7 @@ export default {
     //获取所有省份
     async baseProvinceList(){
       let that = this;
-      let res = await Base.baseProvinceList();
+      let res = await Http.get(Config.api.baseProvinceList, {});
       if(res.code === 0){
         let rd = res.data, d = [];
         rd.forEach(item => {

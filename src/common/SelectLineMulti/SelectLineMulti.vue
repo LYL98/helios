@@ -1,10 +1,10 @@
 <template>
-  <el-transfer v-model="lineCodes" :data="dataItem" :titles="['未选线路','已选线路']" @change="changeLine"></el-transfer>
+  <el-transfer v-model="lineIds" :data="dataItem" :titles="['未选线路','已选线路']" @change="changeLine"></el-transfer>
 </template>
 
 <script>
 import { Transfer, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectLineMulti",
@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       pCode: this.provinceCode || '',
-      lineCodes: this.value || [],
+      lineIds: this.value || [],
       dataItem: []
     };
   },
@@ -40,7 +40,7 @@ export default {
         that.$data.dataItem = [];
         return false;
       }
-      let res = await Base.baseLineListOperator({
+      let res = await Http.get(Config.api.baseLineListOperator, {
         province_code: pCode
       });
       if(res.code === 0){
@@ -48,7 +48,7 @@ export default {
         rd.forEach(item => {
           d.push({
             label: item.title,
-            key: item.code,
+            key: item.id,
           });
         });
         that.$data.dataItem = d;
@@ -68,7 +68,7 @@ export default {
     value: {
       deep: true,
       handler: function (a, b) {
-        this.$data.lineCodes = a || [];
+        this.$data.lineIds = a || [];
       }
     }
   }

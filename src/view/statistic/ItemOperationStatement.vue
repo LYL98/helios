@@ -18,7 +18,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Tabs, TabPane} from 'element-ui';
   import ItemDailyAnalysisStatement from './ItemDailyAnalysisStatement';
   import ItemSingleAnalysisStatement from './ItemSingleAnalysisStatement';
@@ -35,12 +34,10 @@
     },
     data() {
       return {
+        auth: this.$auth,
         activeTab: 'first'
       }
     },
-    computed: mapGetters({
-      auth: 'globalAuth'
-    }),
     created() {
       documentTitle("统计 - 商品运营报表");
 

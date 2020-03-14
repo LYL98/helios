@@ -3,11 +3,10 @@
     <el-row>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="片区">
-          <my-select-zone v-model="editQuery.zone_code"
+          <my-select-zone v-model="editQuery.zone_id"
                           :provinceCode="editQuery.province_code"
                           clearable
                           size="small"
-                          :isUseToQuery="true"
                           @change="changeQuery"/>
         </my-query-item>
       </el-col>
@@ -35,7 +34,6 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { mapGetters } from 'vuex';
   import {QueryItem, SelectZone} from '@/common';
   import { DataHandle, Constant } from '@/util';
 
@@ -69,6 +67,7 @@
     },
     data() {
       return {
+        province: this.$province,
         currentDateRange: [],
         beforeDateRange: [],
         resetBeginDate: '',
@@ -108,8 +107,7 @@
         set(v) {
           this.$emit('change', v);
         }
-      },
-      ...mapGetters({province: 'globalProvince'})
+      }
     },
     methods: {
       //搜索日期
@@ -154,7 +152,7 @@
           page: 1,
           page_size: 20,
           province_code: this.province.code,
-          zone_code: '',
+          zone_id: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,
           sort: this.backupSort

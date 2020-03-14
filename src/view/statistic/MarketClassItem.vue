@@ -1,67 +1,65 @@
 <template>
-  <div>
+  <sub-menu>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
-        <el-breadcrumb-item
-          :to="{ path: '/statistic/market', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
-        >
+        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }">
           商品销售统计
         </el-breadcrumb-item>
-        <el-breadcrumb-item
-          :to="{ path: '/statistic/market/class', query: { display_class: breadcrumb.display_class, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
-        >
-          {{ breadcrumb.display_class }}
+        <el-breadcrumb-item :to="{ name: 'StatisticMarketClass2', query: {
+            begin_date: query.begin_date,
+            end_date: query.end_date,
+            system_class1: query.system_class1,
+            system_class_code1: query.system_class_code1
+        }}">
+          {{ query.system_class1 === '' ? '全部分类' : query.system_class1 }}
         </el-breadcrumb-item>
-        <el-breadcrumb-item>{{ breadcrumb.item_title }}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ name: 'StatisticMarketClass3', query: {
+            begin_date: query.begin_date,
+            end_date: query.end_date,
+            system_class1: query.system_class1,
+            system_class_code1: query.system_class_code1,
+            system_class2: query.system_class2,
+            system_class_code2: query.system_class_code2
+        }}">
+          {{ query.system_class2 === '' ? '全部分类' : query.system_class2 }}
+        </el-breadcrumb-item>
+        <el-breadcrumb-item>{{ query.system_class === '' ? '全部分类' : query.system_class }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="query" style="margin-bottom: 20px;">
       <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="片区">
-            <my-select-zone
-              v-model="query.zone_code"
-              :provinceCode="query.province_code"
-              clearable
+        <el-col :span="7">
+          <my-query-item label="时间">
+            <el-date-picker
               size="small"
-              @change="changeQuery"
-              class="query-item-select"
-              :isUseToQuery="true"
-              :showAll="true"
+              v-model="pickerValue"
+              type="daterange"
+              align="right"
+              value-format="yyyy-MM-dd"
+              unlink-panels
+              :picker-options="fixDateOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              @change="changePicker"
+              class="query-item-date"
+              :clearable="false"
             />
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="所在仓">
-            <my-select-city
+        <el-col :span="7">
+          <my-query-item label="三级分类">
+            <select-system-class-list
+              v-model="query.system_class_code"
+              @change="changeSystemClass"
               size="small"
-              :isUseToQuery="true"
-              placeholder="所在仓"
-              clearable
-              v-model="query.city_code"
-              :provinceCode="query.province_code"
-              :zoneCode="query.zone_code"
-              @change="changeQuery"
-              class="query-item-select"
-              :showAll="true"
+              :clearable="false"
+              :topCode="query.system_class_code2"
             />
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
-          <div style="display: flex">
-            <el-input
-              size="small"
-              class="query-item-input"
-              placeholder="请输入门店名称、电话"
-              v-model="query.condition"
-              clearable
-              @keyup.enter.native="changeQuery"
-              @clear="changeQuery"
-              ref="condition"
-            />
-            <el-button size="small" type="primary" @click="changeQuery" style="margin-left: 4px" icon="el-icon-search"></el-button>
-            <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
-          </div>
+        <el-col :span="7">
+          <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
         </el-col>
       </el-row>
     </div>
@@ -72,7 +70,7 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         @sort-change="onSort"
       >
@@ -82,29 +80,49 @@
           label="序号"
           :index="indexMethod"
         />
-        <el-table-column label="门店" prop="store_title">
+        <el-table-column label="商品" prop="item_system_class">
           <template slot-scope="scope">
-            {{ scope.row.store_title || '-' }}
+            <a href="javascript:void(0)"
+               class="title"
+               @click="handleShowClassDetail(scope.row)"
+               v-if="auth.isAdmin || auth.StatisticMarketClassItemStore"
+            >
+              {{ scope.row.code }} / {{ scope.row.title }}
+            </a>
+            <div v-else>
+              {{ scope.row.code }} / {{ scope.row.title }}
+            </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
+        <el-table-column label="分类">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
+            {{ scope.row.system_class_title || '' }}
           </template>
         </el-table-column>
-        <el-table-column label="称重金额" prop="check_chg">
-          <template slot-scope="scope">
-            <span v-if="scope.row.check_chg === 0">￥0</span>
-            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
-            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
             ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
-        <el-table-column label="件数" sortable="custom" prop="count_real" />
+        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.fram_total_price) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="件数" sortable="custom" prop="count_real"/>
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope">
+            <my-table-operate
+              :list="[
+                {
+                  title: '查看',
+                  isDisplay: auth.isAdmin || auth.StatisticMarketClassItemStore,
+                  command: () => handleShowClassDetail(scope.row)
+                }
+              ]"
+            />
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div class="footer">
@@ -121,18 +139,18 @@
         />
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  import { Row, Col, DatePicker, Table, TableColumn, Pagination, Input, Button, Breadcrumb, BreadcrumbItem } from 'element-ui';
-  import { QueryItem, SelectZone, SelectCity } from '@/common';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
+  import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
+  import { QueryItem, TableOperate, SelectSystemClassList } from '@/common';
+  import { Http, Config, DataHandle, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
-    name: "MarketClassItem",
+    name: "MarketClass",
+    mixins: [viewMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -140,25 +158,20 @@
       'el-breadcrumb-item': BreadcrumbItem,
       'el-date-picker': DatePicker,
       'el-table': Table,
+      'el-button': Button,
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
-      'el-input': Input,
-      'el-button': Button,
       'my-query-item': QueryItem,
-      'my-select-zone': SelectZone,
-      'my-select-city': SelectCity,
+      'my-table-operate': TableOperate,
+      'select-system-class-list': SelectSystemClassList
     },
-    computed: mapGetters({
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
-    }),
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_BREADCRUMB + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         pickerValue: [],
-        breadcrumb: { },
-        query: { },
+        breadcrumb: {},
+        query: {},
         listItem: {
           num: 0,
           items: []
@@ -168,12 +181,10 @@
     },
     created() {
       documentTitle("统计 - 商品销售统计");
-      this.initBreadcrumb();
       this.initQuery();
-      this.saleClassItemStoreQuery();
+      this.saleClassItemQuery();
     },
     methods: {
-      ...mapActions(['message', 'loading']),
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;
@@ -185,7 +196,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
@@ -201,41 +212,24 @@
       returnPrice(price) {
         return DataHandle.returnPrice(price);
       },
-      //返回百分比
-      returnPercentage(item_num, sun){
-        return DataHandle.returnPercentage(item_num, sun);
-      },
-      initBreadcrumb() {
-        let display_class = this.$route.query.display_class;
-        let item_title = this.$route.query.item_title;
-        let begin_date = this.$route.query.begin_date;
-        let end_date = this.$route.query.end_date;
-        this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
-          display_class: display_class,
-          item_title: item_title,
-          begin_date: begin_date,
-          end_date: end_date
-        })
-      },
+      //初始化参数
       initQuery() {
-        let pickerValue = [];
-        let begin_date = this.$route.query.begin_date;
-        let end_date = this.$route.query.end_date;
-        pickerValue.push(begin_date);
-        pickerValue.push(end_date);
-        this.$data.pickerValue = pickerValue;
-        this.$data.query = Object.assign(this.$data.query, {
+        let q = this.$route.query;
+        this.$data.pickerValue = [q.begin_date, q.end_date];
+        this.$data.query = {
           province_code: this.province.code,
-          begin_date: begin_date,
-          end_date: end_date,
-          sort: '-item_total_price',
-          item_id: this.$route.query.item_id,
-          zone_code: '',
-          city_code: '',
-          condition: '',
+          begin_date: q.begin_date,
+          end_date: q.end_date,
+          sort: '-amount_real',
+          system_class1: q.system_class1,
+          system_class_code1: q.system_class_code1,
+          system_class2: q.system_class2,
+          system_class_code2: q.system_class_code2,
+          system_class: q.system_class3,
+          system_class_code: q.system_class_code3,
           page: 1,
           page_size: Constant.PAGE_SIZE
-        });
+        };
       },
       // 改变查询日期
       changePicker(value) {
@@ -247,27 +241,16 @@
           this.$data.query.end_date = '';
         }
         this.$data.query.page = 1;
-        this.saleClassItemStoreQuery();
+        this.saleClassItemQuery();
       },
-
-      changeQuery() {
-        this.saleClassItemStoreQuery();
-      },
-
-      resetQuery() {
-        this.initQuery();
-        this.$refs['condition'].currentValue = '';
-        this.saleClassItemStoreQuery();
-      },
-
       changePage(page) {
         this.$data.query.page = page;
-        this.saleClassItemStoreQuery();
+        this.saleClassItemQuery();
       },
       changePageSize(size) {
         this.$data.query.page = 1;
         this.$data.query.page_size = size;
-        this.saleClassItemStoreQuery();
+        this.saleClassItemQuery();
       },
       onSort({ column, prop, order }) {
         if (order === 'ascending') {
@@ -278,29 +261,63 @@
           this.query.sort = ''
         }
         // this.$data.query.page = 1;
-        this.saleClassItemStoreQuery();
+        this.saleClassItemQuery();
       },
-
+      resetQuery() {
+        this.initQuery();
+        this.saleClassItemQuery();
+      },
+      //改变分类
+      changeSystemClass(data){
+        this.$data.query.system_class = data.title;
+        this.saleClassItemQuery();
+      },
       // 获取商品分类列表
-      async saleClassItemStoreQuery() {
+      async saleClassItemQuery() {
         let that = this;
         let { query } = that;
-        that.loading({isShow: true, isWhole: true});
-        let res = await Statistic.statisticalOrderItemSaleStores(query);
+        this.$loading({ isShow: true, isWhole: true });
+        let res = await Http.get(Config.api.statisticalOrderItemSum, query);
         if(res.code === 0){
-          res.data.items.map((item, index) => {
-            item.id = index;
-          });
           that.$data.listItem = res.data;
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
+      },
+      handleShowClassDetail(item) {
+        this.$router.push({
+          name: 'StatisticMarketClassItemStore',
+          query: {
+            item_id: item.id,
+            item_title: item.code + ' ' + item.title,
+            system_class1: this.query.system_class1,
+            system_class_code1: this.query.system_class_code1,
+            system_class2: this.query.system_class2,
+            system_class_code2: this.query.system_class_code2,
+            system_class3: this.query.system_class,
+            system_class_code3: this.query.system_class_code,
+            begin_date: this.query.begin_date,
+            end_date: this.query.end_date
+          }
+        });
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
+  .title {
+    color: inherit;
+    padding: 5px 10px 5px 0;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .title:hover {
+    font-weight: 600;
+  }
+  .title-disable {
+    color: inherit;
+    padding: 5px 10px 5px 0;
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-group-buy-item-statistics
     v-model="query"
     @change="changeQuery"
@@ -16,7 +16,7 @@
     <div class="statistics-table-list-container" style="position: relative;">
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -110,20 +110,19 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
   import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
   import { QueryGroupBuyItemStatistics } from '@/container'
-  // import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
   import Constant from "@/util/constant";
-  import { Statistic } from '@/service';
   import { DataHandle, Config, Http } from '@/util';
-  import { mapGetters, mapActions } from 'vuex';
+  import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "GroupBuyItemStatement",
+  mixins: [viewMixin],
   data() {
     return {
       dataItem: {
@@ -134,10 +133,10 @@ export default {
       offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
       /*
       * groupbuy_time: (YYYY-mm-dd HH:MM:ss)团购时间
-condition:
-sort: 排序字段指定 参团人数(user_num)/销售件数(item_sale_num)/下单金额(total_price_sale)/收入金额(header_profit)
-page:
-page_size:*/
+        condition:
+        sort: 排序字段指定 参团人数(user_num)/销售件数(item_sale_num)/下单金额(total_price_sale)/收入金额(header_profit)
+        page:
+        page_size:*/
       query: {
         page: 1,
         page_size: 20,
@@ -151,11 +150,6 @@ page_size:*/
       currentRow: {}
     }
   },
-  computed: mapGetters({
-    auth: 'globalAuth',
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
-  }),
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -189,7 +183,7 @@ page_size:*/
     },
 
     isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {
@@ -265,7 +259,7 @@ page_size:*/
         end_date,
       };
       //判断是否可导出
-      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(`${api}_check`, {
         province_code: this.province.code,
         ...query
@@ -277,9 +271,9 @@ page_size:*/
         }
         window.open(queryStr);
       }else{
-        this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+        this.$message({ title: '提示', message: res.message, type: 'error' });
       }
-      this.$store.dispatch('loading', {isShow: false});
+      this.$loading({ isShow: false });
     },
 
     loadListDataFirstPage() {
@@ -290,8 +284,8 @@ page_size:*/
     async statisticalSumGroupBuyItem(){
       let that = this;
       let { query } = that;
-      that.loading({isShow: true, isWhole: true});
-      let res = await Statistic.statisticalSumGroupBuyItem(query);
+      this.$loading({ isShow: true, isWhole: true });
+      let res = await Http.get(Config.api.statisticalSumGroupBuyItem, query);
       if(res.code === 0){
         //手动增加总计和平均值的行数据
         // if (res.data.items && res.data.items.length > 0) {
@@ -309,15 +303,13 @@ page_size:*/
         that.$data.dataItem = res.data;
         // that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
         //   item => item.m_title ? item.m_title : selectArea === 'item' ? that.formatString(item.item_code) + '/' + that.formatString(item.item_title)
-        //     : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.display_class_title)
+        //     : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.system_class_title)
         // )
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

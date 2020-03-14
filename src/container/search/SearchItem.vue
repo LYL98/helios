@@ -11,9 +11,8 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Autocomplete, Button } from 'element-ui';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
 
   export default {
     name: "SearchItem",
@@ -35,11 +34,6 @@
     model: {
       prop: 'item',
       event: 'select'
-    },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      }),
     },
     data() {
       let {title} = this.$props.item;
@@ -85,7 +79,7 @@
 
       async baseItemList({query, id}, callback) {
 
-        let data = { condition: query, province_code: this.province.code };
+        let data = { condition: query, province_code: this.$province.code };
 
         if (this.$props.is_gift !== null) {
           data.is_gift = this.$props.is_gift;
@@ -99,7 +93,7 @@
           data.promotion_time_end = this.$props.is_promotion.promotion_time_end;
         }
 
-        let res = await Base.baseItemList(data);
+        let res = await Http.get(Config.api.baseItemList, data);
         if (res.code === 0) {
           let rd = res.data;
           if (rd.length === 0) { // 如果查询结果为空，则提示没有结果

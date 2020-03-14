@@ -1,11 +1,10 @@
 <template>
-  <div @mousemove="handleTableMouseMove">
+  <div @mousemove="handleTableMouseMove" class="table-conter">
     <el-table
-      class="list-table"
+      class="list-table my-table-float"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
       :data="data"
-      :height="windowHeight - offsetHeight"
       :row-class-name="highlightRowClassName"
       highlight-current-row="highlight-current-row"
       :row-key="rowIdentifier"
@@ -112,12 +111,11 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Table, TableColumn, Dialog, Form, FormItem, MessageBox, Tag } from 'element-ui';
   import {TableOperate} from '@/common';
-  import { Constant, DataHandle } from '@/util';
-  import { Item } from '@/service';
-  import { tableMixin } from '@/mixins';
+  import { Http, Config, Constant, DataHandle } from '@/util';
+  import tableMixin from './table.mixin';
+  
   export default {
     name: "TableMarketingScopePromotion",
     components: {
@@ -138,7 +136,6 @@
       pageSize: { type: Number, required: true },
       start: { type: Function, required: true },
       end: { type: Function, required: true },
-      offsetHeight: {type: Number, required: true}
     },
     data() {
       return {
@@ -150,10 +147,6 @@
       }
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
       promotionStatus: {
         get() {
           return Constant.ITEM_PROMOTION_STATUS;
@@ -171,7 +164,7 @@
         return (this.$props.page - 1) * this.$props.pageSize + index + 1;
       },
       async handleShowDetail(id) {
-        let res = await Item.promotionDetail({ promotion_id: id });
+        let res = await Http.get(Config.api.itemPromotionDetail, { promotion_id: id });
         if (res.code === 0) {
           this.$data.dialog.item = res.data;
           this.$data.dialog.isShow = true;

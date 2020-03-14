@@ -1,10 +1,10 @@
 <template>
-  <el-transfer v-model="zoneCodes" :data="dataItem" :titles="['未选片区','已选片区']" @change="changeZone"></el-transfer>
+  <el-transfer v-model="zoneIds" :data="dataItem" :titles="['未选片区','已选片区']" @change="changeZone"></el-transfer>
 </template>
 
 <script>
 import { Transfer, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectZoneMulti",
@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       pCode: this.provinceCode || '',
-      zoneCodes: this.value || [],
+      zoneIds: this.value || [],
       dataItem: []
     };
   },
@@ -40,7 +40,7 @@ export default {
         that.$data.dataItem = [];
         return false;
       }
-      let res = await Base.baseZoneList({
+      let res = await Http.get(Config.api.baseZoneList, {
         province_code: pCode
       });
       if(res.code === 0){
@@ -48,7 +48,7 @@ export default {
         rd.forEach(item => {
           d.push({
             label: item.title,
-            key: item.code,
+            key: item.id,
           });
         });
         that.$data.dataItem = d;
@@ -68,7 +68,7 @@ export default {
     value: {
       deep: true,
       handler: function (a, b) {
-        this.$data.zoneCodes = a || [];
+        this.$data.zoneIds = a || [];
       }
     }
   }

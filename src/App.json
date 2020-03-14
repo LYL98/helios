@@ -1,0 +1,408 @@
+{
+  "menus": [
+    {
+      "title": "商品",
+      "icon": "&#xe73e;",
+      "name": "Item",
+      "children": [
+        {
+          "title": "商品库",
+          "name": "ItemGlobalMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "商品库",
+              "upName": "ItemGlobalMain",
+              "name": "ItemGlobal"
+            },
+            {
+              "title": "回收站",
+              "upName": "ItemGlobalMain",
+              "name": "ItemRecover"
+            }
+          ]
+        },
+        {
+          "title": "商品属性",
+          "name": "ItemPropertyMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "科学分类",
+              "upName": "ItemPropertyMain",
+              "name": "ItemSystemClass"
+            },
+            {
+              "title": "筐信息",
+              "upName": "ItemPropertyMain",
+              "name": "ItemFrame"
+            }
+          ]
+        },
+        {
+          "title": "货架商品",
+          "name": "ItemListMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "在售商品",
+              "upName": "ItemListMain",
+              "name": "ItemList"
+            },
+            {
+              "title": "待售商品",
+              "upName": "ItemListMain",
+              "name": "ItemListForSale"
+            }
+          ]
+        },
+        {
+          "title": "货架商品属性",
+          "name": "ItemListPropertyMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "商品价格标签",
+              "upName": "ItemListPropertyMain",
+              "name": "ItemTagsPrice"
+            },
+            {
+              "title": "商品运营标签",
+              "upName": "ItemListPropertyMain",
+              "name": "ItemTags"
+            },
+            {
+              "title": "展示分类",
+              "upName": "ItemListPropertyMain",
+              "name": "ItemDisplayClass"
+            }
+          ]
+        },
+        {
+          "title": "每日报价",
+          "name": "ItemPricing"
+        },
+        {
+          "title": "供应商",
+          "name": "ItemSupplier"
+        },
+        {
+          "title": "采购",
+          "name": "ItemPurchaseMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "预采",
+              "upName": "ItemPurchaseMain",
+              "name": "ItemGPurchase"
+            },
+            {
+              "title": "反采",
+              "upName": "ItemPurchaseMain",
+              "name": "ItemLocalPurchase"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "业务",
+      "icon": "&#xe736;",
+      "name": "Business",
+      "children": [
+        {
+          "title": "商户",
+          "name": "MerchantMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "门店",
+              "upName": "MerchantMain",
+              "name": "MerchantStoreQuery"
+            },
+            {
+              "title": "门店筐",
+              "upName": "MerchantMain",
+              "name": "MerchantRefundQuery"
+            }
+          ]
+        },
+        {
+          "title": "商户属性",
+          "name": "MerchantPropertyMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "商户等级",
+              "upName": "MerchantPropertyMain",
+              "name": "MerchantGrade"
+            },
+            {
+              "title": "商户内标签",
+              "upName": "MerchantPropertyMain",
+              "name": "MerchantInnerTags"
+            },
+            {
+              "title": "商户外标签",
+              "upName": "MerchantPropertyMain",
+              "name": "MerchantOuterTags"
+            }
+          ]
+        },
+        {
+          "title": "用户订单",
+          "name": "OrderList"
+        },
+        {
+          "title": "售后订单",
+          "name": "OrderAfterSale"
+        },
+        {
+          "title": "营销",
+          "name": "MarketMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "全场营销",
+              "upName": "MarketMain",
+              "name": "MarketingScopePromotionQuery"
+            },
+            {
+              "title": "优惠券",
+              "upName": "MarketMain",
+              "name": "MarketingCouponQuery"
+            },
+            {
+              "title": "Banner",
+              "upName": "MarketMain",
+              "name": "Banner"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "仓库",
+      "icon": "&#xe75f;",
+      "name": "Warehouse",
+      "children": [
+        {
+          "title": "库存",
+          "name": "WarehouseInventory"
+        },
+        {
+          "title": "品控收货",
+          "name": "WarehouseQualityControl"
+        },
+        {
+          "title": "入库",
+          "name": "WarehouseStockPending"
+        },
+        {
+          "title": "库存变动记录",
+          "name": "WarehouseInventoryMove"
+        },
+        {
+          "title": "出库计划",
+          "name": "WarehouseOutStorage"
+        },
+        {
+          "title": "调拨单",
+          "name": "WarehouseDistribute"
+        },
+        {
+          "title": "库",
+          "name": "WarehouseList"
+        }
+      ]
+    },
+    {
+      "title": "场地",
+      "icon": "&#xe75f;",
+      "name": "Operate",
+      "children": [
+        {
+          "title": "品控收货",
+          "name": "OperateReceiving"
+        },
+        {
+          "title": "分配装车",
+          "name": "OperateTruckLoadMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "分配",
+              "upName": "OperateTruckLoadMain",
+              "name": "OperateSort"
+            },
+            {
+              "title": "装车",
+              "upName": "OperateTruckLoadMain",
+              "name": "OperateTruckLoad"
+            },
+            {
+              "title": "装车延时",
+              "upName": "OperateTruckLoadMain",
+              "name": "OperateTruckLoadDelay"
+            }
+          ]
+        },
+        {
+          "title": "发车",
+          "name": "OperateDepart"
+        },
+        {
+          "title": "线路规划",
+          "name": "OperateLineList"
+        },
+        {
+          "title": "配送人员",
+          "name": "Deliver"
+        },{
+          "title": "退筐",
+          "name": "OperateRefundFrame"
+        }
+      ]
+    },{
+      "title": "财务",
+      "icon": "&#xe64e;",
+      "name": "Finance",
+      "children": [{
+        "title": "客户财务管理",
+        "name": "FinanceBalanceQuery"
+      },{
+        "title": "财务审核",
+        "name": "FinanceApproveQuery"
+      },{
+        "title": "供应商流水",
+        "name": "FinanceSBDetail"
+      },{
+        "title": "供应商流水审核",
+        "name": "FinanceSBDetailAudit"
+      },{
+        "title": "供应商对账单",
+        "name": "FinanceSStatement"
+      }]
+    },{
+      "title": "统计",
+      "icon": "&#xe7ab;",
+      "name": "Statistic",
+      "children": [{
+        "title": "商品销售统计",
+        "name": "StatisticMarket"
+      },{
+        "title": "客户订单统计",
+        "name": "StatisticClient"
+      },{
+        "title": "运营统计",
+        "name": "StatisticOperation"
+      },{
+        "title": "导出、打印",
+        "name": "StatisticExportPrint"
+      },{
+        "title": "业务运营报表",
+        "name": "BusinessOperationStatement"
+      },{
+        "title": "商品运营报表",
+        "name": "ItemOperationStatement"
+      }]
+    },{
+      "title": "设置",
+      "icon": "&#xe74c;",
+      "name": "System",
+      "children": [{
+        "title": "运营人员",
+        "name": "SystemOperatorList"
+      },{
+        "title": "角色",
+        "name": "SystemRoleList"
+      },{
+        "title": "平台设置",
+        "name": "SystemSettingMain",
+        "type": "main",
+        "children": [
+          {
+            "title": "省",
+            "upName": "SystemSettingMain",
+            "name": "Province"
+          },
+          {
+            "title": "仓",
+            "upName": "SystemSettingMain",
+            "name": "Storehouse"
+          },
+          {
+            "title": "运营配置",
+            "upName": "SystemSettingMain",
+            "name": "Setting"
+          }
+        ]
+      },{
+        "title": "区域运营配置",
+        "name": "SettingCustom"
+      },{
+        "title": "区域配置",
+        "name": "SystemAreaMain",
+        "type": "main",
+        "children": [
+          {
+            "title": "片区",
+            "upName": "SystemAreaMain",
+            "name": "Zone"
+          },
+          {
+            "title": "县域",
+            "upName": "SystemAreaMain",
+            "name": "City"
+          }
+        ]
+      }]
+    },{
+      "title": "团购",
+      "icon": "&#xe652;",
+      "name": "Group",
+      "children": [
+        {
+          "title": "团购活动",
+          "name": "GroupActivity"
+        },
+        {
+          "title": "商品列表",
+          "name": "GroupItem"
+        },
+        {
+          "title": "用户订单",
+          "name": "GroupOrderQuery"
+        },
+        {
+          "title": "门店订单",
+          "name": "GroupStoreOrder"
+        },
+        {
+          "title": "团购门店",
+          "name": "GroupHeadQuery"
+        },
+        {
+          "title": "团员列表",
+          "name": "GroupMemberQuery"
+        },
+        {
+          "title": "团购统计",
+          "name": "GroupBuyStatement"
+        },
+        {
+          "title": "商品分类",
+          "name": "GroupItemClass"
+        },
+        {
+          "title": "回收站",
+          "name": "GroupItemRecoverList"
+        },
+        {
+          "title": "Banner管理",
+          "name": "GroupBanner"
+        }
+      ]
+    }
+  ]
+}

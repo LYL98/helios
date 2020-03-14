@@ -2,35 +2,35 @@
   <el-select
     filterable
     :clearable="clearable"
-    v-model="selectedCityCode"
+    v-model="selectedCityId"
     :disabled="disabled"
     :placeholder="placeholder || '请选择所在仓'"
     :size="size"
     @change="onChange"
-    :class="isUseToQuery ? 'query-item-select' : 'default'"
+    style="width: 100%;"
   >
     <el-option v-if="typeof showAll !== 'undefined'" key="" label="全部" value="">
     </el-option>
     <el-option
       v-for="item in dataItem"
-      :key="item.code"
+      :key="item.id"
       :label="item.title"
-      :value="item.code">
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
 
 <script>
-  import { Select, Option, MessageBox } from 'element-ui';
-  import { Base } from '@/service';
+  import { Select, Option } from 'element-ui';
+  import { Http, Config } from '@/util';
 
   export default {
-    name: "SelectCity",
+    name: "SelectCityRefactor",
     components: {
       'el-select': Select,
       'el-option': Option
     },
-    props: ['value', 'provinceCode', 'zoneCode' ,'showAll', 'clearable', 'placeholder', 'disabled', 'size','isUseToQuery'],
+    props: ['value', 'provinceCode', 'zoneId' ,'showAll', 'clearable', 'placeholder', 'disabled', 'size'],
     model: {
       prop: 'value',
       event: 'change'
@@ -42,7 +42,7 @@
     },
     computed: {
       //县市改变
-      selectedCityCode: {
+      selectedCityId: {
         get() {
           return this.$props.value;
         },
@@ -63,7 +63,7 @@
           this.baseCityList();
         }
       },
-      zoneCode: {
+      zoneId: {
         deep: true,
         immediate: true,
         handler: function (next, pre) {
@@ -72,29 +72,29 @@
       },
     },
     methods: {
-      onChange(cityCode) {
+      onChange(cityId) {
         let cityName = '';
         for (let i = 0; i < this.dataItem.length; i++) {
           let item = this.dataItem[i];
-          if (item.code === cityCode) {
+          if (item.id === cityId) {
             cityName = item.title;
             break;
           }
         }
-        // console.log('cityCode: ', cityCode, ', ', cityName);
+        // console.log('cityId: ', cityId, ', ', cityName);
         this.$emit('changeCityName', cityName);
       },
       //根据传进来的省份code 获取城市列表
       async baseCityList(){
-        let res = await Base.baseCityList({
+        let res = await Http.get(Config.api.baseCityList, {
           province_code: this.$props.provinceCode || '',
-          zone_code: this.$props.zoneCode || ''
+          zone_id: this.$props.zoneId || ''
         });
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
         }else{
-          MessageBox.alert(res.message, '提示');
+          this.$messageBox.alert(res.message, '提示');
         }
       },
     }
@@ -102,8 +102,4 @@
 </script>
 
 <style scoped>
-  .default{
-    width: 100%;
-  }
-
 </style>

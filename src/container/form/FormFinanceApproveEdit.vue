@@ -6,9 +6,9 @@
         <el-radio border label="declined">驳回</el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item label="备注" prop="check_remark">
+    <el-form-item label="备注" prop="audit_remark">
       <el-input
-        v-model="editItem.check_remark"
+        v-model="editItem.audit_remark"
         type="textarea"
         :rows="3"
         resize="none"
@@ -45,7 +45,7 @@
       return {
         editItem: editItem,
         rules: {
-          check_remark: [
+          audit_remark: [
             { max: 200, message: '不能超过200个字符，请重新编辑', trigger: 'change' }
           ]
         }

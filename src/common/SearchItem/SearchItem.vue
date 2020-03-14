@@ -12,7 +12,7 @@
 
 <script>
 import { Autocomplete, Button } from 'element-ui'
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SearchItem",
@@ -21,16 +21,23 @@ export default {
     'el-button': Button
   },
   props: ['value', 'size', 'provinceCode'],
-  // watch: {
-  //   inputValue: function (after, before) {
-  //     // 把变化后的值发送到父组件
-  //     this.$emit('input', after)
-  //   }
-  // },
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
   data() {
     return {
-      itemList: [],
-      inputValue: this.value
+      itemList: []
+    }
+  },
+  computed: {
+    inputValue: {
+      get() {
+        return this.$props.value;
+      },
+      set(v) {
+        this.$emit('change', v);
+      }
     }
   },
   methods: {
@@ -45,7 +52,7 @@ export default {
       this.inputValue = '';
     },
     async baseItemList({query, id}, callback) {
-      let res = await Base.baseItemList({
+      let res = await Http.get(Config.api.baseItemList, {
         condition: query,
         province_code: this.$props.provinceCode || '',
       });

@@ -1,5 +1,5 @@
 <template>
-  <div class="table-body">
+  <div class="container-table">
     <div class="table-top" v-if="(page === 'item' && (auth.isAdmin || auth.GroupItemEditLog || auth.GroupItemAdd || auth.GroupItemDelete)) ||
       (page === 'recover' && (auth.isAdmin || auth.GroupItemRecover))">
       <div class="left">
@@ -17,14 +17,13 @@
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%"
-        :height="windowHeight - offsetHeight"
-        class="list-table"
+        class="list-table my-table-float"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="30" v-if="auth.isAdmin || auth.GroupItemDelete || auth.GroupItemRecover"></el-table-column>
+        <el-table-column type="selection" width="42" v-if="auth.isAdmin || auth.GroupItemDelete || auth.GroupItemRecover"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
@@ -48,9 +47,7 @@
             <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
           </div>
         </el-table-column>
-        <!--table-column end 操作占位-->
-        <el-table-column label min-width="1"/>
-        <el-table-column label="操作" width="100" fixed="right" align="center">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -78,19 +75,12 @@
       </el-table>
     </div>
     <div class="table-bottom">
-      <div class="left"></div>
+      <div class="left">
+        <el-button type="primary" size="mini" :disabled="multipleSelection.length === 0" @click.native="handleDelete('multi')" v-if="(auth.isAdmin || auth.GroupItemDelete) && page === 'item'">批量删除</el-button>
+        <el-button size="mini" :disabled="multipleSelection.length === 0" @click.native="handleRecover('multi')" v-if="(auth.isAdmin || auth.GroupItemRecover) && page === 'recover'">批量恢复</el-button>
+      </div>
       <div class="right">
-        <el-pagination
-          background
-          layout="total, sizes, prev, pager, next, jumper"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          @size-change="changePageSize"
-          @current-change="changePage"
-          :total="dataItem.num"
-          :page-size="query.page_size"
-          :current-page="query.page"
-          @selection-change="handleSelectionChange"
-        />
+        <pagination :pageComponent='this'/>
       </div>
     </div>
     <!-- 表格end -->
@@ -110,25 +100,20 @@
       page: { type: String, default: 'item' }, //页面item、recover
     },
     created() {
-      if((this.page === 'item' && !this.auth.isAdmin && !this.auth.GroupItemEditLog && !this.auth.GroupItemAdd && !this.auth.GroupItemDelete) ||
-        (this.page === 'recover' && !this.auth.isAdmin && !this.auth.GroupItemRecover)){
-          this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION;
-        }
       let pc = this.getPageComponents('QueryGroupItem');
       this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_PAGINATION,
         tableName: 'TableGroupItem',
         tableColumn: [
-          { label: '商品编号/名称', key: 'code_title', width: '360', isShow: true },
-          { label: '商品分类', key: 'category', width: '180', isShow: true },
+          { label: '商品编号/名称', key: 'code_title', width: '200', isShow: true },
+          { label: '商品分类', key: 'category', width: '120', isShow: true },
           { label: '市场价', key: 'price_origin', width: '100', isShow: true },
           { label: '建议团长价', key: 'advice_header_price', width: '100', isShow: true },
           { label: '建议团购价', key: 'advice_price_sale', width: '100', isShow: true },
-          { label: '创建时间', key: 'created', width: '160', isShow: true },
-          { label: '更新时间', key: 'updated', width: '160', isShow: false },
+          { label: '创建时间', key: 'created', width: '120', isShow: true },
+          { label: '更新时间', key: 'updated', width: '120', isShow: false },
         ]
       }
     },

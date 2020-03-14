@@ -24,10 +24,9 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import { mapGetters } from 'vuex';
-  import { QueryItem, CollapseQuery, SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
+  import { QueryItem } from '@/common';
   import { DataHandle } from '@/util';
-  import { queryMixin } from '@/mixins';
+  import queryMixin from './query.mixin';
 
   export default {
     name: "QueryGroupBuyMemberStatistics",
@@ -37,11 +36,7 @@
       'el-col': Col,
       'el-input': Input,
       'el-button': Button,
-      'my-select-buyer': SelectBuyer,
-      'my-select-display-class': SelectDisplayClass,
-      'my-search-item': SearchItem,
-      'my-query-item': QueryItem,
-      'my-collapse-query': CollapseQuery
+      'my-query-item': QueryItem
     },
     mixins: [queryMixin],
     created() {
@@ -58,24 +53,23 @@
     },
     props: {
       // 查询对象
-      query: {type: Object, required: true},
+      queryData: {type: Object, required: true},
       reset: {type: Function, required: true}
     },
     model: {
-      prop: 'query',
+      prop: 'queryData',
       event: 'change'
     },
     computed: {
       editQuery: {
         get() {
-          this.backupSort = this.$props.query.sort;
-          return this.$props.query;
+          this.backupSort = this.$props.queryData.sort;
+          return this.$props.queryData;
         },
         set(v) {
           this.$emit('change', v);
         }
-      },
-      ...mapGetters({province: 'globalProvince'})
+      }
     },
     methods: {
       changeQuery() {

@@ -18,7 +18,7 @@
           >{{ scope.row.is_freeze_header ? '已冻结' : '未冻结' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <my-table-operate
             @command-click="handleCommandClick(scope.row)"
@@ -37,11 +37,10 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import { Table, TableColumn, MessageBox, Tag } from 'element-ui';
   import { TableOperate } from '@/common';
   import { Config, Http } from '@/util';
-  import { tableMixin } from '@/mixins';
+  import tableMixin from './table.mixin';
 
   export default {
     name: "TableGroupHeadDetailList",
@@ -54,12 +53,8 @@
     mixins: [tableMixin],
     props: {
       dataItem: { type: Array, required: true},
-      getPageComponents: { type: Function, require: true }, //获取页面组件
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth'
-      }),
     },
     data() {
       return {
@@ -76,11 +71,11 @@
           type: 'warning'
         }).then(async () => {
           let res = await Http.post(Config.api.groupHeadFreeze, {
-            header_id: data.id,
+            header_id: data.header_id,
             is_freeze_header: !data.is_freeze_header
           });
           if(res.code === 0){
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: `已${str}`,
               type: 'success'
@@ -91,7 +86,7 @@
               com.$data.groupDetail.members2[index].is_freeze_header = !data.is_freeze_header;
             }
           }else{
-            this.$store.dispatch('message', {
+            this.$message({
               title: '提示',
               message: res.message,
               type: 'error'

@@ -42,7 +42,7 @@ export default {
     localStorage.setItem(name, JSON.stringify(data));
   },
   /**
-   * 写入LocalStorage
+   * 删除LocalStorage
    * @param {*name} name
    */
   removeLocalStorage(name) {
@@ -97,17 +97,17 @@ export default {
   //页面设置
   setPageSetting(key, value) {
     let storageData = {};
-    let apsd = localStorage.getItem("applePageSettingData");
+    let apsd = localStorage.getItem("heliosPageSettingData");
     if (apsd != null && typeof apsd != "undefined") {
       storageData = JSON.parse(apsd);
     }
     storageData[key] = value;
-    localStorage.setItem("applePageSettingData", JSON.stringify(storageData));
+    localStorage.setItem("heliosPageSettingData", JSON.stringify(storageData));
   },
 
   //获取页面设置
   getPageSetting(key) {
-    let apsd = localStorage.getItem("applePageSettingData");
+    let apsd = localStorage.getItem("heliosPageSettingData");
     if (apsd != null && typeof apsd != "undefined") {
       let storageData = JSON.parse(apsd);
       if (key) {

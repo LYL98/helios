@@ -4,7 +4,7 @@
     <draggable class="draggable" v-model="fileList" @end="onEndDraggable" :options="{group: 'people'}">
       <div class="avatar" v-for="item in fileList" :key="item.uid">
         <span class="float-layer">
-          <i class="el-icon-delete" @click="handleRemove(item.url)"></i>
+          <i class="el-icon-delete" @click="handleRemove(item.url)" v-if="!disabled"></i>
           <i class="el-icon-search" @click="handlePreview(item.url)"></i>
         </span>
         <img :src="item.url + '_min200x200'">
@@ -28,6 +28,7 @@
       :before-upload="onBeforeUpload"
       :on-success="onSuccess"
       :on-error="onError"
+      :disabled="disabled"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -85,7 +86,8 @@
       multiple: { type: Boolean, default: true },
       images: { type: Array | String, default: '' },
       module: { type: String, default: 'item' },
-      limit: { type: Number, default: 1 }
+      limit: { type: Number, default: 1 },
+      disabled: { type: Boolean, default: false }
     },
     data() {
       // 获取传递进来的默认值

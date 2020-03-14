@@ -1,22 +1,24 @@
 <template>
-  <el-select v-model="zoneCode" @clear="onClear"
-             :clearable="clearable" :size="size"
-             filterable placeholder="请选择片区"
-             :class="isUseToQuery ? 'query-item-select' : 'default'"
-             @change="changeZone">
-    <el-option v-if="typeof showAll !== 'undefined'" key="" label="全部" value=""></el-option>
-    <el-option
-      v-for="item in dataItem"
-      :key="item.code"
-      :label="item.title"
-      :value="item.code">
-    </el-option>
+  <el-select
+    v-model="zoneId" @clear="onClear"
+    :clearable="clearable" :size="size"
+    :disabled="disabled"
+    filterable placeholder="请选择片区"
+    style="width: 100%;"
+    @change="changeZone">
+      <el-option v-if="typeof showAll !== 'undefined'" key="" label="全部" value=""></el-option>
+      <el-option
+        v-for="item in dataItem"
+        :key="item.id"
+        :label="item.title"
+        :value="item.id">
+      </el-option>
   </el-select>
 </template>
 
 <script>
 import { Select, Option, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
 export default {
   name: "SelectZone",
@@ -27,7 +29,7 @@ export default {
   created(){
     this.baseZoneList();
   },
-  props: ['value', 'provinceCode', 'showAll', 'size', 'clearable', 'isUseToQuery'],
+  props: ['value', 'provinceCode', 'showAll', 'size', 'clearable', 'disabled'],
   model: {
     prop: 'value',
     event: 'ev'
@@ -35,7 +37,7 @@ export default {
   data() {
     return {
       pCode: this.provinceCode || '',
-      zoneCode: this.value || '',
+      zoneId: this.value || '',
       dataItem: []
     };
   },
@@ -47,7 +49,7 @@ export default {
 
       let title = ''
       this.dataItem.map(item => {
-        if (item.code === v) {
+        if (item.id === v) {
           title = item.title
         }
       });
@@ -64,7 +66,7 @@ export default {
         that.$data.dataItem = [];
         return false;
       }
-      let res = await Base.baseZoneList({
+      let res = await Http.get(Config.api.baseZoneList, {
         province_code: pCode
       });
       if(res.code === 0){
@@ -72,7 +74,7 @@ export default {
         that.$data.dataItem = rd;
         //如果只有一个片区，默认选择，页面不显示
         if(rd.length === 1){
-          that.changeZone(rd[0].code, true);
+          that.changeZone(rd[0].id, true);
         }else{
           that.changeZone('', true);
         }
@@ -92,7 +94,7 @@ export default {
     value: {
       deep: true,
       handler: function (a, b) {
-        this.$data.zoneCode = a || '';
+        this.$data.zoneId = a || '';
       }
     }
   }
@@ -101,8 +103,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .default{
-    width: 100%;
-  }
-
 </style>

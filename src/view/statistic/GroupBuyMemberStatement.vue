@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <query-group-buy-member-statistics
     v-model="query"
     @change="changeQuery"
@@ -16,7 +16,7 @@
     <div class="statistics-table-list-container" style="position: relative;">
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -101,20 +101,18 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
   import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
   import { QueryGroupBuyMemberStatistics } from '@/container'
-  // import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
-  import Constant from "@/util/constant";
-  import { Statistic } from '@/service';
-  import { DataHandle, Config, Http } from '@/util';
-  import { mapGetters, mapActions } from 'vuex';
+  import { DataHandle, Config, Http, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "GroupBuyMemberStatement",
+  mixins: [viewMixin],
   data() {
     return {
       dataItem: {
@@ -137,11 +135,6 @@ export default {
       currentRow: {}
     }
   },
-  computed: mapGetters({
-    auth: 'globalAuth',
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
-  }),
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -175,7 +168,7 @@ export default {
     },
 
     isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {
@@ -252,7 +245,7 @@ export default {
       };
       
       //判断是否可导出
-      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(`${api}_check`, {
         province_code: this.province.code,
         ...query
@@ -264,9 +257,9 @@ export default {
         }
         window.open(queryStr);
       }else{
-        this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+        this.$message({ title: '提示', message: res.message, type: 'error' });
       }
-      this.$store.dispatch('loading', {isShow: false});
+      this.$loading({ isShow: false });
     },
 
     loadListDataFirstPage() {
@@ -277,8 +270,8 @@ export default {
     async statisticalSumGroupBuyMember(){
       let that = this;
       let { query } = that;
-      that.loading({isShow: true, isWhole: true});
-      let res = await Statistic.statisticalSumGroupBuyMember(query);
+      this.$loading({ isShow: true, isWhole: true });
+      let res = await Http.get(Config.api.statisticalSumGroupBuyMember, query);
       if(res.code === 0){
         //手动增加总计和平均值的行数据
         // if (res.data.items && res.data.items.length > 0) {
@@ -296,15 +289,13 @@ export default {
         that.$data.dataItem = res.data;
         // that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
         //   item => item.m_title ? item.m_title : selectArea === 'item' ? that.formatString(item.item_code) + '/' + that.formatString(item.item_title)
-        //     : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.display_class_title)
+        //     : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.system_class_title)
         // )
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

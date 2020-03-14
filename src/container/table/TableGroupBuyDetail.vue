@@ -38,22 +38,10 @@
         <div :class="isEllipsis(scope.row)">{{ scope.row.sale_num }}</div>
       </template>
     </el-table-column>
-    <!--<el-table-column label="团购状态" prop="progress_status" min-width="80">-->
-      <!--<template slot-scope="scope">-->
-        <!--<el-tag-->
-          <!--size="small"-->
-          <!--:type="statusTagType[scope.row.progress_status]"-->
-          <!--disable-transitions-->
-        <!--&gt;-->
-          <!--{{ groupBuyProgressStatus(scope.row.progress_status, scope.row.gb_result) }}-->
-        <!--</el-tag>-->
-      <!--</template>-->
-    <!--</el-table-column>-->
   </el-table>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import { Table, TableColumn, MessageBox, Tag } from 'element-ui';
   import {TableOperate} from '@/common';
   import { Constant, DataHandle } from '@/util';
@@ -70,17 +58,14 @@
       data: { type: Array, required: true},
       page: { type: Number, required: true },
       pageSize: { type: Number, required: true },
-      offsetHeight: { type: Number, required: true},
       showItem: { type: Function, required: true },
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
+      
     },
     data() {
       return {
+        auth: this.$auth,
         currentRow: {},
         statusTagType: {
           pre: 'warning',
@@ -103,7 +88,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {

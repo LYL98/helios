@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <!-- 查询 -->
     <div class="query" style="margin-bottom: 16px;">
       <my-query-item label="时间">
@@ -19,14 +19,13 @@
       </my-query-item>
     </div>
 
-    <div :style="'height:' + (windowHeight - offsetHeight) + 'px; overflow-y: auto;'">
+    <div :style="'height:' + (viewWindowHeight - offsetHeight) + 'px; overflow-y: auto;'">
       <!-- 图表 -->
       <div class="echart-container">
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
           <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
-          <li>称重总金额: <span>{{ returnPrice(totalCheckChg) }}</span> 元</li>
-          <li>称重后商品总金额: <span>{{ returnPrice(totalAmountReal) }}</span> 元</li>
+          <li>订单框总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
           <li>销售总量: <span>{{ totalCount }}</span> 件</li>
         </ul>
       </div>
@@ -47,67 +46,59 @@
           label="序号"
           :index="indexMethod"
         />
-        <el-table-column label="商品分类" prop="item_display_class">
+        <el-table-column label="一级科学分类" prop="item_system_class">
           <template slot-scope="scope">
             <a href="javascript:void(0)"
               class="title"
               @click="handleShowClassDetail(scope.row)"
-              v-if="!!scope.row.item_display_class && ( auth.isAdmin || auth.StatisticMarketClass )"
+              v-if="!!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass2 )"
             >
-              {{ scope.row.item_display_class || '其它' }}
+              {{ scope.row.item_system_class || '其它' }}
             </a>
             <div v-else>
-              {{ scope.row.item_display_class || '其它' }}
+              {{ scope.row.item_system_class || '其它' }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="称重金额" prop="check_chg">
-          <template slot-scope="scope">
-            <span v-if="scope.row.check_chg === 0">￥0</span>
-            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
-            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
             ￥{{ returnPrice(scope.row.amount_real) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.fram_total_price) }}
           </template>
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
-            {{ returnPercentage(scope.row.item_total_price, totalItemTotalPrice) }}%
+            {{ returnPercentage(scope.row.amount_real, totalItemTotalPrice) }}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
             <my-table-operate
               :list="[
-                  {
-                    title: '查看',
-                    isDisplay: !!scope.row.item_display_class && ( auth.isAdmin || auth.StatisticMarketClass ),
-                    command: () => handleShowClassDetail(scope.row)
-                  }
-                ]"
+                {
+                  title: '查看',
+                  isDisplay: !!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass2 ),
+                  command: () => handleShowClassDetail(scope.row)
+                }
+              ]"
             />
           </template>
         </el-table-column>
       </el-table>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination } from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
+  import { Http, Config, DataHandle, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   import echarts from "echarts/lib/echarts";
   import "echarts/lib/chart/pie";
@@ -115,6 +106,7 @@
 
   export default {
     name: "Market",
+    mixins: [viewMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -125,11 +117,6 @@
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate
     },
-    computed: mapGetters({
-      auth: 'globalAuth',
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
-    }),
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
@@ -139,8 +126,7 @@
         listItem: [],
         orderClassSumData2: [],
         totalItemTotalPrice: 0,
-        totalCheckChg: 0,
-        totalAmountReal: 0,
+        totalFramPrice: 0,
         totalCount: 0,
         currentRow: {},
         chart: null,
@@ -178,7 +164,6 @@
       });
     },
     methods: {
-      ...mapActions(['message', 'loading']),
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;
@@ -190,7 +175,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
@@ -223,7 +208,7 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-item_total_price',
+          sort: '-amount_real',
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -258,15 +243,15 @@
       async saleClassList(callback){
         let that = this;
         let { query } = that;
-        that.loading({isShow: true, isWhole: true});
-        let res = await Statistic.statisticalOrderClassSum(query);
+        this.$loading({ isShow: true, isWhole: true });
+        let res = await Http.get(Config.api.statisticalOrderClassSum, query);
         if(res.code === 0){
           that.$data.listItem = res.data;
           typeof callback === 'function' && callback();
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
       initChart() {
         let that = this;
@@ -274,38 +259,28 @@
           return
         }
         let orderClassSumData = that.$data.listItem;
-        /*
-        [initChart
-          { value: 600, name: "芒果" },
-          { value: 310, name: "菠萝" },
-          { value: 234, name: "香蕉" },
-          { value: 135, name: "苹果" },
-          { value: 533, name: "榴莲" },
-          { value: 500, name: "其它" }
-        ]
-        */
         let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {},
-        totalItemTotalPrice = 0, totalCheckChg = 0, totalAmountReal = 0, totalCount = 0;
+        totalItemTotalPrice = 0, totalFramPrice = 0, totalCount = 0;
         for (let i = 0; i < orderClassSumData.length; i++) {
           //总数据
-          totalItemTotalPrice += orderClassSumData[i].item_total_price;
-          totalCheckChg += orderClassSumData[i].check_chg;
-          totalAmountReal += orderClassSumData[i].amount_real;
+          totalItemTotalPrice += orderClassSumData[i].amount_real;
+          totalFramPrice += orderClassSumData[i].fram_total_price;
         }
         for(let i = 0; i < orderClassSumData.length; i++){
           //饼图数据
-          let percent = orderClassSumData[i].item_total_price / totalItemTotalPrice;
-          if(percent > 0.05 && orderClassSumData[i].item_display_class !== '其它'){
+          let percent = orderClassSumData[i].amount_real / totalItemTotalPrice;
+          if(percent > 0.05 && orderClassSumData[i].item_system_class !== '其它'){
             data.push({
-              value: that.returnPrice(orderClassSumData[i].item_total_price),
-              name: orderClassSumData[i].item_display_class,
+              value: that.returnPrice(orderClassSumData[i].amount_real),
+              name: orderClassSumData[i].item_system_class,
+              system_class_code: orderClassSumData[i].system_class_code
             });
           }else{
-            dataTemp.value += orderClassSumData[i].item_total_price;
+            dataTemp.value += orderClassSumData[i].amount_real;
           }
 
           //列表数据
-          if(orderClassSumData[i].item_display_class !== '其它'){
+          if(orderClassSumData[i].item_system_class !== '其它'){
             data2.push(orderClassSumData[i]);
           }else{
             dataTemp2 = orderClassSumData[i];
@@ -316,24 +291,24 @@
         if(dataTemp.value) {
           data.push({
             value: that.returnPrice(dataTemp.value),
-            name: dataTemp.name
+            name: dataTemp.name,
+            system_class_code: ''
           });
         }
 
-        if(dataTemp2.item_display_class){
+        if(dataTemp2.item_system_class){
           data2.push(dataTemp2);
         }
 
         that.$data.orderClassSumData2 = data2;
         that.$data.totalItemTotalPrice = totalItemTotalPrice;
-        that.$data.totalCheckChg = totalCheckChg;
-        that.$data.totalAmountReal = totalAmountReal;
+        that.$data.totalFramPrice = totalFramPrice;
         that.$data.totalCount = totalCount;
 
         let formatter = "{all|{b}：{c}元}  {per|{d}%}";
         let color = that.color;
         if (data && data.length === 0) {
-          data.push({value: '0', name: '暂无数据'});
+          data.push({value: '0', name: '暂无数据', system_class_code: ''});
           color = ['#a5a5a5'];
           formatter = "{b}";
         }
@@ -383,30 +358,30 @@
         that.chart.off('click');
         // 点击饼图事件处理
         that.chart.on('click', function (params) {
-          // console.log("params", params);
           if (params.componentType === 'series') {
             if (params.name === '其它' || params.name === '暂无数据') {
               return;
             }
             that.$router.push({
-              path: '/statistic/market/class',
+              name: 'StatisticMarketClass2',
               query: {
-                display_class: params.name,
-                begin_date: that.$data.query.begin_date,
-                end_date: that.$data.query.end_date
+                system_class1: params.name,
+                system_class_code1: params.data.system_class_code,
+                begin_date: that.query.begin_date,
+                end_date: that.query.end_date
               }
             });
           }
         });
       },
       handleShowClassDetail(item) {
-        let display_class = item.item_display_class;
         this.$router.push({
-          path: '/statistic/market/class',
+          name: 'StatisticMarketClass2',
           query: {
-            display_class: display_class,
-            begin_date: this.$data.query.begin_date,
-            end_date: this.$data.query.end_date
+            system_class1: item.item_system_class,
+            system_class_code1: item.system_class_code,
+            begin_date: this.query.begin_date,
+            end_date: this.query.end_date
           }
         });
       }

@@ -310,14 +310,14 @@ export default {
           data: xAverage,
         });
       } else {
-        if (detail.selectType !== 'customer') {
+        /*if (detail.selectType !== 'customer') {
           lineSeries.push({
             name: '总计',
             type: 'line',
             smooth: true,
             data: xTotal,
           })
-        }
+        }*/
         lineSeries.push({
           name: '平均值',
           type: 'line',
@@ -338,7 +338,7 @@ export default {
       } else if (that.isAverageLine()) {
         legends.push('平均值')
       } else {
-        legends.push('总计');
+        //legends.push('总计');
         legends.push('平均值');
         legends.push(that.lineName())
       }

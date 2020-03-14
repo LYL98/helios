@@ -1,27 +1,27 @@
 <template>
   <el-select
-    v-model="selectedCityCode"
+    v-model="selectedCityId"
     :size="size"
     :filterable="filterable"
     :clearable="clearable"
     :disabled="disabled"
     :placeholder="placeholder"
-    :class="isUseToQuery ? 'query-item-select' : 'default'"
+    style="width: 100%;"
   >
     <el-option v-if="showAll" key="" label="全部" value="">
     </el-option>
     <el-option
       v-for="item in dataItem"
-      :key="item.code"
+      :key="item.id"
       :label="item.title"
-      :value="item.code">
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
 
 <script>
   import { Select, Option, MessageBox } from 'element-ui';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
 
   export default {
     name: "SelectCity",
@@ -29,18 +29,17 @@
       'el-select': Select,
       'el-option': Option
     },
-    // props: ['value', 'size', 'provinceCode', 'zoneCode' , 'filterable', 'clearable', 'placeholder', 'disabled'],
+    // props: ['value', 'size', 'provinceCode', 'zoneId' , 'filterable', 'clearable', 'placeholder', 'disabled'],
     props: {
       showAll: { type: Boolean, default: false },
       value: { type: String | Number },
       size: { type: String, default: '' },
       provinceCode: { type: String | Number },
-      zoneCode: { type: String | Number },
+      zoneId: { type: String | Number },
       filterable: { type: Boolean, default: true },
       clearable: { type: Boolean, default: true},
       placeholder: { type: String, default: '所在仓' },
       disabled: { type: Boolean, default: false },
-      isUseToQuery: {type: Boolean, default: false}
     },
     model: {
       prop: 'value',
@@ -53,7 +52,7 @@
     },
     computed: {
       //县市改变
-      selectedCityCode: {
+      selectedCityId: {
         get() {
           return this.$props.value;
         },
@@ -75,7 +74,7 @@
         }
       },
 
-      zoneCode: {
+      zoneId: {
         deep: true,
         immediate: true,
         handler: function (next, pre) {
@@ -91,9 +90,9 @@
     methods: {
       //根据传进来的省份code 获取城市列表
       async baseCityList(){
-        let res = await Base.baseCityList({
+        let res = await Http.get(Config.api.baseCityList, {
           province_code: this.$props.provinceCode || '',
-          zone_code: this.$props.zoneCode || ''
+          zone_id: this.$props.zoneId || ''
         });
         if(res.code === 0){
           let rd = res.data;
@@ -107,7 +106,4 @@
 </script>
 
 <style scoped>
-  .default{
-    width: 100%;
-  }
 </style>

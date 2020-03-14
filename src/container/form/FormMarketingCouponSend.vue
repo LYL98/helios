@@ -19,7 +19,7 @@
     <el-form-item label="选择商户所在县域" v-if="editItem.type === 'grade'">
       <search-city
         height="300px"
-        v-model="editItem.city_codes"
+        v-model="editItem.city_ids"
         :provinceCode="province.code"
         @change="changeCity"
       ></search-city>
@@ -28,7 +28,7 @@
     <el-form-item label="选择指定县域" v-if="editItem.type === 'city'" :error="error.city" class="required">
       <search-city
         height="300px"
-        v-model="editItem.city_codes"
+        v-model="editItem.city_ids"
         :provinceCode="province.code"
         @change="changeCity"
       ></search-city>
@@ -50,10 +50,8 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import {Form, FormItem, Radio, RadioGroup, Dialog, Button, Message, MessageBox} from 'element-ui';
   import { SearchMerchantGrade, SearchCity, SearchMerchant } from '@/container/search';
-  import { Base } from '@/service';
 
   export default {
     name: "FormMarketingCouponSend",
@@ -78,14 +76,10 @@
       prop: 'item',
       event: 'change'
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince',
-      })
-    },
     data() {
       let item = Object.assign({}, this.$props.item);
       return {
+        province: this.$province,
         editItem: item,
         error: {
           type: '',
@@ -104,7 +98,7 @@
             if (this.$data.editItem.grade_codes.length === 0) { this.$data.error.grade = '请选择发放的商户等级'; valid = false; }
             break;
           case 'city':
-            if (this.$data.editItem.city_codes.length === 0) { this.$data.error.city = '请选择发放的县域'; valid = false; }
+            if (this.$data.editItem.city_ids.length === 0) { this.$data.error.city = '请选择发放的县域'; valid = false; }
             break;
           case 'merchant':
             if (this.$data.editItem.merchant_ids.length === 0) { this.$data.error.merchant = '请指定发放的商户'; valid = false; }
@@ -124,7 +118,7 @@
         this.$data.error.merchant = '';
 
         this.$data.editItem.grade_codes = [];
-        this.$data.editItem.city_codes = [];
+        this.$data.editItem.city_ids = [];
         this.$data.editItem.merchant_ids = [];
       },
 
@@ -154,10 +148,10 @@
         switch (this.editItem.type) {
           case 'grade':
             items = this.editItem.grade_codes.map(item => item.title);
-            citys = this.editItem.city_codes.map(item => item.title);
+            citys = this.editItem.city_ids.map(item => item.title);
             break;
           case 'city':
-            items = this.editItem.city_codes.map(item => item.title);
+            items = this.editItem.city_ids.map(item => item.title);
             break;
           case 'merchant':
             items = this.editItem.merchant_ids.map(item => item.title);

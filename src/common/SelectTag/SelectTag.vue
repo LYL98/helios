@@ -1,17 +1,13 @@
 <template>
   <el-select v-model="tagName" clearable placeholder="请选择品类链接" @change="onChange">
-    <el-option
-      v-for="item in itemTags"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+    <el-option v-for="item in itemTags" :key="item.title" :label="item.title" :value="item.title">
     </el-option>
   </el-select>
 </template>
 
 <script>
 import { Select, Option, MessageBox} from 'element-ui'
-import { Base } from '@/service';
+import { Http, Config } from '@/util';
 
   export default {
     name: "SelectTag",
@@ -22,6 +18,9 @@ import { Base } from '@/service';
     },
     data() {
       return {
+        query: {
+          province_code: this.$province.code
+        },
         itemTags: [], //商品标签
         tagName: this.tag
       }
@@ -33,9 +32,8 @@ import { Base } from '@/service';
       //获取商品标签列表
       async baseItemTagsList(){
         let that = this;
-        let res = await Base.baseItemTagsList();
+        let res = await Http.get(Config.api.baseItemTagsList, this.query);
         if(res.code === 0){
-          res.data.map(item => {item.label=item.title; item.value=item.title});
           that.$data.itemTags = res.data;
         }else{
           MessageBox.alert(res.message, '提示');

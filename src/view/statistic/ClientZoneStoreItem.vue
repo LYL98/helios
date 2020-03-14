@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
         <el-breadcrumb-item
@@ -9,23 +9,23 @@
         </el-breadcrumb-item>
 
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client/zone', query: { zone_code: breadcrumb.zone_code, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client/zone', query: { zone_id: breadcrumb.zone_id, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
         >
-          {{ breadcrumb.zone_code === '' ? '全部片区' : breadcrumb.zone_title }}
+          {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
 
         <el-breadcrumb-item
           :to="{ path: '/statistic/client/zone/store',
             query: {
-              city_code: breadcrumb.city_code,
+              city_id: breadcrumb.city_id,
               city_title: breadcrumb.city_title,
-              zone_code: breadcrumb.zone_code,
+              zone_id: breadcrumb.zone_id,
               zone_title: breadcrumb.zone_title,
               begin_date: breadcrumb.begin_date,
               end_date: breadcrumb.end_date }
             }"
         >
-          {{ breadcrumb.city_code === '' ? '全部县域' : breadcrumb.city_title }}
+          {{ breadcrumb.city_id === '' ? '全部县域' : breadcrumb.city_title }}
         </el-breadcrumb-item>
 
         <el-breadcrumb-item>{{ query.store_title }}</el-breadcrumb-item>
@@ -53,30 +53,12 @@
           </my-query-item>
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="采购员">
-            <my-select-buyer
-              :provinceCode="province.code"
-              v-model="query.buyer_id"
+          <my-query-item label="科学分类">
+            <my-select-system-class
+              v-model="query.system_class_codes"
               :clearable="true"
               size="small"
-              :hasAllSelection="true"
-              @change="changeBuyer"
-              class="query-item-select"
-              :isUseToQuery="true"
-            />
-          </my-query-item>
-        </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="展示分类">
-            <my-select-display-class
-              v-model="query.display_class"
-              :clearable="true"
-              size="small"
-              :hasAllSelection="true"
-              @change="changeDisplayClass"
-              class="query-item-select"
-              :isUseToQuery="true"
-              :use-name="true"
+              @change="changeSystemClass"
             />
             <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
           </my-query-item>
@@ -90,16 +72,11 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="merchantListData.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         @sort-change="onSort"
       >
-        <el-table-column
-          type="index"
-          :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
-          label="序号"
-          :index="indexMethod"
-        />
+        <el-table-column type="index" width="120" label="序号" :index="indexMethod" />
         <!-- 县域、订单金额、订单量、件数、占比、操作 -->
         <el-table-column label="编号/商品" prop="store_title">
           <template slot-scope="scope">
@@ -111,21 +88,14 @@
             <span :class="isEllipsis(scope.row)">{{scope.row.count_real}}件</span>
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="称重金额" prop="check_chg">
-          <template slot-scope="scope">
-            <span v-if="scope.row.check_chg === 0">￥0</span>
-            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
-            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="称重后商品金额" sortable="custom" prop="amount_real">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
           <template slot-scope="scope">
             ￥{{ returnPrice(scope.row.amount_real) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="筐金额" sortable="custom" prop="fram_total_price">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.fram_total_price) }}
           </template>
         </el-table-column>
       </el-table>
@@ -144,18 +114,18 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
-  import { QueryItem, TableOperate, SelectBuyer, SelectDisplayClass } from '@/common';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
+  import { QueryItem, TableOperate, SelectSystemClass } from '@/common';
+  import { Http, Config, DataHandle, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "ClientZoneStoreItem",
+    mixins: [viewMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -168,14 +138,8 @@
       'el-button': Button,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
-      'my-select-buyer': SelectBuyer,
-      'my-select-display-class': SelectDisplayClass,
+      'my-select-system-class': SelectSystemClass,
     },
-    computed: mapGetters({
-      auth: 'globalAuth',
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
-    }),
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
@@ -198,7 +162,6 @@
       this.storeSaleItems();
     },
     methods: {
-      ...mapActions(['message', 'loading']),
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;
@@ -210,7 +173,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
@@ -232,21 +195,19 @@
       },
 
       initBreadcrumb() {
-        console.log('initBreadcrumb', this.$route.query)
 
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
           store_id: this.$route.query.store_id,
           store_title: this.$route.query.store_title,
-          city_code: this.$route.query.city_code,
+          city_id: this.$route.query.city_id,
           city_title: this.$route.query.city_title,
-          zone_code: this.$route.query.zone_code,
+          zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
           begin_date: this.$route.query.begin_date,
           end_date: this.$route.query.end_date
         })
       },
       initQuery() {
-        console.log("当前的请求参数", this.$route.query);
         let pickerValue = [];
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
@@ -257,15 +218,15 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-item_total_price',
+          sort: '-amount_real',
           store_id: this.$route.query.store_id,
           store_title: this.$route.query.store_title,
-          zone_code: this.$route.query.zone_code,
+          zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
-          city_code: this.$route.query.city_code,
+          city_id: this.$route.query.city_id,
           city_title: this.$route.query.city_title,
-          buyer_id: '',
-          display_class: '',
+          system_class: '',
+          system_class_codes: [],
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -282,19 +243,10 @@
         this.$data.query.page = 1;
         this.storeSaleItems();
       },
-      changeBuyer(data, isInit) {
-        if (!isInit) {
-          // console.log("改变片区", data);
-          this.$data.query.zone_code = data;
-          this.storeSaleItems();
-        }
-      },
-      changeDisplayClass(data, isInit) {
-        if (!isInit) {
-          // console.log("改变县域", data);
-          this.$data.query.city_code = data;
-          this.storeSaleItems();
-        }
+      //改变科学分类
+      changeSystemClass(value, data) {
+        this.$data.query.system_class = data.title || '';
+        this.storeSaleItems();
       },
       changePage(page) {
         this.$data.query.page = page;
@@ -327,17 +279,17 @@
         let that = this;
         let { query } = that;
         query.is_gift = 0;
-        that.loading({isShow: true, isWhole: true});
-        let res = await Statistic.statisticalOrderStoreSaleItems(query);
+        this.$loading({ isShow: true, isWhole: true });
+        let res = await Http.get(Config.api.statisticalOrderStoreSaleItems, query);
         if(res.code === 0){
           res.data.items.map((item, index) => {
             item.id = index;
           });
           that.$data.merchantListData = res.data;
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
     }
   }

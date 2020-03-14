@@ -8,8 +8,11 @@ const HtmlIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const HappyPack = require('happypack');
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
+const configBase = require('./configBase');
+const outputDir = configBase.BuildOutputDir || 'dist';
+
 module.exports = {
-  outputDir: '../dist',
+  outputDir: outputDir,
   productionSourceMap: false,
   chainWebpack: config => {
     config.module.rule('js').uses.clear();
@@ -69,7 +72,7 @@ module.exports = {
       // 生产环境下: 1、显示打包进度条，2、打包结束后，替换之前的打包文件
       ...(process.env.NODE_ENV === 'production' ? [
         new WebpackBar(),
-        new CleanWebpackPlugin(['../dist'], {
+        new CleanWebpackPlugin([outputDir], {
           allowExternal: true,
           beforeEmit: true
         }),
@@ -85,7 +88,6 @@ module.exports = {
         assets: ['dll/dll.core.js'], // 添加的资源相对html的路径
         append: false // false 在其他资源的之前添加 true 在其他资源之后添加
       }),
-
       // 使用happypack 加速 babel-loader打包速度
       new HappyPack({
         id: 'happy-babel',
@@ -105,7 +107,7 @@ module.exports = {
     extract: false,
     loaderOptions: {
       sass: {
-        data: '@import "./element-variables.scss";'
+        data: '@import "./main.scss";'
       }
     }
   },

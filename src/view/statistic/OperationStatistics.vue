@@ -1,6 +1,6 @@
 <!--运营统计-->
 <template>
-  <div>
+  <sub-menu>
     <div class="query" style="margin-bottom: 20px">
       <el-row>
         <el-col :xl="6" :lg="7" :span="7">
@@ -22,29 +22,14 @@
         </el-col>
       </el-row>
     </div>
-    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - offsetHeight + 'px'}">
+    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: viewWindowHeight - offsetHeight + 'px'}">
       <div style="background-color: white;">
         <!--<P style="text-align: center; padding-top: 10px">-->
           <!--<span style="color: blue; font-size: 20px">{{selectItemName ? selectItemName : '-'}}</span>-->
           <!--<span style="font-size: 20px">指标分析</span>-->
         <!--</P>-->
         <!--图表-->
-        <div style="display: flex">
-          <div id="main" style="margin-top: 20px; height: 600px; flex: 1" ref="myIndexChart"></div>
-          <div style="flex: initial; width: 200px;">
-            <div style="margin-top: 80px; font-size: 18px; color: black;">指标放大倍数</div>
-            <div style="margin-top: 10px;">
-              <span>订单商品金额: {{zoomRate[0]}}倍</span><br/>
-              <span>优惠金额: {{zoomRate[2]}}倍</span><br/>
-              <span>订单应付金额: {{zoomRate[4]}}倍</span><br/>
-              <span>发货金额: {{zoomRate[5]}}倍</span><br/>
-              <span>下单门店数: {{zoomRate[7]}}倍</span><br/>
-              <span>订单数量: {{zoomRate[8]}}倍</span><br/>
-              <span>下单件数: {{zoomRate[9]}}倍</span><br/>
-              <span>下单商品数: {{zoomRate[10]}}倍</span><br/>
-            </div>
-          </div>
-        </div>
+        <div id="main" style="padding-top: 20px; height: 600px;" ref="myIndexChart"></div>
       </div>
       <!--表格-->
       <div class="statistics-table-list-container">
@@ -55,48 +40,48 @@
           <el-table-column
             label="指标"
             fixed="left"
-            width="120px"
+            width="140px"
             prop="city_title">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
-              <el-tooltip class="item" effect="dark" content="优惠金额：优惠券和优惠活动的合计" placement="right" v-if="scope.row.name === '优惠金额'">
+              <el-tooltip class="item" effect="dark" content="GMV： 订单商品金额 + 运费" placement="right" v-if="scope.row.name === 'GMV'">
+                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="订单应付金额：GMV - 优惠金额 + 框金额" placement="right" v-if="scope.row.name === '订单应付金额'">
+                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="客单价：GMV / 下单门店数" placement="right" v-if="scope.row.name === '客单价'">
+                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="订单数量：下单天数" placement="right" v-if="scope.row.name === '订单数量'">
                 <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column
-            min-width="100px"
-            align="left"
-            v-for="(d, index) in dateRange()"
-            :key="index"
-            :label="labelDate(d)">
-            <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.cells, d) }}</span>
-            </template>
+          <el-table-column min-width="100px" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
+            <el-tooltip slot-scope="scope" effect="dark" :content="scope.row.hints[index]" placement="top" v-if="false">
+              <span>{{ cellValue(scope.row.cells, d) }}</span>
+            </el-tooltip>
+            <template slot-scope="scope" v-else>{{ cellValue(scope.row.cells, d) }}</template>
           </el-table-column>
           <el-table-column label="平均值" min-width="100" align="left">
-            <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ average(scope.row.cells, scope.$index) }}</span>
-            </template>
+            <template slot-scope="scope">{{ average(scope.row.cells, scope.$index) }}</template>
           </el-table-column>
           <el-table-column label="合计" min-width="110" align="left">
-            <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ total(scope.row.cells, scope.$index) }}</span>
-            </template>
+            <template slot-scope="scope">{{ total(scope.row.cells, scope.$index) }}</template>
           </el-table-column>
         </el-table>
       </div>
 
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message, Tooltip } from 'element-ui';
-  import { mapGetters, mapActions } from 'vuex';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
-  import { QueryItem, SearchItem } from '@/common';
+  import { Http, Config, DataHandle, Constant } from '@/util';
+  import { QueryItem } from '@/common';
+  import viewMixin from '@/view/view.mixin';
 
   import echarts from "echarts/lib/echarts";
   import 'echarts/lib/chart/line';
@@ -108,10 +93,7 @@
 
   export default {
     name: "OperationStatistics",
-    computed: mapGetters({
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
-    }),
+    mixins: [viewMixin],
     components: {
       'el-button': Button,
       'el-date-picker': DatePicker,
@@ -123,7 +105,6 @@
       'el-select': Select,
       'el-option': Option,
       'el-input': Input,
-      'my-search-item': SearchItem,
       'my-query-item': QueryItem,
       'el-tooltip': Tooltip,
     },
@@ -156,7 +137,6 @@
         dataItem: [],
         selectArea: 'zone',
         selectItemName: '',
-        zoomRate: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         lineColors: [
           '#D27575',   //1
           '#E2BA6F',   //2
@@ -172,23 +152,10 @@
         ],
         /**
          * 
-         - item_total_price: 订单商品金额
-        - amount_delivery: 运费金额
-        - bonus_promotion: 优惠金额
-        - check_chg: 称重金额
-        - real_price: 订单应付金额
-         order_num: 订单数量
-         total_delivery_item_price / store_num: 客单价 (发货金额 / 下单门店数)
-         store_num: 下单门店数
-         total_delivery_item_price: 发货金额
          * */
         indexNames: [
-          '订单商品金额',
-          '运费金额',
-          '优惠金额',
-          '称重金额',
+          'GMV',
           '订单应付金额',
-          '发货金额',
           '客单价',
           '下单门店数',
           '订单数量',
@@ -229,7 +196,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
 
       highlightRowClassName({row, rowIndex}) {
@@ -313,67 +280,29 @@
         //x轴日期：例如 1月1日
         let xDisplayDates = this.dateRange('f2');
 
-        //放大指标
-        that.zoomLines();
-
         let option = {
           tooltip : {
             trigger: 'axis',
-            //show: true,   //default true
-            // showDelay: 0,
-            // hideDelay: 50,
-            // transitionDuration:0,
-            // backgroundColor : 'rgba(255,0,255,0.7)',
-            // borderColor : '#f50',
-            // borderRadius : 8,
-            // borderWidth: 2,
-            // padding: 10,    // [5, 10, 15, 20]
-            // position : function(p) {
-            //   // 位置回调
-            //   // console.log && console.log(p);
-            //   return [p[0] + 10, p[1] - 10];
-            // },
-            // textStyle : {
-            //   color: 'yellow',
-            //   decoration: 'none',
-            //   fontFamily: 'Verdana, sans-serif',
-            //   fontSize: 15,
-            //   fontStyle: 'italic',
-            //   fontWeight: 'bold'
-            // },
-            formatter: function (params,ticket,callback) {
-              // console.log(params.length);
+            formatter: function (params, ticket, callback) {
               var res = params[0].name;
-              for (var i = 0, l = params.length; i < l; i++) {
-                let zoomValue = params[i].value / that.narrowRate(params[i].seriesName);
-                res += '<br/>' + params[i].seriesName + ' : ' + zoomValue;
-              }
-              //callback 异步时使用
-              // callback(ticket, res);
+              res += '<br/>' + params[0].seriesName + ' : ' + params[0].value;
+              /*for (var i = 0, l = params.length; i < l; i++) {
+                res += '<br/>' + params[i].seriesName + ' : ' + params[i].value;
+              }*/
               return res
             }
           },
-          // toolbox: {
-          //   show : true,
-          //   feature : {
-          //     mark : {show: true},
-          //     dataView : {show: true, readOnly: false},
-          //     magicType: {show: true, type: ['line', 'bar']},
-          //     restore : {show: true},
-          //     saveAsImage : {show: true}
-          //   }
-          // },
           calculable : true,
           legend: {
             data: indexNames,
+            selectedMode: 'single',
             selected: {
-              '订单商品金额': true,
-              '优惠金额': false,
+              'GMV': true,
               '订单应付金额': false,
               '发货金额': false,
-              '下单门店数': true,
+              '下单门店数': false,
               '订单数量': false,
-              '下单件数': true,
+              '下单件数': false,
               '下单商品数': false,
             },
           },
@@ -393,158 +322,114 @@
             },
           ],
           series : [
+            //GMV
             {
-              name:'订单商品金额',
+              name:'GMV',
               type:'line',
-              itemStyle: {normal: {color: lineColors[0], lineStyle: {color: lineColors[0]}}},
+              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
               smooth: true,
               data: this.lineData(0, xDates)
             },
             {
-              name:'优惠金额',
+              name:'GMV',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
+              data:this.lineData(0, xDates)
+            },
+
+            //订单应付金额
+            {
+              name:'订单应付金额',
               type:'line',
-              itemStyle: {normal: {color: lineColors[2], lineStyle: {color: lineColors[2]}}},
+              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
+              smooth: true,
+              data: this.lineData(1, xDates)
+            },
+            {
+              name:'订单应付金额',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
+              data:this.lineData(1, xDates)
+            },
+
+            //客单价
+            {
+              name:'客单价',
+              type:'line',
+              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
               smooth: true,
               data: this.lineData(2, xDates)
             },
             {
-              name:'订单应付金额',
+              name:'客单价',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
+              data:this.lineData(2, xDates)
+            },
+
+            //下单门店数
+            {
+              name:'下单门店数',
+              type:'line',
+              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
+              smooth: true,
+              data: this.lineData(3, xDates)
+            },
+            {
+              name:'下单门店数',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
+              data:this.lineData(3, xDates)
+            },
+
+            //订单数量
+            {
+              name:'订单数量',
               type:'line',
               itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
               smooth: true,
               data: this.lineData(4, xDates)
             },
             {
-              name:'发货金额',
+              name:'订单数量',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
+              data:this.lineData(4, xDates)
+            },
+
+            //下单件数
+            {
+              name:'下单件数',
               type:'line',
-              itemStyle: {normal: {color: lineColors[5], lineStyle: {color: lineColors[5]}}},
+              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
               smooth: true,
               data: this.lineData(5, xDates)
             },
             {
-              name:'下单门店数',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[7], lineStyle: {color: lineColors[7]}}},
-              smooth: true,
-              data: this.lineData(7, xDates)
-            },
-            {
-              name:'订单数量',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[8], lineStyle: {color: lineColors[8]}}},
-              smooth: true,
-              data: this.lineData(8, xDates)
-            },
-            {
               name:'下单件数',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[9], lineStyle: {color: lineColors[9]}}},
-              smooth: true,
-              data: this.lineData(9, xDates)
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
+              data:this.lineData(5, xDates)
             },
+
+            //下单商品数
             {
               name:'下单商品数',
               type:'line',
-              itemStyle: {normal: {color: lineColors[10], lineStyle: {color: lineColors[10]}}},
+              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
               smooth: true,
-              data: this.lineData(10, xDates)
-            }
+              data: this.lineData(6, xDates)
+            },
+            {
+              name:'下单商品数',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
+              data:this.lineData(6, xDates)
+            },
           ]
         };
 
-        // console.log('init chart');
         echarts.init(that.$refs.myIndexChart).setOption(option)
-      },
-      //计算缩放比例
-      zoomLines() {
-        let { dataItem, zoomRate } = this;
-        //恢复比例默认值
-        for (let i = 0; i < zoomRate.length; i++) {
-          zoomRate[i] = 1;
-        }
-        //缩放阈值，相差倍数大于这个值就进行放大
-        let zoomThreshold = 5;
-        //对指标进行分类放大
-        if (dataItem && dataItem.length > 0) {
-          let priceMaxValues = Array();
-          let type1MaxValues = Array();
-          let type2MaxValues = Array();
-          for (let i = 0; i < dataItem.length; i++) {
-            let item = dataItem[i];
-            let length = item.cells.length;
-            let originValues = Array();
-            for (let j = 0; j < length; j++) {
-              let cellValue = item.cells[j].origin_value;
-              originValues.push(Number(this.handleIndexValue(i, cellValue)));
-            }
-            let maxCellValue = Math.max(...originValues);
-            switch (i) {
-              case 0:
-              case 4:
-              case 5:
-                //价格
-                priceMaxValues.push(maxCellValue);
-                break;
-              case 7:
-              case 10:
-                type1MaxValues.push(maxCellValue);
-                break;
-              case 2:
-              case 8:
-              case 9:
-                type2MaxValues.push(maxCellValue);
-                break;
-              default:
-                break;
-            }
-          }
-          let priceMaxValue = Math.max(...priceMaxValues);
-          let type1MaxValue = Math.max(...type1MaxValues);
-          let type2MaxValue = Math.max(...type2MaxValues);
-
-          //销售量放大比例
-          if (priceMaxValue !== 0 && priceMaxValue / type1MaxValue > zoomThreshold) {
-            let zoom = parseInt(priceMaxValue / type1MaxValue - 1);
-            zoomRate[7] = zoom;
-            zoomRate[10] = zoom;
-          }
-
-          //采购价、销售价、优惠价放大比例
-          if (priceMaxValue !== 0 && priceMaxValue / type2MaxValue > zoomThreshold) {
-            let zoom = parseInt(priceMaxValue / type2MaxValue - 1);
-            zoomRate[2] = zoom;
-            zoomRate[8] = zoom;
-            zoomRate[9] = zoom;
-          }
-        }
-      },
-      //根据指标名称查找缩小比例
-      narrowRate(seriesName) {
-        let { zoomRate } = this;
-        switch (seriesName) {
-          case '订单商品金额':
-            return zoomRate[0];
-          case '运费金额':
-            return zoomRate[1];
-          case '优惠金额':
-            return zoomRate[2];
-          case '称重金额':
-            return zoomRate[3];
-          case '订单应付金额':
-            return zoomRate[4];
-          case '发货金额':
-            return zoomRate[5];
-          case '客单价':
-            return zoomRate[6];
-          case '下单门店数':
-            return zoomRate[7];
-          case '订单数量':
-            return zoomRate[8];
-          case '下单件数':  //下单件数
-            return zoomRate[9];
-          case '下单商品数':  //下单商品数
-            return zoomRate[10];
-        }
       },
       /**
        * 每个指标的数据
@@ -553,7 +438,7 @@
        * @returns {any[]}
        */
       lineData(index, xDates) {
-        let { dataItem, zoomRate } = this;
+        let { dataItem } = this;
         let lineData = Array();
         if (dataItem && dataItem.length > 0) {
           //得到特定指标的行数据
@@ -571,7 +456,7 @@
               if (cellDate === colDate) {
                 hasDate = true;
                 //放大相应的比例，方便数据比对
-                lineData.push(Number(this.handleIndexValue(index, cellValue)) * zoomRate[index]);
+                lineData.push(Number(this.handleIndexValue(index, cellValue)));
                 break;
               }
             }
@@ -590,15 +475,11 @@
           case 0:
           case 1:
           case 2:
+            return DataHandle.returnPrice(value);
           case 3:
           case 4:
           case 5:
           case 6:
-            return DataHandle.returnPrice(value);
-          case 7:
-          case 8:
-          case 9:
-          case 10:
             return value;
           default:
             return 0;
@@ -610,56 +491,55 @@
           case 0:
           case 1:
           case 2:
+            return this.returnPrice(value);
           case 3:
           case 4:
           case 5:
           case 6:
-            return this.returnPrice(value);
-          case 7:
-          case 8:
-          case 9:
-          case 10:
             return this.formatValue(value);
           default:
             return 0;
         }
       },
 
+      /**
+       * - item_cat_num: 下单商品种类数量
+          - item_num: 下单商品件数
+          - amount_real: 商品金额
+          - bonus_promotion: 优惠减免
+          - real_price：应付金额
+          - amount_delivery: 运费
+          - order_num: 订单数量
+          - store_num: 下单门店数
+          - total_delivery_item_price: 发货金额
+          - price_per_order: 平均每单发货金额
+          - gmv:
+          客单价：gmv / store_num
+       */
+
       cellDisplayValue(index, cellItem) {
         let that = this;
         let result = '-';
         switch (index) {
           case 0:
-            result = that.returnPrice(cellItem.item_total_price);
+            result = that.returnPrice(cellItem.gmv);
             break;
           case 1:
-            result = that.returnPrice(cellItem.amount_delivery);
-            break;
-          case 2:
-            result = that.returnPrice(cellItem.bonus_promotion);
-            break;
-          case 3:
-            result = that.returnPrice(cellItem.check_chg);
-            break;
-          case 4:
             result = that.returnPrice(cellItem.real_price);
             break;
-          case 5:
-            result = that.returnPrice(cellItem.total_delivery_item_price);
+          case 2:
+            result = that.returnPrice(cellItem.gmv / cellItem.store_num);
             break;
-          case 6:
-            result = that.returnPrice(cellItem.total_delivery_item_price / cellItem.store_num); //(发货金额 / 下单门店数)
-            break;
-          case 7:
+          case 3:
             result = that.formatValue(cellItem.store_num);
             break;
-          case 8:
+          case 4:
             result = that.formatValue(cellItem.order_num);
             break;
-          case 9:
+          case 5:
             result = that.formatValue(cellItem.item_num);
             break;
-          case 10:
+          case 6:
             result = that.formatValue(cellItem.item_cat_num);
             break;
           default:
@@ -672,37 +552,25 @@
         let result = '-';
         switch (index) {
           case 0:
-            result = cellItem.item_total_price;
+            result = cellItem.gmv;
             break;
           case 1:
-            result = cellItem.amount_delivery;
-            break;
-          case 2:
-            result = cellItem.bonus_promotion;
-            break;
-          case 3:
-            result = cellItem.check_chg;
-            break;
-          case 4:
             result = cellItem.real_price;
             break;
-          case 5:
-            result = cellItem.total_delivery_item_price;
+          case 2:
+            result = cellItem.gmv / cellItem.store_num;
             break;
-          case 6:
-            result = cellItem.total_delivery_item_price / cellItem.store_num; //(发货金额 / 下单门店数)
-            break;
-          case 7:
+          case 3:
             result = cellItem.store_num;
             break;
-          case 8:
+          case 4:
             result = cellItem.order_num;
             break;
-          case 9:
+          case 5:
             result = cellItem.item_num;
             break;
-          case 10:
-            result = cellItem.item_cat_num;
+          case 6:
+            result = cellItem.item_cat_num
             break;
           default:
             break;
@@ -727,11 +595,6 @@
           let cellItem = rowItems[i];
           sum += Number(cellItem.origin_value)
         }
-        // if (index === 2 || index === 3 || index === 4) {
-        //   return that.handleIndexValueToDisplay(index, sum);
-        // } else {
-        //   return '-';
-        // }
         return that.handleIndexValueToDisplay(index, sum);
       },
       average(rowItems, index) {
@@ -774,8 +637,8 @@
       async statisticalSumBusinessDelivery(callback) {
         let that = this;
         let { query, indexNames } = that;
-        that.loading({isShow: true, isWhole: true});
-        let res = await Statistic.statisticalSumBusinessDelivery(query);
+        this.$loading({ isShow: true, isWhole: true });
+        let res = await Http.get(Config.api.statisticalSumBusinessDelivery, query);
         if(res.code === 0){
           //将日期维度转化成指标维度
           let dateItems = res.data;
@@ -785,7 +648,8 @@
               //初始化行变量
               let indexItem = {
                 name: indexNames[i],
-                cells: Array()
+                cells: Array(),
+                hints: Array(),
               };
 
               //计算列
@@ -797,9 +661,12 @@
                   //用index区分赋值
                   value: this.cellDisplayValue(i, item),
                   origin_value: this.cellOriginValue(i, item),
-                  type: i
+                  type: i,
                 };
-                indexItem.cells.push(cell)
+                if(i === 0){
+                  indexItem.hints.push(`订单商品金额：${this.returnPrice(item.amount_real)}  运费：${this.returnPrice(item.amount_delivery)}`);//gmv提示
+                }
+                indexItem.cells.push(cell);
               }
 
               indexItems.push(indexItem)
@@ -812,12 +679,10 @@
           that.$data.dataItem = indexItems;
           typeof callback === 'function' && callback();
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
-
-      ...mapActions(['message', 'loading'])
     }
   }
 </script>

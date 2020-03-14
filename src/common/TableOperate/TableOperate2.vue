@@ -1,99 +1,101 @@
 <template>
-  <div>
-    <!-- 如果只有一项操作，则列出单项 -->
-    <a class="single-item" v-if="list.length <= 1 && list[0].isDisplay" href="javascript:void(0);" @click.prevent="handleCommand(list[0].command)">{{ list[0].title }}</a>
-
-    <!-- 如果有多项操作，则下拉显示操作菜单 -->
-    <el-dropdown
-      v-if="list.length > 1 && hasDisplayItem"
-      class="my-table-operate"
-      :trigger="trigger"
-      :placement="placement"
-      :show-timeout="50"
-      :hide-timeout="50"
-      @command="handleCommand"
-      @visible-change="handleVisibleChange"
-    >
-      <img
-        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAADCAYAAACXr/8TAAAAAXNSR0IArs4c6QAAAE9JREFUGBljZACBdc9DGf4zrAKzQQQjw2qGIMkwOJ8MeUaGbZ9FGb5/uQo0RBRq0GsGTh5tBi/e12A+mfJMDD++TEUyFOTabLihIJPJlAcAXZUuzjQGkjIAAAAASUVORK5CYII="
-        alt="operate-icon"
-      />
-      <el-dropdown-menu slot="dropdown" style="margin-top: 0px; margin-left: -5px;">
-        <el-dropdown-item
-          v-for="(item, index) in list"
-          :key="index"
-          v-show="item.isDisplay"
-          :command="item.command"
-        >{{item.title}}</el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+  <div class="table-operate">
+    <div class="main" v-if="mainDisplayItem.length > 0">
+      <a href="javascript:void(0);" @click.prevent="handleCommand(mainDisplayItem[0].command)">{{ mainDisplayItem[0].title }}</a>
+    </div>
+    <div class="sub table-operate-sub" v-if="subDisplayItem.length > 0">
+      <a href="javascript:void(0);" :style="`width: ${index === subDisplayItem.length - 1 ? width - 20 + 'px' : 'auto'}`"
+        v-for="(item, index) in subDisplayItem"
+        :key="index"
+        @click.prevent="handleCommand(item.command)"
+      >{{ item.title }}</a>
+    </div>
   </div>
 </template>
 
 <script>
-  import {Dropdown, DropdownMenu, DropdownItem} from 'element-ui';
-
   export default {
     name: "TableOperate",
-    components: {
-      'el-dropdown': Dropdown,
-      'el-dropdown-menu': DropdownMenu,
-      'el-dropdown-item': DropdownItem
-    },
     props: {
+      width: { type: String | Number, default: 120},
       trigger: { type: String, default: 'hover' },
       placement: { type: String, default: 'bottom' },
       list: { type: Array, required: true }
     },
     computed: {
-      hasDisplayItem: {
+      mainDisplayItem: {
         get() {
           // 判断操作队列中是否有需要显示的项
-          return this.$props.list.some(item => item.isDisplay);
+          let d = this.$props.list.filter(item => item.isDisplay);
+          if(d.length > 0) return d;
+          return [];
+        }
+      },
+      subDisplayItem: {
+        get() {
+          // 判断操作队列中是否有需要显示的项
+          let d = this.$props.list.filter(item => item.isDisplay);
+          if(d.length > 1){
+            d.shift(); //删除第一个
+            return d;
+          }
+          return [];
         }
       }
     },
     data() {
       return {
-        clickedItem: false
       }
     },
     methods: {
-      handleCommand(command) {
-        if (this.$props.list.length <= 1) {
-          this.$emit('command-click');
-        } else {
-          this.$data.clickedItem = true;
-        }
-        command && command();
-      },
-      handleVisibleChange(visible) {
-        if (!this.$data.clickedItem) {
-          this.$emit('command-visible', visible);
-        } else {
-          this.$emit('command-click');
-          this.$data.clickedItem = false;
-        }
-      }
     }
   }
 </script>
 
-<style scoped>
-  .single-item {
+<style lang="scss" scoped>
+  .table-operate {
+    position: relative;
     font-size: 12px;
-    text-decoration: underline;
+    >.main{
+      text-align: center;
+      >a{
+        display: block;
+        &:hover{
+          font-weight: bold;
+        }
+      }
+    }
+    >.sub{
+      position: absolute;
+      right: 0px;
+      top: 28px;
+      width: auto;
+      white-space: nowrap;
+      >a{
+        margin-left: 10px;
+        display: inline-block;
+        &:hover{
+          font-weight: bold;
+        }
+        &:last-child{
+          text-align: center;
+          margin: 0;
+        }
+      }
+    }
   }
-  .single-item:hover {
-    font-weight: 900;
+</style>
+<style lang="scss">
+  .table-operate-sub{
+    display: none;
   }
-  .my-table-operate {
-    cursor: pointer;
+  .el-table__row:hover {
+    .table-operate-sub{
+      display: block;
+    }
+    td:last-child >.cell{
+      overflow: visible;
+    }
   }
-
-  .my-table-operate img {
-    padding: 10px;
-    margin-left: -10px;
-    margin-bottom: -10px;
-  }
+  
 </style>
