@@ -8,7 +8,7 @@
 
     <el-table
       style="margin-top: -15px;"
-      :data="listItem.items"
+      :data="dataItem.items"
       :row-class-name="highlightRowClassName"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
@@ -55,7 +55,7 @@
         :page-sizes="[10, 20, 30, 40, 50]"
         @size-change="changePageSize"
         @current-change="changePage"
-        :total="listItem.num"
+        :total="dataItem.num"
         :page-size="query.page_size"
         :current-page="query.page"
       />
@@ -64,11 +64,10 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message, Popover } from 'element-ui';
   import { OmissionText } from '@/common';
   import { Constant, Config, Http } from '@/util';
-  import { Item } from '@/service';
+  
   export default {
     name: "TableMarketingCouponLog",
     components: {
@@ -83,16 +82,12 @@
     props: {
       coupon_log: { type: Object, required: true }
     },
-    computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
+        province: this.$province,
+        auth: this.$auth,
         query: { },
-        listItem: {
+        dataItem: {
           items: [],
           num: 0
         },
@@ -111,7 +106,7 @@
       async listExport() {
         let api = Config.api.itemCouponListExport;
         //判断是否可导出
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
           province_code: this.province.code,
           coupon_id: this.query.coupon_id
@@ -121,9 +116,9 @@
           
           window.open(queryStr);
         }else{
-          this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+          this.$message({ title: '提示', message: res.message, type: 'error' });
         }
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({ isShow: false });
       },
 
       cellMouseEnter(row, column, cell, event) {
@@ -137,7 +132,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
@@ -174,13 +169,13 @@
         this.queryLog();
       },
       async queryLog() {
-        let res = await Item.couponDistributeLog(this.$data.query);
+        let res = await Http.get(Config.api.itemCouponDistributeLog, this.query);
         if (res.code === 0) {
           let items = res.data.items.map(item => {
             item.dis_scope_str = this.showDisLog(item);
             return item;
           });
-          this.$data.listItem = Object.assign({}, this.$data.listItem, { num: res.data.num, items: items });
+          this.$data.dataItem = Object.assign({}, this.$data.dataItem, { num: res.data.num, items: items });
         } else {
           Message.warning(res.message);
         }

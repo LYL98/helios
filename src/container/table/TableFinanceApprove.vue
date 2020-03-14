@@ -1,12 +1,11 @@
 <template>
-  <div @mousemove="handleTableMouseMove">
+  <div @mousemove="handleTableMouseMove" class="table-conter">
     <el-table
-      class="list-table"
+      class="list-table my-table-float"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
       :data="data"
       :row-class-name="highlightRowClassName"
-      :height="windowHeight - offsetHeight"
       :highlight-current-row="true"
       :row-key="rowIdentifier"
       :current-row-key="clickedRow[rowIdentifier]"
@@ -19,10 +18,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="充值/扣款类型" prop="reason" min-width="140">
+      <el-table-column label="充值/扣款类型" prop="opt_type" min-width="140">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ reason[scope.row.reason] }}
+            {{ opt_type[scope.row.opt_type] }}
           </div>
         </template>
       </el-table-column>
@@ -33,10 +32,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="提交人" prop="operator_name" min-width="100">
+      <el-table-column label="提交人" prop="creator_name" min-width="100">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ scope.row.operator_name }}
+            {{ scope.row.creator_name }}
           </div>
         </template>
       </el-table-column>
@@ -63,10 +62,10 @@
       <el-table-column label="提交时间" prop="created" min-width="100">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">{{returnDate(scope.row.created)}}</div>
-          <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnTime(scope.row.created)}}</div>
+          <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnDateFormat(scope.row.created, 'HH:mm:ss')}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <my-table-operate
             @command-click="handleCommandClick(scope.row)"
@@ -96,53 +95,39 @@
     >
       <el-form label-position="left" label-width="100px" style="margin-top: -10px; padding: 0 20px;" v-if="dialog.isShow">
         <el-form-item label="审核状态：">{{ status[dialog.detail.status] }}</el-form-item>
-        <el-form-item label="审核备注：">{{ dialog.detail.check_remark }}</el-form-item>
+        <el-form-item label="审核备注：">{{ dialog.detail.audit_remark }}</el-form-item>
         <el-form-item label="审核人：">{{ dialog.detail.checker_name }}</el-form-item>
-        <el-form-item label="审核时间：">{{ dialog.detail.check_time }}</el-form-item>
+        <el-form-item label="审核时间：">{{ dialog.detail.audit_time }}</el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  import {Table, TableColumn, Dialog, Form, FormItem, Tag} from 'element-ui';
-  import {ToPrice, OmissionText, TableOperate} from '@/common';
-  import {Constant, DataHandle} from '@/util';
-  import { Finance } from '@/service';
-  import { tableMixin } from '@/mixins';
+  import { OmissionText, TableOperate } from '@/common';
+  import { Http, Config, Constant, DataHandle } from '@/util';
+  import tableMixin from './table.mixin';
+  
   export default {
     name: "TableFinanceApprove",
+    mixins: [tableMixin],
     components: {
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-dialog': Dialog,
-      'el-form': Form,
-      'el-form-item': FormItem,
-      'el-tag': Tag,
-      'my-to-price': ToPrice,
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate
     },
-    mixins: [tableMixin],
     props: {
       data: { type: Array, required: true },
       stripe: {type: Boolean, default: true},
       'highlight-current-row': {type: Boolean, default: true},
       page: {type: Number, required: true},
       pageSize: {type: Number, required: true},
-      offsetHeight: { type: Number, required: true},
       itemEdit: { type: Function, required: true }
     },
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
     },
     data() {
       return {
-        reason: Constant.MERCHANT_BALANCE_REASON,
+        opt_type: Constant.MERCHANT_BALANCE_REASON,
         status: {
           wait_check: '待审核',
           checked: '审核通过',
@@ -169,7 +154,7 @@
         this.$props.itemEdit(item);
       },
       async handleShowDetail(item) {
-        let res = await Finance.approveDetail({ id: item.id });
+        let res = await Http.get(Config.api.financeApproveDetail, { id: item.id });
         if (res.code === 0) {
           this.$data.dialog.detail = res.data;
           this.$data.dialog.isShow = true;

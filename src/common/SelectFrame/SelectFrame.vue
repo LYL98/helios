@@ -1,17 +1,17 @@
 <template>
-  <el-select v-model="frameCode" filterable clearable placeholder="请选择框" style="width:100%;" @change="changeFrame">
+  <el-select v-model="frameCode" filterable clearable placeholder="请选择筐" style="width:100%;" @change="changeFrame" :size="size">
     <el-option
       v-for="item in dataItem"
-      :key="item.code"
-      :label="item.title"
-      :value="item.code">
+      :key="item.id"
+      :label="`${item.title}（￥${returnPrice(item.price)}）`"
+      :value="item.id">
     </el-option>
   </el-select>
 </template>
 
 <script>
 import { Select, Option, MessageBox } from 'element-ui';
-import { Base } from '@/service';
+import { Http, Config, DataHandle } from '@/util';
 
 export default {
   name: "SelectFrame",
@@ -22,7 +22,10 @@ export default {
   created(){
     this.baseFrameList();
   },
-  props: ['value'],
+  props: {
+    value: { type: String | Number },
+    size: { type: String, default: 'medium' }, //medium/small/mini
+  },
   model: {
     prop: 'value',
     event: 'ev'
@@ -34,21 +37,25 @@ export default {
     };
   },
   methods: {
-    //框改变
+    // 返回价格
+    returnPrice(data) {
+      return DataHandle.returnPrice(data);
+    },
+    //筐改变
     changeFrame(v, isInit){
       this.$emit('ev', v);
       this.$emit('change', v, isInit);
     },
-    //获取所有框
+    //获取所有筐
     async baseFrameList(){
       let that = this;
-      let res = await Base.baseFrameList();
+      let res = await Http.get(Config.api.baseFrameList, {});
       if(res.code === 0){
         let rd = res.data;
         that.$data.dataItem = rd;
-        //如果只有一个框，默认选择，页面不显示
+        //如果只有一个筐，默认选择，页面不显示
         if(rd.length === 1){
-          that.changeFrame(rd[0].code, true);
+          that.changeFrame(rd[0].id, true);
         }
       }else{
         MessageBox.alert(res.message, '提示');

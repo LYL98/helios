@@ -19,9 +19,9 @@
         />
       </my-query-item>
       <my-query-item>
-        <el-select size="small" v-model="query.reason" style="width: 180px; margin-left: 20px;"
+        <el-select size="small" v-model="query.opt_type" style="width: 180px; margin-left: 20px;"
                    @change="changeQuery" placeholder="选择变动原因" clearable>
-          <el-option v-for="(item, key) in reason" :key="key" :label="item" :value="key"></el-option>
+          <el-option v-for="(item, key) in optType" :key="key" :label="item" :value="key"></el-option>
         </el-select>
       </my-query-item>
       <my-query-item>
@@ -56,7 +56,7 @@
       </my-query-item>
     </div>
     <el-table
-      :data="listItem.items"
+      :data="dataItem.items"
       :row-class-name="highlightRowClassName"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
@@ -105,10 +105,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="变动原因" prop="reason" width="160">
+      <el-table-column label="变动原因" prop="opt_type" width="160">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ reason[scope.row.reason] }}
+            {{ optType[scope.row.opt_type] }}
           </div>
         </template>
       </el-table-column>
@@ -127,7 +127,7 @@
         :page-sizes="[10, 20, 30, 40, 50]"
         @size-change="changePageSize"
         @current-change="changePage"
-        :total="listItem.num"
+        :total="dataItem.num"
         :page-size="query.page_size"
         :current-page="query.page"
       />
@@ -136,11 +136,9 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Input, Button, Select, Option, Table, TableColumn, Pagination, Message, DatePicker } from 'element-ui';
-  import { ButtonGroup, QueryItem, ToPrice, OmissionText, TableOperate } from '@/common';
-  import { Constant, DataHandle } from '@/util';
-  import { Finance } from '@/service';
+  import { SelectOption, QueryItem, OmissionText, TableOperate } from '@/common';
+  import { Http, Config, Constant, DataHandle } from '@/util';
   export default {
     name: "TableFinanceBalanceMerchantLog",
     components: {
@@ -152,26 +150,21 @@
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
       'el-date-picker': DatePicker,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
-      'my-to-price': ToPrice,
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
+        province: this.$province,
         pickerValue: null,
         query: { },
-        listItem: {
+        dataItem: {
           items: [],
           num: 0
         },
-        reason: Constant.MERCHANT_BALANCE_REASON,
+        optType: Constant.MERCHANT_BALANCE_REASON,
         operator: {
           member: '用户',
           operator: '运营人员',
@@ -202,7 +195,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
@@ -218,7 +211,7 @@
       initQuery() {
         this.$data.query = Object.assign(this.$data.query, {
           province_code: this.province.code,
-          reason: '',
+          opt_type: '',
           operator_class: '',
           merchant_title: '',
           operator_name: '',
@@ -260,9 +253,9 @@
         this.BalanceLogQuery();
       },
       async BalanceLogQuery() {
-        let res = await Finance.balanceLogQuery(this.$data.query);
+        let res = await Http.get(Config.api.financeBalanceLogQuery, this.query);
         if (res.code === 0) {
-          this.$data.listItem = Object.assign({}, this.$data.listItem, res.data);
+          this.$data.dataItem = Object.assign({}, this.$data.dataItem, res.data);
         } else {
           Message.warning(res.message);
         }

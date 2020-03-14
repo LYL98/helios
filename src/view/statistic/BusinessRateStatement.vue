@@ -2,7 +2,7 @@
   业务四率表
 -->
 <template>
-  <div>
+  <sub-menu>
     <query-business-four-rate
       v-model="query"
       @change="changeQuery"
@@ -16,7 +16,7 @@
     <div class="statistics-table-list-container">
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         @sort-change="onSort"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
@@ -127,43 +127,12 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="item_total_price"
-          label="订单商品金额"
+          prop="gmv"
+          label="GMV"
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.item_total_price)}}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="amount_delivery"
-          label="运费金额"
-          align="left"
-          min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_delivery)}}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="bonus_promotion"
-          label="优惠金额"
-          align="left"
-          min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{returnPrice(scope.row.bonus_promotion)}}</div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="check_chg"
-          label="称重金额"
-          align="left"
-          min-width="120">
-          <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              <span v-if="scope.row.check_chg < 0" class="color-green">{{returnPrice(scope.row.check_chg)}}</span>
-              <span v-else-if="scope.row.check_chg > 0" class="color-red">{{returnPrice(scope.row.check_chg)}}</span>
-              <span v-else>{{returnPrice(scope.row.check_chg)}}</span>
-            </div>
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.gmv)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -173,6 +142,24 @@
           min-width="120">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.real_price)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="fram_total_price"
+          label="筐金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.fram_total_price)}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="bonus_promotion"
+          label="优惠金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{returnPrice(scope.row.bonus_promotion)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -200,23 +187,19 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-import { mapGetters, mapActions } from 'vuex';
 import { SelectZone } from '@/common';
-import { Statistic } from '@/service';
 import { QueryBusinessFourRate } from '@/container';
-import { DataHandle, Constant } from '@/util';
+import { Http, Config, DataHandle, Constant } from '@/util';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "BusinessRateStatement",
-  computed: mapGetters({
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
-  }),
+  mixins: [viewMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -241,7 +224,7 @@ export default {
         page: 1,
         page_size: 20,
         province_code: '',
-        zone_code: '',
+        zone_id: '',
         begin_date: '',
         end_date: '',
         sort: ''
@@ -262,7 +245,7 @@ export default {
     },
 
     isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {
@@ -330,7 +313,7 @@ export default {
       // this.$data.query = {
       //   page: 1,
       //   page_size: 20,
-      //   zone_code: '',
+      //   zone_id: '',
       //   province_code: this.province.code,
       //   sort: this.$data.resetSort,
       //   begin_date: this.$data.resetBeginDate,
@@ -349,8 +332,10 @@ export default {
     async orderFourRateList(){
       let that = this;
       let { query, selectArea } = that;
-      that.loading({isShow: true, isWhole: true});
-      let res = selectArea === 'zone' ? await Statistic.statisticalOrderFourRateZone(query): await Statistic.statisticalOrderFourRateCity(query);
+      this.$loading({ isShow: true, isWhole: true });
+      let res = selectArea === 'zone' ?
+        await Http.get(Config.api.statisticalOrderFourRateZone, query):
+        await Http.get(Config.api.statisticalOrderFourRateCity, query);
       if(res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
           //插入平均值
@@ -379,12 +364,10 @@ export default {
         that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
           item => selectArea === 'zone' ? item.zone_title : item.city_title);
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

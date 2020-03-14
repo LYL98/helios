@@ -11,7 +11,6 @@ module.exports = {
       "vue/dist/vue.runtime.esm.js",
       "vue-resource/dist/vue-resource.common.js",
       "vue-router/dist/vue-router.common.js",
-      "vuex/dist/vuex.common.js",
       "vue-quill-editor",
       "vuedraggable",
       "md5",

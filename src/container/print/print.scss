@@ -1,0 +1,26 @@
+.flex-coliumn-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom-btn-body{
+    background: #fff;
+    height: 64px;
+    >.bottom-btn{
+        position: fixed;
+        right: 16px;
+        bottom: 14px;
+    }
+}
+
+///* 执行打印命令时，非打印区域隐藏（不会被打印出来） */
+//@media print{
+//    .bottom-btn-body{
+//        display: none;
+//    }
+//    #app-body{
+//        display: none;
+//    }
+//}

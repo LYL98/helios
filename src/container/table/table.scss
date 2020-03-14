@@ -1,4 +1,4 @@
-.table-body{
+.container-table{
     position: relative;
     .table-option-btn{
         position: absolute;
@@ -15,16 +15,21 @@
 
 .table-top{
     text-align: right;
-    //padding: 0 16px;
-    margin-bottom: 16px;
+    padding: 16px;
     display: flex;
     align-items: center;
+    position: relative;
+    background: #fff;
     >.left{
         text-align: left;
         flex: 1;
+        min-height: 28px;
     }
     >.right{
         text-align: right;
+        position: relative;
+        z-index: 1;
+        min-height: 28px;
     }
 }
 
@@ -41,9 +46,11 @@
 .td-item{
     &.link-item, .link-item{
         text-decoration: underline;
+        //font-weight: bold;
         &:hover{
             cursor: pointer;
-            font-weight: bold;
+            //font-weight: bold;
+            opacity: .7;
         }
     }
 }

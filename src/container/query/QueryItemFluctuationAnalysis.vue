@@ -1,93 +1,72 @@
 <template>
   <div class="query">
-    <my-collapse-query :isSubPage="true" @expandChange="onExpandChange">
-      <template slot="header">
-        <el-row>
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="时间">
-              <el-date-picker
-                v-model="currentDateRange"
-                type="daterange"
-                size="small"
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :picker-options="fixDateOptions"
-                :clearable="false"
-                class="query-item-date"
-                @change="changePicker">
-              </el-date-picker>
-            </my-query-item>
-          </el-col>
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="波动指标">
-              <el-select v-model="editQuery.selectIndex"
-                         placeholder="请选择"
-                         size="small"
-                         class="query-item-select"
-                         @change="changeQuery">
-                <el-option
-                  v-for="item in indexOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </my-query-item>
-          </el-col>
-          <el-col :xl="8" :lg="10" :span="10">
-            <my-query-item label="搜索">
-              <div style="display: flex">
-                <el-input
-                  size="small"
-                  placeholder="请输入商品名称或编号"
-                  class="query-item-input"
-                  clearable
-                  @clear="changeQuery"
-                  v-model="editQuery.item_condition"
-                  @keyup.enter.native="changeQuery"
-                />
-                <el-button size="small" type="primary" style="margin-left: 4px" @click="changeQuery" icon="el-icon-search"></el-button>
-                <el-button v-if="!isExpand" size="small" type="primary" class="query-item-reset" plain @click="resetQuery">重置</el-button>
-              </div>
-            </my-query-item>
-          </el-col>
-        </el-row>
-      </template>
-      <template slot="expand">
-        <el-row style="margin-top: 16px">
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="展示分类">
-              <my-select-display-class
-                                       size="small"
-                                       :isUseToQuery="true"
-                                       v-model="editQuery.display_class_code"
-                                       @change="changeQuery"/>
-            </my-query-item>
-          </el-col>
-          <el-col :xl="6" :lg="7" :span="7">
-            <my-query-item label="采购员">
-              <my-select-buyer :provinceCode="editQuery.province_code"
-                               v-model="editQuery.buyer_id"
-                               size="small"
-                               :isUseToQuery="true"
-                               @change="changeQuery"/>
-              <el-button size="small" type="primary" class="query-item-reset" plain @click="resetQuery">重置</el-button>
-            </my-query-item>
-          </el-col>
-        </el-row>
-      </template>
-    </my-collapse-query>
+    <el-row>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="时间">
+          <el-date-picker
+            v-model="currentDateRange"
+            type="daterange"
+            size="small"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="fixDateOptions"
+            :clearable="false"
+            class="query-item-date"
+            @change="changePicker">
+          </el-date-picker>
+        </my-query-item>
+      </el-col>
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="波动指标">
+          <el-select v-model="editQuery.selectIndex"
+                      placeholder="请选择"
+                      size="small"
+                      class="query-item-select"
+                      @change="changeQuery">
+            <el-option
+              v-for="item in indexOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </my-query-item>
+      </el-col>
+      <el-col :xl="8" :lg="10" :span="10">
+        <my-query-item label="搜索">
+          <div style="display: flex">
+            <el-input
+              size="small"
+              placeholder="请输入商品名称或编号"
+              class="query-item-input"
+              clearable
+              @clear="changeQuery"
+              v-model="editQuery.item_condition"
+              @keyup.enter.native="changeQuery"
+            />
+            <el-button size="small" type="primary" style="margin-left: 4px" @click="changeQuery" icon="el-icon-search"></el-button>
+            <el-button v-if="!isExpand" size="small" type="primary" class="query-item-reset" plain @click="resetQuery">重置</el-button>
+          </div>
+        </my-query-item>
+      </el-col>
+    </el-row>
+    <el-row style="margin-top: 16px">
+      <el-col :xl="6" :lg="7" :span="7">
+        <my-query-item label="科学分类">
+          <select-system-class size="small" v-model="editQuery.system_class_codes" @change="selectSystemClass" style="max-width: 224px;"/>
+        </my-query-item>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message, Select, Option} from 'element-ui';
-  import { mapGetters } from 'vuex';
-  import { QueryItem, CollapseQuery, SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
+  import { QueryItem, SelectSystemClass } from '@/common';
   import { DataHandle } from '@/util';
-  import { queryMixin } from '@/mixins';
+  import queryMixin from './query.mixin';
   import Constant from "../../util/constant";
 
   export default {
@@ -100,11 +79,8 @@
       'el-button': Button,
       'el-select': Select,
       'el-option': Option,
-      'my-select-buyer': SelectBuyer,
-      'my-select-display-class': SelectDisplayClass,
-      'my-search-item': SearchItem,
-      'my-query-item': QueryItem,
-      'my-collapse-query': CollapseQuery
+      'select-system-class': SelectSystemClass,
+      'my-query-item': QueryItem
     },
     mixins: [queryMixin],
     created() {
@@ -174,26 +150,6 @@
         this.beforeDateRange = b;
       }
     },
-    props: {
-      // 查询对象
-      query: {type: Object, required: true},
-      reset: {type: Function, required: true}
-    },
-    model: {
-      prop: 'query',
-      event: 'change'
-    },
-    computed: {
-      editQuery: {
-        get() {
-          return this.$props.query;
-        },
-        set(v) {
-          this.$emit('change', v);
-        }
-      },
-      ...mapGetters({province: 'globalProvince'})
-    },
     methods: {
       //搜索日期
       changePicker(value){
@@ -224,6 +180,15 @@
         //触发change事件
         this.editQuery = Object.assign({}, this.editQuery);
       },
+      //选择科学分类
+      selectSystemClass(value, data){
+        if(value.length === 0){
+          this.editQuery.system_class_code = '';
+        }else{
+          this.editQuery.system_class_code = data.code;
+        }
+        this.changeQuery();
+      },
       changeQuery() {
         //触发change事件
         this.editQuery = Object.assign({}, this.editQuery);
@@ -234,8 +199,8 @@
           page: 1,
           page_size: 20,
           province_code: this.province.code,
-          buyer_id: '',
-          display_class_code: '',
+          system_class_codes: [],
+          system_class_code: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,
           item_condition: '',

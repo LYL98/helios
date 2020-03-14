@@ -2,7 +2,7 @@
   业务波动表
 -->
 <template>
-    <div>
+    <sub-menu>
       <query-business-fluctuation
         v-model="query"
         @change="changeQuery"
@@ -16,7 +16,7 @@
       </div>
       <div class="statistics-table-list-container">
         <el-table :data="dataItem.items"
-                  :height="windowHeight - offsetHeight"
+                  :height="viewWindowHeight - offsetHeight"
                   :row-class-name="highlightRowClassName"
                   @cell-mouse-enter="cellMouseEnter"
                   @cell-mouse-leave="cellMouseLeave"
@@ -31,12 +31,7 @@
               <span>{{formatValue(selectArea === 'zone' ? scope.row.zone_title : scope.row.city_title)}}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            min-width="100"
-            align="left"
-            v-for="(d, index) in dateRange()"
-            :key="d"
-            :label="labelDate(d)">
+          <el-table-column min-width="100" align="left" v-for="(d, index) in dateRange()" :key="d" :label="labelDate(d)">
             <template slot-scope="scope">
               <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.items, d) }}</span>
             </template>
@@ -78,24 +73,20 @@
 
 
       <my-business-fluctuation-chart :data="chartData" :callback="cancelFluctuationChart"></my-business-fluctuation-chart>
-    </div>
+    </sub-menu>
 </template>
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
-import { mapGetters, mapActions } from 'vuex';
 import { SelectZone } from '@/common';
-import { Statistic } from '@/service';
-import { DataHandle, Constant } from '@/util';
+import { Http, Config, DataHandle, Constant } from '@/util';
 import BusinessFluctuationChart from "./BusinessFluctuationChart";
-import {QueryBusinessFluctuation} from '@/container'
+import {QueryBusinessFluctuation} from '@/container';
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "BusinessFluctuationStatement",
-  computed: mapGetters({
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
-  }),
+  mixins: [viewMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -112,6 +103,7 @@ export default {
   },
   data() {
     return {
+      province: this.$province,
       dataItem: {},
       selectArea: 'zone',
       selectType: 'merchant',
@@ -121,8 +113,8 @@ export default {
         page: 1,
         page_size: 20,
         province_code: '',
-        zone_code: '',
-        city_code: '',
+        zone_id: '',
+        city_id: '',
         begin_date: '',
         end_date: '',
         selectType: 'merchant'
@@ -148,7 +140,7 @@ export default {
     },
 
     isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {
@@ -245,8 +237,8 @@ export default {
           case 'merchant':
             result = cellItem.store_num_ord || cellItem.store_num_ord === 0 ? cellItem.store_num_ord : '-';
             break;
-          case 'item_total_price':
-            result = cellItem.item_total_price || cellItem.item_total_price === 0 ? '¥' + that.returnPrice(cellItem.item_total_price) : '-';
+          case 'gmv':
+            result = cellItem.gmv || cellItem.gmv === 0 ? '¥' + that.returnPrice(cellItem.gmv) : '-';
             break;
           case 'amount_delivery':
             result = cellItem.amount_delivery || cellItem.amount_delivery === 0 ? '¥' + that.returnPrice(cellItem.amount_delivery) : '-';
@@ -281,8 +273,8 @@ export default {
             case 'merchant':
               result = cellItem.store_num_ord ? cellItem.store_num_ord : 0;
               break;
-            case 'item_total_price':
-              result = cellItem.item_total_price ? cellItem.item_total_price : 0;
+            case 'gmv':
+              result = cellItem.gmv ? cellItem.gmv : 0;
               break;
             case 'amount_delivery':
               result = cellItem.amount_delivery ? cellItem.amount_delivery : 0;
@@ -308,7 +300,7 @@ export default {
       switch (selectType) {
         case 'merchant':
           return sum || sum === 0 ? DataHandle.formatCount(sum) : '-';
-        case 'item_total_price':
+        case 'gmv':
         case 'amount_delivery':
         case 'bonus_promotion':
         case 'check_chg':
@@ -339,8 +331,8 @@ export default {
             case 'merchant':
               result = cellItem.store_num_ord ? cellItem.store_num_ord : 0;
               break;
-            case 'item_total_price':
-              result = cellItem.item_total_price ? cellItem.item_total_price : 0;
+            case 'gmv':
+              result = cellItem.gmv ? cellItem.gmv : 0;
               break;
             case 'amount_delivery':
               result = cellItem.amount_delivery ? cellItem.amount_delivery : 0;
@@ -366,7 +358,7 @@ export default {
       switch (selectType) {
         case 'merchant':
           return sum || sum === 0 ? DataHandle.formatCount(sum / rowItems.length) : '-';
-        case 'item_total_price':
+        case 'gmv':
         case 'amount_delivery':
         case 'bonus_promotion':
         case 'check_chg':
@@ -412,8 +404,10 @@ export default {
     async orderTrendCity(){
       let that = this;
       let { query, selectArea } = that;
-      that.loading({isShow: true, isWhole: true});
-      let res = selectArea === 'zone' ? await Statistic.statisticalOrderTrendZone(query): await Statistic.statisticalOrderTrendCity(query);
+      this.$loading({ isShow: true, isWhole: true });
+      let res = selectArea === 'zone' ?
+        await Http.get(Config.api.statisticalOrderTrendZone, query):
+        await Http.get(Config.api.statisticalOrderTrendCity, query);
       if(res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
           let averages = res.data.averages;
@@ -438,12 +432,10 @@ export default {
         that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
           item => selectArea === 'zone' ? item.zone_title : item.city_title)
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

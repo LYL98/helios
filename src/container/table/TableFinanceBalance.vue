@@ -1,11 +1,10 @@
 <template>
-  <div @mousemove="handleTableMouseMove">
+  <div @mousemove="handleTableMouseMove" class="table-conter">
     <el-table
-      class="list-table"
+      class="list-table my-table-float"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
       :data="data"
-      :height="windowHeight - offsetHeight"
       :row-class-name="highlightRowClassName"
       highlight-current-row="highlight-current-row"
       :row-key="rowIdentifier"
@@ -26,7 +25,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <my-table-operate
             @command-click="handleCommandClick(scope.row)"
@@ -57,27 +56,17 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
-  import {Table, TableColumn, MessageBox, Tag} from 'element-ui';
-  import {TableOperate, ToPrice} from '@/common';
+  import {TableOperate} from '@/common';
   import {Constant, DataHandle} from '@/util';
-  import { tableMixin } from '@/mixins';
+  import tableMixin from './table.mixin';
 
   export default {
     name: "TableFinanceBalance",
     components: {
-      'el-table': Table,
-      'el-table-column': TableColumn,
-      'el-tag': Tag,
-      'my-table-operate': TableOperate,
-      'my-to-price': ToPrice
+      'my-table-operate': TableOperate
     },
     mixins: [tableMixin],
     computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        windowHeight: 'windowHeight'
-      }),
     },
     props: {
       data: {type: Array, required: true},
@@ -88,7 +77,6 @@
       itemEdit: {type: Function, required: true},
       approveLog: {type: Function, required: true},
       balanceLog: {type: Function, required: true},
-      offsetHeight: {type: Number, required: true}
     },
     methods: {
 

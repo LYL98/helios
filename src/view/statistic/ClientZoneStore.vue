@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
         <el-breadcrumb-item
@@ -9,12 +9,12 @@
         </el-breadcrumb-item>
 
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client/zone', query: { zone_code: breadcrumb.zone_code, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client/zone', query: { zone_id: breadcrumb.zone_id, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
         >
-          {{ breadcrumb.zone_code === '' ? '全部片区' : breadcrumb.zone_title }}
+          {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
 
-        <el-breadcrumb-item>{{ query.city_code === '' ? '全部县域' : query.city_title }}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ query.city_id === '' ? '全部县域' : query.city_title }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="query" style="margin-bottom: 20px;">
@@ -41,7 +41,7 @@
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="片区">
             <my-select-zone
-              :value="query.zone_code"
+              :value="query.zone_id"
               :provinceCode="query.province_code"
               :clearable="false"
               size="small"
@@ -49,15 +49,14 @@
               @change="changeZone"
               @changeTitle="changeZoneTitle"
               class="query-item-select"
-              :isUseToQuery="true"
             />
           </my-query-item>
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="县域">
             <my-select-city
-              :value="query.city_code"
-              :zoneCode="query.zone_code"
+              :value="query.city_id"
+              :zoneId="query.zone_id"
               :provinceCode="query.province_code"
               :clearable="false"
               size="small"
@@ -65,7 +64,6 @@
               @change="changeCity"
               @changeCityName="changeCityName"
               class="query-item-select"
-              :isUseToQuery="true"
             />
           </my-query-item>
         </el-col>
@@ -78,7 +76,7 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="orderItemSumData.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         @sort-change="onSort"
       >
@@ -105,26 +103,9 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="item_total_price" min-width="120">
+        <el-table-column label="GMV" sortable="custom" prop="gmv" min-width="120">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.item_total_price) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="运费金额" sortable="custom" prop="amount_delivery">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.amount_delivery) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
-          <template slot-scope="scope">
-            {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="称重金额" prop="check_chg">
-          <template slot-scope="scope">
-            <span v-if="scope.row.check_chg === 0">￥0</span>
-            <span class="color-red" v-else-if="scope.row.check_chg > 0">￥{{ returnPrice(scope.row.check_chg) }}</span>
-            <span class="color-green" v-else>-￥{{ returnPrice(Math.abs(scope.row.check_chg)) }}</span>
+            ￥{{ returnPrice(scope.row.gmv) }}
           </template>
         </el-table-column>
         <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="120">
@@ -132,12 +113,22 @@
             ￥{{ returnPrice(scope.row.real_price) }}
           </template>
         </el-table-column>
+        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.fram_total_price) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
+          <template slot-scope="scope">
+            {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
+          </template>
+        </el-table-column>
         <el-table-column label="订单量" sortable="custom" prop="order_count">
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="piece_num"/>
         <el-table-column label="占比" prop="percent">
           <template slot-scope="scope">
-            {{returnPercentage(scope.row.item_total_price, total)}}%
+            {{returnPercentage(scope.row.gmv, total)}}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
@@ -169,18 +160,18 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem } from 'element-ui';
   import { QueryItem, TableOperate, SelectZone, SelectCity } from '@/common';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
+  import { Http, Config, DataHandle, Constant } from '@/util';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "ClientZoneStore",
+    mixins: [viewMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -195,11 +186,6 @@
       'my-select-zone': SelectZone,
       'my-select-city': SelectCity
     },
-    computed: mapGetters({
-      auth: 'globalAuth',
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
-    }),
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
@@ -222,7 +208,6 @@
       this.statisticalOrderMerchantSum();
     },
     methods: {
-      ...mapActions(['message', 'loading']),
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;
@@ -234,7 +219,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
@@ -259,9 +244,9 @@
         // console.log('store_title', this.$route.query)
 
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
-          city_code: this.$route.query.city_code,
+          city_id: this.$route.query.city_id,
           city_title: this.$route.query.city_title,
-          zone_code: this.$route.query.zone_code,
+          zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
           begin_date: this.$route.query.begin_date,
           end_date: this.$route.query.end_date
@@ -279,10 +264,10 @@
           province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
-          sort: '-item_total_price',
-          zone_code: this.$route.query.zone_code,
+          sort: '-gmv',
+          zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
-          city_code: this.$route.query.city_code,
+          city_id: this.$route.query.city_id,
           city_title: this.$route.query.city_title,
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -303,9 +288,9 @@
       changeZone(data, isInit) {
         if (!isInit) {
           // console.log("改变片区", data);
-          this.$data.query.zone_code = data;
-          this.$data.query.city_code = '';
-          this.$data.breadcrumb.zone_code = data;
+          this.$data.query.zone_id = data;
+          this.$data.query.city_id = '';
+          this.$data.breadcrumb.zone_id = data;
           this.statisticalOrderMerchantSum();
         }
       },
@@ -319,7 +304,7 @@
       changeCity(data, isInit) {
         if (!isInit) {
           // console.log("改变县域", data);
-          this.$data.query.city_code = data;
+          this.$data.query.city_id = data;
           this.statisticalOrderMerchantSum();
         }
       },
@@ -351,20 +336,20 @@
       async statisticalOrderMerchantSum(callback) {
         let that = this;
         let { query } = that;
-        that.loading({isShow: true, isWhole: true});
-        let res = await Statistic.statisticalOrderMerchantSum(query);
+        this.$loading({ isShow: true, isWhole: true });
+        let res = await Http.get(Config.api.statisticalOrderMerchantSum, query);
         if(res.code === 0){
           this.total = 0
           res.data.items.map(item => {
-            this.total += item.item_total_price
+            this.total += item.gmv
           })
 
           that.$data.orderItemSumData = res.data;
           typeof callback === 'function' && callback();
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
       handleShowClassDetail(item) {
         console.log('handleShowClassDetail' , this.$data.query)
@@ -373,9 +358,9 @@
           query: {
             store_id: item.store_id,
             store_title: item.store_title,
-            city_code: this.$data.query.city_code,
+            city_id: this.$data.query.city_id,
             city_title: this.$data.query.city_title,
-            zone_code: this.$data.query.zone_code,
+            zone_id: this.$data.query.zone_id,
             zone_title: this.$data.query.zone_title,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date

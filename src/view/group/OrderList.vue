@@ -2,19 +2,6 @@
   <div>
     <div class="query">
       <el-row>
-        <!--<el-col :xl="6" :lg="7" :span="7">-->
-          <!--<my-query-item label="所在仓">-->
-            <!--<my-select-city-->
-              <!--size="small"-->
-              <!--:isUseToQuery="true"-->
-              <!--:provinceCode="province.code"-->
-              <!--v-model="query.city_code"-->
-              <!--placeholder="所在仓"-->
-              <!--clearable-->
-              <!--@change="changeQuery"-->
-            <!--&gt;</my-select-city>-->
-          <!--</my-query-item>-->
-        <!--</el-col>-->
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="订单状态">
             <el-select
@@ -98,12 +85,11 @@
 
     <div @mousemove="handleTableMouseMove">
       <el-table
-        class="list-table"
+        class="list-table my-table-float"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -206,7 +192,7 @@
    * resetQuery
    *
    */
-  import { ButtonGroup, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
+  import { SelectOption, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
 
@@ -214,7 +200,7 @@
     name: "OrderList",
     components: {
       'my-select-city': SelectCity,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'my-image-preview': ImagePreview,

@@ -5,7 +5,7 @@
       <el-button size="small" type="primary" icon="el-icon-search" @click="handleQuery"></el-button>
       <el-button size="small" type="primary" @click="resetQuery">重置</el-button>
     </div>
-    <el-table :data="listItem.items" :row-class-name="highlightRowClassName" :highlight-current-row="true">
+    <el-table :data="dataItem.items" :row-class-name="highlightRowClassName" :highlight-current-row="true">
       <el-table-column label="发放时间" prop="created" width="100"></el-table-column>
       <el-table-column label="编号" prop="coupon_code" width="130"></el-table-column>
       <el-table-column label="名称" prop="coupon_title" width="200"></el-table-column>
@@ -33,7 +33,7 @@
         :page-sizes="[10, 20, 30, 40, 50]"
         @size-change="changePageSize"
         @current-change="changePage"
-        :total="listItem.num"
+        :total="dataItem.num"
         :page-size="query.page_size"
         :current-page="query.page"
       />
@@ -42,10 +42,8 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message } from 'element-ui';
-  import { Constant } from '@/util';
-  import { Item } from '@/service';
+  import { Http, Config, Constant } from '@/util';
   export default {
     name: "TableMarketingCouponLogStatistic",
     components: {
@@ -55,15 +53,11 @@
       'el-table-column': TableColumn,
       'el-pagination': Pagination
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
+        province: this.$province,
         query: { },
-        listItem: {
+        dataItem: {
           items: [],
           num: 0
         },
@@ -108,9 +102,9 @@
         this.queryLog();
       },
       async queryLog() {
-        let res = await Item.couponDistributeLog(this.$data.query);
+        let res = await Http.get(Config.api.itemCouponDistributeLog, this.query);
         if (res.code === 0) {
-          this.$data.listItem = Object.assign({}, this.$data.listItem, res.data);
+          this.$data.dataItem = Object.assign({}, this.$data.dataItem, res.data);
         } else {
           Message.warning(res.message);
         }

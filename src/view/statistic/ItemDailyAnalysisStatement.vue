@@ -2,23 +2,21 @@
   商品每日分析
 -->
 <template>
-  <div>
+  <sub-menu>
     <query-item-daily-analysis
       v-model="query"
       @change="changeQuery"
-      :reset="resetQuery"
-      @expandChange="onExpandChange"/>
+      :reset="resetQuery"/>
     <div class="statistics-table-list-container" style="position: relative;">
       <div style="height: 0">
         <el-select style="position: absolute; top: 8px; left: 20px; width: 110px; z-index: 100" size="small" v-model="selectArea" @change="onSelectArea">
           <el-option label="编号/商品" value="item"></el-option>
-          <el-option label="采购员" value="buyer"></el-option>
-          <el-option label="展示分类" value="class"></el-option>
+          <!--<el-option label="展示分类" value="class"></el-option>-->
         </el-select>
       </div>
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -29,19 +27,18 @@
           <template slot-scope="scope">
             <span id="titleScope">
               {{ scope.row.m_title ? scope.row.m_title : selectArea === 'item'
-                  ? formatString(scope.row.item_code) + '/' + formatString(scope.row.item_title)
-                  : selectArea === 'buyer' ?  formatString(scope.row.buyer_name) : formatString(scope.row.display_class_title)
-                }}
+                  ? formatString(scope.row.item_code) + '/' + formatString(scope.row.item_title): formatString(scope.row.system_class_title)
+              }}
             </span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="price_buy_real"
+          prop="price_buy"
           label="采购价"
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.price_buy_real)}}</span>
+            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.price_buy)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -59,21 +56,25 @@
           align="left"
           min-width="110">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
-              <span>{{formatValue(scope.row.count_real)}}</span>
-              <span v-if="scope.row.gross_weight && scope.row.gross_weight !== 0 && scope.row.count_real !== 0"
-                    style="color: blue;">{{'(共' + (returnWeight(scope.row.gross_weight) * formatValue(scope.row.count_real)) + '斤)'}}</span>
-            </div>
-
+            <span :class="isEllipsis(scope.row)">{{formatValue(scope.row.count_real)}}</span>
           </template>
         </el-table-column>
         <el-table-column
           prop="amount_real"
-          label="销售金额"
+          label="订单商品金额"
           align="left"
           min-width="120">
           <template slot-scope="scope">
             <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_real)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="fram_total_price"
+          label="框金额"
+          align="left"
+          min-width="120">
+          <template slot-scope="scope">
+            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.fram_total_price)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -137,24 +138,19 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-import { mapGetters, mapActions } from 'vuex';
-import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
-import { Statistic } from '@/service';
-import { DataHandle } from '@/util';
+import { Http, Config, DataHandle } from '@/util';
 import { QueryItemDailyAnalysis } from '@/container'
 import Constant from "@/util/constant";
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "ItemDailyAnalysisStatement",
-  computed: mapGetters({
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
-  }),
+  mixins: [viewMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -164,15 +160,10 @@ export default {
     'el-select': Select,
     'el-option': Option,
     'el-input': Input,
-    'my-select-buyer': SelectBuyer,
-    'my-select-display-class': SelectDisplayClass,
-    'my-search-item': SearchItem,
     'query-item-daily-analysis': QueryItemDailyAnalysis
   },
   created() {
-    // let titles = document.getElementsByClassName('titleScope');
-    // console.log(titles.length);
-    this.loadItemDailyAnalysisListFirstPage()
+    
   },
   data() {
     return {
@@ -186,8 +177,8 @@ export default {
         page_size: 20,
         province_code: '',
         opt_date: '',
-        buyer_id: '',
-        display_class_code: '',
+        system_class_codes: [],
+        system_class_code: '',
         item_condition: '',
       },
       currentRow: {}
@@ -206,7 +197,7 @@ export default {
     },
 
     isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {
@@ -217,13 +208,6 @@ export default {
         return 'stripe-row'
       }
       return '';
-    },
-    onExpandChange(isExpand) {
-      if (isExpand) {
-        this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-      } else {
-        this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-      }
     },
     formatValue(value) {
       return value || value === 0 ? value : '-'
@@ -267,8 +251,7 @@ export default {
       //   page: 1,
       //   page_size: 20,
       //   opt_date: '',
-      //   buyer_id: '',
-      //   display_class_code: '',
+      //   system_class_code: '',
       //   item_condition: '',
       // };
       // this.loadItemDailyAnalysisListFirstPage()
@@ -283,9 +266,8 @@ export default {
     async itemDailyAnalysisList(){
       let that = this;
       let { query, selectArea } = that;
-      that.loading({isShow: true, isWhole: true});
-      let res = selectArea === 'item' ? await Statistic.statisticalItemDailyAnalysis(query) :
-                selectArea === 'buyer' ? await Statistic.statisticalItemDailyAnalysisBuyer(query) : await Statistic.statisticalItemDailyAnalysisClass(query);
+      this.$loading({ isShow: true, isWhole: true });
+      let res = selectArea === 'item' ? await Http.get(Config.api.statisticalItemDailyAnalysis, query) : await Http.get(Config.api.statisticalItemDailyAnalysisClass, query);
       if(res.code === 0){
         //手动增加总计和平均值的行数据
         if (res.data.items && res.data.items.length > 0) {
@@ -303,15 +285,13 @@ export default {
         that.$data.dataItem = res.data;
         that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
           item => item.m_title ? item.m_title : selectArea === 'item' ? that.formatString(item.item_code) + '/' + that.formatString(item.item_title)
-            : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.display_class_title)
+            : that.formatString(item.system_class_title)
         )
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

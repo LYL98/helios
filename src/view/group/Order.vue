@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <sub-menu>
     <order-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="orderList" :show-detail="showItemDetail"></order-list>
     <el-dialog title="订单详情" width="1200px" :visible.sync="isShowDetail" :before-close="closeItemDetail">
       <order-detail :detail="itemDetail" v-if="isShowDetail"></order-detail>
@@ -7,7 +7,7 @@
         <el-button @click.native="closeItemDetail">关 闭</el-button>
       </span>
     </el-dialog>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

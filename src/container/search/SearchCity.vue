@@ -5,7 +5,7 @@
       <my-select-zone
         style="width: 200px"
         :provinceCode="provinceCode"
-        v-model="query.zone_code"
+        v-model="query.zone_id"
         @change="selectByCondition"
         clearable
       ></my-select-zone>
@@ -23,7 +23,7 @@
           <el-checkbox-group v-model="multipleSelection" @change="handleCheckedItemsChange">
             <ul style="padding: 0 10px;">
               <li v-for="item in showList">
-                <el-checkbox :label="item" :key="item.code">{{item.title}}</el-checkbox>
+                <el-checkbox :label="item" :key="item.id">{{item.title}}</el-checkbox>
               </li>
             </ul>
           </el-checkbox-group>
@@ -49,7 +49,7 @@
 <script>
   import { Table, TableColumn, Input, Button, Pagination, Checkbox, CheckboxGroup, Message } from 'element-ui';
   import { SelectZone } from '@/common';
-  import { Base } from '@/service';
+  import { Http, Config } from '@/util';
   export default {
     name: "SearchCity",
     components: {
@@ -75,7 +75,7 @@
       showList: {
         // 如果筛选到的itemList不在右侧编辑中的列表中editList，则填充在showList中显示出来。
         get() {
-          return this.$data.itemList.filter(item => !this.$data.editList.some(editItem => editItem.code === item.code));
+          return this.$data.itemList.filter(item => !this.$data.editList.some(editItem => editItem.id === item.id));
         }
       }
     },
@@ -83,7 +83,7 @@
       return {
         query: {
           province_code: this.$props.provinceCode,
-          zone_code: '', // 片区code
+          zone_id: '', // 片区code
         },
         cityTitle: '',
         // 搜索完毕后，获取搜索到的列表itemList，
@@ -115,7 +115,7 @@
        */
       selectByCondition() {
         // 如果查询列表没有搜索参数，则初始化状态。
-        if (!this.$data.query.zone_code
+        if (!this.$data.query.zone_id
           && !this.$data.cityTitle) {
           this.$data.itemList = [];
           this.$data.multipleSelection = [];
@@ -139,7 +139,7 @@
       clearQueryCondition() {
         this.$data.query = Object.assign({}, this.$data.query, {
           province_code: this.$props.provinceCode,
-          zone_code: ''
+          zone_id: ''
         })
         this.$data.cityTitle = '';
         this.$data.itemList = [];
@@ -204,12 +204,12 @@
        */
       handleRemoveItem(item) {
         // 从编辑列表删除
-        this.$data.editList = this.$data.editList.filter(t => t.code !== item.code);
+        this.$data.editList = this.$data.editList.filter(t => t.id !== item.id);
         this.$emit('change', this.$data.editList);
       },
 
       async queryCity() {
-        let res = await Base.baseCityList(this.$data.query);
+        let res = await Http.get(Config.api.baseCityList, this.$data.query);
         if (res.code === 0) {
           this.$data.itemList = this.$data.cityTitle === '' ? res.data : res.data.filter(item => item.title.indexOf(this.$data.cityTitle) != -1);;
         } else {

@@ -6,9 +6,8 @@
           <my-query-item label="所在仓">
             <my-select-city
               size="small"
-              :isUseToQuery="true"
               :provinceCode="province.code"
-              v-model="query.city_code"
+              v-model="query.city_id"
               clearable
               placeholder="所在仓"
               @change="changeQuery"
@@ -17,7 +16,8 @@
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
           <my-query-item label="门店状态">
-            <my-button-group
+            <select-option
+              size="small"
               :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
               v-model="query.is_freeze_header"
               @change="changeQuery"
@@ -52,12 +52,11 @@
 
     <div @mousemove="handleTableMouseMove">
       <el-table
-        class="list-table"
+        class="list-table my-table-float"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
-        :height="windowHeight - offsetHeight"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -160,7 +159,7 @@
    * resetQuery
    *
    */
-  import { ButtonGroup, QueryItem, SelectCity, TableOperate } from '@/common';
+  import { SelectOption, QueryItem, SelectCity, TableOperate } from '@/common';
   import { Constant, Http, Config } from '@/util';
   import tableMixin from '@/container/table/table.mixin';
 
@@ -168,7 +167,7 @@
     name: "HeadList",
     components: {
       'my-select-city': SelectCity,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate
     },
@@ -197,7 +196,7 @@
       initQuery() {
         this.$data.query = {
           province_code: this.province.code,
-          city_code: '',
+          city_id: '',
           is_freeze_header: '',
           condition: '',
           page: 1,

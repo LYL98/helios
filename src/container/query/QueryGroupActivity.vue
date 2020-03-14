@@ -10,7 +10,7 @@
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="上架状态">
-          <button-group size="small" v-model="query.status" :options="{'全部': '', '已上架': 'activated', '未上架': 'deactivated'}" @change="handleQuery('TableGroupActivity')"/>
+          <select-option size="small" v-model="query.status" :options="{'全部': '', '已上架': 'activated', '未上架': 'deactivated'}" @change="handleQuery('TableGroupActivity')"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
@@ -27,15 +27,15 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin2';
-  import { ButtonGroup } from '@/common';
+  import queryMixin from './query.mixin';
+  import { SelectOption } from '@/common';
   import { Constant } from '@/util';
 
   export default {
     name: "QueryGroupActivity",
     mixins: [queryMixin],
     components: {
-      'button-group': ButtonGroup,
+      'select-option': SelectOption,
     },
     created() {
       this.$data.initQuery.province_code = this.province.code;

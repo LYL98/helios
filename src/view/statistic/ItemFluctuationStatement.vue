@@ -2,12 +2,11 @@
   业务波动表
 -->
 <template>
-    <div>
+    <sub-menu>
       <query-item-fluctuation-analysis
         v-model="query"
         @change="changeQuery"
-        :reset="resetQuery"
-        @expandChange="onExpandChange"/>
+        :reset="resetQuery"/>
       <!--<p style="margin-top: 30px; font-size: 18px;">-->
         <!--商品<span style="color: blue;">{{indexOptions[selectIndex].label}}</span>波动分析-->
       <!--</p>-->
@@ -15,12 +14,11 @@
         <div style="height: 0">
           <el-select style="position: absolute; top: 8px; left: 20px; width: 110px; z-index: 100" size="small" v-model="selectArea" @change="onSelectArea">
             <el-option label="编号/商品" value="item"></el-option>
-            <el-option label="采购员" value="buyer"></el-option>
-            <el-option label="展示分类" value="class"></el-option>
+            <!--<el-option label="展示分类" value="class"></el-option>-->
           </el-select>
         </div>
         <el-table :data="dataItem.items"
-                  :height="windowHeight - offsetHeight"
+                  :height="viewWindowHeight - offsetHeight"
                   :row-class-name="highlightRowClassName"
                   @cell-mouse-enter="cellMouseEnter"
                   @cell-mouse-leave="cellMouseLeave"
@@ -33,7 +31,7 @@
               <span>
                 {{ scope.row.m_title ? scope.row.m_title : selectArea === 'item'
                   ? formatString(scope.row.item_code) + '/' + formatString(scope.row.item_title)
-                  : selectArea === 'buyer' ?  formatString(scope.row.buyer_name) : formatString(scope.row.display_class_title)
+                  : formatString(scope.row.system_class_title)
                 }}
               </span>
             </template>
@@ -85,24 +83,19 @@
       </div>
 
       <my-item-fluctuation-chart :data="chartData" :callback="cancelFluctuationChart"></my-item-fluctuation-chart>
-    </div>
+    </sub-menu>
 </template>
 
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
-import { mapGetters, mapActions } from 'vuex';
-import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
-import { Statistic } from '@/service';
-import { DataHandle, Constant } from '@/util';
+import { Http, Config, DataHandle, Constant } from '@/util';
 import ItemFluctuationChart from "./ItemFluctuationChart";
 import { QueryItemFluctuationAnalysis } from '@/container'
+import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "ItemFluctuationStatement",
-  computed: mapGetters({
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
-  }),
+  mixins: [viewMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -114,9 +107,6 @@ export default {
     'el-radio-group': RadioGroup,
     'el-radio': Radio,
     'my-item-fluctuation-chart': ItemFluctuationChart,
-    'my-select-buyer': SelectBuyer,
-    'my-select-display-class': SelectDisplayClass,
-    'my-search-item': SearchItem,
     'query-item-fluctuation-analysis': QueryItemFluctuationAnalysis
   },
   data() {
@@ -133,8 +123,7 @@ export default {
         page: 1,
         page_size: 20,
         province_code: '',
-        buyer_id: '',
-        display_class_code: '',
+        system_class_code: '',
         begin_date: '',
         end_date: '',
         item_condition: '',
@@ -188,7 +177,7 @@ export default {
     },
 
     isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {
@@ -199,13 +188,6 @@ export default {
         return 'stripe-row'
       }
       return '';
-    },
-    onExpandChange(isExpand) {
-      if (isExpand) {
-        this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-      } else {
-        this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-      }
     },
     //返回价格
     returnPrice(price){
@@ -283,7 +265,7 @@ export default {
       if (cellItem) {
         switch (selectIndex) {
           case 0:
-            result = that.returnPrice(cellItem.price_buy_real);
+            result = that.returnPrice(cellItem.price_buy);
             break;
           case 1:
             result = that.returnPrice(cellItem.price_sale);
@@ -325,7 +307,7 @@ export default {
         if (cellItem) {
           switch (selectIndex) {
             case 0:
-              result = cellItem.price_buy_real;
+              result = cellItem.price_buy;
               break;
             case 1:
               result = cellItem.price_sale;
@@ -385,7 +367,7 @@ export default {
         if (cellItem) {
           switch (selectIndex) {
             case 0:
-              result = cellItem.price_buy_real;
+              result = cellItem.price_buy;
               break;
             case 1:
               result = cellItem.price_sale;
@@ -493,14 +475,14 @@ export default {
       this.loadItemTrendAnalysisList();
     },
     loadItemTrendAnalysisList() {
-      this.itemTrendAnalysis().catch(e => this.message({title: '提示', message: e, type: 'error'}));
+      this.itemTrendAnalysis().catch(e => this.$message({title: '提示', message: e, type: 'error'}));
     },
     async itemTrendAnalysis(){
       let that = this;
       let { query, selectArea } = that;
-      that.loading({isShow: true, isWhole: true});
-      let res = selectArea === 'item' ? await Statistic.statisticalItemTrendAnalysis(query) :
-                selectArea === 'buyer' ? await Statistic.statisticalItemTrendAnalysisBuyer(query) : await Statistic.statisticalItemTrendAnalysisClass(query);
+      this.$loading({ isShow: true, isWhole: true });
+      let res = selectArea === 'item' ? await Http.get(Config.api.statisticalItemTrendAnalysis, query) :
+                                        await Http.get(Config.api.statisticalItemTrendAnalysisClass, query);
       if(res.code === 0){
         if (res.data.items && res.data.items.length > 0) {
           //插入平均值
@@ -540,15 +522,13 @@ export default {
 
         that.maxLabelWidth = DataHandle.computeTableLabelMinWidth(that.$data.dataItem.items,
           item => item.m_title ? item.m_title : selectArea === 'item' ? that.formatString(item.item_code) + '/' + that.formatString(item.item_title)
-              : selectArea === 'buyer' ? that.formatString(item.buyer_name) : that.formatString(item.display_class_title)
+              : that.formatString(item.system_class_title)
         )
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

@@ -3,27 +3,27 @@
  * @author epo
  * @created 2018-12-07
  */
+module.exports = {
+    /**
+     * api地址
+     * 测试：https://xxxdev.xxx.xxx
+     * 生产：https://xxx.xxx.xxx
+     */
+    RequestHttp: 'https://xxxdev.xxx.xxx',
 
-/**
- * api地址
- * 测试：https://xxxdev.xxx.xxx
- * 生产：https://xxx.xxx.xxx
- */
-export const RequestHttp = 'https://xxxdev.xxx.xxx';
+    //腾讯Bucket上传地址
+    TencentUpPath: 'https://xxx.xxx.xxx',
 
-/**
- * 资源上传地址
- * 华东地址：up.qiniu.com、up-z0.qiniu.com、upload.qiniu.com
- * 华南地址：up.qiniup.com
- */
-export const TencentUpPath = 'https://up.qiniup.com';
+    /**
+     * 腾讯Bucket下载地址
+     * 测试：https://cdn-xxx-dev.xxx.xxx/
+     * 生产：https://cdn-xxx-pro.xxx.xxx/
+     */
+    TencentPath: 'https://cdn-xxx-dev.xxx.xxx/',
 
-/**
- * 资源下载地址
- * 测试：https://cdn-xxx-dev.xxx.xxx/
- * 生产：https://cdn-xxx-pro.xxx.xxx/
- */
-export const TencentPath = 'https://cdn-xxx-dev.xxx.xxx/';
+    //构建后文件目录
+    BuildOutputDir: '../dist',
 
-//是否打印网络请求日志
-export const IsPrintRequestLog = false;
+    //是否是测试开发环境
+    IsDev: false
+}

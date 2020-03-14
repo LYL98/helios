@@ -20,7 +20,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+*.wxss
 
 *.map
-*.wxss
 configBase.js

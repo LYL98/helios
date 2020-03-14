@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { Tabs, TabPane} from 'element-ui';
 import GroupBuyItemStatement from './GroupBuyItemStatement';
 import GroupBuyCaptainStatement from './GroupBuyCaptainStatement';
@@ -30,12 +29,10 @@ export default {
     'my-group-buy-captain-statement': GroupBuyCaptainStatement,
     'my-group-buy-member-statement': GroupBuyMemberStatement,
   },
-  computed: mapGetters({
-    auth: 'globalAuth'
-  }),
   data() {
     return {
-      activeTab: 'first'
+      activeTab: 'first',
+      auth: this.$auth
     }
   },
   created() {

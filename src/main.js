@@ -2,13 +2,13 @@ import Vue from 'vue';
 import VueResource from 'vue-resource';
 // import 'babel-polyfill';//解决ie浏览器不支持promise
 import App from './App';
-import store from './store';
 import router from './router';
-import { DataHandle, Method, Http, Config } from '@/util';
+import { DataHandle, Method } from '@/util';
 import { MessageBox, Notification, Loading } from 'element-ui';
 
 import * as Sentry from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';
+import './../element-variables.scss';
 
 // 服务器地址
 let url = window.location.origin;
@@ -61,21 +61,8 @@ Vue.use({
     Vue.prototype.$messageBox = MessageBox;
 
     //全局省份
-    let province = Method.getLocalStorage('appleGlobalProvince');
+    let province = Method.getLocalStorage('heliosGlobalProvince');
     Vue.prototype.$province = province;
-
-    //全局品牌 refresh (true,false)
-    Vue.prototype.$getBrand = async (refresh)=>{
-      if(globalBrand && globalBrand.brand_name && !refresh){
-        return globalBrand;
-      }
-      let res = await Http.get(Config.api.getBrand, {});
-      if(res.code === 0){
-        globalBrand = res.data;
-        return globalBrand;
-      }
-      return { brand_name: '', brand_icon: ''};
-    }
   }
 });
 
@@ -83,6 +70,5 @@ DataHandle.initArrayRemove();//初始化数组删除
 
 new Vue({
   router,
-  store,
   render: h => h(App)
 }).$mount('#app')

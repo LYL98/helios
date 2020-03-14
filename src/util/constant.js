@@ -16,7 +16,7 @@ const Constant = {
   //筛选区一行的高度值，如果筛选区有两行隐藏，则需要乘以2，以此类推
   QUERY_OFFSET_LINE_HEIGHT: 48,
   //表格高度计算参数, 16为模块之间的间距
-  OFFSET_BASE_HEIGHT: 74,   //基础偏置高度42+16+16
+  OFFSET_BASE_HEIGHT: 78,   //基础偏置高度46+16+16
   OFFSET_OPERATE: 44,   //操作区行高28+16
   OFFSET_TABS: 40,   //tab切换器高度
   OFFSET_BREADCRUMB: 30, // 面包屑的高度
@@ -47,7 +47,7 @@ const Constant = {
     sys_refund: '系统退款',
     cancel_order_refund: '订单取消退款',
     after_sale_refund: '售后退款',
-    frame_return: '退框退款',
+    frame_return: '退筐退款',
     refund_for_pay_after_cancel: '金额退回',
     manual_aftersale: '退赔售后(手动充值)',
     manual_discount: '优惠充值(手动充值)',
@@ -84,9 +84,9 @@ const Constant = {
     decline: '驳回', // 兼容历史数据
     declined: '驳回' // 兼容接口
   },
-  // 退框变更原因
+  // 退筐变更原因
   MERCHANT_REFUND_REASON: {
-    frame_return: '门店退框',
+    frame_return: '门店退筐',
     order_done: '发货增加',
     manual_fix: '手动修改'
   },
@@ -209,8 +209,6 @@ const Constant = {
   //订单价格变动原因
   PRICE_CHANGE: {
     short: '缺货',
-    weight_up: '实重上升',
-    weight_down: '实重下降',
     update_amount: '手动改价'
   },
   //售后单状态
@@ -219,16 +217,20 @@ const Constant = {
     close: '已完成',
   },
   // 售后单处理类型
-  AFTER_SALE_OPT_TYPE: {
-    quality: '质量异常',
-    delivery: '物流异常',
-    amount_delivery: '运费退还',
-    weight: '少称',
-    not_match: '与SKU描述不相符',
-    num: '缺货/错货',
-    big_order_bonus: '大单优惠',
-    other: '其他'
+  AFTER_SALE_OPT_TYPE: (type) => {
+    let data = [
+      { key: 'quality', value: '质量异常' },
+      { key: 'delivery', value: '物流异常' },
+      { key: 'amount_delivery', value: '运费退还' },
+      { key: 'weight', value: '少称' },
+      { key: 'not_match', value: '与SKU描述不相符' },
+      { key: 'num', value: '缺货/错货' },
+      { key: 'big_order_bonus', value: '大单优惠' },
+      { key: 'other', value: '其他' }
+    ];
+    return handleKeyValue(type, data);
   },
+
   //售后单处理结果
   AFTER_SALE_RESULT: {
     init: '商家提交售后申请，待处理', //正在处理
@@ -245,21 +247,41 @@ const Constant = {
     cancel_order_refund: '订单取消退款',
     after_sale_refund: '售后退款'
   },
-  //运营人员数据权限级别1:全国 2:省 3:片区 4:县市 5:线路
+  //运营人员数据权限级别1:总部 2:区域 3:片区 4:县域
   OPERATOR_DATA_LEVEL: {
-    '1': '全国',
-    '2': '省',
+    '1': '总部',
+    '2': '区域',
     '3': '片区',
-    '4': '县域',
-    '5': '线路'
+    '4': '县域'
+  },
+  // 配送人员职务
+  DELIVER_POST: (type) => {
+    let data = [
+      { key: 'deliver', value: '司机' },
+      { key: 'sorter', value: '装车员' },
+      { key: 'local_distributor', value: '配送员' },
+    ];
+    return handleKeyValue(type, data);
   },
   //运营人员职务
-  OPERATOR_POST: {
-    salesman: '业务员',
-    buyer: '采购员',
-    distributor: '配送员'
+  OPERATOR_POST: (type) => {
+    let data = [
+      { key: 'buyer', value: '商品' },
+      { key: 'salesman', value: '业务' },
+      { key: 'supply', value: '供应链' },
+      { key: 'other', value: '其他' },
+    ];
+    return handleKeyValue(type, data);
   },
-  // 退框记录的状态
+  //运营人员职务 颜色
+  OPERATOR_POST_TYPE: {
+    salesman: 'info',
+    buyer: 'info',
+    deliver: 'info',
+    sorter: 'info',
+    local_distributor: 'info'
+  },
+  // 退筐记录的状态
   OPERATE_REFUND_FRAME_STATUS: {
     init: '未审核',
     checked: '审核通过',
@@ -307,6 +329,278 @@ const Constant = {
       }
     }]
   },
+  //供应商类型
+  SUPPLIER_TYPE: (type) => {
+    let data = [
+      { key: 'global_pur', value: '全国' },
+      { key: 'local_pur', value: '区域' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //供应商账期
+  SUPPLIER_BILL_TERM: (type) => {
+    let data = [
+      { key: 0, value: '现结' },
+      { key: 7, value: '周结' },
+      { key: 14, value: '双周结' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //供应商账期2
+  SUPPLIER_BILL_TERM2: (type) => {
+    let data = [
+      { key: 0, value: '现结' },
+      { key: 7, value: '账期' },
+      { key: 14, value: '账期' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //审核状态(共用)
+  AUDIT_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待审核' },
+      { key: 'success', value: '审核通过' },
+      { key: 'fail', value: '作废' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //审核状态(颜色)
+  AUDIT_STATUS_TYPE: {
+    init: 'primary',
+    success: 'regular',
+    fail: 'info'
+  },
+  //采购订单状态（预采、反采）
+  PURCHASE_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待审核' },
+      { key: 'success', value: '待收货' },
+      { key: 'fail', value: '作废' },
+      { key: 'part_in', value: '部分收货' },
+      { key: 'all_in', value: '已完成' },
+      { key: 'closed', value: '关闭' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //采购订单状态(颜色)
+  PURCHASE_STATUS_TYPE: {
+    init: 'primary',
+    success: 'success',
+    fail: 'info',
+    part_in: 'warning',
+    all_in: 'regular',
+    closed: 'info'
+  },
+  //调拨单状态
+  DISTRIBUTE_STATUS: (type)=>{
+    let data = [
+      { key: 'success', value: '待收货' },
+      { key: 'part_in', value: '部分收货' },
+      { key: 'all_in', value: '已完成' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //调拨单状态(颜色)
+  DISTRIBUTE_STATUS_TYPE: {
+    success: 'primary',
+    part_in: 'warning',
+    all_in: 'regular'
+  },
+  //财务结款状态
+  S_STATEMENT_PAID_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待结款' },
+      { key: 'paid', value: '已结款' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //财务结款状态(颜色)
+  S_STATEMENT_PAID_STATUS_TYPE: {
+    init: 'warning',
+    paid: 'info'
+  },
+  //财务对财单状态
+  S_STATEMENT_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待确认' },
+      { key: 'confirmed', value: '待结款' },
+      { key: 'paid', value: '已结款' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //财务对财表状态(颜色)
+  S_STATEMENT_STATUS_TYPE: {
+    init: 'primary',
+    confirmed: 'warning',
+    paid: 'regular'
+  },
+  //供应商流水类型
+  SUPPLIER_BILL_REASON: (type)=>{
+    let data = [
+      { key: 'local_buy', value: '货款' }, //反采采购
+      { key: 'distribution', value: '货款' }, //预采采购
+      { key: 'item_damage', value: '货损' }, //货损
+      { key: 'refund', value: '退货' }, //退货
+      { key: 'other', value: '其它' }, //其它（手动充值、扣款）
+    ];
+    return handleKeyValue(type, data);
+  },
+  //品控单状态
+  Q_C_STATUS: (type)=>{
+    let data = [
+      { key: 'success', value: '待收货' },
+      { key: 'part_in', value: '部分收货' },
+      { key: 'all_in', value: '已完成' },
+      { key: 'closed', value: '关闭' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //品控单状态颜色
+  Q_C_STATUS_TYPE: {
+    success: 'primary',
+    part_in: 'warning',
+    all_in: 'regular',
+    closed: 'info'
+  },
+  //入库单状态
+  INVENTORY_STATUS: (type)=>{
+    let data = [
+      { key: 'success', value: '待入库' },
+      { key: 'all_in', value: '已入库' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //入库单状态(颜色)
+  INVENTORY_STATUS_TYPE: {
+    success: 'primary',
+    all_in: 'regular'
+  },
+  //入库类型
+  INVENTORY_TYPES: (type)=>{
+    let data = [
+      { key: 'global_pur', value: '预采入库' },
+      { key: 'local_pur', value: '反采入库' },
+      { key: 'distribute', value: '调拨入库' },
+      { key: 'allocate', value: '场地入库' },
+      { key: 'refund', value: '场地入库' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //入库类型(颜色)
+  INVENTORY_TYPES_TYPE: {
+    global_pur: 'info',
+    local_pur: 'info',
+    distribute: 'info',
+    allocate: 'info',
+    refund: 'info'
+  },
+  //变动类型
+  SUP_OPT_TYPES: (type)=>{
+    let data = [
+      { key: 'damage', value: '报损' },
+      { key: 'damage_sale', value: '报损销售' },
+      { key: 'sale_offline', value: '线下销售' },
+      { key: 'refund', value: '退货入库' },
+      { key: 'refund_to_supplier', value: '退货给供应商' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //变动类型(颜色)
+  SUP_OPT_TYPES_TYPE: {
+    damage: 'info',
+    damage_sale: 'info',
+    sale_offline: 'info',
+    refund: 'info',
+    refund_to_supplier: 'info'
+  },
+  //发车状态
+  DEPART_STATUS: (type)=>{
+    let data = [
+      { key: 'wait_confirm', value: '待确认' },
+      { key: 'wait_delivery', value: '待发车' },
+      { key: 'delivering', value: '配送中' },
+      { key: 'done', value: '已完成' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //发车状态(颜色)
+  DEPART_STATUS_TYPE: {
+    wait_confirm: 'primary',
+    wait_delivery: 'primary',
+    delivering: 'warning',
+    done: 'refund'
+  },
+  //分配方式
+  DISTRIBUTE_OPT_TYPES: (type)=>{
+    let data = [
+      { key: 'by_line', value: '按线路分配' },
+      { key: 'by_od_time', value: '按下单时间分配' },
+    ];
+    return handleKeyValue(type, data);
+  },
+  //分配方式状态(颜色)
+  DISTRIBUTE_OPT_TYPES_TYPE: {
+    by_line: 'info',
+    by_od_time: 'info'
+  },
+  //装车tab切换
+  TRUCK_LOADING_TAB: (type)=>{
+    let data = [
+      { key: 'sort', value: '分配'},
+      { key: 'truck', value: '装车'},
+      { key: 'truck_delay', value: '装车延时'}
+    ];
+    return handleKeyValue(type, data);
+  },
+  //出库状态
+  OUT_STORAGE_STATUS: (type)=>{
+    let data = [
+      { key: 'init', value: '待出库'},
+      { key: 'part', value: '部分出库'},
+      { key: 'all', value: '已出库'}
+    ];
+    return handleKeyValue(type, data);
+  },
+  //出库状态(颜色)
+  OUT_STORAGE_STATUS_TYPE: {
+    init: 'primary',
+    part: 'warning',
+    all: 'regular'
+  },
+  //权限级别
+  ROLE_AUTH_LEVEL: (type)=>{
+    let data = [
+      { key: 'global', value: '总部' },
+      { key: 'local', value: '区域' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //权限级别(颜色)
+  ROLE_AUTH_LEVEL_TYPE: {
+    global: 'info',
+    local: 'info'
+  },
 };
+
+//处理key value
+const handleKeyValue = (type, data) => {
+  //list
+  if(type === 'list'){
+    return data;
+  }
+  let d = {};
+  //value_key
+  if(type === 'value_key'){
+    data.map(item => {
+      d[item.value] = item.key;
+    });
+    return d;
+  }
+  //key_value
+  data.map(item => {
+    d[item.key] = item.value;
+  });
+  return d;
+}
 
 export default Constant;

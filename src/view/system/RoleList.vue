@@ -1,22 +1,30 @@
 <template>
+  <sub-menu>
   <div class="role-list-body" style="background-color: #fff;">
     <div class="role-list">
       <!--角色列表start-->
       <div class="left">
         <div class="title">
           角色列表
-          <el-button class="btn" icon="el-icon-plus" size="mini" @click.native="showAddEdit" v-if="auth.isAdmin || auth.SystemRoleAdd" >新增</el-button>
+          <el-button class="btn" icon="el-icon-plus" size="mini" @click.native="showAddEdit('add')" v-if="auth.isAdmin || auth.SystemRoleAdd" >新增</el-button>
         </div>
-        <div class="content" :style="`height:${windowHeight - 116}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
-          <div v-for="(item,index) in dataItem" :class="`role-item ${detail.id === item.id && 'active'}`" @click="selectRoleItem(item, detail.id === item.id)" :key="index">
-            <div class="add-dot" :title="item.title">
-              {{item.title}}
+        <div class="select">
+          <el-select v-model="selectRoleType" placeholder="请选择权限级别" clearable filterable style="width: 100%;" size="mini">
+            <el-option v-for="(value, key) in roleAuthLevel" :key="key" :label="value" :value="key"></el-option>
+          </el-select>
+        </div>
+        <div class="content" :style="`height:${viewWindowHeight - 166}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
+          <template v-for="(item,index) in dataItem">
+            <div :class="`role-item ${detail.id === item.id && 'active'}`" @click="selectRoleItem(item, detail.id === item.id)" :key="index" v-if="selectRoleType === '' || selectRoleType === item.role_type">
+              <div class="add-dot" :title="item.title">
+                {{item.title}}
+              </div>
+              <div class="option">
+                <i class="el-icon-delete" v-if="auth.isAdmin || auth.SystemRoleDelete" @click="deleteData(item)"></i>
+                <i class="el-icon-edit-outline" v-if="auth.isAdmin || auth.SystemRoleEdit" @click="showAddEdit(item)"></i>
+              </div>
             </div>
-            <div class="option">
-              <i class="el-icon-delete" v-if="auth.isAdmin || auth.SystemRoleDelete" @click="deleteData(item)"></i>
-              <i class="el-icon-edit-outline" v-if="auth.isAdmin || auth.SystemRoleEdit" @click="showAddEdit"></i>
-            </div>
-          </div>
+          </template>
         </div>
       </div>
       <!--角色列表end-->
@@ -31,16 +39,16 @@
             </el-radio-group>
           </span>
           <span class="f-r">
-            <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin">超级管理员</el-checkbox>
+            <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin" :disabled="detail.role_type === 'global' ? false : true">超级管理员</el-checkbox>
           </span>
         </div>
-        <div class="content" :style="`height:${windowHeight - 166}px;`">
+        <div class="content" :style="`height:${viewWindowHeight - 166}px;`">
           <div class="content-body" v-if="detail.is_super_admin"><div>超级管理员</div></div>
           <!--菜单权限start-->
-          <div class="per-item-body" :style="`height:${windowHeight - 186}px; padding: 10px 0; border-bottom: 1px solid #f3f4f6;`">
+          <div class="per-item-body" :style="`height:${viewWindowHeight - 186}px; padding: 10px 0; border-bottom: 1px solid #f3f4f6;`">
             <el-tree
             v-if="isShowTree"
-            :data="permissionList"
+            :data="permissionTree"
             :default-expand-all="defaultExpandAll"
             show-checkbox
             check-strictly
@@ -56,72 +64,81 @@
           <!--菜单权限end-->
         </div>
         <div class="t-r">
-          <el-button type="primary" style="margin: 10px 10px 0 0;" v-if="auth.isAdmin || auth.SystemRoleEdit" :disabled="!isChange" @click.native="save">保存已修改</el-button>
+          <el-button type="primary" style="margin: 5px 10px 0 0;" v-if="auth.isAdmin || auth.SystemRoleEdit" :disabled="!isChange" @click.native="save">保存已修改</el-button>
         </div>
       </div>
       <!--权限列表start-->
     </div>
-    <my-add-edit-role :callback="myCallBack" />
+    <add-edit-system-role :callback="myCallBack" ref="AddEditSystemRole" />
   </div>
+  </sub-menu>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { Button, Checkbox, MessageBox,Tree, RadioGroup, RadioButton } from 'element-ui';
-import { Config, Constant, DataHandle } from '@/util';
-import RoleAddEdit from './RoleAddEdit';
+import viewMixin from './../view.mixin';
+import { Button, Checkbox, Tree, RadioGroup, RadioButton, Select, Option } from 'element-ui';
+import { Config, Constant, DataHandle, Http } from '@/util';
+import { AddEditSystemRole } from '@/container';
 
 export default {
   name: 'RoleList',
+  mixins: [viewMixin],
   components: {
     'el-button': Button,
     'el-checkbox': Checkbox,
-    'my-add-edit-role': RoleAddEdit,
+    'add-edit-system-role': AddEditSystemRole,
     'el-tree': Tree,
     'el-radio-group': RadioGroup,
     'el-radio-button': RadioButton,
+    'el-select': Select,
+    'el-option': Option,
   },
   created(){
-    let that = this;
     documentTitle("设置 - 角色列表");
-    that.systemRoleListPermissionList({
-      callback: ()=>{
-        that.handleFold(); //处理样式层叠
-      }
-    });
-    that.systemRoleListQuery();
+    this.getPermissionTree();
+    this.getRoleList();
   },
   //实例销毁之前调用
   beforeDestroy(){
     //清detail
-    this.systemRoleListChangeDetail({
+    this.getRoleDetail({
       permission_codes: [],
       is_super_admin: false
     });
   },
-  computed: mapGetters({
-    windowHeight: 'windowHeight',
-    dataItem: 'systemRoleListDataItem',
-    permissionList: 'systemRoleListPermissionList',
-    roleDetail: 'systemRoleDetail',
-    auth: 'globalAuth',
-  }),
   data(){
     return {
+      auth: this.$auth,
+      roleAuthLevel: Constant.ROLE_AUTH_LEVEL(),
+      windowHeight: 0,
       isChange: false,
+      dataItem: [],
       detail: {
         permission_codes: []
       },
       isShowTree: true,
       defaultExpandAll: true,
+      permissionTree: [],
       detailTemp: {},
       defaultProps: {
         children: 'childs',
         label: 'title'
       },
+      selectRoleType: '', //搜索权限级别
     }
   },
   methods: {
+    //获取权限树
+    async getPermissionTree(){
+      let res = await Http.get(Config.api.permissionTree, {});
+      if(res.code === 0){
+        this.$data.permissionTree = res.data;
+        this.handleFold(); //处理样式层叠
+      }else{
+
+      }
+    },
+    //
     onNodeExpand(data, node, nodeComponent) {
       this.handleFold();
     },
@@ -185,83 +202,100 @@ export default {
       } else {
         return true;
       }
-
     },
 
     //组件回调
     myCallBack(res){
-      let that = this;
-      let { detail } = that;
       if(!res){
-        that.systemRoleListChangeDetail(that.detailTemp);
+        this.getRoleDetail(this.detailTemp);
       }else{
-        that.systemRoleListChangeDetail(res);
-        that.systemRoleListQuery();
+        this.getRoleDetail(res);
+        this.getRoleList();
       }
     },
     //保存已修改
-    save() {
-      this.systemRoleListAddEdit({
-        data: this.detail,
-        callback: () => {
-          this.systemRoleListQuery();
-        }
-      });
+    async save() {
+      let { detail } = this;
+      this.$loading({isShow: true});
+      let res = await Http.post(detail.id ? Config.api.roleEdit : Config.api.roleAdd, detail);
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
+        this.getRoleList();
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
     },
     //显示新增
-    showAddEdit(){
-      let that = this;
-      that.$data.detailTemp = that.detail;
+    showAddEdit(data){
+      this.$data.detailTemp = this.detail;
       //清detail
-      that.systemRoleListChangeDetail({
+      this.getRoleDetail({
         permission_codes: [],
         is_super_admin: false
       });
-      that.systemRoleShowHideAddEidt(true);
+      let d = this.detail;
+      if(data !== 'add'){
+        d = data;
+      }
+      let pc = this.viewGetPageComponents('AddEditSystemRole');
+      pc.showAddEdit(this.dataItem, d);
     },
     //删除数据
     deleteData(data) {
-      let that = this;
-      MessageBox.confirm('您确认要删除？', '提示', {
+      this.$messageBox.confirm('您确认要删除？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        that.systemRoleListDelete({
-          data: {
-            id: data.id
-          },
-          callback: ()=>{
+        (async ()=>{
+          this.$loading({isShow: true});
+          let res = await Http.post(Config.api.roleDelete, {id: data.id});
+          this.$loading({isShow: false});
+          if(res.code === 0){
             //清detail
-            that.systemRoleListChangeDetail({
+            this.getRoleDetail({
               permission_codes: [],
               is_super_admin: false
             });
-            that.systemRoleListQuery();
+            this.getRoleList();
+          }else{
+            this.$message({message: res.message, type: 'error'});
           }
-        });
-      })
-      .catch(() => {
+        })();
+      }).catch(() => {
         //console.log('取消');
       });
     },
     //选择角色列表
     selectRoleItem(data, is_active){
-      this.systemRoleListChangeDetail(data);
+      this.getRoleDetail(data);
       this.$data.isChange = false;
     },
     //改变是否管理员
     changeSuperAdmin(val){
       this.$data.isChange = true;
     },
-    ...mapActions([
-      'systemRoleListPermissionList',
-      'systemRoleListQuery',
-      'systemRoleListChangeDetail',
-      'systemRoleListAddEdit',
-      'systemRoleListDelete',
-      'systemRoleShowHideAddEidt'
-    ]),
+    //获取角色列表
+    async getRoleList(){
+      this.$loading({isShow: true});
+      let res = await Http.get(Config.api.roleList, {});
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        let rd = res.data;
+        this.$data.dataItem = rd;
+        if(!this.detail.id && rd.length > 0){
+          this.$data.detail = rd[0];
+        }
+      }else{
+        this.$message({message: res.message, type: 'error'});
+      }
+    },
+    //获取角色详情(直接保存详情)
+    getRoleDetail(data){
+      this.$data.detail = data;
+      this.$refs.tree.setCheckedKeys(data.permission_codes); // 树型重新选择
+    },
     //全部展开收起
     changeExpandAll(v){
       this.$data.isShowTree = false;
@@ -313,19 +347,12 @@ export default {
       that.$refs.tree.setCheckedKeys(detail.permission_codes);
     },
   },
-  watch:{
-    //监听roleDetail变化
-    roleDetail(a, b) {
-      let res = JSON.parse( JSON.stringify(a) );
-      this.$data.detail =  res;
-      this.$refs.tree.setCheckedKeys(res.permission_codes); // 树型重新选择
-    }
-  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  $--color-primary: #f57e00;
   .role-list{
     display: flex;
     > div{
@@ -344,6 +371,10 @@ export default {
           float: right;
           margin-top: 6px;
         }
+      }
+      >.select{
+        padding: 10px;
+        border-bottom: 1px solid #e5e5e5;
       }
       > .content{
         overflow-y: auto;
@@ -458,6 +489,9 @@ export default {
 /*第一级*/
 .role-tree > .el-tree-node{
   margin-bottom: 20px;
+}
+.el-tree-node__content .el-checkbox{
+  margin-right: 8px;
 }
 .role-tree > .el-tree-node > .el-tree-node__content > .el-tree-node__label{
   font-weight: bold;

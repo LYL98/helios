@@ -85,16 +85,16 @@
       },
       //获取账户列表
       async groupStoreBalanceLog(){
-        this.$store.dispatch('loading', {isShow: true, isWhole: true});
+        this.$loading({isShow: true, isWhole: true});
         let { query } = this;
         let res = await Http.get(Config.api.groupStoreBalanceLog, query);
-        this.$store.dispatch('loading', {isShow: false});
+        this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.isShow = true;
           let rd = res.data;
           this.$data.balanceList = rd;
         }else{
-          this.$store.dispatch('message', {message: res.message, type: 'error'});
+          this.$message({message: res.message, type: 'error'});
         }
       },
       // 设置每页显示数量

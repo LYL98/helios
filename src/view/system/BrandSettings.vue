@@ -1,6 +1,7 @@
 <template>
+  <sub-menu>
   <div style="background-color: #fff; padding: 16px 20px;">
-    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - 100 + 'px'}">
+    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: viewWindowHeight - 100 + 'px'}">
       <el-form label-position="right" label-width="160px" style="width: 700px;" :model="ruleForm" :rules="rules"
                ref="ruleForm">
         <el-form-item label="品牌名配置:" prop="brand_name">
@@ -31,16 +32,17 @@
       </el-form>
     </div>
   </div>
+  </sub-menu>
 </template>
 <script>
-  import {mapGetters, mapActions} from "vuex";
-  import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from "element-ui";
-  import { Config, Verification } from '@/util';
-  import {Base} from '@/service';
+  import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from 'element-ui';
+  import { Http, Config, Verification } from '@/util';
   import {UploadImg} from '@/common';
+  import viewMixin from '@/view/view.mixin';
 
   export default {
     name: "BrandSettings",
+    mixins: [viewMixin],
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
@@ -49,11 +51,6 @@
       'el-upload': Upload,
       'my-upload-img': UploadImg,
     },
-    computed: mapGetters({
-      brand: 'brand',
-      brandService: 'brandService',
-      windowHeight: 'windowHeight'
-    }),
     data() {
       let validImages = function (rules, value, callback) {
         if (value.length && value.length > 0) {
@@ -79,6 +76,8 @@
         }
       }
       return {
+        brand: {},
+        brandService: {},
         ruleForm: {
           brand_name: '',
           brand_icon: [],
@@ -132,7 +131,32 @@
       this.systemBrandService({data: 'get'});
     },
     methods: {
-      ...mapActions(['systemBrand', 'systemBrandService', 'getBrand']),
+      //获取品牌信息
+      async systemBrand({data, callback}){
+        this.$loading({isShow: true, isWhole: true});
+        let res = data == 'get' ? await Http.get(Config.api.BrandInfo, {}) : await Http.post(Config.api.BrandInfo, data);
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          if(data !='get')this.$message({title: '提示', message: res.message, type: 'success'});
+          this.$data.brand = res.data;
+          typeof callback === 'function' && callback(res.data);
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //服务
+      async systemBrandService({data, callback}){
+        this.$loading({isShow: true, isWhole: true});
+        let res = data == 'get' ? await Http.get(Config.api.CustomerService, {}) : await Http.post(Config.api.CustomerService, data)
+        this.$loading({isShow: false});
+        if (res.code === 0) {
+          if(data !='get') this.$message({title: '提示', message: res.message, type: 'success'});
+          this.$data.brandService = res.data;
+          typeof callback === 'function' && callback(res.data);
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
       changeBrandIcon() {
         this.$refs['ruleForm'].validateField('brand_icon');
       },
@@ -140,24 +164,23 @@
         this.$refs['ruleFormQR'].validateField('qr_code');
       },
       submit(formName) {
-        let self = this;
+        let that = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             if (formName == 'ruleForm') {
-              let data = JSON.parse(JSON.stringify(self.ruleForm));
+              let data = JSON.parse(JSON.stringify(that.ruleForm));
               data.brand_icon = data.brand_icon.join()
               this.systemBrand({
                 data: data, callback: (res) => {
-                  self.systemBrand({data: 'get'});
-                  self.getBrand();
+                  that.systemBrand({data: 'get'});
                 }
               });
             } else {
-              let data = JSON.parse(JSON.stringify(self.ruleFormQR));
+              let data = JSON.parse(JSON.stringify(that.ruleFormQR));
               data.qr_code = data.qr_code.join()
               this.systemBrandService({
                 data: data, callback: (res) => {
-                  self.systemBrandService({data: 'get'});
+                  that.systemBrandService({data: 'get'});
                 }
               });
             }

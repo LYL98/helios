@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <sub-menu>
     <query-group-store-order :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryGroupStoreOrder"/>
     <table-group-store-order :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableGroupStoreOrder"/>
     <detail-group-store-order :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailGroupStoreOrder"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

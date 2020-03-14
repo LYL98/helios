@@ -13,11 +13,11 @@
         </el-select>
       </my-query-item>
       <my-query-item style="margin-left: 20px;">
-        <my-button-group
+        <select-option
           size="small"
           buttonWidth="60"
           :options="{'全部': '', '充值': 'manual_topup', '扣款': 'manual_deduct'}"
-          v-model="query.reason"
+          v-model="query.opt_type"
           @change="changeQuery"
         />
       </my-query-item>
@@ -44,17 +44,17 @@
           clearable
           style="width: 180px; margin-left: 20px;"
           placeholder="输入提交人名称"
-          v-model="query.operator_name"
+          v-model="query.creator_name"
           @clear="changeQuery"
           @keyup.enter.native="changeQuery"
-          ref="operator_name"
+          ref="creator_name"
         ></el-input>
         <el-button size="small" type="primary" icon="el-icon-search" @click="changeQuery" style="margin-left: 4px;"></el-button>
         <el-button size="small" type="primary" plain style="margin-left: 10px;" @click="resetQuery">重置</el-button>
       </my-query-item>
     </div>
     <el-table
-      :data="listItem.items"
+      :data="dataItem.items"
       :row-class-name="highlightRowClassName"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
@@ -74,10 +74,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="充值/扣款类型" prop="reason" width="180">
+      <el-table-column label="充值/扣款类型" prop="opt_type" width="180">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ reason[scope.row.reason] }}
+            {{ opt_type[scope.row.opt_type] }}
           </div>
         </template>
       </el-table-column>
@@ -89,10 +89,10 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="提交人" prop="operator_name" width="120">
+      <el-table-column label="提交人" prop="creator_name" width="120">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
-            {{ scope.row.operator_name }}
+            {{ scope.row.creator_name }}
           </div>
         </template>
       </el-table-column>
@@ -110,7 +110,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <my-table-operate
             :list="[
@@ -131,7 +131,7 @@
         :page-sizes="[10, 20, 30, 40, 50]"
         @size-change="changePageSize"
         @current-change="changePage"
-        :total="listItem.num"
+        :total="dataItem.num"
         :page-size="query.page_size"
         :current-page="query.page"
       />
@@ -145,20 +145,19 @@
     >
       <el-form label-position="left" label-width="100px" style="padding: 20px;" v-if="dialog.isShow">
         <el-form-item label="审核状态：">{{ status[dialog.detail.status] }}</el-form-item>
-        <el-form-item label="审核备注：">{{ dialog.detail.check_remark }}</el-form-item>
+        <el-form-item label="审核备注：">{{ dialog.detail.audit_remark }}</el-form-item>
         <el-form-item label="审核人：">{{ dialog.detail.checker_name }}</el-form-item>
-        <el-form-item label="审核时间：">{{ dialog.detail.check_time }}</el-form-item>
+        <el-form-item label="审核时间：">{{ dialog.detail.audit_time }}</el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message, DatePicker, Select, Option, Dialog, Form, FormItem } from 'element-ui';
-  import { ButtonGroup, QueryItem, ToPrice, OmissionText, TableOperate } from '@/common';
-  import { Constant, DataHandle } from '@/util';
-  import { Finance } from '@/service';
+  import { SelectOption, QueryItem, OmissionText, TableOperate } from '@/common';
+  import { Http, Config, Constant, DataHandle } from '@/util';
+  
   export default {
     name: "TableFinanceBalanceApproveLog",
     components: {
@@ -173,30 +172,27 @@
       'el-dialog': Dialog,
       'el-form': Form,
       'el-form-item': FormItem,
-      'my-button-group': ButtonGroup,
+      'select-option': SelectOption,
       'my-query-item': QueryItem,
-      'my-to-price': ToPrice,
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate
     },
     props: {
       merchant_id: { type: String | Number, required: true }
     },
-    computed: {
-      ...mapGetters({
-        auth: 'globalAuth',
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
+        province: this.$province,
+        auth: this.$auth,
         pickerValue: null,
-        query: { },
-        listItem: {
+        query: {
+          creator_name: ''
+        },
+        dataItem: {
           items: [],
           num: 0
         },
-        reason: Constant.MERCHANT_BALANCE_REASON,
+        opt_type: Constant.MERCHANT_BALANCE_REASON,
         status: {
           wait_check: '待审核',
           checked: '审核通过',
@@ -228,7 +224,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
@@ -246,8 +242,8 @@
           province_code: this.province.code,
           merchant_id: this.$props.merchant_id,
           status: '',
-          reason: '',
-          operator_name: '',
+          opt_type: '',
+          creator_name: '',
           begin_date: '',
           end_date: '',
           page: 1,
@@ -274,7 +270,7 @@
         this.initQuery();
         this.$data.pickerValue = null;
         this.ApproveQuery();
-        this.$refs['operator_name'].currentValue = '';
+        this.$refs['creator_name'].currentValue = '';
       },
       changePage(page) {
         this.$data.query.page = page;
@@ -285,15 +281,15 @@
         this.ApproveQuery();
       },
       async ApproveQuery() {
-        let res = await Finance.approveQuery(this.$data.query);
+        let res = await Http.get(Config.api.financeApproveQuery, this.query);
         if (res.code === 0) {
-          this.$data.listItem = Object.assign({}, this.$data.listItem, res.data);
+          this.$data.dataItem = Object.assign({}, this.$data.dataItem, res.data);
         } else {
           Message.warning(res.message);
         }
       },
       async handleShowDetail(item) {
-        let res = await Finance.approveDetail({ id: item.id });
+        let res = await Http.get(Config.api.financeApproveDetail, { id: item.id });
         if (res.code === 0) {
           this.$data.dialog.detail = res.data;
           this.$data.dialog.isShow = true;

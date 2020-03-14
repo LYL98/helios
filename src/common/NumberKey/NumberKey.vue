@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="" :visible="isShow" width="400px" :before-close="cancelKey">
+  <el-dialog title="." :visible="isShow" class="number-key" width="400px" :before-close="cancelKey">
     <div class="key-div">
       <div class="number-div">
         <a href="javascript:void(0);" @click="upDown('down')">-</a>
@@ -240,4 +240,9 @@ export default {
     }
   }
 }
+</style>
+<style>
+  .number-key .el-dialog__title{
+    color: #fff;
+  }
 </style>

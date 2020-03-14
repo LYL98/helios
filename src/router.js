@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import { Http, Config } from '@/util';
+import { MessageBox, Notification } from 'element-ui';
 
 Vue.use(Router);
 
@@ -13,63 +15,128 @@ const router = new Router({
     {
       path: '/',
       name: 'Login',
-      component: () => import('@/Login')
+      component: () => import('@/view/Login')
     },
 
-    /*客户*/
-    {
-      path: '/merchant/store/query',
-      name: 'MerchantStoreQuery',
-      component: () => import('@/view/merchant/List')
-    },
-    {
-      path: '/merchant/refund/query',
-      name: 'MerchantRefundQuery',
-      component: () => import('@/view/merchant/RefundList')
-    },
-    /*采购*/
-    {
-      path: '/purchase/supplier/query',
-      name: 'PurchaseSupplierQuery',
-      component: () => import('@/view/purchase/SupplierList')
-    },
-    {
-      path: '/purchase/item/query',
-      name: 'PurchaseItemQuery',
-      component: () => import('@/view/purchase/ItemList')
-    },
-    {
-      path: '/purchase/warehouse/query',
-      name: 'PurchaseWarehouseQuery',
-      component: () => import('@/view/purchase/WarehouseList')
-    },
-    {
-      path: '/purchase/finance/query',
-      name: 'PurchaseFinanceQuery',
-      component: () => import('@/view/purchase/FinanceList')
-    },
     /*商品*/
+    {
+      path: '/item/global',
+      name: 'ItemGlobal',
+      component: () => import('@/view/item/Global')
+    },
+    {
+      path: '/item/recover',
+      name: 'ItemRecover',
+      component: () => import('@/view/item/Recover')
+    },
+    {
+      path: '/item/system/class',
+      name: 'ItemSystemClass',
+      component: () => import('@/view/item/SystemClass')
+    },
+    {
+      path: '/item/frame',
+      name: 'ItemFrame',
+      component: () => import('@/view/item/Frame')
+    },
     {
       path: '/item/list',
       name: 'ItemList',
       component: () => import('@/view/item/List')
     },
     {
+      path: '/item/list/for/sale',
+      name: 'ItemListForSale',
+      component: () => import('@/view/item/ListForSale')
+    },
+    {
       path: '/item/pricing',
       name: 'ItemPricing',
       component: () => import('@/view/item/Pricing')
     },
-    /*营销*/
     {
-      path: '/marketing/scope/promotion/query',
+      path: '/item/supplier',
+      name: 'ItemSupplier',
+      component: () => import('@/view/item/Supplier')
+    },
+    {
+      path: '/item/tags/price',
+      name: 'ItemTagsPrice',
+      component: () => import('@/view/item/TagsPrice')
+    },
+    {
+      path: '/item/tags',
+      name: 'ItemTags',
+      component: () => import('@/view/item/Tags')
+    },
+    {
+      path: '/item/display/class',
+      name: 'ItemDisplayClass',
+      component: () => import('@/view/item/DisplayClass')
+    },
+    {
+      path: '/item/gpurchase',
+      name: 'ItemGPurchase',
+      component: () => import('@/view/item/GPurchase')
+    },
+    {
+      path: '/item/localpurchase',
+      name: 'ItemLocalPurchase',
+      component: () => import('@/view/item/LocalPurchase')
+    },
+
+    /*业务*/
+    {
+      path: '/business/merchant/store/query',
+      name: 'MerchantStoreQuery',
+      component: () => import('@/view/business/merchant/List')
+    },
+    {
+      path: '/business/merchant/refund/query',
+      name: 'MerchantRefundQuery',
+      component: () => import('@/view/business/merchant/Refund')
+    },
+    {
+      path: '/business/merchant/grade',
+      name: 'MerchantGrade',
+      component: () => import('@/view/business/merchantGrade/Main')
+    },
+    {
+      path: '/business/merchant/inner/tag',
+      name: 'MerchantInnerTags',
+      component: () => import('@/view/business/merchantInnerTags/Main')
+    },
+    {
+      path: '/business/merchant/outer/tag',
+      name: 'MerchantOuterTags',
+      component: () => import('@/view/business/merchantOuterTags/Main')
+    },
+    {
+      path: '/business/order/list',
+      name: 'OrderList',
+      component: () => import('@/view/business/order/List')
+    },
+    {
+      path: '/business/order/after_sale',
+      name: 'OrderAfterSale',
+      component: () => import('@/view/business/order/AfterSale')
+    },
+    {
+      path: '/business/marketing/scope/promotion/query',
       name: 'MarketingScopePromotionQuery',
-      component: () => import('@/view/marketing/ScopePromotionList')
+      component: () => import('@/view/business/marketing/ScopePromotionList')
     },
     {
-      path: '/marketing/coupon/query',
+      path: '/business/marketing/coupon/query',
       name: 'MarketingCouponQuery',
-      component: () => import('@/view/marketing/CouponList')
+      component: () => import('@/view/business/marketing/CouponList')
     },
+    {
+      path: '/business/banner',
+      name: 'Banner',
+      component: () => import('@/view/business/banner/Main')
+    },
+
     /*团购*/
     {
       path: '/group/activity',
@@ -116,28 +183,79 @@ const router = new Router({
       name: 'GroupBanner',
       component: () => import('@/view/group/Banner')
     },
-    /*订单*/
+
+    /*仓库*/
     {
-      path: '/order/list',
-      name: 'OrderList',
-      component: () => import('@/view/order/List')
+      path: '/warehouse/quality/control',
+      name: 'WarehouseQualityControl',
+      component: () => import('@/view/warehouse/QualityControl')
     },
     {
-      path: '/order/after_sale',
-      name: 'OrderAfterSale',
-      component: () => import('@/view/order/AfterSale')
+      path: '/warehouse/stock/pending',
+      name: 'WarehouseStockPending',
+      component: () => import('@/view/warehouse/StockPending')
+    },
+    {
+      path: '/warehouse/inventory',
+      name: 'WarehouseInventory',
+      component: () => import('@/view/warehouse/Inventory')
+    },
+    {
+      path: '/warehouse/inventory/move',
+      name: 'WarehouseInventoryMove',
+      component: () => import('@/view/warehouse/InventoryMove')
+    },
+    {
+      path: '/warehouse/out/storage',
+      name: 'WarehouseOutStorage',
+      component: () => import('@/view/warehouse/OutStorage')
+    },
+    {
+      path: '/warehouse/distribute',
+      name: 'WarehouseDistribute',
+      component: () => import('@/view/warehouse/Distribute')
+    },
+    {
+      path: '/warehouse/list',
+      name: 'WarehouseList',
+      component: () => import('@/view/warehouse/list/Main')
     },
 
-    /*配送*/
+    /*场地*/
     {
       path: '/operate/receiving',
       name: 'OperateReceiving',
       component: () => import('@/view/operate/Receiving')
     },
     {
+      path: '/operate/sort',
+      name: 'OperateSort',
+      component: () => import('@/view/operate/sort/Main')
+    },
+    {
+      path: '/operate/truck/load',
+      name: 'OperateTruckLoad',
+      component: () => import('@/view/operate/truckLoad/Main')
+    },
+    {
+      path: '/operate/truck/load/delay',
+      name: 'OperateTruckLoadDelay',
+      component: () => import('@/view/operate/truckLoadDelay/Main')
+    },
+    {
+      path: '/operate/depart',
+      name: 'OperateDepart',
+      component: () => import('@/view/operate/Depart')
+    },
+    {
       path: '/operate/line/list',
       name: 'OperateLineList',
       component: () => import('@/view/operate/LineList')
+    },
+    {
+      path: '/operate/deliver',
+      name: 'Deliver',
+      component: () => import('@/view/operate/deliver/deliver')
     },
     {
       path: '/operate/refund/frame',
@@ -156,6 +274,21 @@ const router = new Router({
       name: 'FinanceApproveQuery',
       component: () => import('@/view/finance/ApproveList')
     },
+    {
+      path: '/finance/s/b/detail',
+      name: 'FinanceSBDetail',
+      component: () => import('@/view/finance/SBDetail')
+    },
+    {
+      path: '/finance/s/b/detail/audit',
+      name: 'FinanceSBDetailAudit',
+      component: () => import('@/view/finance/SBDetailAudit')
+    },
+    {
+      path: '/finance/s/statement',
+      name: 'FinanceSStatement',
+      component: () => import('@/view/finance/SStatement')
+    },
 
     /*统计*/
     {
@@ -164,14 +297,24 @@ const router = new Router({
       component: () => import('@/view/statistic/Market')
     },
     {
-      path: '/statistic/market/class',
-      name: 'StatisticMarketClass',
-      component: () => import('@/view/statistic/MarketClass')
+      path: '/statistic/market/class2',
+      name: 'StatisticMarketClass2',
+      component: () => import('@/view/statistic/MarketClass2')
+    },
+    {
+      path: '/statistic/market/class3',
+      name: 'StatisticMarketClass3',
+      component: () => import('@/view/statistic/MarketClass3')
     },
     {
       path: '/statistic/market/class/item',
       name: 'StatisticMarketClassItem',
       component: () => import('@/view/statistic/MarketClassItem')
+    },
+    {
+      path: '/statistic/market/class/item/store',
+      name: 'StatisticMarketClassItemStore',
+      component: () => import('@/view/statistic/MarketClassItemStore')
     },
     {
       path: '/statistic/client',
@@ -219,57 +362,6 @@ const router = new Router({
       component: () => import('@/view/statistic/GroupBuyStatement')
     },
 
-    /*基础信息*/
-    {
-      path: '/basicdata/system/class/list',
-      name: 'BasicDataSystemClassList',
-      component: () => import('@/view/basicdata/SystemClassList')
-    },
-    {
-      path: '/basicdata/display/class/list',
-      name: 'BasicDataDisplayClassList',
-      component: () => import('@/view/basicdata/DisplayClassList')
-    },
-    {
-      path: '/basicdata/frame/list',
-      name: 'BasicDataFrameList',
-      component: () => import('@/view/basicdata/FrameList')
-    },
-    {
-      path: '/basicdata/item/tags/list',
-      name: 'BasicDataItemTagsList',
-      component: () => import('@/view/basicdata/ItemTagsList')
-    },
-    {
-      path: '/basicdata/province/list',
-      name: 'BasicDataProvinceList',
-      component: () => import('@/view/basicdata/ProvinceList')
-    },
-    {
-      path: '/basicdata/zone/list',
-      name: 'BasicDataZoneList',
-      component: () => import('@/view/basicdata/ZoneList')
-    },
-    {
-      path: '/basicdata/city/list',
-      name: 'BasicDataCityList',
-      component: () => import('@/view/basicdata/CityList')
-    },
-    {
-      path: '/basicdata/grade/list',
-      name: 'BasicDataGradeList',
-      component: () => import('@/view/basicdata/GradeList')
-    },
-    {
-      path: '/basicdata/merchant/inner/tag/list',
-      name: 'BasicDataMerchantInnerTagsList',
-      component: () => import('@/view/basicdata/MerchantInnerTagsList')
-    },
-    {
-      path: '/basicdata/merchant/outer/tag/list',
-      name: 'BasicDataMerchantOuterTagsList',
-      component: () => import('@/view/basicdata/MerchantOuterTagsList')
-    },
     /*系统设置*/
     {
       path: '/system/role/list',
@@ -282,19 +374,34 @@ const router = new Router({
       component: () => import('@/view/system/OperatorList')
     },
     {
+      path: '/system/province',
+      name: 'Province',
+      component: () => import('@/view/system/province/Main')
+    },
+    {
+      path: '/system/storehouse',
+      name: 'Storehouse',
+      component: () => import('@/view/system/storehouse/Main')
+    },
+    {
       path: '/system/setting',
-      name: 'SystemSetting',
-      component: () => import('@/view/system/Setting')
+      name: 'Setting',
+      component: () => import('@/view/system/setting/Main')
+    },
+    {
+      path: '/system/zone',
+      name: 'Zone',
+      component: () => import('@/view/system/zone/Main')
+    },
+    {
+      path: '/system/city',
+      name: 'City',
+      component: () => import('@/view/system/city/Main')
     },
     {
       path: '/system/setting/custom',
-      name: 'SystemSettingCustom',
-      component: () => import('@/view/system/SettingCustom')
-    },
-    {
-      path: '/system/banner/list',
-      name: 'SystemBannerList',
-      component: () => import('@/view/system/BannerList')
+      name: 'SettingCustom',
+      component: () => import('@/view/system/settingCustom/Main')
     },
     {
       path: '/system/brand/settings',
@@ -304,33 +411,87 @@ const router = new Router({
   ]
 });
 
-//全局守卫
-/*router.beforeEach((to, from, next) => {
-  if(to.name !== 'Login' && to.name !== 'SimulateLogin' && to.name !== 'Hint'){
-    Indicator.open();
-    //判断是否登录
-    Account.getSignIsLogin().then((res)=>{
-      if(res.code === 0){
-        let rd = res.data;
-        let d = Method.getLocalStorage('appleLoginInfo');
-        if(d){
-          if(d.id !== rd.id){
-            Method.setLocalStorage('appleLoginInfo', rd);
-          }
-        }else{
-          Method.setLocalStorage('appleLoginInfo', rd);
-        }
-        next();
-        window.scrollTo(0,0);
-      }else{
-        Config.accreditLogin();
-      }
-      Indicator.close();
+let myInfo = {}, nextPage = ()=>{}, auth = {}, page = '', pageName = '';
+
+//判断是否已登录
+const getIsLogin = async ()=>{
+  let res = await Http.get(Config.api.signIsLogin, {});
+  if(res.code === 0){
+    myInfo = res.data;
+    getAuthorityList();//用户权限
+  }else if(res.code === 200){
+    router.replace({ name: "Login" });
+  }else{
+    MessageBox.alert(res.message, '提示', {
+      type: 'error'
     });
+  }
+}
+
+//路由跳转时是否有权限
+const judgeAuth = ()=>{
+  if(pageName === 'Home'){
+    return true;
+  }
+  for(let a in auth){
+    if(a === 'isAdmin'){
+      return true;
+    }else if(a === pageName){
+      return true;
+    }
+  }
+  return false;
+}
+
+//获取当前登录用户权限
+const getAuthorityList = ()=>{
+  let data = { permission_list: [] };
+  if (myInfo) {
+    data = myInfo;
+  }
+  let a = {};
+  if(data.is_admin){
+      a.isAdmin = true;
+  }else{
+      let pl = data.permission_list;
+      if (pl && pl.length > 0) {
+          for (let i = 0; i < pl.length; i++) {
+            let p = pl[i].code;
+            let url = pl[i].url;
+            a[p] = url || true;
+          }
+      }
+  }
+  auth = a;
+  Vue.use({
+    install(Vue){
+      Vue.prototype.$auth = a; //放入全局
+      Vue.prototype.$myInfo = myInfo; //放入全局
+    }
+  });
+  //如果没有权限
+  if(!judgeAuth()){
+    Notification.error({
+      title: '提示',
+      message: '您没有权限访问',
+      offset: 50
+    });
+    //router.go(-1);
+  }else{
+    nextPage();
+  }
+}
+
+//全局守卫
+router.beforeEach((to, from, next) => {
+  if(to.name !== 'Login'){
+    page = to.path;
+    pageName = to.name;
+    nextPage = next;
+    getIsLogin();
   }else{
     next();
-    window.scrollTo(0,0);
   }
-});*/
+});
 
 export default router;

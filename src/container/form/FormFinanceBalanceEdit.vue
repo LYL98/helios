@@ -10,8 +10,8 @@
       <el-radio v-model="editItem.change_type" border size="small" @change="toggerType" :label="1">充值</el-radio>
       <el-radio v-model="editItem.change_type" border size="small" @change="toggerType" :label="-1">扣款</el-radio>
     </el-form-item>
-    <el-form-item label="充值类型" prop="reason" v-if="editItem.change_type == 1">
-      <el-select v-model="editItem.reason" style="width: 260px;" placeholder="请选择充值类型" clearable>
+    <el-form-item label="充值类型" prop="opt_type" v-if="editItem.change_type == 1">
+      <el-select v-model="editItem.opt_type" style="width: 260px;" placeholder="请选择充值类型" clearable>
         <el-option v-for="(item, key) in rechargeReason" :key="key" :label="item" :value="key"></el-option>
       </el-select>
     </el-form-item>
@@ -36,7 +36,6 @@
 <script>
   import {Form, FormItem, Select, Option, Input, InputNumber, Radio, Button, Message, MessageBox} from 'element-ui';
   import { ToPrice } from '@/common';
-  import {Merchant} from '@/service';
   import {DataHandle, Constant, Verification} from '@/util';
 
   export default {
@@ -87,7 +86,7 @@
         rechargeReason: Constant.MERCHANT_BALANCE_RECHARGE_REASON,
 
         rules: {
-          reason: [
+          opt_type: [
             { required: true, message: '请选择充值类型', trigger: 'change' }
           ],
           amount: [
@@ -103,7 +102,7 @@
     methods: {
 
       toggerType() {
-        this.$data.editItem.reason = '';
+        this.$data.editItem.opt_type = '';
         // 校验金额是否满足条件
         // this.$refs['ruleForm'].validateField(['amount']);
       },

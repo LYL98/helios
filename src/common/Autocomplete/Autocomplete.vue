@@ -96,7 +96,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .my-autocomplete{
   li{
     line-height: normal;

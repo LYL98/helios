@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="wp-query">
-      <my-button-group
+      <select-option
         buttonWidth="60"
         :options="{'全部': '', '未使用': 0, '已使用': 1}"
         v-model="query.is_used"
@@ -34,7 +34,7 @@
       </div>
     </div>
     <el-table
-      :data="listItem.items"
+      :data="dataItem.items"
       @cell-mouse-enter="cellMouseEnter"
       @cell-mouse-leave="cellMouseLeave"
       :row-class-name="highlightRowClassName"
@@ -93,7 +93,7 @@
         :page-sizes="[10, 20, 30, 40, 50]"
         @size-change="changePageSize"
         @current-change="changePage"
-        :total="listItem.num"
+        :total="dataItem.num"
         :page-size="query.page_size"
         :current-page="query.page"
       />
@@ -102,11 +102,9 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import { Input, Button, Table, TableColumn, Pagination, Message } from 'element-ui';
-  import { ButtonGroup } from '@/common';
-  import { Constant } from '@/util';
-  import { Item } from '@/service';
+  import { SelectOption } from '@/common';
+  import { Http, Config, Constant } from '@/util';
   export default {
     name: "TableMarketingCouponStatistic",
     components: {
@@ -115,20 +113,16 @@
       'el-table': Table,
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
-      'my-button-group': ButtonGroup
+      'select-option': SelectOption
     },
     props: {
       showItem: { type: Function, required: true }
     },
-    computed: {
-      ...mapGetters({
-        province: 'globalProvince'
-      })
-    },
     data() {
       return {
-        query: { },
-        listItem: {
+        province: this.$province,
+        query: {},
+        dataItem: {
           items: [],
           num: 0
         },
@@ -151,7 +145,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
@@ -193,9 +187,9 @@
         this.queryLog();
       },
       async queryLog() {
-        let res = await Item.couponDistributeStatistic(this.$data.query);
+        let res = await Http.get(Config.api.itemCouponDistributeStatistic, this.query);
         if (res.code === 0) {
-          this.$data.listItem = Object.assign({}, this.$data.listItem, res.data);
+          this.$data.dataItem = Object.assign({}, this.$data.dataItem, res.data);
         } else {
           Message.warning(res.message);
         }

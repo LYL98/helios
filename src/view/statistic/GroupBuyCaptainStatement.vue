@@ -1,10 +1,9 @@
 <template>
-  <div>
+  <sub-menu>
     <query-group-buy-captain-statistics
     v-model="query"
     @change="changeQuery"
-    :reset="resetQuery"
-    @expandChange="onExpandChange"/>
+    :reset="resetQuery"/>
     <div v-if="auth.isAdmin || auth.GroupBuyCaptainStatementExport" class="operate">
       <el-button
         v-if="auth.isAdmin || auth.GroupBuyCaptainStatementExport"
@@ -17,7 +16,7 @@
     <div class="statistics-table-list-container" style="position: relative;">
       <el-table
         :data="dataItem.items"
-        :height="windowHeight - offsetHeight"
+        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -112,20 +111,19 @@
         </div>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
   import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
   import { QueryGroupBuyCaptainStatistics } from '@/container'
-  // import { SelectBuyer, SelectDisplayClass, SearchItem } from '@/common';
   import Constant from "@/util/constant";
-  import { Statistic } from '@/service';
   import { DataHandle, Config, Http } from '@/util';
-  import { mapGetters, mapActions } from 'vuex';
+  import viewMixin from '@/view/view.mixin';
 
 export default {
   name: "GroupBuyCaptainStatement",
+  mixins: [viewMixin],
   data() {
     return {
       dataItem: {
@@ -135,20 +133,20 @@ export default {
       maxLabelWidth: 120,
       offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
       /*
-    begin_date: 开始日期
-end_date: 结束日期
-city_code: 县code(所在仓code) 来源于 县列表
-condition:
-sort: 排序字段指定 参团人数(member_num)/销售件数(sale_num)/下单金额(pay_amount)/收入金额(profit)
-page:
-page_size:*/
+      begin_date: 开始日期
+      end_date: 结束日期
+      city_id: 县code(所在仓code) 来源于 县列表
+      condition:
+      sort: 排序字段指定 参团人数(member_num)/销售件数(sale_num)/下单金额(pay_amount)/收入金额(profit)
+      page:
+      page_size:*/
       query: {
         page: 1,
         page_size: 20,
         begin_date: '',
         end_date: '',
         province_code: '',
-        city_code: '',
+        city_id: '',
         sort: '',
         condition: '',
         is_group: 1
@@ -156,11 +154,6 @@ page_size:*/
       currentRow: {}
     }
   },
-  computed: mapGetters({
-    auth: 'globalAuth',
-    province: 'globalProvince',
-    windowHeight: 'windowHeight'
-  }),
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -194,7 +187,7 @@ page_size:*/
     },
 
     isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {
@@ -202,14 +195,6 @@ page_size:*/
         return 'stripe-row'
       }
       return '';
-    },
-
-    onExpandChange(isExpand) {
-      if (isExpand) {
-        this.offsetHeight += Constant.QUERY_OFFSET_LINE_HEIGHT;
-      } else {
-        this.offsetHeight -= Constant.QUERY_OFFSET_LINE_HEIGHT;
-      }
     },
 
     formatDate(date) {
@@ -270,20 +255,20 @@ page_size:*/
       let queryStrGroup = Config.api.statisticalSumGroupBuyHeadExport;
       let queryStrNoGroup = Config.api.statisticalSumGroupBuyHeadExportNoGroup;
 
-      let {condition, sort, is_group, begin_date, end_date, city_code } = this.query;
+      let {condition, sort, is_group, begin_date, end_date, city_id } = this.query;
       let query = {
         condition,
         sort,
         is_group,
         begin_date,
         end_date,
-        city_code
+        city_id
       };
 
       let api = is_group === 1 ? queryStrGroup : queryStrNoGroup
 
       //判断是否可导出
-      this.$store.dispatch('loading', {isShow: true, isWhole: true});
+      this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(`${api}_check`, {
         province_code: this.province.code,
         ...query
@@ -295,9 +280,9 @@ page_size:*/
         }
         window.open(queryStr);
       }else{
-        this.$store.dispatch('message', { title: '提示', message: res.message, type: 'error' });
+        this.$message({ title: '提示', message: res.message, type: 'error' });
       }
-      this.$store.dispatch('loading', {isShow: false});
+      this.$loading({ isShow: false });
     },
 
     loadListDataFirstPage() {
@@ -308,18 +293,18 @@ page_size:*/
     async statisticalSumGroupBuyCaptain(){
       let that = this;
       let { query } = that;
-      that.loading({isShow: true, isWhole: true});
-      let res = query.is_group === 1 ? await Statistic.statisticalSumGroupBuyCaptain(query) : await Statistic.statisticalSumGroupBuyCaptainNoGroup(query);
+      this.$loading({ isShow: true, isWhole: true });
+      let res = query.is_group === 1 ?
+        await Http.get(Config.api.statisticalSumGroupBuyCaptain, query):
+        await Http.get(Config.api.statisticalSumGroupBuyCaptainNoGroup, query);
       if(res.code === 0){
         res.data.items.map((item, index) => item.id = index);
         that.$data.dataItem = res.data;
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   }
 }
 </script>

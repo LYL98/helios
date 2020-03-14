@@ -2,6 +2,7 @@ import baseMixin from '@/container/base.mixin';
 import { Constant, Method, Config, Http } from '@/util';
 import { TableOperate } from '@/common';
 import SettingColumnTitle from './SettingColumnTitle';
+import Pagination from './../layout/Pagination';
 
 // 表格宽度： 860 / 830（带全选）
 
@@ -9,7 +10,8 @@ export default {
   mixins: [baseMixin],
   components: {
     'my-table-operate': TableOperate,
-    'setting-column-title': SettingColumnTitle
+    'setting-column-title': SettingColumnTitle,
+    'pagination': Pagination
   },
   data() {
     return {
@@ -34,10 +36,6 @@ export default {
     this.isShowTableTitle(); //显示表头
   },
   methods: {
-    //展开隐藏搜索(外部重写)
-    onExpandChange(isExpand){
-      //this.$data.isExpand = isExpand;
-    },
     //返回表格序号
     indexMethod(index) {
       let { query } = this;
@@ -46,21 +44,6 @@ export default {
     //选择
     handleSelectionChange(val) {
       this.$data.multipleSelection = val;
-    },
-    //显示新增修改(新增组件，数据)
-    handleShowAddEdit(pageComponents, data){
-      let pc = this.getPageComponents(pageComponents);
-      pc.showAddEdit(data);
-    },
-    //显示详情
-    handleShowDetail(pageComponents, data){
-      let pc = this.getPageComponents(pageComponents);
-      pc.showDetail(data);
-    },
-    //显示form
-    handleShowForm(pageComponents, data){
-      let pc = this.getPageComponents(pageComponents);
-      pc.showForm(data);
     },
     //删除
     handleDelete(data){
@@ -79,11 +62,14 @@ export default {
       this.$data.query.page_size = pageSize;
       this.$data.query.page = 1;
       this.getData(this.query);
+      this.handleSelectionChange([]); //清空选择
     },
     //翻页
     changePage(page) {
       this.$data.query.page = page;
       this.getData(this.query);
+      window.scrollTo(0, 0);
+      this.handleSelectionChange([]); //清空选择
     },
     /**
      * 当鼠标在表格中移动时，解除当前行的锁定状态。 如果仅仅是在操作按钮上移动，则不做响应
@@ -135,19 +121,7 @@ export default {
      * 判断单元格是否缩略显示文本
      */
     isEllipsis(row) {
-      return row[this.$data.rowIdentifier] != this.$data.currentRow[this.$data.rowIdentifier] ? 'ellipsis' : ''
-    },
-
-    /**
-     * 斑马线的背景颜色样式
-     */
-    highlightRowClassName({row, rowIndex}) {
-      if (rowIndex % 2 == 0) {
-        return 'stripe-row';
-      } else if (rowIndex % 2 != 0) {
-        return 'default-row'
-      }
-      return '';
+      return row[this.$data.rowIdentifier] != this.$data.currentRow[this.$data.rowIdentifier] ? 'add-dot' : ''
     },
 
     //是否显示表头哪一项
@@ -202,24 +176,6 @@ export default {
       }
       Method.setPageSetting('Table', ts);
       this.isShowTableTitle();//重新刷新表头
-    },
-    //列表导出
-    async handleExport(apiStr, query) {
-      let api = Config.api[apiStr];
-      //判断是否可导出
-      this.$loading({ isShow: true });
-      let res = await Http.get(`${api}_check`, query);
-      if(res.code === 0){
-        let queryStr = `${api}?`;
-        for(let item in query){
-          queryStr += `${item}=${query[item]}&`;
-        }
-        queryStr = queryStr.substring(0, queryStr.length - 1);
-        window.open(queryStr);
-      }else{
-        this.$message({ title: '提示', message: res.message, type: 'error' });
-      }
-      this.$loading({ isShow: false });
     },
   }
 }

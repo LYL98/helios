@@ -7,19 +7,18 @@
 -->
 
 <template>
-  <el-button-group :class="buttonWidth ? '' : 'query-item-button-group'">
+  <div :style="width ? `'width: ${width};` : ''" class="button-group">
     <el-button
-      :class="buttonWidth ? '' : 'query-item-button custom-el-button'"
-      :style="buttonWidth && `width: ${buttonWidth}px; text-align: center; padding-left: 0; padding-right: 0;` "
       v-for="(value, key) of options"
       :size="size"
       :key="key"
       :type="selectValue === value ? 'primary' : 'default'"
+      :disabled="disabled"
       @click="handleClick(value)"
     >
       {{ key }}
     </el-button>
-  </el-button-group>
+  </div>
 </template>
 
 
@@ -34,7 +33,8 @@
       size: { type: String, default: 'small' },
       value: [ String, Number, Boolean ],
       options: { type: Object, default: {} },
-      buttonWidth: { type: String | Number, default: null }
+      width: { type: String | Number, default: '' },
+      disabled: { type: Boolean, default: false }
     },
     model: {
       prop: 'value',
@@ -59,17 +59,20 @@
   }
 </script>
 
-<style scoped>
-  /*.group{*/
-    /*min-width: 270px;*/
-  /*}*/
-  /*.button{*/
-    /*width: 90px*/
-  /*}*/
-  /*@media only screen and (max-width: 1400px) {*/
-    /*.button {*/
-      /*width: 70px*/
-    /*}*/
-  /*}*/
+<style lang="scss">
+  .button-group{
+    display: flex;
+    >button{
+      flex: 1;
+      margin: 0 !important;
+      border-radius: 0;
+      &:first-child{
+        border-radius: 3px 0 0 3px;
+      }
+      &:last-child{
+        border-radius: 0 3px 3px 0;
+      }
+    }
+  }
 </style>
 

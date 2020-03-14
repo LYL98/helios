@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <sub-menu>
     <head-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="HeadList"></head-list>
     <!--详情-->
     <head-detail :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="HeadDetail"></head-detail>
     <!--新增-->
     <head-edit :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="HeadEdit"></head-edit>
     <detail-head-balance-log :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailHeadBalanceLog"/>
-  </div>
+  </sub-menu>
 </template>
 
 <script>

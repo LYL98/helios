@@ -1,5 +1,5 @@
 <template>
-  <div class="my-quill-editor">
+  <div :class="`my-quill-editor ${mainClass}`">
     <quill-editor
       v-model="content"
       ref="myQuillEditor"
@@ -60,8 +60,7 @@
   import {Input, Upload, Button, Message} from 'element-ui';
   import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
   import {quillEditor, Quill} from "vue-quill-editor";
-  import {Base} from '@/service';
-  import {Config} from '@/util';
+  import {Http, Config} from '@/util';
 
   import './quill.core.min.css';
   import './quill.snow.min.css';
@@ -76,7 +75,8 @@
     props: {
       value: {type: String, default: ''},
       module: {type: String, default: 'item'},
-      disabled: {type: Boolean, default: false}
+      disabled: {type: Boolean, default: false},
+      mainClass: { type: String, default: '' },
     },
     components: {
       'quill-editor': quillEditor,
@@ -86,11 +86,9 @@
       'el-collapse-transition': CollapseTransition
     },
     mounted() {
-
       let toolbar = this.$refs.myQuillEditor.quill.getModule('toolbar');
       toolbar.addHandler('image', this.imgHandler)
       toolbar.addHandler('video', this.videoHandler)
-
     },
     data() {
       return {
@@ -99,13 +97,18 @@
         editorOption: {
           placeholder: '请输入内容...',
           modules: {
-            toolbar: [
+            /*toolbar: [
               [{'font': []}, {'size': ['small', false, 'large', 'huge']}, {'header': [false, 1, 2, 3, 4, 5, 6]}],
               [{'color': []}, {'background': []}, 'bold', 'italic', 'underline', 'strike'],
               [{'list': 'ordered'}, {'list': 'bullet'}, 'blockquote', {'script': 'sub'}, {'script': 'super'}],
               [{'indent': '-1'}, {'indent': '+1'}, {'align': ''}, {'align': 'center'}, {'align': 'right'}, {'align': 'justify'}],
               ['image', 'video'],
               ['clean']
+            ]*/
+            toolbar: [
+              [{'size': ['small', false, 'large', 'huge']}],
+              [{'color': []}, {'background': []}, 'bold', 'italic', 'underline', 'strike'],
+              ['image']
             ]
           },
         },
@@ -148,7 +151,7 @@
       //获取腾讯Bucketpresigned_url
       tencentPresignedUrl(file) {
         let {module} = this;
-        return Base.tencentPresignedUrl({module: module}).then(res => {
+        return Http.get(Config.api.tencentPresignedUrl, {module: module}).then(res => {
           this.uploadData = {
             file: file,
             key: res.data.key,
@@ -159,8 +162,8 @@
 
       //自定义上传
       async httpRequestUpload(e){
-        let { uploadData } = this;
-        let res = await Base.uploadToTencent(e.data);
+        let data = e.data;
+        let res = await Http.put(data.presigned_url, data);
         /**
          *  也可在此处理成功或失败后事件
          * if(res.code === 0){
@@ -234,7 +237,6 @@
 </script>
 
 <style lang="scss">
-
 
   .my-quill-editor {
     line-height: 24px;

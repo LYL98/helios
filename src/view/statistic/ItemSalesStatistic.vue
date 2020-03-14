@@ -7,18 +7,18 @@
       @close="onCancel"
       :before-close="cancelStatistic">
       <div style="border-bottom: #F7F7F8 solid 10px; padding-bottom: 16px">
-        <my-select-zone v-model="query.zone_code"
+        <my-select-zone v-model="query.zone_id"
                         :provinceCode="province.code"
                         clearable
                         size="small"
                         @change="changeZone"
                         style="width: 180px;"/>
-        <my-select-city v-model="query.city_code"
+        <my-select-city v-model="query.city_id"
                         :provinceCode="province.code"
                         ref="mySelectCity"
                         clearable
                         size="small"
-                        :zoneCode="query.zone_code"
+                        :zoneId="query.zone_id"
                         @change="changeCity"
                         style="width: 180px;margin-left: 20px"/>
         <el-input placeholder="请输入门店名称/电话"
@@ -90,11 +90,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import { Dialog, Button, Input, Table, TableColumn, Pagination } from 'element-ui';
 import { SelectProvince, SelectCity, SelectZone } from "@/common"
-import { Statistic } from '@/service';
-import { DataHandle } from '@/util';
+import { Http, Config, DataHandle } from '@/util';
 
 export default {
   name: "ItemSalesStatistic",
@@ -112,9 +110,6 @@ export default {
   created() {
 
   },
-  computed: mapGetters({
-    province: 'globalProvince'
-  }),
   props: ['item'],
   data() {
     return {
@@ -131,8 +126,8 @@ export default {
         condition: '',
         item_id: '',
         province_code: '',
-        zone_code: '',
-        city_code: '',
+        zone_id: '',
+        city_id: '',
         sort: ''
       },
       currentRow: {}
@@ -150,7 +145,7 @@ export default {
     },
 
     isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
     highlightRowClassName({row, rowIndex}) {
       if (rowIndex % 2 === 0) {
@@ -175,8 +170,8 @@ export default {
       this.loadItemSalesList();
     },
     changeZone() {
-      if (this.query.zone_code === '') {
-        this.query.city_code = '';
+      if (this.query.zone_id === '') {
+        this.query.city_id = '';
       }
       this.loadItemSalesListWithFirstPage()
     },
@@ -208,8 +203,8 @@ export default {
         condition: '',
         item_id: '',
         province_code: '',
-        zone_code: '',
-        city_code: '',
+        zone_id: '',
+        city_id: '',
         sort: ''
       };
       this.loadItemSalesListWithFirstPage()
@@ -229,8 +224,8 @@ export default {
     async itemSaleStores(){
       let that = this;
       let { query } = that;
-      that.loading({isShow: true, isWhole: true});
-      let res = await Statistic.statisticalOrderItemSaleStores(query);
+      this.$loading({ isShow: true, isWhole: true });
+      let res = await Http.get(Config.api.statisticalOrderItemSaleStores, query);
       if(res.code === 0){
         res.data.items.map((item, index) => {
           item.id = index;
@@ -238,12 +233,10 @@ export default {
         });
         that.$data.merchantListData = res.data;
       }else{
-        that.message({title: '提示', message: res.message, type: 'error'});
+        this.$message({title: '提示', message: res.message, type: 'error'});
       }
-      that.loading({isShow: false });
+      this.$loading({ isShow: false });
     },
-
-    ...mapActions(['message', 'loading'])
   },
   watch: {
     item: function (a, b) {

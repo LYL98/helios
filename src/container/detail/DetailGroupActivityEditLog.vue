@@ -69,13 +69,11 @@
 <script>
   import detailMixin from './detail.mixin';
   import { Http, Config, Constant } from '@/util';
-  import { ButtonGroup } from '@/common';
 
   export default {
     name: "DetailGroupActivityEditLog",
     mixins: [detailMixin],
     components: {
-      'button-group': ButtonGroup
     },
     data() {
       let initQuery = {

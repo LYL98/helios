@@ -6,23 +6,20 @@
           <el-select v-model="editQuery.selectType" @change="changeQuery"
                      size="small" class="query-item-select">
             <el-option label="下单门店数" value="merchant"></el-option>
-            <el-option label="订单商品金额" value="item_total_price"></el-option>
-            <!--<el-option label="运费金额" value="amount_delivery"></el-option>-->
-            <el-option label="优惠金额" value="bonus_promotion"></el-option>
-            <!--<el-option label="称重金额" value="check_chg"></el-option>-->
+            <el-option label="GMV" value="gmv"></el-option>
             <el-option label="订单应付金额" value="real_price"></el-option>
+            <el-option label="优惠金额" value="bonus_promotion"></el-option>
             <el-option label="客单价" value="customer"></el-option>
           </el-select>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="片区">
-          <my-select-zone v-model="editQuery.zone_code"
+          <my-select-zone v-model="editQuery.zone_id"
                           :provinceCode="editQuery.province_code"
                           clearable
                           size="small"
-                          @change="changeQuery"
-                          :isUseToQuery="true"/>
+                          @change="changeQuery"/>
         </my-query-item>
       </el-col>
       <el-col :xl="6" :lg="7" :span="7">
@@ -49,8 +46,7 @@
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message, Select, Option} from 'element-ui';
-  import { mapGetters } from 'vuex';
-  import {QueryItem, ButtonGroup, SelectZone} from '@/common';
+  import {QueryItem, SelectZone} from '@/common';
   import { DataHandle, Constant } from '@/util';
 
   export default {
@@ -64,8 +60,7 @@
       'el-select': Select,
       'el-option': Option,
       'my-select-zone': SelectZone,
-      'my-query-item': QueryItem,
-      'my-button-group': ButtonGroup,
+      'my-query-item': QueryItem
     },
     created() {
       //设置默认日期范围
@@ -88,6 +83,7 @@
     },
     data() {
       return {
+        province: this.$province,
         currentDateRange: [],
         beforeDateRange: [],
         resetBeginDate: '',
@@ -123,8 +119,8 @@
             page: 1,
             page_size: 20,
             province_code: '',
-            zone_code: '',
-            city_code: '',
+            zone_id: '',
+            city_id: '',
             begin_date: '',
             end_date: '',
             selectType: 'merchant'
@@ -135,8 +131,7 @@
         set(v) {
           this.$emit('change', v);
         }
-      },
-      ...mapGetters({province: 'globalProvince'})
+      }
     },
     methods: {
       //搜索日期
@@ -182,8 +177,8 @@
           page: 1,
           page_size: 20,
           province_code: this.province.code,
-          zone_code: '',
-          city_code: '',
+          zone_id: '',
+          city_id: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,
           selectType: 'merchant'

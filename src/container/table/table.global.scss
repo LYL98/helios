@@ -1,3 +1,20 @@
+/*表格滚动固定标题共用样式*/
+.my-table-float{
+    width: 100%;
+    /*>.el-table__header-wrapper{
+        
+    }*/
+    >.my-table-float__header-wrapper{
+        >.el-table__header{
+            border-bottom: 1px solid #eee;
+        }
+        position: fixed;
+        z-index: 2;
+        top: 42px;
+    }
+}
+
+/*表格操作*/
 .table-option-body{
     >.cell{
         overflow: visible !important;

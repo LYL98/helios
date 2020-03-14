@@ -2,7 +2,7 @@
   商品单品分析
 -->
 <template>
-  <div>
+  <sub-menu>
     <div class="query" style="margin-bottom: 20px">
       <el-row>
         <el-col :xl="6" :lg="7" :span="7">
@@ -32,30 +32,13 @@
         </el-col>
       </el-row>
     </div>
-    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: windowHeight - offsetHeight + 'px'}">
+    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: viewWindowHeight - offsetHeight + 'px'}">
       <div style="background-color: white">
         <P style="text-align: center; padding-top: 10px">
           <span style="color: blue; font-size: 20px">{{selectItemName ? selectItemName : '-'}}</span>
           <span style="font-size: 20px">指标分析</span>
         </P>
-        <!--图表-->
-        <div style="display: flex">
-          <div id="main" style="margin-top: 20px; height: 600px; flex: 1" ref="myIndexChart"></div>
-          <div style="flex: initial; width: 200px;">
-            <div style="margin-top: 80px; margin-left: 20px;font-size: 18px; color: black;">指标放大倍数</div>
-            <div style="margin-top: 10px; margin-left: 20px">
-              <span>采购价: {{zoomRate[0]}}倍</span><br/>
-              <span>销售价: {{zoomRate[1]}}倍</span><br/>
-              <span>销售量: {{zoomRate[2]}}倍</span><br/>
-              <span>销售金额: {{zoomRate[3]}}倍</span><br/>
-              <span>下单客户数: {{zoomRate[4]}}倍</span><br/>
-              <span>下单率: {{zoomRate[5]}}倍</span><br/>
-              <span>加价率: {{zoomRate[6]}}倍</span><br/>
-              <span>退赔率: {{zoomRate[7]}}倍</span><br/>
-              <span>采购价格偏差: {{zoomRate[8]}}倍</span><br/>
-            </div>
-          </div>
-        </div>
+        <div id="main" style="margin-top: 20px; height: 600px;" ref="myIndexChart"></div>
       </div>
       <!--表格-->
       <div class="statistics-table-list-container">
@@ -96,15 +79,14 @@
         </el-table>
       </div>
     </div>
-  </div>
+  </sub-menu>
 </template>
 
 <script>
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-  import { mapGetters, mapActions } from 'vuex';
-  import { Statistic } from '@/service';
-  import { DataHandle, Constant } from '@/util';
+  import { Http, Config, DataHandle, Constant } from '@/util';
   import { QueryItem, SearchItem } from '@/common';
+  import viewMixin from '@/view/view.mixin';
 
   import echarts from "echarts/lib/echarts";
   import 'echarts/lib/chart/line';
@@ -116,10 +98,7 @@
 
   export default {
     name: "ItemSingleAnalysisStatement",
-    computed: mapGetters({
-      province: 'globalProvince',
-      windowHeight: 'windowHeight'
-    }),
+    mixins: [viewMixin],
     components: {
       'el-button': Button,
       'el-date-picker': DatePicker,
@@ -176,7 +155,6 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS  + Constant.OFFSET_QUERY_CLOSE,
         selectArea: 'zone',
         selectItemName: '',
-        zoomRate: [1, 1, 1, 1, 1, 1, 1, 1, 1],
         lineColors: [
           '#4FF222',  //1
           '#F22222',  //2
@@ -227,7 +205,7 @@
       },
 
       isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'ellipsis' : ''
+        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
       },
 
       highlightRowClassName({row, rowIndex}) {
@@ -304,17 +282,7 @@
         }
       },
       defaultDateRange(format) {
-        // let today = new Date();
-        // let yesterdayDate = new Date(today.setDate(today.getDate() - 1));
-        // let yesterday;
-        // if (format === 'f1') {
-        //   yesterday = DataHandle.formatDate(yesterdayDate, 'yyyy-MM-dd');
-        // } else if (format === 'f2') {
-        //   yesterday = this.labelDate(yesterdayDate, 'yyyy-MM-dd');
-        // } else {
-        //   yesterday = yesterdayDate;
-        // }
-        return Array()
+        return Array();
       },
       labelDate(date) {
         return DataHandle.formatDateLabel(date)
@@ -322,7 +290,7 @@
       initChart() {
         let that = this;
         if (!that.$refs.myIndexChart) {
-          return
+          return;
         }
 
         let { lineColors } = this;
@@ -332,65 +300,28 @@
         //x轴日期：例如 1月1日
         let xDisplayDates = this.dateRange('f2');
 
-        //放大指标
-        that.zoomLines();
 
         let option = {
           tooltip : {
             trigger: 'axis',
-            //show: true,   //default true
-            // showDelay: 0,
-            // hideDelay: 50,
-            // transitionDuration:0,
-            // backgroundColor : 'rgba(255,0,255,0.7)',
-            // borderColor : '#f50',
-            // borderRadius : 8,
-            // borderWidth: 2,
-            // padding: 10,    // [5, 10, 15, 20]
-            // position : function(p) {
-            //   // 位置回调
-            //   // console.log && console.log(p);
-            //   return [p[0] + 10, p[1] - 10];
-            // },
-            // textStyle : {
-            //   color: 'yellow',
-            //   decoration: 'none',
-            //   fontFamily: 'Verdana, sans-serif',
-            //   fontSize: 15,
-            //   fontStyle: 'italic',
-            //   fontWeight: 'bold'
-            // },
             formatter: function (params,ticket,callback) {
-              // console.log(params.length);
               var res = params[0].name;
               for (var i = 0, l = params.length; i < l; i++) {
-                let zoomValue = params[i].value / that.narrowRate(params[i].seriesName);
-                res += '<br/>' + params[i].seriesName + ' : ' + zoomValue;
+                res += '<br/>' + params[i].seriesName + ' : ' + params[i].value;
               }
-              //callback 异步时使用
-              // callback(ticket, res);
               return res
             }
           },
-          // toolbox: {
-          //   show : true,
-          //   feature : {
-          //     mark : {show: true},
-          //     dataView : {show: true, readOnly: false},
-          //     magicType: {show: true, type: ['line', 'bar']},
-          //     restore : {show: true},
-          //     saveAsImage : {show: true}
-          //   }
-          // },
           calculable : true,
           legend: {
             data: this.indexNames(),
+            selectedMode: 'single',
             selected: {
-              '采购价': false,
+              '采购价': true,
               '销售价': false,
-              '销售量': true,
-              '销售金额': true,
-              '下单客户数': true,
+              '销售量': false,
+              '销售金额': false,
+              '下单客户数': false,
               '下单率': false,
               '加价率': false,
               '退赔率': false,
@@ -413,6 +344,7 @@
             },
           ],
           series : [
+            //采购价
             {
               name:'采购价',
               type:'line',
@@ -421,6 +353,14 @@
               data: this.lineData(0, xDates)
             },
             {
+              name:'采购价',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[1], lineStyle: {color: lineColors[1]}}},
+              data:this.lineData(0, xDates)
+            },
+
+            //销售价
+            {
               name:'销售价',
               type:'line',
               itemStyle: {normal: {color: lineColors[1], lineStyle: {color: lineColors[1]}}},
@@ -428,12 +368,28 @@
               data: this.lineData(1, xDates)
             },
             {
-              name:'销售量',
+              name:'销售价',
               type:'bar',
+              itemStyle: {normal: {color: lineColors[0], lineStyle: {color: lineColors[0]}}},
+              data:this.lineData(1, xDates)
+            },
+
+            //销售量
+            {
+              name:'销售量',
+              type:'line',
               itemStyle: {normal: {color: lineColors[2], lineStyle: {color: lineColors[2]}}},
               smooth: true,
               data: this.lineData(2, xDates)
             },
+            {
+              name:'销售量',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
+              data: this.lineData(2, xDates)
+            },
+
+            //销售金额
             {
               name:'销售金额',
               type:'line',
@@ -442,12 +398,28 @@
               data: this.lineData(3, xDates)
             },
             {
+              name:'销售金额',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[2], lineStyle: {color: lineColors[2]}}},
+              data:this.lineData(3, xDates)
+            },
+
+            //下单客户数
+            {
               name:'下单客户数',
               type:'line',
               itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
               smooth: true,
               data: this.lineData(4, xDates)
             },
+            {
+              name:'下单客户数',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[5], lineStyle: {color: lineColors[5]}}},
+              data:this.lineData(4, xDates)
+            },
+
+            //下单率
             {
               name:'下单率',
               type:'line',
@@ -456,12 +428,28 @@
               data: this.lineData(5, xDates)
             },
             {
+              name:'下单率',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
+              data:this.lineData(5, xDates)
+            },
+
+            //加价率
+            {
               name:'加价率',
               type:'line',
               itemStyle: {normal: {color: lineColors[6], lineStyle: {color: lineColors[6]}}},
               smooth: true,
               data: this.lineData(6, xDates)
             },
+            {
+              name:'加价率',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[7], lineStyle: {color: lineColors[7]}}},
+              data:this.lineData(6, xDates)
+            },
+
+            //退赔率
             {
               name:'退赔率',
               type:'line',
@@ -470,127 +458,30 @@
               data: this.lineData(7, xDates)
             },
             {
+              name:'退赔率',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[6], lineStyle: {color: lineColors[6]}}},
+              data:this.lineData(7, xDates)
+            },
+
+            //采购价格偏差
+            {
               name:'采购价格偏差',
               type:'line',
               itemStyle: {normal: {color: lineColors[8], lineStyle: {color: lineColors[8]}}},
               smooth: true,
               data: this.lineData(8, xDates)
             },
+            {
+              name:'采购价格偏差',
+              type:'bar',
+              itemStyle: {normal: {color: lineColors[5], lineStyle: {color: lineColors[5]}}},
+              data:this.lineData(8, xDates)
+            },
           ]
         };
 
-        // console.log('init chart');
         echarts.init(that.$refs.myIndexChart).setOption(option)
-      },
-      //计算缩放比例
-      zoomLines() {
-        let { dataItem, zoomRate } = this;
-        //恢复比例默认值
-        for (let i=0; i<zoomRate.length; i++) {
-          zoomRate[i] = 1;
-        }
-        //缩放阈值，相差倍数大于这个值就进行放大
-        let zoomThreshold = 5;
-        if (dataItem && dataItem.length > 0) {
-          let priceMaxValues = Array();
-          let amountMaxValues = Array();
-          let percentMaxValues = Array();
-          let salesMaxValues = Array();
-          let storeMaxValues = Array();
-          for (let i=0; i<dataItem.length; i++) {
-            let item = dataItem[i];
-            let length = item.cells.length;
-            let originValues = Array();
-            for (let j=0; j<length; j++) {
-              let cellValue = item.cells[j].origin_value;
-              originValues.push(Number(this.handleIndexValue(i, cellValue)));
-            }
-            let maxCellValue = Math.max(...originValues);
-            switch (i) {
-              case 5:
-              case 6:
-              case 7:
-              case 8:
-                //百分比
-                percentMaxValues.push(maxCellValue);
-                break;
-              case 0:
-              case 1:
-                //价格
-                priceMaxValues.push(maxCellValue);
-                break;
-              case 3:
-                //销售金额(相对值最大)
-                amountMaxValues.push(maxCellValue);
-                break;
-              case 2:
-                //销售量
-                salesMaxValues.push(maxCellValue);
-                break;
-              case 4:
-                //客户数
-                storeMaxValues.push(maxCellValue);
-                break;
-              default:
-                break;
-            }
-          }
-          let priceMaxValue = Math.max(...priceMaxValues);
-          let amountMaxValue = Math.max(...amountMaxValues);
-          let percentMaxValue = Math.max(...percentMaxValues);
-          let salesMaxValue = Math.max(...salesMaxValues);
-          let storeMaxValue = Math.max(...storeMaxValues);
-
-          //百分比放大比例，下单客户数和下单率曲线可能重合
-          if (percentMaxValue !== 0 && amountMaxValue / percentMaxValue > zoomThreshold) {
-            let zoom = parseInt(amountMaxValue / percentMaxValue / 2);
-            zoomRate[5] = zoom;
-            zoomRate[6] = zoom;
-            zoomRate[7] = zoom;
-            zoomRate[8] = zoom;
-          }
-
-          //销售量放大比例
-          if (salesMaxValue !== 0 && amountMaxValue / salesMaxValue > zoomThreshold) {
-            zoomRate[2] = parseInt(amountMaxValue / salesMaxValue - 1);
-          }
-
-          //客户数放大比例
-          if (storeMaxValue !== 0 && amountMaxValue / storeMaxValue > zoomThreshold) {
-            zoomRate[4] = parseInt(amountMaxValue / storeMaxValue - 1);
-          }
-
-          //采购价和销售价放大比例
-          if (priceMaxValue !== 0 && amountMaxValue / priceMaxValue > zoomThreshold) {
-            let zoom = parseInt(amountMaxValue / priceMaxValue - 1);
-            zoomRate[0] = zoom;
-            zoomRate[1] = zoom;
-          }
-        }
-      },
-      //根据指标名称查找缩小比例
-      narrowRate(seriesName) {
-        let { zoomRate } = this;
-        switch (seriesName) {
-          case '采购价':
-            return zoomRate[0];
-          case '销售价':
-            return zoomRate[1];
-          case '销售量':
-            return zoomRate[2];
-          case '销售金额':
-            return zoomRate[3];
-          case '下单客户数':
-            return zoomRate[4];
-          case '下单率':
-            return zoomRate[5];
-          case '加价率':
-            return zoomRate[6];
-          case '退赔率':
-            return zoomRate[7];
-          case '采购价格偏差':
-            return zoomRate[8];
-        }
       },
       /**
        * 每个指标的数据
@@ -599,7 +490,7 @@
        * @returns {any[]}
        */
       lineData(index, xDates) {
-        let { dataItem, zoomRate } = this;
+        let { dataItem } = this;
         let lineData = Array();
         if (dataItem && dataItem.length > 0) {
           //得到特定指标的行数据
@@ -617,7 +508,7 @@
               if (cellDate === colDate) {
                 hasDate = true;
                 //放大相应的比例，方便数据比对
-                lineData.push(Number(this.handleIndexValue(index, cellValue)) * zoomRate[index]);
+                lineData.push(Number(this.handleIndexValue(index, cellValue)));
                 break;
               }
             }
@@ -690,7 +581,7 @@
         let result = '-';
         switch (index) {
           case 0:
-            result = that.returnPrice(cellItem.price_buy_real);
+            result = that.returnPrice(cellItem.price_buy);
             break;
           case 1:
             result = that.returnPrice(cellItem.price_sale);
@@ -725,7 +616,7 @@
         let result = '-';
         switch (index) {
           case 0:
-            result = cellItem.price_buy_real;
+            result = cellItem.price_buy;
             break;
           case 1:
             result = cellItem.price_sale;
@@ -830,16 +721,16 @@
       },
 
       async itemSingleAnalysisList(callback){
-        let that = this;
-        let { query } = that;
-        that.loading({isShow: true, isWhole: true});
-        let res = await Statistic.statisticalItemSingleAnalysis(query);
+        let { query } = this;
+        this.$loading({ isShow: true, isWhole: true });
+        let res = await Http.get(Config.api.statisticalItemSingleAnalysis, query);
+        this.$loading({ isShow: false });
         if(res.code === 0){
           //将日期维度转化成指标维度
           let dateItems = res.data;
           let indexItems = Array();
           if (dateItems && dateItems.length > 0) {
-            for (let i=0; i<9; i++) {
+            for (let i = 0; i < 9; i++) {
               //初始化行变量
               let indexItem = {
                 name: this.indexName(i),
@@ -847,7 +738,7 @@
               };
 
               //计算列
-              for (let j=0; j<dateItems.length; j++) {
+              for (let j = 0; j < dateItems.length; j++) {
                 let item = dateItems[j];
                 //初始化一行中每列单元格
                 let cell = {
@@ -859,33 +750,31 @@
                 };
                 indexItem.cells.push(cell)
               }
-
               indexItems.push(indexItem)
             }
           }
+          //console.log(indexItems);
           indexItems.map((item, index) => item.id = index);
-          that.$data.dataItem = indexItems;
+          this.$data.dataItem = indexItems;
           typeof callback === 'function' && callback();
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
 
       async defaultItem(callback){
         let that = this;
         let { defaultItemQuery } = that;
-        that.loading({isShow: true, isWhole: true});
-        let res = await Statistic.statisticalItemSaleGreatest(defaultItemQuery);
+        this.$loading({ isShow: true, isWhole: true });
+        let res = await Http.get(Config.api.statisticalItemSaleGreatest, defaultItemQuery);
         if(res.code === 0){
           typeof callback === 'function' && callback(res.data);
         }else{
-          that.message({title: '提示', message: res.message, type: 'error'});
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
-        that.loading({isShow: false });
+        this.$loading({ isShow: false });
       },
-
-      ...mapActions(['message', 'loading'])
     }
   }
 </script>

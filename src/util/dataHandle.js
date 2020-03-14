@@ -102,7 +102,11 @@ const dataHandle = {
   returnMarkup(data){
     if(!data) return 0;
     let v = data / 10;
-    return v;
+    let p = v.toFixed(1);
+    if(p.substring(p.length - 2, p.length) === '.0'){
+      return p.substring(0, p.length - 2);
+    }
+    return p;
   },
   //返回下单率
   returnLowerRate(data){
@@ -118,15 +122,9 @@ const dataHandle = {
   },
   //返回建议价(今日询价，加价率)
   returnSuggestPrice(priceBuy, markupRate){
-    let v = priceBuy * (1 + markupRate / 100);
-    let p = v.toFixed(2);
-    if(p.substring(p.length - 3, p.length) === '.00'){
-      return p.substring(0, p.length - 3);
-    }
-    if(p.substring(p.length - 1, p.length) === '0'){
-      return p.substring(0, p.length - 1);
-    }
-    return p;
+    let v = priceBuy * (1 + markupRate / 1000);
+    let p = parseInt(v);
+    return p; //返回分
   },
   //返回百分比
   returnPercentage(item_num, sun){
@@ -139,6 +137,22 @@ const dataHandle = {
       return d.substring(0, d.length - 1);
     }
     return d;
+  },
+  //返回计算百分比
+  returnPercent(data){
+    if(!data) return 0;
+    let v = data / 10;
+    let p = v.toFixed(1);
+    if(p.substring(p.length - 2, p.length) === '.0'){
+      return p.substring(0, p.length - 2);
+    }
+    return p;
+  },
+  //处理百分比
+  handlePercent(data){
+    if(!data) return 0;
+    let v = data * 10;
+    return Math.round(v);
   },
   //返回要支付类型(微信额度，余额额度)
   returnPayType(weixin, balance) {
@@ -285,6 +299,7 @@ const dataHandle = {
    * @returns {*}
    */
   keepTwoDecimal(v) {
+    v = Number(v);
     let p = v.toFixed(2);
     if(p.substring(p.length - 3, p.length) === '.00'){
       return p.substring(0, p.length - 3);
