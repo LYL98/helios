@@ -31,25 +31,28 @@
         <el-collapse>
           <el-collapse-item title="查看报价参考信息">
             <el-row>
-              <el-col :span="12">
+              <el-col :span="8">
                 <el-form-item label="今日供货价">
                   {{detail.price_buy ? '￥' + returnPrice(detail.price_buy) : '-'}}
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="8">
                 <el-form-item label="今日建议价">{{returnSuggestPrice(detail)}}</el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="8">
+                <el-form-item label="今日加价率">{{returnRate(detail.price_buy, detail.price_sale)}}</el-form-item>
+              </el-col>
+              <el-col :span="8">
                 <el-form-item label="昨日供货价">
                   {{detail.price_buy_last ? '￥' + returnPrice(detail.price_buy_last) : '-'}}
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="8">
                 <el-form-item label="昨日销售价">
                   {{detail.price_sale_last ? '￥' + returnPrice(detail.price_sale_last) : '-'}}
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="8">
                 <el-form-item label="昨日销量">{{returnUnit(detail.sale_num_last, '件', '-')}}</el-form-item>
               </el-col>
             </el-row>
@@ -230,6 +233,13 @@ export default {
       
       if(min === 0 && max === 0) return '-';
       return `￥${this.returnPrice(min)} - ￥${this.returnPrice(max)}`;
+    },
+
+    //返回加价率(询价，销售价)
+    returnRate(p1, p2){
+      if(!p1 || !p2) return '-';
+      //传的数值：如10.3 传 103
+      return this.returnMarkup((p2 / p1 - 1) * 1000) + '%';
     },
 
     //提交数据
