@@ -87,19 +87,10 @@
           <el-table-column label="调拨数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="品控数量" width="140">
-            <template slot-scope="scope">{{returnUnit(scope.row.num_in, '件', '-')}}</template>
+          <el-table-column label="待入库数量" width="140">
+            <template slot-scope="scope">{{returnUnit(scope.row.num - scope.row.num_in_stock, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="入库数量" width="140">
-            <template slot-scope="scope">{{returnUnit(scope.row.num_in_stock, '件', '-')}}</template>
-          </el-table-column>
-          <el-table-column label="状态" width="100">
-            <template slot-scope="scope">
-              <el-tag size="small" :type="distributeStatusType[scope.row.status]" disable-transitions>
-                {{distributeStatus[scope.row.status]}}
-              </el-tag>
-            </template>
-          </el-table-column>
+          <el-table-column label="创建时间" width="180" prop="created"></el-table-column>
         </el-table>
       </div>
 
@@ -117,19 +108,10 @@
           <el-table-column label="采购数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="品控数量" width="140">
-            <template slot-scope="scope">{{returnUnit(scope.row.num_in, '件', '-')}}</template>
+          <el-table-column label="待入库数量" width="140">
+            <template slot-scope="scope">{{returnUnit(scope.row.num - scope.row.num_in_stock, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="入库数量" width="140">
-            <template slot-scope="scope">{{returnUnit(scope.row.num_in_stock, '件', '-')}}</template>
-          </el-table-column>
-          <el-table-column label="状态" width="100">
-            <template slot-scope="scope">
-              <el-tag size="small" :type="purchaseStatusType[scope.row.status]" disable-transitions>
-                {{purchaseStatus[scope.row.status]}}
-              </el-tag>
-            </template>
-          </el-table-column>
+          <el-table-column label="创建时间" width="180" prop="created"></el-table-column>
         </el-table>
       </div>
 
@@ -146,6 +128,9 @@
           </el-table-column>
           <el-table-column label="供应商库存" width="180">
             <template slot-scope="scope">{{returnUnit(scope.row.bidding.num, '件', '-')}}</template>
+          </el-table-column>
+          <el-table-column label="供应商报价时间" width="180">
+            <template slot-scope="scope">{{scope.row.bidding.created || '-'}}</template>
           </el-table-column>
         </el-table>
       </div>
@@ -183,10 +168,6 @@ export default {
     };
 
     return {
-      distributeStatus: Constant.DISTRIBUTE_STATUS(),
-      distributeStatusType: Constant.DISTRIBUTE_STATUS_TYPE,
-      purchaseStatus: Constant.PURCHASE_STATUS(),
-      purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
       initDetail: {},
       rules: {
         price_sale: [
