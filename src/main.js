@@ -3,7 +3,7 @@ import VueResource from 'vue-resource';
 // import 'babel-polyfill';//解决ie浏览器不支持promise
 import App from './App';
 import router from './router';
-import { DataHandle, Method, Http, Config } from '@/util';
+import { DataHandle, Method } from '@/util';
 import { MessageBox, Notification, Loading } from 'element-ui';
 
 import * as Sentry from '@sentry/browser';
@@ -24,9 +24,6 @@ if(isPro){
     ],
   });
 }
-
-//全局品牌
-let globalBrand = {};
 
 Vue.use(VueResource);
 Vue.config.productionTip = false;
