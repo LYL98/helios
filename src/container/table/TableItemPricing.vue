@@ -123,8 +123,9 @@
     },
     data() {
       return {
-        tabValue: 'init',
+        tabValue: 'all',
         queryTabsData: {
+          '全部': 'all',
           '未报价': 'init',
           '待审核': 'wait',
           '已审核': 'done'
@@ -138,7 +139,7 @@
           { label: '昨日销量', key: 'sale_num_last', width: '100', isShow: true },
           { label: '今日供货价', key: 'price_buy', width: '90', isShow: true },
           { label: '今日建议价', key: 'suggest_price', width: '120', isShow: true },
-          { label: '今日加价率', key: 'today_rise_rate', width: '100', isShow: false },
+          { label: '今日加价率', key: 'today_rise_rate', width: '100', isShow: true },
           { label: '今日销售价', key: 'price_sale', width: '90', isShow: true },
           { label: '总库存', key: 'available_num', width: '80', isShow: true },
         ],
