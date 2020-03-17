@@ -2,11 +2,20 @@
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 98%; max-width: 1400px;" :model="detail" :rules="rules" ref="ruleForm">
-        <el-form-item label="商品图片">
-          <image-preview>
-            <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
-          </image-preview>
-        </el-form-item>
+        <el-row>
+          <el-col :span="4" v-if="detail.video">
+            <el-form-item label="商品视频">
+              <video-preview :src="tencentPath + detail.video"></video-preview>
+            </el-form-item>
+          </el-col>
+          <el-col :span="20">
+            <el-form-item label="商品图片">
+              <image-preview>
+                <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
+              </image-preview>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <h6 class="subtitle">基本信息</h6>
         <el-form-item label="商品编号/名称">
           <el-input size="medium" :value="`${detail.code}/${detail.title}`" disabled></el-input>
@@ -265,7 +274,7 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
-import { SelectDisplayClass, ImagePreview, InputNumber, InputPrice, InputWeight, SelectInnerTag, SelecItemTags } from '@/common';
+import { SelectDisplayClass, ImagePreview, videoPreview, InputNumber, InputPrice, InputWeight, SelectInnerTag, SelecItemTags } from '@/common';
 import { OtherItemSupplier, SelectBuyer } from '@/component';
 
 export default {
@@ -279,6 +288,7 @@ export default {
     'select-item-tags': SelecItemTags,
     'my-select-display-class': SelectDisplayClass,
     'image-preview': ImagePreview,
+    'video-preview': videoPreview,
     'other-item-supplier': OtherItemSupplier,
     'my-select-buyer': SelectBuyer,
   },
