@@ -79,7 +79,8 @@
 
 <script>
   import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio, RadioGroup, DatePicker} from 'element-ui';
-  import {FormArea, SelectProvince, SelectCity, UploadImg} from '@/common';
+  import {FormArea, SelectProvince, SelectCity} from '@/common';
+  import { UploadImg } from '@/component';
   import {Http, Config, DataHandle, Verification} from '@/util';
   import md5 from 'md5';
 

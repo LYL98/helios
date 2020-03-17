@@ -8,12 +8,9 @@
       @focus="onEditorFocus($event)"
     >
       <template slot="toolbar">
-        <el-collapse-transition name="fade">
-          <div class="upload-control" v-if="isUploading"
-               style="display: flex; flex-direction: column; border: 1px solid #ccc; border-bottom: none; padding: 10px 5px;">
-            <i class="el-icon-close" @click="isUploading = false"
-               style="cursor: pointer; align-self: flex-end; margin-bottom: 10px;"></i>
-            <div style="display: flex">
+        <div v-if="isUploading" class="editor-upload-body">
+          <div class="editor-upload-div">
+            <!--<div style="display: flex">
               <el-input
                 size="mini"
                 v-model="mediaUrl"
@@ -28,9 +25,8 @@
               >
                 {{`插入${uploadType === 'image' ? '图片' : '视频'}`}}
               </el-button>
-            </div>
+            </div>-->
             <el-upload
-              style="margin-top: 10px;"
               :action="tencentUpPath"
               :http-request="httpRequestUpload"
               :data="uploadData"
@@ -46,21 +42,20 @@
                 type="primary"
                 icon="el-icon-upload"
                 element-loading-text="上传中,请稍候..."
-              >{{`本地${uploadType === 'image' ? '图片' : '视频'}上传`}}
+              >{{`本地${uploadType === 'image' ? '图片' : '视频(*.mp4)'}上传`}}
               </el-button>
             </el-upload>
           </div>
-        </el-collapse-transition>
+        </div>
       </template>
     </quill-editor>
   </div>
 </template>
 
 <script>
-  import {Input, Upload, Button, Message} from 'element-ui';
-  import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
-  import {quillEditor, Quill} from "vue-quill-editor";
-  import {Http, Config} from '@/util';
+  import { Input, Upload, Button, Message } from 'element-ui';
+  import { quillEditor, Quill } from "vue-quill-editor";
+  import { Http, Config } from '@/util';
 
   import './quill.core.min.css';
   import './quill.snow.min.css';
@@ -77,20 +72,24 @@
       module: {type: String, default: 'item'},
       disabled: {type: Boolean, default: false},
       mainClass: { type: String, default: '' },
+      isUpImage: {type: Boolean, default: true},
+      isUpVideo: {type: Boolean, default: false},
     },
     components: {
       'quill-editor': quillEditor,
       'el-input': Input,
       'el-upload': Upload,
-      'el-button': Button,
-      'el-collapse-transition': CollapseTransition
+      'el-button': Button
     },
     mounted() {
       let toolbar = this.$refs.myQuillEditor.quill.getModule('toolbar');
-      toolbar.addHandler('image', this.imgHandler)
-      toolbar.addHandler('video', this.videoHandler)
+      toolbar.addHandler('image', this.imgHandler);
+      toolbar.addHandler('video', this.videoHandler);
     },
     data() {
+      let imageVideos = [];
+      if(this.isUpImage) imageVideos.push('image');
+      if(this.isUpVideo) imageVideos.push('video');
       return {
         tencentPath: Config.tencentPath,
         tencentUpPath: Config.tencentUpPath,
@@ -108,7 +107,7 @@
             toolbar: [
               [{'size': ['small', false, 'large', 'huge']}],
               [{'color': []}, {'background': []}, 'bold', 'italic', 'underline', 'strike'],
-              ['image']
+              imageVideos
             ]
           },
         },
@@ -151,7 +150,11 @@
       //获取腾讯Bucketpresigned_url
       tencentPresignedUrl(file) {
         let {module} = this;
-        return Http.get(Config.api.tencentPresignedUrl, {module: module}).then(res => {
+        let data = { module: module };
+        if(file.type === 'video/mp4'){
+          data.name_suffix = 'mp4';
+        }
+        return Http.get(Config.api.tencentPresignedUrl, data).then(res => {
           this.uploadData = {
             file: file,
             key: res.data.key,
@@ -182,6 +185,7 @@
         // 调整光标到最后
         this.quill.setSelection(this.editorRange.index + 1);
         this.$refs['editor-upload'].clearFiles();
+        this.isUploading = false;
       },
 
       insertMediaUrl() {
@@ -215,19 +219,19 @@
       upError() {
         this.$refs['editor-upload'].clearFiles();
       },
-
+      //上传图片
       imgHandler(state) {
         if (state) {
+          this.isUploading = this.uploadType === 'image' ? !this.isUploading : true;
           this.uploadType = 'image';
-          this.isUploading = true;
           this.mediaUrl = '';
         }
       },
-
+      //上传视频
       videoHandler(state) {
         if (state) {
+          this.isUploading = this.uploadType === 'video' ? !this.isUploading : true;
           this.uploadType = 'video';
-          this.isUploading = true;
           this.mediaUrl = '';
         }
       }
@@ -237,7 +241,22 @@
 </script>
 
 <style lang="scss">
-
+  .editor-upload-body{
+    position: relative;
+    left: 250px;
+    top: 40px;
+    z-index: 2;
+    display: inline;
+    >.editor-upload-div{
+      position: absolute;
+      background: #fff;
+      width: auto;
+      padding: 10px;
+      border-radius: 3px;
+      box-shadow: 0 0 5px rgba($color: #000, $alpha: .3);
+    }
+  }
+  
   .my-quill-editor {
     line-height: 24px;
     .ql-container {
