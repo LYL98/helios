@@ -2,12 +2,21 @@
   <add-edit-layout :title="returnPageTitles('商品')" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" :model="detail" :rules="rules" ref="ruleForm">
       <h6 class="subtitle">基本信息</h6>
-      <el-form-item label="商品图片" prop="images">
-        <image-preview v-if="pageType === 'detail'">
-          <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
-        </image-preview>
-        <upload-img v-else v-model="detail.images" module="item" :limit="5" :disabled="!judgeOrs(pageType, ['add', 'edit'])"></upload-img>
-      </el-form-item>
+      <el-row>
+        <el-col :span="4">
+          <el-form-item label="商品视频" prop="video">
+            <upload-video v-model="detail.video" module="item" :multiple="false" :limit="5" :disabled="!judgeOrs(pageType, ['add', 'edit'])"></upload-video>
+          </el-form-item>
+        </el-col>
+        <el-col :span="20">
+          <el-form-item label="商品图片" prop="images">
+            <image-preview v-if="pageType === 'detail'">
+              <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
+            </image-preview>
+            <upload-img v-else v-model="detail.images" module="item" :limit="5" :disabled="!judgeOrs(pageType, ['add', 'edit'])"></upload-img>
+          </el-form-item>
+        </el-col>
+      </el-row>
       <el-form-item label="商品名称" prop="title">
         <el-input size="medium" v-model="detail.title" :maxLength="20" placeholder="请输入20位以内的字符"></el-input>
       </el-form-item>
@@ -71,7 +80,7 @@
         </el-col>
       </el-row>
       <el-form-item label="商品详情">
-        <quill-editor mainClass="item-g-quill-editor" v-model="detail.content" module="item" height="200" :disabled="pageType === 'detail' ? true : false"></quill-editor>
+        <quill-editor mainClass="item-g-quill-editor" v-model="detail.content" isUpVideo module="item" height="200" :disabled="pageType === 'detail' ? true : false"></quill-editor>
       </el-form-item>
       <template v-if="pageType === 'detail'">
         <h6 class="subtitle">操作记录</h6>
@@ -109,7 +118,8 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Verification, Constant } from '@/util';
-import { ImagePreview, QuillEditor, UploadImg, InputWeight, InputNumber, SelectFrame, SelectSystemClass } from '@/common';
+import { ImagePreview, QuillEditor, InputWeight, InputNumber, SelectFrame, SelectSystemClass } from '@/common';
+import { UploadImg, UploadVideo } from '@/component';
 
 export default {
   name: "AddEditItemGlobal",
@@ -117,6 +127,7 @@ export default {
   components: {
     'image-preview': ImagePreview,
     'upload-img': UploadImg,
+    'upload-video': UploadVideo,
     'quill-editor': QuillEditor,
     'input-weight': InputWeight,
     'input-number': InputNumber,
@@ -127,33 +138,9 @@ export default {
     page: { type: String, default: 'global' }, //页面global、recover
   },
   data(){
-    //毛重
-    // let validGrossWeight = function (rules, value, callback) {
-    //   console.log("this: ", this.$data);
-    //   if(value < 1){
-    //     callback('毛重不能小于0.1斤');
-    //   }else{
-    //     callback();
-    //   }
-    // };
-    //净重
-    // let validNetWeight = function (rules, value, callback) {
-    //   if(value < 1){
-    //     callback('净重不能小于0.1斤');
-    //   }else{
-    //     callback();
-    //   }
-    // };
-    //科学分类
-    // let validSystemClass = (rules, value, callback) => {
-    //   if(value.length < 6){
-    //     callback('请选择至第三级分类');
-    //   }else{
-    //     callback();
-    //   }
-    // }
     let initDetail = {
       title: '', //商品名称(必填项)
+      video: '', //视频
       images: [], //图片(必填项, 列表),
       package_spec: '', //包装规格
       item_spec: '', //商品规格
@@ -258,7 +245,6 @@ export default {
         if (!rd.weight_e) {
           rd.weight_e = '';
         }
-        console.log("rd: ", rd);
         rd.system_class_codes = [];
         for(let i = 0; i < rd.system_classes.length; i++){
           rd.system_class_codes.push(rd.system_classes[i].code);

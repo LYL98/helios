@@ -41,7 +41,8 @@
 <script>
 import addEditMixin from '@/container/addEdit/add.edit.mixin';
 import { Config, Verification, Http } from '@/util';
-import { SearchItem, UploadImg, SelectDisplayClass, SelectTag } from '@/common'
+import { SearchItem, SelectDisplayClass, SelectTag } from '@/common';
+import { UploadImg } from '@/component';
 
 export default {
   name: "AddEdit",
