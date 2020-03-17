@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--drawer-->
-    <el-drawer v-if="type === 'drawer'" :title="title" :visible.sync="isShow" direction="rtl" :before-close="beforeClose" size="100%" custom-class="my-add-edit-drawer">
+    <el-drawer v-if="type === 'drawer'" :title="title" :visible.sync="isShow" direction="ttb" :before-close="beforeClose" size="100%" custom-class="my-add-edit-drawer">
       <slot></slot>
     </el-drawer>
 
