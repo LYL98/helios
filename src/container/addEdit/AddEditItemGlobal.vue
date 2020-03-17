@@ -5,7 +5,7 @@
       <el-row>
         <el-col :span="4">
           <el-form-item label="商品视频" prop="video">
-            <upload-video v-model="detail.video" module="item" :multiple="false" :limit="5" :disabled="!judgeOrs(pageType, ['add', 'edit'])"></upload-video>
+            <upload-video v-model="detail.video" module="item" :multiple="false" :disabled="!judgeOrs(pageType, ['add', 'edit'])"></upload-video>
           </el-form-item>
         </el-col>
         <el-col :span="20">
@@ -303,6 +303,9 @@ export default {
   .item-g-quill-editor{
     .ql-container {
       height: 400px;
+    }
+    .ql-video{
+      width: 100%;
     }
   }
 </style>

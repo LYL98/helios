@@ -2,12 +2,12 @@
   <div :id="key" class="my-upload">
     <!--视频列表-->
     <draggable class="draggable" v-model="fileList" @end="onEndDraggable" :options="{group: 'people'}">
-      <div class="avatar" v-for="item in fileList" :key="item.uid">
+      <div class="video" v-for="item in fileList" :key="item.uid">
         <span class="float-layer">
           <i class="el-icon-delete" @click="handleRemove(item.url)" v-if="!disabled"></i>
-          <i class="el-icon-search" @click="handlePreview(item.url)"></i>
+          <i class="el-icon-video-play" @click="handlePreview(item.url)"></i>
         </span>
-        <img :src="item.url + '_min200x200'">
+        <i class="el-icon-video-camera video-icon"></i>
       </div>
     </draggable>
 
@@ -30,13 +30,14 @@
       :on-error="onError"
       :disabled="disabled"
     >
-      <i class="el-icon-plus"></i>
+      <i class="el-icon-loading" v-if="isLoading"></i>
+      <i class="el-icon-plus" v-else></i>
     </el-upload>
 
     <!--查看视频-->
     <el-dialog :visible.sync="isShow" append-to-body fullscreen :before-close="handleCloseDialog" style="background: #23241f;">
-      <div class="image-wrapper">
-        <video src="https://www.w3school.com.cn/i/movie.ogg"/>
+      <div class="video-wrapper">
+        <video :src="playVideo" controls autoplay/>
       </div>
     </el-dialog>
   </div>
@@ -74,9 +75,7 @@
     },
     data() {
       // 获取传递进来的默认值
-      let fs = this.videos ? this.videos.map(item => {
-        return {url: Config.tencentPath + item}
-      }) : [];
+      let fs = this.handleInitData(this.videos);
 
       // 生成组件的id值，便于更新视频列表后，调用
       let key = `upload-${Math.random().toString(16).substring(2)}`;
@@ -100,35 +99,23 @@
           X: 0,
           Y: 0
         },
-        imgRecord: new Set()
+        imgRecord: new Set(),
+        playVideo: '',
+        isLoading: false
       }
     },
     computed: {
-      fileListStart: function () {
-        return this.fileList.length - 1;
-      },
-      fileListEnd: function () {
-        return this.fileList[this.fileList.length - 1].url
-      },
-      transformScale: {
-        get() {
-          return this.$data.size / 10;
-        }
-      },
+      
     },
     watch: {
       videos: {
         deep: true,
         handler: function (next, pre) {
-          if (pre.length === 0) {
-            let fs = next.map(item => {
-              return {url: Config.tencentPath + item}
-            });
-            //数据列表
-            this.fileList = this.copyJson(fs);
-            //上传组件列表
-            this.upFileList = this.copyJson(fs);
-          }
+          let fs = this.handleInitData(next);
+          //数据列表
+          this.fileList = this.copyJson(fs);
+          //上传组件列表
+          this.upFileList = this.copyJson(fs);
         }
       },
     },
@@ -137,8 +124,21 @@
       copyJson(json){
         return JSON.parse(JSON.stringify(json));
       },
+      //处理初始数据
+      handleInitData(vs){
+        let fs = [];
+        if(typeof vs === 'string' && vs){
+          fs = [{ url: Config.tencentPath + vs }];
+        }else if(typeof vs === 'array'){
+          fs = vs.map(item => {
+            return { url: Config.tencentPath + item }
+          });
+        }
+        return fs;
+      },
       // 在开始上传之前的钩子函数，该函数返回结果为true 则开始进行上传
       onBeforeUpload(file) {
+        this.$data.isLoading = true;
         return this.tencentPresignedUrl(file);
       },
 
@@ -149,7 +149,8 @@
           this.uploadData = {
             file: file,
             key: res.data.key,
-            presigned_url: res.data.presigned_url
+            presigned_url: res.data.presigned_url,
+            name_suffix: 'mp4'
           }
 
           //需要去重
@@ -178,6 +179,7 @@
       
       //上传成功
       onSuccess(res, file, fileList) {
+        this.$data.isLoading = false;
         let fileRecord = {}
         this.imgRecord.forEach(function (value) {
           // console.log(value)
@@ -187,22 +189,21 @@
         });
 
         this.fileList.push({url: Config.tencentPath + fileRecord.key});
-        // 将缓存起来的视频地址进行截取 只保留key值，存放在videos列表中
-        let videos = this.fileList.map(item => item.url.substring(Config.tencentPath.length));
 
         //判断是否全部上传完成
         let undones = fileList.filter(item => item.status !== 'success' && item.status !== 'error');
         if(undones.length === 0){
-          this.$emit('change', videos);
+          this.changeVideos();
         }
       },
 
       //上传失败
       onError(err, file, fileList) {
+        this.$data.isLoading = false;
         //判断是否全部上传完成
         let undones = fileList.filter(item => item.status !== 'success' && item.status !== 'error');
         if(undones.length === 0){
-          this.$emit('change', videos);
+          this.changeVideos();
         }
       },
 
@@ -217,71 +218,34 @@
         let fs = this.fileList.filter(item => item.url !== url);
         this.fileList = this.copyJson(fs);
         this.upFileList = this.copyJson(fs);
-        // 将缓存起来的视频地址进行截取 只保留key值，存放在videos列表中
-        let videos = this.fileList.map(item => item.url.substring(Config.tencentPath.length));
-        this.$emit('change', videos);
+        this.changeVideos();
       },
 
       //拖动排序视频
       onEndDraggable(){
+        this.changeVideos();
+      },
+
+      //改变值
+      changeVideos(){
         // 将缓存起来的视频地址进行截取 只保留key值，存放在videos列表中
-        let videos = this.fileList.map(item => item.url.substring(Config.tencentPath.length));
-        this.$emit('change', videos);
+        let vs = this.fileList.map(item => item.url.substring(Config.tencentPath.length));
+        let d = vs;
+        if(typeof this.videos === 'string' && vs.length > 0) d = vs[0];
+        if(typeof this.videos === 'string' && vs.length === 0) d = '';
+        this.$emit('change', d);
       },
 
       //查看视频
       handlePreview(url) {
+        this.playVideo = url;
         this.isShow = true;
-      },
-
-      handleDragstart(e) {
-        this.drag.beginX = e.clientX;
-        this.drag.beginY = e.clientY;
-        this.drag.X = 0;
-        this.drag.Y = 0;
-        this.drag.isDraging = true;
-        return false;
-      },
-
-      handleDrag(e) {
-        if (e.clientX === this.drag.X && e.clientY === this.drag.Y) return; // 表示没有移动
-        if (e.clientX === 0 && e.clientY === 0) return; // 表示拖拽结束
-
-        // 第一次的偏移量
-        if (this.drag.X === 0 && this.drag.Y === 0) {
-          this.position.x = this.position.x + (e.clientX - this.drag.beginX);
-          this.position.y = this.position.y + (e.clientY - this.drag.beginY);
-        } else {
-          this.position.x = this.position.x + (e.clientX - this.drag.X);
-          this.position.y = this.position.y + (e.clientY - this.drag.Y);
-        }
-
-        this.drag.X = e.clientX;
-        this.drag.Y = e.clientY;
-
-        return false;
-      },
-
-      // 初始化视频状态。在视频切换 和 关闭窗口时。
-      initImageStatus() {
-        this.size = 10;
-        this.position = Object.assign({}, this.posistion, {
-          x: window.innerWidth * 0.8 * 0.5,
-          y: window.innerHeight * 0.8 * 0.5
-        });
-        this.drag = Object.assign({}, this.drag, {
-          isDraging: false,
-          beginX: 0,
-          beginY: 0,
-          x: 0,
-          y: 0
-        });
       },
 
       //关闭视频
       handleCloseDialog() {
-        this.initImageStatus();
         this.isShow = false;
+        this.playVideo = '';
       }
     }
   }
@@ -294,7 +258,7 @@
     height: 64px;
     >.draggable {
       height: inherit;
-      >.avatar{
+      >.video{
         display: inline-block;
         margin-right: 10px;
         box-sizing: border-box;
@@ -336,12 +300,14 @@
             margin-left: 5px;
           }
         }
-        img {
+        .el-icon-video-camera {
           width: 100%;
           height: 100%;
           border-radius: inherit;
+          font-size: 63px;
+          color: #ddd;
         }
-        img+img {
+        .el-icon-video-camera+.el-icon-video-camera {
           margin-left: 5px;
         }
       }
@@ -358,13 +324,6 @@
       height: 64px;
     }
   }
-  
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 2s;
-  }
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-  }
 
   .el-dialog.is-fullscreen {
     background: #23241f;
@@ -379,47 +338,15 @@
       flex: 1;
     }
 
-    .image-preview-wrapper {
-      /*background: #5daf34;*/
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+  }
 
-      .icon-wrapper {
-        width: 20px;
-
-        i {
-          color: lightgrey;
-          font-size: 30px;
-          font-weight: 50;
-          cursor: pointer;
-        }
-
-        i:hover {
-          color: red;
-        }
-
-      }
-
-      .image-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 80vh;
-        width: 80vw;
-        position: relative;
-        overflow: hidden;
-        img {
-          cursor: move;
-          position: absolute;
-          max-height: 100%;
-          max-width: 100%;
-        }
-
-      }
-
+  .video-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >video{
+      user-select: none;
+      margin: 0 auto;
     }
   }
 </style>
