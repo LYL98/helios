@@ -1,14 +1,3 @@
-// import ButtonGroup from './ButtonGroup';
-// import QueryItem from './QueryItem';
-// import ToPrice from './ToPrice';
-// import TableOperate from './TableOperate';
-// import OmissionText from './OmissionText';
-// import CollapseQuery from './CollapseQuery';
-// import FormArea from './FormArea';
-//
-//
-// export {ButtonGroup, QueryItem, ToPrice, TableOperate, OmissionText, CollapseQuery, FormArea}
-
 export { default as Autocomplete } from './Autocomplete';
 export { default as Avatar } from './Avatar';
 export { default as Button } from './Button';
@@ -18,6 +7,7 @@ export { default as CollapseQuery } from './CollapseQuery';
 export { default as Dialog } from './Dialog';
 export { default as FormArea } from './FormArea';
 export { default as ImagePreview } from './ImagePreview';
+export { default as videoPreview } from './videoPreview';
 export { default as InputNumber } from './InputNumber';
 export { default as InputPhone } from './InputPhone';
 export { default as InputPrice } from './InputPrice';
@@ -52,7 +42,6 @@ export { default as SelectZoneMulti } from './SelectZoneMulti';
 export { default as SortingIndicator } from './SortingIndicator';
 export { default as TableOperate } from './TableOperate';
 export { default as ToPrice } from './ToPrice';
-export { default as UploadImg } from './UploadImg';
 export { default as SelectSystemClass } from './SelectSystemClass';
 export { default as SelectSystemClassList } from './SelectSystemClassList';
 export { default as QrCode } from './QrCode';

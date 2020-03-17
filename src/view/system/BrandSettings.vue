@@ -37,7 +37,7 @@
 <script>
   import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from 'element-ui';
   import { Http, Config, Verification } from '@/util';
-  import {UploadImg} from '@/common';
+  import { UploadImg } from '@/component';
   import viewMixin from '@/view/view.mixin';
 
   export default {

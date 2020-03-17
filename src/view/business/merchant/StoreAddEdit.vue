@@ -55,7 +55,8 @@
     RadioGroup,
   } from 'element-ui';
   import {Http, Config, Constant, DataHandle, Method, Verification} from '@/util';
-  import {SelectProvince, SelectCity, UploadImg} from '@/common';
+  import {SelectProvince, SelectCity} from '@/common';
+  import { UploadImg } from '@/component';
 
   export default {
     name: "StoreAddEdit",

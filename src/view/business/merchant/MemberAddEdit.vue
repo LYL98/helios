@@ -28,7 +28,7 @@
 <script>
 import { Table, TableColumn, Message, MessageBox, Button, Dialog, Form, FormItem, Input, Radio, Col, Row } from 'element-ui';
 import { Http, Config, Constant, DataHandle, Method, Verification } from '@/util';
-import { UploadImg } from '@/common';
+import { UploadImg } from '@/component';
 import md5 from 'md5';
 
 export default {
