@@ -20,7 +20,6 @@ export { default as AddEditGroupItem } from './AddEditGroupItem';
 export { default as AddEditGroupActivity } from './AddEditGroupActivity';
 export { default as AddEditGroupItemClass } from './AddEditGroupItemClass';
 
-export { default as AddEditSystemRole } from './AddEditSystemRole';
 export { default as AddEditSystemOperator } from './AddEditSystemOperator';
 
 export { default as AddEditFinanceSBDetail } from './AddEditFinanceSBDetail';

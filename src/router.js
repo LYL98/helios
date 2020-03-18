@@ -364,9 +364,9 @@ const router = new Router({
 
     /*系统设置*/
     {
-      path: '/system/role/list',
+      path: '/system/role',
       name: 'SystemRoleList',
-      component: () => import('@/view/system/RoleList')
+      component: () => import('@/view/system/role/Main')
     },
     {
       path: '/system/operator/list',

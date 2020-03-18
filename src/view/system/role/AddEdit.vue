@@ -18,8 +18,8 @@
           <div style="color: #7f1305;">注：可快速复制现有角色的功能</div>
         </el-form-item>
         <el-form-item label="超级管理员" v-if="detail.role_type === 'global'" class="is-required">
-          <el-radio v-model="detail.is_super_admin" :label="true">是</el-radio>
-          <el-radio v-model="detail.is_super_admin" :label="false">否</el-radio>
+          <el-radio v-model="detail.is_super_admin" :label="true" :disabled="$myInfo.is_admin && $myInfo.opt_type === 'global' ? false : true">是</el-radio>
+          <el-radio v-model="detail.is_super_admin" :label="false" :disabled="$myInfo.is_admin && $myInfo.opt_type === 'global' ? false : true">否</el-radio>
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="detail.remark" type="textarea" :maxlength="100"></el-input>
