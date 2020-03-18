@@ -678,5 +678,8 @@ export default {
     img{
       width: 100% !important;
     }
+    .ql-video{
+      width: 100%;
+    }
   }
 </style>
