@@ -9,7 +9,7 @@
           <el-button class="btn" icon="el-icon-plus" size="mini" @click.native="showAddEdit('add')" v-if="auth.isAdmin || auth.SystemRoleAdd" >新增</el-button>
         </div>
         <div class="select">
-          <el-select v-model="selectRoleType" placeholder="请选择权限级别" clearable filterable style="width: 100%;" size="mini">
+          <el-select v-model="selectRoleType" placeholder="请选择权限级别" clearable filterable style="width: 100%;" size="mini" @change="changeRoleType">
             <el-option v-for="(value, key) in roleAuthLevel" :key="key" :label="value" :value="key"></el-option>
           </el-select>
         </div>
@@ -39,7 +39,7 @@
             </el-radio-group>
           </span>
           <span class="f-r">
-            <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin" :disabled="detail.role_type === 'global' ? false : true">超级管理员</el-checkbox>
+            <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin" :disabled="$myInfo.is_admin && $myInfo.opt_type === 'global' && detail.role_type === 'global' ? false : true">超级管理员</el-checkbox>
           </span>
         </div>
         <div class="content" :style="`height:${viewWindowHeight - 166}px;`">
@@ -69,16 +69,16 @@
       </div>
       <!--权限列表start-->
     </div>
-    <add-edit-system-role :callback="myCallBack" ref="AddEditSystemRole" />
+    <add-edit :callback="myCallBack" ref="AddEditSystemRole" />
   </div>
   </sub-menu>
 </template>
 
 <script>
-import viewMixin from './../view.mixin';
+import viewMixin from '@/view/view.mixin';
 import { Button, Checkbox, Tree, RadioGroup, RadioButton, Select, Option } from 'element-ui';
 import { Config, Constant, DataHandle, Http } from '@/util';
-import { AddEditSystemRole } from '@/container';
+import AddEdit from './AddEdit';
 
 export default {
   name: 'RoleList',
@@ -86,7 +86,7 @@ export default {
   components: {
     'el-button': Button,
     'el-checkbox': Checkbox,
-    'add-edit-system-role': AddEditSystemRole,
+    'add-edit': AddEdit,
     'el-tree': Tree,
     'el-radio-group': RadioGroup,
     'el-radio-button': RadioButton,
@@ -289,6 +289,19 @@ export default {
         }
       }else{
         this.$message({message: res.message, type: 'error'});
+      }
+    },
+    //选择角色类型
+    changeRoleType(){
+      let { selectRoleType, dataItem } = this;
+      let con = dataItem.filter(item => selectRoleType === '' || item.role_type === selectRoleType);
+      if(con.length > 0){
+        this.getRoleDetail(con[0]);
+      }else{
+        this.getRoleDetail({
+          permission_codes: [],
+          is_super_admin: false
+        });
       }
     },
     //获取角色详情(直接保存详情)
