@@ -421,14 +421,19 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import "./add.edit.scss";
+</style>
+<style lang="scss">
   .qa-standard{
     background-color: #F5F7FA;
     border-color: #E4E7ED;
     border-radius: 5px;
     padding: 5px 10px;
+    height: 400px;
+    overflow-y: auto;
+    img{
+      width: 100% !important;
+    }
   }
-</style>
-<style lang="scss">
   .my-content-div{
     height: 400px;
     border: 1px solid #ececec;
@@ -437,6 +442,9 @@ export default {
     overflow-y: auto;
     img{
       width: 100% !important;
+    }
+    .ql-video{
+      display: none;
     }
   }
 </style>
