@@ -5,8 +5,8 @@
         <el-form-item label="仓名称" prop="title">
           <el-input size="medium" v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
-        <el-form-item label="所属省份" prop="province_code">
-          <my-select-province size="medium" v-model="detail.province_code" nationwide/>
+        <el-form-item label="所属区域" prop="province_code">
+          <my-select-province size="medium" v-model="detail.province_code" nationwide :disabled="pageType === 'add' ? false : true"/>
         </el-form-item>
         <el-form-item label="地址" prop="address">
           <el-input size="medium" v-model="detail.address" placeholder="请输入200位以内的字符" :maxlength="200"></el-input>
@@ -45,7 +45,7 @@ export default {
             { required: true, message: '名称不能为空', trigger: 'change' }
         ],
         province_code: [
-            { required: true, message: '请选择所属省份', trigger: 'change' }
+            { required: true, message: '请选择所属区域', trigger: 'change' }
         ],
         address: [
             { required: true, message: '请输入详细地址', trigger: 'change' }

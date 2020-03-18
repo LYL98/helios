@@ -28,7 +28,7 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Verification } from '@/util';
-import { UploadImg } from '@/common';
+import { UploadImg } from '@/component';
 
 export default {
   name: "AddEditGroupBanner",

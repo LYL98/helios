@@ -21,7 +21,7 @@
     },
     mixins: [viewMixin],
     created() {
-      documentTitle("设置 - 省");
+      documentTitle("设置 - 区域");
     },
   };
 </script>

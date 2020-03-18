@@ -51,7 +51,7 @@
               </el-col>
               <el-col :span="8">
                 <dl class="detail-item">
-                  <dt class="label">所在仓</dt>
+                  <dt class="label">县域</dt>
                   <dd class="content">{{detail.city.title}}</dd>
                 </dl>
               </el-col>

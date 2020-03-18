@@ -38,7 +38,7 @@
       zoneId: { type: String | Number },
       filterable: { type: Boolean, default: true },
       clearable: { type: Boolean, default: true},
-      placeholder: { type: String, default: '所在仓' },
+      placeholder: { type: String, default: '县域' },
       disabled: { type: Boolean, default: false },
     },
     model: {
@@ -66,7 +66,7 @@
         deep: true,
         immediate: true,
         handler: function (next, pre) {
-          // 如果省份code 为 空 或者 零，则返回.
+          // 如果区域code 为 空 或者 零，则返回.
           if (!next) {
             return;
           }
@@ -88,7 +88,7 @@
 
     },
     methods: {
-      //根据传进来的省份code 获取城市列表
+      //根据传进来的区域code 获取城市列表
       async baseCityList(){
         let res = await Http.get(Config.api.baseCityList, {
           province_code: this.$props.provinceCode || '',

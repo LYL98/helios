@@ -2,11 +2,20 @@
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" :disabled="pageType === 'detail'" label-width="140px" style="width: 98%; max-width: 1400px;" :model="detail" :rules="rules" ref="ruleForm">
-        <el-form-item label="商品图片">
-          <image-preview>
-            <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
-          </image-preview>
-        </el-form-item>
+        <el-row>
+          <el-col :span="4" v-if="detail.video">
+            <el-form-item label="商品视频">
+              <video-preview :src="tencentPath + detail.video"></video-preview>
+            </el-form-item>
+          </el-col>
+          <el-col :span="20">
+            <el-form-item label="商品图片">
+              <image-preview>
+                <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in detail.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
+              </image-preview>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <h6 class="subtitle">基本信息</h6>
         <el-form-item label="商品编号/名称">
           <el-input size="medium" :value="`${detail.code}/${detail.title}`" disabled></el-input>
@@ -161,9 +170,9 @@
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <el-form-item
                   :prop="'city_prices_temp.' + index + '.city_id'"
-                  :rules="[{ required: true, message: '请选择所在仓', trigger: 'change' }]"
+                  :rules="[{ required: true, message: '请选择县域', trigger: 'change' }]"
                 >
-                  <el-select v-model="item.city_id" placeholder="请选择所在仓" size="medium">
+                  <el-select v-model="item.city_id" placeholder="请选择县域" size="medium">
                     <el-option
                       v-for="city in cityList"
                       :key="city.id"
@@ -265,7 +274,7 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
-import { SelectDisplayClass, ImagePreview, InputNumber, InputPrice, InputWeight, SelectInnerTag, SelecItemTags } from '@/common';
+import { SelectDisplayClass, ImagePreview, videoPreview, InputNumber, InputPrice, InputWeight, SelectInnerTag, SelecItemTags } from '@/common';
 import { OtherItemSupplier, SelectBuyer } from '@/component';
 
 export default {
@@ -279,6 +288,7 @@ export default {
     'select-item-tags': SelecItemTags,
     'my-select-display-class': SelectDisplayClass,
     'image-preview': ImagePreview,
+    'video-preview': videoPreview,
     'other-item-supplier': OtherItemSupplier,
     'my-select-buyer': SelectBuyer,
   },
@@ -469,7 +479,7 @@ export default {
     }
   },
   methods: {
-    //根据传进来的省份code 获取城市列表
+    //根据传进来的区域code 获取城市列表
     async baseCityList(){
       let res = await Http.get(Config.api.baseCityList, {
         province_code: this.$province.code || '',
@@ -572,7 +582,7 @@ export default {
       city_prices_temp[index] = item;
       this.$data.detail.city_prices_temp = city_prices_temp;
     },
-    //请选择所在仓
+    //请选择县域
     onSystemClassChange(val) {
       this.nodeList(val.length - 1, val)
     },

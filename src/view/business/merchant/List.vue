@@ -91,7 +91,7 @@
         province: this.$province,
         auth: this.$auth,
         tencentPath: Config.tencentPath,
-        provinceList: [],//省列表
+        provinceList: [],//区域列表
         query: {
           is_audited: '',
           is_freeze: '',
@@ -156,8 +156,8 @@
       },
 
       /**
-       * 切换省份 的按钮事件
-       * 1、设置当前的省份code
+       * 切换区域 的按钮事件
+       * 1、设置当前的区域code
        * 2、设置page属性为1
        * 3、重新加载商户列表
        */
@@ -198,7 +198,7 @@
        */
       selectMerchantByCondition() {
         let { query, province } = this;
-        query.province_code = province.code; // 当前省份code
+        query.province_code = province.code; // 当前区域code
         query.page = 1;
         this.$data.query = query;
         this.storeQuery();

@@ -2,10 +2,10 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="所在仓">
+        <my-query-item label="县域">
           <my-select-city
             size="small"
-            placeholder="所在仓"
+            placeholder="县域"
             clearable
             v-model="editQuery.city_id"
             :provinceCode="editQuery.province_code"

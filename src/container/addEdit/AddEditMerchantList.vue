@@ -29,10 +29,10 @@
         <el-form-item label="门店名称" prop="store_title">
           <el-input v-model="detail.store_title" :maxlength="10" style="width: 260px;" placeholder="请输入门店名称"></el-input>
         </el-form-item>
-        <el-form-item label="所在仓" prop="province">
+        <el-form-item label="县域" prop="province">
           <my-select-province style="width: 110px;" :value="province.code" :disabled="true"/>
           <my-select-city style="width: 140px; margin-left: 6px;" v-model="detail.city_id" :provinceCode="province.code"
-                          placeholder="请选择所在仓" @change="changCity"/>
+                          placeholder="请选择县域" @change="changCity"/>
         </el-form-item>
       </div>
       <div style="display: flex; justify-content: space-between;">
@@ -79,7 +79,8 @@
 
 <script>
   import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio, RadioGroup, DatePicker} from 'element-ui';
-  import {FormArea, SelectProvince, SelectCity, UploadImg} from '@/common';
+  import {FormArea, SelectProvince, SelectCity} from '@/common';
+  import { UploadImg } from '@/component';
   import {Http, Config, DataHandle, Verification} from '@/util';
   import md5 from 'md5';
 
@@ -172,7 +173,7 @@
             {max: 10, message: '请输入10个以内的字符', trigger: 'blur'}
           ],
           province: [
-            {required: true, message: '请选择所在仓', trigger: 'blur'}
+            {required: true, message: '请选择县域', trigger: 'blur'}
           ],
           linkman: [
             {required: true, message: '收货人不能为空', trigger: 'change'},

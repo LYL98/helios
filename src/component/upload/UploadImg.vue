@@ -30,7 +30,8 @@
       :on-error="onError"
       :disabled="disabled"
     >
-      <i class="el-icon-plus"></i>
+      <i class="el-icon-loading" v-if="isLoading"></i>
+      <i class="el-icon-plus" v-else></i>
     </el-upload>
 
     <!--查看图片-->
@@ -118,7 +119,8 @@
           X: 0,
           Y: 0
         },
-        imgRecord: new Set()
+        imgRecord: new Set(),
+        isLoading: false
       }
     },
     computed: {
@@ -157,6 +159,7 @@
       },
       // 在开始上传之前的钩子函数，该函数返回结果为true 则开始进行上传
       onBeforeUpload(file) {
+        this.$data.isLoading = true;
         return this.tencentPresignedUrl(file);
       },
 
@@ -196,6 +199,7 @@
       
       //上传成功
       onSuccess(res, file, fileList) {
+        this.$data.isLoading = false;
         let fileRecord = {}
         this.imgRecord.forEach(function (value) {
           // console.log(value)
@@ -217,6 +221,7 @@
 
       //上传失败
       onError(err, file, fileList) {
+        this.$data.isLoading = false;
         //判断是否全部上传完成
         let undones = fileList.filter(item => item.status !== 'success' && item.status !== 'error');
         if(undones.length === 0){

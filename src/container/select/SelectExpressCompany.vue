@@ -36,7 +36,7 @@
       size: { type: String, default: '' },
       filterable: { type: Boolean, default: true },
       clearable: { type: Boolean, default: true},
-      placeholder: { type: String, default: '所在仓' },
+      placeholder: { type: String, default: '县域' },
       disabled: { type: Boolean, default: false }
     },
     model: {
@@ -63,7 +63,7 @@
       }
     },
     methods: {
-      //根据传进来的省份code 获取城市列表
+      //根据传进来的区域code 获取城市列表
       async baseOrderShipList(){
         let res = await Http.get(Config.api.baseOrderShipList, {});
 

@@ -1,5 +1,5 @@
 <template>
-  <el-transfer v-model="provinceCodes" :data="dataItem" :titles="['未选省份','已选省份']" @change="changeProvince"></el-transfer>
+  <el-transfer v-model="provinceCodes" :data="dataItem" :titles="['未选区域','已选区域']" @change="changeProvince"></el-transfer>
 </template>
 
 <script>
@@ -26,12 +26,12 @@ export default {
     };
   },
   methods: {
-    //省份改变
+    //区域改变
     changeProvince(v){
       this.$emit('ev', v);
       this.$emit('change', v);
     },
-    //获取所有省份
+    //获取所有区域
     async baseProvinceList(){
       let that = this;
       let res = await Http.get(Config.api.baseProvinceList, {});

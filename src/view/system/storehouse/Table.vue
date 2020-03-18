@@ -33,7 +33,7 @@
                   </div>
                 </div>
               </template>
-              <!--省-->
+              <!--区域-->
               <div class="td-item" v-else-if="item.key === 'province'">
                 <span v-if="scope.row.province_code === 'nationwide'">全国</span>
                 <span v-else-if="scope.row.province_code">{{scope.row.province.title}}</span>
@@ -93,7 +93,7 @@
         tableName: 'Storehouse',
         tableColumn: [
           { label: '仓', key: 'title', width: '2', isShow: true },
-          { label: '所属省份', key: 'province', width: '2', isShow: true },
+          { label: '所属区域', key: 'province', width: '2', isShow: true },
           { label: '地址', key: 'address', width: '3', isShow: true },
           { label: '创建时间', key: 'created', width: '1', isShow: true },
           { label: '更新时间', key: 'updated', width: '1', isShow: false },

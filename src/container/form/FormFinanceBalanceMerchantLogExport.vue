@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form label-position="right" label-width="80px" style="width: 540px; margin-top: -10px;">
-      <el-form-item label="当前省份">
+      <el-form-item label="当前区域">
         {{ province.title }}
       </el-form-item>
       <el-form-item label="选择日期">
@@ -37,7 +37,7 @@
     >
       <div style="padding: 0 20px;">
         <div>
-          <span>当前省份：{{ province.title }}</span>
+          <span>当前区域：{{ province.title }}</span>
           <span style="margin-left: 20px;">日期：{{ pickerValue[0] }} 至 {{ pickerValue[1] }}</span>
         </div>
         <div style="text-align: center; margin: 20px 0;">

@@ -27,7 +27,7 @@
 <script>
 import addEditMixin from '@/container/addEdit/add.edit.mixin';
 import { Http, Config, Verification, Constant } from '@/util';
-import { UploadImg } from '@/common';
+import { UploadImg } from '@/component';
 
 export default {
   name: 'Brand',

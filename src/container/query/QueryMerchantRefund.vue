@@ -2,7 +2,7 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col  :span="7">
-        <my-query-item label="所在仓">
+        <my-query-item label="县域">
           <select-city
             size="small"
             clearable

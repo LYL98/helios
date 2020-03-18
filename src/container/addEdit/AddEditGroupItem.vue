@@ -68,7 +68,8 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Verification } from '@/util';
-import { QuillEditor, UploadImg, SelectGroupItemClass } from '@/common';
+import { QuillEditor, SelectGroupItemClass } from '@/common';
+import { UploadImg } from '@/component';
 
 export default {
   name: "AddEditGroupItem",

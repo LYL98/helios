@@ -1,9 +1,9 @@
 <template>
   <div class="select-province">
     <div @click="show" class="select-province-div">
-      省份：{{province && province.title}}<i class="el-icon-arrow-down el-icon--right"></i>
+      区域：{{province && province.title}}<i class="el-icon-arrow-down el-icon--right"></i>
     </div>
-    <el-dialog title="选择省份" :visible="isShow" :before-close="cancel" append-to-body :show-close="false" :close-on-press-escape="false">
+    <el-dialog title="选择区域" :visible="isShow" :before-close="cancel" append-to-body :show-close="false" :close-on-press-escape="false">
       <div v-if="dataItem.length > 0">
         <el-tag :type="province && province.code === item.code ? 'danger' : 'info'" v-for="(item, index) in dataItem" :key="index" style="margin: 10px 10px 0 0;cursor:pointer;" @click.native="changeProvince(item)">{{item.title}}</el-tag>
       </div>
@@ -40,7 +40,7 @@ export default {
     };
   },
   methods: {
-    //选择全局省
+    //选择全局区域
     show(){
       this.$data.isShow = true;
     },
@@ -53,19 +53,19 @@ export default {
         this.loginOut();
       }
     },
-    //省改变
+    //区域改变
     changeProvince(data){
       Method.setLocalStorage('heliosGlobalProvince', data);//缓存
       window.location.reload();
     },
-    //获取所有省
+    //获取所有区域
     async baseProvinceListMy(){
       let { province } = this;
       let res = await Http.get(Config.api.baseProvinceListMy, {});
       if(res.code === 0){
         let rd = res.data;
         this.$data.dataItem = rd;
-        //如果只有一个省，默认选择
+        //如果只有一个区域，默认选择
         if(rd.length === 1 && province.code != rd[0].code){
           this.changeProvince(rd[0]);
         }else if(rd.length === 0 || !province.code){
