@@ -170,9 +170,9 @@
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <el-form-item
                   :prop="'city_prices_temp.' + index + '.city_id'"
-                  :rules="[{ required: true, message: '请选择所在仓', trigger: 'change' }]"
+                  :rules="[{ required: true, message: '请选择县域', trigger: 'change' }]"
                 >
-                  <el-select v-model="item.city_id" placeholder="请选择所在仓" size="medium">
+                  <el-select v-model="item.city_id" placeholder="请选择县域" size="medium">
                     <el-option
                       v-for="city in cityList"
                       :key="city.id"
@@ -479,7 +479,7 @@ export default {
     }
   },
   methods: {
-    //根据传进来的省份code 获取城市列表
+    //根据传进来的区域code 获取城市列表
     async baseCityList(){
       let res = await Http.get(Config.api.baseCityList, {
         province_code: this.$province.code || '',
@@ -582,7 +582,7 @@ export default {
       city_prices_temp[index] = item;
       this.$data.detail.city_prices_temp = city_prices_temp;
     },
-    //请选择所在仓
+    //请选择县域
     onSystemClassChange(val) {
       this.nodeList(val.length - 1, val)
     },

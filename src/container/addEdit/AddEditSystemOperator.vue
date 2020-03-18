@@ -8,7 +8,7 @@
               可以选择操作 运营人员类型 和 选择所有区域
           2、如果登录人员为区域：
               不允许编辑权限级别，
-              在新增或编辑时，只能选择本人所在的区域（此处不做禁用，是需要兼容部分老数据中 区域运营人员没有省份code的情况）
+              在新增或编辑时，只能选择本人所在的区域（此处不做禁用，是需要兼容部分老数据中 区域运营人员没有区域code的情况）
         -->
         <el-row>
           <el-col :span="12">
@@ -216,7 +216,7 @@ export default {
           break;
       }
     },
-    //省份改变
+    //区域改变
     changeProvince() {
       this.handleChangePost(this.$data.detail.post);
     },
@@ -266,7 +266,7 @@ export default {
         }
       });
     },
-    //获取所有省
+    //获取所有区域
     async baseProvinceList(){
       let res = await Http.get(Config.api.baseProvinceList, {});
       if(res.code === 0){

@@ -5,7 +5,7 @@
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
-        <el-form-item label="所属省份" prop="province_code">
+        <el-form-item label="所属区域" prop="province_code">
           <my-select-province :value="detail.province_code" @change="changeProvince" :disabled="detail.id ? true: false"/>
         </el-form-item>
         <el-form-item label="所属片区" prop="zone_id">
@@ -46,7 +46,7 @@ export default {
             { required: true, message: '名称不能为空', trigger: 'blur' }
         ],
         province_code: [
-            { required: true, message: '请选择所属省份', trigger: 'change' }
+            { required: true, message: '请选择所属区域', trigger: 'change' }
         ],
         zone_id: [
             { required: true, message: '请选择所属片区', trigger: 'change' }
@@ -62,10 +62,10 @@ export default {
   },
   methods: {
 
-    // 切换省份时，所选省份，是否和当前省份一致！
+    // 切换区域时，所选区域，是否和当前区域一致！
     // 如果不一致，则清空city选择
     changeProvince(v) {
-      if (v !== this.detail.province_code) { // 和当前的省份不同
+      if (v !== this.detail.province_code) { // 和当前的区域不同
         this.$set(this.detail, 'zone_id', '');
         this.$set(this.detail, 'province_code', v);
       }

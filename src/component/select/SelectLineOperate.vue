@@ -49,7 +49,7 @@ export default {
       });
       if(res.code === 0){
         let rd = res.data;
-        //如果只有一个省，默认选择，页面不显示
+        //如果只有一个区域，默认选择，页面不显示
         if(rd.length > 0){
           that.changeLine(rd[0].id, true);
         }

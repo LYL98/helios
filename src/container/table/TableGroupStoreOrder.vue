@@ -35,7 +35,7 @@
               <div>{{scope.row.store.linkman}}</div>
               <div>{{scope.row.store.phone}}</div>
             </div>
-            <!--所在仓-->
+            <!--县域-->
             <div class="td-item add-dot2" v-else-if="item.key === 'city_title'">{{scope.row.city.title}}</div>
             <!--原价、建议团长价、建议团购价-->
             <div class="td-item add-dot2" v-else-if="item.key === 'amount'">&yen;{{returnPrice(scope.row.amount)}}</div>
@@ -105,7 +105,7 @@
           { label: '门店名称', key: 'store_title', width: '160', isShow: true },
           { label: '门店地址', key: 'store_address', width: '160', isShow: true },
           { label: '联系方式', key: 'linkman', width: '120', isShow: true },
-          { label: '所在仓', key: 'city_title', width: '100', isShow: true },
+          { label: '县域', key: 'city_title', width: '100', isShow: true },
           { label: '实付金额', key: 'amount', width: '100', isShow: true },
           { label: '状态', key: 'status', width: '80', isShow: true },
           { label: '发货日期', key: 'delivery_date', width: '120', isShow: true },

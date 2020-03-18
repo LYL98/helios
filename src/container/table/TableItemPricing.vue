@@ -196,8 +196,11 @@
         }
         let min = DataHandle.returnSuggestPrice(item.price_buy, item.rise_min);
         let max = DataHandle.returnSuggestPrice(item.price_buy, item.rise_max);
-        if(item.price_sale < min || item.price_sale > max){
+        if(item.price_sale > max){
           return 'color: #ff5252; font-weight: bold;';
+        }
+        if(item.price_sale < min){
+          return 'color: #76C627; font-weight: bold;';
         }
         return '';
       },

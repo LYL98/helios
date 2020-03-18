@@ -46,13 +46,13 @@
       this.baseProvinceList();
     },
     methods: {
-      //获取所有省
+      //获取所有区域
       async baseProvinceList(){
         let res = await Http.get(Config.api.baseProvinceList, {});
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
-          //如果只有一个省，默认选择，页面不显示
+          //如果只有一个区域，默认选择，页面不显示
           if(rd.length === 1){
             this.editValue = rd[0].code;
             // that.changeProvince(rd[0].code, true);

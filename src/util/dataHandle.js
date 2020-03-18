@@ -444,11 +444,11 @@ const dataHandle = {
     let day = date.getDate();
     return (month >= 10 ? month : '0' + month) + '-' + (day >= 10 ? day : '0' + day)
   },
-  //数据权限级别(1-5)1:全国 2:省 3:片区 4:县市 5:线路
+  //数据权限级别(1-5)1:全国 2:区域 3:片区 4:县市 5:线路
   returnDataLevel(level) {
     switch (level) {
       case '1': return '全国';
-      case '2': return '省';
+      case '2': return '区域';
       case '3': return '片区';
       case '4': return '县市';
       case '5': return '线路';
