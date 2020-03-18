@@ -18,7 +18,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="所在仓" width="100" prop="city.title">
+        <el-table-column label="县域" width="100" prop="city.title">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.city && scope.row.city.title }}
@@ -92,11 +92,6 @@
                 command: () => affirmStoreUnFreeze(scope.row)
               },
               {
-                title: '修改所在仓',
-                isDisplay: auth.isAdmin || auth.MerchantStoreEditCity,
-                command: () => editCity(scope.row)
-              },
-              {
                 title: '修改详情',
                 isDisplay: auth.isAdmin || auth.MerchantStoreEdit,
                 command: () => editStore(scope.row)
@@ -134,10 +129,7 @@
       >
       </store-add-edit>
     </el-dialog>
-
-    <el-dialog title="修改所在仓" :close-on-click-modal="false" width="640px" :visible.sync="editCityVisible" v-if="editCityVisible" append-to-body>
-      <store-edit-city :store_id="store_id" :editCitySuccess="editCitySuccess" :editCityCancel="editCityCancel"></store-edit-city>
-    </el-dialog>
+    
   </div>
 </template>
 
@@ -146,7 +138,6 @@
   import {TableOperate, OmissionText, SelectProvince} from '@/common';
   import {Http, Config, Constant, DataHandle, Method} from '@/util';
   import StoreAddEdit from './StoreAddEdit';
-  import StoreEditCity from './StoreEditCity';
   import tableMixin from '@/container/table/table.mixin';
 
   export default {
@@ -165,7 +156,6 @@
       'el-select': Select,
       'my-select-province': SelectProvince,
       'store-add-edit': StoreAddEdit,
-      'store-edit-city': StoreEditCity,
       'my-table-operate': TableOperate,
       'my-omission-text': OmissionText
     },
@@ -194,7 +184,6 @@
         store_id: '',
         isEditStore: false,
         editDialogVisible: false,
-        editCityVisible: false,
         currentRow: {}
       }
     },
@@ -211,7 +200,7 @@
         this.$data.query = query;
         this.storeList();
       },
-      //省份改变
+      //区域改变
       changeProvince() {
         //this.$data.addData.sales_man = '';
       },
@@ -288,23 +277,6 @@
         this.editDialogVisible = false;
       },
 
-      // 编辑门店所在仓
-      editCity(item) {
-        this.store_id = item.id;
-        this.editCityVisible = true;
-      },
-      // 编辑门店所在仓
-      editCitySuccess() {
-        this.store_id = '';
-        this.editCityVisible = false;
-        this.refresh();
-        this.storeQuery();
-      },
-      // 退出编辑门店所在仓
-      editCityCancel() {
-        this.store_id = '';
-        this.editCityVisible = false;
-      },
       //确认删除门店
       deleteStore(data) {
 

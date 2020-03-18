@@ -52,7 +52,7 @@ export default {
             { max: 10, message: '请输入10个以内的字符', trigger: 'blur' }
         ],
         province_code: [
-            { required: true, message: '请选择所属省份', trigger: 'change' }
+            { required: true, message: '请选择所属区域', trigger: 'change' }
         ]
       }
     }

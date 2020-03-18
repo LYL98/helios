@@ -28,11 +28,24 @@
           </my-query-item>
         </el-col>
       </el-row>
+      <el-row :gutter="32" style="margin-top: 16px;">
+        <el-col :span="7">
+          <my-query-item label="科学分类">
+            <select-system-class v-model="query.system_class_codes" :clearable="true" size="small" @change="changeSystemClass" />
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <my-query-item label="加价率低于">
+            <input-percent v-model="query.markup_rate" size="small" @keyup.enter.native="handleQuery('TableItemPricing')" />
+          </my-query-item>
+        </el-col>
+      </el-row>
     </div>
     <!-- 头部end -->
 </template>
 
 <script>
+  import { InputPercent, SelectSystemClass } from '@/common';
   import { SelectBuyer } from '@/component';
   import queryMixin from './query.mixin';
 
@@ -40,6 +53,8 @@
     name: "QueryItemPricing",
     components: {
       'select-buyer': SelectBuyer,
+      'input-percent': InputPercent,
+      'select-system-class': SelectSystemClass,
     },
     mixins: [queryMixin],
     created() {
@@ -52,7 +67,10 @@
         opt_date: '',
         buyer_id: '',
         sort: '',
-        condition: ''
+        condition: '',
+        markup_rate: '',
+        system_class_code: '',
+        system_class_codes: [],
       }
       return {
         initQuery: initQuery,
@@ -60,6 +78,11 @@
       }
     },
     methods: {
+      //改变科学分类
+      changeSystemClass(value, data) {
+        this.$data.query.system_class_code = data.code || '';
+        this.handleQuery('TableItemPricing');
+      },
     }
   }
 </script>

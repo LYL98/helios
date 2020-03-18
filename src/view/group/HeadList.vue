@@ -3,13 +3,13 @@
     <div class="query">
       <el-row>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="所在仓">
+          <my-query-item label="县域">
             <my-select-city
               size="small"
               :provinceCode="province.code"
               v-model="query.city_id"
               clearable
-              placeholder="所在仓"
+              placeholder="县域"
               @change="changeQuery"
             ></my-select-city>
           </my-query-item>
@@ -89,7 +89,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="所在仓" prop="city_title" min-width="100">
+        <el-table-column label="县域" prop="city_title" min-width="100">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.city_title }}

@@ -80,7 +80,7 @@ export default {
     provinceCode: {
       deep: true,
       handler: function (a, b) {
-        // console.log('省份发生变化：', a);
+        // console.log('区域发生变化：', a);
         this.$data.pCode = a || '';
         this.baseCityList();
       }

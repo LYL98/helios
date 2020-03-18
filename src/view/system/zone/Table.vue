@@ -20,7 +20,7 @@
         :current-row-key="clickedRow[rowIdentifier]"
       >
         <el-table-column type="index" label="序号" min-width="150"></el-table-column>
-        <el-table-column label="所属省份" min-width="160">
+        <el-table-column label="所属区域" min-width="160">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.province && scope.row.province.title }}

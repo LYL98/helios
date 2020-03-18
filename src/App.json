@@ -322,7 +322,7 @@
         "type": "main",
         "children": [
           {
-            "title": "省",
+            "title": "区域",
             "upName": "SystemSettingMain",
             "name": "Province"
           },

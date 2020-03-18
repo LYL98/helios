@@ -133,21 +133,16 @@
             </el-row>
           </template>
 
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="备注" prop="remark">
-                <el-input v-model="inventoryData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="品控标准">
-                <div v-if="itemData.system_class.qa_standard" v-html="itemData.system_class.qa_standard" class="qa-standard"></div>
-                <div v-else class="qa-standard">暂无品控标准</div>
-              </el-form-item>
-            </el-col>
-          </el-row>
+          <el-form-item label="备注" prop="remark">
+            <el-input v-model="inventoryData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
+          </el-form-item>
+          <el-form-item label="品控标准">
+            <div v-if="itemData.system_class.qa_standard" v-html="itemData.system_class.qa_standard" class="qa-standard"></div>
+            <div v-else class="qa-standard">暂无品控标准</div>
+          </el-form-item>
+          <el-form-item label="商品详情">
+            <div class="my-content-div" v-html="itemData.content"></div>
+          </el-form-item>
         </template>
       </el-form>
 
@@ -265,7 +260,8 @@ export default {
         system_class: {
           qa_rate: 0,
           qa_standard: ''
-        }
+        },
+        content: ''
       },
       rules: {
         produce_date: [
@@ -430,5 +426,17 @@ export default {
     border-color: #E4E7ED;
     border-radius: 5px;
     padding: 5px 10px;
+  }
+</style>
+<style lang="scss">
+  .my-content-div{
+    height: 400px;
+    border: 1px solid #ececec;
+    padding: 0 10px;
+    background: #F5F7FA;
+    overflow-y: auto;
+    img{
+      width: 100% !important;
+    }
   }
 </style>

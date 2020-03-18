@@ -37,7 +37,7 @@
       <el-dialog :title="titleStrs[selectIndex].title" :visible="isShow" :before-close="cancel" :width="isPreview ? '1000px' : '540px'">
         <div v-if="isPreview">
           <div style="display: flex; flex-wrap: wrap;">
-            <p v-if="titleStrs[selectIndex].key !== '7'"><span style="color: #73767D;">当前省份</span><span style="margin-left: 12px;color: #3B3D42;">{{province.title}}</span></p>
+            <p v-if="titleStrs[selectIndex].key !== '7'"><span style="color: #73767D;">当前区域</span><span style="margin-left: 12px;color: #3B3D42;">{{province.title}}</span></p>
             <p v-if="titleStrs[selectIndex].key !== '7'" style="margin-left: 70px;"><span style="color: #73767D;">日期</span><span style="margin-left: 12px;color: #3B3D42;">{{previewDate()}}</span></p>
             <p v-if="titleStrs[selectIndex].key === '2' || titleStrs[selectIndex].key === 'print'" style="margin-left: 70px;"><span style="color: #73767D;">县市</span><span style="margin-left: 12px;color: #3B3D42;">{{cityName}}</span></p>
           </div>
@@ -54,7 +54,7 @@
 
         </div>
         <el-form label-position="right" label-width="100px" style="width: 540px; margin-top: -10px;" :rules="rules" ref="ruleForm" v-else-if="titleStrs[selectIndex].key !== '7'">
-          <el-form-item label="当前省份">
+          <el-form-item label="当前区域">
             {{ province.title }}
           </el-form-item>
           <el-form-item  label="选择日期" v-if="titleStrs[selectIndex].key !== '2' && titleStrs[selectIndex].key !== 'print'">
@@ -233,7 +233,7 @@ export default {
       },
       rules: {
         province_code: [
-          { required: true, message: "省份信息读取失败！", trigger: "change" }
+          { required: true, message: "区域信息读取失败！", trigger: "change" }
         ]
       },
       /*最近30天（以当天作为结尾，往前30天）
@@ -295,7 +295,7 @@ export default {
     submitExport() {
       let that = this;
       let { province, query, selectIndex, titleStrs } = that;
-      // 拼接省份编码
+      // 拼接区域编码
       let queryStr = apis[titleStrs[selectIndex].key] + "?province_code=" + province.code;
       switch (titleStrs[selectIndex].key) {
         case "1": // 县域订货单导出 params: province_code, begin_date, end_date
@@ -338,7 +338,7 @@ export default {
       let { query ,province, itemData, printType} = this;
       query.province_code = province.code;
       if (!province.code) {
-        this.$message({ title: "提示", message: "省份信息读取失败", type: "error" });
+        this.$message({ title: "提示", message: "区域信息读取失败", type: "error" });
         return false;
       }
 

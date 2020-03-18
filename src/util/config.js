@@ -308,8 +308,8 @@ const Config = (() => {
       groupBannerDetail: apiM + '/gb_basicdata/banner/detail', //banner详情
       groupBannerList: apiM + '/gb_basicdata/banner/list', //banner列表
 
-      baseProvinceListMy: apiM + '/common/my_province', //省列表(我的省列表)（全局省份）
-      baseProvinceList: apiM + '/common/province/list', //省列表 (组件共用）
+      baseProvinceListMy: apiM + '/common/my_province', //区域列表(我的区域列表)（全局区域）
+      baseProvinceList: apiM + '/common/province/list', //区域列表 (组件共用）
       baseStoreList: apiM + '/common/store/list', // 门店列表(组件共用)
       baseZoneList: apiM + '/common/zone/list', //片区列表（组件共用）
       baseCityList: apiM + '/common/city/list', //县区列表（组件共用）
@@ -338,10 +338,10 @@ const Config = (() => {
       baseWarehouseList: apiM + '/common/warehouse/list', //获取库列表（组件共用）
       baseWareTrayList: apiM + '/common/ware_tray/list', //获取托盘列表（组件共用）
 
-      basicdataProvinceAdd: apiM + '/basicdata/province/add', //省新增
-      basicdataProvinceEdit: apiM + '/basicdata/province/edit', //省修改
-      basicdataProvinceList: apiM + '/basicdata/province/list', //省列表
-      basicdataProvinceDelete: apiM + '/basicdata/province/delete', //省删除
+      basicdataProvinceAdd: apiM + '/basicdata/province/add', //区域新增
+      basicdataProvinceEdit: apiM + '/basicdata/province/edit', //区域修改
+      basicdataProvinceList: apiM + '/basicdata/province/list', //区域列表
+      basicdataProvinceDelete: apiM + '/basicdata/province/delete', //区域删除
 
       basicdataZoneAdd: apiM + '/basicdata/zone/add', //片区新增
       basicdataZoneEdit: apiM + '/basicdata/zone/edit', //片区修改
@@ -430,7 +430,6 @@ const Config = (() => {
       storeDetail: apiM + '/store/detail', //门店详情
       storeAdd: apiM + '/store/add', //添加门店
       storeEdit: apiM + '/store/edit', //修改门店
-      storeEditCity: apiM + '/store/city_edit', //修改所在仓
       storeFreeze: apiM + '/store/freeze', //门店冻结
       storeUnFreeze: apiM + '/store/unfreeze', //门店解冻
       storeDelete: apiM + '/store/delete', //删除门店

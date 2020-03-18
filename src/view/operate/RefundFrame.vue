@@ -37,11 +37,11 @@
       </el-row>
       <el-row :gutter="32" style="margin-top: 16px;">
         <el-col :span="7">
-          <my-query-item label="所在仓">
+          <my-query-item label="县域">
             <my-select-city
               clearable
               size="small"
-              placeholder="所在仓"
+              placeholder="县域"
               v-model="query.city_id"
               :provinceCode="query.province_code"
               @change="selectByCondition"
