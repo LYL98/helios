@@ -34,7 +34,7 @@
         </el-table-column>
         <el-table-column
           prop="city_title"
-          label="所在仓"
+          label="县域"
           align="left"
           min-width="150">
           <template slot-scope="scope">
@@ -135,7 +135,7 @@ export default {
       /*
       begin_date: 开始日期
       end_date: 结束日期
-      city_id: 县code(所在仓code) 来源于 县列表
+      city_id: 县code(县域code) 来源于 县列表
       condition:
       sort: 排序字段指定 参团人数(member_num)/销售件数(sale_num)/下单金额(pay_amount)/收入金额(profit)
       page:

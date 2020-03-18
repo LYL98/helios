@@ -37,7 +37,7 @@
           >{{scope.row.merchant && scope.row.merchant.is_post_pay ? '是' : '否'}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="所在仓" min-width="80" prop="city.title">
+      <el-table-column label="县域" min-width="80" prop="city.title">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
             {{ scope.row.city && scope.row.city.title }}

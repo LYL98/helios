@@ -27,7 +27,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="所在仓" min-width="200" prop="city.title">
+        <el-table-column label="县域" min-width="200" prop="city.title">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.city && scope.row.city.title }}

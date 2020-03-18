@@ -4,7 +4,7 @@
     :clearable="clearable"
     v-model="selectedCityId"
     :disabled="disabled"
-    :placeholder="placeholder || '请选择所在仓'"
+    :placeholder="placeholder || '请选择县域'"
     :size="size"
     @change="onChange"
     style="width: 100%;"
@@ -56,7 +56,7 @@
         deep: true,
         immediate: true,
         handler: function (next, pre) {
-          // 如果省份code 为 空 或者 零，则返回.
+          // 如果区域code 为 空 或者 零，则返回.
           if (!next) {
             return;
           }
@@ -84,7 +84,7 @@
         // console.log('cityId: ', cityId, ', ', cityName);
         this.$emit('changeCityName', cityName);
       },
-      //根据传进来的省份code 获取城市列表
+      //根据传进来的区域code 获取城市列表
       async baseCityList(){
         let res = await Http.get(Config.api.baseCityList, {
           province_code: this.$props.provinceCode || '',

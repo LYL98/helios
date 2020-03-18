@@ -77,7 +77,7 @@ export default {
       let ids = this.localSuppliers[index].suppliers.map(item => item.supplier_id);
       return ids;
     },
-    //获取省列表
+    //获取区域列表
     async baseProvinceList(){
       this.$loading({isShow: true});
       let res = await Http.get(Config.api.baseProvinceList, {});

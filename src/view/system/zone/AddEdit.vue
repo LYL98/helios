@@ -5,7 +5,7 @@
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
-        <el-form-item label="所属省份" prop="province_code">
+        <el-form-item label="所属区域" prop="province_code">
           <my-select-province v-model="detail.province_code" :disabled="detail.id ? true: false" />
         </el-form-item>
         <el-form-item label="排序" prop="rank">
@@ -39,7 +39,7 @@ export default {
             { required: true, message: '名称不能为空', trigger: 'blur' }
         ],
         province_code: [
-            { required: true, message: '请选择所属省份', trigger: 'change' }
+            { required: true, message: '请选择所属区域', trigger: 'change' }
         ],
         rank: [
           { pattern: Verification.testStrs.isNumber, message: '排序必须为正整数数字', trigger: 'blur' },
