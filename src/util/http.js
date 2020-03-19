@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Config from './config';
-import { Message } from 'element-ui';
 
 //处理发送前事件
 function beforesendHandling(url, data) {
