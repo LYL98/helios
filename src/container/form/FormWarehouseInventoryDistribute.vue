@@ -130,7 +130,7 @@ export default {
       let res = await Http.post(Config.api.supDistributeAdd, {
         tray_items: [{tray_item_id: detail.id, num: detail.num_in}],
         storehouses: [{storehouse_id: detail.tar_storehouse_id, num: detail.num_in, available_date: detail.available_date, estimate_arrive_at: detail.estimate_arrive_at}],
-        driver_id: null,
+        driver_id: detail.driver_id,
         driver_name: detail.driver_name,
         driver_phone: detail.driver_phone,
         driver_car_num: detail.driver_car_num,
