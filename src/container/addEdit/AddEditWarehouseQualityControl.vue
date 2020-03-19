@@ -141,6 +141,35 @@
             <div v-else class="qa-standard">暂无品控标准</div>
           </el-form-item>
           <el-form-item label="商品详情">
+            <div style="margin-bottom: 16px;">
+              <image-preview>
+                <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in itemData.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
+              </image-preview>
+            </div>
+            <el-row>
+              <el-col :span="5">
+                <el-form-item label="产地" label-width="60px">{{itemData.origin_place}}</el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="规格" label-width="60px">{{itemData.item_spec || '-'}}</el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="重量" label-width="60px">
+                  <span v-if="!!itemData.weight_s">{{returnWeight(itemData.weight_s)}}
+                    <span v-if="!!itemData.weight_e"> - {{returnWeight(itemData.weight_e)}}</span> 斤
+                  </span>
+                </el-form-item>
+              </el-col>
+              <el-col :span="4">
+                <el-form-item label="筐" label-width="60px">
+                  <template v-if="itemData.frame_id">含筐</template>
+                  <template v-else>-</template>
+                </el-form-item>
+              </el-col>
+              <el-col :span="5">
+                <el-form-item label="包装规格" label-width="80px">{{itemData.package_spec}}</el-form-item>
+              </el-col>
+            </el-row>
             <div class="my-content-div" v-html="itemData.content"></div>
           </el-form-item>
         </template>
@@ -176,7 +205,7 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, Constant } from '@/util';
-import { InputNumber, InputPrice, SelectOption } from '@/common';
+import { InputNumber, InputPrice, SelectOption, ImagePreview } from '@/common';
 
 export default {
   name: "AddEditWarehouseQualityControl",
@@ -184,7 +213,8 @@ export default {
   components: {
     'input-number': InputNumber,
     'input-price': InputPrice,
-    'select-option': SelectOption
+    'select-option': SelectOption,
+    'image-preview': ImagePreview,
   },
   props: {
     fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
@@ -261,6 +291,7 @@ export default {
           qa_rate: 0,
           qa_standard: ''
         },
+        images: [],
         content: ''
       },
       rules: {
@@ -428,7 +459,7 @@ export default {
     border-color: #E4E7ED;
     border-radius: 5px;
     padding: 5px 10px;
-    height: 400px;
+    max-height: 400px;
     overflow-y: auto;
     img{
       width: 100% !important;
