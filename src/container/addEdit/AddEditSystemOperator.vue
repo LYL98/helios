@@ -300,14 +300,13 @@ export default {
     //提交数据
     async addEditData(){
       let { detail } = this;
-      if(!detail.id){
-        detail.password = md5(detail.password);
-      }
-      this.$loading({isShow: true});
-      let res = await Http.post(Config.api[detail.id ? 'operatorEdit' : 'operatorAdd'], {
+      let d = {
         ...detail,
         avatar: Array.isArray(detail.avatar) ? detail.avatar.join('') : detail.avatar
-      });
+      }
+      if(!detail.id) d.password = md5(detail.password);
+      this.$loading({isShow: true});
+      let res = await Http.post(Config.api[detail.id ? 'operatorEdit' : 'operatorAdd'], d);
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: `${detail.id ? '修改' : '新增'}成功`, type: 'success'});
