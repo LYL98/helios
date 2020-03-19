@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Config from './config';
+import { Message } from 'element-ui';
 
 //处理发送前事件
 function beforesendHandling(url, data) {
@@ -64,7 +65,31 @@ function get(api, data) {
  * @param data
  * @returns {Promise.<Response>}
  */
-function post(api, data) {
+let CATCHE_POSTED_LIST = []; // 缓存 post api 请求 的列表 { api: string, latest_timestamp: number  }
+function post(api, data, config) {
+
+    let throttle = true;
+    if (config && typeof config.throttle === 'boolean') {
+      throttle = config.throttle;
+    }
+
+    if (throttle) {
+      let posted = CATCHE_POSTED_LIST.find(item => item.api === api);
+
+      if (posted) {
+
+        if (posted.latest_timestamp + (2 * 1000) > new Date().getTime()) {
+          console.warn('点击频率过于频繁！', posted);
+          return Promise.resolve({ code: 520, message: '点击频率过于频繁！需要注意哦 ~ ' });
+        }
+
+        posted.latest_timestamp = new Date().getTime();
+      } else {
+        posted = {api: api, latest_timestamp: new Date().getTime()}
+        CATCHE_POSTED_LIST.push(posted);
+      }
+    }
+
     let url = api + '?time=' + new Date().getTime();
 
     beforesendHandling(url, data);//处理发送前事件

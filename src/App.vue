@@ -97,7 +97,7 @@
       }
     },
     created() {
-      
+
     },
     computed: {
       //index
@@ -164,7 +164,7 @@
         if(item.name === 'OperateTruckLoadMain'){
           this.$data.globalQuery = {};
         }
-        
+
         let { auth, pageData } = this;
         let name = item.name;
         let type = item.type;
@@ -224,7 +224,7 @@
       async signLogin(){
         let data = Method.getLocalStorage('loginData');
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.signLogin, data);
+        let res = await Http.post(Config.api.signLogin, data, {throttle: false});
         this.$loading({ isShow: false });
         if(res.code === 0){
           if(this.$route.name !== 'Home') this.$router.replace({ name: "Home" });

@@ -18,7 +18,7 @@
             </el-input>
           </el-form-item>
         </el-form>
-        <el-button type="primary" size="large" @click.native="submitLogin" id="btn-submit" class="btn-submit" :loading="loading.isShow">登录</el-button>
+        <el-button type="primary" size="large" @click.native="submitLogin" id="btn-submit" class="btn-submit" :loading="loading">登录</el-button>
       </div>
     </div>
     <div class="foot-div"></div>
@@ -72,14 +72,16 @@ export default {
             //防止错误时回车穿透
             let dom = document.getElementById('btn-submit');
             dom.focus();
-            
+
             if(loading) return;
 
             this.$data.loading = true;
             let res = await Http.post(Config.api.signLogin, {
               login_name: loginData.login_name,
               password: md5(loginData.password)
-            });
+            }, {throttle: false});
+            
+            this.$data.loading = false;
             if(res.code === 0){
               this.$router.replace({ name: "Home" });
               isSuccess = true;
@@ -93,7 +95,6 @@ export default {
             }else{
               this.$message({message: res.message, type: 'error'});
             }
-            this.$data.loading = false;
           })();
         }else{
           if(vs.login_name){
@@ -103,7 +104,7 @@ export default {
           }
         }
       });
-      
+
     },
   }
 }
@@ -167,5 +168,5 @@ export default {
     font-size: 12px;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
   }
-  
+
 </style>
