@@ -26,7 +26,6 @@ export { default as SearchGroupItem } from './SearchGroupItem';
 export { default as SelectCity } from './SelectCity';
 export { default as SelectCityMulti } from './SelectCityMulti';
 export { default as SelectDisplayClass } from './SelectDisplayClass';
-export { default as SelectDistributorMulti } from './SelectDistributorMulti';
 export { default as SelectFrame } from './SelectFrame';
 export { default as SelectGroupItemClass } from './SelectGroupItemClass';
 export { default as SelectLineMulti } from './SelectLineMulti';

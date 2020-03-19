@@ -23,6 +23,7 @@ export default {
     hasAllSelection: { type: Boolean, default: false },
     filterable: { type: Boolean, default: false },
     placeholder: { type: String, default: '' },
+    remote: { type: Boolean, default: false },
     createdGetData: { type: Boolean, default: true }, //是否组件创建时取数据
   },
   model: {
