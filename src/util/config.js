@@ -341,7 +341,6 @@ const Config = (() => {
       basicdataProvinceAdd: apiM + '/basicdata/province/add', //区域新增
       basicdataProvinceEdit: apiM + '/basicdata/province/edit', //区域修改
       basicdataProvinceList: apiM + '/basicdata/province/list', //区域列表
-      basicdataProvinceDelete: apiM + '/basicdata/province/delete', //区域删除
 
       basicdataZoneAdd: apiM + '/basicdata/zone/add', //片区新增
       basicdataZoneEdit: apiM + '/basicdata/zone/edit', //片区修改

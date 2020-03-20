@@ -9,7 +9,7 @@
 更新注意事项
 修改sys_permission表
 修改：Province
-删除：MerchantStoreEditCity
+删除：MerchantStoreEditCity、ProvinceDelete
 ```
 
 ### 3.3.6
