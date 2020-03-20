@@ -397,7 +397,6 @@ const Config = (() => {
       basicdataStorehouseList: apiM + '/sup_storehouse/query', //仓列表
       basicdataStorehouseAdd: apiM + '/sup_storehouse/add', //仓新增
       basicdataStorehouseEdit: apiM + '/sup_storehouse/edit', //仓修改
-      basicdataStorehouseDelete: apiM + '/sup_storehouse/delete', //仓删除
 
       basicdataWarehouseList: apiM + '/sup_warehouse/query', //库列表
       basicdataWarehouseAdd: apiM + '/sup_warehouse/add', //库新增
