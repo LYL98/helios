@@ -57,11 +57,6 @@
                 title: '修改',
                 isDisplay: auth.isAdmin || auth.ProvinceEdit,
                 command: () => handleShowAddEdit('AddEdit', scope.row)
-              },
-              {
-                title: '删除',
-                isDisplay: auth.isAdmin || auth.ProvinceDelete,
-                command: () => handleDelete(scope.row)
               }
             ]"
             />
@@ -103,20 +98,6 @@
           this.$data.dataItem = res.data;
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
-        }
-      },
-      //删除数据
-      async deleteData(data) {
-        this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.basicdataProvinceDelete, {
-          code: data.code
-        });
-        this.$loading({ isShow: false });
-        if(res.code === 0){
-          this.getData(this.query);
-          this.$message({message: '已删除', type: 'success'});
-        }else{
-          this.$message({message: res.message, type: 'error'});
         }
       },
     }

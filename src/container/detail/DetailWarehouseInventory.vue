@@ -13,7 +13,7 @@
         <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
         <el-table-column label="批次" prop="batch_code">
           <template slot-scope="scope">
-            <span v-if="auth.isAdmin || auth.WarehouseInventoryDetailBuyDetail" class="link-item"
+            <span v-if="(auth.isAdmin || auth.WarehouseInventoryDetailBuyDetail) && fromPage === 'Inventory'" class="link-item"
               @click="handleShowBuyDetail(scope.row)">{{scope.row.batch_code}}</span>
             <span v-else>{{scope.row.batch_code}}</span>
           </template>
