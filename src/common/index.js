@@ -7,7 +7,7 @@ export { default as CollapseQuery } from './CollapseQuery';
 export { default as Dialog } from './Dialog';
 export { default as FormArea } from './FormArea';
 export { default as ImagePreview } from './ImagePreview';
-export { default as VideoPreview2 } from './VideoPreview2';
+export { default as VideoPreview } from './VideoPreview';
 export { default as InputNumber } from './InputNumber';
 export { default as InputPhone } from './InputPhone';
 export { default as InputPrice } from './InputPrice';

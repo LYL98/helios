@@ -274,7 +274,7 @@
 <script>
 import addEditMixin from './add.edit.mixin';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
-import { SelectDisplayClass, ImagePreview, VideoPreview2, InputNumber, InputPrice, InputWeight, SelectInnerTag, SelecItemTags } from '@/common';
+import { SelectDisplayClass, ImagePreview, VideoPreview, InputNumber, InputPrice, InputWeight, SelectInnerTag, SelecItemTags } from '@/common';
 import { OtherItemSupplier, SelectBuyer } from '@/component';
 
 export default {
@@ -288,7 +288,7 @@ export default {
     'select-item-tags': SelecItemTags,
     'my-select-display-class': SelectDisplayClass,
     'image-preview': ImagePreview,
-    'video-preview': VideoPreview2,
+    'video-preview': VideoPreview,
     'other-item-supplier': OtherItemSupplier,
     'my-select-buyer': SelectBuyer,
   },
