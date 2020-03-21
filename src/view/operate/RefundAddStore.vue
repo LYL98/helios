@@ -46,7 +46,7 @@
           <li style="margin-top: 40px;">
             <el-checkbox-group v-model="multipleSelection" @change="handleCheckedStoresChange">
               <ul style="padding: 0 10px;">
-                <li v-for="store in showList">
+                <li v-for="(store, index) in showList" :key="index">
                   <el-checkbox :label="store" :key="store.id">{{store.title}}</el-checkbox>
                 </li>
               </ul>
@@ -157,7 +157,12 @@
         province: this.$province,
         auth: this.$auth,
         // 查询门店
-        query: {},
+        query: {
+          province_code: this.$province.code,
+          line_id: '',
+          city_id: '',
+          store_title: ''
+        },
         // 搜索完毕后，获取搜索到的城市列表storeList，
         storeList: [],
         isIndeterminate: true, // 表示不确定。 介于 已经全选 和 未选择 之间。
@@ -181,7 +186,6 @@
     methods: {
       initQuery() {
         this.$data.query = Object.assign(this.$data.query, {
-          province_code: this.province.code,
           line_id: '',
           city_id: '',
           store_title: ''
@@ -229,7 +233,7 @@
         if (!!value && (isNaN(value) || value <= 0)) {
           return callback(new Error('退筐金额必须为大于零的纯数字'));
         }
-        if (!!value && !/^[0-9]+([.]\d{0,2})?$/.test(value)) {
+        if (!!value && !Verification.isPrice(value)) {
           return callback(new Error('退筐金额最多只能输入两位小数'));
         }
         if (value > 1000000) {

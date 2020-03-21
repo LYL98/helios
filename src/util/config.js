@@ -341,7 +341,6 @@ const Config = (() => {
       basicdataProvinceAdd: apiM + '/basicdata/province/add', //区域新增
       basicdataProvinceEdit: apiM + '/basicdata/province/edit', //区域修改
       basicdataProvinceList: apiM + '/basicdata/province/list', //区域列表
-      basicdataProvinceDelete: apiM + '/basicdata/province/delete', //区域删除
 
       basicdataZoneAdd: apiM + '/basicdata/zone/add', //片区新增
       basicdataZoneEdit: apiM + '/basicdata/zone/edit', //片区修改
@@ -398,7 +397,6 @@ const Config = (() => {
       basicdataStorehouseList: apiM + '/sup_storehouse/query', //仓列表
       basicdataStorehouseAdd: apiM + '/sup_storehouse/add', //仓新增
       basicdataStorehouseEdit: apiM + '/sup_storehouse/edit', //仓修改
-      basicdataStorehouseDelete: apiM + '/sup_storehouse/delete', //仓删除
 
       basicdataWarehouseList: apiM + '/sup_warehouse/query', //库列表
       basicdataWarehouseAdd: apiM + '/sup_warehouse/add', //库新增

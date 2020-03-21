@@ -1,5 +1,5 @@
 <template>
-  <el-table @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" :data="dataItem" :row-class-name="highlightRowClassName" highlight-current-row="highlight-current-row">
+  <el-table @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" :data="storeDataItem" :row-class-name="highlightRowClassName" highlight-current-row="highlight-current-row">
     <el-table-column label="门店名称" min-width="100">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">{{ scope.row.title }}</div>
@@ -73,7 +73,7 @@
     },
     mixins: [tableMixin],
     props: {
-      dataItem: { type: Array, required: true}
+      storeDataItem: { type: Array, required: true, detault: [] }
     },
     computed: {
       

@@ -1,8 +1,9 @@
 <template>
   <print-layout title="打印线路码" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <div class="flex-coliumn-center" style="width: 208mm; height: 295mm;">
-      <qr-code :content="qrCodeContent" v-if="isShow" :width="500" :height="500"/>
-      <div style="font-size: 50px; font-weight: 600; margin-top: 20px;">{{ detail.line_index }} / {{detail.title}}</div>
+      <qr-code :content="qrCodeContent" v-if="isShow" :width="400" :height="400"/>
+      <div style="font-size: 120px; font-weight: 600; margin-top: 20px;">{{ detail.line_index }}号线</div>
+      <div style="font-size: 60px; font-weight: 600; margin-top: 5px;">{{detail.title}}</div>
     </div>
     <div class="bottom-btn-body">
       <div class="bottom-btn">

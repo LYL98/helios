@@ -43,7 +43,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="110">
+        <el-table-column label="操作" width="100">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
@@ -53,11 +53,6 @@
                   title: '修改',
                   isDisplay: auth.isAdmin || auth.StorehouseEdit,
                   command: () => handleShowAddEdit('AddEdit', scope.row, 'edit')
-                },
-                {
-                  title: '删除',
-                  isDisplay: auth.isAdmin || auth.StorehouseDelete,
-                  command: () => handleDelete(scope.row)
                 }
               ]"
             />
@@ -95,8 +90,8 @@
           { label: '仓', key: 'title', width: '2', isShow: true },
           { label: '所属区域', key: 'province', width: '2', isShow: true },
           { label: '地址', key: 'address', width: '3', isShow: true },
-          { label: '创建时间', key: 'created', width: '1', isShow: true },
-          { label: '更新时间', key: 'updated', width: '1', isShow: false },
+          { label: '创建时间', key: 'created', width: '2', isShow: true },
+          { label: '更新时间', key: 'updated', width: '2', isShow: false },
         ]
       }
     },
@@ -111,20 +106,6 @@
           this.$data.dataItem = res.data;
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
-        }
-      },
-      //删除数据
-      async deleteData(data) {
-        this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.basicdataStorehouseDelete, {
-          id: data.id
-        });
-        this.$loading({ isShow: false });
-        if(res.code === 0){
-          this.getData(this.query);
-          this.$message({message: '已删除', type: 'success'});
-        }else{
-          this.$message({message: res.message, type: 'error'});
         }
       },
     }
