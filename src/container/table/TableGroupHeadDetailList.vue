@@ -1,5 +1,5 @@
 <template>
-  <el-table @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" :data="dataItem" :row-class-name="highlightRowClassName" highlight-current-row="highlight-current-row">
+  <el-table @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" :data="memberDataItem" :row-class-name="highlightRowClassName" highlight-current-row="highlight-current-row">
     <el-table-column label="团长名称" min-width="100">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">{{ scope.row.realname }}</div>
@@ -52,7 +52,7 @@
     },
     mixins: [tableMixin],
     props: {
-      dataItem: { type: Array, required: true},
+      memberDataItem: { type: Array, required: true, defalut: [] },
     },
     computed: {
     },
@@ -71,7 +71,7 @@
           type: 'warning'
         }).then(async () => {
           let res = await Http.post(Config.api.groupHeadFreeze, {
-            header_id: data.header_id,
+            header_id: data.id,
             is_freeze_header: !data.is_freeze_header
           });
           if(res.code === 0){
@@ -83,7 +83,8 @@
             //更新父组件页面数据
             let com = this.$props.getPageComponents('HeadDetail');
             if(com && com.groupDetail && com.groupDetail.members && com.groupDetail.members.length > index){
-              com.$data.groupDetail.members2[index].is_freeze_header = !data.is_freeze_header;
+              com.groupDetail.members2[index].is_freeze_header = !data.is_freeze_header;
+              com.$data.groupDetail = this.copyJson(com.groupDetail);
             }
           }else{
             this.$message({
