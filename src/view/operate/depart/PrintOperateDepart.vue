@@ -17,7 +17,7 @@ import printMixin from '@/share/mixin/print.mixin';
 import { Http, Config } from '@/util';
 
 export default {
-  name: "PrintOperateDepart",
+  name: "Print",
   mixins: [printMixin],
   components: {
   },

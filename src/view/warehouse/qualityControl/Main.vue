@@ -16,12 +16,12 @@
     QueryWarehouseQualityControl,
     TableWarehouseQualityControl,
     AddEditWarehouseQualityControl,
-    PrintWarehouseStockPending,
     FormClose,
     DetailWarehouseQualityControlD,
     DetailWarehouseQualityControlP,
     FormWarehouseQualityControlEditNum
   } from '@/container';
+  import PrintWarehouseStockPending from '@/view/warehouse/stockPending/PrintWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

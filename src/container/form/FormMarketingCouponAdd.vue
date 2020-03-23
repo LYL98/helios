@@ -461,9 +461,9 @@
 </template>
 
 <script>
-  import {Form, FormItem, DatePicker, Radio, RadioGroup, Input, Button} from 'element-ui';
-  import {FormArea} from '@/common';
-  import {SearchItem} from "@/container/search";
+  import { Form, FormItem, DatePicker, Radio, RadioGroup, Input, Button } from 'element-ui';
+  import { FormArea } from '@/common';
+  import { SearchItem } from "@/component";
   import { DataHandle } from '@/util';
 
   export default {

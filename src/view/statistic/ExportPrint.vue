@@ -132,7 +132,7 @@ import {
 import { Http, Config, Constant, DataHandle, Request } from "@/util";
 import { SelectCity, SelectCityMulti } from "@/common";
 import mainMixin from '@/share/mixin/main.mixin';
-import { SearchItem } from '@/container';
+import { SearchItem } from '@/component';
 
 const apis = {
   "1": Config.api.orderCityExport,

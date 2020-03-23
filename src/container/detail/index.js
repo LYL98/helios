@@ -34,13 +34,4 @@ export { default as DetailWarehouseInventoryMovePutaway } from './DetailWarehous
 export { default as DetailWarehouseQualityControlD } from './DetailWarehouseQualityControlD';
 export { default as DetailWarehouseQualityControlP } from './DetailWarehouseQualityControlP';
 
-export { default as DetailOperateSort } from './DetailOperateSort';
-export { default as DetailOperateDepartStore } from './DetailOperateDepartStore';
-export { default as DetailOperateDepartStoreItem } from './DetailOperateDepartStoreItem';
-export { default as DetailOperateSortCity } from './DetailOperateSortCity';
-export { default as DetailOperateLineDriver } from './DetailOperateLineDriver';
-export { default as DetailOperateDepart } from './DetailOperateDepart';
-export { default as DetailOperateDepartDriverTrack } from './DetailOperateDepartDriverTrack';
-export { default as DetailOperateDepartStockout } from './DetailOperateDepartStockout';
-export { default as DetailOperateDepartStockoutDetail } from './DetailOperateDepartStockoutDetail';
 export { default as DetailOperateTruckLoad } from './DetailOperateTruckLoad';

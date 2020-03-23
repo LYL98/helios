@@ -117,7 +117,7 @@
 <script>
   import { Input, Checkbox, CheckboxGroup, Table, TableColumn, Form, FormItem, Button, Message } from 'element-ui';
   import { ToPrice, QueryItem } from '@/common';
-  import { SelectLine, SelectCity } from '@/container';
+  import { SelectLine, SelectCity } from '@/component';
   import { Http, Config, DataHandle, Verification } from '@/util';
 
   export default {

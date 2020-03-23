@@ -24,7 +24,7 @@
 
 <script>
   import { SelectOption } from '@/common';
-  import { SelectLine } from '@/container';
+  import { SelectLine } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {

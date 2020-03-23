@@ -235,7 +235,7 @@
 <script>
   import {Row, Col, Table, TableColumn, Popover, Pagination, Button, Input, Select, Option, DatePicker, Dialog, Tag, MessageBox, Message} from 'element-ui';
   import {SelectOption, QueryItem, TableOperate, OmissionText, QuerySearchInput} from '@/common';
-  import {SelectLine, SelectCity} from '@/container';
+  import {SelectLine, SelectCity} from '@/component';
   import {Config, Constant, DataHandle, Http} from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
   import RefundAddStore from './RefundAddStore';

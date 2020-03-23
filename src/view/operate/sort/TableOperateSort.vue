@@ -102,7 +102,7 @@
 <script>
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
-  import queryTabs from './QueryTabs';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: 'TableOperateSort',
