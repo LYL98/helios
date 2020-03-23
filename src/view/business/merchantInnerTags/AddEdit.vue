@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import addEditMixin from '@/container/addEdit/add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
 
 export default {

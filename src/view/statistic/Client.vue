@@ -118,7 +118,7 @@
   import { Row, Col, DatePicker, Table, TableColumn, Pagination } from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   import echarts from "echarts/lib/echarts";
   import "echarts/lib/chart/pie";
@@ -126,7 +126,7 @@
 
   export default {
     name: "Client",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-row': Row,
       'el-col': Col,

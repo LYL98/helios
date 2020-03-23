@@ -10,7 +10,7 @@
 
 <script>
   import { QueryOperateLine, TableOperateLine, AddEditOperateLine, PrintOperateLine, DetailOperateLineDriver } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'LineList',
@@ -21,7 +21,7 @@
       'print-operate-line': PrintOperateLine,
       'detail-operate-line-driver': DetailOperateLineDriver
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle('场地 - 线路规划');
     }

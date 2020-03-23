@@ -9,7 +9,7 @@
 
 <script>
   import { QueryWarehouseStockPending, TableWarehouseStockPending, AddEditWarehouseStockPending, PrintWarehouseStockPending } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'StockPending',
@@ -19,7 +19,7 @@
       'add-edit-warehouse-stock-pending': AddEditWarehouseStockPending,
       'print-warehouse-stock-pending': PrintWarehouseStockPending
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("仓库 - 仓管入库");
     },

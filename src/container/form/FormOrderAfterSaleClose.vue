@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import formMixin from '@/container/form/form.mixin';
+import formMixin from '@/share/mixin/form.mixin';
 import { Http, Config, DataHandle, Constant, Verification } from '@/util';
 import { InputPrice, InputNumber } from '@/common';
 

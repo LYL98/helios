@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import addEditMixin from './add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Constant } from '@/util';
 import { InputPrice } from '@/common';
 import { SelectSupplier } from '@/component';
@@ -186,5 +186,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import "./add.edit.scss";
+  @import "@/share/scss/add.edit.scss";
 </style>

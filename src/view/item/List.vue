@@ -10,7 +10,7 @@
 
 <script>
   import { QueryItemList, TableItemList, AddEditItemList, DetailItemList, DetailItemListEditRecord, FormItemListEditInnerTag } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'List',
@@ -21,7 +21,7 @@
       'detail-item-list-edit-record': DetailItemListEditRecord,
       'form-item-list-edit-inner-tag': FormItemListEditInnerTag
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("商品 - 在售商品");
     },

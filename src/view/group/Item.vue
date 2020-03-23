@@ -10,11 +10,11 @@
 
 <script>
   import { AddEditGroupItem, TableGroupItem, QueryGroupItem, DetailGroupItem, DetailGroupItemEditLog } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "Item",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'add-edit-group-item': AddEditGroupItem,
       'query-group-item': QueryGroupItem,

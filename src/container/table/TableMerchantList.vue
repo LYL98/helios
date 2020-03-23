@@ -94,7 +94,7 @@
 <script>
   import { TableOperate } from '@/common';
   import { Http, Config, DataHandle } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     components: {

@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import addEditMixin from './add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Verification, DataHandle } from '@/util';
 import { SearchGroupItem, TableOperate } from '@/common';
 

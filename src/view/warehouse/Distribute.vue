@@ -9,7 +9,7 @@
 
 <script>
   import { QueryWarehouseDistribute, TableWarehouseDistribute, DetailWarehouseDistribute, AddEditWarehouseStockPending } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'GPurchaseDistribute',
@@ -19,7 +19,7 @@
       'detail-warehouse-distribute': DetailWarehouseDistribute,
       'detail-warehouse-stock': AddEditWarehouseStockPending
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("仓库 - 调拨单");
     },

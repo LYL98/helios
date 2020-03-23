@@ -1,5 +1,5 @@
-import baseMixin from '@/container/base.mixin';
-import Layout from './../layout/Layout';
+import baseMixin from '@/share/mixin/_base.mixin';
+import Layout from '@/share/layout/Layout';
 
 export default {
   mixins: [baseMixin],

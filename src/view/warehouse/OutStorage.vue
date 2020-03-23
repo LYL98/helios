@@ -14,7 +14,7 @@
     DetailWarehouseInventory,
     FormWarehouseInventoryOutStorage
   } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'OutStorage',
@@ -24,7 +24,7 @@
       'detail-warehouse-inventory': DetailWarehouseInventory,
       'form-warehouse-inventory-out-storage': FormWarehouseInventoryOutStorage
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle('仓库 - 出库计划');
     }

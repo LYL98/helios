@@ -15,11 +15,11 @@
   import HeadEdit from './HeadEdit';
   import HeadDetail from './HeadDetail';
   import { DetailHeadBalanceLog } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "Head",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'head-list': HeadList,
       'head-edit': HeadEdit,

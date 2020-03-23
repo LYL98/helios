@@ -52,7 +52,7 @@
 </template>
 
 <script>
-  import addEditMixin from './add.edit.mixin';
+  import addEditMixin from '@/share/mixin/add.edit.mixin';
   import { Http, Config, Constant, DataHandle } from '@/util';
 
   export default {

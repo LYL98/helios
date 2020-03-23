@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
   import { SelectOption, SelectSystemClass } from '@/common';
   import { Constant } from '@/util';
 
@@ -64,5 +64,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import './query.scss';
+  @import '@/share/scss/query.scss';
 </style>

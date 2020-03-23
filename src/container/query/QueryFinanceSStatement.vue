@@ -46,7 +46,7 @@
 
 <script>
   import { SelectOption } from '@/common';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
   import { Constant } from '@/util';
 
   export default {

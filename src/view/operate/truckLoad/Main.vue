@@ -14,7 +14,7 @@
 <script>
   import { QueryOperateTruckLoad, TableOperateTruckLoad, FormOperateTruckLoadAffirm, DetailOperateTruckLoad, FormOperateTruckLoadEditNum } from '@/container';
   import MenuQuery from './../sort/MenuQuery';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Main',
@@ -26,7 +26,7 @@
       'detail-operate-tuck-load': DetailOperateTruckLoad,
       'form-operate-tuck-load-edit-num': FormOperateTruckLoadEditNum
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle('场地 - 装车');
     }

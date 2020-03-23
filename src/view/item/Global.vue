@@ -10,7 +10,7 @@
 
 <script>
   import { QueryItemGlobal, TableItemGlobal, AddEditItemGlobal, DetailItemGlobalEditRecord, FormItemGlobalSupplierType } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Global',
@@ -21,7 +21,7 @@
       'detail-item-global-edit-record': DetailItemGlobalEditRecord,
       'form-item-global-supplier-type': FormItemGlobalSupplierType
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("商品 - 商品池");
     },

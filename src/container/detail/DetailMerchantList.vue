@@ -167,7 +167,7 @@
 </template>
 
 <script>
-  import detailMixin from './detail.mixin';
+  import detailMixin from '@/share/mixin/detail.mixin';
   import {TableOperate, ToPrice, OmissionText} from '@/common';
   import TagsEdit from '@/view/business/merchant/TagsEdit';
   import MerchantStore from '@/view/business/merchant/Store';

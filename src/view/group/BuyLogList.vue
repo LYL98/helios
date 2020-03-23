@@ -132,7 +132,7 @@
   import { Button, Input, Select, Option, DatePicker, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { QueryItem } from '@/common';
   import { Http, Constant, Config, DataHandle } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: "BuyLogList",

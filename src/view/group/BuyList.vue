@@ -137,7 +137,7 @@
                   <dt class="label">阶梯优惠:</dt>
                   <dd class="content">
                     <ul>
-                      <li v-for="rule in detailData.rules">
+                      <li v-for="(rule, index) in detailData.rules" :key="index">
                         <span>满{{rule.full}}件, </span><span>售{{returnPrice(rule.price)}}元/件</span>
                       </li>
                     </ul>
@@ -237,7 +237,7 @@
                   <dt class="label">阶梯优惠:</dt>
                   <dd class="content">
                     <ul>
-                      <li v-for="rule in detailMerchantData.rules">
+                      <li v-for="(rule, index) in detailMerchantData.rules" :key="index">
                         <span>满{{rule.full}}件, </span><span>售{{returnPrice(rule.price)}}元/件</span>
                       </li>
                     </ul>
@@ -278,11 +278,11 @@
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox, Col, Row} from 'element-ui';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import {QueryGroupBuy, TableGroupBuy, FormGroupBuy, TableGroupBuyDetail, TableGroupBuyMerchantDetail} from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "BuyList",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-button': Button,
       'el-pagination': Pagination,

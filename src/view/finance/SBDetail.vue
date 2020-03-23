@@ -8,7 +8,7 @@
 
 <script>
   import { QueryFinanceSBDetail, TableFinanceSBDetail, AddEditFinanceSBDetail} from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'FinanceSBDetail',
@@ -17,7 +17,7 @@
       'table-finance-s-b-detail': TableFinanceSBDetail,
       'add-edit-finance-s-b-detail': AddEditFinanceSBDetail,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("财务 - 供应商流水");
       

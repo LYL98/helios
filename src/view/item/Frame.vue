@@ -7,7 +7,7 @@
 
 <script>
   import { TableItemFrame, AddEditItemFrame } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Frame',
@@ -15,7 +15,7 @@
       'table-item-frame': TableItemFrame,
       'add-edit-item-frame': AddEditItemFrame,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("信息 - 筐信息列表");
     },

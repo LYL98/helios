@@ -131,7 +131,7 @@ import {
 } from 'element-ui';
 import { Http, Config, Constant, DataHandle, Request } from "@/util";
 import { SelectCity, SelectCityMulti } from "@/common";
-import viewMixin from '@/view/view.mixin';
+import mainMixin from '@/share/mixin/main.mixin';
 import { SearchItem } from '@/container';
 
 const apis = {
@@ -150,7 +150,7 @@ const apis = {
 
 export default {
   name: "ExportPrint",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     "el-form": Form,
     "el-form-item": FormItem,

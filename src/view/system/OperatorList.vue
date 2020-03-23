@@ -10,7 +10,7 @@
 
 <script>
   import { QuerySystemOperator, TableSystemOperator, AddEditSystemOperator, DetailSystemOperator, FormSystemOperatorResetPwd } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'SystemOperator',
@@ -21,7 +21,7 @@
       'detail-system-operator': DetailSystemOperator,
       'from-system-operator-reset-pwd': FormSystemOperatorResetPwd,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("设置 - 运营人员列表");
     },

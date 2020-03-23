@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import addEditMixin from './add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
 import { QuillEditor, InputPercent } from '@/common';
 

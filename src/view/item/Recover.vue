@@ -8,7 +8,7 @@
 
 <script>
   import { QueryItemGlobal, TableItemGlobal, AddEditItemGlobal } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Recover',
@@ -17,7 +17,7 @@
       'table-item-global': TableItemGlobal,
       'addEdit-item-global': AddEditItemGlobal
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("商品 - 回收站");
     },

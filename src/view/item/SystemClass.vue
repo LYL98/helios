@@ -8,7 +8,7 @@
 
 <script>
   import { QueryItemSystemClass, TableItemSystemClass, AddEditItemSystemClass } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'SystemClass',
@@ -17,7 +17,7 @@
       'table-item-system-class': TableItemSystemClass,
       'add-edit-item-system-class': AddEditItemSystemClass,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("信息 - 科学分类列表");
     },

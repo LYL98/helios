@@ -22,7 +22,7 @@
     DetailWarehouseQualityControlP,
     FormWarehouseQualityControlEditNum
   } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'QualityControl',
@@ -36,7 +36,7 @@
       'detail-warehouse-quality-control-p': DetailWarehouseQualityControlP,
       'form-warehouse-quality-control-edit-num': FormWarehouseQualityControlEditNum,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("仓库 - 品控入库");
     },

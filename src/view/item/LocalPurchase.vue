@@ -10,7 +10,7 @@
 
 <script>
   import { QueryItemLocalPurchase, TableItemLocalPurchase, AddEditItemLocalPurchase, FormClose, AddEditWarehouseStockPending} from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'LocalPurchase',
@@ -21,7 +21,7 @@
       'form-close': FormClose,
       'detail-warehouse-stock': AddEditWarehouseStockPending
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("商品 - 反采");
     },

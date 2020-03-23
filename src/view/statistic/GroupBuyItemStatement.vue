@@ -118,11 +118,11 @@
   import { QueryGroupBuyItemStatistics } from '@/container'
   import Constant from "@/util/constant";
   import { DataHandle, Config, Http } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "GroupBuyItemStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   data() {
     return {
       dataItem: {

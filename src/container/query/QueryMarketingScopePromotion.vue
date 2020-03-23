@@ -51,7 +51,7 @@
 <script>
   import {Row, Col, Button, Input, DatePicker, Select, Option} from 'element-ui';
   import {SelectOption, QueryItem} from '@/common';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryMarketingScopePromotion",

@@ -11,7 +11,7 @@
 
 <script>
   import { QueryItemGPurchase, TableItemGPurchase, AddEditItemGPurchase, FormAudit, FormClose, AddEditWarehouseStockPending} from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'GPurchase',
@@ -23,7 +23,7 @@
       'form-close': FormClose,
       'detail-warehouse-stock': AddEditWarehouseStockPending
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("商品 - 预采");
     },

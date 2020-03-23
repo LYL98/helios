@@ -1,8 +1,8 @@
-import baseMixin from '@/container/base.mixin';
-import { Constant, Method, Config, Http } from '@/util';
+import baseMixin from '@/share/mixin/_base.mixin';
+import { Constant, Method } from '@/util';
 import { TableOperate } from '@/common';
-import SettingColumnTitle from './SettingColumnTitle';
-import Pagination from './../layout/Pagination';
+import SettingColumnTitle from '@/share/layout/TableSettingColumnTitle';
+import Pagination from '@/share/layout/Pagination';
 
 // 表格宽度： 860 / 830（带全选）
 

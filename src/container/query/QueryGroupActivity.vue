@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
   import { SelectOption } from '@/common';
   import { Constant } from '@/util';
 

@@ -30,7 +30,7 @@
 <script>
   import { Constant } from '@/util';
   import { SelectCity } from '@/common';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryItem",

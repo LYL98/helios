@@ -66,7 +66,7 @@
   import {DatePicker, Row, Col, Input, Button, Message, Select, Option} from 'element-ui';
   import { QueryItem, SelectSystemClass } from '@/common';
   import { DataHandle } from '@/util';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
   import Constant from "../../util/constant";
 
   export default {

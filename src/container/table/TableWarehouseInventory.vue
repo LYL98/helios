@@ -70,7 +70,7 @@
 
 <script>
   import { Http, Config } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: 'TableWarehouseInventory',
@@ -113,8 +113,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/share/scss/table.scss';
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

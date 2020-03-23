@@ -13,7 +13,7 @@
   import { Dialog, Transfer } from 'element-ui';
   import { Constant } from '@/util';
   export default {
-    name: 'SettingColumnTitle',
+    name: 'TableSettingColumnTitle',
     components: {
       'el-dialog': Dialog,
       'el-transfer': Transfer
@@ -38,5 +38,5 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/share/scss/table.scss';
 </style>

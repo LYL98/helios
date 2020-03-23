@@ -31,7 +31,7 @@
               <span>{{formatValue(selectArea === 'zone' ? scope.row.zone_title : scope.row.city_title)}}</span>
             </template>
           </el-table-column>
-          <el-table-column min-width="100" align="left" v-for="(d, index) in dateRange()" :key="d" :label="labelDate(d)">
+          <el-table-column min-width="100" align="left" v-for="d in dateRange()" :key="d" :label="labelDate(d)">
             <template slot-scope="scope">
               <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.items, d) }}</span>
             </template>
@@ -82,11 +82,11 @@ import { SelectZone } from '@/common';
 import { Http, Config, DataHandle, Constant } from '@/util';
 import BusinessFluctuationChart from "./BusinessFluctuationChart";
 import {QueryBusinessFluctuation} from '@/container';
-import viewMixin from '@/view/view.mixin';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "BusinessFluctuationStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,

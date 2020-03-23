@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import formMixin from './form.mixin';
+import formMixin from '@/share/mixin/form.mixin';
 import { Http, Config, Constant, Verification } from '@/util';
 import { InputNumber, InputPrice } from '@/common';
 import { SelectStorehouse, SelectDriver } from '@/component';

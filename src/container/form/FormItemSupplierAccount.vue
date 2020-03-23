@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import formMixin from './form.mixin';
+import formMixin from '@/share/mixin/form.mixin';
 import { Http, Config, Verification } from '@/util';
 
 export default {

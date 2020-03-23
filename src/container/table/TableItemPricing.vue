@@ -108,7 +108,7 @@
 
 <script>
   import { Http, Config, DataHandle } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
   import queryTabs from './QueryTabs';
 
   export default {
@@ -280,7 +280,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/share/scss/table.scss';
   .pricing-bottom-wrapper {
     background-color: #fff;
     height: 48px;
@@ -314,5 +314,5 @@
   }
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

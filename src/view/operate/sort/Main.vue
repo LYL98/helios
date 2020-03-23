@@ -14,7 +14,7 @@
 
 <script>
   import { QueryOperateSort, TableOperateSort, DetailOperateSort, AddEditOperateSort, DetailOperateSortCity, PrintOperateSort } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
   import MenuQuery from './MenuQuery';
 
   export default {
@@ -28,7 +28,7 @@
       'detail-operate-sort-city': DetailOperateSortCity,
       'print-operate-sort': PrintOperateSort
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle('场地 - 分配');
     }

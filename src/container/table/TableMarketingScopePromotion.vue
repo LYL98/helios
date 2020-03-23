@@ -95,7 +95,7 @@
         <el-form-item label="创建时间：">{{ dialog.item.created }}</el-form-item>
         <el-form-item label="活动内容：">
           <ul>
-            <li v-for="item in dialog.item.rules">
+            <li v-for="(item, index) in dialog.item.rules" :key="index">
               全场满
               {{ returnPrice(item.full) }}
               元，
@@ -114,7 +114,7 @@
   import { Table, TableColumn, Dialog, Form, FormItem, MessageBox, Tag } from 'element-ui';
   import {TableOperate} from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import tableMixin from './table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
   
   export default {
     name: "TableMarketingScopePromotion",

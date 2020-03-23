@@ -101,7 +101,7 @@
 
 <script>
   import { Http, Config, Constant } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: 'TableItemSupplier',
@@ -207,7 +207,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/share/scss/table.scss';
   .is-presale{
     color: #fff;
     background: #FFA349;
@@ -223,5 +223,5 @@
   }
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

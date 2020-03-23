@@ -108,11 +108,11 @@
   import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
   import { QueryGroupBuyMemberStatistics } from '@/container'
   import { DataHandle, Config, Http, Constant } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "GroupBuyMemberStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   data() {
     return {
       dataItem: {

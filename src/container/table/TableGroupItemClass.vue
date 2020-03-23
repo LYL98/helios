@@ -18,20 +18,22 @@
       >
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
-        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-          <div slot-scope="scope" class="my-td-item">
-            <!--编号名称-->
-            <template v-if="item.key === 'code_title'">
-              <div class="td-item add-dot2">
-                {{scope.row.id}}/{{scope.row.title}}
-              </div>
-            </template>
-            <!--原价、建议团长价、建议团购价-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'price_origin' || item.key === 'advice_header_price' || item.key === 'advice_price_sale'">&yen;{{returnPrice(scope.row[item.key])}}</div>
-            <!--正常情况-->
-            <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
-          </div>
-        </el-table-column>
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
+            <div slot-scope="scope" class="my-td-item">
+              <!--编号名称-->
+              <template v-if="item.key === 'code_title'">
+                <div class="td-item add-dot2">
+                  {{scope.row.id}}/{{scope.row.title}}
+                </div>
+              </template>
+              <!--原价、建议团长价、建议团购价-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'price_origin' || item.key === 'advice_header_price' || item.key === 'advice_price_sale'">&yen;{{returnPrice(scope.row[item.key])}}</div>
+              <!--正常情况-->
+              <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
+            </div>
+          </el-table-column>
+        </template>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
@@ -66,7 +68,7 @@
 
 <script>
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: 'TableGroupItemClass',
@@ -118,5 +120,5 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/share/scss/table.scss';
 </style>

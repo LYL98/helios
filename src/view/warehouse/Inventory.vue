@@ -26,7 +26,7 @@
     AddEditItemGPurchase,
     AddEditItemLocalPurchase
   } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Inventory',
@@ -42,7 +42,7 @@
       'detail-item-g-purchase': AddEditItemGPurchase,
       'detail-item-local-purchase': AddEditItemLocalPurchase
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("仓库 - 库存");
     }
