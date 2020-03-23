@@ -10,8 +10,6 @@ export { default as AddEditItemDisplayClass } from './AddEditItemDisplayClass';
 export { default as AddEditItemGPurchase } from './AddEditItemGPurchase';
 export { default as AddEditItemLocalPurchase } from './AddEditItemLocalPurchase';
 
-export { default as AddEditOperateLine } from './AddEditOperateLine';
-
 export { default as AddEditMerchantList } from './AddEditMerchantList';
 export { default as AddEditMerchantRefund } from './AddEditMerchantRefund';
 
@@ -27,5 +25,4 @@ export { default as AddEditFinanceSBDetail } from './AddEditFinanceSBDetail';
 export { default as AddEditWarehouseStockPending } from './AddEditWarehouseStockPending';
 export { default as AddEditWarehouseQualityControl } from './AddEditWarehouseQualityControl';
 
-export { default as AddEditOperateSort } from './AddEditOperateSort';
 

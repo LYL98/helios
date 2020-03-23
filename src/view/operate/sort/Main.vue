@@ -13,7 +13,12 @@
 </template>
 
 <script>
-  import { QueryOperateSort, TableOperateSort, DetailOperateSort, AddEditOperateSort, DetailOperateSortCity, PrintOperateSort } from '@/container';
+  import QueryOperateSort from './QueryOperateSort';
+  import TableOperateSort from './TableOperateSort';
+  import DetailOperateSort from './DetailOperateSort';
+  import AddEditOperateSort from './AddEditOperateSort';
+  import DetailOperateSortCity from './DetailOperateSortCity';
+  import PrintOperateSort from './PrintOperateSort';
   import mainMixin from '@/share/mixin/main.mixin';
   import MenuQuery from './MenuQuery';
 

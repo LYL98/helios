@@ -9,7 +9,11 @@
 </template>
 
 <script>
-  import { QueryOperateLine, TableOperateLine, AddEditOperateLine, PrintOperateLine, DetailOperateLineDriver } from '@/container';
+  import QueryOperateLine from './QueryOperateLine';
+  import TableOperateLine from './TableOperateLine';
+  import AddEditOperateLine from './AddEditOperateLine';
+  import PrintOperateLine from './PrintOperateLine';
+  import DetailOperateLineDriver from './DetailOperateLineDriver';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

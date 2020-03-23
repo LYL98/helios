@@ -13,17 +13,15 @@
 </template>
 
 <script>
-  import {
-    QueryOperateDepart,
-    TableOperateDepart,
-    DetailOperateDepart,
-    DetailOperateDepartStore,
-    DetailOperateDepartStoreItem,
-    DetailOperateDepartDriverTrack,
-    DetailOperateDepartStockout,
-    DetailOperateDepartStockoutDetail,
-    PrintOperateDepart
-  } from '@/container';
+  import QueryOperateDepart from './QueryOperateDepart';
+  import TableOperateDepart from './TableOperateDepart';
+  import DetailOperateDepart from './DetailOperateDepart';
+  import DetailOperateDepartDriverTrack from './DetailOperateDepartDriverTrack';
+  import DetailOperateDepartStockout from './DetailOperateDepartStockout';
+  import DetailOperateDepartStockoutDetail from './DetailOperateDepartStockoutDetail';
+  import DetailOperateDepartStore from './DetailOperateDepartStore';
+  import DetailOperateDepartStoreItem from './DetailOperateDepartStoreItem';
+  import PrintOperateDepart from './PrintOperateDepart';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

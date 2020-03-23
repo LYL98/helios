@@ -93,7 +93,7 @@
 <script>
   import {Row, Col, Input, Button, DatePicker} from 'element-ui';
   import {SelectOption, QueryItem} from '@/common';
-  import {SelectCity} from '@/container';
+  import { SelectCity } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {

@@ -36,11 +36,8 @@ export { default as QueryItemDisplayClass } from './QueryItemDisplayClass';
 export { default as QueryItemGPurchase } from './QueryItemGPurchase';
 export { default as QueryItemLocalPurchase } from './QueryItemLocalPurchase';
 
-export { default as QueryOperateLine } from './QueryOperateLine';
-export { default as QueryOperateSort } from './QueryOperateSort';
 export { default as QueryOperateTruckLoad } from './QueryOperateTruckLoad';
 export { default as QueryOperateTruckLoadDelay } from './QueryOperateTruckLoadDelay';
-export { default as QueryOperateDepart } from './QueryOperateDepart';
 
 export { default as QuerySystemOperator } from './QuerySystemOperator';
 

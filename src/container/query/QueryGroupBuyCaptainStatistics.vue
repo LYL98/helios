@@ -67,7 +67,7 @@
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
   import { QueryItem, SelectOption } from '@/common';
   import { DataHandle, Constant } from '@/util';
-  import {SelectCity} from '@/container';
+  import { SelectCity } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {

@@ -72,7 +72,7 @@
 <script>
   import {Row, Col, Select, Option, DatePicker, Button, Input} from 'element-ui';
   import {SelectOption, QueryItem} from '@/common';
-  import {SelectCity} from "@/container";
+  import {SelectCity} from "@/component";
   import { Constant } from '@/util';
   import queryMixin from '@/share/mixin/query.mixin';
 

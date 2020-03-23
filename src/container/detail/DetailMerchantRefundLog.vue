@@ -131,7 +131,7 @@
 
 <script>
   import detailMixin from '@/share/mixin/detail.mixin';
-  import { SelectCity } from '@/container';
+  import { SelectCity } from '@/component';
   import { Http, Config, Constant, DataHandle } from '@/util';
 
   export default {

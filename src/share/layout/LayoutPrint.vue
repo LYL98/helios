@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-drawer :title="title" append-to-body :visible.sync="isShow" direction="ttb" :before-close="beforeClose" custom-class="my-print-drawer" :modal="false">
+    <el-drawer :title="title" append-to-body :visible.sync="isShow" direction="rtl" :before-close="beforeClose" custom-class="my-print-drawer" :modal="false">
       <slot></slot>
     </el-drawer>
   </div>

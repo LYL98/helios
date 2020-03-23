@@ -32,11 +32,8 @@ export { default as TableItemDisplayClass } from './TableItemDisplayClass';
 export { default as TableItemGPurchase } from './TableItemGPurchase';
 export { default as TableItemLocalPurchase } from './TableItemLocalPurchase';
 
-export { default as TableOperateLine } from './TableOperateLine';
-export { default as TableOperateSort } from './TableOperateSort';
 export { default as TableOperateTruckLoad } from './TableOperateTruckLoad';
 export { default as TableOperateTruckLoadDelay } from './TableOperateTruckLoadDelay';
-export { default as TableOperateDepart } from './TableOperateDepart';
 
 export { default as TableSystemOperator } from './TableSystemOperator';
 

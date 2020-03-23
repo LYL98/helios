@@ -56,7 +56,7 @@
 
 <script>
   import { Table, TableColumn, Input, Button, Pagination, Checkbox, CheckboxGroup, Message } from 'element-ui';
-  import { SelectCity } from '@/container/select';
+  import { SelectCity } from '@/component/select';
   import { SelectZone } from '@/common';
   import { Http, Config } from '@/util';
   export default {

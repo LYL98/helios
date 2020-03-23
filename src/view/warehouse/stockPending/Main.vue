@@ -8,7 +8,8 @@
 </template>
 
 <script>
-  import { QueryWarehouseStockPending, TableWarehouseStockPending, AddEditWarehouseStockPending, PrintWarehouseStockPending } from '@/container';
+  import { QueryWarehouseStockPending, TableWarehouseStockPending, AddEditWarehouseStockPending } from '@/container';
+  import PrintWarehouseStockPending from './PrintWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
