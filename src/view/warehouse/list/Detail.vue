@@ -52,7 +52,7 @@
 <script>
   import detailMixin from '@/share/mixin/detail.mixin';
   import { Http, Config, Constant } from '@/util';
-  import Pagination from '@/container/layout/Pagination';
+  import Pagination from '@/share/layout/Pagination';
 
   export default {
     name: "Detail",
