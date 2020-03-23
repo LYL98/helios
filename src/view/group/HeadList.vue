@@ -161,7 +161,7 @@
    */
   import { SelectOption, QueryItem, SelectCity, TableOperate } from '@/common';
   import { Constant, Http, Config } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: "HeadList",

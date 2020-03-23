@@ -24,7 +24,7 @@
     DetailOperateDepartStockoutDetail,
     PrintOperateDepart
   } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Depart',
@@ -39,7 +39,7 @@
       'detail-operate-depart-stockout-detail': DetailOperateDepartStockoutDetail,
       'print-operate-depart': PrintOperateDepart
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle('场地 - 发车');
     }

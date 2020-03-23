@@ -26,7 +26,7 @@
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
   import { QueryItem } from '@/common';
   import { DataHandle } from '@/util';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryGroupBuyMemberStatistics",

@@ -38,11 +38,11 @@
   import { Pagination, Dialog } from 'element-ui';
   import { QueryFinanceApprove, TableFinanceApprove, FormFinanceApproveEdit } from '@/container';
   import { Http, Config, Constant } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "ApproveList",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-pagination': Pagination,
       'el-dialog': Dialog,

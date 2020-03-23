@@ -8,7 +8,7 @@
 
 <script>
   import { QueryItemPricing, TableItemPricing, AddEditItemPricing } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Pricing',
@@ -17,7 +17,7 @@
       'table-item-pricing': TableItemPricing,
       'add-edit-item-pricing': AddEditItemPricing
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("商品 - 每日报价");
     },

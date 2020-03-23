@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import formMixin from './form.mixin';
+import formMixin from '@/share/mixin/form.mixin';
 import { Http, Config, Constant } from '@/util';
 import { InputNumber } from '@/common';
 import { CascaderWarehouseTray } from '@/component';

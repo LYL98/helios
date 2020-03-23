@@ -237,7 +237,7 @@
   import { Row, Col, Button, Input, Select, Option, Table, TableColumn, Pagination, Dialog, Switch, Tag } from 'element-ui';
   import { Constant, Http, Config } from '@/util';
   import { QueryItem, QuerySearchInput, TableOperate, SelectOption } from '@/common';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
   import DeliverEdit from './deliver-edit';
   import DeliverDetail from './deliver-detail';
   import ResetPassword from './reset-password';

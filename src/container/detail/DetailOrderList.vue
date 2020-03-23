@@ -296,7 +296,7 @@
 <script>
   import { ImagePreview } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
-  import detailMixin from '@/container/detail/detail.mixin';
+  import detailMixin from '@/share/mixin/detail.mixin';
 
   export default {
     name: "DetailOrderList",

@@ -91,7 +91,7 @@
   import { Collapse, CollapseItem } from 'element-ui';
   import { SelectOption, SelectDisplayClass, SelectInnerTag, SelectSystemClass } from '@/common';
   import { SelectBuyer } from '@/component';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
   import { Constant } from '@/util';
 
   export default {

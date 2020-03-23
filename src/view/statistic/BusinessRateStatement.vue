@@ -195,11 +195,11 @@ import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Inp
 import { SelectZone } from '@/common';
 import { QueryBusinessFourRate } from '@/container';
 import { Http, Config, DataHandle, Constant } from '@/util';
-import viewMixin from '@/view/view.mixin';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "BusinessRateStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,

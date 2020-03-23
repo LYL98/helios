@@ -8,7 +8,7 @@
 
 <script>
   import { QueryItemTags, TableItemTags, AddEditItemTags } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Tags',
@@ -17,7 +17,7 @@
       'table-item-tags': TableItemTags,
       'add-edit-item-tags': AddEditItemTags,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("商品 - 商品运营标签");
     },

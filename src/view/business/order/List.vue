@@ -155,8 +155,8 @@
   import { QueryOrder } from '@/container';
   import {Config, DataHandle, Constant, Http} from '@/util';
   import { DetailOrderList, DetailOrderAfterSale } from '@/container';
-  import tableMixin from '@/container/table/table.mixin';
-  import viewMixin from '@/view/view.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "OrderList",
@@ -168,7 +168,7 @@
       'detail-order-after-sale': DetailOrderAfterSale,
       'query-order': QueryOrder,
     },
-    mixins: [tableMixin, viewMixin],
+    mixins: [tableMixin, mainMixin],
     created() {
       documentTitle('订单 - 订单列表');
       this.initQuery();
@@ -337,7 +337,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import '@/container/table/table.scss';
+  @import '@/share/scss/table.scss';
   .order-no {
     color: inherit;
     padding: 5px 10px 5px 0;
@@ -387,5 +387,5 @@
   }
 </style>
 <style lang="scss">
-  @import '@/container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

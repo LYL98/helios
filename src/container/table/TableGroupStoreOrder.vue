@@ -24,32 +24,34 @@
         <el-table-column type="selection" width="42" :selectable="selectable" v-if="auth.isAdmin || auth.GroupStoreOrderDelivery"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
-        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-          <div slot-scope="scope" class="my-td-item">
-            <!--门店名称-->
-            <div class="td-item add-dot2" v-if="item.key === 'store_title'">{{scope.row.store.title}}</div>
-            <!--门店地址-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'store_address'">{{scope.row.store.address}}</div>
-            <!--联系方式-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'linkman'">
-              <div>{{scope.row.store.linkman}}</div>
-              <div>{{scope.row.store.phone}}</div>
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
+            <div slot-scope="scope" class="my-td-item">
+              <!--门店名称-->
+              <div class="td-item add-dot2" v-if="item.key === 'store_title'">{{scope.row.store.title}}</div>
+              <!--门店地址-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'store_address'">{{scope.row.store.address}}</div>
+              <!--联系方式-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'linkman'">
+                <div>{{scope.row.store.linkman}}</div>
+                <div>{{scope.row.store.phone}}</div>
+              </div>
+              <!--县域-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'city_title'">{{scope.row.city.title}}</div>
+              <!--原价、建议团长价、建议团购价-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'amount'">&yen;{{returnPrice(scope.row.amount)}}</div>
+              <template v-else-if="item.key === 'status'">
+                <el-tag size="small" :type="groupStoreOrderStatusType[scope.row.status]" disable-transitions>
+                  {{ groupStoreOrderStatus[scope.row.status] }}
+                </el-tag>
+              </template>
+              <!--发货日期-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'delivery_date'">{{scope.row.activity.delivery_date}}</div>
+              <!--正常情况-->
+              <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
-            <!--县域-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'city_title'">{{scope.row.city.title}}</div>
-            <!--原价、建议团长价、建议团购价-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'amount'">&yen;{{returnPrice(scope.row.amount)}}</div>
-            <template v-else-if="item.key === 'status'">
-              <el-tag size="small" :type="groupStoreOrderStatusType[scope.row.status]" disable-transitions>
-                {{ groupStoreOrderStatus[scope.row.status] }}
-              </el-tag>
-            </template>
-            <!--发货日期-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'delivery_date'">{{scope.row.activity.delivery_date}}</div>
-            <!--正常情况-->
-            <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
-          </div>
-        </el-table-column>
+          </el-table-column>
+        </template>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
@@ -87,7 +89,7 @@
 
 <script>
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: 'TableGroupStoreOrder',
@@ -191,5 +193,5 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/share/scss/table.scss';
 </style>

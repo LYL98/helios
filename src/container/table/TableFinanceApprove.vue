@@ -106,7 +106,7 @@
 <script>
   import { OmissionText, TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import tableMixin from './table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
   
   export default {
     name: "TableFinanceApprove",

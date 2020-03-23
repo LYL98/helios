@@ -68,7 +68,7 @@
   import { QueryItem, SelectOption } from '@/common';
   import { DataHandle, Constant } from '@/util';
   import {SelectCity} from '@/container';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryGroupBuyItemStatistics",

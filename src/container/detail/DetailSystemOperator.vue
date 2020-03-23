@@ -22,7 +22,7 @@
 </template>
 
 <script>
-  import detailMixin from './detail.mixin';
+  import detailMixin from '@/share/mixin/detail.mixin';
   import { Http, Config, Constant } from '@/util';
   import { ImagePreview } from '@/common';
 
@@ -43,5 +43,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "./detail.scss";
+  @import "@/share/scss/detail.scss";
 </style>

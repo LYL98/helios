@@ -101,7 +101,7 @@
 
 <script>
   import { Http, Config, Constant } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
   import queryTabs from './QueryTabs';
 
   export default {
@@ -228,7 +228,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/share/scss/table.scss';
   .all-select{
     position: absolute;
     top: 14px;
@@ -265,5 +265,5 @@
   }
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

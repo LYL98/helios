@@ -157,8 +157,8 @@
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { SelectOption, QueryItem, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
-  import viewMixin from '@/view/view.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "MemberList",
@@ -176,7 +176,7 @@
       'my-table-operate': TableOperate,
       'my-image-preview': ImagePreview
     },
-    mixins: [tableMixin, viewMixin],
+    mixins: [tableMixin, mainMixin],
     data() {
       return {
         tencentPath: Config.tencentPath,

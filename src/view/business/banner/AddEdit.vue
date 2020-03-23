@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import addEditMixin from '@/container/addEdit/add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Config, Verification, Http } from '@/util';
 import { SearchItem, SelectDisplayClass, SelectTag } from '@/common';
 import { UploadImg } from '@/component';

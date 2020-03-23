@@ -21,7 +21,7 @@
     DetailWarehouseInventoryMoveOutStorage,
     DetailWarehouseInventoryMovePutaway
   } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'InventoryMoveMove',
@@ -35,7 +35,7 @@
       'detail-warehouse-inventory-move-out-storage': DetailWarehouseInventoryMoveOutStorage,
       'detail-warehouse-inventory-move-putaway': DetailWarehouseInventoryMovePutaway
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("仓库 - 库存变动记录");
     },

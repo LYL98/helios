@@ -33,7 +33,7 @@
 
 <script>
   import { Http, Config } from '@/util';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryOperateLine",

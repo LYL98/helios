@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import printMixin from './print.mixin';
+import printMixin from '@/share/mixin/print.mixin';
 import { Http, Config } from '@/util';
 import { QrCode } from '@/common';
 
@@ -65,6 +65,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './print.scss';
+  @import '@/share/scss/print.scss';
 
 </style>

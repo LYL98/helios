@@ -25,7 +25,7 @@
 <script>
   import { SelectOption } from '@/common';
   import { SelectLine } from '@/container';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryOperateTruckLoad",

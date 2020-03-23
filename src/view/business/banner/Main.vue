@@ -8,11 +8,11 @@
 <script>
   import Table from './Table';
   import AddEdit from './AddEdit';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "BannerList",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'table-view': Table,
       'add-edit-view': AddEdit,

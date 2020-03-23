@@ -130,7 +130,7 @@
 </template>
 
 <script>
-  import detailMixin from './detail.mixin';
+  import detailMixin from '@/share/mixin/detail.mixin';
   import { SelectCity } from '@/container';
   import { Http, Config, Constant, DataHandle } from '@/util';
 

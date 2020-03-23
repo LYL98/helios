@@ -203,7 +203,7 @@
 </template>
 
 <script>
-import addEditMixin from './add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Constant } from '@/util';
 import { InputNumber, InputPrice, SelectOption, ImagePreview } from '@/common';
 
@@ -451,7 +451,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import "./add.edit.scss";
+  @import "@/share/scss/add.edit.scss";
 </style>
 <style lang="scss">
   .qa-standard{

@@ -11,7 +11,7 @@
 
 <script>
   import { QueryItemSupplier, TableItemSupplier, AddEditItemSupplier, DetailItemSupplier, DetailItemSupplierItem, FormItemSupplierAccount} from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Supplier',
@@ -23,7 +23,7 @@
       'detail-item-supplier-item': DetailItemSupplierItem,
       'form-item-supplier-accont': FormItemSupplierAccount
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("商品 - 供应商");
     },

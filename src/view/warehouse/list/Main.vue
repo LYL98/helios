@@ -16,7 +16,7 @@
   import Detail from './Detail';
   import AddEditTray from './AddEditTray';
   import PrintTray from './PrintTray';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'WarehouseList',
@@ -28,7 +28,7 @@
       'add-edit-warehouse-tray': AddEditTray,
       'print-warehouse-tray': PrintTray
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("仓库 - 库列表");
     },

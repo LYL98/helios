@@ -38,11 +38,11 @@
   import {Form, FormItem, Button, Input, Message, Upload, MessageBox} from 'element-ui';
   import { Http, Config, Verification } from '@/util';
   import { UploadImg } from '@/component';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "BrandSettings",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-form': Form,
       'el-form-item': FormItem,

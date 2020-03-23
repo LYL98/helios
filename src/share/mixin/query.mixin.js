@@ -1,4 +1,4 @@
-import baseMixin from '@/container/base.mixin';
+import baseMixin from '@/share/mixin/_base.mixin';
 import { Constant } from '@/util';
 import { QueryItem, QuerySearchInput } from '@/common';
 

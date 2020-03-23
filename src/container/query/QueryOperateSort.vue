@@ -23,7 +23,7 @@
 
 <script>
   import { SelectOption } from '@/common';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryOperateSort",

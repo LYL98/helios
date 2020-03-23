@@ -8,7 +8,7 @@
 
 <script>
   import { QueryItemDisplayClass, TableItemDisplayClass, AddEditItemDisplayClass } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'DisplayClass',
@@ -17,7 +17,7 @@
       'table-item-display-class': TableItemDisplayClass,
       'add-edit-item-display-class': AddEditItemDisplayClass,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("商品 - 展示分类");
     },

@@ -74,7 +74,7 @@
   import {SelectOption, QueryItem} from '@/common';
   import {SelectCity} from "@/container";
   import { Constant } from '@/util';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryOrderAfterSale",

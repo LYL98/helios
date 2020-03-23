@@ -23,7 +23,7 @@
 <script>
   import { SelectOption, SelectSystemClass } from '@/common';
   import { SelectStorehouse } from '@/component';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
   import { Constant } from '@/util';
 
   export default {

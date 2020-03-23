@@ -2,7 +2,7 @@
 </template>
 
 <script>
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryGroupBanner",

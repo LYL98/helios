@@ -95,7 +95,7 @@
 <script>
 import { ImagePreview } from "@/common";
 import { Http, Config, Constant, DataHandle } from "@/util";
-import tableMixin from "@/container/table/table.mixin";
+import tableMixin from "@/share/mixin/table.mixin";
 
 export default {
   name: "TableSystemOperator",
@@ -197,5 +197,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@import "./table.scss";
+@import "@/share/scss/table.scss";
 </style>

@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import detailMixin from './detail.mixin';
+import detailMixin from '@/share/mixin/detail.mixin';
 import { Http, Config, Constant, DataHandle } from '@/util';
 import { ImagePreview } from  '@/common'
 
@@ -172,5 +172,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import "./detail.scss";
+  @import "@/share/scss/detail.scss";
 </style>

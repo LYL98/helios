@@ -58,7 +58,7 @@
 <script>
   import {TableOperate} from '@/common';
   import {Constant, DataHandle} from '@/util';
-  import tableMixin from './table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: "TableFinanceBalance",

@@ -8,7 +8,7 @@
 
 <script>
   import { QueryFinanceSStatement, TableFinanceSStatement, DetailFinanceSStatement} from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'SStatement',
@@ -17,7 +17,7 @@
       'table-finance-s-statement': TableFinanceSStatement,
       'detail-finance-s-statement': DetailFinanceSStatement,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("财务 - 供应商对账单");
     },

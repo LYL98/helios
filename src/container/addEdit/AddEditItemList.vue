@@ -272,7 +272,7 @@
 </template>
 
 <script>
-import addEditMixin from './add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, DataHandle, Verification, Constant } from '@/util';
 import { SelectDisplayClass, ImagePreview, VideoPreview, InputNumber, InputPrice, InputWeight, SelectInnerTag, SelecItemTags } from '@/common';
 import { OtherItemSupplier, SelectBuyer } from '@/component';
@@ -666,7 +666,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import "./add.edit.scss";
+  @import "@/share/scss/add.edit.scss";
 </style>
 <style lang="scss">
   .my-content-div{

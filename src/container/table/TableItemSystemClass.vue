@@ -42,7 +42,7 @@
 <script>
   import { TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: 'TableItemSystemClass',
@@ -114,7 +114,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './table.scss';
+  @import '@/share/scss/table.scss';
   .custom-tree-node {
     flex: 1;
     display: flex;
@@ -130,7 +130,7 @@
   }
 </style>
 <style lang="scss">
-  @import './table.global.scss';
+  @import '@/share/scss/table.global.scss';
   .custom-tree-node:hover .options{
     display: block;
   }

@@ -118,8 +118,8 @@ import { Button, Badge, Input, Select, Option, Table, TableColumn, MessageBox, P
 import { OmissionText, SelectCity, TableOperate } from '@/common';
 import { QueryOrderAfterSale, DetailOrderList, DetailOrderAfterSale, FormOrderAfterSaleClose, AddEditItemList } from "@/container";
 import { Config, DataHandle, Constant, Http } from '@/util';
-import tableMixin from '@/container/table/table.mixin';
-import viewMixin from '@/view/view.mixin';
+import tableMixin from '@/share/mixin/table.mixin';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "AfterSale",
@@ -138,7 +138,7 @@ export default {
     'form-order-after-sale-close': FormOrderAfterSaleClose,
     'my-table-operate': TableOperate
   },
-  mixins: [tableMixin, viewMixin],
+  mixins: [tableMixin, mainMixin],
   created(){
     let that = this;
     documentTitle('订单 - 售后列表');
@@ -255,7 +255,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-  @import '@/container/table/table.scss';
+  @import '@/share/scss/table.scss';
   .after-sale {
     .form-search {
       display: flex;
@@ -306,5 +306,5 @@ export default {
 
 </style>
 <style lang="scss">
-  @import '@/container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

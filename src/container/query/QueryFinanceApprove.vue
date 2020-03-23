@@ -66,7 +66,7 @@
   import {Row, Col, Input, Button, DatePicker, Select, Option} from 'element-ui';
   import {SelectOption, QueryItem} from '@/common';
   import {SelectCity} from '@/container';
-  import queryMixin from './query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryFinanceApprove",

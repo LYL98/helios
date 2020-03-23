@@ -133,11 +133,11 @@
     TableFinanceBalanceMerchantLog
   } from '@/container';
   import {Constant, DataHandle, Config, Http} from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "BalanceList",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-button': Button,
       'el-pagination': Pagination,

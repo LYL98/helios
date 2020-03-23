@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import printMixin from '@/container/print/print.mixin';
+import printMixin from '@/share/mixin/print.mixin';
 import { Http, Config } from '@/util';
 import { QrCode } from '@/common';
 
@@ -65,7 +65,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import '@/container/print/print.scss';
+  @import '@/share/scss/print.scss';
   .flex-column-center {
     height: 150px;
     overflow: hidden;

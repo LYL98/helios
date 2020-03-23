@@ -15,11 +15,11 @@
   import OrderList from './OrderList';
   import OrderDetail from './OrderDetail';
   import { Http, Config } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "Order",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-dialog': Dialog,
       'el-button': Button,

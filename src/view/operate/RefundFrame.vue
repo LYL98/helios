@@ -237,9 +237,9 @@
   import {SelectOption, QueryItem, TableOperate, OmissionText, QuerySearchInput} from '@/common';
   import {SelectLine, SelectCity} from '@/container';
   import {Config, Constant, DataHandle, Http} from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
   import RefundAddStore from './RefundAddStore';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "RefundFrame",
@@ -266,7 +266,7 @@
       'my-table-operate': TableOperate,
       'query-search-input': QuerySearchInput
     },
-    mixins: [tableMixin, viewMixin],
+    mixins: [tableMixin, mainMixin],
     computed: {
       multipleReturnNum: {
         get() {
@@ -489,8 +489,8 @@
 </script>
 
 <style lang="scss" scoped>
-  @import './../../container/table/table.scss';
+  @import '@/share/scss/table.scss';
 </style>
 <style lang="scss">
-  @import './../../container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

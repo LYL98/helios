@@ -9,7 +9,7 @@
 
 <script>
   import { QueryFinanceSBDetail, TableFinanceSBDetail, AddEditFinanceSBDetail, FormAudit} from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'FinanceSBDetailAudit',
@@ -19,7 +19,7 @@
       'add-edit-finance-s-b-detail': AddEditFinanceSBDetail,
       'form-audit': FormAudit
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("财务 - 供应商流水审核");
     },

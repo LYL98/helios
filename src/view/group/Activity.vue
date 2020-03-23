@@ -12,11 +12,11 @@
 
 <script>
   import { AddEditGroupActivity, TableGroupActivity, QueryGroupActivity, DetailGroupActivity, DetailGroupActivityEditLog, DetailGroupActivityItem, AddEditGroupItem } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "Item",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'add-edit-group-activity': AddEditGroupActivity,
       'query-group-activity': QueryGroupActivity,

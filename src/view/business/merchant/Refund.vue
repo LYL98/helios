@@ -9,7 +9,7 @@
 
 <script>
   import { QueryMerchantRefund, TableMerchantRefund, AddEditMerchantRefund, DetailMerchantRefundLog } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'MerchantRefund',
@@ -19,7 +19,7 @@
       'add-edit-merchant-refund': AddEditMerchantRefund,
       'detail-merchant-refund-log': DetailMerchantRefundLog,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("业务 - 门店筐信息");
     },

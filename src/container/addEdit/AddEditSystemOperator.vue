@@ -128,7 +128,7 @@
 
 <script>
 import { Radio } from 'element-ui';
-import addEditMixin from './add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Config, Constant, Verification, Http } from '@/util';
 import { SelectProvince, SelectProvinceMulti, SelectZoneMulti, SelectCityMulti, SelectLineMulti, Avatar } from '@/common';
 import md5 from 'md5';
@@ -324,5 +324,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import "./add.edit.scss";
+  @import "@/share/scss/add.edit.scss";
 </style>

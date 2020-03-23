@@ -1,6 +1,6 @@
 import { Constant } from '@/util';
-import Layout from './../layout/Layout';
-import baseMixin from '@/container/base.mixin';
+import Layout from '@/share/layout/Layout';
+import baseMixin from '@/share/mixin/_base.mixin';
 
 export default {
   mixins: [baseMixin],

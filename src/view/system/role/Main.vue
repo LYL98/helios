@@ -75,14 +75,14 @@
 </template>
 
 <script>
-import viewMixin from '@/view/view.mixin';
+import mainMixin from '@/share/mixin/main.mixin';
 import { Button, Checkbox, Tree, RadioGroup, RadioButton, Select, Option } from 'element-ui';
 import { Config, Constant, DataHandle, Http } from '@/util';
 import AddEdit from './AddEdit';
 
 export default {
   name: 'RoleList',
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-checkbox': Checkbox,

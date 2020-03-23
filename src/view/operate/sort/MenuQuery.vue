@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import subMenuQueryMixin from '@/view/submenu.query.mixin';
+  import subMenuQueryMixin from '@/share/mixin/submenu.query.mixin';
   import { Constant } from '@/util';
   
   export default {

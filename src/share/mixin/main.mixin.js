@@ -1,4 +1,4 @@
-import SubMenu from '@/view/layout/SubMenu';
+import SubMenu from '@/share/layout/SubMenu';
 
 export default {
   components: {
