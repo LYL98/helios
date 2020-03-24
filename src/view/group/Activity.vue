@@ -11,7 +11,13 @@
 </template>
 
 <script>
-  import { AddEditGroupActivity, TableGroupActivity, QueryGroupActivity, DetailGroupActivity, DetailGroupActivityEditLog, DetailGroupActivityItem, AddEditGroupItem } from '@/container';
+  import AddEditGroupActivity from './AddEditGroupActivity';
+  import TableGroupActivity from './TableGroupActivity';
+  import QueryGroupActivity from './QueryGroupActivity';
+  import DetailGroupActivity from './DetailGroupActivity';
+  import DetailGroupActivityEditLog from './DetailGroupActivityEditLog';
+  import DetailGroupActivityItem from './DetailGroupActivityItem';
+  import AddEditGroupItem from './AddEditGroupItem';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

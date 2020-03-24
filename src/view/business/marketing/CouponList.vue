@@ -144,7 +144,12 @@
 
 <script>
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox} from 'element-ui';
-  import {QueryMarketingCoupon, TableMarketingCoupon, TableMarketingCouponLog, TableMarketingCouponStatistic, FormMarketingCouponAdd, FormMarketingCouponSend} from '@/container';
+  import QueryMarketingCoupon from './QueryMarketingCoupon';
+  import TableMarketingCoupon from './TableMarketingCoupon';
+  import TableMarketingCouponLog from './TableMarketingCouponLog';
+  import TableMarketingCouponStatistic from './TableMarketingCouponStatistic';
+  import FormMarketingCouponAdd from './FormMarketingCouponAdd';
+  import FormMarketingCouponSend from './FormMarketingCouponSend';
   import {Constant, DataHandle, Config, Http} from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
 

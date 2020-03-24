@@ -94,7 +94,7 @@ const router = new Router({
     {
       path: '/business/merchant/refund/query',
       name: 'MerchantRefundQuery',
-      component: () => import('@/view/business/merchant/Refund')
+      component: () => import('@/view/business/merchantRefund/Refund')
     },
     {
       path: '/business/merchant/grade',
@@ -119,7 +119,7 @@ const router = new Router({
     {
       path: '/business/order/after_sale',
       name: 'OrderAfterSale',
-      component: () => import('@/view/business/order/AfterSale')
+      component: () => import('@/view/business/afterSale/AfterSale')
     },
     {
       path: '/business/marketing/scope/promotion/query',

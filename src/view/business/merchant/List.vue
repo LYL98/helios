@@ -54,7 +54,10 @@
 
 <script>
   import { MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
-  import { QueryMerchantStore, TableMerchantList, AddEditMerchantList, DetailMerchantList } from '@/container';
+  import QueryMerchantStore  from './QueryMerchantStore';
+  import TableMerchantList from './TableMerchantList';
+  import AddEditMerchantList from './AddEditMerchantList';
+  import DetailMerchantList from './DetailMerchantList';
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
 

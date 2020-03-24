@@ -36,7 +36,9 @@
 
 <script>
   import { Pagination, Dialog } from 'element-ui';
-  import { QueryFinanceApprove, TableFinanceApprove, FormFinanceApproveEdit } from '@/container';
+  import QueryFinanceApprove from './QueryFinanceApprove';
+  import TableFinanceApprove from './TableFinanceApprove';
+  import FormFinanceApproveEdit from './FormFinanceApproveEdit';
   import { Http, Config, Constant } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
 

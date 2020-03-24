@@ -116,7 +116,7 @@
 
 <script>
   import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-  import { QueryGroupBuyCaptainStatistics } from '@/container'
+  import QueryGroupBuyCaptainStatistics from './QueryGroupBuyCaptainStatistics';
   import Constant from "@/util/constant";
   import { DataHandle, Config, Http } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';

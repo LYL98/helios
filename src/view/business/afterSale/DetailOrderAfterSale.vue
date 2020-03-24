@@ -138,7 +138,7 @@
             <div v-else class="member f-r">
               <div class="online">
                 <span class="t-r" style="margin-bottom: 10px; margin-right: 10px;">客服：{{item.employee_no}}</span>
-                <img src="../../assets/img/online_avatar.png" alt="avatar" v-if="!item.avatar" width="48" height="48">
+                <img src="@/assets/img/online_avatar.png" alt="avatar" v-if="!item.avatar" width="48" height="48">
                 <img v-else :src="tencentPath + item.avatar + '_min200x200'" width="48" height="48" style="border-radius: 50%;"/>
               </div>
               <div style="margin-right: 50px; padding: 10px; background: #FAFAFB; border-radius: 2px">

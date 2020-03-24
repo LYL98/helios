@@ -81,7 +81,7 @@ import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Rad
 import { SelectZone } from '@/common';
 import { Http, Config, DataHandle, Constant } from '@/util';
 import BusinessFluctuationChart from "./BusinessFluctuationChart";
-import {QueryBusinessFluctuation} from '@/container';
+import QueryBusinessFluctuation from './QueryBusinessFluctuation';
 import mainMixin from '@/share/mixin/main.mixin';
 
 export default {

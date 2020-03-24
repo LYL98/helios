@@ -9,7 +9,11 @@
 </template>
 
 <script>
-  import { AddEditGroupItem, TableGroupItem, QueryGroupItem, DetailGroupItem, DetailGroupItemEditLog } from '@/container';
+  import AddEditGroupItem from './AddEditGroupItem';
+  import TableGroupItem from './TableGroupItem';
+  import QueryGroupItem from './QueryGroupItem';
+  import DetailGroupItem from './DetailGroupItem';
+  import DetailGroupItemEditLog from './DetailGroupItemEditLog';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

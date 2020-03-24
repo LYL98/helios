@@ -90,7 +90,7 @@
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
 import { Http, Config, DataHandle, Constant } from '@/util';
 import ItemFluctuationChart from "./ItemFluctuationChart";
-import { QueryItemFluctuationAnalysis } from '@/container'
+import QueryItemFluctuationAnalysis from './QueryItemFluctuationAnalysis';
 import mainMixin from '@/share/mixin/main.mixin';
 
 export default {

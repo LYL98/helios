@@ -14,7 +14,7 @@
   import HeadList from './HeadList';
   import HeadEdit from './HeadEdit';
   import HeadDetail from './HeadDetail';
-  import { DetailHeadBalanceLog } from '@/container';
+  import DetailHeadBalanceLog from './DetailHeadBalanceLog';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

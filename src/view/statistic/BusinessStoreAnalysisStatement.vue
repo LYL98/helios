@@ -118,7 +118,7 @@
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
 import { SelectZone, SelectCity } from '@/common';
 import { Http, Config, DataHandle, Constant } from '@/util';
-import { QueryBusinessStore } from '@/container';
+import QueryBusinessStore from './QueryBusinessStore';
 import mainMixin from '@/share/mixin/main.mixin';
 
 export default {

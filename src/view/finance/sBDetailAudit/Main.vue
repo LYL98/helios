@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import { FormAudit} from '@/container';
+  import FormAudit from '@/share/layout/FormAudit';
   import QueryFinanceSBDetail from '@/view/finance/sBDetail/QueryFinanceSBDetail';
   import TableFinanceSBDetail from '@/view/finance/sBDetail/TableFinanceSBDetail';
   import AddEditFinanceSBDetail from '@/view/finance/sBDetail/AddEditFinanceSBDetail';

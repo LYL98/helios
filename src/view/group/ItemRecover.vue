@@ -7,7 +7,9 @@
 </template>
 
 <script>
-  import { TableGroupItem, QueryGroupItem, DetailGroupItem } from '@/container';
+  import TableGroupItem from './TableGroupItem';
+  import QueryGroupItem from './QueryGroupItem';
+  import DetailGroupItem from './DetailGroupItem';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

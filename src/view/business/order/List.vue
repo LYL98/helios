@@ -152,9 +152,10 @@
 
 <script>
   import { SelectOption, TableOperate, SelectCity } from '@/common';
-  import { QueryOrder } from '@/container';
   import {Config, DataHandle, Constant, Http} from '@/util';
-  import { DetailOrderList, DetailOrderAfterSale } from '@/container';
+  import QueryOrder from './QueryOrder';
+  import DetailOrderList from './DetailOrderList';
+  import DetailOrderAfterSale from '@/view/business/afterSale/DetailOrderAfterSale';
   import tableMixin from '@/share/mixin/table.mixin';
   import mainMixin from '@/share/mixin/main.mixin';
 

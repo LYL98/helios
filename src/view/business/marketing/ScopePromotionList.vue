@@ -58,7 +58,9 @@
    * 促销活动列表
    */
   import { Pagination, Button, Dialog } from 'element-ui';
-  import { QueryMarketingScopePromotion, TableMarketingScopePromotion, FormMarketingScopePromotion } from '@/container';
+  import QueryMarketingScopePromotion from './QueryMarketingScopePromotion';
+  import TableMarketingScopePromotion from './TableMarketingScopePromotion';
+  import FormMarketingScopePromotion from './FormMarketingScopePromotion';
   import CouponList from './CouponList';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
