@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import addEditMixin from '@/container/addEdit/add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Verification, Constant } from '@/util';
 import { UploadImg } from '@/component';
 

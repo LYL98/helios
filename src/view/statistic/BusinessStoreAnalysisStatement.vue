@@ -118,12 +118,12 @@
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
 import { SelectZone, SelectCity } from '@/common';
 import { Http, Config, DataHandle, Constant } from '@/util';
-import { QueryBusinessStore } from '@/container';
-import viewMixin from '@/view/view.mixin';
+import QueryBusinessStore from './QueryBusinessStore';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "BusinessStoreAnalysisStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,

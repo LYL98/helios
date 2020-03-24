@@ -6,11 +6,11 @@
 
 <script>
   import MemberList from './MemberList';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "Member",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'member-list': MemberList
     },

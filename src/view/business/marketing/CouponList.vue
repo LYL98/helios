@@ -144,13 +144,18 @@
 
 <script>
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox} from 'element-ui';
-  import {QueryMarketingCoupon, TableMarketingCoupon, TableMarketingCouponLog, TableMarketingCouponStatistic, FormMarketingCouponAdd, FormMarketingCouponSend} from '@/container';
+  import QueryMarketingCoupon from './QueryMarketingCoupon';
+  import TableMarketingCoupon from './TableMarketingCoupon';
+  import TableMarketingCouponLog from './TableMarketingCouponLog';
+  import TableMarketingCouponStatistic from './TableMarketingCouponStatistic';
+  import FormMarketingCouponAdd from './FormMarketingCouponAdd';
+  import FormMarketingCouponSend from './FormMarketingCouponSend';
   import {Constant, DataHandle, Config, Http} from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "CouponList",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-button': Button,
       'el-pagination': Pagination,
@@ -499,8 +504,8 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '@/container/table/table.scss';
+  @import '@/share/scss/table.scss';
 </style>
 <style lang="scss">
-  @import '@/container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

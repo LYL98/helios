@@ -81,7 +81,7 @@
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message, Tooltip } from 'element-ui';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import { QueryItem } from '@/common';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   import echarts from "echarts/lib/echarts";
   import 'echarts/lib/chart/line';
@@ -93,7 +93,7 @@
 
   export default {
     name: "OperationStatistics",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-button': Button,
       'el-date-picker': DatePicker,

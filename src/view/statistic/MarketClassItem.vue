@@ -146,11 +146,11 @@
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
   import { QueryItem, TableOperate, SelectSystemClassList } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "MarketClass",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-row': Row,
       'el-col': Col,

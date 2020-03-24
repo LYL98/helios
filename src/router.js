@@ -22,67 +22,67 @@ const router = new Router({
     {
       path: '/item/global',
       name: 'ItemGlobal',
-      component: () => import('@/view/item/Global')
+      component: () => import('@/view/item/global/Main')
     },
     {
       path: '/item/recover',
       name: 'ItemRecover',
-      component: () => import('@/view/item/Recover')
+      component: () => import('@/view/item/recover/Main')
     },
     {
       path: '/item/system/class',
       name: 'ItemSystemClass',
-      component: () => import('@/view/item/SystemClass')
+      component: () => import('@/view/item/systemClass/Main')
     },
     {
       path: '/item/frame',
       name: 'ItemFrame',
-      component: () => import('@/view/item/Frame')
+      component: () => import('@/view/item/frame/Main')
     },
     {
       path: '/item/list',
       name: 'ItemList',
-      component: () => import('@/view/item/List')
+      component: () => import('@/view/item/list/Main')
     },
     {
       path: '/item/list/for/sale',
       name: 'ItemListForSale',
-      component: () => import('@/view/item/ListForSale')
+      component: () => import('@/view/item/listForSale/Main')
     },
     {
       path: '/item/pricing',
       name: 'ItemPricing',
-      component: () => import('@/view/item/Pricing')
+      component: () => import('@/view/item/pricing/Main')
     },
     {
       path: '/item/supplier',
       name: 'ItemSupplier',
-      component: () => import('@/view/item/Supplier')
+      component: () => import('@/view/item/supplier/Main')
     },
     {
       path: '/item/tags/price',
       name: 'ItemTagsPrice',
-      component: () => import('@/view/item/TagsPrice')
+      component: () => import('@/view/item/tagsPrice/Main')
     },
     {
       path: '/item/tags',
       name: 'ItemTags',
-      component: () => import('@/view/item/Tags')
+      component: () => import('@/view/item/tags/Main')
     },
     {
       path: '/item/display/class',
       name: 'ItemDisplayClass',
-      component: () => import('@/view/item/DisplayClass')
+      component: () => import('@/view/item/displayClass/Main')
     },
     {
       path: '/item/gpurchase',
       name: 'ItemGPurchase',
-      component: () => import('@/view/item/GPurchase')
+      component: () => import('@/view/item/gPurchase/Main')
     },
     {
       path: '/item/localpurchase',
       name: 'ItemLocalPurchase',
-      component: () => import('@/view/item/LocalPurchase')
+      component: () => import('@/view/item/localPurchase/Main')
     },
 
     /*业务*/
@@ -94,7 +94,7 @@ const router = new Router({
     {
       path: '/business/merchant/refund/query',
       name: 'MerchantRefundQuery',
-      component: () => import('@/view/business/merchant/Refund')
+      component: () => import('@/view/business/merchantRefund/Refund')
     },
     {
       path: '/business/merchant/grade',
@@ -119,7 +119,7 @@ const router = new Router({
     {
       path: '/business/order/after_sale',
       name: 'OrderAfterSale',
-      component: () => import('@/view/business/order/AfterSale')
+      component: () => import('@/view/business/afterSale/AfterSale')
     },
     {
       path: '/business/marketing/scope/promotion/query',
@@ -188,32 +188,32 @@ const router = new Router({
     {
       path: '/warehouse/quality/control',
       name: 'WarehouseQualityControl',
-      component: () => import('@/view/warehouse/QualityControl')
+      component: () => import('@/view/warehouse/qualityControl/Main')
     },
     {
       path: '/warehouse/stock/pending',
       name: 'WarehouseStockPending',
-      component: () => import('@/view/warehouse/StockPending')
+      component: () => import('@/view/warehouse/stockPending/Main')
     },
     {
       path: '/warehouse/inventory',
       name: 'WarehouseInventory',
-      component: () => import('@/view/warehouse/Inventory')
+      component: () => import('@/view/warehouse/inventory/Main')
     },
     {
       path: '/warehouse/inventory/move',
       name: 'WarehouseInventoryMove',
-      component: () => import('@/view/warehouse/InventoryMove')
+      component: () => import('@/view/warehouse/inventoryMove/Main')
     },
     {
       path: '/warehouse/out/storage',
       name: 'WarehouseOutStorage',
-      component: () => import('@/view/warehouse/OutStorage')
+      component: () => import('@/view/warehouse/outStorage/Main')
     },
     {
       path: '/warehouse/distribute',
       name: 'WarehouseDistribute',
-      component: () => import('@/view/warehouse/Distribute')
+      component: () => import('@/view/warehouse/distribute/Main')
     },
     {
       path: '/warehouse/list',
@@ -225,7 +225,7 @@ const router = new Router({
     {
       path: '/operate/receiving',
       name: 'OperateReceiving',
-      component: () => import('@/view/operate/Receiving')
+      component: () => import('@/view/operate/receiving/Main')
     },
     {
       path: '/operate/sort',
@@ -245,12 +245,12 @@ const router = new Router({
     {
       path: '/operate/depart',
       name: 'OperateDepart',
-      component: () => import('@/view/operate/Depart')
+      component: () => import('@/view/operate/depart/Main')
     },
     {
       path: '/operate/line/list',
       name: 'OperateLineList',
-      component: () => import('@/view/operate/LineList')
+      component: () => import('@/view/operate/line/Main')
     },
     {
       path: '/operate/deliver',
@@ -260,34 +260,34 @@ const router = new Router({
     {
       path: '/operate/refund/frame',
       name: 'OperateRefundFrame',
-      component: () => import('@/view/operate/RefundFrame')
+      component: () => import('@/view/operate/refundFrame/Main')
     },
 
     /*财务*/
     {
-      path: '/finance/balance/query',
-      name: 'FinanceBalanceQuery',
-      component: () => import('@/view/finance/BalanceList')
-    },
-    {
       path: '/finance/approve/query',
       name: 'FinanceApproveQuery',
-      component: () => import('@/view/finance/ApproveList')
+      component: () => import('@/view/finance/approve/Main')
+    },
+    {
+      path: '/finance/balance/query',
+      name: 'FinanceBalanceQuery',
+      component: () => import('@/view/finance/balance/Main')
     },
     {
       path: '/finance/s/b/detail',
       name: 'FinanceSBDetail',
-      component: () => import('@/view/finance/SBDetail')
+      component: () => import('@/view/finance/sBDetail/Main')
     },
     {
       path: '/finance/s/b/detail/audit',
       name: 'FinanceSBDetailAudit',
-      component: () => import('@/view/finance/SBDetailAudit')
+      component: () => import('@/view/finance/sBDetailAudit/Main')
     },
     {
       path: '/finance/s/statement',
       name: 'FinanceSStatement',
-      component: () => import('@/view/finance/SStatement')
+      component: () => import('@/view/finance/sStatement/Main')
     },
 
     /*统计*/
@@ -371,7 +371,7 @@ const router = new Router({
     {
       path: '/system/operator/list',
       name: 'SystemOperatorList',
-      component: () => import('@/view/system/OperatorList')
+      component: () => import('@/view/system/operator/Main')
     },
     {
       path: '/system/province',
@@ -406,7 +406,7 @@ const router = new Router({
     {
       path: '/system/brand/settings',
       name: 'SystemBrandSettings',
-      component: () => import('@/view/system/BrandSettings')
+      component: () => import('@/view/system/brandSettings/Main')
     },
   ]
 });

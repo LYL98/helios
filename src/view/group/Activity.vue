@@ -11,12 +11,18 @@
 </template>
 
 <script>
-  import { AddEditGroupActivity, TableGroupActivity, QueryGroupActivity, DetailGroupActivity, DetailGroupActivityEditLog, DetailGroupActivityItem, AddEditGroupItem } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import AddEditGroupActivity from './AddEditGroupActivity';
+  import TableGroupActivity from './TableGroupActivity';
+  import QueryGroupActivity from './QueryGroupActivity';
+  import DetailGroupActivity from './DetailGroupActivity';
+  import DetailGroupActivityEditLog from './DetailGroupActivityEditLog';
+  import DetailGroupActivityItem from './DetailGroupActivityItem';
+  import AddEditGroupItem from './AddEditGroupItem';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "Item",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'add-edit-group-activity': AddEditGroupActivity,
       'query-group-activity': QueryGroupActivity,

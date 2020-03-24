@@ -7,12 +7,14 @@
 </template>
 
 <script>
-  import { TableGroupItem, QueryGroupItem, DetailGroupItem } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import TableGroupItem from './TableGroupItem';
+  import QueryGroupItem from './QueryGroupItem';
+  import DetailGroupItem from './DetailGroupItem';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "ItemRecover",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'query-group-item': QueryGroupItem,
       'table-group-item': TableGroupItem,

@@ -332,7 +332,6 @@ const Config = (() => {
       baseMerchantList: apiM + '/common/merchant/list', //商品列表（组件共用）
       baseSupplierList: apiM + '/common/supplier/list', // 供应商列表(组件共用)
       baseItemDetail: apiM + '/common/item/detail', //商品列表（组件共用）
-      baseOrderShipList: apiM + '/common/shipper/list', //快递公司列表 （订单手动发货时用）
       baseSupStorehouseList: apiM + '/sup_storehouse/list', //根据登陆账号权限，返回仓列表
       baseStorehouseList: apiM + '/common/storehouse/list', //获取仓列表（组件共用）
       baseWarehouseList: apiM + '/common/warehouse/list', //获取库列表（组件共用）

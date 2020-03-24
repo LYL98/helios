@@ -28,11 +28,11 @@ import ItemCommonDes from './ItemCommonDes';
 import Freight from './Freight';
 import OrderAffirm from './OrderAffirm';
 import { Constant } from '@/util';
-import viewMixin from '@/view/view.mixin';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: 'Main',
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-row': Row,
     'el-col': Col,

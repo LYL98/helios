@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import queryMixin from '@/container/query/query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
   import { Http, Config } from '@/util';
 
   export default {

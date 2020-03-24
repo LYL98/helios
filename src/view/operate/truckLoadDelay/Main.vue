@@ -9,9 +9,10 @@
 </template>
 
 <script>
-  import { QueryOperateTruckLoadDelay, TableOperateTruckLoadDelay } from '@/container';
-  import viewMixin from '@/view/view.mixin';
-  import MenuQuery from './../sort/MenuQuery';
+  import QueryOperateTruckLoadDelay from './QueryOperateTruckLoadDelay';
+  import TableOperateTruckLoadDelay from './TableOperateTruckLoadDelay';
+  import MenuQuery from '@/view/operate/sort/MenuQuery';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Main',
@@ -20,7 +21,7 @@
       'query-operate-truck-load-delay': QueryOperateTruckLoadDelay,
       'table-operate-truck-load-delay': TableOperateTruckLoadDelay
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle('场地 - 装车延时');
     }

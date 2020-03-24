@@ -58,14 +58,16 @@
    * 促销活动列表
    */
   import { Pagination, Button, Dialog } from 'element-ui';
-  import { QueryMarketingScopePromotion, TableMarketingScopePromotion, FormMarketingScopePromotion } from '@/container';
+  import QueryMarketingScopePromotion from './QueryMarketingScopePromotion';
+  import TableMarketingScopePromotion from './TableMarketingScopePromotion';
+  import FormMarketingScopePromotion from './FormMarketingScopePromotion';
   import CouponList from './CouponList';
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "ScopePromotionList",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-button': Button,
       'el-pagination': Pagination,
@@ -243,8 +245,8 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '@/container/table/table.scss';
+  @import '@/share/scss/table.scss';
 </style>
 <style lang="scss">
-  @import '@/container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

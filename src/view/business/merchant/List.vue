@@ -54,9 +54,12 @@
 
 <script>
   import { MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
-  import { QueryMerchantStore, TableMerchantList, AddEditMerchantList, DetailMerchantList } from '@/container';
+  import QueryMerchantStore  from './QueryMerchantStore';
+  import TableMerchantList from './TableMerchantList';
+  import AddEditMerchantList from './AddEditMerchantList';
+  import DetailMerchantList from './DetailMerchantList';
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "MerchantList",
@@ -75,7 +78,7 @@
       'detail-merchant-list': DetailMerchantList,
       'query-merchant-store': QueryMerchantStore,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       let that = this;
       documentTitle('业务 - 门店');
@@ -610,8 +613,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './../../../container/table/table.scss';
+  @import '@/share/scss/table.scss';
 </style>
 <style lang="scss">
-  @import './../../../container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

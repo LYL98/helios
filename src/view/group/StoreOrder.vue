@@ -7,12 +7,14 @@
 </template>
 
 <script>
-  import { TableGroupStoreOrder, QueryGroupStoreOrder, DetailGroupStoreOrder } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import TableGroupStoreOrder from './TableGroupStoreOrder';
+  import QueryGroupStoreOrder from './QueryGroupStoreOrder';
+  import DetailGroupStoreOrder from './DetailGroupStoreOrder';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "StoreOrder",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'query-group-store-order': QueryGroupStoreOrder,
       'table-group-store-order': TableGroupStoreOrder,

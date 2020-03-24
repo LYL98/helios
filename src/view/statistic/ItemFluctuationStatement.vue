@@ -39,7 +39,7 @@
           <el-table-column
             min-width="100"
             align="left"
-            v-for="(d, index) in dateRange()"
+            v-for="d in dateRange()"
             :key="d"
             :label="labelDate(d)">
             <template slot-scope="scope">
@@ -90,12 +90,12 @@
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
 import { Http, Config, DataHandle, Constant } from '@/util';
 import ItemFluctuationChart from "./ItemFluctuationChart";
-import { QueryItemFluctuationAnalysis } from '@/container'
-import viewMixin from '@/view/view.mixin';
+import QueryItemFluctuationAnalysis from './QueryItemFluctuationAnalysis';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "ItemFluctuationStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,

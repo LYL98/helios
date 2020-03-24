@@ -194,7 +194,7 @@
    */
   import { SelectOption, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: "OrderList",

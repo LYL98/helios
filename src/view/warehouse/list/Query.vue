@@ -13,7 +13,7 @@
 
 <script>
   import { SelectStorehouse } from '@/component';
-  import queryMixin from '@/container/query/query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "Query",

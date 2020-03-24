@@ -93,7 +93,7 @@
   import {Config, Constant, DataHandle, Method, Http} from '@/util';
   import md5 from 'md5';
   import MemberAddEdit from './MemberAddEdit';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: "MerchantAdd",

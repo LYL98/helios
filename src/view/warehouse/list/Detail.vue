@@ -50,9 +50,9 @@
 </template>
 
 <script>
-  import detailMixin from '@/container/detail/detail.mixin';
+  import detailMixin from '@/share/mixin/detail.mixin';
   import { Http, Config, Constant } from '@/util';
-  import Pagination from '@/container/layout/Pagination';
+  import Pagination from '@/share/layout/Pagination';
 
   export default {
     name: "Detail",
@@ -173,7 +173,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "@/container/detail/detail.scss";
+  @import "@/share/scss/detail.scss";
   .tray-top, .tray-bottom{
     display: flex;
     align-items: center;

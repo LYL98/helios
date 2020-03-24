@@ -103,7 +103,7 @@
 <script>
   import { TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: 'Table',
@@ -192,8 +192,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import '@/container/table/table.scss';
+  @import '@/share/scss/table.scss';
 </style>
 <style lang="scss">
-  @import '@/container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

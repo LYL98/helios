@@ -6,12 +6,13 @@
 </template>
 
 <script>
-  import { AddEditGroupItemClass, TableGroupItemClass } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import AddEditGroupItemClass from './AddEditGroupItemClass';
+  import TableGroupItemClass from './TableGroupItemClass';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "ItemClass",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'add-edit-group-item-class': AddEditGroupItemClass,
       'table-group-item-class': TableGroupItemClass,
