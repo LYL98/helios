@@ -123,15 +123,13 @@
 
 <script>
   import {Button, Pagination, Dialog} from 'element-ui';
-  import {
-    QueryFinanceBalance,
-    TableFinanceBalance,
-    FormFinanceBalanceEdit,
-    FormFinanceBalanceMerchantLogExport,
-    TableFinanceBalanceApproveLog,
-    TableFinanceBalanceLog,
-    TableFinanceBalanceMerchantLog
-  } from '@/container';
+  import QueryFinanceBalance from './QueryFinanceBalance';
+  import TableFinanceBalance from './TableFinanceBalance';
+  import FormFinanceBalanceEdit from './FormFinanceBalanceEdit';
+  import FormFinanceBalanceMerchantLogExport from './FormFinanceBalanceMerchantLogExport';
+  import TableFinanceBalanceApproveLog from './TableFinanceBalanceApproveLog';
+  import TableFinanceBalanceLog from './TableFinanceBalanceLog';
+  import TableFinanceBalanceMerchantLog from './TableFinanceBalanceMerchantLog';
   import {Constant, DataHandle, Config, Http} from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
 

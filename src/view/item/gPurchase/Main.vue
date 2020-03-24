@@ -10,7 +10,8 @@
 </template>
 
 <script>
-  import { FormAudit, FormClose } from '@/container';
+  import FormClose from '@/share/layout/FormClose';
+  import FormAudit from '@/share/layout/FormAudit';
   import QueryItemGPurchase from './QueryItemGPurchase';
   import TableItemGPurchase from './TableItemGPurchase';
   import AddEditItemGPurchase from './AddEditItemGPurchase';

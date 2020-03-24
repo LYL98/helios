@@ -116,7 +116,10 @@
 <script>
 import { Button, Badge, Input, Select, Option, Table, TableColumn, MessageBox, Pagination, Tag, DatePicker } from 'element-ui';
 import { OmissionText, SelectCity, TableOperate } from '@/common';
-import { QueryOrderAfterSale, DetailOrderList, DetailOrderAfterSale, FormOrderAfterSaleClose } from "@/container";
+import QueryOrderAfterSale from './QueryOrderAfterSale';
+import DetailOrderAfterSale from './DetailOrderAfterSale';
+import FormOrderAfterSaleClose from './FormOrderAfterSaleClose';
+import DetailOrderList from '@/view/business/order/DetailOrderList';
 import AddEditItemList from '@/view/item/list/AddEditItemList';
 import { Config, DataHandle, Constant, Http } from '@/util';
 import tableMixin from '@/share/mixin/table.mixin';

@@ -8,7 +8,10 @@
 </template>
 
 <script>
-  import { QueryMerchantRefund, TableMerchantRefund, AddEditMerchantRefund, DetailMerchantRefundLog } from '@/container';
+  import QueryMerchantRefund from './QueryMerchantRefund';
+  import TableMerchantRefund from './TableMerchantRefund';
+  import AddEditMerchantRefund from './AddEditMerchantRefund';
+  import DetailMerchantRefundLog from './DetailMerchantRefundLog';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

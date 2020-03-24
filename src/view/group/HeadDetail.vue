@@ -13,7 +13,8 @@
 
 <script>
 import { Dialog, Button} from 'element-ui';
-import { TableGroupHeadDetail, TableGroupHeadDetailList } from '@/container';
+import TableGroupHeadDetail from './TableGroupHeadDetail';
+import TableGroupHeadDetailList from './TableGroupHeadDetailList';
 import { Http, Config } from '@/util';
 import detailMixin from '@/share/mixin/detail.mixin';
 

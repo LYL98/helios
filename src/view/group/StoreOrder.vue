@@ -7,7 +7,9 @@
 </template>
 
 <script>
-  import { TableGroupStoreOrder, QueryGroupStoreOrder, DetailGroupStoreOrder } from '@/container';
+  import TableGroupStoreOrder from './TableGroupStoreOrder';
+  import QueryGroupStoreOrder from './QueryGroupStoreOrder';
+  import DetailGroupStoreOrder from './DetailGroupStoreOrder';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

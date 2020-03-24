@@ -277,7 +277,11 @@
 <script>
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox, Col, Row} from 'element-ui';
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import {QueryGroupBuy, TableGroupBuy, FormGroupBuy, TableGroupBuyDetail, TableGroupBuyMerchantDetail} from '@/container';
+  import QueryGroupBuy from './QueryGroupBuy';
+  import TableGroupBuy from './TableGroupBuy';
+  import FormGroupBuy from './FormGroupBuy';
+  import TableGroupBuyDetail from './TableGroupBuyDetail';
+  import TableGroupBuyMerchantDetail from './TableGroupBuyMerchantDetail';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

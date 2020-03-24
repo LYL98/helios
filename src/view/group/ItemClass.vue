@@ -6,7 +6,8 @@
 </template>
 
 <script>
-  import { AddEditGroupItemClass, TableGroupItemClass } from '@/container';
+  import AddEditGroupItemClass from './AddEditGroupItemClass';
+  import TableGroupItemClass from './TableGroupItemClass';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

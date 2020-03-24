@@ -7,7 +7,9 @@
 </template>
 
 <script>
-  import { AddEditGroupBanner, TableGroupBanner, QueryGroupBanner } from '@/container';
+  import AddEditGroupBanner from './AddEditGroupBanner';
+  import TableGroupBanner from './TableGroupBanner';
+  import QueryGroupBanner from './QueryGroupBanner';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

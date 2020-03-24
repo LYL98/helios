@@ -144,7 +144,7 @@
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
 import { Http, Config, DataHandle } from '@/util';
-import { QueryItemDailyAnalysis } from '@/container'
+import QueryItemDailyAnalysis from './QueryItemDailyAnalysis';
 import Constant from "@/util/constant";
 import mainMixin from '@/share/mixin/main.mixin';
 

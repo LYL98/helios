@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import { FormClose } from '@/container';
+  import FormClose from '@/share/layout/FormClose';
   import QueryWarehouseQualityControl from './QueryWarehouseQualityControl';
   import TableWarehouseQualityControl from './TableWarehouseQualityControl';
   import AddEditWarehouseQualityControl from './AddEditWarehouseQualityControl';
