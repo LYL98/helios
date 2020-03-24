@@ -1,14 +1,16 @@
 <template>
   <sub-menu>
-    <query-warehouse-stock-pending :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseStockPending"/>
-    <table-warehouse-stock-pending :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseStockPending"/>
-    <add-edit-warehouse-stock-pending :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditWarehouseStockPending"/>
-    <print-warehouse-stock-pending :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintWarehouseStockPending"/>
+    <query-warehouse-stock-pending :getPageComponents="viewGetPageComponents" ref="QueryWarehouseStockPending"/>
+    <table-warehouse-stock-pending :getPageComponents="viewGetPageComponents" ref="TableWarehouseStockPending"/>
+    <add-edit-warehouse-stock-pending :getPageComponents="viewGetPageComponents" ref="AddEditWarehouseStockPending"/>
+    <print-warehouse-stock-pending :getPageComponents="viewGetPageComponents" ref="PrintWarehouseStockPending"/>
   </sub-menu>
 </template>
 
 <script>
-  import { QueryWarehouseStockPending, TableWarehouseStockPending, AddEditWarehouseStockPending } from '@/container';
+  import QueryWarehouseStockPending from './QueryWarehouseStockPending';
+  import TableWarehouseStockPending from './TableWarehouseStockPending';
+  import AddEditWarehouseStockPending from './AddEditWarehouseStockPending';
   import PrintWarehouseStockPending from './PrintWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
 

@@ -6,7 +6,8 @@
 </template>
 
 <script>
-  import { TableItemFrame, AddEditItemFrame } from '@/container';
+  import TableItemFrame from './TableItemFrame';
+  import AddEditItemFrame from './AddEditItemFrame';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

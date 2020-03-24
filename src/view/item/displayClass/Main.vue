@@ -7,7 +7,9 @@
 </template>
 
 <script>
-  import { QueryItemDisplayClass, TableItemDisplayClass, AddEditItemDisplayClass } from '@/container';
+  import QueryItemDisplayClass from './QueryItemDisplayClass';
+  import TableItemDisplayClass from './TableItemDisplayClass';
+  import AddEditItemDisplayClass from './AddEditItemDisplayClass';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

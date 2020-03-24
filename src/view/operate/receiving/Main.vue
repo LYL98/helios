@@ -12,15 +12,13 @@
 </template>
 
 <script>
-  import {
-    QueryWarehouseQualityControl,
-    TableWarehouseQualityControl,
-    AddEditWarehouseQualityControl,
-    FormClose,
-    DetailWarehouseQualityControlD,
-    DetailWarehouseQualityControlP,
-    FormWarehouseQualityControlEditNum
-  } from '@/container';
+  import { FormClose } from '@/container';
+  import QueryWarehouseQualityControl from '@/view/warehouse/qualityControl/QueryWarehouseQualityControl';
+  import TableWarehouseQualityControl from '@/view/warehouse/qualityControl/TableWarehouseQualityControl';
+  import AddEditWarehouseQualityControl from '@/view/warehouse/qualityControl/AddEditWarehouseQualityControl';
+  import DetailWarehouseQualityControlD from '@/view/warehouse/qualityControl/DetailWarehouseQualityControlD';
+  import DetailWarehouseQualityControlP from '@/view/warehouse/qualityControl/DetailWarehouseQualityControlP';
+  import FormWarehouseQualityControlEditNum from '@/view/warehouse/qualityControl/FormWarehouseQualityControlEditNum';
   import PrintWarehouseStockPending from '@/view/warehouse/stockPending/PrintWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
 

@@ -9,9 +9,10 @@
 </template>
 
 <script>
-  import { QueryOperateTruckLoadDelay, TableOperateTruckLoadDelay } from '@/container';
+  import QueryOperateTruckLoadDelay from './QueryOperateTruckLoadDelay';
+  import TableOperateTruckLoadDelay from './TableOperateTruckLoadDelay';
+  import MenuQuery from '@/view/operate/sort/MenuQuery';
   import mainMixin from '@/share/mixin/main.mixin';
-  import MenuQuery from './../sort/MenuQuery';
 
   export default {
     name: 'Main',

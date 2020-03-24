@@ -7,7 +7,9 @@
 </template>
 
 <script>
-  import { QueryItemTags, TableItemTags, AddEditItemTags } from '@/container';
+  import QueryItemTags from './QueryItemTags';
+  import TableItemTags from './TableItemTags';
+  import AddEditItemTags from './AddEditItemTags';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

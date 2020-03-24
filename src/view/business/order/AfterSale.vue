@@ -116,7 +116,8 @@
 <script>
 import { Button, Badge, Input, Select, Option, Table, TableColumn, MessageBox, Pagination, Tag, DatePicker } from 'element-ui';
 import { OmissionText, SelectCity, TableOperate } from '@/common';
-import { QueryOrderAfterSale, DetailOrderList, DetailOrderAfterSale, FormOrderAfterSaleClose, AddEditItemList } from "@/container";
+import { QueryOrderAfterSale, DetailOrderList, DetailOrderAfterSale, FormOrderAfterSaleClose } from "@/container";
+import AddEditItemList from '@/view/item/list/AddEditItemList';
 import { Config, DataHandle, Constant, Http } from '@/util';
 import tableMixin from '@/share/mixin/table.mixin';
 import mainMixin from '@/share/mixin/main.mixin';

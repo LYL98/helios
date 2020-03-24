@@ -10,7 +10,11 @@
 </template>
 
 <script>
-  import { QueryItemGPurchase, TableItemGPurchase, AddEditItemGPurchase, FormAudit, FormClose, AddEditWarehouseStockPending} from '@/container';
+  import { FormAudit, FormClose } from '@/container';
+  import QueryItemGPurchase from './QueryItemGPurchase';
+  import TableItemGPurchase from './TableItemGPurchase';
+  import AddEditItemGPurchase from './AddEditItemGPurchase';
+  import AddEditWarehouseStockPending from '@/view/warehouse/stockPending/AddEditWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

@@ -1,19 +1,17 @@
 <template>
   <sub-menu>
-    <query-warehouse-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseOutStorage"/>
-    <table-warehouse-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseOutStorage"/>
-    <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventory" fromPage="OutStorage"/>
-    <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseInventoryOutStorage" fromPage="OutStorage"/>
+    <query-warehouse-out-storage :getPageComponents="viewGetPageComponents" ref="QueryWarehouseOutStorage"/>
+    <table-warehouse-out-storage :getPageComponents="viewGetPageComponents" ref="TableWarehouseOutStorage"/>
+    <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" ref="DetailWarehouseInventory" fromPage="OutStorage"/>
+    <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" ref="FormWarehouseInventoryOutStorage" fromPage="OutStorage"/>
   </sub-menu>
 </template>
 
 <script>
-  import {
-    QueryWarehouseOutStorage,
-    TableWarehouseOutStorage,
-    DetailWarehouseInventory,
-    FormWarehouseInventoryOutStorage
-  } from '@/container';
+  import QueryWarehouseOutStorage from './QueryWarehouseOutStorage';
+  import TableWarehouseOutStorage from './TableWarehouseOutStorage';
+  import DetailWarehouseInventory from '@/view/warehouse/inventory/DetailWarehouseInventory';
+  import FormWarehouseInventoryOutStorage from '@/view/warehouse/inventory/FormWarehouseInventoryOutStorage';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

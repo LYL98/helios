@@ -3,12 +3,12 @@
     <template slot="left-query">
       <menu-query :getPageComponents="viewGetPageComponents" ref="MenuQuery" fromPage="Sort"/>
     </template>
-    <query-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryOperateSort"/>
-    <table-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableOperateSort"/>
-    <detail-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateSort"/>
-    <add-edit-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditOperateSort"/>
-    <detail-operate-sort-city :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailOperateSortCity"/>
-    <print-operate-sort :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintOperateSort"/>
+    <query-operate-sort :getPageComponents="viewGetPageComponents" ref="QueryOperateSort"/>
+    <table-operate-sort :getPageComponents="viewGetPageComponents" ref="TableOperateSort"/>
+    <detail-operate-sort :getPageComponents="viewGetPageComponents" ref="DetailOperateSort"/>
+    <add-edit-operate-sort :getPageComponents="viewGetPageComponents" ref="AddEditOperateSort"/>
+    <detail-operate-sort-city :getPageComponents="viewGetPageComponents" ref="DetailOperateSortCity"/>
+    <print-operate-sort :getPageComponents="viewGetPageComponents" ref="PrintOperateSort"/>
   </sub-menu>
 </template>
 

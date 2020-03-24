@@ -1,15 +1,19 @@
 <template>
   <sub-menu>
-    <query-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QuerySystemOperator" page="global"/>
-    <table-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableSystemOperator" page="global"/>
+    <query-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QuerySystemOperator"/>
+    <table-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableSystemOperator"/>
     <add-edit-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditSystemOperator"/>
-    <detail-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailSystemOperator" page="global"/>
+    <detail-system-operator :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailSystemOperator"/>
     <from-system-operator-reset-pwd :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormSystemOperatorResetPwd"/>
   </sub-menu>
 </template>
 
 <script>
-  import { QuerySystemOperator, TableSystemOperator, AddEditSystemOperator, DetailSystemOperator, FormSystemOperatorResetPwd } from '@/container';
+  import QuerySystemOperator from './QuerySystemOperator';
+  import TableSystemOperator from './TableSystemOperator';
+  import AddEditSystemOperator from './AddEditSystemOperator';
+  import DetailSystemOperator from './DetailSystemOperator';
+  import FormSystemOperatorResetPwd from './FormSystemOperatorResetPwd';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

@@ -14,7 +14,6 @@ export { default as QueryItemFluctuationAnalysis } from './QueryItemFluctuationA
 export { default as QueryFinanceBalance } from './QueryFinanceBalance';
 export { default as QueryFinanceApprove } from './QueryFinanceApprove';
 export { default as QueryFinanceSStatement } from './QueryFinanceSStatement';
-export { default as QueryFinanceSBDetail } from './QueryFinanceSBDetail';
 
 export { default as QueryGroupBanner } from './QueryGroupBanner';
 export { default as QueryGroupItem } from './QueryGroupItem';
@@ -23,27 +22,3 @@ export { default as QueryGroupStoreOrder } from './QueryGroupStoreOrder';
 export { default as QueryGroupBuyItemStatistics } from './QueryGroupBuyItemStatistics';
 export { default as QueryGroupBuyCaptainStatistics } from './QueryGroupBuyCaptainStatistics';
 export { default as QueryGroupBuyMemberStatistics } from './QueryGroupBuyMemberStatistics';
-
-export { default as QueryItemGlobal } from './QueryItemGlobal';
-export { default as QueryItemList } from './QueryItemList';
-export { default as QueryItemPricing } from './QueryItemPricing';
-export { default as QueryItemSupplier } from './QueryItemSupplier';
-export { default as QueryItemSystemClass } from './QueryItemSystemClass';
-export { default as QueryItemFrame } from './QueryItemFrame';
-export { default as QueryItemTagsPrice } from './QueryItemTagsPrice';
-export { default as QueryItemTags } from './QueryItemTags';
-export { default as QueryItemDisplayClass } from './QueryItemDisplayClass';
-export { default as QueryItemGPurchase } from './QueryItemGPurchase';
-export { default as QueryItemLocalPurchase } from './QueryItemLocalPurchase';
-
-export { default as QueryOperateTruckLoad } from './QueryOperateTruckLoad';
-export { default as QueryOperateTruckLoadDelay } from './QueryOperateTruckLoadDelay';
-
-export { default as QuerySystemOperator } from './QuerySystemOperator';
-
-export { default as QueryWarehouseOutStorage } from './QueryWarehouseOutStorage';
-export { default as QueryWarehouseInventory } from './QueryWarehouseInventory';
-export { default as QueryWarehouseStockPending } from './QueryWarehouseStockPending';
-export { default as QueryWarehouseQualityControl } from './QueryWarehouseQualityControl';
-export { default as QueryWarehouseDistribute } from './QueryWarehouseDistribute';
-export { default as QueryWarehouseInventoryMove } from './QueryWarehouseInventoryMove';

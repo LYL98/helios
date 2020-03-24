@@ -7,7 +7,9 @@
 </template>
 
 <script>
-  import { QueryItemPricing, TableItemPricing, AddEditItemPricing } from '@/container';
+  import QueryItemPricing from './QueryItemPricing';
+  import TableItemPricing from './TableItemPricing';
+  import AddEditItemPricing from './AddEditItemPricing';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
