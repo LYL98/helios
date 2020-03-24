@@ -12,8 +12,12 @@
 </template>
 
 <script>
-  import { QueryOperateTruckLoad, TableOperateTruckLoad, FormOperateTruckLoadAffirm, DetailOperateTruckLoad, FormOperateTruckLoadEditNum } from '@/container';
-  import MenuQuery from './../sort/MenuQuery';
+  import QueryOperateTruckLoad from './QueryOperateTruckLoad';
+  import TableOperateTruckLoad from './TableOperateTruckLoad';
+  import FormOperateTruckLoadAffirm from './FormOperateTruckLoadAffirm';
+  import DetailOperateTruckLoad from './DetailOperateTruckLoad';
+  import FormOperateTruckLoadEditNum from './FormOperateTruckLoadEditNum';
+  import MenuQuery from '@/view/operate/sort/MenuQuery';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

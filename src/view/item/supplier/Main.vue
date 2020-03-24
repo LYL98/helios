@@ -10,7 +10,12 @@
 </template>
 
 <script>
-  import { QueryItemSupplier, TableItemSupplier, AddEditItemSupplier, DetailItemSupplier, DetailItemSupplierItem, FormItemSupplierAccount} from '@/container';
+  import QueryItemSupplier from './QueryItemSupplier';
+  import TableItemSupplier from './TableItemSupplier';
+  import AddEditItemSupplier from './AddEditItemSupplier';
+  import DetailItemSupplier from './DetailItemSupplier';
+  import DetailItemSupplierItem from './DetailItemSupplierItem';
+  import FormItemSupplierAccount from './FormItemSupplierAccount';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

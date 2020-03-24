@@ -8,7 +8,10 @@
 </template>
 
 <script>
-  import { QueryWarehouseDistribute, TableWarehouseDistribute, DetailWarehouseDistribute, AddEditWarehouseStockPending } from '@/container';
+  import QueryWarehouseDistribute from './QueryWarehouseDistribute';
+  import TableWarehouseDistribute from './TableWarehouseDistribute';
+  import DetailWarehouseDistribute from './DetailWarehouseDistribute';
+  import AddEditWarehouseStockPending from '@/view/warehouse/stockPending/AddEditWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

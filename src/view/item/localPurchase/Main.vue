@@ -9,7 +9,10 @@
 </template>
 
 <script>
-  import { QueryItemLocalPurchase, TableItemLocalPurchase, AddEditItemLocalPurchase, FormClose, AddEditWarehouseStockPending} from '@/container';
+  import QueryItemLocalPurchase from './QueryItemLocalPurchase';
+  import TableItemLocalPurchase from './TableItemLocalPurchase';
+  import AddEditItemLocalPurchase from './AddEditItemLocalPurchase';
+  import AddEditWarehouseStockPending from '@/view/warehouse/stockPending/AddEditWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

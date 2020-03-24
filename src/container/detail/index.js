@@ -1,10 +1,6 @@
 export { default as DetailFinanceSStatement } from './DetailFinanceSStatement';
-export { default as DetailItemGlobalEditRecord } from './DetailItemGlobalEditRecord';
-export { default as DetailItemListEditRecord } from './DetailItemListEditRecord';
 
 export { default as DetailHeadBalanceLog } from './DetailHeadBalanceLog';
-
-export { default as DetailSystemOperator } from './DetailSystemOperator';
 
 export { default as DetailMerchantList } from './DetailMerchantList';
 export { default as DetailMerchantRefundLog } from './DetailMerchantRefundLog';
@@ -18,20 +14,3 @@ export { default as DetailGroupStoreOrder } from './DetailGroupStoreOrder';
 
 export { default as DetailOrderList } from './DetailOrderList';
 export { default as DetailOrderAfterSale } from './DetailOrderAfterSale';
-
-export { default as DetailItemSupplier } from './DetailItemSupplier';
-export { default as DetailItemSupplierItem } from './DetailItemSupplierItem';
-
-export { default as DetailWarehouseInventory } from './DetailWarehouseInventory';
-
-export { default as DetailWarehouseDistribute } from './DetailWarehouseDistribute';
-export { default as DetailWarehouseInventoryMoveCheck } from './DetailWarehouseInventoryMoveCheck';
-export { default as DetailWarehouseInventoryMoveVariation } from './DetailWarehouseInventoryMoveVariation';
-export { default as DetailWarehouseInventoryMoveDistribute } from './DetailWarehouseInventoryMoveDistribute';
-export { default as DetailWarehouseInventoryMoveMove } from './DetailWarehouseInventoryMoveMove';
-export { default as DetailWarehouseInventoryMoveOutStorage } from './DetailWarehouseInventoryMoveOutStorage';
-export { default as DetailWarehouseInventoryMovePutaway } from './DetailWarehouseInventoryMovePutaway';
-export { default as DetailWarehouseQualityControlD } from './DetailWarehouseQualityControlD';
-export { default as DetailWarehouseQualityControlP } from './DetailWarehouseQualityControlP';
-
-export { default as DetailOperateTruckLoad } from './DetailOperateTruckLoad';

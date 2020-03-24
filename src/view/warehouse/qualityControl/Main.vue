@@ -1,26 +1,24 @@
 <template>
   <sub-menu>
-    <query-warehouse-quality-control :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseQualityControl" fromPage="QualityControl"/>
-    <table-warehouse-quality-control :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseQualityControl" fromPage="QualityControl"/>
-    <add-edit-warehouse-quality-control :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditWarehouseQualityControl" fromPage="QualityControl"/>
-    <print-warehouse-stock-pending :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="PrintWarehouseStockPending" fromPage="QualityControl"/>
-    <form-close :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormClose" page="WarehouseQualityControl" title="关闭"/>
-    <detail-warehouse-quality-control-d :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlD" fromPage="QualityControl"/>
-    <detail-warehouse-quality-control-p :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseQualityControlP" fromPage="QualityControl"/>
-    <form-warehouse-quality-control-edit-num :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormWarehouseQualityControlEditNum" fromPage="QualityControl"/>
+    <query-warehouse-quality-control :getPageComponents="viewGetPageComponents" ref="QueryWarehouseQualityControl" fromPage="QualityControl"/>
+    <table-warehouse-quality-control :getPageComponents="viewGetPageComponents" ref="TableWarehouseQualityControl" fromPage="QualityControl"/>
+    <add-edit-warehouse-quality-control :getPageComponents="viewGetPageComponents" ref="AddEditWarehouseQualityControl" fromPage="QualityControl"/>
+    <print-warehouse-stock-pending :getPageComponents="viewGetPageComponents" ref="PrintWarehouseStockPending" fromPage="QualityControl"/>
+    <form-close :getPageComponents="viewGetPageComponents" ref="FormClose" page="WarehouseQualityControl" title="关闭"/>
+    <detail-warehouse-quality-control-d :getPageComponents="viewGetPageComponents" ref="DetailWarehouseQualityControlD" fromPage="QualityControl"/>
+    <detail-warehouse-quality-control-p :getPageComponents="viewGetPageComponents" ref="DetailWarehouseQualityControlP" fromPage="QualityControl"/>
+    <form-warehouse-quality-control-edit-num :getPageComponents="viewGetPageComponents" ref="FormWarehouseQualityControlEditNum" fromPage="QualityControl"/>
   </sub-menu>
 </template>
 
 <script>
-  import {
-    QueryWarehouseQualityControl,
-    TableWarehouseQualityControl,
-    AddEditWarehouseQualityControl,
-    FormClose,
-    DetailWarehouseQualityControlD,
-    DetailWarehouseQualityControlP,
-    FormWarehouseQualityControlEditNum
-  } from '@/container';
+  import { FormClose } from '@/container';
+  import QueryWarehouseQualityControl from './QueryWarehouseQualityControl';
+  import TableWarehouseQualityControl from './TableWarehouseQualityControl';
+  import AddEditWarehouseQualityControl from './AddEditWarehouseQualityControl';
+  import DetailWarehouseQualityControlD from './DetailWarehouseQualityControlD';
+  import DetailWarehouseQualityControlP from './DetailWarehouseQualityControlP';
+  import FormWarehouseQualityControlEditNum from './FormWarehouseQualityControlEditNum';
   import PrintWarehouseStockPending from '@/view/warehouse/stockPending/PrintWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
 

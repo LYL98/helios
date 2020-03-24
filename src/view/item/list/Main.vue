@@ -9,7 +9,11 @@
 </template>
 
 <script>
-  import { QueryItemList, TableItemList, AddEditItemList, DetailItemList, DetailItemListEditRecord, FormItemListEditInnerTag } from '@/container';
+  import QueryItemList from './QueryItemList';
+  import TableItemList from './TableItemList';
+  import AddEditItemList from './AddEditItemList';
+  import DetailItemListEditRecord from './DetailItemListEditRecord';
+  import FormItemListEditInnerTag from './FormItemListEditInnerTag';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

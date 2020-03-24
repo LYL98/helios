@@ -9,7 +9,11 @@
 </template>
 
 <script>
-  import { QueryItemGlobal, TableItemGlobal, AddEditItemGlobal, DetailItemGlobalEditRecord, FormItemGlobalSupplierType } from '@/container';
+  import QueryItemGlobal from './QueryItemGlobal';
+  import TableItemGlobal from './TableItemGlobal';
+  import AddEditItemGlobal from './AddEditItemGlobal';
+  import DetailItemGlobalEditRecord from './DetailItemGlobalEditRecord';
+  import FormItemGlobalSupplierType from './FormItemGlobalSupplierType';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

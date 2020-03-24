@@ -7,7 +7,9 @@
 </template>
 
 <script>
-  import { QueryItemGlobal, TableItemGlobal, AddEditItemGlobal } from '@/container';
+  import QueryItemGlobal from '@/view/item/global/QueryItemGlobal';
+  import TableItemGlobal from '@/view/item/global/TableItemGlobal';
+  import AddEditItemGlobal from '@/view/item/global/AddEditItemGlobal';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

@@ -8,7 +8,10 @@
 </template>
 
 <script>
-  import { QueryFinanceSBDetail, TableFinanceSBDetail, AddEditFinanceSBDetail, FormAudit} from '@/container';
+  import { FormAudit} from '@/container';
+  import QueryFinanceSBDetail from '@/view/finance/sBDetail/QueryFinanceSBDetail';
+  import TableFinanceSBDetail from '@/view/finance/sBDetail/TableFinanceSBDetail';
+  import AddEditFinanceSBDetail from '@/view/finance/sBDetail/AddEditFinanceSBDetail';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

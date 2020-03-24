@@ -1,26 +1,24 @@
 <template>
   <sub-menu>
-    <query-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryWarehouseInventoryMove"/>
-    <table-warehouse-inventory-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableWarehouseInventoryMove"/>
-    <detail-warehouse-inventory-move-check :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveCheck"/>
-    <detail-warehouse-inventory-move-variation :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveVariation"/>
-    <detail-warehouse-inventory-move-distribute :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveDistribute"/>
-    <detail-warehouse-inventory-move-move :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveMove"/>
-    <detail-warehouse-inventory-move-out-storage :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMoveOutStorage"/>
-    <detail-warehouse-inventory-move-putaway :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailWarehouseInventoryMovePutaway"/>
+    <query-warehouse-inventory-move :getPageComponents="viewGetPageComponents" ref="QueryWarehouseInventoryMove"/>
+    <table-warehouse-inventory-move :getPageComponents="viewGetPageComponents" ref="TableWarehouseInventoryMove"/>
+    <detail-warehouse-inventory-move-check :getPageComponents="viewGetPageComponents" ref="DetailWarehouseInventoryMoveCheck"/>
+    <detail-warehouse-inventory-move-variation :getPageComponents="viewGetPageComponents" ref="DetailWarehouseInventoryMoveVariation"/>
+    <detail-warehouse-inventory-move-distribute :getPageComponents="viewGetPageComponents" ref="DetailWarehouseInventoryMoveDistribute"/>
+    <detail-warehouse-inventory-move-move :getPageComponents="viewGetPageComponents" ref="DetailWarehouseInventoryMoveMove"/>
+    <detail-warehouse-inventory-move-out-storage :getPageComponents="viewGetPageComponents" ref="DetailWarehouseInventoryMoveOutStorage"/>
+    <detail-warehouse-inventory-move-putaway :getPageComponents="viewGetPageComponents" ref="DetailWarehouseInventoryMovePutaway"/>
   </sub-menu>
 </template>
 <script>
-  import {
-    QueryWarehouseInventoryMove,
-    TableWarehouseInventoryMove,
-    DetailWarehouseInventoryMoveCheck,
-    DetailWarehouseInventoryMoveVariation,
-    DetailWarehouseInventoryMoveDistribute,
-    DetailWarehouseInventoryMoveMove,
-    DetailWarehouseInventoryMoveOutStorage,
-    DetailWarehouseInventoryMovePutaway
-  } from '@/container';
+  import QueryWarehouseInventoryMove from './QueryWarehouseInventoryMove';
+  import TableWarehouseInventoryMove from './TableWarehouseInventoryMove';
+  import DetailWarehouseInventoryMoveCheck from './DetailWarehouseInventoryMoveCheck';
+  import DetailWarehouseInventoryMoveVariation from './DetailWarehouseInventoryMoveVariation';
+  import DetailWarehouseInventoryMoveDistribute from './DetailWarehouseInventoryMoveDistribute';
+  import DetailWarehouseInventoryMoveMove from './DetailWarehouseInventoryMoveMove';
+  import DetailWarehouseInventoryMoveOutStorage from './DetailWarehouseInventoryMoveOutStorage';
+  import DetailWarehouseInventoryMovePutaway from './DetailWarehouseInventoryMovePutaway';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

@@ -7,7 +7,9 @@
 </template>
 
 <script>
-  import { QueryFinanceSBDetail, TableFinanceSBDetail, AddEditFinanceSBDetail} from '@/container';
+  import QueryFinanceSBDetail from './QueryFinanceSBDetail';
+  import TableFinanceSBDetail from './TableFinanceSBDetail';
+  import AddEditFinanceSBDetail from './AddEditFinanceSBDetail';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {

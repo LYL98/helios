@@ -9,7 +9,6 @@ export { default as TableFinanceBalanceLog } from './TableFinanceBalanceLog';
 export { default as TableFinanceBalanceMerchantLog } from './TableFinanceBalanceMerchantLog';
 export { default as TableFinanceApprove } from './TableFinanceApprove';
 export { default as TableFinanceSStatement } from './TableFinanceSStatement';
-export { default as TableFinanceSBDetail } from './TableFinanceSBDetail';
 
 export { default as TableGroupBanner } from './TableGroupBanner';
 export { default as TableGroupItem } from './TableGroupItem';
@@ -20,29 +19,5 @@ export { default as TableGroupBuyDetail } from './TableGroupBuyDetail';
 export { default as TableGroupHeadDetail } from './TableGroupHeadDetail';
 export { default as TableGroupHeadDetailList } from './TableGroupHeadDetailList';
 
-export { default as TableItemGlobal } from './TableItemGlobal';
-export { default as TableItemList } from './TableItemList';
-export { default as TableItemPricing } from './TableItemPricing';
-export { default as TableItemSupplier } from './TableItemSupplier';
-export { default as TableItemSystemClass } from './TableItemSystemClass';
-export { default as TableItemFrame } from './TableItemFrame';
-export { default as TableItemTagsPrice } from './TableItemTagsPrice';
-export { default as TableItemTags } from './TableItemTags';
-export { default as TableItemDisplayClass } from './TableItemDisplayClass';
-export { default as TableItemGPurchase } from './TableItemGPurchase';
-export { default as TableItemLocalPurchase } from './TableItemLocalPurchase';
-
-export { default as TableOperateTruckLoad } from './TableOperateTruckLoad';
-export { default as TableOperateTruckLoadDelay } from './TableOperateTruckLoadDelay';
-
-export { default as TableSystemOperator } from './TableSystemOperator';
-
 export { default as TableMerchantList } from './TableMerchantList';
 export { default as TableMerchantRefund } from './TableMerchantRefund';
-
-export { default as TableWarehouseOutStorage } from './TableWarehouseOutStorage';
-export { default as TableWarehouseInventory } from './TableWarehouseInventory';
-export { default as TableWarehouseStockPending } from './TableWarehouseStockPending';
-export { default as TableWarehouseQualityControl } from './TableWarehouseQualityControl';
-export { default as TableWarehouseDistribute } from './TableWarehouseDistribute';
-export { default as TableWarehouseInventoryMove } from './TableWarehouseInventoryMove';
