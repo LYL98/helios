@@ -126,6 +126,12 @@ const Config = (() => {
       itemCouponDistributeStatistic: apiM + '/coupon/distribute/merchants/query', // 优惠券发放记录
       itemCouponListExport: apiM + '/coupon/distribute/log/export', //优惠券导出
 
+      // 营销策略
+      bussinessMarketingStrategyCityQuery: apiM + '/item/city_price/query', // 县域定价查询
+      bussinessMarketingStrategyCityAdd: apiM + '/item/city_price/add', // 新增县域定价
+      bussinessMarketingStrategyCityEdit: apiM + '/item/city_price/edit', // 编辑县域定价
+
+
       //团购商品分类
       groupItemClassList: apiM + '/gb_item/category/list', //团购商品分类列表(组件共用)
       groupItemClassQuery: apiM + '/gb_item/category/query',  //团购商品分类

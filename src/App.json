@@ -178,6 +178,23 @@
               "name": "Banner"
             }
           ]
+        },
+        {
+          "title": "营销策略",
+          "name": "MarketingStrategy",
+          "type": "main",
+          "children": [
+            {
+              "title": "县域定价",
+              "upName": "MarketingStrategy",
+              "name": "MarketingStrategyCity"
+            },
+            {
+              "title": "阶梯定价",
+              "upName": "MarketingStrategy",
+              "name": "MarketingStrategyLadder"
+            }
+          ]
         }
       ]
     },

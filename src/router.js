@@ -136,6 +136,16 @@ const router = new Router({
       name: 'Banner',
       component: () => import('@/view/business/banner/Main')
     },
+    {
+      path: '/business/marketing-strategy/city',
+      name: 'MarketingStrategyCity',
+      component: () => import('@/view/business/marketingStrategy/city')
+    },
+    {
+      path: '/business/marketing-strategy/ladder',
+      name: 'MarketingStrategyLadder',
+      component: () => import('@/view/business/marketingStrategy/ladder')
+    },
 
     /*团购*/
     {
