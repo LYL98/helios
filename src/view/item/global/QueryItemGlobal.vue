@@ -31,8 +31,6 @@
       page: { type: String, default: 'global' }, //页面global、recover
     },
     created() {
-      this.$data.initQuery.province_code = this.province.code;
-      this.$data.query.province_code = this.province.code;
       this.$data.initQuery.is_deleted = this.page === 'global' ? '0' : '1'
       this.$data.query.is_deleted = this.page === 'global' ? '0' : '1'
     },
@@ -41,7 +39,6 @@
         system_class_code: '',
         system_class_codes: [],
         condition: '',
-        province_code: '',
         is_deleted: '0'
       }
       return {

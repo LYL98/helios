@@ -1,10 +1,11 @@
 <template>
   <sub-menu>
-    <query-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemList"/>
-    <table-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemList"/>
-    <add-edit-item-list :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemList"/>
-    <detail-item-list-edit-record :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="DetailItemListEditRecord"/>
-    <form-item-list-edit-inner-tag :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="FormItemListEditInnerTag"/>
+    <global-province slot="left-query" type="default" isRequired @change="selectProvince"/>
+    <query-item-list :getPageComponents="viewGetPageComponents" ref="QueryItemList"/>
+    <table-item-list :getPageComponents="viewGetPageComponents" ref="TableItemList"/>
+    <add-edit-item-list :getPageComponents="viewGetPageComponents" ref="AddEditItemList"/>
+    <detail-item-list-edit-record :getPageComponents="viewGetPageComponents" ref="DetailItemListEditRecord"/>
+    <form-item-list-edit-inner-tag :getPageComponents="viewGetPageComponents" ref="FormItemListEditInnerTag"/>
   </sub-menu>
 </template>
 
@@ -14,6 +15,7 @@
   import AddEditItemList from './AddEditItemList';
   import DetailItemListEditRecord from './DetailItemListEditRecord';
   import FormItemListEditInnerTag from './FormItemListEditInnerTag';
+  import { GlobalProvince } from '@/component';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
@@ -23,12 +25,20 @@
       'table-item-list': TableItemList,
       'add-edit-item-list': AddEditItemList,
       'detail-item-list-edit-record': DetailItemListEditRecord,
-      'form-item-list-edit-inner-tag': FormItemListEditInnerTag
+      'form-item-list-edit-inner-tag': FormItemListEditInnerTag,
+      'global-province': GlobalProvince,
     },
     mixins: [mainMixin],
     created() {
       documentTitle("商品 - 在售商品");
     },
+    methods: {
+      //选择区域后
+      selectProvince(data){
+        let pc = this.viewGetPageComponents('TableItemList');
+        if(pc) pc.initGetData({province_code: data.code});
+      }
+    }
   };
 </script>
 
