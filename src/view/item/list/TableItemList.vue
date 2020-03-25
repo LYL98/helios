@@ -149,10 +149,17 @@
       }
     },
     created() {
-      let pc = this.getPageComponents('QueryItemList');
-      this.getData(pc.query);
+      //在Main.vue初始化
     },
     methods: {
+      //初始化获取数据
+      initGetData(extraQuery){
+        let pc = this.getPageComponents('QueryItemList');
+        this.getData({
+          ...pc.query,
+          ...extraQuery
+        });
+      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用

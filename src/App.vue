@@ -1,56 +1,71 @@
 <template>
   <div id="app-body">
     <div id="app" v-if="pageData.name !== 'Login'" style="min-width: 1000px;">
-      <div id="head-div">
-        <div id="logo-div" class="ellipsis">蒲公英运营中心</div>
-        <div class="global-province" v-if="pageData.name !== 'Login'">
-          <my-global-province/>
-        </div>
-        <el-dropdown trigger="click" placement="bottom" class="f-r login-username" @command="clickDropdown">
-          <div style="display: flex; align-items: center;">
-            <img v-if="myInfo.avatar && myInfo.avatar !== ''" :src="tencentPath + myInfo.avatar" alt="avatar" width="24" height="24" style="margin-right: 8px; border-radius: 12px">
-            <img v-else src="@/assets/img/default_avatar.png" alt="avatar" width="24" height="24" style="margin-right: 8px; border-radius: 12px">
-            {{myInfo.realname}}
-          </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="editPassword">修改密码</el-dropdown-item>
-            <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
-            <el-dropdown-item command="reloadAuth" v-if="isDev">重载权限(仅供开发测试用)</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
       <div id="nav-menu-div">
+        <div id="login-username">
+          <div class="avatar">
+            <img v-if="myInfo.avatar && myInfo.avatar !== ''" :src="tencentPath + myInfo.avatar" alt="avatar" width="54" height="54">
+            <img v-else src="@/assets/img/default_avatar.png" alt="avatar" width="54" height="54">
+          </div>
+          <el-dropdown trigger="click" placement="bottom" @command="clickDropdown">
+            <div class="username">
+              <div class="str add-dot">{{myInfo.realname}}</div>
+              <div class="icon"><i class="el-icon-arrow-down"></i></div>
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="editPassword">修改密码</el-dropdown-item>
+              <el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
+              <el-dropdown-item command="reloadAuth" v-if="isDev">重载权限(仅供开发测试用)</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
         <div id="menu-div">
           <el-menu
             :router="false"
             unique-opened
             :default-active="getMenuIndex"
             menu-trigger="click"
-            background-color="#262626"
+            background-color="#20232C"
             style="border-right: 0"
-            text-color="#bbb"
-            active-text-color="#00ADE7"
+            text-color="#D1D4DB"
+            active-text-color="#D1D4DB"
           >
             <!--:route="{name: 'Home'}"-->
-            <el-menu-item class="home" index="Home" v-if="auth.isAdmin || auth.Home" @click="(e) => selectMenu(e, { name: 'Home' })">
+            <el-menu-item class="home" index="Home" v-if="auth.isAdmin || auth.Home" @click="(e) => clickMenu(e, { name: 'Home' })">
               <i class="iconfont menu-icon">&#xe751;</i>
               <span>首页</span>
             </el-menu-item>
 
-            <!--动态菜单-->
-            <template v-for="(item, index) in menus">
-              <el-submenu :index="item.name" :key="index" v-if="auth.isAdmin || auth[item.name]">
-                <template slot="title">
+            <!--运营菜单-->
+            <template v-if="selectMenu === 'operate'">
+              <template v-for="(item, index) in menus">
+                <el-submenu :index="item.name" :key="index" v-if="auth.isAdmin || auth[item.name]">
+                  <template slot="title">
+                    <i class="iconfont menu-icon" v-html="item.icon"></i>
+                    <span>{{item.title}}</span>
+                  </template>
+                  <template v-for="(m, i) in item.children">
+                    <el-menu-item :index="m.name" :key="i" v-if="auth.isAdmin || auth[m.name]" @click="(e) => clickMenu(e, m)"><span>{{m.title}}</span></el-menu-item>
+                  </template>
+                </el-submenu>
+              </template>
+            </template>
+
+            <!--团购菜单-->
+            <template v-else-if="selectMenu === 'gbuy'">
+              <template v-for="(item, index) in gmenus">
+                <el-menu-item :index="item.name" :key="index" v-if="auth.isAdmin || auth[item.name]" @click="(e) => clickMenu(e, item)">
                   <i class="iconfont menu-icon" v-html="item.icon"></i>
                   <span>{{item.title}}</span>
-                </template>
-                <template v-for="(m, i) in item.children">
-                  <el-menu-item :index="m.name" :key="i" v-if="auth.isAdmin || auth[m.name]" @click="(e) => selectMenu(e, m)"><span>{{m.title}}</span></el-menu-item>
-                </template>
-              </el-submenu>
+                </el-menu-item>
+              </template>
             </template>
 
           </el-menu>
+        </div>
+        <div id="go-g-buy" v-if="authList.length > 1">
+          <div v-if="selectMenu === 'operate'" class="btn" @click="changeMenuType('gbuy')">进入团购中心</div>
+          <div v-else-if="selectMenu === 'gbuy'" class="btn" @click="changeMenuType('operate')">进入运营中心</div>
         </div>
       </div>
       <div id="router-view-div" style="min-width: 1000px;">
@@ -68,7 +83,7 @@
 <script>
   import { Menu, Submenu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Backtop, Form, Notification } from 'element-ui';
   import { Http, Config, Method, DataHandle } from '@/util';
-  import { GlobalProvince, PwdModify } from '@/component';
+  import { PwdModify } from '@/component';
   import AppJson from './App.json';
 
   export default {
@@ -80,14 +95,16 @@
       'el-dropdown': Dropdown,
       'el-dropdown-menu': DropdownMenu,
       'el-dropdown-item': DropdownItem,
-      'el-backtop': Backtop,
-      'my-global-province': GlobalProvince,
+      'el-backtop': Backtop
     },
     data() {
       return {
         isDev: Config.isDev,
         tencentPath: Config.tencentPath,
+        authList: [],
         menus: AppJson.menus,
+        gmenus: AppJson.gmenus,
+        selectMenu: '',
         pageData: {
           name: 'Login'
         },
@@ -158,8 +175,13 @@
       }
     },
     methods: {
+      //切换菜单类型
+      changeMenuType(type){
+        this.$data.selectMenu = type;
+        if(this.$route.name !== 'Home') this.$router.replace({ name: "Home" });
+      },
       //选择菜单
-      selectMenu(e, item){
+      clickMenu(e, item){
         //临时解决
         if(item.name === 'OperateTruckLoadMain'){
           this.$data.globalQuery = {};
@@ -215,7 +237,6 @@
         this.$loading({ isShow: false });
         if(res.code === 0){
           this.$router.replace({ name: "Login" });
-          //window.location.replace('/');
         }else{
           this.$message({ message: res.message, type: 'error' });
         }
@@ -228,7 +249,6 @@
         this.$loading({ isShow: false });
         if(res.code === 0){
           if(this.$route.name !== 'Home') this.$router.replace({ name: "Home" });
-          //window.location.reload();
         }else{
           this.$message({ message: res.message, type: 'error' });
         }
@@ -240,6 +260,27 @@
         this.$data.pageData = a;
         this.$data.auth = this.$auth || {};
         this.$data.myInfo = this.$myInfo || {};
+        let { auth } = this, authList = [];
+        if(auth.isAdmin){
+          authList = ['operate', 'gbuy'];
+          if(this.selectMenu === '') this.$data.selectMenu = 'operate';
+        }else{
+          let operate = false, gbuy = false;
+          for(let item in auth){
+            if(item.indexOf('Group') < 0 && item !== 'Home') operate = true;
+            if(item === 'Group') gbuy = true;
+          }
+          if(operate) authList.push('operate');
+          if(gbuy) authList.push('gbuy');
+          if(this.selectMenu === '' && a.name.indexOf('Group') === 0 && gbuy){
+            this.$data.selectMenu = 'gbuy';
+          }else if(this.selectMenu === '' && operate){
+            this.$data.selectMenu = 'operate';
+          }else if(this.selectMenu === '' && gbuy){
+            this.$data.selectMenu = 'gbuy';
+          }
+        }
+        this.$data.authList = authList;
       },
     }
   }

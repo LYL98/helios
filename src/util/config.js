@@ -536,12 +536,6 @@ const Config = (() => {
     tencentUpPath: TencentUpPath, //腾讯Bucket上传地址
     tencentPath: TencentPath,//腾讯Bucket下载地址
     isPrintRequestLog: IsPrintRequestLog,// 打印请求日志
-    //授板登录(重新登录)
-    accreditLogin() {
-      setTimeout(() => {
-        window.location.replace('/');
-      }, 2000);
-    }
   }
 })();
 
