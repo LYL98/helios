@@ -3,6 +3,11 @@
     <div class="container-query">
       <el-row :gutter="32">
         <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province type="select" isRequired @change="selectProvince"/>
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
           <my-query-item label="销售日期">
             <el-date-picker
               v-model="query.opt_date"
@@ -17,11 +22,6 @@
             </el-date-picker>
           </my-query-item>
         </el-col>
-        <el-col :span="7">
-          <my-query-item label="采购员">
-            <select-buyer size="small" :provinceCode="query.province_code" v-model="query.buyer_id" @change="handleQuery('TableItemPricing')" />
-          </my-query-item>
-        </el-col>
         <el-col :span="10">
           <my-query-item label="搜索">
             <query-search-input v-model="query.condition" placeholder="请输入商品名称/编号" size="small" @search="handleQuery('TableItemPricing')" @reset="handleClearQuery('TableItemPricing')"/>
@@ -29,6 +29,11 @@
         </el-col>
       </el-row>
       <el-row :gutter="32" style="margin-top: 16px;">
+        <el-col :span="7">
+          <my-query-item label="采购员">
+            <select-buyer size="small" :provinceCode="query.province_code" v-model="query.buyer_id" @change="handleQuery('TableItemPricing')" />
+          </my-query-item>
+        </el-col>
         <el-col :span="7">
           <my-query-item label="科学分类">
             <select-system-class v-model="query.system_class_codes" :clearable="true" size="small" @change="changeSystemClass" />
@@ -46,7 +51,7 @@
 
 <script>
   import { InputPercent, SelectSystemClass } from '@/common';
-  import { SelectBuyer } from '@/component';
+  import { SelectBuyer, GlobalProvince } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
@@ -55,6 +60,7 @@
       'select-buyer': SelectBuyer,
       'input-percent': InputPercent,
       'select-system-class': SelectSystemClass,
+      'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
     created() {
@@ -63,7 +69,7 @@
     },
     data() {
       let initQuery = {
-        province_code: this.$province.code,
+        province_code: '',
         opt_date: '',
         buyer_id: '',
         sort: '',
@@ -83,6 +89,12 @@
         this.$data.query.system_class_code = data.code || '';
         this.handleQuery('TableItemPricing');
       },
+      //选择区域后【页面初始化】
+      selectProvince(data){
+        this.$data.initQuery.province_code = data.code;
+        this.$data.query.province_code = data.code;
+        this.handleQuery('TableItemPricing');
+      }
     }
   }
 </script>

@@ -1,8 +1,8 @@
 <template>
   <sub-menu>
-    <query-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="QueryItemPricing"/>
-    <table-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="TableItemPricing"/>
-    <add-edit-item-pricing :getPageComponents="viewGetPageComponents" :windowHeight="viewWindowHeight" ref="AddEditItemPricing"/>
+    <query-item-pricing :getPageComponents="viewGetPageComponents" ref="QueryItemPricing"/>
+    <table-item-pricing :getPageComponents="viewGetPageComponents" ref="TableItemPricing"/>
+    <add-edit-item-pricing :getPageComponents="viewGetPageComponents" ref="AddEditItemPricing"/>
   </sub-menu>
 </template>
 

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import { Http, Config } from '@/util';
+import { Http, Config, Method } from '@/util';
 import { MessageBox, Notification } from 'element-ui';
 
 Vue.use(Router);
@@ -476,6 +476,9 @@ const getAuthorityList = ()=>{
     install(Vue){
       Vue.prototype.$auth = a; //放入全局
       Vue.prototype.$myInfo = myInfo; //放入全局
+      //全局区域
+      let province = Method.getLocalStorage('globalProvince');
+      Vue.prototype.$province = province.code ? province : {province_code: myInfo.province_code};
     }
   });
   //如果没有权限
