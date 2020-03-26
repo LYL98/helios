@@ -3,7 +3,7 @@
     <div id="app" v-if="pageData.name !== 'Login'" style="min-width: 1000px;">
       <div id="nav-menu-div">
         <div id="login-username">
-          <div class="avatar">
+          <div class="username-avatar">
             <img v-if="myInfo.avatar && myInfo.avatar !== ''" :src="tencentPath + myInfo.avatar" alt="avatar" width="54" height="54">
             <img v-else src="@/assets/img/default_avatar.png" alt="avatar" width="54" height="54">
           </div>

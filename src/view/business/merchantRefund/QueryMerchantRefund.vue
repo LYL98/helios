@@ -1,11 +1,24 @@
 <template>
   <div class="container-query">
     <el-row :gutter="32">
+      <el-col :span="7">
+        <my-query-item label="区域">
+          <select-province
+            v-model="query.province_code"
+            size="small"
+            showAll
+            clearable
+            @change="selectProvince"
+          />
+        </my-query-item>
+      </el-col>
       <el-col  :span="7">
         <my-query-item label="县域">
           <select-city
             size="small"
+            :disabled="query.province_code ? false : true"
             clearable
+            showAll
             v-model="query.city_id"
             :provinceCode="query.province_code"
             @change="handleQuery('TableMerchantRefund')"
@@ -29,20 +42,21 @@
 
 <script>
   import { Constant } from '@/util';
-  import { SelectCity } from '@/common';
+  import { SelectProvince, SelectCity } from '@/common';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryItem",
     components: {
-      'select-city': SelectCity
+      'select-city': SelectCity,
+      'select-province': SelectProvince,
     },
     mixins: [queryMixin],
     created() {
     },
     data() {
       let initQuery = {
-        province_code: this.$province.code,
+        province_code: '',
         city_id: '',
         condition: '',
         page: 1,
@@ -54,6 +68,11 @@
       }
     },
     methods: {
+      //查询选择区域后
+      selectProvince(){
+        this.query.city_id = '';
+        this.handleQuery('TableMerchantRefund');
+      },
     }
   }
 </script>
