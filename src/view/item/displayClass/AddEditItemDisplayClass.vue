@@ -29,10 +29,13 @@ export default {
   mixins: [addEditMixin],
   components: {
   },
+  props: {
+    provinceCode: { type: String, default: '' }, //省code
+  },
   data(){
     return{
       initDetail: {
-        province_code: this.$province.code
+        province_code: this.provinceCode
       },
       rules: {
         title: [

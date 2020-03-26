@@ -40,7 +40,8 @@ export default {
   components: {
     'input-percent': InputPercent
   },
-  created() {
+  props: {
+    provinceCode: { type: String, default: '' }, //省code
   },
   data(){
     let that = this;
@@ -59,7 +60,7 @@ export default {
         rise_min: '',
         rise_max: '',
         remark: '',
-        province_code: this.$province.code
+        province_code: this.provinceCode
       },
       rules: {
         title: [

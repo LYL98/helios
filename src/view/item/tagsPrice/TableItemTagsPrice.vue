@@ -69,9 +69,8 @@
     components: {
     },
     mixins: [tableMixin],
-    created() {
-      let pc = this.getPageComponents('QueryItemTagsPrice'); //获取query组件
-      this.getData(pc.query);
+    props: {
+      provinceCode: { type: String, default: '' }, //省code
     },
     data() {
       return {
@@ -86,12 +85,16 @@
         ]
       }
     },
+    created() {
+      this.getData();
+    },
     methods: {
       //获取数据
-      async getData(query){
-        this.$data.query = query; //赋值，minxin用
+      async getData(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.basicdataItemInnerTagsList, query);
+        let res = await Http.get(Config.api.basicdataItemInnerTagsList, {
+          province_code: this.provinceCode
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -107,7 +110,7 @@
         });
         this.$loading({ isShow: false });
         if(res.code === 0){
-          this.getData(this.query);
+          this.getData();
           this.$message({message: '已删除', type: 'success'});
         }else{
           this.$message({message: res.message, type: 'error'});

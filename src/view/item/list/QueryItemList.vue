@@ -59,7 +59,7 @@
       <el-row :gutter="32" style="margin-top: 16px;">
         <el-col :span="7">
           <my-query-item label="采购员">
-            <select-buyer size="small" :provinceCode="query.province_code" v-model="query.buyer_id" @change="handleQuery('TableItemList')" />
+            <select-buyer size="small" :provinceCode="provinceCode" v-model="query.buyer_id" @change="handleQuery('TableItemList')" />
           </my-query-item>
         </el-col>
       </el-row>
@@ -108,16 +108,7 @@
     mixins: [queryMixin],
     props: {
       fromPage: { type: String, default: 'List' }, //List 在售商品， ListForSale 待售商品
-    },
-    created() {
-      let { initQuery, query, fromPage } = this;
-      initQuery.province_code = this.$province.code;
-      query.province_code = this.$province.code;
-      let isOnSale = fromPage === 'List' ? 1 : 0;
-      initQuery.is_on_sale = isOnSale;
-      query.is_on_sale = isOnSale;
-      this.$data.initQuery = initQuery;
-      this.$data.query = query;
+      provinceCode: { type: String, default: '' }, //省code
     },
     data() {
       let initQuery = {
@@ -135,6 +126,14 @@
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }
+    },
+    created() {
+      let { initQuery, query, fromPage } = this;
+      let isOnSale = fromPage === 'List' ? 1 : 0;
+      initQuery.is_on_sale = isOnSale;
+      query.is_on_sale = isOnSale;
+      this.$data.initQuery = initQuery;
+      this.$data.query = query;
     },
     methods: {
       //选择科学分类

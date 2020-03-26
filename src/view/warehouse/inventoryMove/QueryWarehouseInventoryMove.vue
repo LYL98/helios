@@ -62,7 +62,6 @@
         tar_storehouse_id: '', //调拨记录用
         condition: '',
         picker_value: null,
-        //province_code: this.$province.code,
       }
       return {
         tabValue: '', //由table控制
