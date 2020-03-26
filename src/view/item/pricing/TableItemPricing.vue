@@ -118,8 +118,9 @@
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryItemPricing');
-      this.getData(pc.query);
+      //页面初始化在query组件，因要必选区域
+      //let pc = this.getPageComponents('QueryItemPricing');
+      //this.getData(pc.query);
     },
     data() {
       return {

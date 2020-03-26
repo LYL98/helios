@@ -9,6 +9,7 @@
 </template>
 
 <script>
+  import FormClose from '@/share/layout/FormClose';
   import QueryItemLocalPurchase from './QueryItemLocalPurchase';
   import TableItemLocalPurchase from './TableItemLocalPurchase';
   import AddEditItemLocalPurchase from './AddEditItemLocalPurchase';
