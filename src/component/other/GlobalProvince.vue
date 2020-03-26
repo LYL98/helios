@@ -9,13 +9,14 @@
         <i class="el-icon-arrow-down el-icon--right"></i>
       </div>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item :command="{}" v-if="!isRequired" :style="!province.id && 'color: #00ADE7;'">全部区域</el-dropdown-item>
+        <el-dropdown-item :command="{title: '', code: ''}" v-if="!isRequired" :style="!province.id && 'color: #00ADE7;'">全部区域</el-dropdown-item>
         <el-dropdown-item :command="item" v-for="(item, index) in dataItem" :key="index" :style="province.code === item.code && 'color: #00ADE7;'">{{item.title}}</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
 
     <!-- type === select -->
     <el-select v-model="selectCode" filterable placeholder="全部" :size="size" :clearable="!isRequired" style="width:100%;" v-else-if="type === 'select'">
+      <el-option v-if="!isRequired" label="全部" value=""/>
       <el-option v-for="(item, index) in dataItem" :key="index" :label="item.title" :value="item.code"/>
     </el-select>
     
@@ -74,16 +75,20 @@ export default {
   methods: {
     //区域改变
     changeProvince(data){
+      data = data || {title: '', code: ''};
       this.$data.province = data;
       this.$data.isShow = false;
-      Method.setLocalStorage('globalProvince', data);//缓存
-      //全局注册方法
-      Vue.use({
-        install(Vue){
-          //全局区域
-          Vue.prototype.$province = data;
-        }
-      });
+      //如必选
+      if(this.isRequired){
+        Method.setLocalStorage('globalProvince', data);//缓存
+        //全局注册方法
+        Vue.use({
+          install(Vue){
+            //全局区域
+            Vue.prototype.$province = data;
+          }
+        });
+      }
       this.$emit('change', data);
     },
     //获取所有区域

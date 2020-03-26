@@ -22,7 +22,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="选择商品" v-if="bannerType === 'commdity'">
-        <my-search-item v-model="itemName" @onSelectItem="selectItem" :provinceCode="$province.code"></my-search-item>
+        <my-search-item v-model="itemName" @onSelectItem="selectItem" :provinceCode="provinceCode"></my-search-item>
       </el-form-item>
       <el-form-item label="商品类型" v-if="bannerType === 'category'">
         <my-select-tag :tag="tagName" @change="selectTag"></my-select-tag>
@@ -53,12 +53,11 @@ export default {
     'my-upload-img': UploadImg,
     'my-select-tag': SelectTag
   },
-  created: function() {
-
+  props: {
+    provinceCode: { type: String, default: '' }, //省code
   },
   data(){
     let initDetail = {
-      province_code: '',
       images: [],
       url: '',
       is_usable: true,
@@ -156,7 +155,7 @@ export default {
     },
     async baseDisplayClassList(code, callback) {
       let res = await Http.get(Config.api.baseDisplayClassList, {
-        province_code: this.$province.code,
+        province_code: this.provinceCode,
         code: code
       });
       if (res.code === 0) {
@@ -183,7 +182,7 @@ export default {
       this.$loading({isShow: true});
       let res = await Http.post(Config.api[pageType === 'edit' ? 'systemBannerEdit' : 'systemBannerAdd'], {
         ...detail,
-        province_code: this.$province.code
+        province_code: this.provinceCode
       });
       this.$loading({isShow: false});
       if(res.code === 0){

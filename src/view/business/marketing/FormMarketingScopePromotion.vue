@@ -145,7 +145,6 @@
         callback();
       }
       return {
-        province: this.$province,
         editItem: item,
         error: {
           rules: ''
@@ -204,7 +203,7 @@
       },
 
       async itemScopePromotionRepeat(value, callback) {
-        let res = await Http.get(Config.api.itemScopePromotionRepeat, {province_code: this.province.code, time_start: value[0], time_end: value[1]});
+        let res = await Http.get(Config.api.itemScopePromotionRepeat, {province_code: this.$province.code, time_start: value[0], time_end: value[1]});
         if (res.code === 0) {
           if (!res.data) {
             callback();

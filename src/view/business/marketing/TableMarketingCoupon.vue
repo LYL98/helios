@@ -133,8 +133,7 @@
       sendItem: { type: Function, required: true },
       autoDis: { type: Function, required: true },
       showItem: { type: Function, required: true },
-      showLog: { type: Function, required: true },
-      offsetHeight: { type: Number, required: true}
+      showLog: { type: Function, required: true }
     },
     computed: {
     },
