@@ -1,5 +1,8 @@
 <template>
   <sub-menu>
+    <template slot="left-query">
+      <global-province/>
+    </template>
     <query-merchant-store v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <div class="table-top" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
@@ -59,6 +62,7 @@
   import AddEditMerchantList from './AddEditMerchantList';
   import DetailMerchantList from './DetailMerchantList';
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
+  import { GlobalProvince } from '@/component';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
@@ -77,6 +81,7 @@
       'add-edit-merchant-list': AddEditMerchantList,
       'detail-merchant-list': DetailMerchantList,
       'query-merchant-store': QueryMerchantStore,
+      'global-province': GlobalProvince,
     },
     mixins: [mainMixin],
     created() {

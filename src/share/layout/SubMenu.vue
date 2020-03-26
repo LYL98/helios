@@ -41,12 +41,12 @@
   /*三级菜单*/
   .my-sub-menu{
     height: 48px;
-    overflow: hidden;
     display: flex;
     align-items: center;
     border-bottom: 1px solid #eee;
     background: #fff;
     padding: 0 10px;
+    position: relative;
     >.menu{
       flex: 1;
       display: flex;

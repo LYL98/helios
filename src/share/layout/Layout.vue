@@ -41,9 +41,9 @@ export default {
   /*弹框共用*/
   .my-add-edit-drawer{
       left: 180px !important;
-      top: 42px !important;
+      top: 0 !important;
       width: calc(100% - 180px) !important;
-      height: calc(100% - 42px) !important;
+      height: 100% !important;
       outline: none;
       >.el-drawer__header{
           font-size: 18px;

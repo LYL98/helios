@@ -1,5 +1,7 @@
 import Vue from 'vue';
+import { MessageBox } from 'element-ui';
 import Config from './config';
+let logoutNum = 0;
 
 //处理发送前事件
 function beforesendHandling(url, data) {
@@ -24,7 +26,18 @@ function errHandling(err) {
 
 //登出事件
 function logout() {
-    Config.accreditLogin();//重新授权登录
+    if(logoutNum > 0) return;
+    MessageBox.alert('登录已失效，请重新登录', '提示', {
+        type: 'error',
+        confirmButtonText: '我知道了'
+    }).then(()=>{
+        logoutNum = 0;
+        window.location.replace('/#/');
+    }).catch(()=>{
+        logoutNum = 0;
+        window.location.replace('/#/');
+    });
+    logoutNum++;
 }
 
 /**

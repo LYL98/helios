@@ -429,9 +429,8 @@ const getIsLogin = async ()=>{
   if(res.code === 0){
     myInfo = res.data;
     getAuthorityList();//用户权限
-  }else if(res.code === 200){
-    router.replace({ name: "Login" });
-  }else{
+  }else if(res.code !== 200){
+    //不包括登录已失效
     MessageBox.alert(res.message, '提示', {
       type: 'error'
     });
