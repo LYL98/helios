@@ -95,6 +95,11 @@
               <input-price size="medium" :value="detail.price_sale" disabled/>
             </el-form-item>
           </el-col>
+          <el-col :span="8">
+            <el-form-item label="最小订货数量" prop="min_num_per_order">
+              <input-number size="medium" v-model="detail.min_num_per_order" placeholder="0 - 999，0表示不限定" unit="件" :max="999"/>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="10">
           <el-col :span="8">
@@ -162,72 +167,6 @@
 
         <el-form-item label="商品标签" prop="tags">
           <select-item-tags v-model="detail.tags"/>
-        </el-form-item>
-
-        <el-form-item label="区域定价">
-          <ul>
-            <li v-for="(item, index) in detail.city_prices_temp" :key="index" style="display: flex; align-items: center;">
-              <div style="display: flex; align-items: center; justify-content: space-between;">
-                <el-form-item
-                  :prop="'city_prices_temp.' + index + '.city_id'"
-                  :rules="[{ required: true, message: '请选择县域', trigger: 'change' }]"
-                >
-                  <el-select v-model="item.city_id" placeholder="请选择县域" size="medium">
-                    <el-option
-                      v-for="city in cityList"
-                      :key="city.id"
-                      :label="city.title"
-                      :value="city.id"
-                      :disabled="detail.city_prices_temp.some(item => item.city_id === city.id)"
-                    >
-                    </el-option>
-                  </el-select>
-
-                </el-form-item>
-
-                <el-form-item
-                  :prop="'city_prices_temp.' + index + '.percent'"
-                  :rules="[
-                    { required: true, message: '请输入浮动比例', trigger: 'change' },
-                    { validator: validCityPercent, trigger: 'blur' },
-                  ]"
-                  style="margin-left: 10px;"
-                >
-                  <el-input
-                    style="width: 230px;"
-                    v-model="item.percent"
-                    @input="changeCityPercent(index)"
-                    placeholder="浮动(-100% ~ 1000%)"
-                    size="medium"
-                  >
-                    <template slot="append">%</template>
-                  </el-input>
-                </el-form-item>
-
-                <el-form-item
-                  style="margin-left: 10px;"
-                  :prop="'city_prices_temp.' + index + '.price'"
-                  :rules="[
-                      { validator: validCityPrice, trigger: 'change' },
-                    ]"
-                >
-                  <el-input
-                    disabled
-                    v-model="item.price"
-                    placeholder="0 - 1000000"
-                    style="width: 180px;"
-                    size="medium"
-                  >
-                    <template slot="append">元</template>
-                  </el-input>
-                </el-form-item>
-              </div>
-              <i style="margin-left: 10px; cursor: pointer; position: relative; top: -13px;"
-                class="el-icon-close icon-button" @click="handleRemoveCityPrice(index)"></i>
-            </li>
-          </ul>
-          <!-- 新增区域定价按钮 -->
-          <el-button plain size="medium" type="primary" @click="handleAddCityPrice">增加区域定价</el-button>
         </el-form-item>
         <!--供应商信息-->
         <other-item-supplier :supplierData="supplierData"/>
@@ -311,20 +250,7 @@ export default {
         callback();
       }
     };
-    let validOrderNum = function (rules, value, callback) {
-      let num = parseInt(value);
-      if (typeof num === 'number') {
-        if (num > 999) {
-          callback(new Error('最大订货件数为999'))
-        } else if (num < 1) {
-          callback('最大订货件数不能小于1')
-        } else {
-          callback()
-        }
-      } else {
-        callback('必须是数值类型')
-      }
-    };
+
     let validPriceBuy = function (rules, value, callback) {
       let num = Number(value);
       if (typeof num === 'number') {
@@ -406,13 +332,13 @@ export default {
       content: '',
       is_presale: false,
       is_gift: false,
+      min_num_per_order: 0,
       order_num_max: 999,
       display_class: {},
       frame: {},
       system_class: {},
       first_grounder: {},
-      last_updater: {},
-      city_prices_temp: []
+      last_updater: {}
     }
     return {
       supplierData: {
@@ -451,11 +377,17 @@ export default {
           { pattern: Verification.testStrs.isValidValue, message: '原价必须为数字', trigger: 'change' },
           { validator: validPriceOrigin, trigger: 'blur' },
         ],
+        min_num_per_order: [
+          { required: true, message: '请输入最小订货件数', trigger: 'change' },
+          { pattern: Verification.testStrs.isNumber, message: '最小订货件数必须为整数', trigger: 'blur' },
+          // { type: 'number', max: 3, message: '最大订货件数为999', trigger: 'blur' }
+          { validator: this.validNumPerOder, trigger: 'blur' },
+        ],
         order_num_max: [
           { required: true, message: '请输入最大订货件数', trigger: 'change' },
           { pattern: Verification.testStrs.isNumber, message: '最大订货件数必须为整数', trigger: 'blur' },
           // { type: 'number', max: 3, message: '最大订货件数为999', trigger: 'blur' }
-          { validator: validOrderNum, trigger: 'blur' },
+          { validator: this.validOrderNum, trigger: 'blur' },
         ],
         presale_date: [
           { validator: validPresaleDate, trigger: 'change' },
@@ -477,6 +409,39 @@ export default {
     }
   },
   methods: {
+
+    validNumPerOder (rules, value, callback) {
+      let num = parseInt(value);
+      if (typeof num === 'number') {
+        if (num > 999) {
+          callback(new Error('最小订货件数为999'))
+        } else if (num < 0) {
+          callback('最小订货件数不能小于0')
+        } else {
+          !!this.$data.detail.order_num_max && this.$refs['ruleForm'].validateField('order_num_max');
+          callback()
+        }
+      } else {
+        callback('必须是数值类型')
+      }
+    },
+    validOrderNum (rules, value, callback) {
+      let num = parseInt(value);
+      if (typeof num === 'number') {
+        if (num > 999) {
+          callback(new Error('最大订货件数为999'))
+        } else if (num < 1) {
+          callback('最大订货件数不能小于1')
+        } else if (value <= this.$data.detail.min_num_per_order) {
+          callback('最大订货件数必须大于最小订货数量');
+        } else {
+          callback();
+        }
+      } else {
+        callback('必须是数值类型')
+      }
+    },
+
     //根据传进来的区域code 获取城市列表
     async baseCityList(){
       let res = await Http.get(Config.api.baseCityList, {
@@ -523,12 +488,6 @@ export default {
         if(rd.presale_begin && rd.presale_end){
           rd.presale_date = [rd.presale_begin, rd.presale_end];
         }
-        //区域价格
-        rd.city_prices_temp = rd.city_prices.map(item => {
-          item.percent = this.returnMarkup(item.percent);
-          item.price = this.returnPrice(item.price_sale);
-          return item;
-        });
         this.$data.detail = rd;
         this.pItemGetSuppliers();
         this.$data.isShow = true;
@@ -545,40 +504,6 @@ export default {
       }else{
         this.$message({message: res.message, type: 'error'});
       }
-    },
-    //新增区域价格
-    handleAddCityPrice() {
-      let city_prices_temp = this.$data.detail.city_prices_temp;
-      city_prices_temp.push({ city_id: '', percent: '', price: '' });
-      this.$data.detail.city_prices_temp = city_prices_temp;
-    },
-    //删除区域价格
-    handleRemoveCityPrice(i) {
-      let city_prices_temp = this.$data.detail.city_prices_temp.filter((item, index) => index !== i);
-      this.$data.detail.city_prices_temp = city_prices_temp;
-    },
-    //修改价格
-    changePriceSale() {
-      let detail = this.$data.detail;
-      if (!detail.price_sale / 100 || isNaN(detail.price_sale / 100)) return;
-      let city_prices_temp = this.$data.detail.city_prices_temp;
-      city_prices_temp = city_prices_temp.map(item => {
-        if (item.percent && !isNaN(item.percent)) {
-          item.price = (Number(detail.price_sale / 100) + Number(this.returnMarkup(this.returnPrice((this.handlePrice(detail.price_sale / 100) * this.handleMarkup(item.percent) / 100))))).toFixed(2)
-        }
-        return item;
-      });
-    },
-    //修改区域价格
-    changeCityPercent(index) {
-      let detail = this.$data.detail;
-      let item = this.$data.detail.city_prices_temp[index];
-      item.price = detail.price_sale / 100 && item.percent && !isNaN(detail.price_sale / 100) && !isNaN(item.percent)
-        ? (Number(detail.price_sale / 100) + Number(this.returnMarkup(this.returnPrice((this.handlePrice(detail.price_sale / 100) * this.handleMarkup(item.percent) / 100))))).toFixed(2)
-        : ''
-      let city_prices_temp = this.$data.detail.city_prices_temp;
-      city_prices_temp[index] = item;
-      this.$data.detail.city_prices_temp = city_prices_temp;
     },
     //请选择县域
     onSystemClassChange(val) {
@@ -640,12 +565,7 @@ export default {
       }
       this.$loading({isShow: true});
       let res = await Http.post(Config.api[pageType === 'edit' ? 'itemEdit' : 'itemOnGround'], {
-        ...detail,
-        city_prices: detail.city_prices_temp.map(item => {
-          let city = {...item};
-          city.percent = this.handleMarkup(city.percent);
-          return { city_id: city.city_id, percent: city.percent };
-        }),
+        ...detail
       });
       this.$loading({isShow: false});
       if(res.code === 0){

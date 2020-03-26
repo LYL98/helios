@@ -82,7 +82,7 @@
           <el-table-column label="商品编号/名称" prop="item_id" min-width="240">
             <template slot-scope="scope">
               <div class="my-td-item">
-                {{ scope.row.item && scope.row.item.id }} / {{ scope.row.item && scope.row.item.title }}
+                {{ scope.row.item && scope.row.item.code }} / {{ scope.row.item && scope.row.item.title }}
               </div>
             </template>
           </el-table-column>
