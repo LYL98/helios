@@ -50,10 +50,9 @@ export default {
     isRequired: { type: Boolean, default: false }, //必选一个区域
   },
   data() {
-    let province = Method.getLocalStorage('heliosGlobalProvince');
+    let province = Method.getLocalStorage('globalProvince');
     return {
       province: province || {},
-      selectCode: '',
       isShow: false,
       dataItem: []
     };
@@ -61,12 +60,23 @@ export default {
   created(){
     this.baseProvinceListMy();
   },
+  computed: {
+    selectCode: {
+      get(){
+        return this.province.code;
+      },
+      set(code){
+        let con = this.dataItem.filter(item => item.code === code);
+        this.changeProvince(con[0]);
+      }
+    }
+  },
   methods: {
     //区域改变
     changeProvince(data){
       this.$data.province = data;
       this.$data.isShow = false;
-      Method.setLocalStorage('heliosGlobalProvince', data);//缓存
+      Method.setLocalStorage('globalProvince', data);//缓存
       //全局注册方法
       Vue.use({
         install(Vue){
