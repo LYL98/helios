@@ -221,7 +221,7 @@
       },
 
       intoEditList() {
-        this.$data.editList = [...this.$data.selectedList].map(item => {
+        let list = [...this.$data.selectedList].map(item => {
           return {
             item_id: item.id,
             code: item.code,
@@ -233,6 +233,7 @@
             discount_error: false,
           }
         });
+        this.$data.editList = [...this.$data.editList, ...list];
       },
 
       handleRemoveItem(item_id) {
