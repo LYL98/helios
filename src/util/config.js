@@ -128,9 +128,9 @@ const Config = (() => {
 
       // 营销策略
       bussinessMarketingStrategyCityQuery: apiM + '/item/city_price/query', // 县域定价查询
-      bussinessMarketingStrategyCityAdd: apiM + '/item/city_price/add', // 新增县域定价
-      bussinessMarketingStrategyCityEdit: apiM + '/item/city_price/edit', // 编辑县域定价
-
+      bussinessMarketingStrategyCityAdd: apiM + '/item/city_price/add', // 新增
+      bussinessMarketingStrategyCityBatchEdit: apiM + '/item/city_price/batch_edit', // 修改
+      bussinessMarketingStrategyCityDelete: apiM + '/item/city_price/delete', // 删除
 
       //团购商品分类
       groupItemClassList: apiM + '/gb_item/category/list', //团购商品分类列表(组件共用)
