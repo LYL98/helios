@@ -44,9 +44,6 @@
           </my-query-item>
         </el-col>
       </el-row>
-      <el-row :gutter="32" style="margin-top: 16px;">
-
-      </el-row>
     </div>
 
     <div class="container-table">

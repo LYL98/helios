@@ -1,15 +1,9 @@
 <template>
   <el-form :model="formData" ref="ruleForm" label-width="120px" class="pr-30">
     <el-form-item
-      label="商品编号："
+      label="商品编号/名称："
     >
-      <span v-if="item.item">{{ item.item.code }}</span>
-      <span v-else>-</span>
-    </el-form-item>
-    <el-form-item
-      label="商品名称："
-    >
-      <span v-if="item.item">{{ item.item.title }}</span>
+      <span v-if="item.item">{{ item.item.code }} / {{ item.item.title }}</span>
       <span v-else>-</span>
     </el-form-item>
     <el-form-item
@@ -30,6 +24,21 @@
       label="浮动价格："
     >
       {{ item.item && item.item.price_sale ? '￥' + DataHandle.returnPrice(item.item.price_sale * formData.discount / 100) : '-' }}
+    </el-form-item>
+    <el-form-item
+      label="总库存："
+    >
+      {{ item.item && !!item.item.item_stock ? item.item.item_stock + '件' : '-' }}
+    </el-form-item>
+    <el-form-item
+      label="已售数量："
+    >
+      {{ item.item && !!item.item.sale_already ? item.item.sale_already + '件' : '-' }}
+    </el-form-item>
+    <el-form-item
+      label="生效时间："
+    >
+      {{ item.updated }}
     </el-form-item>
 
     <div class="display-flex justify-content-end">
