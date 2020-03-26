@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { Tag, Dropdown, DropdownMenu, DropdownItem, Select, Option } from 'element-ui';
 import { Http, Config, Method } from '@/util';
 
@@ -49,8 +50,9 @@ export default {
     isRequired: { type: Boolean, default: false }, //必选一个区域
   },
   data() {
+    let province = Method.getLocalStorage('heliosGlobalProvince');
     return {
-      province: this.$province || {},
+      province: province || {},
       selectCode: '',
       isShow: false,
       dataItem: []
@@ -65,6 +67,13 @@ export default {
       this.$data.province = data;
       this.$data.isShow = false;
       Method.setLocalStorage('heliosGlobalProvince', data);//缓存
+      //全局注册方法
+      Vue.use({
+        install(Vue){
+          //全局区域
+          Vue.prototype.$province = data;
+        }
+      });
       this.$emit('change', data);
     },
     //获取所有区域

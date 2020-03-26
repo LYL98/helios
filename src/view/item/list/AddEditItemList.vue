@@ -134,7 +134,7 @@
         <el-row :gutter="10">
           <el-col :span="8">
             <el-form-item label="采购员">
-              <my-select-buyer size="medium" :provinceCode="detail.province_code" v-model="detail.buyer_id" />
+              <my-select-buyer size="medium" :provinceCode="provinceCode" v-model="detail.buyer_id" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -294,9 +294,7 @@ export default {
   },
   props: {
     page: { type: String, default: '' }, //after-sale-detail售后页面，不显示
-  },
-  created() {
-    this.$data.detail.province_code = this.province.code;
+    provinceCode: { type: String, default: '' }, //省code
   },
   data(){
     let validPresaleDate = function (rules, value, callback) {
@@ -482,7 +480,7 @@ export default {
     //根据传进来的区域code 获取城市列表
     async baseCityList(){
       let res = await Http.get(Config.api.baseCityList, {
-        province_code: this.$province.code || '',
+        province_code: this.provinceCode || '',
         zone_id: ''
       });
       if(res.code === 0){

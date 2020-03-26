@@ -61,8 +61,8 @@ Vue.use({
     Vue.prototype.$messageBox = MessageBox;
 
     //全局区域
-    let province = Method.getLocalStorage('heliosGlobalProvince');
-    Vue.prototype.$province = province;
+    //let province = Method.getLocalStorage('heliosGlobalProvince');
+    //Vue.prototype.$province = province;
   }
 });
 

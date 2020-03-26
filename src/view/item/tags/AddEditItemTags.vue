@@ -39,16 +39,13 @@ export default {
   components: {
     'my-avatar': Avatar
   },
-  created() {
-    //this.basicdataItemTagsIcons();
-    if(this.images.length){
-      // this.detail.image_id = this.images[0].id
-    }
+  props: {
+    provinceCode: { type: String, default: '' }, //省code
   },
   data(){
     return{
       initDetail: {
-        province_code: this.$province.code,
+        province_code: this.provinceCode,
         image:[],
       },
       images: [],
@@ -62,6 +59,12 @@ export default {
           { pattern: Verification.testStrs.isNumber, message: '排序必须为正整数数字', trigger: 'blur' },
         ]
       }
+    }
+  },
+  created() {
+    //this.basicdataItemTagsIcons();
+    if(this.images.length){
+      // this.detail.image_id = this.images[0].id
     }
   },
   methods: {

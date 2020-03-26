@@ -123,6 +123,7 @@
     mixins: [tableMixin],
     props: {
       fromPage: { type: String, default: 'List' }, //List 在售商品， ListForSale 待售商品
+      provinceCode: { type: String, default: '' }, //省code
     },
     data() {
       let tableColumn = [
@@ -149,22 +150,18 @@
       }
     },
     created() {
-      //在Main.vue初始化
+      let pc = this.getPageComponents('QueryItemList');
+      this.getData(pc.query);
     },
     methods: {
-      //初始化获取数据
-      initGetData(extraQuery){
-        let pc = this.getPageComponents('QueryItemList');
-        this.getData({
-          ...pc.query,
-          ...extraQuery
-        });
-      },
       //获取数据
       async getData(query){
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.itemQuery, query);
+        let res = await Http.get(Config.api.itemQuery, {
+          ...query,
+          province_code: this.provinceCode
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
