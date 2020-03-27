@@ -90,7 +90,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="今日报价" prop="price_sale" min-width="100">
+          <el-table-column label="定价" prop="price_sale" min-width="100">
             <template slot-scope="scope">
               <div class="mt-td-item" v-if="scope.row.item && !!scope.row.item.price_sale">
                 ￥{{ DataHandle.returnPrice(scope.row.item.price_sale) }}
