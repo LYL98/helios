@@ -79,7 +79,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="今日报价" prop="price_sale" min-width="100">
+          <el-table-column label="定价" prop="price_sale" min-width="100">
             <template slot-scope="scope">
               <div class="mt-td-item" v-if="!!scope.row.price_sale">
                 ￥{{ DataHandle.returnPrice(scope.row.price_sale) }}
@@ -140,7 +140,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="生效时间" prop="updated" min-width="160">
+          <el-table-column label="生效时间" prop="step_prices_updated" min-width="160">
           </el-table-column>
           <el-table-column label="总库存" prop="item_stock" min-width="100">
             <template slot-scope="scope">
@@ -310,11 +310,11 @@
 
       changePicker(value){
         if(value && value.length === 2){
-          this.query.update_begin = value[0];
-          this.query.update_end = value[1];
+          this.query.step_price_update_begin = value[0];
+          this.query.step_price_update_end = value[1];
         }else{
-          this.query.update_begin = '';
-          this.query.update_end = '';
+          this.query.step_price_update_begin = '';
+          this.query.step_price_update_end = '';
         }
         this.$data.query = this.query;
         this.stepPriceQuery();

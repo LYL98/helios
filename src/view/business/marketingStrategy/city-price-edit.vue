@@ -40,6 +40,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column
+          align="center"
           type="selection"
           width="45">
         </el-table-column>
@@ -48,6 +49,7 @@
 
       <div class="into-out" v-if="type === 'add'">
         <i class="el-icon-d-arrow-right" @click="intoEditList"></i>
+        <i class="el-icon-d-arrow-left mt-20" @click="removeEditList"></i>
       </div>
 
       <el-table
@@ -55,7 +57,14 @@
         height="500"
         stripe
         class="custom-el-table-append table-border"
+        @selection-change="handleRemoveChange"
       >
+        <el-table-column
+          v-if="type === 'add'"
+          type="selection"
+          align="center"
+          width="45">
+        </el-table-column>
         <el-table-column width="50" v-if="type === 'add'">
           <template slot-scope="scope">
             <span
@@ -69,23 +78,28 @@
             {{ scope.row.code }} / {{ scope.row.title }}
           </template>
         </el-table-column>
-<!--        <el-table-column label="县域" min-width="100">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-input size="mini" disabled :value="scope.row.city_title"></el-input>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-        <el-table-column label="今日报价" prop="price_sale" width="90">
+        <el-table-column label="定价" prop="price_sale" min-width="90">
           <template slot-scope="scope">
             {{ !!scope.row.price_sale ? '￥' + DataHandle.returnPrice(scope.row.price_sale) : '未报价' }}
           </template>
         </el-table-column>
         <el-table-column label="浮动率" width="120">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="allDiscount"
+              size="mini"
+              @input="changeAllDiscount"
+              placeholder="浮动率"
+            >
+              <template slot="append">%</template>
+            </el-input>
+          </template>
           <template slot-scope="scope">
             <el-input
               size="mini"
               v-model="scope.row.discount"
               :class="scope.row.discount_error ? 'custom-input-error' : ''"
-              @input="changeDiscount(scope.row.item_id)"
+              @input="changeDiscount(scope.row)"
             >
               <template slot="append">%</template>
             </el-input>
@@ -143,8 +157,11 @@
         },
         itemList: [],
         selectedList: [],
+
         editList: [],
-        rules: [],
+        removeList: [],
+
+        allDiscount: '',
       };
     },
 
@@ -223,6 +240,8 @@
       },
 
       intoEditList() {
+        if (this.$data.selectedList.length <= 0 ) return;
+
         let list = [...this.$data.selectedList].map(item => {
           return {
             item_id: item.id,
@@ -231,21 +250,39 @@
             city_id: this.$props.city.id,
             city_title: this.$props.city.title,
             price_sale: item.price_sale,
-            discount: '',
+            discount: this.$data.allDiscount,
             discount_error: false,
           }
         });
         this.$data.editList = [...this.$data.editList, ...list];
+        this.$data.selectedList = [];
+      },
+
+      handleRemoveChange(val) {
+        this.$data.removeList = val;
+      },
+
+      removeEditList() {
+        if (this.$data.removeList.length <= 0) return;
+        this.$data.editList = this.$data.editList.filter(d => !this.$data.removeList.some(item => item.item_id === d.item_id));
+        this.$data.removeList = [];
       },
 
       handleRemoveItem(item_id) {
         this.$data.editList = this.$data.editList.filter(d => d.item_id !== item_id);
       },
 
-      changeDiscount(item_id) {
-        let item = this.$data.editList.find(item => item.item_id === item_id);
-        if (!item) return;
+      changeDiscount(item) {
         item.discount_error = this.validDiscount(item.discount);
+      },
+
+      changeAllDiscount(v) {
+        this.$data.allDiscount = v;
+        this.$data.editList = this.$data.editList.map(item => {
+          item.discount = v
+          item.discount_error = this.validDiscount(v);
+          return item;
+        });
       },
 
       validDiscount(discount) {
@@ -341,7 +378,13 @@
   .into-out {
     margin: 0 20px;
 
-    .el-icon-d-arrow-right:hover {
+    .el-icon-d-arrow-right,
+    .el-icon-d-arrow-left {
+      display: block;
+    }
+
+    .el-icon-d-arrow-right:hover,
+    .el-icon-d-arrow-left:hover {
       font-weight: 600;
       cursor: pointer;
     }
