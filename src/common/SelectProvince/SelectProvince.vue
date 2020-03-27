@@ -23,6 +23,7 @@
       showAll: {type: Boolean, default: false},
       size: { type: String, default: '' },
       nationwide: { type: Boolean, default: false }, //是否显示全国
+      isAuth: { type: Boolean, default: false }, //是否要求权限
     },
     model: {
       prop: 'value',
@@ -49,7 +50,7 @@
     methods: {
       //获取所有区域
       async baseProvinceList(){
-        let res = await Http.get(Config.api.baseProvinceList, {});
+        let res = await Http.get(this.isAuth ? Config.api.baseProvinceListMy : Config.api.baseProvinceList, {});
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
