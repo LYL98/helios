@@ -124,7 +124,7 @@
 </template>
 
 <script>
-  import { Row, Col, Form, FormItem, RadioGroup, Radio, Input, Button, Table, TableColumn } from 'element-ui';
+  import { Row, Col, Form, FormItem, RadioGroup, Radio, Input, Button, Table, Message, TableColumn } from 'element-ui';
   import { QueryItem, QuerySearchInput, SelectSystemClass, SelectDisplayClass } from '@/common';
   import { Http, Config, DataHandle } from '@/util';
   export default {
@@ -295,15 +295,20 @@
       },
 
       async handleSubmit() {
-        if (this.$data.editList.length <= 0) return;
+        if (this.$data.editList.length <= 0) {
+          Message.warning({ message: '请先选择商品！', offset: 100 });
+          return;
+        };
 
         this.$data.editList = this.$data.editList.map(item => {
           item.discount_error = this.validDiscount(item.discount);
           return item;
         });
-        this.$data.editList = JSON.parse(JSON.stringify(this.$data.editList));
 
-        if (this.$data.editList.some(item => item.discount_error)) return;
+        if (this.$data.editList.some(item => item.discount_error)) {
+          Message.error({ message: '请检查输入格式！', offset: 100 });
+          return;
+        }
 
         let entries = this.$props.type === 'add'
             ? this.$data.editList.map(item => ({

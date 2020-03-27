@@ -62,6 +62,7 @@
           <el-table-column
             fixed
             v-if="$auth.isAdmin || $auth.MarketingStrategyCityModify || MarketingStrategyCityDelete"
+            align="center"
             type="selection"
             width="50">
           </el-table-column>

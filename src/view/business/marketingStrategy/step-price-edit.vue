@@ -40,6 +40,7 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column
+          align="center"
           type="selection"
           width="45">
         </el-table-column>
@@ -48,6 +49,7 @@
 
       <div class="into-out" v-if="type === 'add'">
         <i class="el-icon-d-arrow-right" @click="intoEditList"></i>
+        <i class="el-icon-d-arrow-left mt-20" @click="removeEditList"></i>
       </div>
 
       <el-table
@@ -55,12 +57,22 @@
         height="500"
         stripe
         class="custom-el-table-append table-border"
+        ref="editTable"
+        @selection-change="handleRemoveChange"
       >
+        <el-table-column
+          v-if="type === 'add'"
+          type="selection"
+          align="center"
+          width="45"
+          fixed
+        >
+        </el-table-column>
         <el-table-column width="50" v-if="type === 'add'" fixed>
           <template slot-scope="scope">
             <span
               class="font-size-12 color-primary cursor-pointer"
-              @click="handleRemoveItem(scope.row.item_id)"
+              @click="handleRemoveItem(scope.row)"
             >移除</span>
           </template>
         </el-table-column>
@@ -185,7 +197,7 @@
 </template>
 
 <script>
-  import { Row, Col, Form, FormItem, RadioGroup, Radio, Input, Button, Table, TableColumn } from 'element-ui';
+  import { Row, Col, Form, FormItem, RadioGroup, Radio, Input, Button, Table, Message, TableColumn } from 'element-ui';
   import { QueryItem, QuerySearchInput, SelectSystemClass, SelectDisplayClass } from '@/common';
   import { Http, Config, DataHandle } from '@/util';
   export default {
@@ -215,10 +227,12 @@
         query: {
           system_class_codes: []
         },
+
         itemList: [],
         selectedList: [],
+
         editList: [],
-        rules: [],
+        removeList: [],
       };
     },
 
@@ -311,8 +325,18 @@
         this.$data.editList = [...this.$data.editList, ...list];
       },
 
-      handleRemoveItem(item_id) {
-        this.$data.editList = this.$data.editList.filter(d => d.item_id !== item_id);
+      handleRemoveItem(item) {
+        this.$data.editList = this.$data.editList.filter(d => d.item_id !== item.item_id);
+      },
+
+      handleRemoveChange(val) {
+        this.$data.removeList = val;
+      },
+
+      removeEditList() {
+        if (this.$data.removeList.length <= 0) return;
+        this.$data.editList = this.$data.editList.filter(d => !this.$data.removeList.some(item => item.item_id === d.item_id));
+        this.$data.removeList = [];
       },
 
       changeNum(step, index) {
@@ -342,7 +366,10 @@
       },
 
       async handleSubmit() {
-        if (this.$data.editList.length <= 0) return;
+        if (this.$data.editList.length <= 0) {
+          Message.warning({ message: '请先选择商品！', offset: 100 });
+          return;
+        }
 
         this.$data.editList = this.$data.editList.map(item => {
           item.step_prices = item.step_prices.map(d => {
@@ -350,11 +377,11 @@
           });
           return item;
         });
-        this.$data.editList = JSON.parse(JSON.stringify(this.$data.editList));
 
-        if (this.$data.editList.some(item => item.step_prices.some(d => d.num_error || d.discount_error))) return;
-
-        console.log('验证成功！');
+        if (this.$data.editList.some(item => item.step_prices.some(d => d.num_error || d.discount_error))) {
+          Message.error({ message: '请检查输入格式！', offset: 100 });
+          return;
+        }
 
         let entries = this.$props.type === 'add'
             ? this.$data.editList.map(item => ({
@@ -428,7 +455,13 @@
   .into-out {
     margin: 0 20px;
 
-    .el-icon-d-arrow-right:hover {
+    .el-icon-d-arrow-right,
+    .el-icon-d-arrow-left {
+      display: block;
+    }
+
+    .el-icon-d-arrow-right:hover,
+    .el-icon-d-arrow-left:hover {
       font-weight: 600;
       cursor: pointer;
     }
