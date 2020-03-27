@@ -7,6 +7,7 @@
             v-model="query.province_code"
             size="small"
             showAll
+            isAuth
             clearable
             @change="selectProvince"
           />

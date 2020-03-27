@@ -147,7 +147,9 @@ export default {
     let that = this;
     documentTitle('订单 - 售后列表');
     this.initQuery();
-    this.orderAfterSaleQuery();
+
+    //在Query组件初始化
+    //this.orderAfterSaleQuery();
   },
   data(){
     return {
@@ -165,7 +167,7 @@ export default {
 
     initQuery() {
       this.$data.query = Object.assign({}, this.$data.query, {
-        province_code: this.province.code,
+        province_code: '',
         city_id: '',
         condition: '',
         item: '',
@@ -223,11 +225,11 @@ export default {
       //判断是否可导出
       this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(`${api}_check`, {
-        province_code: this.province.code,
+        province_code: this.query.province_code,
         ...query
       });
       if(res.code === 0){
-        let queryStr = `${api}?province_code=${this.province.code}`;
+        let queryStr = `${api}?province_code=${this.query.province_code}`;
         for (let item in query) {
           queryStr += `&${item}=${query[item]}`
         }

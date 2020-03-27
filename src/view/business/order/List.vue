@@ -173,7 +173,9 @@
     created() {
       documentTitle('订单 - 订单列表');
       this.initQuery();
-      this.getOrderGetList(this.query);
+
+      //在Query组件初始化
+      //this.getOrderGetList(this.query);
     },
     data() {
       return {
@@ -221,7 +223,7 @@
 
       initQuery() {
         this.$data.query = Object.assign({}, this.$data.query, {
-          province_code: this.province.code,
+          province_code: '',
           city_id: '',
           status: '',
           pay_status: '',
@@ -270,11 +272,11 @@
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
-          province_code: this.province.code,
+          province_code: this.query.province_code,
           ...query
         });
         if(res.code === 0){
-          let queryStr = `${api}?province_code=${this.province.code}`;
+          let queryStr = `${api}?province_code=${this.query.province_code}`;
           for (let item in query) {
             queryStr += `&${item}=${query[item]}`
           }

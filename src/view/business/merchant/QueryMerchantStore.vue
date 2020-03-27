@@ -6,6 +6,7 @@
           <select-province
             v-model="editQuery.province_code"
             size="small"
+            isAuth
             showAll
             clearable
             @change="selectProvince"
