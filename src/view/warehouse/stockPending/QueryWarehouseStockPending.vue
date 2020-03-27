@@ -2,21 +2,8 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="创建时间">
-          <el-date-picker
-            size="small"
-            v-model="query.picker_value"
-            type="daterange"
-            align="right"
-            value-format="yyyy-MM-dd"
-            unlink-panels
-            :picker-options="fixDateOptions"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            @change="changePicker"
-            style="width: 100%;"
-          />
+        <my-query-item label="仓库">
+          <select-storehouse size="small" v-model="query.storehouse_id" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -38,8 +25,21 @@
     </el-row>
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
-        <my-query-item label="仓库">
-          <select-storehouse size="small" v-model="query.storehouse_id" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
+        <my-query-item label="创建时间">
+          <el-date-picker
+            size="small"
+            v-model="query.picker_value"
+            type="daterange"
+            align="right"
+            value-format="yyyy-MM-dd"
+            unlink-panels
+            :picker-options="fixDateOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            @change="changePicker"
+            style="width: 100%;"
+          />
         </my-query-item>
       </el-col>
     </el-row>

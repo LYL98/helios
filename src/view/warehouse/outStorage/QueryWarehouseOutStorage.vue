@@ -2,6 +2,11 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
+        <my-query-item label="区域">
+          <global-province type="select" isRequired @change="selectProvince"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="配送日期">
           <el-date-picker
             size="small"
@@ -11,17 +16,6 @@
             style="width: 100%;"
             placeholder="配送日期"
             :clearable="false"
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
-        <my-query-item label="状态">
-          <select-option
-            :options="outStorageStatus"
-            v-model="query.status"
-            @change="handleQuery('TableWarehouseOutStorage')"
-            size="small"
-            clearable
           />
         </my-query-item>
       </el-col>
@@ -36,13 +30,15 @@
 
 <script>
   import { SelectOption } from '@/common';
+  import { GlobalProvince } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
   import { Constant } from '@/util';
 
   export default {
     name: "QueryWarehouseOutStorage",
     components: {
-      'select-option': SelectOption
+      'select-option': SelectOption,
+      'global-province': GlobalProvince
     },
     mixins: [queryMixin],
     created() {
@@ -52,7 +48,6 @@
     data() {
       let initQuery = {
         delivery_date: '',
-        status: '',
         condition: '',
         province_code: this.$province.code,
       }
@@ -61,13 +56,13 @@
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }
     },
-    computed: {
-      outStorageStatus(){
-        let d = Constant.OUT_STORAGE_STATUS('value_key');
-        return { '全部': '', ...d};
-      }
-    },
     methods: {
+      //选择区域后【页面初始化】
+      selectProvince(data){
+        this.$data.initQuery.province_code = data.code;
+        this.$data.query.province_code = data.code;
+        this.handleQuery('TableWarehouseOutStorage');
+      }
     }
   }
 </script>

@@ -145,7 +145,7 @@
     },
     data() {
       let initQuery = {
-        province_code: this.$province.code,
+        province_code: '',
         city_id: '',
         store_title: '',
         reason: '',

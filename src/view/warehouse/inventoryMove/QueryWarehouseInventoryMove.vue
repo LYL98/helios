@@ -2,6 +2,11 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
+        <my-query-item :label="queryTitles[tabValue] || '仓库'">
+          <select-storehouse v-model="query.storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" isAuth @initCallBack="storehouseInit" />
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="创建时间">
           <el-date-picker
             size="small"
@@ -17,11 +22,6 @@
             @change="changePicker"
             style="width: 100%;"
           />
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
-        <my-query-item :label="queryTitles[tabValue] || '仓库'">
-          <select-storehouse v-model="query.storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" isAuth @initCallBack="storehouseInit" />
         </my-query-item>
       </el-col>
       <el-col :span="10">

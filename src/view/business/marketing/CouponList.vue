@@ -1,5 +1,6 @@
 <template>
   <sub-menu>
+    <global-province slot="left-query" type="default" isRequired @change="selectProvince"/>
     <query-marketing-coupon v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <div class="table-top" v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
@@ -31,7 +32,6 @@
         :autoDis="handleAutoDis"
         :showItem="handleShowItem"
         :showLog="handleShowLog"
-        :offsetHeight="offsetHeight"
         :windowHeight="viewWindowHeight"
       >
       </table-marketing-coupon>
@@ -151,6 +151,7 @@
   import FormMarketingCouponAdd from './FormMarketingCouponAdd';
   import FormMarketingCouponSend from './FormMarketingCouponSend';
   import {Constant, DataHandle, Config, Http} from '@/util';
+  import { GlobalProvince } from '@/component';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
@@ -167,14 +168,21 @@
       'table-marketing-coupon-log': TableMarketingCouponLog,
       'table-marketing-coupon-statistic': TableMarketingCouponStatistic,
       'form-marketing-coupon-add': FormMarketingCouponAdd,
-      'form-marketing-coupon-send': FormMarketingCouponSend
+      'form-marketing-coupon-send': FormMarketingCouponSend,
+      'global-province': GlobalProvince,
     },
     data() {
       return {
-        province: this.$province,
+        province: {},
         auth: this.$auth,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
-        query: {}, // 查询条件
+        query: {
+          province_code: '',
+          status: '', //活动状态 '' 全部； 'st_activated'：进行中； 'st_deactivated'：'未开展'
+          coupon_type: '',  // '' 全部； 'type_reduction' 全场满减； 'type_discount' 单品满折
+          is_auto_dis: '',
+          page: 1,
+          page_size: Constant.PAGE_SIZE
+        }, // 查询条件
         item: {},   // 需要新增的项
         send: {}, // 需要发送的项
         formSending: false,
@@ -204,14 +212,22 @@
     },
     created() {
       documentTitle('营销 - 优惠券');
-      this.initQuery();
-      this.itemCouponQuery();
-
-      if (!this.auth.isAdmin && !this.auth.MarketingCouponDistributeStatistic && !this.auth.MarketingCouponAdd) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-      }
     },
     methods: {
+      //选择区域后
+      selectProvince(data){
+        if(this.province.id){
+          let { query } = this;
+          this.$data.province = data;
+          query.page = 1;
+          query.province_code = data.code;
+          this.$data.query = query;
+        }else{
+          this.$data.province = data;
+          this.initQuery();
+        }
+        this.itemCouponQuery();
+      },
       //获取数据
       async itemCouponQuery(){
         this.$loading({isShow: true, isWhole: true});

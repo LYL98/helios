@@ -2,24 +2,26 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="县域">
-          <my-select-city
+        <my-query-item label="区域">
+          <select-province
+            v-model="editQuery.province_code"
             size="small"
-            placeholder="县域"
+            showAll
             clearable
-            v-model="editQuery.city_id"
-            :provinceCode="editQuery.province_code"
-            @change="changeQuery"
+            @change="selectProvince"
           />
         </my-query-item>
       </el-col>
       <el-col :span="7">
-        <my-query-item label="审核状态">
-          <select-option
-            :options="{'全部': '', '待审核': 0, '已审核': 1}"
-            v-model="editQuery.is_audited"
-            @change="changeQuery"
+        <my-query-item label="县域">
+          <my-select-city
+            :disabled="editQuery.province_code ? false : true"
             size="small"
+            showAll
+            clearable
+            v-model="editQuery.city_id"
+            :provinceCode="editQuery.province_code"
+            @change="changeQuery"
           />
         </my-query-item>
       </el-col>
@@ -36,6 +38,16 @@
       </el-col>
     </el-row>
     <el-row :gutter="32" style="margin-top: 16px;">
+      <el-col :span="7">
+        <my-query-item label="审核状态">
+          <select-option
+            :options="{'全部': '', '待审核': 0, '已审核': 1}"
+            v-model="editQuery.is_audited"
+            @change="changeQuery"
+            size="small"
+          />
+        </my-query-item>
+      </el-col>
       <el-col :span="7">
         <my-query-item label="冻结状态">
           <select-option
@@ -56,6 +68,8 @@
           />
         </my-query-item>
       </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="团购门店">
           <select-option
@@ -66,8 +80,6 @@
           />
         </my-query-item>
       </el-col>
-    </el-row>
-    <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="创建时间">
           <el-date-picker
@@ -92,8 +104,8 @@
 
 <script>
   import {Row, Col, Input, Button, DatePicker} from 'element-ui';
-  import {SelectOption, QueryItem} from '@/common';
-  import { SelectCity } from '@/component';
+  import {SelectOption, QueryItem, SelectProvince} from '@/common';
+  import { SelectCity, GlobalProvince } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
@@ -106,7 +118,9 @@
       'el-date-picker': DatePicker,
       'my-query-item': QueryItem,
       'select-option': SelectOption,
-      'my-select-city': SelectCity
+      'my-select-city': SelectCity,
+      'select-province': SelectProvince,
+      'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
     data() {
@@ -115,6 +129,11 @@
       }
     },
     methods: {
+      //查询选择区域后
+      selectProvince(){
+        this.editQuery.city_id = '';
+        this.changeQuery();
+      },
       //搜索日期
       changePicker(value){
         if(value && value.length === 2){

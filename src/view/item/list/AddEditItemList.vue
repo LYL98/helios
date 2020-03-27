@@ -452,7 +452,7 @@ export default {
         let rd = res.data;
         this.$data.cityList = rd;
       }else{
-        MessageBox.alert(res.message, '提示');
+        this.$message({message: res.message, type: 'error'});
       }
     },
     //显示新增修改(重写) (数据，类型)

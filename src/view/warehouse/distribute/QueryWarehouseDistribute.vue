@@ -2,6 +2,34 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
+        <my-query-item label="调入仓">
+          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="handleQuery('TableWarehouseDistribute')" isAuth @initCallBack="storehouseInit"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
+        <my-query-item label="调出仓">
+          <select-storehouse size="small" v-model="query.src_storehouse_id" clearable filterable @change="handleQuery('TableWarehouseDistribute')"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="10">
+        <my-query-item label="搜索">
+          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseDistribute')" @reset="handleClearQuery('TableWarehouseDistribute')"/>
+        </my-query-item>
+      </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
+      <el-col :span="7">
+        <my-query-item label="状态">
+          <select-option
+            :options="distributeStatus"
+            v-model="query.status"
+            @change="handleQuery('TableWarehouseDistribute')"
+            size="small"
+            clearable
+          />
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="可售时间">
           <el-date-picker
             size="small"
@@ -29,34 +57,6 @@
             @change="changePicker"
             style="width: 100%;"
           />
-        </my-query-item>
-      </el-col>
-      <el-col :span="10">
-        <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseDistribute')" @reset="handleClearQuery('TableWarehouseDistribute')"/>
-        </my-query-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="32" style="margin-top: 16px;">
-      <el-col :span="7">
-        <my-query-item label="状态">
-          <select-option
-            :options="distributeStatus"
-            v-model="query.status"
-            @change="handleQuery('TableWarehouseDistribute')"
-            size="small"
-            clearable
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
-        <my-query-item label="调出仓">
-          <select-storehouse size="small" v-model="query.src_storehouse_id" clearable filterable @change="handleQuery('TableWarehouseDistribute')"/>
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
-        <my-query-item label="调入仓">
-          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="handleQuery('TableWarehouseDistribute')" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
     </el-row>
