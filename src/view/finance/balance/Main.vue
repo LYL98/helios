@@ -152,6 +152,7 @@
       return {
         auth: this.$auth,
         query: {
+          province_code: '',
           title: ''
         },
         dataItem: {
@@ -178,6 +179,7 @@
     methods: {
       initQuery() {
         this.$data.query = Object.assign(this.$data.query, {
+          province_code: '',
           title: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -186,10 +188,7 @@
       //获取数据
       async getData(){
         this.$loading({ isShow: true });
-        let res = await Http.get(Config.api.financeBalanceQuery, {
-          ...this.query,
-          province_code: this.$province.code,
-        });
+        let res = await Http.get(Config.api.financeBalanceQuery, this.query);
         this.$loading({ isShow: false });
         if (res.code === 0) {
           this.$data.dataItem = res.data;
@@ -273,11 +272,11 @@
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
-          province_code: this.$province.code,
+          province_code: this.query.province_code,
           title: title
         });
         if(res.code === 0){
-          let queryStr = `${api}?province_code=${this.$province.code}&title=${title}`;
+          let queryStr = `${api}?province_code=${this.query.province_code}&title=${title}`;
           
           window.open(queryStr);
         }else{

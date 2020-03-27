@@ -31,9 +31,11 @@
       'el-button': Button,
       'my-quill-editor': QuillEditor
     },
+    props: {
+      provinceCode: { type: String, default: '' }, //省code
+    },
     data() {
       return {
-        province: this.$province,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + 82 + 83 + 40 + 16,
         item: {
           content: ''
@@ -53,7 +55,7 @@
     methods: {
       async getItemCommon() {
         let res = await Http.get(Config.api.basicdataCommonDescription, {
-          province_code: this.province.code
+          province_code: this.provinceCode
         });
         if (res.code === 0) {
           this.item.content = res.data;
@@ -64,7 +66,7 @@
 
       async setItemCommon(unified_description) {
         let res = await Http.post(Config.api.basicdataCommonDescription, {
-          province_code: this.province.code,
+          province_code: this.provinceCode,
           unified_description: unified_description
         });
         if (res.code === 0) {
