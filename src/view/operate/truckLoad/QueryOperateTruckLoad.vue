@@ -4,7 +4,7 @@
       <el-col :span="7">
         <my-query-item label="线路">
           <select-line
-            :provinceCode="province.code"
+            :provinceCode="provinceCode"
             v-model="query.line_id"
             size="small"
             :clearable="false"
@@ -34,13 +34,13 @@
       'select-line': SelectLine
     },
     mixins: [queryMixin],
-    created() {
+    props: {
+      provinceCode: { type: String, default: '' }, //省code
     },
     data() {
       let initQuery = {
         condition: '',
-        line_id: '',
-        province_code: this.$province.code,
+        line_id: ''
       }
       return {
         initQuery: initQuery,
@@ -48,11 +48,14 @@
       }
     },
     methods: {
-      //线路初始化默认选择
+      //线路初始化默认选择【初始代】
       lineInit(rd){
         if(rd.length > 0){
           this.$data.initQuery.line_id = rd[0].id;
           this.$data.query.line_id = rd[0].id;
+        }else{
+          this.$data.initQuery.line_id = '';
+          this.$data.query.line_id = '';
         }
         let pc = this.getPageComponents('TableOperateTruckLoad');
         pc.getData(this.query);

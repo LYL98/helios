@@ -76,6 +76,15 @@
           // console.log('e.message:', e.message);
         }
       },
+    },
+    watch: {
+      //监听区域code
+      provinceCode: {
+        deep: true,
+        handler: function (a, b) {
+          this.baseLineList();
+        }
+      }
     }
   }
 </script>

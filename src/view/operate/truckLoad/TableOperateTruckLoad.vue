@@ -102,6 +102,9 @@
       'query-tabs': queryTabs
     },
     mixins: [tableMixin],
+    props: {
+      provinceCode: { type: String, default: '' }, //省code
+    },
     created() {
       //在QueryOperateTruckLoad组件里初始化
     },
@@ -163,7 +166,10 @@
         if(!query.delivery_date || !query.line_id) return;
         
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supDeliveryLineDetail, query);
+        let res = await Http.get(Config.api.supDeliveryLineDetail, {
+          ...query,
+          province_code: this.provinceCode
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
