@@ -54,9 +54,11 @@
     },
     data() {
       return {
-        province: this.$province,
         auth: this.$auth,
         query: {
+          province_code: '',
+          status: '',
+          reason: '',
           merchant_title: '',
           operator_name: ''
         },
@@ -76,7 +78,9 @@
       documentTitle('财务 - 财务审核');
       // 判断是否具有促销活动的权限
       this.initQuery();
-      this.getData();
+
+      //在Query组件初始化
+      //this.getData();
     },
     methods: {
       async getData() {
@@ -89,7 +93,7 @@
       },
       initQuery() {
         this.$data.query = Object.assign({}, this.$data.query, {
-          province_code: this.province.code,
+          province_code: '',
           status: '',
           reason: '',
           merchant_title: '',

@@ -49,7 +49,7 @@
       let initQuery = {
         delivery_date: '',
         condition: '',
-        province_code: this.$province.code,
+        province_code: '',
       }
       return {
         initQuery: initQuery,

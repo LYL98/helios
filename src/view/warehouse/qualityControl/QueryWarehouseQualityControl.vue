@@ -2,7 +2,10 @@
   <div>
     <div class="app-my-sub-menu">
       <div class="my-sub-menu">
-        <div class="left"></div>
+        <div class="left">
+          <!--场地品控-->
+          <global-province v-if="fromPage === 'Receiving'" type="default" isRequired @change="selectProvince"/>
+        </div>
         <div class="menu">
           <div :class="`menu-item ${query.type === key && 'active'}`" v-for="(value, key) in types" :key="key" @click="changeType(key)">{{value}}</div>
         </div>
@@ -31,13 +34,14 @@
   import { SelectOption, ButtonGroup } from '@/common';
   import queryMixin from '@/share/mixin/query.mixin';
   import { Constant } from '@/util';
-  import { SelectStorehouse } from '@/component';
+  import { GlobalProvince, SelectStorehouse } from '@/component';
 
   export default {
     name: "QueryWarehouseQualityControl",
     components: {
       'select-option': SelectOption,
       'button-group': ButtonGroup,
+      'global-province': GlobalProvince,
       'select-storehouse': SelectStorehouse
     },
     mixins: [queryMixin],
@@ -92,7 +96,13 @@
         this.$data.query = query;
         this.handleQuery('TableWarehouseQualityControl');
       },
-      //初始化选择仓库时
+      //选择区域后【场地 初始化】
+      selectProvince(data){
+        this.$data.initQuery.province_code = data.code;
+        this.$data.query.province_code = data.code;
+        this.handleQuery('TableWarehouseQualityControl');
+      },
+      //选择仓库时【仓库 初始化】
       storehouseInit(dataItem){
         let d = dataItem.filter(item => item.province_code === this.$province.code);
         let { initQuery, query } = this;

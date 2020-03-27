@@ -10,7 +10,7 @@
       :row-key="rowIdentifier"
       :current-row-key="clickedRow[rowIdentifier]"
     >
-      <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize < 999950 ? 68 : 88" label="序号" :index="indexMethod" />
+      <el-table-column type="index" width="120" label="序号" :index="indexMethod" />
       <el-table-column label="商户名称" prop="title" min-width="200">
         <template slot-scope="scope">
           <div :class="isEllipsis(scope.row)">
@@ -97,14 +97,9 @@
   }
 </script>
 
-<style scoped>
-  .title {
-    color: inherit;
-    padding: 5px 10px 5px 0;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  .title:hover {
-    font-weight: 600;
-  }
+<style lang="scss" scoped>
+  @import '@/share/scss/table.scss';
+</style>
+<style lang="scss">
+  @import '@/share/scss/table.global.scss';
 </style>

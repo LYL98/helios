@@ -31,8 +31,6 @@
       'select-option': SelectOption
     },
     mixins: [queryMixin],
-    created() {
-    },
     computed: {
       allotStatus: {
         get(){
@@ -44,7 +42,6 @@
       let initQuery = {
         status: '',
         condition: '',
-        province_code: this.$province.code,
       }
       return {
         initQuery: initQuery,
