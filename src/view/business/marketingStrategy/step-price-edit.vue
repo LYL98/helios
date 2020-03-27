@@ -56,7 +56,7 @@
         stripe
         class="custom-el-table-append table-border"
       >
-        <el-table-column width="50" v-if="type === 'add'">
+        <el-table-column width="50" v-if="type === 'add'" fixed>
           <template slot-scope="scope">
             <span
               class="font-size-12 color-primary cursor-pointer"
@@ -64,41 +64,116 @@
             >移除</span>
           </template>
         </el-table-column>
-        <el-table-column label="商品名称" prop="title" min-width="240">
+        <el-table-column label="商品名称" prop="title" min-width="240" fixed>
           <template slot-scope="scope">
             {{ scope.row.code }} / {{ scope.row.title }}
           </template>
         </el-table-column>
-<!--        <el-table-column label="县域" min-width="100">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-input size="mini" disabled :value="scope.row.city_title"></el-input>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
         <el-table-column label="今日报价" prop="price_sale" width="90">
           <template slot-scope="scope">
             {{ !!scope.row.price_sale ? '￥' + DataHandle.returnPrice(scope.row.price_sale) : '未报价' }}
           </template>
         </el-table-column>
-        <el-table-column label="浮动率" width="120">
+
+        <el-table-column label="阶梯一" width="120">
           <template slot-scope="scope">
             <el-input
               size="mini"
-              v-model="scope.row.discount"
-              :class="scope.row.discount_error ? 'custom-input-error' : ''"
-              @input="changeDiscount(scope.row.item_id)"
+              v-model="scope.row.step_prices[0].num"
+              :class="scope.row.step_prices[0].num_error ? 'custom-input-error' : ''"
+              @input="changeNum(scope.row.step_prices[0], 0)"
+            >
+              <template slot="append">件</template>
+            </el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="折扣率" width="120">
+          <template slot-scope="scope">
+            <el-input
+              size="mini"
+              v-model="scope.row.step_prices[0].discount"
+              :class="scope.row.step_prices[0].discount_error ? 'custom-input-error' : ''"
+              @input="changeDiscount(scope.row.step_prices[0], 0)"
             >
               <template slot="append">%</template>
             </el-input>
           </template>
         </el-table-column>
-        <el-table-column label="浮动价格" min-width="100">
+        <el-table-column label="优惠价格" min-width="100">
           <template slot-scope="scope">
-            {{ !!scope.row.discount && !!scope.row.price_sale
-            ? '￥' + DataHandle.returnPrice(scope.row.price_sale * scope.row.discount / 100)
+            {{ !!scope.row.step_prices[0].discount && !!scope.row.price_sale
+            ? '￥' + DataHandle.returnPrice(scope.row.price_sale * scope.row.step_prices[0].discount / 100)
             : ''
             }}
           </template>
         </el-table-column>
+
+        <el-table-column label="阶梯二" width="120">
+          <template slot-scope="scope">
+            <el-input
+              size="mini"
+              v-model="scope.row.step_prices[1].num"
+              :class="scope.row.step_prices[1].num_error ? 'custom-input-error' : ''"
+              @input="changeNum(scope.row.step_prices[1], 1)"
+            >
+              <template slot="append">件</template>
+            </el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="折扣率" width="120">
+          <template slot-scope="scope">
+            <el-input
+              size="mini"
+              v-model="scope.row.step_prices[1].discount"
+              :class="scope.row.step_prices[1].discount_error ? 'custom-input-error' : ''"
+              @input="changeDiscount(scope.row.step_prices[1], 1)"
+            >
+              <template slot="append">%</template>
+            </el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="优惠价格" min-width="100">
+          <template slot-scope="scope">
+            {{ !!scope.row.step_prices[1].discount && !!scope.row.price_sale
+            ? '￥' + DataHandle.returnPrice(scope.row.price_sale * scope.row.step_prices[1].discount / 100)
+            : ''
+            }}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="阶梯三" width="120">
+          <template slot-scope="scope">
+            <el-input
+              size="mini"
+              v-model="scope.row.step_prices[2].num"
+              :class="scope.row.step_prices[2].num_error ? 'custom-input-error' : ''"
+              @input="changeNum(scope.row.step_prices[2], 2)"
+            >
+              <template slot="append">件</template>
+            </el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="折扣率" width="120">
+          <template slot-scope="scope">
+            <el-input
+              size="mini"
+              v-model="scope.row.step_prices[2].discount"
+              :class="scope.row.step_prices[2].discount_error ? 'custom-input-error' : ''"
+              @input="changeDiscount(scope.row.step_prices[2], 2)"
+            >
+              <template slot="append">%</template>
+            </el-input>
+          </template>
+        </el-table-column>
+        <el-table-column label="优惠价格" min-width="100">
+          <template slot-scope="scope">
+            {{ !!scope.row.step_prices[2].discount && !!scope.row.price_sale
+            ? '￥' + DataHandle.returnPrice(scope.row.price_sale * scope.row.step_prices[2].discount / 100)
+            : ''
+            }}
+          </template>
+        </el-table-column>
+
       </el-table>
     </div>
 
@@ -114,7 +189,7 @@
   import { QueryItem, QuerySearchInput, SelectSystemClass, SelectDisplayClass } from '@/common';
   import { Http, Config, DataHandle } from '@/util';
   export default {
-    name: 'city-price-add',
+    name: 'step-price-add',
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -132,7 +207,6 @@
       'my-select-display-class': SelectDisplayClass,
     },
     props: {
-      city: { type: Object, default: { id: '', title: '' } },
       type: { type: String, default: 'add' },
       items: { type: Array, default: [] },
     },
@@ -168,8 +242,6 @@
             item_id: d.item.id,
             code: d.item.code,
             title: d.item.title,
-            city_id: this.$props.city.id,
-            city_title: this.$props.city.title,
             price_sale: d.item.price_sale,
             discount: DataHandle.returnDiscount(d.discount),
             discount_error: false,
@@ -183,7 +255,6 @@
       initQuery() {
         this.$data.query = {
           province_code: this.$province.code,
-          city_id: this.$props.city.id,
           is_all: 0,
           is_gift: 0,
           city_or_level: 1,
@@ -228,11 +299,13 @@
             item_id: item.id,
             code: item.code,
             title: item.title,
-            city_id: this.$props.city.id,
-            city_title: this.$props.city.title,
             price_sale: item.price_sale,
-            discount: '',
-            discount_error: false,
+
+            step_prices: [
+              { num: '', num_error: false, discount: '', discount_error: false },
+              { num: '', num_error: false, discount: '', discount_error: false },
+              { num: '', num_error: false, discount: '', discount_error: false },
+            ],
           }
         });
         this.$data.editList = [...this.$data.editList, ...list];
@@ -242,10 +315,21 @@
         this.$data.editList = this.$data.editList.filter(d => d.item_id !== item_id);
       },
 
-      changeDiscount(item_id) {
-        let item = this.$data.editList.find(item => item.item_id === item_id);
-        if (!item) return;
-        item.discount_error = this.validDiscount(item.discount);
+      changeNum(step, index) {
+        step.num_error = this.validNum(step.num);
+      },
+
+      changeDiscount(step, index) {
+        step.discount_error = this.validDiscount(step.discount);
+      },
+
+      validNum(num) {
+        if (!num) return true;
+        if (isNaN(num)) return true;
+        if (num <= 0) return true;
+        if (num >= 10000) return true;
+        if (!/^[1-9]\d*$/.test(num)) return true;
+        return false;
       },
 
       validDiscount(discount) {
@@ -261,25 +345,28 @@
         if (this.$data.editList.length <= 0) return;
 
         this.$data.editList = this.$data.editList.map(item => {
-          item.discount_error = this.validDiscount(item.discount);
+          item.step_prices = item.step_prices.map(d => {
+            return { num: d.num, num_error: this.validNum(d.num), discount: d.discount, discount_error: this.validDiscount(d.discount) };
+          });
           return item;
         });
         this.$data.editList = JSON.parse(JSON.stringify(this.$data.editList));
 
-        if (this.$data.editList.some(item => item.discount_error)) return;
+        if (this.$data.editList.some(item => item.step_prices.some(d => d.num_error || d.discount_error))) return;
+
+        console.log('验证成功！');
 
         let entries = this.$props.type === 'add'
             ? this.$data.editList.map(item => ({
-                city_id: item.city_id,
-                item_id: item.item_id,
-                discount: DataHandle.handleDiscount(item.discount),
-              }))
+              item_id: item.item_id,
+              step_prices: item.step_prices.map(d => ({ num: Number(d.num), discount: DataHandle.handleDiscount(d.discount) })),
+            }))
             : this.$data.editList.map(item => ({
-                id: item.id,
-                discount: DataHandle.handleDiscount(item.discount)
-              }));
+              id: item.id,
+              discount: DataHandle.handleDiscount(item.discount)
+            }));
 
-        let API = this.$props.type === 'add' ? Config.api.businessMarketingStrategyCityAdd : Config.api.businessMarketingStrategyCityBatchEdit;
+        let API = this.$props.type === 'add' ? Config.api.businessMarketingStrategyStepAdd : Config.api.businessMarketingStrategyStepModify;
 
         let res = await Http.post(API, { entries });
         if (res.code === 0) {
