@@ -179,9 +179,10 @@
     methods: {
       //选择区域后【页面初始化】
       selectProvince(data){
-        // this.$data.initQuery.province_code = data.code;
         this.$data.query.province_code = data.code;
-        // TODO 加载区域数据
+        this.saleClassList(() => {
+          this.initChart();
+        });
       },
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
