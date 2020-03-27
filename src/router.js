@@ -142,9 +142,9 @@ const router = new Router({
       component: () => import('@/view/business/marketingStrategy/city')
     },
     {
-      path: '/business/marketing-strategy/ladder',
-      name: 'MarketingStrategyLadder',
-      component: () => import('@/view/business/marketingStrategy/ladder')
+      path: '/business/marketing-strategy/step',
+      name: 'MarketingStrategyStep',
+      component: () => import('@/view/business/marketingStrategy/step')
     },
 
     /*团购*/
