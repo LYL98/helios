@@ -77,6 +77,9 @@
     created() {
       this.getData();
     },
+    props: {
+      provinceCode: { type: String, default: '' }, //省code
+    },
     data() {
       return {
         dataItem: [],
@@ -100,7 +103,7 @@
       async getData(){
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.systemBannerList, {
-          province_code: this.province.code
+          province_code: this.provinceCode
         });
         this.$loading({isShow: false});
         if(res.code === 0){

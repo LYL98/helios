@@ -40,6 +40,7 @@
       clearable: { type: Boolean, default: true},
       placeholder: { type: String, default: '县域' },
       disabled: { type: Boolean, default: false },
+      showAll: {type: Boolean, default: false},
     },
     model: {
       prop: 'value',
