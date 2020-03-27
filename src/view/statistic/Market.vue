@@ -4,6 +4,11 @@
     <div class="query" style="margin-bottom: 16px;">
       <el-row :gutter="32">
         <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province type="select" @change="selectProvince"/>
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
           <my-query-item label="时间">
             <el-date-picker
               v-model="pickerValue"
@@ -18,11 +23,6 @@
               :clearable="false"
               @change="changePicker">
             </el-date-picker>
-          </my-query-item>
-        </el-col>
-        <el-col :span="7">
-          <my-query-item label="区域">
-            <global-province type="select" @change="selectProvince"/>
           </my-query-item>
         </el-col>
       </el-row>
