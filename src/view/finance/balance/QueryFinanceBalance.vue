@@ -3,7 +3,7 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="区域">
-          <global-province type="select" isRequired @change="selectProvince"/>
+          <global-province :value="editQuery.province_code" type="select" @change="selectProvince"/>
         </my-query-item>
       </el-col>
       <el-col :span="10">
@@ -28,7 +28,10 @@
     methods: {
       //选择区域后【页面初始化】
       selectProvince(data){
-        this.$emit('change', this.editQuery);
+        this.$emit('change', {
+          ...this.editQuery,
+          province_code: data.code
+        });
       },
       resetQuery() {
         this.$props.reset();

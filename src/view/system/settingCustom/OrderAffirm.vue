@@ -31,6 +31,9 @@
   export default {
     name: "OrderAffirm",
     mixins: [addEditMixin],
+    props: {
+      provinceCode: { type: String, default: '' }, //省code
+    },
     data() {
       return{
         isEdit: false,
@@ -57,7 +60,7 @@
       async basicdataConfirmTime() {
         this.$loading({isShow: true});
         let res = await Http.get(Config.api.basicdataConfirmTime, {
-          province_code: this.$province.code
+          province_code: this.provinceCode
         });
         this.$loading({isShow: false});
         if (res.code === 0) {
@@ -70,7 +73,7 @@
       async addEditData() {
         this.$loading({isShow: true});
         let res = await Http.post(Config.api.basicdataConfirmTime, {
-          province_code: this.$province.code,
+          province_code: this.provinceCode,
           ...this.detail
         });
         this.$loading({isShow: false});

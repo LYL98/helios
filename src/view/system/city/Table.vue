@@ -112,12 +112,17 @@
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('Query'); //获取query组件
-      this.getData(pc.query);
+      //在Query组件初始化
+      //let pc = this.getPageComponents('Query'); //获取query组件
+      //this.getData(pc.query);
     },
     data() {
       return {
         dataList: [],
+        dataItem: {
+          items: [],
+          num: 0
+        }
       }
     },
     computed: {

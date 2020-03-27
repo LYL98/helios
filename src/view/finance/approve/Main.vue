@@ -56,6 +56,7 @@
       return {
         auth: this.$auth,
         query: {
+          province_code: '',
           status: '',
           reason: '',
           merchant_title: '',
@@ -83,10 +84,7 @@
     },
     methods: {
       async getData() {
-        let res = await Http.get(Config.api.financeApproveQuery, {
-          ...this.query,
-          province_code: this.$province.code
-        });
+        let res = await Http.get(Config.api.financeApproveQuery, this.query);
         if (res.code === 0) {
           this.$data.dataItem = res.data;
         } else {
@@ -95,6 +93,7 @@
       },
       initQuery() {
         this.$data.query = Object.assign({}, this.$data.query, {
+          province_code: '',
           status: '',
           reason: '',
           merchant_title: '',
