@@ -129,12 +129,7 @@
     },
     created() {
       this.handleTableColumn();
-      //来自场地
-      if(this.fromPage === 'Receiving'){
-        let pc = this.getPageComponents('QueryWarehouseQualityControl');
-        this.getData(pc.query);
-      }
-      //仓库品控 初始化在query组件
+      //仓库品控、来自场地 初始化在query组件
 
       //处理权限
       let { fromPage, auth, pageAuth } = this;

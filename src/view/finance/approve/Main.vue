@@ -54,9 +54,10 @@
     },
     data() {
       return {
-        province: this.$province,
         auth: this.$auth,
         query: {
+          status: '',
+          reason: '',
           merchant_title: '',
           operator_name: ''
         },
@@ -76,11 +77,16 @@
       documentTitle('财务 - 财务审核');
       // 判断是否具有促销活动的权限
       this.initQuery();
-      this.getData();
+
+      //在Query组件初始化
+      //this.getData();
     },
     methods: {
       async getData() {
-        let res = await Http.get(Config.api.financeApproveQuery, this.query);
+        let res = await Http.get(Config.api.financeApproveQuery, {
+          ...this.query,
+          province_code: this.$province.code
+        });
         if (res.code === 0) {
           this.$data.dataItem = res.data;
         } else {
@@ -89,7 +95,6 @@
       },
       initQuery() {
         this.$data.query = Object.assign({}, this.$data.query, {
-          province_code: this.province.code,
           status: '',
           reason: '',
           merchant_title: '',

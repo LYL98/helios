@@ -110,6 +110,9 @@
       'query-tabs': queryTabs
     },
     mixins: [tableMixin],
+    props: {
+      provinceCode: { type: String, default: '' }, //省code
+    },
     created() {
       let pc = this.getPageComponents('QueryOperateSort');
       this.getData(pc.query);
@@ -154,7 +157,10 @@
         
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supOutAllocateQuery, query);
+        let res = await Http.get(Config.api.supOutAllocateQuery, {
+          ...query,
+          province_code: this.provinceCode
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
