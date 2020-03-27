@@ -150,7 +150,6 @@
     },
     data() {
       return {
-        province: this.$province,
         auth: this.$auth,
         query: {
           title: ''
@@ -173,12 +172,12 @@
     created() {
       documentTitle('财务 - 客户财务管理');
       this.initQuery();
-      this.getData();
+      //在Query组件初始化
+      //this.getData();
     },
     methods: {
       initQuery() {
         this.$data.query = Object.assign(this.$data.query, {
-          province_code: this.province.code,
           title: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -187,7 +186,10 @@
       //获取数据
       async getData(){
         this.$loading({ isShow: true });
-        let res = await Http.get(Config.api.financeBalanceQuery, this.query);
+        let res = await Http.get(Config.api.financeBalanceQuery, {
+          ...this.query,
+          province_code: this.$province.code,
+        });
         this.$loading({ isShow: false });
         if (res.code === 0) {
           this.$data.dataItem = res.data;
@@ -266,16 +268,16 @@
       },
       //导出
       async handleBalanceExport() {
-        let {province_code, title} = this.query;
+        let { title } = this.query;
         let api = Config.api.financeBalanceExport;
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           title: title
         });
         if(res.code === 0){
-          let queryStr = `${api}?province_code=${this.province.code}&title=${title}`;
+          let queryStr = `${api}?province_code=${this.$province.code}&title=${title}`;
           
           window.open(queryStr);
         }else{

@@ -1,105 +1,107 @@
 <template>
-  <div @mousemove="handleTableMouseMove" class="table-conter">
-    <el-table
-      class="list-table my-table-float"
-      @cell-mouse-enter="cellMouseEnter"
-      @cell-mouse-leave="cellMouseLeave"
-      :data="data"
-      :row-class-name="highlightRowClassName"
-      :highlight-current-row="true"
-      :row-key="rowIdentifier"
-      :current-row-key="clickedRow[rowIdentifier]"
-    >
-      <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize < 999950 ? 68 : 88" label="序号" :index="indexMethod" />
-      <el-table-column label="商户名称" prop="merchant_title" min-width="140">
-        <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
-            {{ scope.row.merchant_title }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="充值/扣款类型" prop="opt_type" min-width="140">
-        <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
-            {{ opt_type[scope.row.opt_type] }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="金额" prop="amount" min-width="80">
-        <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
-            {{ scope.row.amount > 0 ? '+' : '' }}{{ returnPrice(scope.row.amount) }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="提交人" prop="creator_name" min-width="100">
-        <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
-            {{ scope.row.creator_name }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="充值/扣款备注" min-width="160">
-        <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
-            {{ scope.row.remark || '-' }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="审核人" prop="checker_name" min-width="100">
-        <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
-            {{ scope.row.checker_name || '-' }}
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="审核状态" min-width="100">
-        <template slot-scope="scope">
-          <el-tag disable-transitions size="small" :type="statusTagType[scope.row.status]" style="width: 66px; text-align: center;"
-          >{{ status[scope.row.status] }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="提交时间" prop="created" min-width="100">
-        <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">{{returnDate(scope.row.created)}}</div>
-          <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnDateFormat(scope.row.created, 'HH:mm:ss')}}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="100" align="center">
-        <template slot-scope="scope">
-          <my-table-operate
-            @command-click="handleCommandClick(scope.row)"
-            @command-visible="handleCommandVisible"
-            :list="[
-              {
-                title: '审核',
-                isDisplay: (auth.isAdmin || auth.FinanceApproveEdit) && scope.row.status === 'wait_check',
-                command: () => handleItemEdit(scope.row)
-              },
-              {
-                title: '审核详情',
-                isDisplay: (auth.isAdmin || auth.FinanceApproveDetail) && (scope.row.status == 'checked' || scope.row.status == 'declined'),
-                command: () => handleShowDetail(scope.row)
-              }
-            ]"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-dialog
-      :visible.sync="dialog.isShow"
-      :before-close="handleCloseDetail"
-      width="600px"
-      append-to-body
-      title="审核详情"
-    >
-      <el-form label-position="left" label-width="100px" style="margin-top: -10px; padding: 0 20px;" v-if="dialog.isShow">
-        <el-form-item label="审核状态：">{{ status[dialog.detail.status] }}</el-form-item>
-        <el-form-item label="审核备注：">{{ dialog.detail.audit_remark }}</el-form-item>
-        <el-form-item label="审核人：">{{ dialog.detail.checker_name }}</el-form-item>
-        <el-form-item label="审核时间：">{{ dialog.detail.audit_time }}</el-form-item>
-      </el-form>
-    </el-dialog>
+  <div class="container-table">
+    <div @mousemove="handleTableMouseMove" class="table-conter">
+      <el-table
+        class="list-table my-table-float"
+        @cell-mouse-enter="cellMouseEnter"
+        @cell-mouse-leave="cellMouseLeave"
+        :data="data"
+        :row-class-name="highlightRowClassName"
+        :highlight-current-row="true"
+        :row-key="rowIdentifier"
+        :current-row-key="clickedRow[rowIdentifier]"
+      >
+        <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize < 999950 ? 68 : 88" label="序号" :index="indexMethod" />
+        <el-table-column label="商户名称" prop="merchant_title" min-width="140">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              {{ scope.row.merchant_title }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="充值/扣款类型" prop="opt_type" min-width="140">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              {{ opt_type[scope.row.opt_type] }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="金额" prop="amount" min-width="80">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              {{ scope.row.amount > 0 ? '+' : '' }}{{ returnPrice(scope.row.amount) }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="提交人" prop="creator_name" min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              {{ scope.row.creator_name }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="充值/扣款备注" min-width="160">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              {{ scope.row.remark || '-' }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="审核人" prop="checker_name" min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">
+              {{ scope.row.checker_name || '-' }}
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="审核状态" min-width="100">
+          <template slot-scope="scope">
+            <el-tag disable-transitions size="small" :type="statusTagType[scope.row.status]" style="width: 66px; text-align: center;"
+            >{{ status[scope.row.status] }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="提交时间" prop="created" min-width="100">
+          <template slot-scope="scope">
+            <div :class="isEllipsis(scope.row)">{{returnDate(scope.row.created)}}</div>
+            <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnDateFormat(scope.row.created, 'HH:mm:ss')}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="100" align="center">
+          <template slot-scope="scope">
+            <my-table-operate
+              @command-click="handleCommandClick(scope.row)"
+              @command-visible="handleCommandVisible"
+              :list="[
+                {
+                  title: '审核',
+                  isDisplay: (auth.isAdmin || auth.FinanceApproveEdit) && scope.row.status === 'wait_check',
+                  command: () => handleItemEdit(scope.row)
+                },
+                {
+                  title: '审核详情',
+                  isDisplay: (auth.isAdmin || auth.FinanceApproveDetail) && (scope.row.status == 'checked' || scope.row.status == 'declined'),
+                  command: () => handleShowDetail(scope.row)
+                }
+              ]"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-dialog
+        :visible.sync="dialog.isShow"
+        :before-close="handleCloseDetail"
+        width="600px"
+        append-to-body
+        title="审核详情"
+      >
+        <el-form label-position="left" label-width="100px" style="margin-top: -10px; padding: 0 20px;" v-if="dialog.isShow">
+          <el-form-item label="审核状态：">{{ status[dialog.detail.status] }}</el-form-item>
+          <el-form-item label="审核备注：">{{ dialog.detail.audit_remark }}</el-form-item>
+          <el-form-item label="审核人：">{{ dialog.detail.checker_name }}</el-form-item>
+          <el-form-item label="审核时间：">{{ dialog.detail.audit_time }}</el-form-item>
+        </el-form>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -170,11 +172,15 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  @import '@/share/scss/table.scss';
   .green {
     color: #00d600;
   }
   .red {
     color: #ff3724;
   }
+</style>
+<style lang="scss">
+  @import '@/share/scss/table.global.scss';
 </style>

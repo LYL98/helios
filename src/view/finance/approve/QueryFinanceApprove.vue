@@ -2,13 +2,8 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="审核状态">
-          <el-select v-model="editQuery.status" size="small" style="width: 100%;" clearable @change="changeQuery">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="待审核" value="wait_check"></el-option>
-            <el-option label="审核通过" value="checked"></el-option>
-            <el-option label="被驳回" value="declined"></el-option>
-          </el-select>
+        <my-query-item label="区域">
+          <global-province type="select" isRequired @change="selectProvince"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -30,6 +25,16 @@
       </el-col>
     </el-row>
     <el-row :gutter="32" style="margin-top: 16px;">
+      <el-col :span="7">
+        <my-query-item label="审核状态">
+          <el-select v-model="editQuery.status" size="small" style="width: 100%;" clearable @change="changeQuery">
+            <el-option label="全部" value=""></el-option>
+            <el-option label="待审核" value="wait_check"></el-option>
+            <el-option label="审核通过" value="checked"></el-option>
+            <el-option label="被驳回" value="declined"></el-option>
+          </el-select>
+        </my-query-item>
+      </el-col>
       <el-col :span="7">
         <my-query-item label="类型">
           <select-option
@@ -65,7 +70,7 @@
 <script>
   import { Row, Col, Input, Button, DatePicker, Select, Option } from 'element-ui';
   import { SelectOption, QueryItem } from '@/common';
-  import { SelectCity } from '@/component';
+  import { GlobalProvince, SelectCity } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
@@ -80,6 +85,7 @@
       'el-option': Option,
       'my-query-item': QueryItem,
       'select-option': SelectOption,
+      'global-province': GlobalProvince,
       'my-select-city': SelectCity
     },
     mixins: [queryMixin],
@@ -89,6 +95,10 @@
       }
     },
     methods: {
+      //选择区域后【页面初始化】
+      selectProvince(data){
+        this.$emit('change', this.editQuery);
+      },
       //搜索日期
       changePicker(value){
         if(value && value.length === 2){

@@ -57,7 +57,6 @@
     mixins: [queryMixin],
     data() {
       let initQuery = {
-        province_code: this.$province.code,
         picker_value: null,
         begin_date: '',
         end_date: '',
