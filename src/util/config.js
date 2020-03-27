@@ -505,6 +505,7 @@ const Config = (() => {
       //统计
       statisticalOrderClassSum: apiM + '/statistical/order/class_sum', //统计分析 - 商品销售统计 - 分类别统计
       statisticalOrderItemSum: apiM + '/statistical/order/item_sum', //统计分析 - 商品销售统计 - 商品别统计
+      statisticalOrderProvinceSum: apiM + '/statistical/order/province_sum', //统计分析 - 客户订单统计 - 区域级别汇总
       statisticalOrderGradeSum: apiM + '/statistical/order/zone_sum', //统计分析 - 客户订单统计 - 片区级别汇总
       statisticalOrderCitySum: apiM + '/statistical/order/city_sum', //统计分析 - 客户订单统计 - 县域级别汇总
       statisticalOrderMerchantSum: apiM + '/statistical/order/store_sum', //统计分析 - 客户订单统计 - 商户别汇总

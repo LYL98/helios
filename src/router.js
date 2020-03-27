@@ -332,6 +332,11 @@ const router = new Router({
       component: () => import('@/view/statistic/Client')
     },
     {
+      path: '/statistic/client/province',
+      name: 'StatisticClientProvince',
+      component: () => import('@/view/statistic/ClientProvince')
+    },
+    {
       path: '/statistic/client/zone',
       name: 'StatisticClientZone',
       component: () => import('@/view/statistic/ClientZone')
