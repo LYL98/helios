@@ -15,7 +15,7 @@
     </el-dropdown>
 
     <!-- type === select -->
-    <el-select v-model="selectCode" filterable placeholder="全部" :size="size" :clearable="!isRequired" style="width:100%;" v-else-if="type === 'select'">
+    <el-select v-model="selectCode" :filterable="filterable" placeholder="全部" :size="size" :clearable="!isRequired" style="width:100%;" v-else-if="type === 'select'">
       <el-option v-if="!isRequired" label="全部" value=""/>
       <el-option v-for="(item, index) in dataItem" :key="index" :label="item.title" :value="item.code"/>
     </el-select>
@@ -48,6 +48,7 @@ export default {
   props: {
     type: { type: String, default: 'default' }, //类型
     size: { type: String, default: 'small' }, //type 为 select 时可用
+    filterable:  { type: Boolean, default: false }, //type 为 select 时可用
     isRequired: { type: Boolean, default: false }, //必选一个区域
   },
   data() {
