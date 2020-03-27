@@ -37,6 +37,7 @@
               :value="query.province_code"
               @change="selectProvince"
               size="small"
+              class="query-item-select"
             />
           </my-query-item>
         </el-col>
@@ -199,15 +200,11 @@
       },
 
       initBreadcrumb() {
-        // let zone_id = this.$route.query.zone_id;
-        // let zone_title = this.$route.query.zone_title;
         let province_code = this.$route.query.province_code;
         let province_title = this.$route.query.province_title;
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
-          // zone_id: zone_id,
-          // zone_title: zone_title,
           province_code: province_code,
           province_title: province_title,
           begin_date: begin_date,
@@ -249,19 +246,7 @@
         this.$data.query.province_code = data.code;
         this.zoneOrderList();
       },
-      // changeZone(data, isInit) {
-      //   if (!isInit) {
-      //     // console.log("改变片区", data);
-      //     this.$data.query.zone_id = data;
-      //     this.zoneOrderList();
-      //   }
-      // },
-      // changeZoneTitle(title, isInit) {
-      //   if (!isInit) {
-      //     // console.log('changeZoneTitle', title)
-      //     this.$data.query.zone_title = title
-      //   }
-      // },
+
       changePage(page) {
         this.$data.query.page = page;
         this.zoneOrderList();
@@ -289,35 +274,6 @@
         }
         this.$loading({ isShow: false });
       },
-
-      //统计分析 - 商品销售统计 - 片区分类统计
-      // async zoneOrderList(callback){
-      //   let that = this;
-      //   let { query } = that;
-      //   this.$loading({ isShow: true, isWhole: true });
-      //   let res = await Http.get(Config.api.statisticalOrderGradeSum, query);
-      //   if(res.code === 0){
-      //     that.$data.listItem = res.data;
-      //     typeof callback === 'function' && callback();
-      //   }else{
-      //     this.$message({title: '提示', message: res.message, type: 'error'});
-      //   }
-      //   this.$loading({ isShow: false });
-      // },
-
-      // handleShowClassDetail(item) {
-      //   this.$router.push({
-      //     path: '/statistic/client/zone/store',
-      //     query: {
-      //       city_id: item.city_id,
-      //       city_title: item.city_title,
-      //       zone_id: this.$data.query.zone_id,
-      //       zone_title: this.$data.query.zone_title,
-      //       begin_date: this.$data.query.begin_date,
-      //       end_date: this.$data.query.end_date
-      //     }
-      //   });
-      // }
 
       handleShowZoneDetail(item) {
         let zone_id = item.zone_id;

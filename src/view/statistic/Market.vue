@@ -5,7 +5,10 @@
       <el-row :gutter="32">
         <el-col :span="7">
           <my-query-item label="区域">
-            <global-province type="select" @change="selectProvince"/>
+            <global-province
+              type="select"
+              @change="selectProvince"
+              class="query-item-select"/>
           </my-query-item>
         </el-col>
         <el-col :span="7">

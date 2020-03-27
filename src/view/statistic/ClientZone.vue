@@ -8,7 +8,12 @@
           客户订单统计
         </el-breadcrumb-item>
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client/province', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client/province',
+          query: {
+          province_code: breadcrumb.province_code,
+          province_title: breadcrumb.province_title,
+          begin_date: breadcrumb.begin_date,
+          end_date: breadcrumb.end_date } }"
         >
           {{ breadcrumb.province_code === '' ? '全部省份' : breadcrumb.province_title }}
         </el-breadcrumb-item>

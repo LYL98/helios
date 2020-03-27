@@ -430,15 +430,11 @@
       },
 
       handleShowZoneDetail(item) {
-        let zone_id = item.zone_id;
-        let zone_title = item.zone_title;
         let province_code = item.province_code;
         let province_title = item.province_title;
         this.$router.push({
           path: '/statistic/client/province',
           query: {
-            zone_id: zone_id,
-            zone_title: zone_title,
             province_code: province_code,
             province_title: province_title,
             begin_date: this.$data.query.begin_date,

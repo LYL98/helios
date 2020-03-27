@@ -8,14 +8,28 @@
           客户订单统计
         </el-breadcrumb-item>
 
+        <!--省份标签-->
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client/province', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client/province',
+          query: {
+            province_code: breadcrumb.province_code,
+            province_title: breadcrumb.province_title,
+            begin_date: breadcrumb.begin_date,
+            end_date: breadcrumb.end_date } }"
         >
           {{ breadcrumb.province_code === '' ? '全部省份' : breadcrumb.province_title }}
         </el-breadcrumb-item>
 
+        <!--片区标签-->
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client/zone', query: { zone_id: breadcrumb.zone_id, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client/zone',
+          query: {
+            province_code: breadcrumb.province_code,
+            province_title: breadcrumb.province_title,
+            zone_id: breadcrumb.zone_id,
+            zone_title: breadcrumb.zone_title,
+            begin_date: breadcrumb.begin_date,
+            end_date: breadcrumb.end_date } }"
         >
           {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
