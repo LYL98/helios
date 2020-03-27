@@ -91,8 +91,9 @@
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryOperateLine'); //获取query组件
-      this.getData(pc.query);
+      //在Query组件初始化
+      //let pc = this.getPageComponents('QueryOperateLine'); //获取query组件
+      //this.getData(pc.query);
     },
     data() {
       return {

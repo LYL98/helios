@@ -3,6 +3,11 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
+        <my-query-item label="区域">
+          <global-province type="select" isRequired @change="selectProvince"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="配送日期">
           <el-date-picker
             size="small"
@@ -33,24 +38,36 @@
 
 <script>
   import { Http, Config } from '@/util';
+  import { GlobalProvince } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryOperateLine",
     mixins: [queryMixin],
+    components: {
+      'global-province': GlobalProvince
+    },
     created() {
       this.$data.initQuery.delivery_date = this.today;
       this.$data.query.delivery_date = this.today;
     },
     data() {
       let initQuery = {
-        province_code: this.$province.code,
+        province_code: '',
         delivery_date: '',
         condition: ''
       }
       return {
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
+      }
+    },
+    methods: {
+      //选择区域后【页面初始化】
+      selectProvince(data){
+        this.$data.initQuery.province_code = data.code;
+        this.$data.query.province_code = data.code;
+        this.handleQuery('TableOperateLine');
       }
     }
   }

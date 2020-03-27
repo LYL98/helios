@@ -3,22 +3,18 @@
     <div class="container-query">
       <el-row :gutter="32">
         <el-col :span="7">
-          <my-query-item label="审核状态">
-            <el-select v-model="query.status" size="small" clearable @change="selectByCondition" style="width: 100%;">
-              <el-option label="全部" value=""></el-option>
-              <el-option label="未审核" value="init"></el-option>
-              <el-option label="审核通过" value="checked"></el-option>
-              <el-option label="驳回" value="reject"></el-option>
-            </el-select>
+          <my-query-item label="区域">
+            <global-province type="select" isRequired @change="selectProvince"/>
           </my-query-item>
         </el-col>
         <el-col :span="7">
-          <my-query-item label="线路">
-            <my-select-line
-              size="small"
+          <my-query-item label="县域">
+            <my-select-city
               clearable
-              :provinceCode="province.code"
-              v-model="query.line_id"
+              size="small"
+              placeholder="县域"
+              v-model="query.city_id"
+              :provinceCode="query.province_code"
               @change="selectByCondition"
             />
           </my-query-item>
@@ -37,13 +33,12 @@
       </el-row>
       <el-row :gutter="32" style="margin-top: 16px;">
         <el-col :span="7">
-          <my-query-item label="县域">
-            <my-select-city
-              clearable
+          <my-query-item label="线路">
+            <my-select-line
               size="small"
-              placeholder="县域"
-              v-model="query.city_id"
+              clearable
               :provinceCode="query.province_code"
+              v-model="query.line_id"
               @change="selectByCondition"
             />
           </my-query-item>
@@ -64,6 +59,16 @@
               @change="changePicker"
               style="width: 100%;"
             />
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <my-query-item label="审核状态">
+            <el-select v-model="query.status" size="small" clearable @change="selectByCondition" style="width: 100%;">
+              <el-option label="全部" value=""></el-option>
+              <el-option label="未审核" value="init"></el-option>
+              <el-option label="审核通过" value="checked"></el-option>
+              <el-option label="驳回" value="reject"></el-option>
+            </el-select>
           </my-query-item>
         </el-col>
       </el-row>
@@ -233,10 +238,10 @@
 </template>
 
 <script>
-  import {Row, Col, Table, TableColumn, Popover, Pagination, Button, Input, Select, Option, DatePicker, Dialog, Tag, MessageBox, Message} from 'element-ui';
-  import {SelectOption, QueryItem, TableOperate, OmissionText, QuerySearchInput} from '@/common';
-  import {SelectLine, SelectCity} from '@/component';
-  import {Config, Constant, DataHandle, Http} from '@/util';
+  import { Row, Col, Table, TableColumn, Popover, Pagination, Button, Input, Select, Option, DatePicker, Dialog, Tag, MessageBox, Message } from 'element-ui';
+  import { SelectOption, QueryItem, TableOperate, OmissionText, QuerySearchInput } from '@/common';
+  import { GlobalProvince, SelectLine, SelectCity } from '@/component';
+  import { Config, Constant, DataHandle, Http } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
   import RefundAddStore from './RefundAddStore';
   import mainMixin from '@/share/mixin/main.mixin';
@@ -264,7 +269,8 @@
       'my-omission-text': OmissionText,
       'refund-add-store': RefundAddStore,
       'my-table-operate': TableOperate,
-      'query-search-input': QuerySearchInput
+      'query-search-input': QuerySearchInput,
+      'global-province': GlobalProvince
     },
     mixins: [tableMixin, mainMixin],
     computed: {
@@ -307,10 +313,17 @@
     },
     created() {
       documentTitle('场地 - 退筐');
-      this.$data.query.province_code = this.province.code;
-      this.listQuery();
     },
     methods: {
+      //选择区域后【页面初始化】
+      selectProvince(data){
+        let { query } = this;
+        query.line_id = '';
+        query.province_code = 'city_id';
+        query.province_code = data.code;
+        this.$data.query = query;
+        this.listQuery();
+      },
 
       indexMethod(index) {
         return (this.query.page - 1) * this.query.page_size + index + 1;
@@ -364,7 +377,7 @@
           page: 1,
           page_size: Constant.PAGE_SIZE
         })
-        this.$data.query.province_code = this.province.code;
+        this.$data.query.province_code = this.query.province_code;
         this.$data.pickerValue = null;
         this.listQuery();
       },
@@ -388,11 +401,11 @@
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
-          province_code: this.province.code,
+          province_code: this.query.province_code,
           ...query
         });
         if(res.code === 0){
-          let queryStr = `${api}?province_code=${this.province.code}`;
+          let queryStr = `${api}?province_code=${this.query.province_code}`;
           for (let item in query) {
             queryStr += `&${item}=${query[item]}`
           }
