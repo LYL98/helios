@@ -35,7 +35,7 @@
         <ul class="description">
           <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
           <li>订单框总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
-          <li>改单商品总金额: <span>{{ returnPrice(totalOrderModifyPrice) }}</span> 元</li>
+          <li>改单商品总金额: <span>{{ Math.abs(returnPrice(totalOrderModifyPrice)) }}</span> 元</li>
           <li>销售总量: <span>{{ totalCount }}</span> 件</li>
         </ul>
       </div>
@@ -285,8 +285,7 @@
           //总数据
           totalItemTotalPrice += orderClassSumData[i].amount_real;
           totalFramPrice += orderClassSumData[i].fram_total_price;
-          // TODO 改单金额总计
-          // totalOrderModifyPrice += orderClassSumData[i].
+          totalOrderModifyPrice += orderClassSumData[i].check_chg
         }
         for(let i = 0; i < orderClassSumData.length; i++){
           //饼图数据
