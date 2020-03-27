@@ -1,5 +1,11 @@
 <template>
   <div class="container-table">
+    <div class="table-top">
+      <div class="left">
+        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="queryOutStorageStatus"/>
+      </div>
+      <div class="right"></div>
+    </div>
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
@@ -78,8 +84,9 @@
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryWarehouseOutStorage');
-      this.getData(pc.query);
+      //初始化在Query组件
+      //let pc = this.getPageComponents('QueryWarehouseOutStorage');
+      //this.getData(pc.query);
     },
     data() {
       return {
@@ -93,11 +100,24 @@
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ],
+        tabValue: 'opt_all',
         outStorageStatus: Constant.OUT_STORAGE_STATUS(),
         outStorageStatusType: Constant.OUT_STORAGE_STATUS_TYPE
       }
     },
+    computed: {
+      //tab
+      queryOutStorageStatus(){
+        let d = Constant.OUT_STORAGE_STATUS('value_key');
+        return { '全部': 'opt_all', ...d};
+      }
+    },
     methods: {
+      //切换记录tab
+      changeTab(){
+        let pc = this.getPageComponents('QueryWarehouseOutStorage');
+        this.getData(pc.query);
+      },
       //返回状态
       returnStatus(data){
         if(data.num_out === 0) return 'init';
@@ -105,10 +125,15 @@
         return 'part';
       },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        //如果点重置
+        if(type === 'clear') this.$data.tabValue = 'opt_all';
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supOutPlanQuery, query);
+        let res = await Http.get(Config.api.supOutPlanQuery, {
+          ...query,
+          status: this.tabValue === 'opt_all' ? '' : this.tabValue
+        });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

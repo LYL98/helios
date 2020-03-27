@@ -3,6 +3,7 @@
     <el-row :gutter="32" v-if="type === 'add'">
       <el-col :sm="6" :span="10">
         <my-select-system-class
+          clearable
           :value="query.system_class_codes"
           size="small"
           @change="changeSystemClassCodes"
@@ -10,6 +11,7 @@
       </el-col>
       <el-col :sm="6" :span="10">
         <my-select-display-class
+          clearable
           v-model="query.display_class_id"
           size="small"
           @change="changeQuery"

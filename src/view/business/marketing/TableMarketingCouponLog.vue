@@ -84,7 +84,6 @@
     },
     data() {
       return {
-        province: this.$province,
         auth: this.$auth,
         query: { },
         dataItem: {
@@ -108,11 +107,11 @@
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           coupon_id: this.query.coupon_id
         });
         if(res.code === 0){
-          let queryStr = `${api}?province_code=${this.province.code}&coupon_id=${this.query.coupon_id}`;
+          let queryStr = `${api}?province_code=${this.$province.code}&coupon_id=${this.query.coupon_id}`;
           
           window.open(queryStr);
         }else{
@@ -145,7 +144,7 @@
 
       initQuery() {
         this.$data.query = Object.assign({}, this.$data.query, {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           coupon_id: this.$props.coupon_log.id,
           condition: '',
           page: 1,

@@ -5,13 +5,17 @@
     </template>
     <div class="container-query">
       <div class="city-container">
-        <el-button
-          size="mini"
-          v-for="item in cityList"
-          :key="item.id"
-          :type="item.id === query.city_id ? 'primary' : ''"
-          @click="changeCity(item)"
-        >{{ item.title }}</el-button>
+        <template v-for="item in cityList">
+          <el-button
+            v-if="item.id === query.city_id"
+            size="mini"
+            :key="item.id"
+            type="primary"
+            @click="changeCity(item)"
+          >{{ item.title }}</el-button>
+          <span v-else style="font-size: 12px" class="city-label" @click="changeCity(item)">{{ item.title }}</span>
+        </template>
+
       </div>
       <el-row :gutter="32">
         <el-col :xl="7" :lg="7" :span="10">
@@ -179,7 +183,7 @@
     </div>
     <add-edit-layout
       :is-show="dialog.visible"
-      :title="`新增县域（${selectedCity.title}）定价`"
+      :title="`${dialog.type === 'add' ? '新增' : '修改'}县域（${selectedCity.title}）定价`"
       :before-close="handleCancelEdit"
     >
       <city-price-edit
@@ -335,7 +339,7 @@
       },
 
       changePageSize(page_size) {
-        this.initQuery();
+        this.$data.query.page = 1;
         this.$data.query.page_size = page_size;
         this.cityPriceQuery();
       },
@@ -474,15 +478,24 @@
   .city-container {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+
+    .city-label {
+      box-sizing: border-box;
+      padding: 0px 10px;
+      line-height: 24px;
+      margin-bottom: 5px;
+      cursor: pointer;
+
+      &:hover {
+        color: darken(#2c3e50, 40);
+      }
+    }
 
     .el-button {
-      width: 60px;
-      padding: 5px 0;
-      margin-left: 0;
-      margin-right: 20px;
-      overflow: hidden;
-      margin-bottom: 10px;
+      box-sizing: border-box;
+      padding: 0px 10px;
+      margin-bottom: 5px;
     }
   }
 </style>
