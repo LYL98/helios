@@ -265,6 +265,7 @@
       removeEditList() {
         if (this.$data.removeList.length <= 0) return;
         this.$data.editList = this.$data.editList.filter(d => !this.$data.removeList.some(item => item.item_id === d.item_id));
+        this.$data.removeList = [];
       },
 
       handleRemoveItem(item_id) {
