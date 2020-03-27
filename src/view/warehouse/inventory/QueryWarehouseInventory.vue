@@ -2,13 +2,13 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="科学分类">
-          <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass"/>
+        <my-query-item label="仓库">
+          <select-storehouse size="small" v-model="query.storehouse_id" @change="handleQuery('TableWarehouseInventory')" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
-        <my-query-item label="仓库">
-          <select-storehouse size="small" v-model="query.storehouse_id" @change="handleQuery('TableWarehouseInventory')" isAuth @initCallBack="storehouseInit"/>
+        <my-query-item label="科学分类">
+          <select-system-class size="small" v-model="query.system_class_codes" @change="selectSystemClass"/>
         </my-query-item>
       </el-col>
       <el-col :span="10">
