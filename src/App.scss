@@ -467,6 +467,9 @@
     .el-input__inner{
       width: 270px !important;
     }
+    .el-input {
+      width: 270px !important;
+    }
   }
   .query-item-date{
     min-width: 270px;
@@ -499,6 +502,9 @@
       .el-input__inner{
         width: 210px !important;
       }
+      .el-input {
+        width: 210px !important;
+      }
     }
     .query-item-date{
       min-width: 210px;
@@ -529,6 +535,9 @@
       .el-input__inner{
         width: 225px !important;
       }
+      .el-input {
+        width: 225px !important;
+      }
     }
     .query-item-date{
       min-width: 225px;
@@ -550,6 +559,9 @@
       .el-input__inner{
         width: 240px !important;
       }
+      .el-input {
+        width: 240px !important;
+      }
     }
     .query-item-date{
       min-width: 240px;
@@ -569,6 +581,9 @@
     }
     .query-item-select{
       .el-input__inner{
+        width: 270px !important;
+      }
+      .el-input {
         width: 270px !important;
       }
     }

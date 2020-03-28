@@ -2,21 +2,33 @@
   <sub-menu>
     <!-- 查询 -->
     <div class="query" style="margin-bottom: 16px;">
-      <my-query-item label="时间">
-        <el-date-picker
-          v-model="pickerValue"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          size="small"
-          class="query-item-date"
-          :picker-options="fixDateOptions"
-          :clearable="false"
-          @change="changePicker">
-        </el-date-picker>
-      </my-query-item>
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province
+              type="select"
+              @change="selectProvince"
+              class="query-item-select"/>
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <my-query-item label="时间">
+            <el-date-picker
+              v-model="pickerValue"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              size="small"
+              class="query-item-date"
+              :picker-options="fixDateOptions"
+              :clearable="false"
+              @change="changePicker">
+            </el-date-picker>
+          </my-query-item>
+        </el-col>
+      </el-row>
     </div>
 
     <div :style="'height:' + (viewWindowHeight - offsetHeight) + 'px; overflow-y: auto;'">
@@ -26,6 +38,7 @@
         <ul class="description">
           <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
           <li>订单框总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
+          <li>改单商品总金额: <span>{{ Math.abs(returnPrice(totalOrderModifyPrice)) }}</span> 元</li>
           <li>销售总量: <span>{{ totalCount }}</span> 件</li>
         </ul>
       </div>
@@ -65,11 +78,11 @@
             ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
-        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.fram_total_price) }}
-          </template>
-        </el-table-column>
+        <!--<el-table-column label="框金额" sortable="custom" prop="fram_total_price">-->
+          <!--<template slot-scope="scope">-->
+            <!--￥{{ returnPrice(scope.row.fram_total_price) }}-->
+          <!--</template>-->
+        <!--</el-table-column>-->
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
@@ -99,6 +112,7 @@
   import { QueryItem, TableOperate } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
+  import { GlobalProvince } from '@/component';
 
   import echarts from "echarts/lib/echarts";
   import "echarts/lib/chart/pie";
@@ -115,7 +129,8 @@
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
       'my-query-item': QueryItem,
-      'my-table-operate': TableOperate
+      'my-table-operate': TableOperate,
+      'global-province': GlobalProvince,
     },
     data() {
       return {
@@ -127,6 +142,7 @@
         orderClassSumData2: [],
         totalItemTotalPrice: 0,
         totalFramPrice: 0,
+        totalOrderModifyPrice: 0,
         totalCount: 0,
         currentRow: {},
         chart: null,
@@ -164,6 +180,13 @@
       });
     },
     methods: {
+      //选择区域后【页面初始化】
+      selectProvince(data){
+        this.$data.query.province_code = data.code;
+        this.saleClassList(() => {
+          this.initChart();
+        });
+      },
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;
@@ -260,11 +283,12 @@
         }
         let orderClassSumData = that.$data.listItem;
         let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {},
-        totalItemTotalPrice = 0, totalFramPrice = 0, totalCount = 0;
+        totalItemTotalPrice = 0, totalFramPrice = 0, totalOrderModifyPrice = 0, totalCount = 0;
         for (let i = 0; i < orderClassSumData.length; i++) {
           //总数据
           totalItemTotalPrice += orderClassSumData[i].amount_real;
           totalFramPrice += orderClassSumData[i].fram_total_price;
+          totalOrderModifyPrice += orderClassSumData[i].check_chg
         }
         for(let i = 0; i < orderClassSumData.length; i++){
           //饼图数据
@@ -303,6 +327,7 @@
         that.$data.orderClassSumData2 = data2;
         that.$data.totalItemTotalPrice = totalItemTotalPrice;
         that.$data.totalFramPrice = totalFramPrice;
+        that.$data.totalOrderModifyPrice = totalOrderModifyPrice;
         that.$data.totalCount = totalCount;
 
         let formatter = "{all|{b}：{c}元}  {per|{d}%}";

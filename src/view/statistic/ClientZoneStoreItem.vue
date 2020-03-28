@@ -9,14 +9,36 @@
         </el-breadcrumb-item>
 
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client/zone', query: { zone_id: breadcrumb.zone_id, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client/province',
+          query: {
+            province_code: breadcrumb.province_code,
+            province_title: breadcrumb.province_title,
+            begin_date: breadcrumb.begin_date,
+            end_date: breadcrumb.end_date } }"
+        >
+          {{ breadcrumb.province_code === '' ? '全部省份' : breadcrumb.province_title }}
+        </el-breadcrumb-item>
+
+        <!--片区标签-->
+        <el-breadcrumb-item
+          :to="{ path: '/statistic/client/zone',
+          query: {
+            province_code: breadcrumb.province_code,
+            province_title: breadcrumb.province_title,
+            zone_id: breadcrumb.zone_id,
+            zone_title: breadcrumb.zone_title,
+            begin_date: breadcrumb.begin_date,
+            end_date: breadcrumb.end_date } }"
         >
           {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
 
+        <!--县域标签-->
         <el-breadcrumb-item
           :to="{ path: '/statistic/client/zone/store',
             query: {
+              province_code: breadcrumb.province_code,
+              province_title: breadcrumb.province_title,
               city_id: breadcrumb.city_id,
               city_title: breadcrumb.city_title,
               zone_id: breadcrumb.zone_id,
@@ -59,10 +81,11 @@
               :clearable="true"
               size="small"
               @change="changeSystemClass"
+              class="query-item-select"
             />
-            <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
           </my-query-item>
         </el-col>
+        <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
       </el-row>
     </div>
     <div>
@@ -93,11 +116,11 @@
             ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
-        <el-table-column label="筐金额" sortable="custom" prop="fram_total_price">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.fram_total_price) }}
-          </template>
-        </el-table-column>
+        <!--<el-table-column label="筐金额" sortable="custom" prop="fram_total_price">-->
+          <!--<template slot-scope="scope">-->
+            <!--￥{{ returnPrice(scope.row.fram_total_price) }}-->
+          <!--</template>-->
+        <!--</el-table-column>-->
       </el-table>
 
       <div class="footer" v-if="merchantListData.num > 0">
@@ -203,6 +226,8 @@
           city_title: this.$route.query.city_title,
           zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
+          province_code: this.$route.query.province_code,
+          province_title: this.$route.query.province_title,
           begin_date: this.$route.query.begin_date,
           end_date: this.$route.query.end_date
         })
@@ -215,10 +240,11 @@
         pickerValue.push(end_date);
         this.$data.pickerValue = pickerValue;
         this.$data.query = Object.assign(this.$data.query, {
-          province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
           sort: '-amount_real',
+          province_code: this.$route.query.province_code,
+          province_title: this.$route.query.province_title,
           store_id: this.$route.query.store_id,
           store_title: this.$route.query.store_title,
           zone_id: this.$route.query.zone_id,
