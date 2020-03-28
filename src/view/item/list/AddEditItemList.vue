@@ -130,9 +130,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="8" v-if="!detail.frame_id">
-            <el-form-item label="是否赠品" prop="order_is_gift">
-              <el-radio v-model="detail.is_gift" :label="true" border size="mini">是</el-radio>
-              <el-radio v-model="detail.is_gift" :label="false" border size="mini">否</el-radio>
+            <el-form-item label="是否赠品">
+              <el-radio v-model="detail.is_gift" :label="true" border size="mini" :disabled="detail.is_quoted">是</el-radio>
+              <el-radio v-model="detail.is_gift" :label="false" border size="mini" :disabled="detail.is_quoted">否</el-radio>
             </el-form-item>
           </el-col>
         </el-row>
@@ -143,9 +143,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
+            <!--报价后不可更改是否预售-->
             <el-form-item v-if="!detail.is_gift" label="是否预售">
-              <el-radio v-model="detail.is_presale" :label="true" border size="mini">是</el-radio>
-              <el-radio v-model="detail.is_presale" :label="false" border size="mini">否</el-radio>
+              <el-radio v-model="detail.is_presale" :label="true" border size="mini" :disabled="detail.is_quoted">是</el-radio>
+              <el-radio v-model="detail.is_presale" :label="false" border size="mini" :disabled="detail.is_quoted">否</el-radio>
             </el-form-item>
           </el-col>
           <el-col :span="8">

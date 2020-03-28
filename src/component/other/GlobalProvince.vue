@@ -46,6 +46,7 @@ export default {
     'el-option': Option
   },
   props: {
+    value: { type: String | Object, default: null }, //如果 === null,没传值，类型 === String,已传值
     type: { type: String, default: 'default' }, //类型
     size: { type: String, default: 'small' }, //type 为 select 时可用
     filterable:  { type: Boolean, default: false }, //type 为 select 时可用
@@ -59,12 +60,17 @@ export default {
       dataItem: []
     };
   },
+  model: {
+    prop: 'value',
+    event: 'ev'
+  },
   created(){
     this.baseProvinceListMy();
   },
   computed: {
     selectCode: {
       get(){
+        if(typeof this.value === 'string') return this.value;
         return this.province.code;
       },
       set(code){
@@ -90,7 +96,8 @@ export default {
           }
         });
       }
-      this.$emit('change', data);
+      this.$emit('ev', data.code); //先v-model
+      this.$emit('change', data); //后change
     },
     //获取所有区域
     async baseProvinceListMy(){
@@ -99,18 +106,24 @@ export default {
       if(res.code === 0){
         let rd = res.data;
         this.$data.dataItem = rd;
-        //如果只有一个区域，默认选择
-        if(rd.length === 1 && province.id != rd[0].id){
-          this.changeProvince(rd[0]);
-        }else if((rd.length === 0 || !province.id) && isRequired){
-          this.$data.isShow = true;
-        }else{
-          let con = rd.filter(item => item.id === province.id);
-          if(con.length === 0 && isRequired){
+        //如果必选
+        if(isRequired){
+          if(rd.length === 1 && province.id != rd[0].id){
+            this.changeProvince(rd[0]);
+          }else if(rd.length === 0 || !province.id){
             this.$data.isShow = true;
           }else{
-            this.changeProvince(con[0]);
+            let con = rd.filter(item => item.id === province.id);
+            if(con.length === 0){
+              this.$data.isShow = true;
+            }else{
+              this.changeProvince(con[0]);
+            }
           }
+        }
+        //否则
+        else{
+          this.changeProvince(); //不必选
         }
       }else{
         this.$message({ message: res.message, type: 'error' });

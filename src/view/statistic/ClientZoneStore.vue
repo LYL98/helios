@@ -8,8 +8,28 @@
           客户订单统计
         </el-breadcrumb-item>
 
+        <!--省份标签-->
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client/zone', query: { zone_id: breadcrumb.zone_id, zone_title: breadcrumb.zone_title, begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client/province',
+          query: {
+            province_code: breadcrumb.province_code,
+            province_title: breadcrumb.province_title,
+            begin_date: breadcrumb.begin_date,
+            end_date: breadcrumb.end_date } }"
+        >
+          {{ breadcrumb.province_code === '' ? '全部省份' : breadcrumb.province_title }}
+        </el-breadcrumb-item>
+
+        <!--片区标签-->
+        <el-breadcrumb-item
+          :to="{ path: '/statistic/client/zone',
+          query: {
+            province_code: breadcrumb.province_code,
+            province_title: breadcrumb.province_title,
+            zone_id: breadcrumb.zone_id,
+            zone_title: breadcrumb.zone_title,
+            begin_date: breadcrumb.begin_date,
+            end_date: breadcrumb.end_date } }"
         >
           {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
@@ -108,22 +128,12 @@
             ￥{{ returnPrice(scope.row.gmv) }}
           </template>
         </el-table-column>
-        <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="120">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real" min-width="120">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.real_price) }}
+            ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
-        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.fram_total_price) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
-          <template slot-scope="scope">
-            {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="订单量" sortable="custom" prop="order_count">
+        <el-table-column label="下单门店数" sortable="custom" prop="store_num">
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="piece_num"/>
         <el-table-column label="占比" prop="percent">
@@ -242,6 +252,8 @@
 
       initBreadcrumb() {
         // console.log('store_title', this.$route.query)
+        let province_code = this.$route.query.province_code;
+        let province_title = this.$route.query.province_title;
 
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
           city_id: this.$route.query.city_id,
@@ -249,7 +261,9 @@
           zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
           begin_date: this.$route.query.begin_date,
-          end_date: this.$route.query.end_date
+          end_date: this.$route.query.end_date,
+          province_code: province_code,
+          province_title: province_title
         })
       },
       initQuery() {
@@ -260,8 +274,9 @@
         pickerValue.push(begin_date);
         pickerValue.push(end_date);
         this.$data.pickerValue = pickerValue;
+        let province_code = this.$route.query.province_code;
+        let province_title = this.$route.query.province_title;
         this.$data.query = Object.assign(this.$data.query, {
-          province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
           sort: '-gmv',
@@ -269,6 +284,8 @@
           zone_title: this.$route.query.zone_title,
           city_id: this.$route.query.city_id,
           city_title: this.$route.query.city_title,
+          province_code: province_code,
+          province_title: province_title,
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -352,7 +369,6 @@
         this.$loading({ isShow: false });
       },
       handleShowClassDetail(item) {
-        console.log('handleShowClassDetail' , this.$data.query)
         this.$router.push({
           path: '/statistic/client/zone/store/item',
           query: {
@@ -362,6 +378,8 @@
             city_title: this.$data.query.city_title,
             zone_id: this.$data.query.zone_id,
             zone_title: this.$data.query.zone_title,
+            province_code: this.$data.breadcrumb.province_code,
+            province_title: this.$data.breadcrumb.province_title,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date
           }

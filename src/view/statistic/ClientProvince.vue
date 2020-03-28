@@ -7,17 +7,7 @@
         >
           客户订单统计
         </el-breadcrumb-item>
-        <el-breadcrumb-item
-          :to="{ path: '/statistic/client/province',
-          query: {
-          province_code: breadcrumb.province_code,
-          province_title: breadcrumb.province_title,
-          begin_date: breadcrumb.begin_date,
-          end_date: breadcrumb.end_date } }"
-        >
-          {{ breadcrumb.province_code === '' ? '全部省份' : breadcrumb.province_title }}
-        </el-breadcrumb-item>
-        <el-breadcrumb-item>{{ query.zone_id === '' ? '全部片区' : query.zone_title }}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ query.province_code === '' ? '全部省份' : query.province_title }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="query" style="margin-bottom: 20px;">
@@ -42,15 +32,11 @@
           </my-query-item>
         </el-col>
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="片区">
-            <my-select-zone
-              :value="query.zone_id"
-              :provinceCode="query.province_code"
-              :clearable="false"
+          <my-query-item label="区域">
+            <my-select-province
+              :value="query.province_code"
+              @change="selectProvince"
               size="small"
-              :showAll="true"
-              @change="changeZone"
-              @changeTitle="changeZoneTitle"
               class="query-item-select"
             />
           </my-query-item>
@@ -64,46 +50,44 @@
         @cell-mouse-leave="cellMouseLeave"
         :data="listItem"
         :row-class-name="highlightRowClassName"
-        :height="viewWindowHeight - offsetHeight"
         :highlight-current-row="true"
         @sort-change="onSort"
       >
+        <!-- 片区、订单金额、订单量、件数、占比、操作 -->
         <el-table-column
           type="index"
           :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
           label="序号"
           :index="indexMethod"
         />
-        <!-- 县域、订单金额、订单量、件数、占比、操作 -->
-        <el-table-column label="县域" prop="city_title">
+        <el-table-column label="片区" prop="zone_title" min-width="120">
           <template slot-scope="scope">
-            <!--{{ scope.row.city_title }}-->
-
             <a href="javascript:void(0)"
                class="title"
-               @click="handleShowClassDetail(scope.row)"
-               v-if="auth.isAdmin || auth.StatisticClientZoneStore"
+               @click="handleShowZoneDetail(scope.row)"
+               v-if="!!scope.row.zone_title && ( auth.isAdmin || auth.StatisticClientZone )"
             >
-              {{ scope.row.city_title }}
+              {{ scope.row.zone_title || '其它' }}
             </a>
             <div v-else>
-              {{ scope.row.city_title }}
+              {{ scope.row.zone_title || '其它' }}
             </div>
+
+            <!--{{ scope.row.zone_title || '其它' }}-->
           </template>
         </el-table-column>
-        <el-table-column label="GMV" sortable="custom" prop="gmv" min-width="120">
+        <el-table-column label="GMV" sortable="custom" prop="gmv" min-width="130">
           <template slot-scope="scope">
             ￥{{ returnPrice(scope.row.gmv) }}
           </template>
         </el-table-column>
-        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real" min-width="120">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real" min-width="130">
           <template slot-scope="scope">
             ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
-        <el-table-column label="下单门店数" sortable="custom" prop="store_num">
-        </el-table-column>
-        <el-table-column label="件数" sortable="custom" prop="piece_num"/>
+        <el-table-column label="下单门店数" sortable="custom" prop="store_num"  min-width="100"/>
+        <el-table-column label="件数" sortable="custom" prop="piece_num" min-width="100"></el-table-column>
         <el-table-column label="占比" prop="percent">
           <template slot-scope="scope">
             {{returnPercentage(scope.row.gmv, total)}}%
@@ -113,12 +97,12 @@
           <template slot-scope="scope">
             <my-table-operate
               :list="[
-                {
-                  title: '查看',
-                  isDisplay: auth.isAdmin || auth.StatisticClientZoneStore,
-                  command: () => handleShowClassDetail(scope.row)
-                }
-              ]"
+                  {
+                    title: '查看',
+                    isDisplay: !!scope.row.zone_title && ( auth.isAdmin || auth.StatisticClientZone ),
+                    command: () => handleShowZoneDetail(scope.row)
+                  }
+                ]"
             />
           </template>
         </el-table-column>
@@ -129,9 +113,10 @@
 
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem } from 'element-ui';
-  import { QueryItem, TableOperate, SelectZone } from '@/common';
+  import { QueryItem, TableOperate, SelectZone, SelectProvince } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
+  import { GlobalProvince } from '@/component';
 
   export default {
     name: "ClientZone",
@@ -147,7 +132,9 @@
       'el-pagination': Pagination,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
-      'my-select-zone': SelectZone
+      'my-select-zone': SelectZone,
+      'my-select-province': SelectProvince,
+      'global-province': GlobalProvince,
     },
     data() {
       return {
@@ -165,7 +152,7 @@
       documentTitle("统计 - 客户订单统计");
       this.initBreadcrumb();
       this.initQuery();
-      this.zoneCityOrderList();
+      this.zoneOrderList();
     },
     methods: {
       cellMouseEnter(row, column, cell, event) {
@@ -209,32 +196,27 @@
           this.query.sort = ''
         }
         // this.$data.query.page = 1;
-        this.zoneCityOrderList();
+        this.zoneOrderList();
       },
 
       initBreadcrumb() {
-        let zone_id = this.$route.query.zone_id;
-        let zone_title = this.$route.query.zone_title;
         let province_code = this.$route.query.province_code;
         let province_title = this.$route.query.province_title;
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
-          zone_id: zone_id,
-          zone_title: zone_title,
           province_code: province_code,
           province_title: province_title,
           begin_date: begin_date,
           end_date: end_date
         })
       },
+
       initQuery() {
-        console.log("当前的请求参数", this.$route.query);
+        // console.log("当前的请求参数", this.$route.query);
         let pickerValue = [];
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
-        let province_code = this.$route.query.province_code;
-        let province_title = this.$route.query.province_title;
         pickerValue.push(begin_date);
         pickerValue.push(end_date);
         this.$data.pickerValue = pickerValue;
@@ -242,10 +224,8 @@
           begin_date: begin_date,
           end_date: end_date,
           sort: '-gmv',
-          zone_id: this.$route.query.zone_id,
-          zone_title: this.$route.query.zone_title,
-          province_code: province_code,
-          province_title: province_title,
+          province_code: this.$route.query.province_code,
+          province_title: this.$route.query.province_title,
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -260,36 +240,28 @@
           this.$data.query.end_date = '';
         }
         this.$data.query.page = 1;
-        this.zoneCityOrderList();
+        this.zoneOrderList();
       },
-      changeZone(data, isInit) {
-        if (!isInit) {
-          // console.log("改变片区", data);
-          this.$data.query.zone_id = data;
-          this.zoneCityOrderList();
-        }
+      selectProvince(data){
+        this.$data.query.province_code = data.code;
+        this.zoneOrderList();
       },
-      changeZoneTitle(title, isInit) {
-        if (!isInit) {
-          // console.log('changeZoneTitle', title)
-          this.$data.query.zone_title = title
-        }
-      },
+
       changePage(page) {
         this.$data.query.page = page;
-        this.zoneCityOrderList();
+        this.zoneOrderList();
       },
       changePageSize(size) {
         this.$data.query.page = 1;
         this.$data.query.page_size = size;
-        this.zoneCityOrderList();
+        this.zoneOrderList();
       },
       // 获取商品分类列表
-      async zoneCityOrderList(callback) {
+      async zoneOrderList(callback) {
         let that = this;
         let { query } = that;
         this.$loading({ isShow: true, isWhole: true });
-        let res = await Http.get(Config.api.statisticalOrderCitySum, query);
+        let res = await Http.get(Config.api.statisticalOrderGradeSum, query);
         if(res.code === 0){
           this.total = 0
           res.data.map(item => {
@@ -302,16 +274,19 @@
         }
         this.$loading({ isShow: false });
       },
-      handleShowClassDetail(item) {
+
+      handleShowZoneDetail(item) {
+        let zone_id = item.zone_id;
+        let zone_title = item.zone_title;
+        let province_code = this.$data.breadcrumb.province_code;
+        let province_title = this.$data.breadcrumb.province_title;
         this.$router.push({
-          path: '/statistic/client/zone/store',
+          path: '/statistic/client/zone',
           query: {
-            city_id: item.city_id,
-            city_title: item.city_title,
-            zone_id: this.$data.query.zone_id,
-            zone_title: this.$data.query.zone_title,
-            province_code: this.$data.breadcrumb.province_code,
-            province_title: this.$data.breadcrumb.province_title,
+            zone_id: zone_id,
+            zone_title: zone_title,
+            province_code: province_code,
+            province_title: province_title,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date
           }

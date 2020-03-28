@@ -224,7 +224,9 @@ const Constant = {
       { key: 'amount_delivery', value: '运费退还' },
       { key: 'weight', value: '少称' },
       { key: 'not_match', value: '与SKU描述不相符' },
-      { key: 'num', value: '缺货/错货' },
+      { key: 'num', value: '缺货/错货' }, //新增时不显示
+      { key: 'num_short', value: '缺货' },
+      { key: 'num_error', value: '错货' },
       { key: 'big_order_bonus', value: '大单优惠' },
       { key: 'other', value: '其他' }
     ];
