@@ -28,6 +28,7 @@
                 <div style="height: 42px;" class="add-dot2">
                   <span style="font-weight:bold;">{{scope.row.code}}</span>
                   <span>{{scope.row.title}}</span>
+                  <span class="is-presale" v-if="scope.row.is_presale">预</span>
                 </div>
               </template>
               <!--数量-->
@@ -282,6 +283,19 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import '@/share/scss/table.scss';
+  .is-presale{
+    color: #fff;
+    background: #FFA349;
+    font-size: 12px;
+    display: inline-block;
+    text-align: center;
+    height: 18px;
+    line-height: 18px;
+    width: 18px;
+    border-radius: 18px 0 18px 18px;
+    position: relative;
+    top: -2px;
+  }
   .pricing-bottom-wrapper {
     background-color: #fff;
     height: 48px;
