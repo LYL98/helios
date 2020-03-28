@@ -4,8 +4,14 @@
       <h6 class="subtitle">商品报价</h6>
       <el-form-item label="商品编号/名称">
         {{detail.code}}/{{detail.title}}
+        <span class="is-presale" v-if="detail.is_presale">预</span>
       </el-form-item>
       <el-row>
+        <el-col :span="11">
+          <el-form-item label="总库存">
+            <input-number size="medium" :disabled="detail.is_presale ? false : true" v-model="detail.available_num" unit="件"/>
+          </el-form-item>
+        </el-col>
         <el-col :span="11">
           <el-form-item label="今日销售价" prop="price_sale">
             <input-price size="medium" v-model="detail.price_sale" :placeholder="'建议：' + returnSuggestPrice(detail)" :disabled="false"/>
@@ -20,11 +26,6 @@
             </template>
           </template>
           <template v-else>&nbsp;</template>
-        </el-col>
-        <el-col :span="11">
-          <el-form-item label="总库存">
-            <input-number size="medium" disabled :value="detail.available_num" unit="件"/>
-          </el-form-item>
         </el-col>
       </el-row>
       <div style="margin: 0 0 30px 30px;">
@@ -270,7 +271,8 @@ export default {
       let res = await Http.post(Config.api.itemPriceFix, {
         province_code: this.$province.code,
         item_id: detail.item_id,
-        price_sale: detail.price_sale
+        price_sale: detail.price_sale,
+        available_num: detail.available_num, //预售商品传available_num可改库存
       });
       this.$loading({isShow: false});
       if(res.code === 0){
@@ -295,6 +297,19 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import "@/share/scss/add.edit.scss";
+  .is-presale{
+    color: #fff;
+    background: #FFA349;
+    font-size: 12px;
+    display: inline-block;
+    text-align: center;
+    height: 18px;
+    line-height: 18px;
+    width: 18px;
+    border-radius: 18px 0 18px 18px;
+    position: relative;
+    top: -2px;
+  }
   .edit-a{
     margin-left: 10px;
     position: relative;

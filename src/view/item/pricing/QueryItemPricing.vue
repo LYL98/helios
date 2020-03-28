@@ -45,18 +45,31 @@
           </my-query-item>
         </el-col>
       </el-row>
+      <el-row :gutter="32" style="margin-top: 16px;">
+        <el-col :span="7">
+          <my-query-item label="活动">
+            <select-option
+              :options="{'全部': '', '预售': 1, '非预售': 0}"
+              v-model="query.is_presale"
+              @change="handleQuery('TableItemPricing')"
+              size="small"
+            />
+          </my-query-item>
+        </el-col>
+      </el-row>
     </div>
     <!-- 头部end -->
 </template>
 
 <script>
-  import { InputPercent, SelectSystemClass } from '@/common';
+  import { SelectOption, InputPercent, SelectSystemClass } from '@/common';
   import { SelectBuyer, GlobalProvince } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryItemPricing",
     components: {
+      'select-option': SelectOption,
       'select-buyer': SelectBuyer,
       'input-percent': InputPercent,
       'select-system-class': SelectSystemClass,
@@ -75,6 +88,7 @@
         sort: '',
         condition: '',
         markup_rate: '',
+        is_presale: '',
         system_class_code: '',
         system_class_codes: [],
       }
