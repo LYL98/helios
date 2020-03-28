@@ -84,7 +84,7 @@
             label="序号"
             :index="indexMethod"
           ></el-table-column>
-          <el-table-column label="商品编号/名称" prop="item_id" min-width="240">
+          <el-table-column label="商品编号/名称" prop="item_id" min-width="220">
             <template slot-scope="scope">
               <div class="my-td-item">
                 {{ scope.row.item && scope.row.item.code }} / {{ scope.row.item && scope.row.item.title }}

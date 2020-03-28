@@ -81,31 +81,51 @@
             {{ scope.row.code }} / {{ scope.row.title }}
           </template>
         </el-table-column>
-        <el-table-column label="今日报价" prop="price_sale" width="90">
+        <el-table-column label="定价" prop="price_sale" width="90">
           <template slot-scope="scope">
             {{ !!scope.row.price_sale ? '￥' + DataHandle.returnPrice(scope.row.price_sale) : '未报价' }}
           </template>
         </el-table-column>
 
         <el-table-column label="阶梯一" width="120">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="all_step_prices[0].num"
+              size="mini"
+              @input="changeAllNum(0)"
+              placeholder="阶梯一"
+            >
+              <template slot="append">件</template>
+            </el-input>
+          </template>
           <template slot-scope="scope">
             <el-input
               size="mini"
               v-model="scope.row.step_prices[0].num"
               :class="scope.row.step_prices[0].num_error ? 'custom-input-error' : ''"
-              @input="changeNum(scope.row.step_prices[0], 0)"
+              @input="changeNum(scope.row.step_prices, 0)"
             >
               <template slot="append">件</template>
             </el-input>
           </template>
         </el-table-column>
         <el-table-column label="折扣率" width="120">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="all_step_prices[0].discount"
+              size="mini"
+              @input="changeAllDiscount(0)"
+              placeholder="折扣率"
+            >
+              <template slot="append">%</template>
+            </el-input>
+          </template>
           <template slot-scope="scope">
             <el-input
               size="mini"
               v-model="scope.row.step_prices[0].discount"
               :class="scope.row.step_prices[0].discount_error ? 'custom-input-error' : ''"
-              @input="changeDiscount(scope.row.step_prices[0], 0)"
+              @input="changeDiscount(scope.row.step_prices, 0)"
             >
               <template slot="append">%</template>
             </el-input>
@@ -121,24 +141,44 @@
         </el-table-column>
 
         <el-table-column label="阶梯二" width="120">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="all_step_prices[1].num"
+              size="mini"
+              @input="changeAllNum(1)"
+              placeholder="阶梯二"
+            >
+              <template slot="append">件</template>
+            </el-input>
+          </template>
           <template slot-scope="scope">
             <el-input
               size="mini"
               v-model="scope.row.step_prices[1].num"
               :class="scope.row.step_prices[1].num_error ? 'custom-input-error' : ''"
-              @input="changeNum(scope.row.step_prices[1], 1)"
+              @input="changeNum(scope.row.step_prices, 1)"
             >
               <template slot="append">件</template>
             </el-input>
           </template>
         </el-table-column>
         <el-table-column label="折扣率" width="120">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="all_step_prices[1].discount"
+              size="mini"
+              @input="changeAllDiscount(1)"
+              placeholder="折扣率"
+            >
+              <template slot="append">%</template>
+            </el-input>
+          </template>
           <template slot-scope="scope">
             <el-input
               size="mini"
               v-model="scope.row.step_prices[1].discount"
               :class="scope.row.step_prices[1].discount_error ? 'custom-input-error' : ''"
-              @input="changeDiscount(scope.row.step_prices[1], 1)"
+              @input="changeDiscount(scope.row.step_prices, 1)"
             >
               <template slot="append">%</template>
             </el-input>
@@ -154,24 +194,44 @@
         </el-table-column>
 
         <el-table-column label="阶梯三" width="120">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="all_step_prices[2].num"
+              size="mini"
+              @input="changeAllNum(2)"
+              placeholder="阶梯三"
+            >
+              <template slot="append">件</template>
+            </el-input>
+          </template>
           <template slot-scope="scope">
             <el-input
               size="mini"
               v-model="scope.row.step_prices[2].num"
               :class="scope.row.step_prices[2].num_error ? 'custom-input-error' : ''"
-              @input="changeNum(scope.row.step_prices[2], 2)"
+              @input="changeNum(scope.row.step_prices, 2)"
             >
               <template slot="append">件</template>
             </el-input>
           </template>
         </el-table-column>
         <el-table-column label="折扣率" width="120">
+          <template slot="header" slot-scope="scope">
+            <el-input
+              v-model="all_step_prices[2].discount"
+              size="mini"
+              @input="changeAllDiscount(2)"
+              placeholder="折扣率"
+            >
+              <template slot="append">%</template>
+            </el-input>
+          </template>
           <template slot-scope="scope">
             <el-input
               size="mini"
               v-model="scope.row.step_prices[2].discount"
               :class="scope.row.step_prices[2].discount_error ? 'custom-input-error' : ''"
-              @input="changeDiscount(scope.row.step_prices[2], 2)"
+              @input="changeDiscount(scope.row.step_prices, 2)"
             >
               <template slot="append">%</template>
             </el-input>
@@ -201,7 +261,7 @@
   import { QueryItem, QuerySearchInput, SelectSystemClass, SelectDisplayClass } from '@/common';
   import { Http, Config, DataHandle } from '@/util';
   export default {
-    name: 'step-price-add',
+    name: 'step-price-edit',
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -231,6 +291,12 @@
         itemList: [],
         selectedList: [],
 
+        all_step_prices: [
+          { num: '', discount: '' },
+          { num: '', discount: '' },
+          { num: '', discount: '' },
+        ],
+
         editList: [],
         removeList: [],
       };
@@ -252,13 +318,31 @@
 
         this.$data.editList = [...this.$props.items].map(d => {
           return {
-            id: d.id,
-            item_id: d.item.id,
-            code: d.item.code,
-            title: d.item.title,
-            price_sale: d.item.price_sale,
-            discount: DataHandle.returnDiscount(d.discount),
-            discount_error: false,
+            item_id: d.id,
+            code: d.code,
+            title: d.title,
+            price_sale: d.price_sale,
+
+            step_prices: [
+              {
+                num: Array.isArray(d.step_prices) && d.step_prices.length >= 1 ? d.step_prices[0].num : '',
+                num_error: false,
+                discount: Array.isArray(d.step_prices) && d.step_prices.length >= 1 ? DataHandle.returnDiscount(d.step_prices[0].discount) : '',
+                discount_error: false
+              },
+              {
+                num: Array.isArray(d.step_prices) && d.step_prices.length >= 2 ? d.step_prices[1].num : '',
+                num_error: false,
+                discount: Array.isArray(d.step_prices) && d.step_prices.length >= 2 ? DataHandle.returnDiscount(d.step_prices[1].discount) : '',
+                discount_error: false
+              },
+              {
+                num: Array.isArray(d.step_prices) && d.step_prices.length >= 3 ? d.step_prices[2].num : '',
+                num_error: false,
+                discount: Array.isArray(d.step_prices) && d.step_prices.length >= 3 ? DataHandle.returnDiscount(d.step_prices[2].discount) : '',
+                discount_error: false
+              },
+            ],
           }
         });
       }
@@ -279,6 +363,7 @@
       },
 
       changeSystemClassCodes(v, d) {
+        console.log('v: ', v);
         this.$data.query.system_class_codes = v;
         this.commonItemList();
       },
@@ -294,7 +379,7 @@
 
       async commonItemList() {
         let query = {...this.$data.query};
-        if (query.system_class_codes.length > 0) {
+        if (Array.isArray(query.system_class_codes) && query.system_class_codes.length > 0) {
           query.system_class_code = query.system_class_codes[query.system_class_codes.length - 1];
         }
         delete query.system_class_codes;
@@ -308,6 +393,7 @@
       },
 
       intoEditList() {
+        let all_step_prices = this.$data.all_step_prices;
         let list = [...this.$data.selectedList].map(item => {
           return {
             item_id: item.id,
@@ -316,9 +402,9 @@
             price_sale: item.price_sale,
 
             step_prices: [
-              { num: '', num_error: false, discount: '', discount_error: false },
-              { num: '', num_error: false, discount: '', discount_error: false },
-              { num: '', num_error: false, discount: '', discount_error: false },
+              { num: all_step_prices[0].num, num_error: false, discount: all_step_prices[0].discount, discount_error: false },
+              { num: all_step_prices[1].num, num_error: false, discount: all_step_prices[1].discount, discount_error: false },
+              { num: all_step_prices[2].num, num_error: false, discount: all_step_prices[2].discount, discount_error: false },
             ],
           }
         });
@@ -339,30 +425,171 @@
         this.$data.removeList = [];
       },
 
-      changeNum(step, index) {
-        step.num_error = this.validNum(step.num);
+      changeAllNum(index) {
+        let all_step_prices = this.$data.all_step_prices;
+        this.$data.editList = this.$data.editList.map(item => {
+          item.step_prices = item.step_prices.map((d, i, arr) => {
+            if (i === index) {
+              return {
+                num: all_step_prices[index].num,
+                num_error: this.validNum(all_step_prices[index].num, arr, i),
+                discount: d.discount,
+                discount_error: false,
+              };
+            }
+            return d;
+          });
+          return item;
+        });
       },
 
-      changeDiscount(step, index) {
-        step.discount_error = this.validDiscount(step.discount);
+      changeNum(step_prices, index) {
+        let step = step_prices[index];
+        step.num_error = this.validNum(step.num, step_prices, index);
       },
 
-      validNum(num) {
-        if (!num) return true;
-        if (isNaN(num)) return true;
-        if (num <= 0) return true;
-        if (num >= 10000) return true;
-        if (!/^[1-9]\d*$/.test(num)) return true;
-        return false;
+      changeAllDiscount(index) {
+        let all_step_prices = this.$data.all_step_prices;
+        this.$data.editList = this.$data.editList.map(item => {
+          item.step_prices = item.step_prices.map((d, i, arr) => {
+            if (i === index) {
+              return {
+                num: d.num,
+                num_error: false,
+                discount: all_step_prices[index].discount,
+                discount_error: this.validDiscount(all_step_prices[index].discount, arr, i),
+              };
+            }
+            return d;
+          });
+          return item;
+        });
       },
 
-      validDiscount(discount) {
-        if (!discount) return true;
-        if (isNaN(discount)) return true;
-        if (discount <= 0) return true;
-        if (discount >= 10000) return true;
-        if (!/^-?\d+\.?\d{0,1}$/.test(discount)) return true;
-        return false;
+      changeDiscount(step_prices, index) {
+        let step = step_prices[index];
+        step.discount_error = this.validDiscount(step.discount, step_prices, index);
+      },
+
+      validNum(num, step_prices, index) {
+
+        // 不是 0 - 10000 之间的 整数，就表示存在错误
+        if (!!num && (isNaN(num) || !/^[1-9]\d*$/.test(num) || num <= 0 || num >= 10000)) return true;
+
+        switch(index) {
+          case 0:
+            // 必填
+            if (!num) return true;
+            // 在更新时，检查后两项是否是递增
+            if (!!step_prices[1].num) {
+              step_prices[1].num_error = Number(step_prices[1].num) <= Number(num);
+            }
+            if (!!step_prices[2].num) {
+              step_prices[2].num_error = Number(step_prices[2].num) <= Number(num);
+            }
+            return false;
+          case 1:
+            // 如果 该项已经有折扣 则必填
+            if (!!step_prices[1].discount && !num) return true;
+            // 如果该项的值更新为空，并且第三项也没有折扣信息，则重置折扣的错误信息
+            if (!num && !step_prices[2].discount && !step_prices[1].discount) {
+              step_prices[1].discount_error = false;
+            }
+
+            // 如果第三项已经件数，则必填
+            if (!!step_prices[2].num && !num) return true;
+            // 如果该项已填，且第一项存在值，则不能小于第一项
+            if (!!num && !!step_prices[0].num && Number(num) <= Number(step_prices[0].num)) return true;
+            // 在更新时，检查第三项是否递增
+            if (!!step_prices[2].num) {
+              step_prices[2].num_error = Number(step_prices[2].num) <= Number(num);
+            }
+            return false;
+          case 2:
+            // 如果该项件数为空
+            if (!num) {
+              // 如果折扣也不存在，则重置折扣的错误
+              if (!step_prices[2].discount) {
+                step_prices[2].discount_error = false;
+              }
+              // 如果第二项没有件数 也没有折扣，则重置第二项的件数错误
+              if (!step_prices[1].discount && !step_prices[1].num) {
+                step_prices[1].num_error = false;
+              }
+              // 如果该项已经存在折扣，则必填
+              if (!!step_prices[2].discount) return true;
+            }
+
+            // 如果该项已填，则前两项也填写，则与前两项进行比较
+            if (!!num &&
+                ((!!step_prices[0].num && Number(num) <= Number(step_prices[0].num))
+                    || (!!step_prices[1].num && Number(num) <= Number(step_prices[1].num))
+                )
+            ) return true;
+            return false;
+          default:
+            return false;
+        }
+
+      },
+
+      validDiscount(discount, step_prices, index) {
+
+        // 不是 0 - 10000 之间的 或 小数位超过 1位，就表示存在错误
+        if (!!discount && (isNaN(discount) || !/^-?\d+\.?\d{0,1}$/.test(discount) || discount <= 0 || discount >= 10000)) return true;
+
+        switch(index) {
+          case 0:
+            if (!discount) return true;
+            // 在更新时，检查后两项是否是递减
+            if (!!step_prices[1].discount) {
+              step_prices[1].discount_error = Number(step_prices[1].discount) >= Number(discount);
+            }
+            if (!!step_prices[2].discount) {
+              step_prices[2].discount_error = Number(step_prices[2].discount) >= Number(discount);
+            }
+            return false;
+          case 1:
+            // 如果 该项已经存在件数 则必填
+            if (!!step_prices[1].num && !discount) return true;
+            // 如果该项的值更新为空，并且第三项也没有件数信息，则重置件数的错误信息
+            if (!discount && !step_prices[2].num && !step_prices[1].num) {
+              step_prices[1].num_error = false;
+            }
+            // 如果第三项已经存在折扣，则必填
+            if (!!step_prices[2].discount && !discount) return true;
+            // 如果该项已填，且第一项存在值，则不能大于第一项
+            if (!!discount && !!step_prices[0].discount && Number(discount) >= Number(step_prices[0].discount)) return true;
+            // 在更新时，检查第三项是否递减
+            if (!!step_prices[2].discount) {
+              step_prices[2].discount_error = Number(step_prices[2].discount) >= Number(discount);
+            }
+            return false;
+          case 2:
+            // 如果该项的折扣为空
+            if (!discount) {
+              // 如果如果件数也为空，则重置件数的错误
+              if (!step_prices[2].num) {
+                step_prices[2].num_error = false;
+              }
+              // 如果第二项没有件数 也没有折扣，则重置第二项的折扣错误
+              if (!step_prices[1].num && !step_prices[1].discount) {
+                step_prices[1].discount_error = false;
+              }
+              // 如果该项已经存在件数，则必填
+              if (!!step_prices[2].num) return true;
+            }
+
+            // 如果该项已填，则前两项也填写，则与前两项进行比较
+            if (!!discount &&
+                ((!!step_prices[0].discount && Number(discount) >= Number(step_prices[0].discount))
+                    || (!!step_prices[1].discount && Number(discount) >= Number(step_prices[1].discount))
+                )
+            ) return true;
+            return false;
+          default:
+            return false;
+        }
       },
 
       async handleSubmit() {
@@ -372,8 +599,8 @@
         }
 
         this.$data.editList = this.$data.editList.map(item => {
-          item.step_prices = item.step_prices.map(d => {
-            return { num: d.num, num_error: this.validNum(d.num), discount: d.discount, discount_error: this.validDiscount(d.discount) };
+          item.step_prices = item.step_prices.map((d, i, arr) => {
+            return { num: d.num, num_error: this.validNum(d.num, arr, i), discount: d.discount, discount_error: this.validDiscount(d.discount, arr, i) };
           });
           return item;
         });
@@ -389,8 +616,8 @@
               step_prices: item.step_prices.map(d => ({ num: Number(d.num), discount: DataHandle.handleDiscount(d.discount) })),
             }))
             : this.$data.editList.map(item => ({
-              id: item.id,
-              discount: DataHandle.handleDiscount(item.discount)
+              id: item.item_id,
+              step_prices: item.step_prices.map(d => ({ num: Number(d.num), discount: DataHandle.handleDiscount(d.discount) })),
             }));
 
         let API = this.$props.type === 'add' ? Config.api.businessMarketingStrategyStepAdd : Config.api.businessMarketingStrategyStepModify;
