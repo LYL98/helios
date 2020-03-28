@@ -100,7 +100,7 @@
           formData.discount = DataHandle.handleDiscount(formData.discount);
           let entries = [formData];
 
-          let res = await Http.post(Config.api.businessMarketingStrategyCityBatchEdit, { entries });
+          let res = await Http.post(Config.api.businessMarketingStrategyCityModify, { entries });
           if (res.code === 0) {
             this.$message({message: '修改成功', type: 'success'});
             this.$emit('submit');

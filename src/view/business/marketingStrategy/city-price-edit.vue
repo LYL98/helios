@@ -128,7 +128,7 @@
   import { QueryItem, QuerySearchInput, SelectSystemClass, SelectDisplayClass } from '@/common';
   import { Http, Config, DataHandle } from '@/util';
   export default {
-    name: 'city-price-add',
+    name: 'city-price-edit',
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -277,7 +277,6 @@
       },
 
       changeAllDiscount(v) {
-        this.$data.allDiscount = v;
         this.$data.editList = this.$data.editList.map(item => {
           item.discount = v
           item.discount_error = this.validDiscount(v);
@@ -321,7 +320,7 @@
                 discount: DataHandle.handleDiscount(item.discount)
               }));
 
-        let API = this.$props.type === 'add' ? Config.api.businessMarketingStrategyCityAdd : Config.api.businessMarketingStrategyCityBatchEdit;
+        let API = this.$props.type === 'add' ? Config.api.businessMarketingStrategyCityAdd : Config.api.businessMarketingStrategyCityModify;
 
         let res = await Http.post(API, { entries });
         if (res.code === 0) {
