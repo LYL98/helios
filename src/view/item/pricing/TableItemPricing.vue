@@ -56,6 +56,7 @@
               <!--
                 2019-12-26
                 1、只能报今日的价格
+                2、预售的商品数量为0也可以报价
                 3、有可销售数量就可以报价
               -->
               <my-table-operate
@@ -65,7 +66,9 @@
                 :list="[
                   {
                     title: '报价',
-                    isDisplay: (auth.isAdmin || auth.ItemPriceFix) && scope.row.available_num > 0 && query.opt_date === today && !scope.row.is_quoted,
+                    isDisplay: (auth.isAdmin || auth.ItemPriceFix) &&
+                    (scope.row.available_num > 0 || scope.row.is_presale) &&
+                    query.opt_date === today && !scope.row.is_quoted,
                     command: () => handleShowAddEdit('AddEditItemPricing', { ...scope.row, opt_date: query.opt_date }, 'add')
                   },
                   {
