@@ -36,7 +36,7 @@
           </my-query-item>
         </el-col>
         <el-col :span="7">
-          <my-query-item label="活动类型">
+          <my-query-item label="活动">
             <select-option
               :options="{'全部': '', '预售': 1, '非预售': 0}"
               v-model="query.is_presale"
