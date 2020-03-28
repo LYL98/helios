@@ -2,13 +2,8 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="售后单状态">
-          <select-option
-            size="small"
-            v-model="editQuery.status"
-            :options="{ '全部': '', '待处理': 'waiting_dispose', '已完成': 'close' }"
-            @change="changeQuery"
-          />
+        <my-query-item label="区域">
+          <global-province v-model="editQuery.province_code" type="select" @change="selectProvince"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -31,20 +26,20 @@
     </el-row>
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
+        <my-query-item label="县域">
+          <my-select-city size="small" v-model="editQuery.city_id" placeholder="县域" clearable
+                          :provinceCode="editQuery.province_code" @change="changeQuery"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="处理类型">
           <select-option
             size="small"
             v-model="editQuery.opt_type"
-            :options="{ '全部': '', ...afterSaleOptType }"
+            :options="afterSaleOptType"
             @change="changeQuery"
             placeholder="处理类型"
           />
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
-        <my-query-item label="县域">
-          <my-select-city size="small" v-model="editQuery.city_id" placeholder="县域" clearable
-                          :provinceCode="editQuery.province_code" @change="changeQuery"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -66,13 +61,25 @@
         </my-query-item>
       </el-col>
     </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
+      <el-col :span="7">
+        <my-query-item label="售后单状态">
+          <select-option
+            size="small"
+            v-model="editQuery.status"
+            :options="{ '全部': '', '待处理': 'waiting_dispose', '已完成': 'close' }"
+            @change="changeQuery"
+          />
+        </my-query-item>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-  import {Row, Col, Select, Option, DatePicker, Button, Input} from 'element-ui';
-  import {SelectOption, QueryItem} from '@/common';
-  import {SelectCity} from "@/component";
+  import { Row, Col, Select, Option, DatePicker, Button, Input } from 'element-ui';
+  import { SelectOption, QueryItem } from '@/common';
+  import { GlobalProvince, SelectCity } from "@/component";
   import { Constant } from '@/util';
   import queryMixin from '@/share/mixin/query.mixin';
 
@@ -88,16 +95,28 @@
       'el-input': Input,
       'select-option': SelectOption,
       'my-select-city': SelectCity,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
     data() {
       return {
         pickerValue: null,
-        afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE('value_key')
+      }
+    },
+    computed: {
+      afterSaleOptType(){
+        let d = Constant.AFTER_SALE_OPT_TYPE('value_key');
+        delete d['缺货/错货'];
+        return {'': '全部', ...d};
       }
     },
     methods: {
+      //选择区域后
+      selectProvince(data){
+        this.editQuery.city_id = '';
+        this.changeQuery();
+      },
       //搜索日期
       changePicker(value){
         if(value && value.length === 2){

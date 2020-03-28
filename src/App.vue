@@ -256,10 +256,11 @@
     },
     watch: {
       //监听路由变化
-      $route(a, b){
-        this.$data.pageData = a;
+      $route(to, from){
+        this.$data.pageData = to;
         this.$data.auth = this.$auth || {};
         this.$data.myInfo = this.$myInfo || {};
+        if(from.name === 'Login') this.$data.selectMenu = '';
         let { auth } = this, authList = [];
         if(auth.isAdmin){
           authList = ['operate', 'gbuy'];
@@ -272,7 +273,7 @@
           }
           if(operate) authList.push('operate');
           if(gbuy) authList.push('gbuy');
-          if(this.selectMenu === '' && a.name.indexOf('Group') === 0 && gbuy){
+          if(this.selectMenu === '' && to.name.indexOf('Group') === 0 && gbuy){
             this.$data.selectMenu = 'gbuy';
           }else if(this.selectMenu === '' && operate){
             this.$data.selectMenu = 'operate';
