@@ -9,7 +9,7 @@
       <el-row>
         <el-col :span="11">
           <el-form-item label="总库存">
-            <input-number size="medium" :disabled="detail.is_presale ? false : true" v-model="detail.available_num" unit="件"/>
+            <input-number size="medium" :disabled="!detail.is_presale" v-model="detail.available_num" unit="件"/>
           </el-form-item>
         </el-col>
         <el-col :span="11">
@@ -18,7 +18,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="2">
-          <template v-if="detail.opt_date === today && judgeOrs(pageType, ['detail', 'edit']) && (auth.isAdmin || auth.ItemPriceFix)  && detail.available_num > 0">
+          <template v-if="detail.opt_date === today && judgeOrs(pageType, ['detail', 'edit']) && (auth.isAdmin || auth.ItemPriceFix)  && (detail.available_num > 0 || detail.is_presale)">
             <a href="javascript:void(0);" class="edit-a" v-if="pageType === 'detail'" @click="showHideEdit('edit')">修改</a>
             <template v-else>
               <a href="javascript:void(0);" class="edit-a" @click="handleAddEdit">确认</a>
