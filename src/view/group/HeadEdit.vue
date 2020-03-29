@@ -92,7 +92,6 @@ export default {
   },
   data() {
     return {
-      province: this.$province,
       showType: 'add',
       isShow: false,
       storeList: [],

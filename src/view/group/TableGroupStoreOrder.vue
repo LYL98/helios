@@ -97,8 +97,9 @@
     },
     mixins: [tableMixin],
     created() {
-      let pc = this.getPageComponents('QueryGroupStoreOrder');
-      this.getData(pc.query);
+      //在Query组件初始化
+      //let pc = this.getPageComponents('QueryGroupStoreOrder');
+      //this.getData(pc.query);
     },
     data() {
       return {

@@ -115,7 +115,7 @@
         this.$loading({isShow: true, isWhole: true});
         let { query } = this;
         let res = await Http.get(Config.api.groupItemModifyLogQuery, {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           ...query
         });
         this.$loading({isShow: false});
