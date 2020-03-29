@@ -264,7 +264,11 @@
         let { auth } = this, authList = [];
         if(auth.isAdmin){
           authList = ['operate', 'gbuy'];
-          if(this.selectMenu === '') this.$data.selectMenu = 'operate';
+          if(to.name.indexOf('Group') === 0){
+            this.$data.selectMenu = 'gbuy';
+          }else{
+            this.$data.selectMenu = 'operate';
+          }
         }else{
           let operate = false, gbuy = false;
           for(let item in auth){
@@ -273,12 +277,10 @@
           }
           if(operate) authList.push('operate');
           if(gbuy) authList.push('gbuy');
-          if(this.selectMenu === '' && to.name.indexOf('Group') === 0 && gbuy){
+          if(to.name.indexOf('Group') === 0 && gbuy){
             this.$data.selectMenu = 'gbuy';
-          }else if(this.selectMenu === '' && operate){
+          }else if(operate){
             this.$data.selectMenu = 'operate';
-          }else if(this.selectMenu === '' && gbuy){
-            this.$data.selectMenu = 'gbuy';
           }
         }
         this.$data.authList = authList;

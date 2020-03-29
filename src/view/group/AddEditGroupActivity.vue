@@ -46,7 +46,7 @@
     </el-form>
     <!--搜索-->
     <div class="search-div">
-      <search-group-item @onSelectItem="onSelectItem" v-model="selectItemId" :provinceCode="province.code" :disabled="isDisabledAddItem" style="width: 400px;margin-right: 10px;"/>
+      <search-group-item @onSelectItem="onSelectItem" v-model="selectItemId" :provinceCode="$province.code" :disabled="isDisabledAddItem" style="width: 400px;margin-right: 10px;"/>
       <el-button type="primary" @click.native="addItem" :disabled="isDisabledAddItem">增加商品</el-button>
     </div>
     <!--表格-->
@@ -283,7 +283,7 @@ export default {
     //判断时间
     async groupActivityActCheckDup(value, callback) {
       let res = await Http.get(Config.api.groupActivityActCheckDup, {
-        province_code: this.province.code,
+        province_code: this.$province.code,
         id: this.detail.detail.id || '',
         time_start: value[0],
         time_end: value[1]
@@ -341,7 +341,7 @@ export default {
 
       this.$loading({isShow: true});
       let res = await Http.post(Config.api[detail.detail.id ? 'groupActivityEdit' : 'groupActivityAdd'], {
-        province_code: this.province.code,
+        province_code: this.$province.code,
         ...detail.detail,
         status: detail.detail.is_acitve ? 'activated' : 'deactivated', //是否立即上架
         items: detail.items_temp
