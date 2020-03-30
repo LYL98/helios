@@ -52,15 +52,6 @@
               <el-tooltip class="item" effect="dark" content="GMV： 订单商品金额 + 运费" placement="right" v-if="scope.row.name === 'GMV'">
                 <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
               </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="订单应付金额：GMV - 优惠金额 + 框金额" placement="right" v-if="scope.row.name === '订单应付金额'">
-                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
-              </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="客单价：GMV / 下单门店数" placement="right" v-if="scope.row.name === '客单价'">
-                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
-              </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="订单数量：下单天数" placement="right" v-if="scope.row.name === '订单数量'">
-                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
-              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column min-width="100px" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
@@ -150,10 +141,8 @@
          * */
         indexNames: [
           'GMV',
-          '订单应付金额',
-          '客单价',
+          '订单商品金额',
           '下单门店数',
-          '订单数量',
           '下单件数',
           '下单商品数'
         ],
@@ -299,10 +288,8 @@
             selectedMode: 'single',
             selected: {
               'GMV': true,
-              '订单应付金额': false,
-              '发货金额': false,
+              '订单商品金额': false,
               '下单门店数': false,
-              '订单数量': false,
               '下单件数': false,
               '下单商品数': false,
             },
@@ -326,106 +313,36 @@
             //GMV
             {
               name:'GMV',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(0, xDates)
-            },
-            {
-              name:'GMV',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(0, xDates)
             },
 
-            //订单应付金额
+            //订单商品金额
             {
-              name:'订单应付金额',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(1, xDates)
-            },
-            {
-              name:'订单应付金额',
+              name:'订单商品金额',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(1, xDates)
             },
-
-            //客单价
+            //下单门店数
             {
-              name:'客单价',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(2, xDates)
-            },
-            {
-              name:'客单价',
+              name:'下单门店数',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(2, xDates)
             },
-
-            //下单门店数
             {
-              name:'下单门店数',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(3, xDates)
-            },
-            {
-              name:'下单门店数',
+              name:'下单件数',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(3, xDates)
             },
-
-            //订单数量
             {
-              name:'订单数量',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(4, xDates)
-            },
-            {
-              name:'订单数量',
+              name:'下单商品数',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(4, xDates)
-            },
-
-            //下单件数
-            {
-              name:'下单件数',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(5, xDates)
-            },
-            {
-              name:'下单件数',
-              type:'bar',
-              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
-              data:this.lineData(5, xDates)
-            },
-
-            //下单商品数
-            {
-              name:'下单商品数',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(6, xDates)
-            },
-            {
-              name:'下单商品数',
-              type:'bar',
-              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
-              data:this.lineData(6, xDates)
             },
           ]
         };
@@ -475,12 +392,10 @@
         switch (index) {
           case 0:
           case 1:
-          case 2:
             return DataHandle.returnPrice(value);
+          case 2:
           case 3:
           case 4:
-          case 5:
-          case 6:
             return value;
           default:
             return 0;
@@ -491,12 +406,10 @@
         switch (index) {
           case 0:
           case 1:
-          case 2:
             return this.returnPrice(value);
+          case 2:
           case 3:
           case 4:
-          case 5:
-          case 6:
             return this.formatValue(value);
           default:
             return 0;
@@ -526,21 +439,15 @@
             result = that.returnPrice(cellItem.gmv);
             break;
           case 1:
-            result = that.returnPrice(cellItem.real_price);
+            result = that.returnPrice(cellItem.amount_real);
             break;
           case 2:
-            result = that.returnPrice(cellItem.gmv / cellItem.store_num);
-            break;
-          case 3:
             result = that.formatValue(cellItem.store_num);
             break;
-          case 4:
-            result = that.formatValue(cellItem.order_num);
-            break;
-          case 5:
+          case 3:
             result = that.formatValue(cellItem.item_num);
             break;
-          case 6:
+          case 4:
             result = that.formatValue(cellItem.item_cat_num);
             break;
           default:
@@ -556,21 +463,15 @@
             result = cellItem.gmv;
             break;
           case 1:
-            result = cellItem.real_price;
+            result = cellItem.amount_real;
             break;
           case 2:
-            result = cellItem.gmv / cellItem.store_num;
-            break;
-          case 3:
             result = cellItem.store_num;
             break;
-          case 4:
-            result = cellItem.order_num;
-            break;
-          case 5:
+          case 3:
             result = cellItem.item_num;
             break;
-          case 6:
+          case 4:
             result = cellItem.item_cat_num
             break;
           default:
