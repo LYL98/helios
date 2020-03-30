@@ -2,8 +2,13 @@
 <template>
   <sub-menu>
     <div class="query" style="margin-bottom: 20px">
-      <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province v-model="query.province_code" type="select" @change="selectProvince"/>
+          </my-query-item>
+        </el-col>
+        <el-col :span="10">
           <my-query-item label="时间">
             <el-date-picker
               v-model="currentDateRange"
@@ -13,7 +18,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               size="small"
-              class="query-item-date"
+              style="width: 100%;"
               :picker-options="fixDateOptions"
               :clearable="false"
               @change="onChangeDate">
@@ -81,6 +86,7 @@
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message, Tooltip } from 'element-ui';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import { QueryItem } from '@/common';
+  import { GlobalProvince } from '@/component';
   import mainMixin from '@/share/mixin/main.mixin';
 
   import echarts from "echarts/lib/echarts";
@@ -107,27 +113,16 @@
       'el-input': Input,
       'my-query-item': QueryItem,
       'el-tooltip': Tooltip,
+      'global-province': GlobalProvince,
     },
     created() {
       documentTitle("统计 - 运营统计");
-
-      let { query, province } = this;
-
-      if (province) {
-        query.province_code = province.code;
-      }
 
       let endDate = new Date();
       let endDateStr = DataHandle.formatDate(endDate, 'yyyy-MM-dd');
       let beginDate = new Date(endDate.setDate(endDate.getDate() - 30));
       this.currentDateRange.push(DataHandle.formatDate(beginDate, 'yyyy-MM-dd'));
       this.currentDateRange.push(endDateStr);
-
-      let that = this;
-
-      that.loadOperationStatistics(() => {
-        that.initChart()
-      });
     },
     data() {
       return {
@@ -185,6 +180,12 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(){
+        this.loadOperationStatistics(() => {
+          this.initChart()
+        });
+      },
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;

@@ -187,7 +187,7 @@
 
       initQuery() {
         this.$data.query = {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           action: '',
           time_start: '',
           time_end: '',

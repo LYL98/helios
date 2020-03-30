@@ -72,15 +72,12 @@
     },
     mixins: [tableMixin],
     created() {
-      if(!this.auth.isAdmin && !this.auth.GroupBannerAdd){
-          this.offsetHeight = Constant.OFFSET_BASE_HEIGHT;
-        }
-      let pc = this.getPageComponents('QueryGroupBanner');
-      this.getData(pc.query);
+      //在Query组件初始化
+      //let pc = this.getPageComponents('QueryGroupBanner');
+      //this.getData(pc.query);
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_OPERATE,
         tableName: 'TableGroupBanner',
         tableColumn: [
           { label: '图片', key: 'image', width: '100', isShow: true },

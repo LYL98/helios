@@ -3,14 +3,7 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="区域">
-          <select-province
-            v-model="editQuery.province_code"
-            size="small"
-            isAuth
-            showAll
-            clearable
-            @change="selectProvince"
-          />
+          <global-province v-model="editQuery.province_code" type="select" @change="selectProvince"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -106,7 +99,7 @@
 <script>
   import {Row, Col, Input, Button, DatePicker} from 'element-ui';
   import {SelectOption, QueryItem, SelectProvince} from '@/common';
-  import { SelectCity, GlobalProvince } from '@/component';
+  import { GlobalProvince, SelectCity } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
@@ -120,7 +113,6 @@
       'my-query-item': QueryItem,
       'select-option': SelectOption,
       'my-select-city': SelectCity,
-      'select-province': SelectProvince,
       'global-province': GlobalProvince,
     },
     mixins: [queryMixin],

@@ -3,14 +3,7 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="区域">
-          <select-province
-            v-model="query.province_code"
-            size="small"
-            showAll
-            isAuth
-            clearable
-            @change="selectProvince"
-          />
+          <global-province v-model="query.province_code" type="select" @change="selectProvince"/>
         </my-query-item>
       </el-col>
       <el-col  :span="7">
@@ -43,14 +36,15 @@
 
 <script>
   import { Constant } from '@/util';
-  import { SelectProvince, SelectCity } from '@/common';
+  import { SelectCity } from '@/common';
+  import { GlobalProvince } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "QueryItem",
     components: {
       'select-city': SelectCity,
-      'select-province': SelectProvince,
+      'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
     created() {

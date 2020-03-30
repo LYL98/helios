@@ -76,7 +76,7 @@
     },
     mixins: [tableMixin],
     created() {
-      this.getData();
+      this.getData(this.query);
     },
     data() {
       return {
@@ -92,9 +92,9 @@
     },
     methods: {
       //获取数据
-      async getData(){
+      async getData(query){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.groupItemClassQuery, {});
+        let res = await Http.get(Config.api.groupItemClassQuery, query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
