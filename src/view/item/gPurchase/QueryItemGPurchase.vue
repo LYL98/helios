@@ -19,16 +19,6 @@
     </el-row>
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
-        <my-query-item label="状态">
-          <select-option
-            :options="{'全部': '', ...purchaseStatus}"
-            v-model="query.status"
-            @change="handleQuery('TableItemGPurchase')"
-            size="small"
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
         <my-query-item label="供应商">
           <select-supplier supplierType="global_pur" size="small" v-model="query.supplier_id" @change="handleQuery('TableItemGPurchase')" filterable/>
         </my-query-item>
@@ -74,7 +64,6 @@
     data() {
       let initQuery = {
         order_date: '',
-        status: '',
         condition: '',
         tar_storehouse_id: '',
         supplier_id: '',
@@ -84,7 +73,6 @@
         for_pre: 1, //1预采 0反采
       }
       return {
-        purchaseStatus: Constant.PURCHASE_STATUS('value_key'),
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }

@@ -2,9 +2,11 @@
   <div class="container-table">
     <!--头部-->
     <div class="table-top" v-if="auth.isAdmin || auth.ItemLocalPurchaseExport">
-      <div class="left"></div>
+      <div class="left">
+        <query-tabs v-model="status" @change="changeTab" :tab-panes="statusOptions"/>
+      </div>
       <div class="right">
-        <el-button @click.native="handleExport('fromSupplierOrderExport', query)" size="mini" type="primary" plain>导出反采单</el-button>
+        <el-button @click.native="handleExport('fromSupplierOrderExport', {...query, status})" size="mini" type="primary" plain>导出反采单</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -88,18 +90,29 @@
 <script>
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: 'TableItemLocalPurchase',
     components: {
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
       let pc = this.getPageComponents('QueryItemLocalPurchase');
       this.getData(pc.query);
     },
+    computed: {
+      statusOptions(){
+        let d = Constant.PURCHASE_STATUS('value_key');
+        delete d['待审核'];
+        delete d['作废'];
+        return { '全部': '', ...d};
+      }
+    },
     data() {
       return {
+        status: '',
         tableName: 'TableItemLocalPurchase',
         tableColumn: [
           { label: '反采单号', key: 'code', width: '2', isShow: true },
@@ -118,11 +131,18 @@
       }
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryItemLocalPurchase');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.status = '';
+        }
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.fromSupplierOrderQuery, query);
+        let res = await Http.get(Config.api.fromSupplierOrderQuery, {...query, status: this.$data.status});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

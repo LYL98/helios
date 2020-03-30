@@ -2,10 +2,10 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="类型">
+        <my-query-item label="审核状态">
           <select-option
-            :options="{'全部': '', ...supplierType}"
-            v-model="query.supplier_type"
+            :options="{'全部': '', '待审核': 0, '已审核': 1}"
+            v-model="query.is_audited"
             @change="handleQuery('TableItemSupplier')"
             size="small"
           />
@@ -44,16 +44,6 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :span="7">
-        <my-query-item label="审核状态">
-          <select-option
-            :options="{'全部': '', '待审核': 0, '已审核': 1}"
-            v-model="query.is_audited"
-            @change="handleQuery('TableItemSupplier')"
-            size="small"
-          />
-        </my-query-item>
-      </el-col>
     </el-row>
   </div>
 </template>
@@ -71,14 +61,12 @@
     mixins: [queryMixin],
     data() {
       let initQuery = {
-        supplier_type: '',
         bill_term: '',
         is_freeze: '',
         is_audited: '',
         condition: '',
       }
       return {
-        supplierType: Constant.SUPPLIER_TYPE('value_key'),
         supplierBillTerm: Constant.SUPPLIER_BILL_TERM('value_key'),
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝

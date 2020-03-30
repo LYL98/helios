@@ -1,9 +1,11 @@
 <template>
   <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.ItemSupplierAdd || auth.ItemSupplierExport">
-      <div class="left"></div>
+      <div class="left">
+        <query-tabs v-model="supplier_type" @change="changeTab" :tab-panes="supplierTypeOptions"/>
+      </div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.ItemSupplierExport" @click.native="handleExport('supplierExport', query)" size="mini" type="primary" plain>导出供应商</el-button>
+        <el-button v-if="auth.isAdmin || auth.ItemSupplierExport" @click.native="handleExport('supplierExport', {...query, supplier_type})" size="mini" type="primary" plain>导出供应商</el-button>
         <el-button v-if="auth.isAdmin || auth.ItemSupplierAdd" @click="handleShowAddEdit('AddEditItemSupplier')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
@@ -102,10 +104,12 @@
 <script>
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: 'TableItemSupplier',
     components: {
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
@@ -114,6 +118,8 @@
     },
     data() {
       return {
+        supplier_type: '',
+        supplierTypeOptions: {'全部': '', ...Constant.SUPPLIER_TYPE('value_key')},
         tableName: 'TableItemSupplier',
         tableColumn: [
           { label: '名称', key: 'title', width: '3', isShow: true },
@@ -131,11 +137,18 @@
       }
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryItemSupplier');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.supplier_type = '';
+        }
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supplierQuery, query);
+        let res = await Http.get(Config.api.supplierQuery, { ...query, supplier_type: this.$data.supplier_type });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
