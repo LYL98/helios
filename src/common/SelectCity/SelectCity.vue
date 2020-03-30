@@ -87,7 +87,6 @@
         this.$emit('changeCityName', cityName);
       },
       handleSelectItem(item) {
-        console.log('item: ', item);
         this.$emit('select-item', item);
       },
       //根据传进来的区域code 获取城市列表
