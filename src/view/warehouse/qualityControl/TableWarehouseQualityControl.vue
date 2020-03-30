@@ -155,10 +155,19 @@
       },
       //返回缺货
       returnStockout(data){
-        if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_in <= 0 || data.num_in >= data.num){
-          return '-';
+        //调拨
+        if(this.query.type === 'distribute'){
+          if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_arrive <= 0 || data.num_arrive >= data.num){
+            return '-';
+          }
+          return (data.num - data.num_arrive) + '件';
+        }else{
+          if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_in <= 0 || data.num_in >= data.num){
+            return '-';
+          }
+          return (data.num - data.num_in) + '件';
         }
-        return (data.num - data.num_in) + '件';
+        
       },
       //获取数据
       async getData(query, type){

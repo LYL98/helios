@@ -8,10 +8,9 @@
       <el-input v-model="addEditData.title" :maxlength="10" placeholder="请输入门店名称"></el-input>
     </el-form-item>
     <el-form-item label="县域" prop="province" class="required">
-      <my-select-province style="width: 150px;" :value="addEditData.province_code"
-                          :disabled="true"/>
+      <my-select-province style="width: 150px;" v-model="addEditData.province_code" :disabled="isEditStore"/>
       <my-select-city style="width: 200px;margin-left: 5px" v-model="addEditData.city_id" :provinceCode="addEditData.province_code"
-                      @change="changeCity" :disabled="isEditStore" placeholder="请选择县域"/>
+                      @change="changeCity" :disabled="isEditStore || addEditData.province_code === ''" placeholder="请选择县域"/>
     </el-form-item>
     <el-row>
       <el-col :span="12">
@@ -95,8 +94,6 @@
           that.$data.id = q.id || store_id;
           that.storeDetail();
         }
-      } else {
-        that.addEditData.province_code = that.province.code;
       }
     },
     data() {
