@@ -3,12 +3,12 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="调入仓">
-          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="handleQuery('TableWarehouseDistribute')" isAuth @initCallBack="storehouseInit"/>
+          <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="handleQuery('TableWarehouseDistribute')" isTarLimit @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
         <my-query-item label="调出仓">
-          <select-storehouse size="small" v-model="query.src_storehouse_id" clearable filterable @change="handleQuery('TableWarehouseDistribute')"/>
+          <select-storehouse size="small" v-model="query.src_storehouse_id" clearable filterable @change="handleQuery('TableWarehouseDistribute')" isSrcLimit/>
         </my-query-item>
       </el-col>
       <el-col :span="10">
@@ -87,8 +87,7 @@
         end_date: '',
         status: '',
         condition: '',
-        picker_value: null,
-        province_code: this.$province.code
+        picker_value: null
       }
       return {
         initQuery: initQuery,

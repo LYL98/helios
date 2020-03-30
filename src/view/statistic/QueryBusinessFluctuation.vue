@@ -1,7 +1,7 @@
 <template>
   <div class="query">
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
+    <el-row :gutter="32">
+      <el-col :span="7">
         <my-query-item label="波动指标">
           <el-select v-model="editQuery.selectType" @change="changeQuery"
                      size="small" class="query-item-select">
@@ -13,7 +13,7 @@
           </el-select>
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="7">
         <my-query-item label="片区">
           <my-select-zone v-model="editQuery.zone_id"
                           :provinceCode="editQuery.province_code"
@@ -22,7 +22,7 @@
                           @change="changeQuery"/>
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="10">
         <my-query-item label="时间段">
           <el-date-picker
             size="small"
