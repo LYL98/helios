@@ -1,7 +1,7 @@
 <template>
   <div class="tabs">
-    <el-tabs :value="value" type="card" @tab-click="handleClick">
-      <el-tab-pane v-for="(key, value) in tabPanes" :key="key" :label="value" :name="key"></el-tab-pane>
+    <el-tabs :value="handleValue" type="card" @tab-click="handleClick">
+      <el-tab-pane v-for="(key, value) in handleTabPanes" :key="key" :label="value" :name="key"></el-tab-pane>
     </el-tabs>    
   </div>
 </template>
@@ -15,7 +15,7 @@
       'el-tab-pane': TabPane
     },
     props: {
-      value: [ String, Number, Boolean ],
+      value: { type: String | Number | Boolean, default: '' },
       tabPanes: { type: Object, default: {} },
       type: { type: String, default: 'none' }, //none 普通；route 路由模式
       routePanes: { type: Object, default: null }, //route 路由模式 传
@@ -25,19 +25,31 @@
       prop: 'value',
       event: 'change'
     },
+    
     computed: {
+      handleValue(){
+        return this.value === '' ? 'my_all' : this.value;
+      },
+      handleTabPanes(){
+        let d = this.tabPanes;
+        for(let item in d){
+          if(d[item] === '') d[item] = 'my_all';
+        }
+        return d;
+      }
     },
     methods: {
       handleClick(e) {
-        let { type, tabPanes, routePanes, value, query } = this;
-        if(value === e.name) return;
+        let an = e.name === 'my_all' ? '' : e.name;
+        let { type, routePanes, value, query } = this;
+        if(value === an) return;
         if(type === 'route'){
           this.$router.push({
-            name: routePanes[e.name],
+            name: routePanes[an],
             query: query
           });
         }
-        this.$emit('change', e.name);
+        this.$emit('change', an);
       }
     }
   }
