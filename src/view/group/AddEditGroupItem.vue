@@ -191,7 +191,7 @@ export default {
       let { detail, page } = this;
       this.$loading({isShow: true});
       let data = {
-        province_code: this.province.code,
+        province_code: this.$province.code,
         ...detail,
         cover_image: this.returnArrayIndex(detail.cover_images, 0),
         share_image: this.returnArrayIndex(detail.share_images, 0),

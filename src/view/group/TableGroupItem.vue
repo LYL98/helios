@@ -100,8 +100,9 @@
       page: { type: String, default: 'item' }, //页面item、recover
     },
     created() {
-      let pc = this.getPageComponents('QueryGroupItem');
-      this.getData(pc.query);
+      //在Query组件初始化
+      //let pc = this.getPageComponents('QueryGroupItem');
+      //this.getData(pc.query);
     },
     data() {
       return {

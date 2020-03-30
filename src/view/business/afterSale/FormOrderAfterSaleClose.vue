@@ -4,14 +4,7 @@
       <el-form label-position="right" label-width="100px" style="width: 500px;" :model="editData" :rules="rules" ref="ruleForm">
         <el-form-item label="处理类型" prop="opt_type">
           <el-select v-model="editData.opt_type" placeholder="请选择" clearable>
-            <el-option label="质量异常" value="quality"/>
-            <el-option label="物流异常" value="delivery"/>
-            <el-option label="运费退还" value="amount_delivery"/>
-            <el-option label="少称" value="weight"/>
-            <el-option label="与SKU描述不相符" value="not_match"></el-option>
-            <el-option label="缺货/错货" value="num"></el-option>
-            <el-option label="大单优惠" value="big_order_bonus"></el-option>
-            <el-option label="其他" value="other"></el-option>
+            <el-option v-for="(key, item) in afterSaleOptType" :key="key" :value="key" :label="item"/>
           </el-select>
         </el-form-item>
         <el-form-item label="处理件数" prop="num">
@@ -83,6 +76,13 @@ export default {
           { required: true, message: '请输入金额', trigger: 'change' },
         ]
       }
+    }
+  },
+  computed: {
+    afterSaleOptType(){
+      let d = Constant.AFTER_SALE_OPT_TYPE('value_key');
+      delete d['缺货/错货']; //不显示缺货/错货（已拆开）
+      return d;
     }
   },
   methods: {

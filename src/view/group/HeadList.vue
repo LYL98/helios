@@ -1,12 +1,17 @@
 <template>
   <div>
-    <div class="query">
-      <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
+    <div class="container-query">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province v-model="query.province_code" isRequired type="select" @change="selectProvince"/>
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
           <my-query-item label="县域">
             <my-select-city
               size="small"
-              :provinceCode="province.code"
+              :provinceCode="query.province_code"
               v-model="query.city_id"
               clearable
               placeholder="县域"
@@ -14,17 +19,7 @@
             ></my-select-city>
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="门店状态">
-            <select-option
-              size="small"
-              :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
-              v-model="query.is_freeze_header"
-              @change="changeQuery"
-            />
-          </my-query-item>
-        </el-col>
-        <el-col :xl="8" :lg="10" :span="10">
+        <el-col :span="10">
           <my-query-item label="搜索">
             <div style="display: flex">
               <el-input
@@ -39,8 +34,20 @@
               />
               <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 2px"
                          @click="changeQuery"></el-button>
-              <el-button type="primary" size="small" class="query-item-reset" plain @click="initQuery">重置</el-button>
+              <el-button type="primary" size="small" class="query-item-reset" plain @click="resetQuery">重置</el-button>
             </div>
+          </my-query-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32" style="margin-top: 16px;">
+        <el-col :span="7">
+          <my-query-item label="门店状态">
+            <select-option
+              size="small"
+              :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
+              v-model="query.is_freeze_header"
+              @change="changeQuery"
+            />
           </my-query-item>
         </el-col>
       </el-row>
@@ -161,6 +168,7 @@
    */
   import { SelectOption, QueryItem, SelectCity, TableOperate } from '@/common';
   import { Constant, Http, Config } from '@/util';
+  import { GlobalProvince } from '@/component';
   import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
@@ -169,7 +177,8 @@
       'my-select-city': SelectCity,
       'select-option': SelectOption,
       'my-query-item': QueryItem,
-      'my-table-operate': TableOperate
+      'my-table-operate': TableOperate,
+      'global-province': GlobalProvince,
     },
     mixins: [tableMixin],
     props: {
@@ -182,27 +191,32 @@
           num: 0,
           items: []
         },
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
       }
     },
     created() {
       this.initQuery();
-      if (this.auth.isAdmin || this.auth.GroupStoreAdd) {
-        this.$data.offsetHeight = this.$data.offsetHeight + Constant.OFFSET_OPERATE;
-      }
     },
 
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.$data.query.city_id = '';
+        this.$data.query.province_code = data.code;
+        this.changeQuery();
+      },
+      resetQuery(){
+        this.initQuery();
+        this.headQuery();
+      },
       initQuery() {
         this.$data.query = {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           city_id: '',
           is_freeze_header: '',
           condition: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
         }
-        this.headQuery();
       },
       changeQuery() {
         this.$data.query = Object.assign(this.$data.query, { page: 1 });

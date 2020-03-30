@@ -23,6 +23,16 @@
             />
           </my-query-item>
         </el-col>
+        <el-col :xl="7" :lg="7" :span="10">
+          <my-query-item label="科学分类">
+            <my-select-system-class
+              clearable
+              :value="query.system_class_codes"
+              size="small"
+              @change="changeSystemClassCodes"
+            />
+          </my-query-item>
+        </el-col>
         <el-col :xl="10" :lg="10" :span="10">
           <my-query-item label="搜索">
             <query-search-input
@@ -38,7 +48,7 @@
     </div>
 
     <div class="container-table">
-      <div class="table-top" v-if="$auth.isAdmin || $auth.MarketingStrategyCityStep">
+      <div class="table-top" v-if="$auth.isAdmin || $auth.MarketingStrategyStepAdd">
         <div class="left"></div>
         <div class="right">
           <el-button @click="handleAddItems" size="mini" type="primary">新增</el-button>
@@ -61,7 +71,7 @@
         >
           <el-table-column
             fixed
-            v-if="$auth.isAdmin || $auth.MarketingStrategyCityModify || MarketingStrategyCityDelete"
+            v-if="$auth.isAdmin || $auth.MarketingStrategyStepModify || MarketingStrategyStepDelete"
             align="center"
             type="selection"
             width="50">
@@ -73,7 +83,7 @@
             label="序号"
             :index="indexMethod"
           ></el-table-column>
-          <el-table-column fixed label="商品编号/名称" prop="item_id" min-width="240">
+          <el-table-column fixed label="商品编号/名称" prop="item_id" min-width="260">
             <template slot-scope="scope">
               <div class="my-td-item">
                 {{ scope.row.code }} / {{ scope.row.title }}
@@ -95,6 +105,7 @@
               <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 1">
                 {{ !!scope.row.step_prices[0].num ? scope.row.step_prices[0].num + '件' : '-' }}
               </div>
+              <div v-else>-</div>
             </template>
           </el-table-column>
           <el-table-column label="优惠价" min-width="100">
@@ -105,6 +116,7 @@
                     : '-'
                 }}
               </div>
+              <div v-else>-</div>
             </template>
           </el-table-column>
           <el-table-column label="阶梯二" min-width="100">
@@ -112,16 +124,18 @@
               <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 2">
                 {{ !!scope.row.step_prices[1].num ? scope.row.step_prices[1].num + '件' : '-' }}
               </div>
+              <div v-else>-</div>
             </template>
           </el-table-column>
           <el-table-column label="优惠价" min-width="100">
             <template slot-scope="scope">
               <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 2">
                 {{ !!scope.row.price_sale && !!scope.row.step_prices[1].discount
-                ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[1].discount / 100))
-                : '-'
+                    ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[1].discount / 100))
+                    : '-'
                 }}
               </div>
+              <div v-else>-</div>
             </template>
           </el-table-column>
           <el-table-column label="阶梯三" min-width="100">
@@ -129,16 +143,18 @@
               <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 3">
                 {{ !!scope.row.step_prices[2].num ? scope.row.step_prices[2].num + '件' : '-' }}
               </div>
+              <div v-else>-</div>
             </template>
           </el-table-column>
           <el-table-column label="优惠价" min-width="100">
             <template slot-scope="scope">
               <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 3">
                 {{ !!scope.row.price_sale && !!scope.row.step_prices[2].discount
-                ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[2].discount / 100))
-                : '-'
+                    ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[2].discount / 100))
+                    : '-'
                 }}
               </div>
+              <div v-else>-</div>
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="step_prices_updated" min-width="160">
@@ -223,7 +239,7 @@
 
 <script>
   import {Row, Col, Button, Input, Select, Option, Pagination, Table, TableColumn, Dialog, DatePicker, Tag} from 'element-ui';
-  import {SelectOption, QueryItem, QuerySearchInput, TableOperate, SelectCity} from '@/common';
+  import {SelectOption, SelectSystemClass, QueryItem, QuerySearchInput, TableOperate, SelectCity} from '@/common';
   import { GlobalProvince } from '@/component';
   import AddEditLayout from '@/share/layout/Layout';
   import { Http, Config, Constant, DataHandle } from '@/util';
@@ -250,6 +266,7 @@
       'add-edit-layout': AddEditLayout,
       'select-option': SelectOption,
       'my-query-item': QueryItem,
+      'my-select-system-class': SelectSystemClass,
       'my-select-city': SelectCity,
       'my-table-operate': TableOperate,
       'query-search-input': QuerySearchInput,
@@ -266,7 +283,7 @@
         dialog: {
           visible: false,
           type: 'add',
-          items: null
+          items: []
         },
       }
     },
@@ -285,7 +302,7 @@
           is_on_sale: 1, // 已上架
           is_gift: 0, // 不是赠品
           province_code: this.$province.code,
-          system_class_code: '',
+          system_class_codes: [],
           sort: '',
           discount: '',
           condition: '',
@@ -321,6 +338,11 @@
         this.stepPriceQuery();
       },
 
+      changeSystemClassCodes(v, d) {
+        this.$data.query.system_class_codes = v;
+        this.stepPriceQuery();
+      },
+
       changePage(page) {
         this.$data.query.page = page;
         this.stepPriceQuery();
@@ -351,7 +373,6 @@
       },
 
       handleAddItems() {
-        return;
         this.$data.dialog = {
           visible: true,
           type: 'add',
@@ -360,7 +381,6 @@
       },
 
       handleModifyItems() {
-        return;
         this.$data.dialog = {
           visible: true,
           type: 'modify',
@@ -425,7 +445,14 @@
       },
 
       async stepPriceQuery() {
-        let res = await Http.get(Config.api.businessMarketingStrategyStepQuery, this.$data.query);
+
+        let query = {...this.$data.query};
+        if (Array.isArray(query.system_class_codes) && query.system_class_codes.length > 0) {
+          query.system_class_code = query.system_class_codes[query.system_class_codes.length - 1];
+        }
+        delete query.system_class_codes;
+
+        let res = await Http.get(Config.api.businessMarketingStrategyStepQuery, query);
         if (res.code !== 0) return;
         this.$data.list = res.data || { items: [] };
       }

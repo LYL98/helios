@@ -256,30 +256,32 @@
     },
     watch: {
       //监听路由变化
-      $route(a, b){
-        this.$data.pageData = a;
+      $route(to, from){
+        this.$data.pageData = to;
         this.$data.auth = this.$auth || {};
         this.$data.myInfo = this.$myInfo || {};
-        let { auth } = this, authList = [];
+        let { auth } = this, authList = [], operate = false, gbuy = false;
         if(auth.isAdmin){
           authList = ['operate', 'gbuy'];
-          if(this.selectMenu === '') this.$data.selectMenu = 'operate';
+          operate = true;
+          gbuy = true;
         }else{
-          let operate = false, gbuy = false;
           for(let item in auth){
             if(item.indexOf('Group') < 0 && item !== 'Home') operate = true;
             if(item === 'Group') gbuy = true;
           }
           if(operate) authList.push('operate');
           if(gbuy) authList.push('gbuy');
-          if(this.selectMenu === '' && a.name.indexOf('Group') === 0 && gbuy){
-            this.$data.selectMenu = 'gbuy';
-          }else if(this.selectMenu === '' && operate){
-            this.$data.selectMenu = 'operate';
-          }else if(this.selectMenu === '' && gbuy){
-            this.$data.selectMenu = 'gbuy';
-          }
         }
+
+        let { selectMenu } = this;
+        if(from.name === 'Login') selectMenu = '';
+        if((to.name.indexOf('Group') === 0 && gbuy) || selectMenu === 'gbuy'){
+          selectMenu = 'gbuy';
+        }else if(operate){
+          selectMenu = 'operate';
+        }
+        this.$data.selectMenu = selectMenu;
         this.$data.authList = authList;
       },
     }

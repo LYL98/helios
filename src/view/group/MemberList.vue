@@ -1,17 +1,23 @@
 <template>
   <div>
     <div class="query">
-      <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province v-model="query.province_code" isRequired type="select" @change="selectProvince"/>
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
           <my-query-item label="团员状态">
             <select-option
               :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
               v-model="query.is_freeze"
               @change="changeQuery"
+              size="small"
             />
           </my-query-item>
         </el-col>
-        <el-col :xl="8" :lg="10" :span="10">
+        <el-col :span="10">
           <my-query-item label="搜索">
             <div style="display: flex">
               <el-input
@@ -26,7 +32,7 @@
               />
               <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 2px"
                          @click="changeQuery"></el-button>
-              <el-button type="primary" size="small" class="query-item-reset" plain @click="initQuery">重置</el-button>
+              <el-button type="primary" size="small" class="query-item-reset" plain @click="resetQuery">重置</el-button>
             </div>
           </my-query-item>
         </el-col>
@@ -157,6 +163,7 @@
   import { Row, Col, Button, Input, Table, TableColumn, Tag, Pagination, MessageBox } from 'element-ui';
   import { SelectOption, QueryItem, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
+  import { GlobalProvince } from '@/component';
   import tableMixin from '@/share/mixin/table.mixin';
   import mainMixin from '@/share/mixin/main.mixin';
 
@@ -174,7 +181,8 @@
       'select-option': SelectOption,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
-      'my-image-preview': ImagePreview
+      'my-image-preview': ImagePreview,
+      'global-province': GlobalProvince,
     },
     mixins: [tableMixin, mainMixin],
     data() {
@@ -187,26 +195,30 @@
           items: []
         },
         currentRow: {},
-        currentRowLocked: false,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
+        currentRowLocked: false
       }
     },
     created() {
       this.initQuery();
-      if (this.auth.isAdmin || this.auth.GroupMemberExport) {
-        this.$data.offsetHeight = this.$data.offsetHeight + Constant.OFFSET_OPERATE;
-      }
     },
 
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.$data.query.province_code = data.code;
+        this.groupMemberQuery();
+      },
       initQuery() {
         this.$data.query = {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           is_freeze: '',
           condition: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
         }
+      },
+      resetQuery(){
+        this.initQuery();
         this.groupMemberQuery();
       },
       changeQuery() {
@@ -289,11 +301,11 @@
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           ...query
         });
         if(res.code === 0){
-          let queryStr = `${api}?province_code=${this.province.code}`;
+          let queryStr = `${api}?province_code=${this.$province.code}`;
           for (let item in query) {
             queryStr += `&${item}=${query[item]}`
           }

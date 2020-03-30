@@ -129,12 +129,12 @@ const Config = (() => {
       // 营销策略
       businessMarketingStrategyCityQuery: apiM + '/item/city_price/query', // 县域定价查询
       businessMarketingStrategyCityAdd: apiM + '/item/city_price/add', // 新增
-      businessMarketingStrategyCityBatchEdit: apiM + '/item/city_price/batch_edit', // 修改
+      businessMarketingStrategyCityModify: apiM + '/item/city_price/batch_edit', // 修改
       businessMarketingStrategyCityDelete: apiM + '/item/city_price/delete', // 删除
 
       businessMarketingStrategyStepQuery: apiM + '/item/query', // 阶梯定价查询，本质上查询的是商品接口，has_step_price = 1 表示过滤出具有阶梯定价的商品
       businessMarketingStrategyStepAdd: apiM + '/item/step_price/add', // 新增
-      businessMarketingStrategyStepModify: apiM + '/item/step_price/edit', // 修改
+      businessMarketingStrategyStepModify: apiM + '/item/step_price/batch_edit', // 修改
       businessMarketingStrategyStepDelete: apiM + '/item/step_price/delete', // 删除
 
 

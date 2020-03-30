@@ -405,7 +405,8 @@ export default {
     //提交数据
     addEditData(){
       let { detail, inventoryData } = this;
-      if(detail.num !== inventoryData.num + detail.num_in){
+      //到货数量 + 已入库数量
+      if(detail.num !== inventoryData.num_arrive + detail.num_in){
         this.$data.inventoryData.accept_type = 'after_have'; //后面会来货
         this.showHideAffirm();
       }else{
