@@ -260,29 +260,28 @@
         this.$data.pageData = to;
         this.$data.auth = this.$auth || {};
         this.$data.myInfo = this.$myInfo || {};
-        if(from.name === 'Login') this.$data.selectMenu = '';
-        let { auth } = this, authList = [];
+        let { auth } = this, authList = [], operate = false, gbuy = false;
         if(auth.isAdmin){
           authList = ['operate', 'gbuy'];
-          if(to.name.indexOf('Group') === 0){
-            this.$data.selectMenu = 'gbuy';
-          }else{
-            this.$data.selectMenu = 'operate';
-          }
+          operate = true;
+          gbuy = true;
         }else{
-          let operate = false, gbuy = false;
           for(let item in auth){
             if(item.indexOf('Group') < 0 && item !== 'Home') operate = true;
             if(item === 'Group') gbuy = true;
           }
           if(operate) authList.push('operate');
           if(gbuy) authList.push('gbuy');
-          if(to.name.indexOf('Group') === 0 && gbuy){
-            this.$data.selectMenu = 'gbuy';
-          }else if(operate){
-            this.$data.selectMenu = 'operate';
-          }
         }
+
+        let { selectMenu } = this;
+        if(from.name === 'Login') selectMenu = '';
+        if((to.name.indexOf('Group') === 0 && gbuy) || selectMenu === 'gbuy'){
+          selectMenu = 'gbuy';
+        }else if(operate){
+          selectMenu = 'operate';
+        }
+        this.$data.selectMenu = selectMenu;
         this.$data.authList = authList;
       },
     }
