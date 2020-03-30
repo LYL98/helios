@@ -69,12 +69,12 @@
               :list="[
                 {
                   title: '详情',
-                  isDisplay: auth.isAdmin || auth.FinanceSBDetailAuditDetail,
+                  isDisplay: (page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailDetail)) || (page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditDetail)),
                   command: () => handleShowAddEdit('AddEditFinanceSBDetail', scope.row, 'detail')
                 },
                 {
                   title: '结款',
-                  isDisplay: page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailAuditPay) && scope.row.bill_term === 0 && scope.row.paid_status === 'init',
+                  isDisplay: page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailPay) && scope.row.bill_term === 0 && scope.row.paid_status === 'init',
                   command: () => handlePay([scope.row.id])
                 },
                 {

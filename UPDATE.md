@@ -4,6 +4,15 @@
 
 ### 版本 （最新 - 旧）
 
+### 3.5.0
+```
+更新注意事项
+修改sys_permission表
+修改：
+   1、code == OperateReceivingEditNum  修改项: urls【从dev数据库拷贝】
+   2、code == StatisticClient  修改项: urls 【从dev数据库拷贝】
+```
+
 ### 3.4.0
 ```
 更新注意事项

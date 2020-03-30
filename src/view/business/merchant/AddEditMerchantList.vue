@@ -30,9 +30,9 @@
           <el-input v-model="detail.store_title" :maxlength="10" style="width: 260px;" placeholder="请输入门店名称"></el-input>
         </el-form-item>
         <el-form-item label="县域" prop="province">
-          <my-select-province style="width: 110px;" :value="province.code" :disabled="true"/>
-          <my-select-city style="width: 140px; margin-left: 6px;" v-model="detail.city_id" :provinceCode="province.code"
-                          placeholder="请选择县域" @change="changCity"/>
+          <my-select-province style="width: 110px;" v-model="detail.province_code" @change="changProvince" clearable isAuth/>
+          <my-select-city style="width: 140px; margin-left: 6px;" v-model="detail.city_id" :provinceCode="detail.province_code"
+                          placeholder="请选择县域" @change="changCity" :disabled="detail.province_code === '' ? true : false"/>
         </el-form-item>
       </div>
       <div style="display: flex; justify-content: space-between;">
@@ -46,12 +46,6 @@
       <el-form-item label="收货地址" prop="address">
         <el-input v-model="detail.address" :maxlength="30" placeholder="请输入收货地址"></el-input>
       </el-form-item>
-      <!--<el-form-item label="是否团购" prop="store_gb_included">-->
-        <!--<el-radio-group v-model="detail.store_gb_included">-->
-          <!--<el-radio border size="small" :label="true">是</el-radio>-->
-          <!--<el-radio border size="small" :label="false">否</el-radio>-->
-        <!--</el-radio-group>-->
-      <!--</el-form-item>-->
     </my-form-area>
 
     <my-form-area label="用户信息" v-if="!this.isModify">
@@ -107,8 +101,6 @@
     },
     // 判断是否是编辑模式？
     created() {
-      let that = this;
-      that.$data.detail.province_code = that.province.code;
     },
     data() {
 
@@ -117,7 +109,9 @@
         avatar: [],
         is_post_pay: false,
         credit_limit: 10000,
-        gender: 1
+        gender: 1,
+        province_code: '',
+        city_id: ''
       };
 
       let validImages = function (rules, value, callback) {
@@ -149,7 +143,6 @@
       };
 
       return {
-        province: this.$province,
         isModify: false,
         isSending: false,
         id: 0,
@@ -203,7 +196,11 @@
       }
     },
     methods: {
-
+      //选择区域
+      changProvince(){
+        this.$data.detail.city_id = '';
+      },
+      //选择县域
       changCity() {
         if (arguments[0] !== "") {
           this.$refs['ruleForm'].clearValidate(['province']);
@@ -273,7 +270,7 @@
                   is_post_pay: false,
                   credit_limit: 10000,
                   gender: 1,
-                  province_code: that.province.code
+                  province_code: ''
                 };
               }
             } else {
