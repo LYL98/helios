@@ -1,7 +1,7 @@
 <template>
   <div class="container-query">
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
+    <el-row :gutter="32">
+      <el-col :span="7">
         <my-query-item label="时间">
           <el-date-picker
             v-model="currentDateRange"
@@ -17,7 +17,7 @@
           </el-date-picker>
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="7">
         <my-query-item label="县域">
           <my-select-city
             size="small"
@@ -29,7 +29,7 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :xl="8" :lg="10" :span="10">
+      <el-col :span="10">
         <my-query-item label="搜索">
           <div style="display: flex">
             <el-input
@@ -48,7 +48,7 @@
       </el-col>
     </el-row>
     <el-row style="margin-top: 16px">
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="7">
         <my-query-item label="参团状态">
           <select-option
             :options="{'参过团': 1, '未参团': 0}"
