@@ -90,7 +90,7 @@
                 :list="[
                   {
                     title: '查看',
-                    isDisplay: !!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientZone ),
+                    isDisplay: !!scope.row.province_title && ( auth.isAdmin || auth.StatisticClient ),
                     command: () => handleShowZoneDetail(scope.row)
                   }
                 ]"
