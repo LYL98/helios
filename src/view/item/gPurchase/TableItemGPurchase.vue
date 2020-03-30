@@ -2,11 +2,10 @@
   <div class="container-table">
     <div class="table-top" v-if="auth.isAdmin || auth.ItemGPurchaseAdd || auth.ItemGPurchaseAudit || auth.ItemGPurchaseExport">
       <div class="left">
-        <el-button v-if="auth.isAdmin || auth.ItemGPurchaseAudit" @click="handleShowForm('FormAudit', { ids: returnListKeyList('id', multipleSelection) })" size="mini" type="primary"
-        :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
+        <query-tabs v-model="status" @change="changeTab" :tab-panes="statusOptions"/>
       </div>
       <div class="right">
-        <el-button v-if="auth.isAdmin || auth.ItemGPurchaseExport" @click.native="handleExport('fromSupplierOrderExport', query)" size="mini" type="primary" plain>导出预采单</el-button>
+        <el-button v-if="auth.isAdmin || auth.ItemGPurchaseExport" @click.native="handleExport('fromSupplierOrderExport', {...query, status})" size="mini" type="primary" plain>导出预采单</el-button>
         <el-button v-if="auth.isAdmin || auth.ItemGPurchaseAdd" @click="handleShowAddEdit('AddEditItemGPurchase')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
@@ -108,10 +107,12 @@
 <script>
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: 'TableItemGPurchase',
     components: {
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
@@ -120,6 +121,8 @@
     },
     data() {
       return {
+        status: '',
+        statusOptions: {'全部': '', ...Constant.PURCHASE_STATUS('value_key')},
         tableName: 'TableItemGPurchase',
         tableColumn: [
           { label: '预采单号', key: 'code', width: '2', isShow: true },
@@ -139,11 +142,18 @@
       }
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryItemGPurchase');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.status = '';
+        }
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.fromSupplierOrderQuery, query);
+        let res = await Http.get(Config.api.fromSupplierOrderQuery, {...query, status: this.$data.status});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

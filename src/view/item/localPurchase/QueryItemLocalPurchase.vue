@@ -25,16 +25,6 @@
     </el-row>
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
-        <my-query-item label="状态">
-          <select-option
-            :options="purchaseStatus"
-            v-model="query.status"
-            @change="handleQuery('TableItemLocalPurchase')"
-            size="small"
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
         <my-query-item label="供应商">
           <select-supplier size="small" v-model="query.supplier_id" :provinceCode="query.province_code" @change="handleQuery('TableItemLocalPurchase')" filterable/>
         </my-query-item>
@@ -65,7 +55,6 @@
         tar_storehouse_id: '',
         order_date: '',
         supplier_id: '',
-        status: '',
         condition: '',
         for_pre: 0, //1预采 0反采
       }
