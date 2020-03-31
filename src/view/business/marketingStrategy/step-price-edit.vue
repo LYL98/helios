@@ -34,7 +34,7 @@
         class="table-border"
         :data="filterItems"
         style="max-width: 320px;"
-        height="500"
+        :height="windowHeight - 200"
         stripe
         empty-text="请筛选定价商品"
         @selection-change="handleSelectionChange"
@@ -54,9 +54,10 @@
 
       <el-table
         :data="editList"
-        height="500"
         stripe
         class="custom-el-table-append table-border"
+        :height="windowHeight - 200"
+        empty-text=" "
         ref="editTable"
         @selection-change="handleRemoveChange"
       >
@@ -281,6 +282,7 @@
     props: {
       type: { type: String, default: 'add' },
       items: { type: Array, default: [] },
+      windowHeight: { type: Number | String, default: 300 }
     },
     data() {
       return {
