@@ -477,6 +477,7 @@ const Config = (() => {
       operatorPwdModify: apiM + '/operator/password_modify', //运营人员修改密码（自己密码）
       operatorFreeze: apiM + '/operator/freeze', //运营人员冻结
       operatorUnFreeze: apiM + '/operator/unfreeze', //运营人员解冻
+      operatorWechatUnbound: apiM + '/operator/wechat/unbound', //解绑微信
 
       //常量
       basicdataConfirmTime: apiM + '/basicdata/constant/confirm/time', //截单时间 GET获取，POST设置
