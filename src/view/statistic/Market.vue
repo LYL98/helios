@@ -228,7 +228,7 @@
         pickerValue.push(end_date);
         this.$data.pickerValue = pickerValue;
         this.$data.query = Object.assign(this.$data.query, {
-          province_code: this.province.code,
+          province_code: '',
           begin_date: begin_date,
           end_date: end_date,
           sort: '-amount_real',
@@ -393,20 +393,23 @@
                 system_class1: params.name,
                 system_class_code1: params.data.system_class_code,
                 begin_date: that.query.begin_date,
-                end_date: that.query.end_date
+                end_date: that.query.end_date,
+                province_code: this.$data.query.province_code
               }
             });
           }
         });
       },
       handleShowClassDetail(item) {
+        // console.log("query", this.$data.query)
         this.$router.push({
           name: 'StatisticMarketClass2',
           query: {
             system_class1: item.item_system_class,
             system_class_code1: item.system_class_code,
             begin_date: this.query.begin_date,
-            end_date: this.query.end_date
+            end_date: this.query.end_date,
+            province_code: this.$data.query.province_code
           }
         });
       }

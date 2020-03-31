@@ -181,7 +181,7 @@
         let q = this.$route.query;
         this.$data.pickerValue = [q.begin_date, q.end_date];
         this.$data.query = {
-          province_code: this.province.code,
+          province_code: q.province_code,
           begin_date: q.begin_date,
           end_date: q.end_date,
           sort: '-amount_real',
@@ -260,7 +260,8 @@
             system_class2: item.item_system_class,
             system_class_code2: item.system_class_code,
             begin_date: this.query.begin_date,
-            end_date: this.query.end_date
+            end_date: this.query.end_date,
+            province_code: this.$route.query.province_code
           }
         });
       }
