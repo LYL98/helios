@@ -140,7 +140,11 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="生效时间" prop="updated" min-width="160">
+          <el-table-column label="生效时间" prop="updated" min-width="100">
+            <template slot-scope="scope">
+              <div>{{ typeof scope.row.updated === 'string' ? scope.row.updated.substring(0, 10) : '-' }}</div>
+              <div>{{ typeof scope.row.updated === 'string' ? scope.row.updated.substring(11) : '-' }}</div>
+            </template>
           </el-table-column>
           <el-table-column label="操作" width="100">
             <template slot-scope="scope">
@@ -194,6 +198,7 @@
         :city="selectedCity"
         :type="dialog.type"
         :items="dialog.items"
+        :windowHeight="viewWindowHeight"
         @submit="handleSubmitEdit"
         @cancel="handleCancelEdit"
       />
@@ -273,7 +278,9 @@
     },
     computed: {
       selectedCity() {
-        let city = this.$data.cityList.find(item => item.id === this.$data.query.city_id);
+        let zone = this.$data.cityList.find(item => item.list.some(d => d.id === this.$data.query.city_id));
+        if (!zone) return { id: '', title: '' };
+        let city = zone.list.find(item => item.id === this.$data.query.city_id);
         if (!city) return { id: '', title: '' };
         return city;
       }
