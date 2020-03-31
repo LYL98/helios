@@ -56,7 +56,7 @@
               <a href="javascript:void(0)"
                 class="title"
                 @click="handleShowZoneDetail(scope.row)"
-                v-if="!!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientZone )"
+                v-if="!!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientProvince )"
               >
                 {{ scope.row.province_title || '其它' }}
               </a>
@@ -90,7 +90,7 @@
                 :list="[
                   {
                     title: '查看',
-                    isDisplay: !!scope.row.province_title && ( auth.isAdmin || auth.StatisticClient ),
+                    isDisplay: !!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientProvince ),
                     command: () => handleShowZoneDetail(scope.row)
                   }
                 ]"
