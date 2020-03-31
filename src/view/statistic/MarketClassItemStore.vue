@@ -213,7 +213,7 @@
         let q = this.$route.query;
         this.$data.pickerValue = [q.begin_date, q.end_date];
         this.$data.query = {
-          province_code: this.province.code,
+          province_code: q.province_code,
           begin_date: q.begin_date,
           end_date: q.end_date,
           sort: '-amount_real',
