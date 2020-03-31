@@ -101,75 +101,18 @@
           <el-table-column label="阶梯优惠" min-width="200">
             <template slot-scope="scope">
               <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 1" class="line-height-18">
-                <div v-for="item in scope.row.step_prices">满{{item.num}}件，￥{{DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[0].discount / 100))}}</div>
+                <div v-for="item in scope.row.step_prices">满{{item.num}}件，￥{{DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * item.discount / 100))}}</div>
               </div>
               <div v-else>-</div>
             </template>
           </el-table-column>
-<!--          <el-table-column label="阶梯一" min-width="90">-->
-<!--            <template slot-scope="scope">-->
-<!--              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 1">-->
-<!--                {{ !!scope.row.step_prices[0].num ? scope.row.step_prices[0].num + '件' : '-' }}-->
-<!--              </div>-->
-<!--              <div v-else>-</div>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="优惠价" min-width="100">-->
-<!--            <template slot-scope="scope">-->
-<!--              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 1">-->
-<!--                {{ !!scope.row.price_sale && !!scope.row.step_prices[0].discount-->
-<!--                    ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[0].discount / 100))-->
-<!--                    : '-'-->
-<!--                }}-->
-<!--              </div>-->
-<!--              <div v-else>-</div>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="阶梯二" min-width="100">-->
-<!--            <template slot-scope="scope">-->
-<!--              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 2">-->
-<!--                {{ !!scope.row.step_prices[1].num ? scope.row.step_prices[1].num + '件' : '-' }}-->
-<!--              </div>-->
-<!--              <div v-else>-</div>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="优惠价" min-width="100">-->
-<!--            <template slot-scope="scope">-->
-<!--              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 2">-->
-<!--                {{ !!scope.row.price_sale && !!scope.row.step_prices[1].discount-->
-<!--                    ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[1].discount / 100))-->
-<!--                    : '-'-->
-<!--                }}-->
-<!--              </div>-->
-<!--              <div v-else>-</div>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="阶梯三" min-width="100">-->
-<!--            <template slot-scope="scope">-->
-<!--              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 3">-->
-<!--                {{ !!scope.row.step_prices[2].num ? scope.row.step_prices[2].num + '件' : '-' }}-->
-<!--              </div>-->
-<!--              <div v-else>-</div>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
-<!--          <el-table-column label="优惠价" min-width="100">-->
-<!--            <template slot-scope="scope">-->
-<!--              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 3">-->
-<!--                {{ !!scope.row.price_sale && !!scope.row.step_prices[2].discount-->
-<!--                    ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[2].discount / 100))-->
-<!--                    : '-'-->
-<!--                }}-->
-<!--              </div>-->
-<!--              <div v-else>-</div>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
           <el-table-column label="生效时间" prop="step_prices_updated" min-width="100">
             <template slot-scope="scope">
               <div>{{ typeof scope.row.step_prices_updated === 'string' ? scope.row.step_prices_updated.substring(0, 10) : '-' }}</div>
               <div>{{ typeof scope.row.step_prices_updated === 'string' ? scope.row.step_prices_updated.substring(11) : '-' }}</div>
             </template>
           </el-table-column>
-          <el-table-column label="总库存" prop="item_stock" min-width="100">
+          <el-table-column label="总库存" prop="item_stock" min-width="120">
             <template slot-scope="scope">
               <div class="my-td-item" v-if="!!scope.row.item_stock">
                 {{ scope.row.item_stock }}件

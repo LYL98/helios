@@ -120,7 +120,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="总库存" prop="item_stock" min-width="100">
+          <el-table-column label="总库存" prop="item_stock" min-width="120">
             <template slot-scope="scope">
               <div class="my-td-item" v-if="scope.row.item && !!scope.row.item.item_stock">
                 {{ scope.row.item.item_stock }}件
