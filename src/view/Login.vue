@@ -1,18 +1,31 @@
 <template>
   <div class="page-login">
-    <a class="logo"></a>
+    <a class="logo cursor-pointer"></a>
     <div class="body">
       <div class="form-container">
-        <div :class="`bg-${type}`" @click="toggleLoginType"></div>
-        <h3 class="login-title">蒲公英运营中心</h3>
-        <el-form v-if="type==='password'" :model="loginData" :rules="rules" ref="ruleForm">
+        <div :class="`bg-${type}`" @click="toggleLoginType" v-if="step === 0"></div>
+        <h3 class="login-title">{{ step === 0 ? (type === 'qrcode' ? '微信扫码登录' : '蒲公英运营中心') : (type === 'qrcode' ? '关联已有账号' : '微信授权') }}</h3>
+        <div class="qrcode-container" v-if="type==='qrcode' && step === 0 || type === 'password' && step === 1">
+          <iframe
+            frameborder="0"
+            scrolling="no"
+            :src="qrconnect_url"
+          >
+          </iframe>
+          <div class="tips mt-30">
+            请使用微信扫一扫{{ type==='qrcode' && step === 0 ? '登录' : '授权' }}
+            <a class="ml-5" @click="signQrconnectUrl">刷新</a>
+            &nbsp;<i :class="`iconfont${refreshing ? ' spinner' : ''}`">&#xe653;</i>
+          </div>
+        </div>
+        <el-form v-if="(type==='password' && step === 0) || (type === 'qrcode' && step === 1)" :model="loginData" :rules="rules" ref="ruleForm">
           <el-form-item class="mt-40 custom-form-item" prop="login_name">
             <el-input
               ref="login-name"
               placeholder="请输入用户名"
               v-model="loginData.login_name"
               class="custom-loign-input"
-              @keyup.enter.native="submitLogin"
+              @keyup.enter.native="handleLogin"
             >
               <i slot="prefix" class="iconfont" style="font-size: 20px">&#xe656;</i>
             </el-input>
@@ -24,19 +37,15 @@
               placeholder="请输入密码"
               v-model="loginData.password"
               class="custom-loign-input"
-              @keyup.enter.native="submitLogin"
+              @keyup.enter.native="handleLogin"
             >
               <i slot="prefix" class="iconfont" style="font-size: 20px">&#xe655;</i>
             </el-input>
           </el-form-item>
           <el-form-item class="mt-40">
-            <el-button type="primary" class="w-100" @click="submitLogin" id="btn-submit" :disabled="loading">登录</el-button>
+            <el-button type="primary" class="w-100" @click="handleLogin" id="btn-submit" :disabled="loading">登录</el-button>
           </el-form-item>
         </el-form>
-        <div class="qrcode-container" v-if="type==='qrcode'">
-          <div class="qrcode"></div>
-          <div class="tips mt-30">请使用微信扫一扫授权绑定 <a>刷新</a> <i class="iconfont">&#xe653;</i></div>
-        </div>
       </div>
     </div>
   </div>
@@ -58,17 +67,32 @@ export default {
   },
   created() {
     documentTitle('登录');
+    this.$data.type === 'qrcode' && this.signQrconnectUrl();
   },
-  data(){
+  beforeDestroy() {
+    this.interval && clearInterval(this.interval);
+  },
+  data() {
     return {
 
-      type: 'password', // password | qrcode
+      type: 'qrcode', //  qrcode | password
+      step: 0,
 
       isDev: Config.isDev,
-      loading: false,
+      refreshing: false, // 刷新二维码
+      loading: false, // 提交loading
+
+      login_key: '',
+      qrconnect_url: '',
+
       loginData: {
         login_name: '',
         password: '',
+      },
+
+      wechatInfo: {
+        snsapi_openid: '',
+        wechat_unionid: '',
       },
       rules: {
         login_name: [
@@ -80,16 +104,120 @@ export default {
       }
     }
   },
+
   methods: {
 
+    /**
+     * 账号密码 + 扫码:
+     *  /m/sign/login 返回的login_key、qrconnect_url
+     *  轮询: /sign/login/confirm 参数login_key
+     *
+     * 直接扫码:
+     *  /m/sign/qrconnect/url
+     *  轮询: /sign/login/confirm 参数login_key
+     *
+     * 登陆失败账号绑定:
+     *  /sign/wechat/bind  参数: login_name、password、snsapi_openid、wechat_unionid
+     */
+    intervalConfirm() {
+      this.interval = setInterval(() => {
+        Http.post(Config.api.signLoginConfirm, { login_key: this.$data.login_key }, { throttle: false })
+          .then(res => {
+            if (res.code == 2) { // 表示需要绑定微信
+              this.interval && clearInterval(this.interval);
+              this.$data.wechatInfo = res.data;
+              this.$data.step = 1;
+              return;
+            }
+
+            if (res.code === 0) { // 表示绑定成功 或者 登录成功
+              this.interval && clearInterval(this.interval);
+              this.$router.replace({ name: "Home" });
+              return;
+            }
+
+          });
+      }, 2000);
+    },
+
     toggleLoginType() {
-      return;
+      this.interval && clearInterval(this.interval);
       if (this.$data.type === 'qrcode') {
         this.$data.type = 'password';
       } else if (this.$data.type === 'password') {
         this.$data.type = 'qrcode';
+        this.signQrconnectUrl();
       }
+      this.$data.step = 0;
     },
+
+    // 如果是切换到了 qrcode 登录，则自动刷新URL
+    async signQrconnectUrl() {
+      this.interval && clearInterval(this.interval); // 请求二维码时，首先重置计时器。
+      if (this.$data.refreshing) return;
+
+      this.$data.refreshing = true;
+      let res = await Http.get(Config.api.signQrconnectUrl);
+      this.$data.refreshing = false;
+
+      if (res.code !== 0) return;
+      this.intervalConfirm(); // 二维码请求成功后，开始计时器
+      this.$data.login_key = res.data.login_key;
+      this.$data.qrconnect_url = res.data.qrconnect_url;
+    },
+
+    handleLogin() {
+      this.$refs['ruleForm'].validate(async (valid, vs) => {
+
+        if (!valid) {
+          if (vs.login_name) {
+            this.$refs['login-name'] && this.$refs['login-name'].focus();
+          } else if(vs.password) {
+            this.$refs['login-password'] && this.$refs['login-password'].focus();
+          }
+          return;
+        }
+
+        // 用户输入合法校验通过。
+        if (this.$data.type === 'qrcode' && this.$data.step === 1) { // 表示当前是绑定微信操作
+          let formData = { ...this.$data.loginData, ...this.$data.wechatInfo };
+          formData.password = md5(formData.password);
+
+          this.$data.loading = true;
+          let res = await Http.post(Config.api.signWechatBind, formData);
+          this.$data.loading = false;
+
+          if (res.code === 0) {
+            this.$router.replace({ name: "Home" });
+          } else {
+            this.$message({message: res.message, type: 'error'});
+          }
+        }
+
+        if (this.$data.type === 'password' && this.$data.step === 0) { // 表示当前是用户输入用户名和密码登录
+          let formData = { ...this.$data.loginData };
+          formData.password = md5(formData.password);
+
+          this.$data.loading = true;
+          let res = await Http.post(Config.api.signLogin, formData, {throttle: false});
+          this.$data.loading = false;
+
+          if (res.code === 0) {
+            this.$data.login_key = res.data.login_key;
+            this.$data.qrconnect_url = res.data.qrconnect_url;
+            this.$data.step = 1;
+            this.intervalConfirm();
+
+            // //如果是测试开发环境
+            this.$data.isDev && Method.setLocalStorage('loginData', formData);
+          }else{
+            this.$message({message: res.message, type: 'error'});
+          }
+        }
+
+      });
+    },
+
     //提交登录
     submitLogin() {
       this.$refs['ruleForm'].validate((valid, vs) => {
@@ -184,6 +312,7 @@ export default {
     position: relative;
     padding: 40px;
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   .body .form-container .login-title {
@@ -233,6 +362,12 @@ export default {
 
   .body .form-container .bg-qrcode {
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAMAAAC5zwKfAAAAQlBMVEUAAAD///+ZmZn////r6+vX19f////////////////////Dw8P///+ZmZnX19fr6+vCwsL5+fn09PSioqK9vb3v7++CBWtlAAAADHRSTlMAgICSgIDz1SsGvYBMRb1uAAABMElEQVRYw63WOW7DMABE0dFmZxMZyc79r5qAKmTgIwU18zsCxCuIKajhK9PtPr2pdYp203ta/IiLk9Ji/B0nhcW7wuJNaVFpUWlRaVFpURCjoMb1v0q7Xo9DbYeyro/nDhBiD/hH7gAhdoHrEyDEPvABEGIfuAKkmAa1lNdewa20tg6QezzBs15QgwtSdEGKLkgxDWreCW61tV0C9Qmwb4dscEGKLkjRBSm6IEUXpJgGNbogRRek6IIUXZCiC1IsBOt36xqoBSDqAzW4IEUXpOiCFF2QYhrUbO6QjS5I0QUpuiBFF6SYBrUcP4ef0jJA/nuY0qLSotKi0qKuN9ejGKjR3yFFgqZI0BQJuiJAWwRoi1GQC1daVFpUWlRaVFpUWlRaVFpUWlRaVFpUWlRa/AWmD5hBMXr7vwAAAABJRU5ErkJggg==") no-repeat center center;
+    transition: all .3s ease-in-out;
+
+    &:hover {
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAA85JREFUeAHt28tr1EAcB/BJX7KFWqV7sCBqj4L4qteC9OZV/wVpPXvw2vTqwWutePfUf0Cw+AdYvfg4KirsZVFLiwu1dv19F2adzSbZTDaPefwGQmYmM5PNhwmTmWSDbrcbCiE2aOMQL3BI2V9pe0nb8yAIPqjFAiQYUSVJjZ/Q0S3aHhLkEUr2ABFhRChkDrtU8g4QJ2QVSoQU35Rp3qcKrNLRJyjR74GyOPdEKTFyj9v5ar8HyuLcE6XEyD3s7g/1QFmNe6KUSN1/TARENUZMxcPBw1RAlGBEKCSHkYCoyohjAjJiAYCMGI+Y6RZWq/LtrGrEPEgPHo5PMeJ/F+0e2K+60wopXvoqzvbNebF2qdE/rYzs/ToWt3bbMjmwf7PaFMtnpgbykHj2pSPW3+738hcbk+J2c0Y8vjInzjeG5hNDdZMy8te8txhSo5tJDZue3+r8FS++dcS1V23xvYNZWb6QHxDnsxwRl/Dj6EQ8en+AaK4wHiBO6QDi63Zvaa8mQAcQcTvnDeP3QHlmB3qivBSd/fBQpVM7WpYQtz93KLerPTrL0THaZFL64uykwAgdF3CsqlAsIP3q9aVGSM+J+P1aiLqAzZkg9vGmKjh5nuJuYdki7X1alC0FEJa+IJYG6AtiqYA+IBY+iAAtGnA77/38I5qnJjYujDHvVNv9TY9unw6O1ax+/PLclKhqIK4EEFe2fHY6fPBuX2xdP601OvdVIhHg6S4mRJooJFn6Laz+yqc35kNKW7sAoV6LjFcKiJO6NjpXDugaYi2ALiHWBugKYq2ALiDWDmg7ohGAQLR1ZdscQEsRzQK0ENE8QMsQK5sLw0Ur4B3LTgtVCpk7oyEsMqwtzSJaWDAXEJcIxN47lmIQVxamBbYig5m3sHKFeMdCSWMXIIwHhKXJCxBWAJqMaA2gqYhWAZqIaPYoDLGYIN+x0CGtRxz1+8Bos92756JZmdLW9UB5VXjHQvHaR2drAXuQBnzQZDcgFGtGtB+wZkQ3AGtEtHIUhldsoNsZ3yfS94Gxo/PKwkziN4Wx7fmaif+x0FZJcNaY9CpBdBYQF1YFotOAVSA6D1g2YuCFIF0kfZ8YdlPmznH/rcti4w1gDyPlD5LeLSZk6R1DZUqY9rkzExnSSsgoGNE/QLgWiOgnYIGI/gIWiIim/A40OuedOPsNp1x93mmf0gRH8yCyWkRAFzFSnZMQ0EFksQSBrIgJ1TkbAlkQWWqEwCjEEdX5MATSEFkoo0ASYsbqXAwCcYgsoykQRdSszsUhoCKySE4BiZizOleDABD/AfOzmFyDEMRqAAAAAElFTkSuQmCC");
+    }
+
     &::after {
       display: inline-block;
       content: '扫码登录';
@@ -253,18 +388,37 @@ export default {
 
   .body .qrcode-container {
     text-align: center;
-    margin-top: 48px;
+    margin-top: 28px;
+    width: 300px;
+    height: 330px;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      transform: scale(.7);
+      margin-top: -82px;
+    }
   }
 
-  .body .qrcode-container .qrcode {
-    display: block;
-    width: 160px;
-    height: 160px;
-    background: #DDD;
-    margin: 0 auto;
-  }
+  /*.body .qrcode-container .qrcode {*/
+  /*  display: block;*/
+  /*  width: 200px;*/
+  /*  height: 200px;*/
+  /*  background: #DDD;*/
+  /*  margin: 0 auto;*/
+  /*  overflow: hidden;*/
+  /*  text-align: center;*/
+
+  /*  */
+  /*}*/
 
   .body .qrcode-container .tips {
+    position: absolute;
+    top: 190px;
+    width: 100%;
     font-size: 14px;
     color: #666666;
 
@@ -290,6 +444,29 @@ export default {
 
   .w-100 {
     width: 100%;
+  }
+
+  .ml-5 {
+    margin-left: 5px;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .spinner {
+    display: inline-block;
+    user-select: none;
+    animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 </style>
 
