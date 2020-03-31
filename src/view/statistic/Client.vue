@@ -1,22 +1,31 @@
 <template>
   <sub-menu>
     <!-- 查询 -->
-    <div class="query" style="margin-bottom: 16px;">
-      <my-query-item label="时间">
-        <el-date-picker
-          v-model="pickerValue"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          size="small"
-          class="query-item-date"
-          :picker-options="fixDateOptions"
-          :clearable="false"
-          @change="changePicker">
-        </el-date-picker>
-      </my-query-item>
+    <div class="container-query" style="margin-bottom: 16px;">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province type="select" @change="selectProvince" />
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <my-query-item label="时间">
+            <el-date-picker
+              v-model="pickerValue"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              size="small"
+              class="query-item-date"
+              :picker-options="fixDateOptions"
+              :clearable="false"
+              @change="changePicker">
+            </el-date-picker>
+          </my-query-item>
+        </el-col>
+      </el-row>
     </div>
 
     <div :style="'height:' + (viewWindowHeight - offsetHeight) + 'px; overflow-y: auto;'">
@@ -106,6 +115,7 @@
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination } from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
+  import { GlobalProvince } from '@/component';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
 
@@ -124,7 +134,8 @@
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
       'my-query-item': QueryItem,
-      'my-table-operate': TableOperate
+      'my-table-operate': TableOperate,
+      'global-province': GlobalProvince,
     },
     data() {
       return {
@@ -172,11 +183,19 @@
       this.initQuery();
     },
     mounted() {
-      this.provinceOrderList(() => {
+      /*this.provinceOrderList(() => {
         this.initChart();
-      });
+      });*/
     },
     methods: {
+      //选择区域后【页面初始化】
+      selectProvince(data){
+        this.$data.query.province_code = data.code;
+        this.provinceOrderList(() => {
+          this.initChart();
+        });
+      },
+
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;

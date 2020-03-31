@@ -70,20 +70,18 @@
           :default-sort = "{prop: 'discount', order: ''}"
         >
           <el-table-column
-            fixed
             v-if="$auth.isAdmin || $auth.MarketingStrategyStepModify || MarketingStrategyStepDelete"
             align="center"
             type="selection"
             width="50">
           </el-table-column>
           <el-table-column
-            fixed
             type="index"
             :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
             label="序号"
             :index="indexMethod"
           ></el-table-column>
-          <el-table-column fixed label="商品编号/名称" prop="item_id" min-width="260">
+          <el-table-column label="商品编号/名称" prop="item_id" min-width="220">
             <template slot-scope="scope">
               <div class="my-td-item">
                 {{ scope.row.code }} / {{ scope.row.title }}
@@ -100,66 +98,21 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="阶梯一" min-width="90">
+          <el-table-column label="阶梯优惠" min-width="200">
             <template slot-scope="scope">
-              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 1">
-                {{ !!scope.row.step_prices[0].num ? scope.row.step_prices[0].num + '件' : '-' }}
+              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 1" class="line-height-18">
+                <div v-for="item in scope.row.step_prices">满{{item.num}}件，￥{{DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * item.discount / 100))}}</div>
               </div>
               <div v-else>-</div>
             </template>
           </el-table-column>
-          <el-table-column label="优惠价" min-width="100">
+          <el-table-column label="生效时间" prop="step_prices_updated" min-width="100">
             <template slot-scope="scope">
-              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 1">
-                {{ !!scope.row.price_sale && !!scope.row.step_prices[0].discount
-                    ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[0].discount / 100))
-                    : '-'
-                }}
-              </div>
-              <div v-else>-</div>
+              <div>{{ typeof scope.row.step_prices_updated === 'string' ? scope.row.step_prices_updated.substring(0, 10) : '-' }}</div>
+              <div>{{ typeof scope.row.step_prices_updated === 'string' ? scope.row.step_prices_updated.substring(11) : '-' }}</div>
             </template>
           </el-table-column>
-          <el-table-column label="阶梯二" min-width="100">
-            <template slot-scope="scope">
-              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 2">
-                {{ !!scope.row.step_prices[1].num ? scope.row.step_prices[1].num + '件' : '-' }}
-              </div>
-              <div v-else>-</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="优惠价" min-width="100">
-            <template slot-scope="scope">
-              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 2">
-                {{ !!scope.row.price_sale && !!scope.row.step_prices[1].discount
-                    ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[1].discount / 100))
-                    : '-'
-                }}
-              </div>
-              <div v-else>-</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="阶梯三" min-width="100">
-            <template slot-scope="scope">
-              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 3">
-                {{ !!scope.row.step_prices[2].num ? scope.row.step_prices[2].num + '件' : '-' }}
-              </div>
-              <div v-else>-</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="优惠价" min-width="100">
-            <template slot-scope="scope">
-              <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 3">
-                {{ !!scope.row.price_sale && !!scope.row.step_prices[2].discount
-                    ? '￥' + DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * scope.row.step_prices[2].discount / 100))
-                    : '-'
-                }}
-              </div>
-              <div v-else>-</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="生效时间" prop="step_prices_updated" min-width="160">
-          </el-table-column>
-          <el-table-column label="总库存" prop="item_stock" min-width="100">
+          <el-table-column label="总库存" prop="item_stock" min-width="120">
             <template slot-scope="scope">
               <div class="my-td-item" v-if="!!scope.row.item_stock">
                 {{ scope.row.item_stock }}件
@@ -179,7 +132,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="100">
+          <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
@@ -230,6 +183,7 @@
         v-if="dialog.visible"
         :type="dialog.type"
         :items="dialog.items"
+        :windowHeight="viewWindowHeight"
         @submit="handleSubmitEdit"
         @cancel="handleCancelEdit"
       />
@@ -462,6 +416,9 @@
 
 <style lang="scss" scoped>
   @import '@/share/scss/table.scss';
+  .line-height-18 {
+    line-height: 18px;
+  }
 </style>
 <style lang="scss">
   @import '@/share/scss/table.global.scss';

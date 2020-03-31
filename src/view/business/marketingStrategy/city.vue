@@ -4,18 +4,20 @@
       <global-province @change="changeProvince" is-required/>
     </template>
     <div class="container-query">
-      <div class="city-container">
-        <template v-for="item in cityList">
-          <el-button
-            v-if="item.id === query.city_id"
-            size="mini"
-            :key="item.id"
-            type="primary"
-            @click="changeCity(item)"
-          >{{ item.title }}</el-button>
-          <span v-else class="city-label" @click="changeCity(item)">{{ item.title }}</span>
-        </template>
-
+      <div v-for="(zone, index) in cityList" :class="`d-flex${index === cityList.length - 1 ? ' mb-16' : ''}`">
+        <div class="zone-title">{{zone.zone_title}}</div>
+        <div class="city-container">
+          <template v-for="city in zone.list">
+            <el-button
+              v-if="city.id === query.city_id"
+              size="mini"
+              :key="city.id"
+              type="primary"
+              @click="changeCity(city)"
+            >{{ city.title }}</el-button>
+            <span v-else class="city-label" @click="changeCity(city)">{{ city.title }}</span>
+          </template>
+        </div>
       </div>
       <el-row :gutter="32">
         <el-col :xl="7" :lg="7" :span="10">
@@ -118,7 +120,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="总库存" prop="item_stock" min-width="100">
+          <el-table-column label="总库存" prop="item_stock" min-width="120">
             <template slot-scope="scope">
               <div class="my-td-item" v-if="scope.row.item && !!scope.row.item.item_stock">
                 {{ scope.row.item.item_stock }}件
@@ -138,7 +140,11 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="生效时间" prop="updated" min-width="160">
+          <el-table-column label="生效时间" prop="updated" min-width="100">
+            <template slot-scope="scope">
+              <div>{{ typeof scope.row.updated === 'string' ? scope.row.updated.substring(0, 10) : '-' }}</div>
+              <div>{{ typeof scope.row.updated === 'string' ? scope.row.updated.substring(11) : '-' }}</div>
+            </template>
           </el-table-column>
           <el-table-column label="操作" width="100">
             <template slot-scope="scope">
@@ -192,6 +198,7 @@
         :city="selectedCity"
         :type="dialog.type"
         :items="dialog.items"
+        :windowHeight="viewWindowHeight"
         @submit="handleSubmitEdit"
         @cancel="handleCancelEdit"
       />
@@ -271,7 +278,9 @@
     },
     computed: {
       selectedCity() {
-        let city = this.$data.cityList.find(item => item.id === this.$data.query.city_id);
+        let zone = this.$data.cityList.find(item => item.list.some(d => d.id === this.$data.query.city_id));
+        if (!zone) return { id: '', title: '' };
+        let city = zone.list.find(item => item.id === this.$data.query.city_id);
         if (!city) return { id: '', title: '' };
         return city;
       }
@@ -449,9 +458,30 @@
         });
         if(res.code === 0) {
           let rd = res.data || [];
-          this.$data.cityList = rd;
-          if (rd.length > 0) {
-            this.$data.query.city_id = rd[0].id;
+          let cityList = [];
+
+          rd.forEach(item => {
+            let zone = cityList.find(d => d.zone_id === item.zone.id);
+            if (zone) {
+              zone.list.push(item);
+            } else {
+              cityList.push({ zone_id: item.zone.id, zone_title: item.zone.title, list: [item] })
+            }
+          });
+
+          this.$data.cityList = cityList
+            .sort((zone1, zone2) => {
+              return zone1.zone_title.localeCompare(zone2.zone_title, 'zh')
+            })
+            .map(item => {
+              item.list.sort((param1, param2) => {
+                return param1.title.localeCompare(param2.title,"zh");
+              });
+              return item;
+            });
+
+          if (cityList.length > 0 && cityList[0].list.length > 0) {
+            this.$data.query.city_id = cityList[0].list[0].id;
             this.cityPriceQuery();
           }
         }else{
@@ -470,31 +500,44 @@
 
 <style lang="scss" scoped>
   @import '@/share/scss/table.scss';
+  .d-flex {
+    display: flex;
+  }
+
+  .zone-title {
+    line-height: 24px;
+    width: 60px;
+    text-align: right;
+  }
+
+  .mb-16 {
+    margin-bottom: 16px;
+  }
 </style>
 <style lang="scss">
   @import '@/share/scss/table.global.scss';
   .city-container {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+    margin-left: 13px;
 
     .city-label {
       font-size: 12px;
       box-sizing: border-box;
       padding: 0px 10px;
       line-height: 24px;
-      margin-bottom: 5px;
       cursor: pointer;
+      color: #909399;
+      transition: color .2s ease-in-out;
 
       &:hover {
-        color: darken(#2c3e50, 40);
+        color: #2c3e50;
       }
     }
 
     .el-button {
       box-sizing: border-box;
       padding: 0px 10px;
-      margin-bottom: 5px;
     }
   }
 </style>
