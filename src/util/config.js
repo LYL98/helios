@@ -13,6 +13,9 @@ const Config = (() => {
       /*-- 基础信息 --*/
       tencentPresignedUrl: apiCommon + '/tencent/presigned_url',//腾讯Buckettoken
       signLogin: apiM + '/sign/login',//用户登录
+      signQrconnectUrl: apiM + '/sign/qrconnect/url',// 获取登录二维码
+      signLoginConfirm: apiM + '/sign/login/confirm',// 轮询扫码状态
+      signWechatBind: apiM + '/sign/wechat/bind',// 轮询扫码状态
       signLogout: apiM + '/sign/logout',//用户退出
       signIsLogin: apiM + '/sign/is_login',//判断是否登录
       loginByToken: apiM + '/validate_user/by_token',//通过token登录
