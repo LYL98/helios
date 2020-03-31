@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { Form, FormItem, Button, Input, Checkbox } from 'element-ui';
+import { Form, FormItem, Button, Input, Checkbox, Message } from 'element-ui';
 import { Config, Http, Method } from '@/util';
 import md5 from 'md5';
 
@@ -136,6 +136,11 @@ export default {
               return;
             }
 
+            if (res.code === 9) { // 表示二维码已过期
+              Message.error({ message: '二维码已过期，请刷新后重新扫描', offset: 100 });
+              return;
+            }
+
           });
       }, 2000);
     },
@@ -153,7 +158,11 @@ export default {
 
     // 如果是切换到了 qrcode 登录，则自动刷新URL
     async signQrconnectUrl() {
-      this.interval && clearInterval(this.interval); // 请求二维码时，首先重置计时器。
+
+      this.$data.login_key = '';
+      this.$data.qrconnect_url = '';
+      this.interval && clearInterval(this.interval); // 请求二维码时，首先重置url 和 计时器
+
       if (this.$data.refreshing) return;
 
       this.$data.refreshing = true;

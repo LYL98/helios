@@ -73,7 +73,7 @@
                     },
                     {
                       title: '解绑微信',
-                      isDisplay: auth.isAdmin || auth.SystemOperatorWechatUnbound,
+                      isDisplay: scope.row.unbound_enable && (auth.isAdmin || auth.SystemOperatorWechatUnbound),
                       command: () => wechatUnbound(scope.row)
                     },
                     {
@@ -166,6 +166,7 @@ export default {
           .then(res => {
             if (res.code === 0) {
               this.$message({ message: '微信解绑成功', type: "success" });
+              that.getData(that.query);
             } else {
               this.$message({ message: res.message, type: "error" });
             }
