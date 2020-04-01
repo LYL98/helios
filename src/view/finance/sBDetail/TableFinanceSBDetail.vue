@@ -144,7 +144,6 @@
 
       return {
         bill_term: '',
-        bill_term_options: {'全部': '', ...Constant.SUPPLIER_BILL_TERM2('value_key')},
         audit_status: this.$props.page === 'sBDetail' ? 'success' : '',
         audit_status_options: {'全部': '', ...Constant.AUDIT_STATUS('value_key')},
 
