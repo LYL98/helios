@@ -425,7 +425,8 @@ const Constant = {
   S_STATEMENT_STATUS: (type)=>{
     let data = [
       { key: 'init', value: '待确认' },
-      { key: 'confirmed', value: '待结款' },
+      { key: 'confirmed', value: '已确认' },
+      { key: 'wait_paid', value: '待结款' },
       { key: 'paid', value: '已结款' }
     ];
     return handleKeyValue(type, data);
@@ -434,6 +435,7 @@ const Constant = {
   S_STATEMENT_STATUS_TYPE: {
     init: 'primary',
     confirmed: 'warning',
+    wait_paid: 'warning',
     paid: 'regular'
   },
   //供应商流水类型
