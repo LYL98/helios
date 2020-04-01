@@ -7,24 +7,6 @@
         </my-query-item>
       </el-col>
       <el-col :span="7">
-        <my-query-item label="状态">
-          <select-option
-            :options="inventoryStatus"
-            v-model="query.status"
-            @change="handleQuery('TableWarehouseStockPending')"
-            size="small"
-            clearable
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="10">
-        <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseStockPending')" @reset="handleClearQuery('TableWarehouseStockPending')"/>
-        </my-query-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="32" style="margin-top: 16px;">
-      <el-col :span="7">
         <my-query-item label="创建时间">
           <el-date-picker
             size="small"
@@ -40,6 +22,11 @@
             @change="changePicker"
             style="width: 100%;"
           />
+        </my-query-item>
+      </el-col>
+      <el-col :span="10">
+        <my-query-item label="搜索">
+          <query-search-input v-model="query.condition" placeholder="入库单号/商品编号/名称" size="small" @search="handleQuery('TableWarehouseStockPending')" @reset="handleClearQuery('TableWarehouseStockPending')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -63,7 +50,6 @@
     },
     data() {
       let initQuery = {
-        status: '',
         condition: '',
         storehouse_id: '',
         picker_value: null,
@@ -74,18 +60,6 @@
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
         selectStorehouseData: {}, //当前选择的仓（入库时用）
-      }
-    },
-    computed: {
-      inventoryStatus: {
-        get(){
-          let d = Constant.INVENTORY_STATUS('value_key');
-          //delete d['全部入库'];
-          return {
-            '全部': '',
-            ...d
-          };
-        }
       }
     },
     methods: {
