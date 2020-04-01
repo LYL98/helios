@@ -123,12 +123,6 @@ export default {
       this.interval = setInterval(() => {
         Http.post(Config.api.signLoginConfirm, { login_key: this.$data.login_key }, { throttle: false })
           .then(res => {
-            if (res.code == 2) { // 表示需要绑定微信
-              this.interval && clearInterval(this.interval);
-              this.$data.wechatInfo = res.data;
-              this.$data.step = 1;
-              return;
-            }
 
             if (res.code === 0) { // 表示绑定成功 或者 登录成功
               this.interval && clearInterval(this.interval);
@@ -136,8 +130,22 @@ export default {
               return;
             }
 
+            if (res.code == 2) { // 表示需要绑定账号密码
+              this.interval && clearInterval(this.interval);
+              this.$data.wechatInfo = res.data;
+              this.$data.step = 1;
+              return;
+            }
+
             if (res.code === 9) { // 表示二维码已过期
+              this.interval && clearInterval(this.interval);
               Message.error({ message: '二维码已过期，请刷新后重新扫描', offset: 100 });
+              return;
+            }
+
+            if (res.code === 1) { // 登录报错
+              this.interval && clearInterval(this.interval);
+              Message.error({ message: res.message, offset: 100 });
               return;
             }
 
@@ -225,51 +233,6 @@ export default {
         }
 
       });
-    },
-
-    //提交登录
-    submitLogin() {
-      this.$refs['ruleForm'].validate((valid, vs) => {
-        if (valid) {
-          (async ()=>{
-            let { loginData, loading, isDev } = this;
-            let isSuccess = false, si = null;
-            //防止错误时回车穿透
-            let dom = document.getElementById('btn-submit');
-            dom.focus();
-
-            if(loading) return;
-
-            this.$data.loading = true;
-            let res = await Http.post(Config.api.signLogin, {
-              login_name: loginData.login_name,
-              password: md5(loginData.password)
-            }, {throttle: false});
-
-            this.$data.loading = false;
-            if(res.code === 0){
-              this.$router.replace({ name: "Home" });
-              isSuccess = true;
-              //如果是测试开发环境
-              if(isDev){
-                Method.setLocalStorage('loginData', {
-                  login_name: loginData.login_name,
-                  password: md5(loginData.password)
-                });
-              }
-            }else{
-              this.$message({message: res.message, type: 'error'});
-            }
-          })();
-        }else{
-          if(vs.login_name){
-            this.$refs['login-name'] && this.$refs['login-name'].focus();
-          }else if(vs.password){
-            this.$refs['login-password'] && this.$refs['login-password'].focus();
-          }
-        }
-      });
-
     },
   }
 }
