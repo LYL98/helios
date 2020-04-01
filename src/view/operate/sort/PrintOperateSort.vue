@@ -58,6 +58,7 @@ export default {
     'qr-code': QrCode
   },
   created(){
+    console.log('dataItem:', this.$data.dataItem);
   },
   mounted() {
     this.link = document.createElement('link');

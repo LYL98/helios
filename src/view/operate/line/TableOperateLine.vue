@@ -56,7 +56,12 @@
               {
                 title: '打印',
                 isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLinePrint),
-                command: () => handleShowPrint('PrintOperateLine', scope.row)
+                command: () => handlePrint(scope.row)
+              },
+              {
+                title: '打印预览',
+                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLinePrint),
+                command: () => handlePrintPreview(scope.row)
               },
               {
                 title: '删除',
@@ -81,7 +86,7 @@
 
 <script>
   import { TableOperate } from '@/common';
-  import { Http, Config, Constant, DataHandle } from '@/util';
+  import { Http, Config, Constant, DataHandle, Lodop } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
@@ -175,6 +180,14 @@
         }).catch(() => {
           //console.log('取消');
         });
+      },
+      handlePrint(item) {
+        let temp = Lodop.tempOperateLine(item);
+        temp && temp.PRINT();
+      },
+      handlePrintPreview(item) {
+        let temp = Lodop.tempOperateLine(item);
+        temp && temp.PREVIEW();
       }
     }
   };

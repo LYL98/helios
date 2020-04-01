@@ -64,14 +64,19 @@
                   command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add_' + scope.row.in_type)
                 },
                 {
+                  title: '打印',
+                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
+                  command: () => handlePrint({...scope.row, order_type: scope.row.in_type, id: scope.row.relate_order_id})
+                },
+                {
+                  title: '打印预览',
+                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
+                  command: () => handlePrintPreview({...scope.row, order_type: scope.row.in_type, id: scope.row.relate_order_id})
+                },
+                {
                   title: '详情',
                   isDisplay: auth.isAdmin || auth.WarehouseStockPendingDetail,
                   command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)
-                },
-                {
-                  title: '打印',
-                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
-                  command: () => handleShowPrint('PrintWarehouseStockPending', {...scope.row, order_type: scope.row.in_type, id: scope.row.relate_order_id})
                 },
               ]"
             />
@@ -90,7 +95,7 @@
 </template>
 
 <script>
-  import { Http, Config, Constant } from '@/util';
+  import { Http, Config, Constant, Lodop } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
   import queryTabs from '@/share/layout/QueryTabs';
 
@@ -141,6 +146,15 @@
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
+      },
+
+      handlePrint(item) {
+        let temp = Lodop.tempGoodsCode(item);
+        temp && temp.PRINT();
+      },
+      handlePrintPreview(item) {
+        let temp = Lodop.tempGoodsCode(item);
+        temp && temp.PREVIEW();
       },
     }
   };

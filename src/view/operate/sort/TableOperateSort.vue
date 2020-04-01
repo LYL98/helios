@@ -44,11 +44,17 @@
                         title: '分配',
                         isDisplay: (auth.isAdmin || auth.OperateSortAdd) && !item.allocated_time,
                         command: () => handleAllocate(item)
-                      },{
+                      },
+                      {
                         title: '打印',
                         isDisplay: (auth.isAdmin || auth.OperateSortPrint) && item.allocated_time,
-                        command: () => handleShowPrint('PrintOperateSort', {delivery_date: query.delivery_date, ids: [item.id]})
-                      }
+                        command: () => handlePrint({delivery_date: query.delivery_date, ids: [item.id]})
+                      },
+                      {
+                        title: '打印预览',
+                        isDisplay: (auth.isAdmin || auth.OperateSortPrint) && item.allocated_time,
+                        command: () => handlePrintPreview({delivery_date: query.delivery_date, ids: [item.id]})
+                      },
                     ]"
                   />
                 </div>
@@ -94,8 +100,10 @@
     </div>
     <div class="table-bottom">
       <div class="left">
-        <el-button @click="handleShowPrint('PrintOperateSort', {delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
-        :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperateSortPrint">批量打印</el-button>
+        <el-button @click="handlePrint({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
+                   :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperateSortPrint">批量打印</el-button>
+        <el-button @click="handlePrintPreview({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
+                   :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperateSortPrint">打印预览</el-button>
       </div>
       <div class="right">
         <pagination :pageComponent='this'/>
@@ -106,7 +114,7 @@
 </template>
 
 <script>
-  import { Http, Config, Constant } from '@/util';
+  import { Http, Config, Constant, Lodop } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
   import queryTabs from '@/share/layout/QueryTabs';
 
@@ -242,6 +250,32 @@
         }).catch(() => {
           //console.log('取消');
         });
+      },
+
+      handlePrint({delivery_date, ids}) {
+        this.PrintAndPreview({delivery_date, ids, type: 'print'});
+      },
+
+      handlePrintPreview({delivery_date, ids}) {
+        this.PrintAndPreview({delivery_date, ids, type: 'preview'});
+      },
+
+      async PrintAndPreview({delivery_date, ids, type}) {
+        this.$loading({isWhole: true});
+        let res = await Http.get(Config.api.supAllocateDetailPrint, {
+          out_stock_ids: ids.join()
+        });
+        this.$loading({isWhole: false});
+        if(res.code === 0){
+          this.$data.dataItem = res.data;
+          let temp = Lodop.tempTruckBatch(res.data, delivery_date);
+
+          temp && type === 'print' && temp.PRINT();
+          temp && type === 'preview' && temp.PREVIEW();
+
+        }else{
+          this.$message({message: res.message, type: 'error'});
+        }
       },
     }
   };

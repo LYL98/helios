@@ -4,7 +4,7 @@
     <div class="container-table">
       <div class="table-top">
         <div class="left">
-          <query-tabs v-model="query.is_post_pay" @change="changeQuery" :tab-panes="{'全部': '', '协议': 1, '非协议': 0}"/>
+          <query-tabs v-model="query.is_post_pay" @change="changeQuery" :tab-panes="{'全部': '', '协议': '1', '非协议': '0'}"/>
         </div>
         <div class="right" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
           <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出商户列表</el-button>
