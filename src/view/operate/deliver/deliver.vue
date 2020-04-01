@@ -299,6 +299,7 @@
     },
     methods: {
       changeQuery() {
+        this.$data.query.page = 1;
         this.deliverQuery();
       },
       resetQuery() {

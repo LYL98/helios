@@ -53,18 +53,6 @@
         </my-query-item>
       </el-col>
       <el-col :span="7">
-        <my-query-item label="商户性质">
-          <select-option
-            :options="{'全部': '', '非协议': 0, '协议': 1}"
-            v-model="editQuery.is_post_pay"
-            @change="changeQuery"
-            size="small"
-          />
-        </my-query-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="32" style="margin-top: 16px;">
-      <el-col :span="7">
         <my-query-item label="团购门店">
           <select-option
             :options="{'全部': '', '非团购': 0, '团购': 1}"
@@ -74,6 +62,8 @@
           />
         </my-query-item>
       </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="创建时间">
           <el-date-picker
