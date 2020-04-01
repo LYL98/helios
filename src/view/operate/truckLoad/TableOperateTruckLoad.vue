@@ -84,7 +84,7 @@
             delivery_date: query.delivery_date,
             line_id: query.line_id,
             ...dataItem
-          })" size="mini" type="primary" :disabled="dataItem.confirmed">发车前确认</el-button>
+          })" size="mini" type="primary" :disabled="dataItem.confirmed">{{dataItem.confirmed ? '已确认' : '发车前确认'}}</el-button>
       </div>
     </div>
     <!-- 表格end -->

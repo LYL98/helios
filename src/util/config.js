@@ -56,6 +56,7 @@ const Config = (() => {
       supPDistributeExport: apiM + '/sup_p_distribute/export', //调拨记录 sup_p_distribute/export  sup_p_distribute/export_check
       supBdetailExport: apiM + '/sup_bdetail/export', //供应商流水导出
       supOnGroundExport: apiM + '/sup_on_ground/export', //导出上架记录
+      supStockRecordExport: apiM + '/sup_stock_record/export', //导出全部记录
       basicDataListDeliveryExport: apiM + '/basicdata/line/delivery_export', //司机导出
 
       //供应商
