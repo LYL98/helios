@@ -16,7 +16,7 @@
       </div>
       <div class="statistics-table-list-container">
         <el-table :data="dataItem.items"
-                  :height="viewWindowHeight - offsetHeight"
+                  :height="viewWindowHeight - 255"
                   :row-class-name="highlightRowClassName"
                   @cell-mouse-enter="cellMouseEnter"
                   @cell-mouse-leave="cellMouseLeave"
@@ -31,7 +31,7 @@
               <span>{{formatValue(selectArea === 'zone' ? scope.row.zone_title : scope.row.city_title)}}</span>
             </template>
           </el-table-column>
-          <el-table-column min-width="100" align="left" v-for="d in dateRange()" :key="d" :label="labelDate(d)">
+          <el-table-column min-width="100" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
             <template slot-scope="scope">
               <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.items, d) }}</span>
             </template>
@@ -111,7 +111,6 @@ export default {
       selectArea: 'zone',
       selectType: 'merchant',
       maxLabelWidth: 80,
-      offsetHeight: 210,
       query: {
         page: 1,
         page_size: 20,

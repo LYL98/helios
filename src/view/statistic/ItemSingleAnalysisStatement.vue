@@ -4,8 +4,13 @@
 <template>
   <sub-menu>
     <div class="query" style="margin-bottom: 20px">
-      <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province :value="defaultItemQuery.province_code" isRequired type="select" @change="selectProvince"/>
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
           <my-query-item label="时间">
             <el-date-picker
               v-model="currentDateRange"
@@ -15,14 +20,14 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               size="small"
-              class="query-item-date"
+              style="width: 100%;"
               :picker-options="fixDateOptions"
               :clearable="false"
               @change="onChangeDate">
             </el-date-picker>
           </my-query-item>
         </el-col>
-        <el-col :xl="8" :lg="10" :span="10">
+        <el-col :span="10">
           <my-query-item label="搜索">
             <div style="display: flex">
               <my-search-item v-model="selectItemName" size="small" class="query-item-input" ref="mySelectItem" @onSelectItem="onSelectItem"></my-search-item>
@@ -86,6 +91,7 @@
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import { QueryItem, SearchItem } from '@/common';
+  import { GlobalProvince } from '@/component';
   import mainMixin from '@/share/mixin/main.mixin';
 
   import echarts from "echarts/lib/echarts";
@@ -111,7 +117,8 @@
       'el-option': Option,
       'el-input': Input,
       'my-search-item': SearchItem,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'global-province': GlobalProvince,
     },
     created() {
       let { defaultItemQuery, province } = this;
@@ -193,6 +200,13 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.defaultItemQuery.province_code = data.code;
+        this.loadItemSingleAnalysisList(() => {
+          this.initChart();
+        });
+      },
       cellMouseEnter(row, column, cell, event) {
         // console.log('row: ', row);
         if(row.id !== this.$data.currentRow.id) {

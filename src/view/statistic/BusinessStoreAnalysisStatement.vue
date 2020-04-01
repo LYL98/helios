@@ -11,7 +11,7 @@
     <div class="statistics-table-list-container">
       <el-table
         :data="dataItem.items"
-        :height="viewWindowHeight - offsetHeight"
+        :height="viewWindowHeight - 255"
         :header-cell-style="{'backgroundColor': '#ffffff'}"
         @sort-change="onSort"
         :row-class-name="highlightRowClassName"
@@ -144,7 +144,6 @@ export default {
     return {
       dataItem: {},
       maxLabelWidth: 80,
-      offsetHeight: 210,
       query: {
         page: 1,
         page_size: 20,
