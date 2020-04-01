@@ -19,16 +19,6 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :span="7">
-        <my-query-item label="状态">
-          <select-option
-            :options="{'全部': '', ...status}"
-            v-model="query.status"
-            @change="handleQuery('TableFinanceSStatement')"
-            size="small"
-          />
-        </my-query-item>
-      </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
           <query-search-input
@@ -60,13 +50,11 @@
         picker_value: null,
         begin_date: '',
         end_date: '',
-        status: '',
         condition: '',
       }
       return {
         initQuery: initQuery,
         query: this.copyJson(initQuery), //只有一层，可以用Object.assign深拷贝
-        status: Constant.S_STATEMENT_STATUS('value_key'),
       }
     },
     methods: {

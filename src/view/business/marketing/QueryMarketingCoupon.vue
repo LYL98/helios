@@ -2,16 +2,6 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="8">
-        <my-query-item label="优惠券类型">
-          <el-select size="small" v-model="editQuery.coupon_type" clearable class="query-item-select" @change="changeQuery">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="满减" value="type_reduction"></el-option>
-            <el-option label="满折" value="type_discount"></el-option>
-            <el-option label="满赠" value="type_gift"></el-option>
-          </el-select>
-        </my-query-item>
-      </el-col>
-      <el-col :span="8">
         <my-query-item label="优惠券状态">
           <select-option
             :options="{'全部': '', '未过期': 'st_on_date', '已过期': 'st_out_of_date'}"

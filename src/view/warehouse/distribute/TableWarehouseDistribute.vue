@@ -1,9 +1,11 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.WarehouseDistributeExport">
-      <div class="left"></div>
-      <div class="right">
-        <el-button @click.native="handleExport('supDistributeExport', query)" size="mini" type="primary" plain>导出调拨单</el-button>
+    <div class="table-top">
+      <div class="left">
+        <query-tabs v-model="status" @change="changeTab" :tab-panes="statusOptions"/>
+      </div>
+      <div class="right" v-if="auth.isAdmin || auth.WarehouseDistributeExport">
+        <el-button @click.native="handleExport('supDistributeExport', {...query, status})" size="mini" type="primary" plain>导出调拨单</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -80,10 +82,12 @@
 <script>
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: 'TableWarehouseDistribute',
     components: {
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
@@ -93,6 +97,8 @@
     },
     data() {
       return {
+        status: '',
+        statusOptions: {'全部': '', ...Constant.DISTRIBUTE_STATUS('value_key')},
         tableName: 'TableWarehouseDistribute',
         tableColumn: [
           { label: '调拨单号', key: 'code', width: '3', isShow: true },
@@ -110,11 +116,18 @@
       }
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryWarehouseDistribute');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.status = '';
+        }
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supDistributeQuery, query);
+        let res = await Http.get(Config.api.supDistributeQuery, {...query, status: this.$data.status});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

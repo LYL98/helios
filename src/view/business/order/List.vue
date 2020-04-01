@@ -2,9 +2,11 @@
   <sub-menu>
     <query-order v-model="query" @change="changeQuery" :reset="resetQuery"></query-order>
     <div class="container-table">
-      <div class="table-top" v-if="auth.isAdmin || auth.OrderListExport || auth.OrderItemExport">
-        <div class="left"></div>
-        <div class="right">
+      <div class="table-top">
+        <div class="left">
+          <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="statusOptions"/>
+        </div>
+        <div class="right" v-if="auth.isAdmin || auth.OrderListExport || auth.OrderItemExport">
           <el-button
             v-if="auth.isAdmin || auth.OrderListExport"
             size="mini"
@@ -158,6 +160,7 @@
   import DetailOrderAfterSale from '@/view/business/afterSale/DetailOrderAfterSale';
   import tableMixin from '@/share/mixin/table.mixin';
   import mainMixin from '@/share/mixin/main.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: "OrderList",
@@ -168,6 +171,7 @@
       'detail-order-list': DetailOrderList,
       'detail-order-after-sale': DetailOrderAfterSale,
       'query-order': QueryOrder,
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin, mainMixin],
     created() {
@@ -195,6 +199,15 @@
           received: 'regular',
           order_done: 'regular',
           order_canceled: 'info'
+        },
+
+        statusOptions: {
+          '全部': '',
+          '待确认': 'wait_confirm',
+          '待发货': 'wait_delivery',
+          '待收货': 'deliveried',
+          '已完成': 'order_done',
+          '已取消': 'order_canceled'
         },
       }
     },

@@ -308,6 +308,7 @@
       },
 
       changeQuery() {
+        this.$data.query.page = 1;
         this.cityPriceQuery();
       },
 

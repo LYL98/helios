@@ -72,6 +72,11 @@
                       command: () => handleShowAddEdit('AddEditSystemOperator', scope.row, 'edit')
                     },
                     {
+                      title: '解绑微信',
+                      isDisplay: scope.row.unbound_enable && (auth.isAdmin || auth.SystemOperatorWechatUnbound),
+                      command: () => wechatUnbound(scope.row)
+                    },
+                    {
                       title: '重置密码',
                       isDisplay: auth.isAdmin || auth.SystemOperatorPasswordReset,
                       command: () => handleShowResetPwd(scope.row)
@@ -147,6 +152,29 @@ export default {
       } else {
         this.$message({ title: "提示", message: res.message, type: "error" });
       }
+    },
+    async wechatUnbound(data) {
+      let that = this;
+      that.$messageBox
+      .confirm(`您确认要解绑微信吗？`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+      .then(() => {
+        Http.post(Config.api.operatorWechatUnbound, {id: data.id})
+          .then(res => {
+            if (res.code === 0) {
+              this.$message({ message: '微信解绑成功', type: "success" });
+              that.getData(that.query);
+            } else {
+              this.$message({ message: res.message, type: "error" });
+            }
+          });
+      })
+      .catch(() => {
+        //console.log('取消');
+      });
     },
     //冻结解冻
     freezeData(data) {

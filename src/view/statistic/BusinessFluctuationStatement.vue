@@ -104,11 +104,14 @@ export default {
   data() {
     return {
       province: this.$province,
-      dataItem: {},
+      dataItem: {
+        items: [],
+        num: 0
+      },
       selectArea: 'zone',
       selectType: 'merchant',
       maxLabelWidth: 80,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
+      offsetHeight: 210,
       query: {
         page: 1,
         page_size: 20,

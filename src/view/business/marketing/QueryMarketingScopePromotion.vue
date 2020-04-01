@@ -2,10 +2,10 @@
   <div class="container-query">
       <el-row :gutter="32">
         <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="活动类型">
+          <my-query-item label="上架状态">
             <select-option
-              :options="{'全部': '', '全场满减': 'type_reduction', '全场满折': 'scope_discount'}"
-              v-model="editQuery.promotion_type"
+              :options="{'全部': '', '已上架': 'st_activated', '未上架': 'st_deactivated' }"
+              v-model="editQuery.status"
               @change="changeQuery"
               size="small"
             />
@@ -29,18 +29,6 @@
               v-model="editQuery.topic"
               @search="changeQuery"
               @reset="resetQuery"
-            />
-          </my-query-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="32" style="margin-top: 16px;">
-        <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="上架状态">
-            <select-option
-              :options="{'全部': '', '已上架': 'st_activated', '未上架': 'st_deactivated' }"
-              v-model="editQuery.status"
-              @change="changeQuery"
-              size="small"
             />
           </my-query-item>
         </el-col>

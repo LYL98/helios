@@ -26,16 +26,6 @@
     </el-row>
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
-        <my-query-item label="审核状态">
-          <el-select v-model="editQuery.status" size="small" style="width: 100%;" clearable @change="changeQuery">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="待审核" value="wait_check"></el-option>
-            <el-option label="审核通过" value="checked"></el-option>
-            <el-option label="被驳回" value="declined"></el-option>
-          </el-select>
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
         <my-query-item label="类型">
           <select-option
             size="small"

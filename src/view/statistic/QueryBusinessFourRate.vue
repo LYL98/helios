@@ -2,6 +2,11 @@
   <div class="query">
     <el-row :gutter="32">
       <el-col :span="7">
+        <my-query-item label="区域">
+          <global-province :value="editQuery.province_code" isRequired type="select" @change="selectProvince"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="片区">
           <my-select-zone v-model="editQuery.zone_id"
                           :provinceCode="editQuery.province_code"
@@ -33,8 +38,9 @@
 </template>
 
 <script>
-  import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
-  import {QueryItem, SelectZone} from '@/common';
+  import { DatePicker, Row, Col, Input, Button, Message } from 'element-ui';
+  import { QueryItem, SelectZone } from '@/common';
+  import { GlobalProvince } from '@/component';
   import { DataHandle, Constant } from '@/util';
 
   export default {
@@ -46,7 +52,8 @@
       'el-input': Input,
       'el-button': Button,
       'my-select-zone': SelectZone,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'global-province': GlobalProvince,
     },
     created() {
       let endDate = new Date();
@@ -58,16 +65,10 @@
 
       this.currentDateRange.push(this.$data.resetBeginDate);
       this.currentDateRange.push(this.$data.resetEndDate);
-
-      let { province } = this;
-      if(province.code){
-        this.editQuery.province_code = province.code;
-      }
-      this.changePicker(this.currentDateRange)
+      this.changePicker(this.currentDateRange);
     },
     data() {
       return {
-        province: this.$province,
         currentDateRange: [],
         beforeDateRange: [],
         resetBeginDate: '',
@@ -110,6 +111,10 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.editQuery.province_code = data.code;
+      },
       //搜索日期
       changePicker(value){
         if (value && value.length === 2) {
@@ -151,7 +156,7 @@
         this.editQuery = {
           page: 1,
           page_size: 20,
-          province_code: this.province.code,
+          province_code: this.$province.code,
           zone_id: '',
           begin_date: this.resetBeginDate,
           end_date: this.resetEndDate,

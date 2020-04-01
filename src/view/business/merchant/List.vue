@@ -2,9 +2,11 @@
   <sub-menu>
     <query-merchant-store v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
-      <div class="table-top" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
-        <div class="left"></div>
-        <div class="right">
+      <div class="table-top">
+        <div class="left">
+          <query-tabs v-model="query.is_post_pay" @change="changeQuery" :tab-panes="{'全部': '', '协议': '1', '非协议': '0'}"/>
+        </div>
+        <div class="right" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
           <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出商户列表</el-button>
           <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="() => addMerchantDialogVisible = true" size="mini" type="primary">新增</el-button>
         </div>
@@ -23,7 +25,7 @@
         :getPageComponents="viewGetPageComponents"
         ref="TableMerchantList"
       />
-    
+
 
       <!-- 分页标签 -->
       <div class="footer" v-if="dataItem.num > 0">
@@ -60,6 +62,7 @@
   import DetailMerchantList from './DetailMerchantList';
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: "MerchantList",
@@ -76,7 +79,8 @@
       'table-merchant-list': TableMerchantList,
       'add-edit-merchant-list': AddEditMerchantList,
       'detail-merchant-list': DetailMerchantList,
-      'query-merchant-store': QueryMerchantStore
+      'query-merchant-store': QueryMerchantStore,
+      'query-tabs': queryTabs
     },
     mixins: [mainMixin],
     created() {

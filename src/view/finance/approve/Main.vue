@@ -1,7 +1,15 @@
 <template>
   <sub-menu>
     <query-finance-approve v-model="query" @change="changeQuery" :reset="resetQuery"/>
-    <table-finance-approve :data="dataItem.items" :windowHeight="viewWindowHeight" :page="query.page" :pageSize="query.page_size" :offset-height="offsetHeight" :itemEdit="handleItemEdit"/>
+    <table-finance-approve :data="dataItem.items" :windowHeight="viewWindowHeight" :page="query.page" :pageSize="query.page_size" :offset-height="offsetHeight" :itemEdit="handleItemEdit">
+      <template slot="query-tab">
+        <div class="table-top">
+          <div class="left">
+            <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="{'全部': '', '待审核': 'wait_check', '审核通过': 'checked', '被驳回': 'declined'}"/>
+          </div>
+        </div>
+      </template>
+    </table-finance-approve>
     <div class="footer">
       <div class="table-pagination">
         <el-pagination
@@ -41,6 +49,7 @@
   import FormFinanceApproveEdit from './FormFinanceApproveEdit';
   import { Http, Config, Constant } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: "Main",
@@ -50,7 +59,8 @@
       'el-dialog': Dialog,
       'query-finance-approve': QueryFinanceApprove,
       'table-finance-approve': TableFinanceApprove,
-      'form-finance-approve-edit': FormFinanceApproveEdit
+      'form-finance-approve-edit': FormFinanceApproveEdit,
+      'query-tabs': queryTabs
     },
     data() {
       return {

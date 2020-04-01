@@ -1,5 +1,11 @@
 <template>
   <div class="container-table">
+    <div class="table-top">
+      <div class="left">
+        <query-tabs v-model="status" @change="changeTab" :tab-panes="{ '全部': '', '待分配': 'unalloted', '已分配': 'alloted' }"/>
+      </div>
+    </div>
+
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
@@ -7,7 +13,7 @@
       <div class="all-select">
         <el-checkbox @change="changeAllSelect" :value="judgeAllSelect"></el-checkbox>
       </div>
-      
+
       <el-table :data="dataItem.items"
         row-class-name="stripe-row"
         class="list-table my-table-float"
@@ -38,11 +44,17 @@
                         title: '分配',
                         isDisplay: (auth.isAdmin || auth.OperateSortAdd) && !item.allocated_time,
                         command: () => handleAllocate(item)
-                      },{
+                      },
+                      {
                         title: '打印',
                         isDisplay: (auth.isAdmin || auth.OperateSortPrint) && item.allocated_time,
-                        command: () => handleShowPrint('PrintOperateSort', {delivery_date: query.delivery_date, ids: [item.id]})
-                      }
+                        command: () => handlePrint({delivery_date: query.delivery_date, ids: [item.id]})
+                      },
+                      {
+                        title: '打印预览',
+                        isDisplay: (auth.isAdmin || auth.OperateSortPrint) && item.allocated_time,
+                        command: () => handlePrintPreview({delivery_date: query.delivery_date, ids: [item.id]})
+                      },
                     ]"
                   />
                 </div>
@@ -88,8 +100,10 @@
     </div>
     <div class="table-bottom">
       <div class="left">
-        <el-button @click="handleShowPrint('PrintOperateSort', {delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
-        :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperateSortPrint">批量打印</el-button>
+        <el-button @click="handlePrint({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
+                   :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperateSortPrint">批量打印</el-button>
+        <el-button @click="handlePrintPreview({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
+                   :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperateSortPrint">打印预览</el-button>
       </div>
       <div class="right">
         <pagination :pageComponent='this'/>
@@ -100,7 +114,7 @@
 </template>
 
 <script>
-  import { Http, Config, Constant } from '@/util';
+  import { Http, Config, Constant, Lodop } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
   import queryTabs from '@/share/layout/QueryTabs';
 
@@ -119,6 +133,7 @@
     },
     data() {
       return {
+        status: '',
         tabValue: 'sort',
         tableName: 'TableOperateSort',
         tableColumn: [
@@ -149,16 +164,24 @@
       },
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryOperateSort');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.status = '';
+        }
         //从MenuQuery组件取数据
         let pc = this.getPageComponents('MenuQuery');
         if(pc) query.delivery_date = pc.query.delivery_date;
-        
+
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supOutAllocateQuery, {
           ...query,
+          status: this.$data.status,
           province_code: this.provinceCode
         });
         this.$loading({isShow: false});
@@ -227,6 +250,32 @@
         }).catch(() => {
           //console.log('取消');
         });
+      },
+
+      handlePrint({delivery_date, ids}) {
+        this.PrintAndPreview({delivery_date, ids, type: 'print'});
+      },
+
+      handlePrintPreview({delivery_date, ids}) {
+        this.PrintAndPreview({delivery_date, ids, type: 'preview'});
+      },
+
+      async PrintAndPreview({delivery_date, ids, type}) {
+        this.$loading({isWhole: true});
+        let res = await Http.get(Config.api.supAllocateDetailPrint, {
+          out_stock_ids: ids.join()
+        });
+        this.$loading({isWhole: false});
+        if(res.code === 0){
+          this.$data.dataItem = res.data;
+          let temp = Lodop.tempTruckBatch(res.data, delivery_date);
+
+          temp && type === 'print' && temp.PRINT();
+          temp && type === 'preview' && temp.PREVIEW();
+
+        }else{
+          this.$message({message: res.message, type: 'error'});
+        }
       },
     }
   };

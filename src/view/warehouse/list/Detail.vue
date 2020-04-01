@@ -20,7 +20,9 @@
       <div class="tray-top">
         <div class="left">
           <el-button size="mini" type="primary" v-if="auth.isAdmin || auth.WarehouseListTrayPrint"
-            @click.native="handleShowPrint('PrintTray', multipleSelection)" :disabled="multipleSelection.length > 0 ? false : true">批量打印</el-button>
+            @click.native="handlePrint(multipleSelection)" :disabled="multipleSelection.length > 0 ? false : true">批量打印</el-button>
+          <el-button size="mini" type="primary" v-if="auth.isAdmin || auth.WarehouseListTrayPrint"
+                     @click.native="handlePrintPreview(multipleSelection)" :disabled="multipleSelection.length > 0 ? false : true">打印预览</el-button>
         </div>
         <div class="right">
           <el-button @click="operate({}, 'add_tray')" size="mini" type="primary" v-if="auth.isAdmin || auth.WarehouseListTrayAdd">增加拖盘</el-button>
@@ -31,10 +33,11 @@
         <el-table-column type="index" label="序号" :index="indexMethod"/>
         <el-table-column prop="code" label="托盘编号"/>
         <el-table-column prop="created" label="创建时间"/>
-        <el-table-column label="操作" width="160">
+        <el-table-column label="操作" width="260">
           <template slot-scope="scope">
             <a href="javascript: void(0);" style="margin-right: 10px;" @click="operate(scope.row, 'edit_tray')" v-if="auth.isAdmin || auth.WarehouseListTrayEdit">修改</a>
-            <a href="javascript: void(0);" style="margin-right: 10px;" @click="handleShowPrint('PrintTray', [scope.row])" v-if="auth.isAdmin || auth.WarehouseListTrayPrint">打印</a>
+            <a href="javascript: void(0);" style="margin-right: 10px;" @click="handlePrint([scope.row])" v-if="auth.isAdmin || auth.WarehouseListTrayPrint">打印</a>
+            <a href="javascript: void(0);" style="margin-right: 10px;" @click="handlePrintPreview([scope.row])" v-if="auth.isAdmin || auth.WarehouseListTrayPrint">打印预览</a>
             <a href="javascript: void(0);" @click="operate(scope.row, 'delete_tray')" v-if="auth.isAdmin || auth.WarehouseListTrayDelete">删除</a>
           </template>
         </el-table-column>
@@ -51,7 +54,7 @@
 
 <script>
   import detailMixin from '@/share/mixin/detail.mixin';
-  import { Http, Config, Constant } from '@/util';
+  import { Http, Config, Constant, Lodop } from '@/util';
   import Pagination from '@/share/layout/Pagination';
 
   export default {
@@ -168,6 +171,14 @@
           this.$message({message: res.message, type: 'error'});
         }
       },
+      handlePrint(list) {
+        let temp = Lodop.tempTrayCode(list);
+        temp && temp.PRINT();
+      },
+      handlePrintPreview(list) {
+        let temp = Lodop.tempTrayCode(list);
+        temp && temp.PREVIEW();
+      }
     }
   }
 </script>

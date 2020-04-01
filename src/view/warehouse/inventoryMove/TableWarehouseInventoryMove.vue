@@ -4,11 +4,13 @@
       <div class="left">
         <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="queryTabsData"/>
       </div>
-      <div class="right">
-        <el-button v-if="auth.isAdmin || auth.WarehouseInventoryMoveExport"
-          @click.native="handleExport(types[tabValue].export_api, query)" size="mini" type="primary" plain>
-            {{types[tabValue].export_srt}}
-          </el-button>
+      <div class="right" v-if="auth.isAdmin || auth.WarehouseInventoryMoveExport">
+        <el-button @click.native="handleExport('supStockRecordExport', query)" size="mini" type="primary" plain>
+          导出全部库存记录
+        </el-button>
+        <el-button @click.native="handleExport(types[tabValue].export_api, query)" size="mini" type="primary" plain>
+          {{types[tabValue].export_srt}}
+        </el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -121,37 +123,37 @@
             detail: 'DetailWarehouseInventoryMoveCheck',
             api: Config.api.supCheckQuery,
             export_api: 'supCheckExport',
-            export_srt: '导出记录'
+            export_srt: '导出盘点记录'
           },
           putaway: {
             detail: 'DetailWarehouseInventoryMovePutaway',
             api: Config.api.supOnGroundQuery,
             export_api: 'supOnGroundExport',
-            export_srt: '导出记录'
+            export_srt: '导出上架记录'
           },
           variation: {
             detail: 'DetailWarehouseInventoryMoveVariation',
             api: Config.api.supModifyQuery,
             export_api: 'supModifyExport',
-            export_srt: '导出记录'
+            export_srt: '导出变动记录'
           },
           distribute: {
             detail: 'DetailWarehouseInventoryMoveDistribute',
             api: Config.api.supDistributeRecordQuery,
             export_api: 'supPDistributeExport',
-            export_srt: '导出记录'
+            export_srt: '导出调拨记录'
           },
           move: {
             detail: 'DetailWarehouseInventoryMoveMove',
             api: Config.api.supMoveQuery,
             export_api: 'supMoveExport',
-            export_srt: '导出记录'
+            export_srt: '导出移库记录'
           },
           out_storage: {
             detail: 'DetailWarehouseInventoryMoveOutStorage',
             api: Config.api.supOutQuery,
             export_api: 'supOutExport',
-            export_srt: '导出记录'
+            export_srt: '导出出库记录'
           }
         },
         supOptTypes: Constant.SUP_OPT_TYPES(),

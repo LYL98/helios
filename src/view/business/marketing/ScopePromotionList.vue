@@ -8,9 +8,11 @@
     >
     </query-marketing-scope-promotion>
     <div class="container-table">
-      <div class="table-top" v-if="auth.isAdmin || auth.MarketingScopePromotionAdd">
-        <div class="left"></div>
-        <div class="right">
+      <div class="table-top">
+        <div class="left">
+          <query-tabs v-model="query.promotion_type" @change="changeQuery" :tab-panes="{'全部': '', '全场满减': 'type_reduction', '全场满折': 'scope_discount'}"/>
+        </div>
+        <div class="right" v-if="auth.isAdmin || auth.MarketingScopePromotionAdd">
           <el-button @click="handleAddItem" size="mini" type="primary">新增</el-button>
         </div>
       </div>
@@ -66,6 +68,7 @@
   import CouponList from './CouponList';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: "ScopePromotionList",
@@ -78,6 +81,7 @@
       'table-marketing-scope-promotion': TableMarketingScopePromotion,
       'form-marketing-scope-promotion': FormMarketingScopePromotion,
       'global-province': GlobalProvince,
+      'query-tabs': queryTabs
     },
     data() {
       return {

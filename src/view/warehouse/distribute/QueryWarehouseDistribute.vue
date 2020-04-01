@@ -19,17 +19,6 @@
     </el-row>
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
-        <my-query-item label="状态">
-          <select-option
-            :options="distributeStatus"
-            v-model="query.status"
-            @change="handleQuery('TableWarehouseDistribute')"
-            size="small"
-            clearable
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
         <my-query-item label="可售时间">
           <el-date-picker
             size="small"
@@ -85,21 +74,12 @@
         available_date: '',
         begin_date: '',
         end_date: '',
-        status: '',
         condition: '',
         picker_value: null
       }
       return {
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
-      }
-    },
-    computed: {
-      distributeStatus: {
-        get(){
-          let d = Constant.DISTRIBUTE_STATUS('value_key');
-          return { '全部': '', ...d };
-        }
       }
     },
     methods: {

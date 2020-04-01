@@ -13,6 +13,9 @@ const Config = (() => {
       /*-- 基础信息 --*/
       tencentPresignedUrl: apiCommon + '/tencent/presigned_url',//腾讯Buckettoken
       signLogin: apiM + '/sign/login',//用户登录
+      signQrconnectUrl: apiM + '/sign/qrconnect/url',// 获取登录二维码
+      signLoginConfirm: apiM + '/sign/login/confirm',// 轮询扫码状态
+      signWechatBind: apiM + '/sign/wechat/bind',// 轮询扫码状态
       signLogout: apiM + '/sign/logout',//用户退出
       signIsLogin: apiM + '/sign/is_login',//判断是否登录
       loginByToken: apiM + '/validate_user/by_token',//通过token登录
@@ -53,6 +56,7 @@ const Config = (() => {
       supPDistributeExport: apiM + '/sup_p_distribute/export', //调拨记录 sup_p_distribute/export  sup_p_distribute/export_check
       supBdetailExport: apiM + '/sup_bdetail/export', //供应商流水导出
       supOnGroundExport: apiM + '/sup_on_ground/export', //导出上架记录
+      supStockRecordExport: apiM + '/sup_stock_record/export', //导出全部记录
       basicDataListDeliveryExport: apiM + '/basicdata/line/delivery_export', //司机导出
 
       //供应商
@@ -474,6 +478,7 @@ const Config = (() => {
       operatorPwdModify: apiM + '/operator/password_modify', //运营人员修改密码（自己密码）
       operatorFreeze: apiM + '/operator/freeze', //运营人员冻结
       operatorUnFreeze: apiM + '/operator/unfreeze', //运营人员解冻
+      operatorWechatUnbound: apiM + '/operator/wechat/unbound', //解绑微信
 
       //常量
       basicdataConfirmTime: apiM + '/basicdata/constant/confirm/time', //截单时间 GET获取，POST设置

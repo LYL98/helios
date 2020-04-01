@@ -1,5 +1,6 @@
 <template>
   <div class="container-table">
+    <slot name="query-tab"></slot>
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <el-table
         class="list-table my-table-float"
@@ -109,7 +110,6 @@
   import { OmissionText, TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
-  
   export default {
     name: "TableFinanceApprove",
     mixins: [tableMixin],

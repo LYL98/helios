@@ -1,9 +1,11 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.WarehouseStockPendingExport">
-      <div class="left"></div>
-      <div class="right">
-        <el-button @click.native="handleExport('supInStockExport', query)" size="mini" type="primary" plain>导出入库单</el-button>
+    <div class="table-top">
+      <div class="left">
+        <query-tabs v-model="status" @change="changeTab" :tab-panes="statusOptions"/>
+      </div>
+      <div class="right" v-if="auth.isAdmin || auth.WarehouseStockPendingExport">
+        <el-button @click.native="handleExport('supInStockExport', {...query, status})" size="mini" type="primary" plain>导出入库单</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -62,14 +64,19 @@
                   command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'add_' + scope.row.in_type)
                 },
                 {
+                  title: '打印',
+                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
+                  command: () => handlePrint({...scope.row, order_type: scope.row.in_type, id: scope.row.relate_order_id})
+                },
+                {
+                  title: '打印预览',
+                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
+                  command: () => handlePrintPreview({...scope.row, order_type: scope.row.in_type, id: scope.row.relate_order_id})
+                },
+                {
                   title: '详情',
                   isDisplay: auth.isAdmin || auth.WarehouseStockPendingDetail,
                   command: () => handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)
-                },
-                {
-                  title: '打印',
-                  isDisplay: auth.isAdmin || auth.WarehouseStockPendingPrint,
-                  command: () => handleShowPrint('PrintWarehouseStockPending', {...scope.row, order_type: scope.row.in_type, id: scope.row.relate_order_id})
                 },
               ]"
             />
@@ -88,7 +95,7 @@
 </template>
 
 <script>
-  import { Http, Config, Constant } from '@/util';
+  import { Http, Config, Constant, Lodop } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
   import queryTabs from '@/share/layout/QueryTabs';
 
@@ -103,6 +110,8 @@
     },
     data() {
       return {
+        status: '',
+        statusOptions: { '全部': '', ...Constant.INVENTORY_STATUS('value_key')},
         inventoryStatus: Constant.INVENTORY_STATUS(),
         inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
         tableName: 'TableWarehouseStockPending',
@@ -119,17 +128,33 @@
       }
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryWarehouseStockPending');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.status = '';
+        }
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supInStockShMonitorQuery, query);
+        let res = await Http.get(Config.api.supInStockShMonitorQuery, {...query, status: this.$data.status});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
+      },
+
+      handlePrint(item) {
+        let temp = Lodop.tempGoodsCode(item);
+        temp && temp.PRINT();
+      },
+      handlePrintPreview(item) {
+        let temp = Lodop.tempGoodsCode(item);
+        temp && temp.PREVIEW();
       },
     }
   };

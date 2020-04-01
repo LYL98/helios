@@ -8,7 +8,7 @@
       </el-form-item>
       <el-row>
         <el-col :span="11">
-          <el-form-item label="总库存">
+          <el-form-item label="总库存" prop="available_num">
             <input-number size="medium" :disabled="!detail.is_presale" v-model="detail.available_num" unit="件"/>
           </el-form-item>
         </el-col>
@@ -174,6 +174,9 @@ export default {
     return {
       initDetail: {},
       rules: {
+        available_num: [
+          { required: true, message: '请输入总库存', trigger: 'change' },
+        ],
         price_sale: [
           { required: true, message: '请输入今日销售价', trigger: 'change' },
           { type: 'number', min: 0.01, message: '请输入今日销售价', trigger: 'change' },
@@ -246,7 +249,7 @@ export default {
     //提交数据
     addEditData(){
       let { detail, priceData, pageType } = this;
-      if(pageType === 'edit'){
+      if(pageType === 'edit' || detail.is_presale){
         this.priceFix();
       }else{
         let str = '反采供应商尚未报价，确认报价后供应商将不可报价，是否确认报价';

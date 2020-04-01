@@ -1,7 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.OperateDepartStockout">
-      <div class="left"></div>
+    <div class="table-top">
+      <div class="left">
+        <query-tabs v-model="status" @change="changeTab" :tab-panes="statusOptions"/>
+      </div>
       <div class="right" v-if="auth.isAdmin || auth.OperateDepartStockout">
         <el-button @click="handleShowDetail('DetailOperateDepartStockout', { delivery_date: query.delivery_date })" size="mini" type="primary" plain>缺货记录</el-button>
       </div>
@@ -94,10 +96,12 @@
 <script>
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: 'TableOperateDepart',
     components: {
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
@@ -107,6 +111,8 @@
     },
     data() {
       return {
+        status: '',
+        statusOptions: {'全部': '', ...Constant.DEPART_STATUS('value_key')},
         departStatus: Constant.DEPART_STATUS(),
         departStatusType: Constant.DEPART_STATUS_TYPE,
         tableName: 'TableOperateDepart',
@@ -123,16 +129,23 @@
       }
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryOperateDepart');
+        this.getData(pc.query);
+      },
       //返回是否可选中
       returnStatus(d){
         if(d.assign_confirm_time) return true;
         return false;
       },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.status = '';
+        }
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supConfirmWait, query);
+        let res = await Http.get(Config.api.supConfirmWait, {...query, status: this.$data.status});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

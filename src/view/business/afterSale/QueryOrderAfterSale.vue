@@ -61,18 +61,6 @@
         </my-query-item>
       </el-col>
     </el-row>
-    <el-row :gutter="32" style="margin-top: 16px;">
-      <el-col :span="7">
-        <my-query-item label="售后单状态">
-          <select-option
-            size="small"
-            v-model="editQuery.status"
-            :options="{ '全部': '', '待处理': 'waiting_dispose', '已完成': 'close' }"
-            @change="changeQuery"
-          />
-        </my-query-item>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
