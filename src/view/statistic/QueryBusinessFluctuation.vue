@@ -7,6 +7,15 @@
         </my-query-item>
       </el-col>
       <el-col :span="7">
+        <my-query-item label="片区">
+          <my-select-zone v-model="editQuery.zone_id"
+                          :provinceCode="editQuery.province_code"
+                          clearable
+                          size="small"
+                          @change="changeQuery"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="波动指标">
           <el-select v-model="editQuery.selectType" @change="changeQuery"
                      size="small" class="query-item-select">
@@ -16,15 +25,6 @@
             <el-option label="优惠金额" value="bonus_promotion"></el-option>
             <el-option label="客单价" value="customer"></el-option>
           </el-select>
-        </my-query-item>
-      </el-col>
-      <el-col :span="7">
-        <my-query-item label="片区">
-          <my-select-zone v-model="editQuery.zone_id"
-                          :provinceCode="editQuery.province_code"
-                          clearable
-                          size="small"
-                          @change="changeQuery"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -119,17 +119,7 @@
     computed: {
       editQuery: {
         get() {
-          let query = {
-            page: 1,
-            page_size: 20,
-            zone_id: '',
-            city_id: '',
-            begin_date: '',
-            end_date: '',
-            selectType: 'merchant'
-          }
-
-          return Object.assign({}, query, this.$props.query);
+          return this.$props.query;
         },
         set(v) {
           this.$emit('change', v);
@@ -143,7 +133,6 @@
       },
       //搜索日期
       changePicker(value){
-        // console.log('changePicker')
         if (value && value.length === 2) {
           //判断时间段是否超过31天
           let beginDate = Date.parse(value[0]);

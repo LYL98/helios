@@ -1,29 +1,17 @@
 <template>
   <div class="query">
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
-        <my-query-item label="时间">
-          <el-date-picker
-            v-model="currentDateRange"
-            type="daterange"
-            size="small"
-            value-format="yyyy-MM-dd"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="fixDateOptions"
-            :clearable="false"
-            class="query-item-date"
-            @change="changePicker">
-          </el-date-picker>
+    <el-row :gutter="32">
+      <el-col :span="7">
+        <my-query-item label="区域">
+          <global-province :value="editQuery.province_code" isRequired type="select" @change="selectProvince"/>
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="7">
         <my-query-item label="波动指标">
           <el-select v-model="editQuery.selectIndex"
                       placeholder="请选择"
                       size="small"
-                      class="query-item-select"
+                      style="width: 100%;"
                       @change="changeQuery">
             <el-option
               v-for="item in indexOptions"
@@ -34,7 +22,7 @@
           </el-select>
         </my-query-item>
       </el-col>
-      <el-col :xl="8" :lg="10" :span="10">
+      <el-col :span="10">
         <my-query-item label="搜索">
           <div style="display: flex">
             <el-input
@@ -52,10 +40,27 @@
         </my-query-item>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 16px">
+    <el-row :gutter="32" style="margin-top: 16px;">
+      <el-col :span="7">
+        <my-query-item label="时间">
+          <el-date-picker
+            v-model="currentDateRange"
+            type="daterange"
+            size="small"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="fixDateOptions"
+            :clearable="false"
+            style="width: 100%;"
+            @change="changePicker">
+          </el-date-picker>
+        </my-query-item>
+      </el-col>
       <el-col :xl="6" :lg="7" :span="7">
         <my-query-item label="科学分类">
-          <select-system-class size="small" v-model="editQuery.system_class_codes" @change="selectSystemClass" style="max-width: 224px;"/>
+          <select-system-class size="small" v-model="editQuery.system_class_codes" @change="selectSystemClass" style="width: 100%;"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -66,6 +71,7 @@
   import {DatePicker, Row, Col, Input, Button, Message, Select, Option} from 'element-ui';
   import { QueryItem, SelectSystemClass } from '@/common';
   import { DataHandle } from '@/util';
+  import { GlobalProvince } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
   import Constant from "../../util/constant";
 
@@ -80,7 +86,8 @@
       'el-select': Select,
       'el-option': Option,
       'select-system-class': SelectSystemClass,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
     created() {
@@ -93,6 +100,7 @@
 
       this.currentDateRange.push(this.resetBeginDate);
       this.currentDateRange.push(this.resetEndDate);
+      this.editQuery.system_class_codes = [];
       let { province } = this;
       if(province.code){
         this.editQuery.province_code = province.code;
@@ -151,6 +159,11 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.editQuery.province_code = data.code;
+        this.changeQuery();
+      },
       //搜索日期
       changePicker(value){
         if (value && value.length === 2) {

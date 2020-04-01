@@ -2,19 +2,8 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="时间">
-          <el-date-picker
-            v-model="currentDateRange"
-            type="daterange"
-            size="small"
-            value-format="yyyy-MM-dd"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="fixDateOptions"
-            :clearable="false"
-            @change="changePicker">
-          </el-date-picker>
+        <my-query-item label="区域">
+          <global-province :value="editQuery.province_code" isRequired type="select" @change="selectProvince"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -47,7 +36,24 @@
         </my-query-item>
       </el-col>
     </el-row>
-    <el-row style="margin-top: 16px">
+    <el-row :gutter="32" style="margin-top: 16px">
+      <el-col :span="7">
+        <my-query-item label="时间">
+          <el-date-picker
+            v-model="currentDateRange"
+            type="daterange"
+            size="small"
+            value-format="yyyy-MM-dd"
+            style="width: 100%;"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="fixDateOptions"
+            :clearable="false"
+            @change="changePicker">
+          </el-date-picker>
+        </my-query-item>
+      </el-col>
       <el-col :span="7">
         <my-query-item label="参团状态">
           <select-option
@@ -67,7 +73,7 @@
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
   import { QueryItem, SelectOption } from '@/common';
   import { DataHandle, Constant } from '@/util';
-  import { SelectCity } from '@/component';
+  import { GlobalProvince, SelectCity } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
@@ -80,7 +86,8 @@
       'el-button': Button,
       'my-select-city': SelectCity,
       'my-query-item': QueryItem,
-      'select-option': SelectOption
+      'select-option': SelectOption,
+      'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
     created() {
@@ -136,6 +143,11 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.editQuery.province_code = data.code;
+        this.changeQuery();
+      },
       //搜索日期
       changePicker(value){
         if (value && value.length === 2) {

@@ -16,7 +16,6 @@
     <div class="statistics-table-list-container" style="position: relative;">
       <el-table
         :data="dataItem.items"
-        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -131,7 +130,6 @@ export default {
         num: 0
       },
       maxLabelWidth: 120,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
       /*
       begin_date: 开始日期
       end_date: 结束日期
@@ -166,9 +164,6 @@ export default {
     'query-group-buy-captain-statistics': QueryGroupBuyCaptainStatistics
   },
   created() {
-    if (!this.auth.isAdmin && !this.auth.GroupBuyCaptainStatementExport) {
-      this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-    }
   },
   methods: {
     indexMethod(index) {

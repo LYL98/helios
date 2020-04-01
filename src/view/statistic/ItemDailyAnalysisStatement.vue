@@ -16,7 +16,7 @@
       </div>
       <el-table
         :data="dataItem.items"
-        :height="viewWindowHeight - offsetHeight"
+        :height="viewWindowHeight - 255"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -171,7 +171,6 @@ export default {
       selectArea: 'item',
       selectItemName: '',
       maxLabelWidth: 120,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
       query: {
         page: 1,
         page_size: 20,
