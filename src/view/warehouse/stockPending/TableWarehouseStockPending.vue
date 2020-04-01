@@ -1,9 +1,11 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.WarehouseStockPendingExport">
-      <div class="left"></div>
-      <div class="right">
-        <el-button @click.native="handleExport('supInStockExport', query)" size="mini" type="primary" plain>导出入库单</el-button>
+    <div class="table-top">
+      <div class="left">
+        <query-tabs v-model="status" @change="changeTab" :tab-panes="statusOptions"/>
+      </div>
+      <div class="right" v-if="auth.isAdmin || auth.WarehouseStockPendingExport">
+        <el-button @click.native="handleExport('supInStockExport', {...query, status})" size="mini" type="primary" plain>导出入库单</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -103,6 +105,8 @@
     },
     data() {
       return {
+        status: '',
+        statusOptions: { '全部': '', ...Constant.INVENTORY_STATUS('value_key')},
         inventoryStatus: Constant.INVENTORY_STATUS(),
         inventoryStatusType: Constant.INVENTORY_STATUS_TYPE,
         tableName: 'TableWarehouseStockPending',
@@ -119,11 +123,18 @@
       }
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryWarehouseStockPending');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.status = '';
+        }
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supInStockShMonitorQuery, query);
+        let res = await Http.get(Config.api.supInStockShMonitorQuery, {...query, status: this.$data.status});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

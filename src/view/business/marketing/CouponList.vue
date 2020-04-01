@@ -3,9 +3,11 @@
     <global-province slot="left-query" type="default" isRequired @change="selectProvince"/>
     <query-marketing-coupon v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
-      <div class="table-top" v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
-        <div class="left"></div>
-        <div class="right">
+      <div class="table-top">
+        <div class="left">
+          <query-tabs v-model="query.coupon_type" @change="changeQuery" :tab-panes="{'全部': '', '满减': 'type_reduction', '满折': 'type_discount', '满赠': 'type_gift'}"/>
+        </div>
+        <div class="right" v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic || auth.MarketingCouponAdd">
           <el-button
             v-if="auth.isAdmin || auth.MarketingCouponDistributeStatistic"
             type="primary"
@@ -153,6 +155,7 @@
   import {Constant, DataHandle, Config, Http} from '@/util';
   import { GlobalProvince } from '@/component';
   import mainMixin from '@/share/mixin/main.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: "CouponList",
@@ -170,6 +173,7 @@
       'form-marketing-coupon-add': FormMarketingCouponAdd,
       'form-marketing-coupon-send': FormMarketingCouponSend,
       'global-province': GlobalProvince,
+      'query-tabs': queryTabs
     },
     data() {
       return {

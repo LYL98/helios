@@ -1,11 +1,11 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="auth.isAdmin || auth.FinanceSStatementPay || auth.FinanceSStatementExport">
+    <div class="table-top">
       <div class="left">
-        <el-button v-if="auth.isAdmin || auth.FinanceSStatementPay" :disabled="multipleSelection.length === 0 ? true : false" @click="supplierStatementPay('batch')" size="mini" type="primary">批量结款</el-button>
+        <query-tabs v-model="query_status" @change="changeTab" :tab-panes="query_status_options"/>
       </div>
-      <div class="right">
-        <el-button v-if="auth.isAdmin || auth.FinanceSStatementExport" @click.native="handleExport('supBillExport', query)" size="mini" type="primary" plain>导出对账单</el-button>
+      <div class="right" v-if="auth.isAdmin || auth.FinanceSStatementExport">
+        <el-button @click.native="handleExport('supBillExport', {...query, status: query_status})" size="mini" type="primary" plain>导出对账单</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -82,10 +82,12 @@
 <script>
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: 'TableFinanceSStatement',
     components: {
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
@@ -94,6 +96,8 @@
     },
     data() {
       return {
+        query_status: '',
+        query_status_options: {'全部': '', ...Constant.S_STATEMENT_STATUS('value_key')},
         tableName: 'TableFinanceSStatement',
         tableColumn: [
           { label: '供应商名称', key: 'supplier', width: '3', isShow: true },
@@ -114,11 +118,18 @@
       returnPaidStatus(d){
         return d.status === 'paid' ? false : true
       },
+      changeTab() {
+        let pc = this.getPageComponents('QueryFinanceSStatement');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.query_status = '';
+        }
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.financeSupBillQuery, query);
+        let res = await Http.get(Config.api.financeSupBillQuery, {...query, status: this.$data.query_status});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

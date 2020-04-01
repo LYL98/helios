@@ -3,9 +3,11 @@
     <query-order-aftersale v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <!-- 头部end -->
-      <div class="table-top" v-if="auth.isAdmin || auth.OrderAftersaleExport">
-        <div class="left"></div>
-        <div class="right">
+      <div class="table-top">
+        <div class="left">
+          <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="{ '全部': '', '待处理': 'waiting_dispose', '已完成': 'close' }"/>
+        </div>
+        <div class="right" v-if="auth.isAdmin || auth.OrderAftersaleExport">
           <el-button size="mini" type="primary" @click="afterSaleListExport" plain>导出售后单列表</el-button>
         </div>
       </div>
@@ -124,6 +126,7 @@ import AddEditItemList from '@/view/item/list/AddEditItemList';
 import { Config, DataHandle, Constant, Http } from '@/util';
 import tableMixin from '@/share/mixin/table.mixin';
 import mainMixin from '@/share/mixin/main.mixin';
+import queryTabs from '@/share/layout/QueryTabs';
 
 export default {
   name: "AfterSale",
@@ -140,7 +143,8 @@ export default {
     'detail-order-list': DetailOrderList,
     'add-edit-item-detail': AddEditItemList,
     'form-order-after-sale-close': FormOrderAfterSaleClose,
-    'my-table-operate': TableOperate
+    'my-table-operate': TableOperate,
+    'query-tabs': queryTabs
   },
   mixins: [tableMixin, mainMixin],
   created(){
@@ -221,7 +225,7 @@ export default {
         begin_date,
         end_date
       }
-      
+
       //判断是否可导出
       this.$loading({ isShow: true,  isWhole: true });
       let res = await Http.get(`${api}_check`, {

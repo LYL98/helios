@@ -75,18 +75,6 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :span="7">
-        <my-query-item label="订单状态">
-          <select-option
-            v-model="editQuery.status"
-            :options="orderStatus"
-            @change="changeQuery"
-            size="small"
-            placeholder="订单状态"
-            clearable
-          />
-        </my-query-item>
-      </el-col>
     </el-row>
   </div>
 </template>
@@ -117,14 +105,6 @@
     data() {
       return {
         pickerValue: null,
-        orderStatus: {
-          '全部': '',
-          '待确认': 'wait_confirm',
-          '待发货': 'wait_delivery',
-          '待收货': 'deliveried',
-          '已完成': 'order_done',
-          '已取消': 'order_canceled'
-        },
         orderType: {
           normal: '普通订单',
           gb_order: '团购订单',
