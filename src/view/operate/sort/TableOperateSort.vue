@@ -1,5 +1,11 @@
 <template>
   <div class="container-table">
+    <div class="table-top">
+      <div class="left">
+        <query-tabs v-model="status" @change="changeTab" :tab-panes="{ '全部': '', '待分配': 'unalloted', '已分配': 'alloted' }"/>
+      </div>
+    </div>
+
     <!-- 表格start -->
     <div @mousemove="handleTableMouseMove" class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
@@ -7,7 +13,7 @@
       <div class="all-select">
         <el-checkbox @change="changeAllSelect" :value="judgeAllSelect"></el-checkbox>
       </div>
-      
+
       <el-table :data="dataItem.items"
         row-class-name="stripe-row"
         class="list-table my-table-float"
@@ -119,6 +125,7 @@
     },
     data() {
       return {
+        status: '',
         tabValue: 'sort',
         tableName: 'TableOperateSort',
         tableColumn: [
@@ -149,16 +156,24 @@
       },
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryOperateSort');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.status = '';
+        }
         //从MenuQuery组件取数据
         let pc = this.getPageComponents('MenuQuery');
         if(pc) query.delivery_date = pc.query.delivery_date;
-        
+
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supOutAllocateQuery, {
           ...query,
+          status: this.$data.status,
           province_code: this.provinceCode
         });
         this.$loading({isShow: false});
