@@ -1,26 +1,17 @@
 <template>
   <div class="query">
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
-        <my-query-item label="时间">
-          <el-date-picker
-            v-model="selectDate"
-            type="date"
-            size="small"
-            value-format="yyyy-MM-dd"
-            placeholder="选择日期"
-            class="query-item-date"
-            :clearable="false"
-            @change="changeDate">
-          </el-date-picker>
+    <el-row :gutter="32">
+      <el-col :span="7">
+        <my-query-item label="区域">
+          <global-province :value="editQuery.province_code" isRequired type="select" @change="selectProvince"/>
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="7">
         <my-query-item label="科学分类">
           <select-system-class size="small" v-model="editQuery.system_class_codes" @change="selectSystemClass" style="max-width: 224px;"/>
         </my-query-item>
       </el-col>
-      <el-col :xl="8" :lg="10" :span="10">
+      <el-col :span="10">
         <my-query-item label="搜索">
           <div style="display: flex">
             <el-input
@@ -38,12 +29,29 @@
         </my-query-item>
       </el-col>
     </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
+      <el-col :span="7">
+        <my-query-item label="时间">
+          <el-date-picker
+            v-model="selectDate"
+            type="date"
+            size="small"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期"
+            style="width: 100%;"
+            :clearable="false"
+            @change="changeDate">
+          </el-date-picker>
+        </my-query-item>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
   import { QueryItem, SelectSystemClass } from '@/common';
+  import { GlobalProvince } from '@/component';
   import { DataHandle } from '@/util';
   import queryMixin from '@/share/mixin/query.mixin';
 
@@ -56,7 +64,8 @@
       'el-input': Input,
       'el-button': Button,
       'select-system-class': SelectSystemClass,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
     created() {
@@ -85,6 +94,11 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.editQuery.province_code = data.code;
+        this.changeQuery();
+      },
       //搜索日期
       changePicker(value){
         if (value && value.length === 2) {

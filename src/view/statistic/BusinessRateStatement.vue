@@ -16,7 +16,7 @@
     <div class="statistics-table-list-container">
       <el-table
         :data="dataItem.items"
-        :height="viewWindowHeight - offsetHeight"
+        :height="viewWindowHeight - 210"
         @sort-change="onSort"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
@@ -222,7 +222,6 @@ export default {
       },
       selectArea: 'zone',
       maxLabelWidth: 80,
-      offsetHeight: 210,
       query: {
         page: 1,
         page_size: 20,

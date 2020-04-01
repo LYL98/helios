@@ -16,7 +16,6 @@
     <div class="statistics-table-list-container" style="position: relative;">
       <el-table
         :data="dataItem.items"
-        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -120,7 +119,6 @@ export default {
         num: 0
       },
       maxLabelWidth: 160,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
       /*condition: 微信昵称或收货人姓名
         sort: 排序字段指定 商品数量(sale_num)/购买件数(sale_num)/消费金额(pay_amount)
         page:
@@ -147,9 +145,6 @@ export default {
     'query-group-buy-member-statistics': QueryGroupBuyMemberStatistics
   },
   created() {
-    if (!this.auth.isAdmin && !this.auth.GroupBuyMemberStatementExport) {
-      this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-    }
   },
   methods: {
     indexMethod(index) {

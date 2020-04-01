@@ -1,29 +1,17 @@
 <template>
   <div class="query">
-    <el-row>
-      <el-col :xl="6" :lg="7" :span="7">
-        <my-query-item label="时间">
-          <el-date-picker
-            v-model="currentDateRange"
-            type="daterange"
-            size="small"
-            value-format="yyyy-MM-dd"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="fixDateOptions"
-            :clearable="false"
-            style="width: 242px;"
-            @change="changePicker">
-          </el-date-picker>
+    <el-row :gutter="32">
+      <el-col :span="7">
+        <my-query-item label="区域">
+          <global-province :value="editQuery.province_code" isRequired type="select" @change="selectProvince"/>
         </my-query-item>
       </el-col>
-      <el-col :xl="6" :lg="7" :span="7">
+      <el-col :span="7">
         <my-query-item label="商品分类">
           <select-group-item-class size="small" v-model="editQuery.category_id" @change="changeQuery" style="width: 242px;" clearable/>
         </my-query-item>
       </el-col>
-      <el-col :xl="8" :lg="10" :span="10">
+      <el-col :span="10">
         <my-query-item label="搜索">
           <div style="display: flex">
             <el-input
@@ -41,6 +29,25 @@
         </my-query-item>
       </el-col>
     </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
+      <el-col :span="7">
+        <my-query-item label="时间">
+          <el-date-picker
+            v-model="currentDateRange"
+            type="daterange"
+            size="small"
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="fixDateOptions"
+            :clearable="false"
+            style="width: 100%;"
+            @change="changePicker">
+          </el-date-picker>
+        </my-query-item>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -48,6 +55,7 @@
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
   import { QueryItem, SelectOption, SelectGroupItemClass } from '@/common';
   import { DataHandle, Constant } from '@/util';
+  import { GlobalProvince } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
@@ -60,7 +68,8 @@
       'el-button': Button,
       'select-option': SelectOption,
       'my-query-item': QueryItem,
-      'select-group-item-class': SelectGroupItemClass
+      'select-group-item-class': SelectGroupItemClass,
+      'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
     created() {
@@ -117,6 +126,11 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.editQuery.province_code = data.code;
+        this.changeQuery();
+      },
       //搜索日期
       changePicker(value){
         if (value && value.length === 2) {
