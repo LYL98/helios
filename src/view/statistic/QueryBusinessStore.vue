@@ -2,6 +2,11 @@
   <div class="query">
     <el-row :gutter="32">
       <el-col :span="7">
+        <my-query-item label="区域">
+          <global-province :value="editQuery.province_code" isRequired type="select" @change="selectProvince"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="片区">
           <my-select-zone v-model="editQuery.zone_id"
                           :provinceCode="editQuery.province_code"
@@ -21,6 +26,8 @@
                           @change="changeQuery"/>
         </my-query-item>
       </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="10">
         <my-query-item label="时间段">
           <el-date-picker
@@ -46,6 +53,7 @@
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
   import {QueryItem, SelectZone, SelectCity} from '@/common';
+  import { GlobalProvince } from '@/component';
   import { DataHandle } from '@/util';
   import Constant from "../../util/constant";
 
@@ -59,7 +67,8 @@
       'el-button': Button,
       'my-select-zone': SelectZone,
       'my-select-city': SelectCity,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'global-province': GlobalProvince,
     },
     created() {
       let endDate = new Date();
@@ -122,6 +131,10 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.editQuery.province_code = data.code;
+      },
       //搜索日期
       changePicker(value){
         if (value && value.length === 2) {
