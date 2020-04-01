@@ -66,6 +66,16 @@
                   command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'add_' + query.type)
                 },
                 {
+                  title: '打印',
+                  isDisplay: pageAuth.print && scope.row.status !== 'closed',
+                  command: () => handlePrint({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: query.type === 'purchase' ? 'pur' : 'distribute'})
+                },
+                {
+                  title: '打印预览',
+                  isDisplay: pageAuth.print && scope.row.status !== 'closed',
+                  command: () => handlePrintPreview({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: query.type === 'purchase' ? 'pur' : 'distribute'})
+                },
+                {
                   title: '详情',
                   isDisplay: pageAuth.detail,
                   command: () => tableShowDetail(scope.row)
@@ -76,15 +86,6 @@
                   command: () => handleShowForm('FormClose', {
                     id: scope.row.id,
                     close_hint: '是否确认关闭采购单，如是，请填写关闭采购单的原因'
-                  })
-                },
-                {
-                  title: '打印',
-                  isDisplay: pageAuth.print && scope.row.status !== 'closed',
-                  command: () => handleShowPrint('PrintWarehouseStockPending', {
-                    ...scope.row,
-                    batch_code: scope.row.batch_code || scope.row.code,
-                    order_type: query.type === 'purchase' ? 'pur' : 'distribute'
                   })
                 },
               ]"
@@ -104,7 +105,8 @@
 </template>
 
 <script>
-  import { Http, Config, Constant } from '@/util';
+  import { Message } from 'element-ui';
+  import { Http, Config, Constant, Lodop } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
   import queryTabs from '@/share/layout/QueryTabs';
 
@@ -167,7 +169,7 @@
           }
           return (data.num - data.num_in) + '件';
         }
-        
+
       },
       //获取数据
       async getData(query, type){
@@ -250,7 +252,15 @@
         }
         let pc = this.getPageComponents(detailPages[query.type]);
         pc.showDetail(data);
-      }
+      },
+      handlePrint(item) {
+        let temp = Lodop.tempGoodsCode(item);
+        temp && temp.PRINT();
+      },
+      handlePrintPreview(item) {
+        let temp = Lodop.tempGoodsCode(item);
+        temp && temp.PREVIEW();
+      },
     }
   };
 </script>
