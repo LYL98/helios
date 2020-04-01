@@ -2,6 +2,11 @@
   <div class="query">
     <el-row :gutter="32">
       <el-col :span="7">
+        <my-query-item label="区域">
+          <global-province :value="editQuery.province_code" isRequired type="select" @change="selectProvince"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="7">
         <my-query-item label="波动指标">
           <el-select v-model="editQuery.selectType" @change="changeQuery"
                      size="small" class="query-item-select">
@@ -22,6 +27,8 @@
                           @change="changeQuery"/>
         </my-query-item>
       </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="10">
         <my-query-item label="时间段">
           <el-date-picker
@@ -45,8 +52,9 @@
 </template>
 
 <script>
-  import {DatePicker, Row, Col, Input, Button, Message, Select, Option} from 'element-ui';
-  import {QueryItem, SelectZone} from '@/common';
+  import { DatePicker, Row, Col, Input, Button, Message, Select, Option } from 'element-ui';
+  import { QueryItem, SelectZone } from '@/common';
+  import { GlobalProvince } from '@/component';
   import { DataHandle, Constant } from '@/util';
 
   export default {
@@ -60,7 +68,8 @@
       'el-select': Select,
       'el-option': Option,
       'my-select-zone': SelectZone,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'global-province': GlobalProvince,
     },
     created() {
       //设置默认日期范围
@@ -73,17 +82,12 @@
 
       this.currentDateRange.push(this.resetBeginDate);
       this.currentDateRange.push(this.resetEndDate);
-      let { province } = this;
-      if(province.code){
-        this.editQuery.province_code = province.code;
-      }
 
       //设置查询开始结束日期，自动触发查询（刚进入页面时）
       this.changePicker(this.currentDateRange)
     },
     data() {
       return {
-        province: this.$province,
         currentDateRange: [],
         beforeDateRange: [],
         resetBeginDate: '',
@@ -118,7 +122,6 @@
           let query = {
             page: 1,
             page_size: 20,
-            province_code: '',
             zone_id: '',
             city_id: '',
             begin_date: '',
@@ -134,6 +137,10 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.editQuery.province_code = data.code;
+      },
       //搜索日期
       changePicker(value){
         // console.log('changePicker')
@@ -176,7 +183,7 @@
         this.editQuery = {
           page: 1,
           page_size: 20,
-          province_code: this.province.code,
+          province_code: this.$province.code,
           zone_id: '',
           city_id: '',
           begin_date: this.resetBeginDate,

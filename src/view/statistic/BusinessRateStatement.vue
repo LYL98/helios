@@ -216,10 +216,13 @@ export default {
   },
   data() {
     return {
-      dataItem: {},
+      dataItem: {
+        items: [],
+        num: 0
+      },
       selectArea: 'zone',
       maxLabelWidth: 80,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
+      offsetHeight: 210,
       query: {
         page: 1,
         page_size: 20,
