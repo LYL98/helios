@@ -1,13 +1,9 @@
 <template>
   <div class="container-table">
-    <div class="table-top" v-if="(page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailAdd)) || (page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailExport)) || returnSelectionAuth">
+    <div class="table-top">
       <div class="left">
-        <el-button v-if="page === 'sBDetailAudit' && (auth.isAdmin || auth.FinanceSBDetailAuditAudit)"
-          @click="handleShowForm('FormAudit', {ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
-          :disabled="multipleSelection.length === 0 ? true : false">批量审核</el-button>
-        <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailPay)"
-          @click="handlePay(returnListKeyList('id', multipleSelection))" size="mini" type="primary"
-          :disabled="multipleSelection.length === 0 ? true : false">批量结款</el-button>
+        <query-tabs v-if="page === 'sBDetail'" v-model="bill_term" @change="changeTab" :tab-panes="{'全部': '', '现结': '0', '账期': '14'}"/>
+        <query-tabs v-if="page === 'sBDetailAudit'" v-model="audit_status" @change="changeTab" :tab-panes="audit_status_options"/>
       </div>
       <div class="right">
         <el-button v-if="page === 'sBDetail' && (auth.isAdmin || auth.FinanceSBDetailExport)" @click.native="handleExport('supBdetailExport', query)" size="mini" type="primary" plain>导出流水</el-button>
@@ -108,10 +104,12 @@
 <script>
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: 'TableFinanceSBDetail',
     components: {
+      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
@@ -145,6 +143,11 @@
       ]);
 
       return {
+        bill_term: '',
+        bill_term_options: {'全部': '', ...Constant.SUPPLIER_BILL_TERM2('value_key')},
+        audit_status: this.$props.page === 'sBDetail' ? 'success' : '',
+        audit_status_options: {'全部': '', ...Constant.AUDIT_STATUS('value_key')},
+
         tableName: 'TableFinanceSBDetail',
         tableColumn: tableColumn,
         paidStatus: Constant.S_STATEMENT_PAID_STATUS(),
@@ -165,9 +168,22 @@
       },
     },
     methods: {
+      changeTab() {
+        let pc = this.getPageComponents('QueryFinanceSBDetail');
+        this.getData(pc.query);
+      },
       //获取数据
-      async getData(query){
+      async getData(query, type){
+        if (type === 'clear') {
+          this.$data.bill_term = '';
+          this.$data.audit_status = this.page === 'sBDetail' ? 'success' : '';
+        }
+
+        query.bill_term = this.$data.bill_term;
+        query.audit_status = this.$data.audit_status;
+
         this.$data.query = query; //赋值，minxin用
+
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.financeSupBDetailQuery, query);
         this.$loading({isShow: false});

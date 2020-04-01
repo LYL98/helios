@@ -14,10 +14,10 @@
           </my-query-item>
         </el-col>
         <el-col :span="7">
-          <my-query-item label="结款类型">
+          <my-query-item label="结款状态">
             <select-option
-              :options="{'全部': '', ...billTerm}"
-              v-model="query.bill_term"
+              :options="{'全部': '', ...paidStatus}"
+              v-model="query.paid_status"
               @change="handleQuery('TableFinanceSBDetail')"
               size="small"
             />
@@ -37,11 +37,13 @@
           </my-query-item>
         </el-col>
         <el-col :span="7">
-          <my-query-item label="审核状态">
-            <el-select v-model="query.audit_status" size="small" style="width: 100%;" clearable @change="handleQuery('TableFinanceSBDetail')">
-              <el-option label="全部" value=""></el-option>
-              <el-option :label="key" :value="value" v-for="(value, key) in auditStatus" :key="key"></el-option>
-            </el-select>
+          <my-query-item label="结款状态">
+            <select-option
+              :options="{'全部': '', ...paidStatus}"
+              v-model="query.paid_status"
+              @change="handleQuery('TableFinanceSBDetail')"
+              size="small"
+            />
           </my-query-item>
         </el-col>
       </template>
@@ -77,16 +79,6 @@
           />
         </my-query-item>
       </el-col>
-      <el-col :span="7">
-        <my-query-item label="结款状态">
-          <select-option
-            :options="{'全部': '', ...paidStatus}"
-            v-model="query.paid_status"
-            @change="handleQuery('TableFinanceSBDetail')"
-            size="small"
-          />
-        </my-query-item>
-      </el-col>
     </el-row>
   </div>
 </template>
@@ -108,12 +100,12 @@
     data() {
       let initQuery = {
         picker_value: null,
-        audit_status: this.page === 'sBDetail' ? 'success' : '',
+        // audit_status: this.page === 'sBDetail' ? 'success' : '',
         created_by: this.page === 'sBDetailAudit' ? 'manual' : '',
         begin_date: '',
         end_date: '',
         bill_reason: '',
-        bill_term: '',
+        // bill_term: '',
         paid_status: '',
         condition: '',
       }
@@ -121,8 +113,6 @@
         initQuery: initQuery,
         query: this.copyJson(initQuery), //只有一层，可以用Object.assign深拷贝
         billReason: Constant.SUPPLIER_BILL_REASON('value_key'),
-        billTerm: Constant.SUPPLIER_BILL_TERM2('value_key'),
-        auditStatus: Constant.AUDIT_STATUS('value_key'),
         paidStatus: Constant.S_STATEMENT_PAID_STATUS('value_key'),
       }
     },
