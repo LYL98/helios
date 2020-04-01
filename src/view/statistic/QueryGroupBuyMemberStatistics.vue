@@ -1,7 +1,12 @@
 <template>
   <div class="query">
-    <el-row>
-      <el-col :xl="8" :lg="10" :span="10">
+    <el-row :gutter="32">
+      <el-col :span="7">
+        <my-query-item label="区域">
+          <global-province :value="editQuery.province_code" isRequired type="select" @change="selectProvince"/>
+        </my-query-item>
+      </el-col>
+      <el-col :span="10">
         <my-query-item label="搜索">
           <div style="display: flex">
             <el-input
@@ -25,6 +30,7 @@
 <script>
   import {DatePicker, Row, Col, Input, Button, Message} from 'element-ui';
   import { QueryItem } from '@/common';
+  import { GlobalProvince } from '@/component';
   import { DataHandle } from '@/util';
   import queryMixin from '@/share/mixin/query.mixin';
 
@@ -36,7 +42,8 @@
       'el-col': Col,
       'el-input': Input,
       'el-button': Button,
-      'my-query-item': QueryItem
+      'my-query-item': QueryItem,
+      'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
     created() {
@@ -72,6 +79,11 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.editQuery.province_code = data.code;
+        this.changeQuery();
+      },
       changeQuery() {
         //触发change事件
         this.editQuery = Object.assign({}, this.editQuery);
