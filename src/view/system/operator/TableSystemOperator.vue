@@ -69,7 +69,7 @@
                     {
                       title: '修改',
                       isDisplay: auth.isAdmin || auth.SystemOperatorEdit,
-                      command: () => handleShowAddEdit('AddEditSystemOperator', scope.row, 'edit')
+                      command: () => handleChangeItem(scope.row)
                     },
                     {
                       title: '解绑微信',
@@ -212,6 +212,12 @@ export default {
         });
       } else {
         this.$message({ message: res.message, type: "error" });
+      }
+    },
+    async handleChangeItem(item) {
+      let res = await Http.get(Config.api.signIsLogin);
+      if (res.code === 0) {
+        this.handleShowAddEdit('AddEditSystemOperator', item, 'edit');
       }
     },
     //显示重置密码

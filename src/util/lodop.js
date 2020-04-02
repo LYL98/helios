@@ -25,18 +25,18 @@ export default {
     let qrcontent = `{"type":"item","sub_item_id":${item.item_id},"item_code":${item.item_code},"order_id":${item.id},"order_type":"${(item.order_type || 'distribute')}","batch_code":"${item.batch_code}"}`;
     LODOP.PRINT_INIT('打印商品码');
     LODOP.SET_PRINT_PAGESIZE(1, 600, 400);
-    LODOP.ADD_PRINT_BARCODE(5, 68, 100, 100, 'QRCode', qrcontent);
-    LODOP.SET_PRINT_STYLEA(0, 'QRCodeVersion');
+    LODOP.ADD_PRINT_BARCODE(0, 60, 120, 120, 'QRCode', qrcontent);
+    LODOP.SET_PRINT_STYLEA(0, 'QRCodeVersion', 10);
     LODOP.SET_PRINT_STYLE('FontName', '微软雅黑');
-    LODOP.SET_PRINT_STYLE('FontSize', 13);
+    LODOP.SET_PRINT_STYLE('FontSize', 10);
     LODOP.SET_PRINT_STYLE('Bold', 1);
     LODOP.SET_PRINT_STYLE('Alignment', 2);
-    LODOP.ADD_PRINT_TEXT(95, 0, 226, 20, item.item_code);
+    LODOP.ADD_PRINT_TEXT(113, 0, 226, 20, item.item_code);
     LODOP.SET_PRINT_STYLE('FontName', '微软雅黑');
     LODOP.SET_PRINT_STYLE('FontSize', 9);
     LODOP.SET_PRINT_STYLE('Bold', 0);
     LODOP.SET_PRINT_STYLE('Alignment', 2);
-    LODOP.ADD_PRINT_TEXT(115, 0, 226, 20, (item.item_title || '').slice(0, 18));
+    LODOP.ADD_PRINT_TEXT(128, 0, 226, 15, (item.item_title || '').slice(0, 18));
     return LODOP;
   },
 
