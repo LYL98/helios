@@ -12,7 +12,8 @@
    1、code == OperateReceivingEditNum  修改项: urls【从dev数据库拷贝】
    2、code == StatisticClient  修改项: urls 【从dev数据库拷贝】
    3、code == WarehouseQualityControlEditNum 修改项: urls【从dev数据库拷贝】
-   4、code == WarehouseInventoryMoveExport 修改项: urls【从dev数据库拷贝】
+   4、code == StatisticClientProvince 新增项: urls【从dev数据库拷贝】
+   5、code == WarehouseInventoryMoveExport 修改项: urls【从dev数据库拷贝】
 ```
 
 ### 3.4.0

@@ -37,7 +37,7 @@
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
           <li>订单商品总金额: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
-          <li>订单框总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
+          <li>筐总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
           <li>改单商品总金额: <span>{{ Math.abs(returnPrice(totalOrderModifyPrice)) }}</span> 元</li>
           <li>销售总量: <span>{{ totalCount }}</span> 件</li>
         </ul>

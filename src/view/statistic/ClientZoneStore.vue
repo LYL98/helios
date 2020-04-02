@@ -133,8 +133,8 @@
             ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
-        <el-table-column label="下单门店数" sortable="custom" prop="store_num">
-        </el-table-column>
+        <!--<el-table-column label="下单门店数" sortable="custom" prop="store_num">-->
+        <!--</el-table-column>-->
         <el-table-column label="件数" sortable="custom" prop="piece_num"/>
         <el-table-column label="占比" prop="percent">
           <template slot-scope="scope">
