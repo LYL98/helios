@@ -49,7 +49,7 @@
             prop="city_title">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
-              <el-tooltip class="item" effect="dark" content="GMV： 订单商品金额 + 运费" placement="right" v-if="scope.row.name === 'GMV'">
+              <el-tooltip class="item" effect="dark" content="GMV = 订单商品金额 + 运费 + 筐 - 优惠金额" placement="right" v-if="scope.row.name === 'GMV'">
                 <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
               </el-tooltip>
             </template>
