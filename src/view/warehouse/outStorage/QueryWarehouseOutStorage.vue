@@ -2,8 +2,8 @@
   <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
-        <my-query-item label="区域">
-          <global-province type="select" isRequired @change="selectProvince"/>
+        <my-query-item label="仓库">
+          <select-storehouse v-model="selectStorehouseId" size="small" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -30,7 +30,7 @@
 
 <script>
   import { SelectOption } from '@/common';
-  import { GlobalProvince } from '@/component';
+  import { SelectStorehouse } from '@/component';
   import queryMixin from '@/share/mixin/query.mixin';
   import { Constant } from '@/util';
 
@@ -38,7 +38,7 @@
     name: "QueryWarehouseOutStorage",
     components: {
       'select-option': SelectOption,
-      'global-province': GlobalProvince
+      'select-storehouse': SelectStorehouse
     },
     mixins: [queryMixin],
     created() {
@@ -52,15 +52,28 @@
         province_code: '',
       }
       return {
+        selectStorehouseId: '',
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }
     },
     methods: {
-      //选择区域后【页面初始化】
-      selectProvince(data){
-        this.$data.initQuery.province_code = data.code;
-        this.$data.query.province_code = data.code;
+      //选择仓库
+      changeStorehouse(data){
+        let { query } = this;
+        query.province_code = data.province_code;
+        this.$data.query = query;
+        this.handleQuery('TableWarehouseOutStorage');
+      },
+      //选择仓库时【仓库 初始化】
+      storehouseInit(dataItem){
+        let d = dataItem.length > 0 ? dataItem[0] : {id: '', province_code: '' };
+        let { initQuery, query } = this;
+        initQuery.province_code = d.province_code;
+        query.province_code = d.province_code;
+        this.$data.selectStorehouseId = d.id;
+        this.$data.initQuery = initQuery;
+        this.$data.query = query;
         this.handleQuery('TableWarehouseOutStorage');
       }
     }

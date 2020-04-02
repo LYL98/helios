@@ -109,13 +109,17 @@
           normal: '普通订单',
           gb_order: '团购订单',
           presale: '预售订单'
-        }
+        },
+        initProvinceCode: ''
       }
     },
     methods: {
       //选择区域后
-      selectProvince(data){
+      selectProvince(data, type){
         this.editQuery.city_id = '';
+        if(type === 'init'){
+          this.initProvinceCode = data.code;
+        }
         this.changeQuery();
       },
       //搜索日期
@@ -132,7 +136,7 @@
       },
       resetQuery() {
         this.$data.pickerValue = null;
-        this.$props.reset();
+        this.$props.reset({province_code: this.initProvinceCode});
       }
     }
   }

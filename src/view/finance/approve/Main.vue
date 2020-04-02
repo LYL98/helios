@@ -101,9 +101,12 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
-      initQuery() {
+      initQuery(resetData) {
+        let provinceCode = '';
+        if(resetData && resetData.province_code) provinceCode = resetData.province_code;
+
         this.$data.query = Object.assign({}, this.$data.query, {
-          province_code: '',
+          province_code: provinceCode,
           status: '',
           reason: '',
           merchant_title: '',
@@ -117,8 +120,8 @@
       changeQuery() {
         this.getData();
       },
-      resetQuery() {
-        this.initQuery();
+      resetQuery(resetData) {
+        this.initQuery(resetData);
         this.getData();
       },
       changePage(page) {
