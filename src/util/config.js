@@ -12,6 +12,7 @@ const Config = (() => {
     api: {
       /*-- 基础信息 --*/
       tencentPresignedUrl: apiCommon + '/tencent/presigned_url',//腾讯Buckettoken
+      signMock: apiM + '/sign/mock',//用户登录(开发用测试用，生产没用)
       signLogin: apiM + '/sign/login',//用户登录
       signQrconnectUrl: apiM + '/sign/qrconnect/url',// 获取登录二维码
       signLoginConfirm: apiM + '/sign/login/confirm',// 轮询扫码状态

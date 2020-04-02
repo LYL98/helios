@@ -227,7 +227,7 @@
         } else if (command === 'editPassword') {
           PwdModify.show(); //修改密码
         } else if (command === 'reloadAuth') {
-          that.signLogin();
+          that.signMock();
         }
       },
       //登出
@@ -242,10 +242,12 @@
         }
       },
       //重新登录
-      async signLogin(){
+      async signMock(){
         let data = Method.getLocalStorage('loginData');
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.signLogin, data, {throttle: false});
+        let res = await Http.get(Config.api.signMock, {
+          phone: data.login_name
+        }, {throttle: false});
         this.$loading({ isShow: false });
         if(res.code === 0){
           if(this.$route.name !== 'Home') this.$router.replace({ name: "Home" });

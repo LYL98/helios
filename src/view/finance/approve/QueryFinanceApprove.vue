@@ -82,11 +82,15 @@
     data() {
       return {
         pickerValue: null,
+        initProvinceCode: ''
       }
     },
     methods: {
       //选择区域后【页面初始化】
-      selectProvince(data){
+      selectProvince(data, type){
+        if(type === 'init'){
+          this.initProvinceCode = data.code;
+        }
         this.$emit('change', {
           ...this.editQuery,
           province_code: data.code
@@ -106,7 +110,7 @@
       },
       resetQuery() {
         this.pickerValue = null;
-        this.$props.reset();
+        this.$props.reset({province_code: this.initProvinceCode});
       }
     }
   }

@@ -234,9 +234,12 @@
         window.scrollTo(0, 0);
       },
 
-      initQuery() {
+      initQuery(resetData) {
+        let provinceCode = '';
+        if(resetData && resetData.province_code) provinceCode = resetData.province_code;
+        
         this.$data.query = Object.assign({}, this.$data.query, {
-          province_code: '',
+          province_code: provinceCode,
           city_id: '',
           status: '',
           pay_status: '',
@@ -261,8 +264,8 @@
         this.getOrderGetList(this.query);
         window.scrollTo(0, 0);
       },
-      resetQuery() {
-        this.initQuery();
+      resetQuery(resetData) {
+        this.initQuery(resetData);
         this.getOrderGetList(this.query);
         window.scrollTo(0, 0);
       },
