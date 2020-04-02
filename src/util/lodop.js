@@ -23,10 +23,12 @@ export default {
     let LODOP = GET_LODOP();
     if (!LODOP) return;
     let qrcontent = `{"type":"item","sub_item_id":${item.item_id},"item_code":${item.item_code},"order_id":${item.id},"order_type":"${(item.order_type || 'distribute')}","batch_code":"${item.batch_code}"}`;
+    console.log('qrcontent: ', qrcontent);
     LODOP.PRINT_INIT('打印商品码');
     LODOP.SET_PRINT_PAGESIZE(1, 600, 400);
-    LODOP.ADD_PRINT_BARCODE(5, 68, 100, 100, 'QRCode', qrcontent);
+    LODOP.ADD_PRINT_BARCODE(5, 69, 100, 100, 'QRCode', qrcontent);
     LODOP.SET_PRINT_STYLEA(0, 'QRCodeVersion');
+    LODOP.SET_PRINT_STYLEA(0,"QRCodeErrorLevel","L"); // //L为低容错率7%，默认是M级容错率15%，最高级H级容错率是30%
     LODOP.SET_PRINT_STYLE('FontName', '微软雅黑');
     LODOP.SET_PRINT_STYLE('FontSize', 13);
     LODOP.SET_PRINT_STYLE('Bold', 1);
