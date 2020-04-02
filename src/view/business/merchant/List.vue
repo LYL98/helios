@@ -184,18 +184,19 @@
       /**
        * 清楚筛选条件
        */
-      resetQuery(){
+      resetQuery(resetData){
         let { page_size } = this.$data.query;
         this.$data.query = {
           is_audited: '',
           is_freeze: '',
           is_post_pay: '',
           gb_included: '',
-          province_code: this.province.code,
+          province_code: '',
           city_id: '',
           condition: '',
           page: 1,
-          page_size: page_size
+          page_size: page_size,
+          ...resetData
         };
         this.storeQuery();
       },

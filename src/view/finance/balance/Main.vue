@@ -177,9 +177,12 @@
       //this.getData();
     },
     methods: {
-      initQuery() {
+      initQuery(resetData) {
+        let provinceCode = '';
+        if(resetData && resetData.province_code) provinceCode = resetData.province_code;
+
         this.$data.query = Object.assign(this.$data.query, {
-          province_code: '',
+          province_code: provinceCode,
           title: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -199,8 +202,8 @@
       changeQuery() {
         this.getData();
       },
-      resetQuery() {
-        this.initQuery();
+      resetQuery(resetData) {
+        this.initQuery(resetData);
         this.getData();
       },
 

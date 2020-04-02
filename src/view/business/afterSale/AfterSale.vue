@@ -169,9 +169,12 @@ export default {
   },
   methods: {
 
-    initQuery() {
+    initQuery(resetData) {
+      let provinceCode = '';
+      if(resetData && resetData.province_code) provinceCode = resetData.province_code;
+
       this.$data.query = Object.assign({}, this.$data.query, {
-        province_code: '',
+        province_code: provinceCode,
         city_id: '',
         condition: '',
         item: '',
@@ -187,8 +190,8 @@ export default {
       this.query.page = 1;
       this.orderAfterSaleQuery();
     },
-    resetQuery() {
-      this.initQuery();
+    resetQuery(resetData) {
+      this.initQuery(resetData);
       this.orderAfterSaleQuery();
     },
     changePageSize(pageSize) {

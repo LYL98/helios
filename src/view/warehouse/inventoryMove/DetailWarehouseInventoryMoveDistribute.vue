@@ -27,7 +27,14 @@
         </el-col>
       </el-row>
       <el-form-item label="调入仓库">{{detail.tar_storehouse.title}}/临时库</el-form-item>
-      <el-form-item label="销售日期">{{detail.available_date}}</el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="销售日期">{{detail.available_date}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="预计到货">{{detail.estimate_arrive_at}}</el-form-item>
+        </el-col>
+      </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="创建人">{{detail.creator.realname}}</el-form-item>
