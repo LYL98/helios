@@ -16,7 +16,7 @@
       </div>
       <el-table
         :data="dataItem.items"
-        :height="viewWindowHeight - offsetHeight"
+        :height="viewWindowHeight - 255"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -144,13 +144,13 @@
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
 import { Http, Config, DataHandle } from '@/util';
-import { QueryItemDailyAnalysis } from '@/container'
+import QueryItemDailyAnalysis from './QueryItemDailyAnalysis';
 import Constant from "@/util/constant";
-import viewMixin from '@/view/view.mixin';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "ItemDailyAnalysisStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -171,7 +171,6 @@ export default {
       selectArea: 'item',
       selectItemName: '',
       maxLabelWidth: 120,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
       query: {
         page: 1,
         page_size: 20,

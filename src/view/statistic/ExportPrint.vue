@@ -1,5 +1,15 @@
 <template>
   <sub-menu>
+    <!-- 查询 -->
+    <div class="container-query" style="margin-bottom: 16px;">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province type="select" isRequired @change="selectProvince" />
+          </my-query-item>
+        </el-col>
+      </el-row>
+    </div>
     <div :style="`margin: 6px; background: white; height: ${viewWindowHeight - 90}px`">
       <div style="padding: 20px;">
         <h6 style="font-size: 14px">商户表</h6>
@@ -120,6 +130,8 @@
 
 <script>
 import {
+  Row,
+  Col,
   Form,
   FormItem,
   Button,
@@ -130,9 +142,9 @@ import {
   Radio
 } from 'element-ui';
 import { Http, Config, Constant, DataHandle, Request } from "@/util";
-import { SelectCity, SelectCityMulti } from "@/common";
-import viewMixin from '@/view/view.mixin';
-import { SearchItem } from '@/container';
+import { QueryItem, SelectCity, SelectCityMulti } from "@/common";
+import mainMixin from '@/share/mixin/main.mixin';
+import { SearchItem, GlobalProvince } from '@/component';
 
 const apis = {
   "1": Config.api.orderCityExport,
@@ -150,8 +162,10 @@ const apis = {
 
 export default {
   name: "ExportPrint",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
+    'el-row': Row,
+    'el-col': Col,
     "el-form": Form,
     "el-form-item": FormItem,
     "el-dialog": Dialog,
@@ -161,7 +175,9 @@ export default {
     "el-option": Option,
     "my-select-city": SelectCity,
     'search-item': SearchItem,
-    'el-radio': Radio
+    'el-radio': Radio,
+    'global-province': GlobalProvince,
+    'my-query-item': QueryItem,
   },
   created() {
     let that = this;
@@ -247,6 +263,10 @@ export default {
     };
   },
   methods: {
+    //选择区域后【页面初始化】
+    selectProvince(data){
+      this.$data.query.province = data;
+    },
     preview() {
       this.isPreview = true;
     },

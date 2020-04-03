@@ -16,7 +16,7 @@
       </div>
       <div class="statistics-table-list-container">
         <el-table :data="dataItem.items"
-                  :height="viewWindowHeight - offsetHeight"
+                  :height="viewWindowHeight - 255"
                   :row-class-name="highlightRowClassName"
                   @cell-mouse-enter="cellMouseEnter"
                   @cell-mouse-leave="cellMouseLeave"
@@ -31,7 +31,7 @@
               <span>{{formatValue(selectArea === 'zone' ? scope.row.zone_title : scope.row.city_title)}}</span>
             </template>
           </el-table-column>
-          <el-table-column min-width="100" align="left" v-for="(d, index) in dateRange()" :key="d" :label="labelDate(d)">
+          <el-table-column min-width="100" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
             <template slot-scope="scope">
               <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.items, d) }}</span>
             </template>
@@ -81,12 +81,12 @@ import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Rad
 import { SelectZone } from '@/common';
 import { Http, Config, DataHandle, Constant } from '@/util';
 import BusinessFluctuationChart from "./BusinessFluctuationChart";
-import {QueryBusinessFluctuation} from '@/container';
-import viewMixin from '@/view/view.mixin';
+import QueryBusinessFluctuation from './QueryBusinessFluctuation';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "BusinessFluctuationStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -104,11 +104,13 @@ export default {
   data() {
     return {
       province: this.$province,
-      dataItem: {},
+      dataItem: {
+        items: [],
+        num: 0
+      },
       selectArea: 'zone',
       selectType: 'merchant',
       maxLabelWidth: 80,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
       query: {
         page: 1,
         page_size: 20,

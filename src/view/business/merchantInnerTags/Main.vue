@@ -10,7 +10,7 @@
   import Query from './Query';
   import Table from './Table';
   import AddEdit from './AddEdit';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'MerchantInnerTagsList',
@@ -19,7 +19,7 @@
       'table-view': Table,
       'add-edit-view': AddEdit,
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       documentTitle("业务 - 商户内标签");
     },

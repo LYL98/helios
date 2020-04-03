@@ -84,11 +84,6 @@
             ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
-        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.fram_total_price) }}
-          </template>
-        </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
@@ -117,11 +112,11 @@
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
   import { QueryItem, TableOperate, SelectSystemClassList } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "MarketClass",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -190,7 +185,7 @@
         let q = this.$route.query;
         this.$data.pickerValue = [q.begin_date, q.end_date];
         this.$data.query = {
-          province_code: this.province.code,
+          province_code: q.province_code,
           begin_date: q.begin_date,
           end_date: q.end_date,
           sort: '-amount_real',
@@ -273,7 +268,8 @@
             system_class3: item.item_system_class,
             system_class_code3: item.system_class_code,
             begin_date: this.query.begin_date,
-            end_date: this.query.end_date
+            end_date: this.query.end_date,
+            province_code: this.$route.query.province_code
           }
         });
       }

@@ -113,11 +113,6 @@
             ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
-        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.fram_total_price) }}
-          </template>
-        </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="count_real" />
       </el-table>
     </div>
@@ -142,11 +137,11 @@
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Input, Button, Breadcrumb, BreadcrumbItem } from 'element-ui';
   import { QueryItem, SelectZone, SelectCity } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "MarketClassItem",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -218,7 +213,7 @@
         let q = this.$route.query;
         this.$data.pickerValue = [q.begin_date, q.end_date];
         this.$data.query = {
-          province_code: this.province.code,
+          province_code: q.province_code,
           begin_date: q.begin_date,
           end_date: q.end_date,
           sort: '-amount_real',

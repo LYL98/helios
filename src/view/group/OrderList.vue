@@ -1,27 +1,13 @@
 <template>
   <div>
-    <div class="query">
-      <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
-          <my-query-item label="订单状态">
-            <el-select
-              class="query-item-select"
-              v-model="query.status"
-              @change="changeQuery"
-              placeholder="全部"
-              size="small"
-              clearable
-            >
-              <el-option
-                v-for="(item, key) in groupOrderStatus"
-                :key="key"
-                :label="item"
-                :value="key"
-              ></el-option>
-            </el-select>
+    <div class="container-query">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province v-model="query.province_code" isRequired type="select" @change="selectProvince"/>
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item label="下单时间">
             <el-date-picker
                 size="small"
@@ -35,11 +21,11 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 @change="changePicker"
-                class="query-item-date"
+                style="width: 100%;"
               />
           </my-query-item>
         </el-col>
-        <el-col :xl="8" :lg="10" :span="10">
+        <el-col :span="10">
           <my-query-item label="搜索">
             <div style="display: flex">
               <el-input
@@ -54,8 +40,29 @@
               />
               <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 2px"
                          @click="changeQuery"></el-button>
-              <el-button type="primary" size="small" class="query-item-reset" plain @click="initQuery">重置</el-button>
+              <el-button type="primary" size="small" class="query-item-reset" plain @click="resetQuery">重置</el-button>
             </div>
+          </my-query-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32" style="margin-top: 16px;">
+        <el-col :span="7">
+          <my-query-item label="订单状态">
+            <el-select
+              v-model="query.status"
+              @change="changeQuery"
+              placeholder="全部"
+              size="small"
+              clearable
+              style="width: 100%;"
+            >
+              <el-option
+                v-for="(item, key) in groupOrderStatus"
+                :key="key"
+                :label="item"
+                :value="key"
+              ></el-option>
+            </el-select>
           </my-query-item>
         </el-col>
       </el-row>
@@ -194,7 +201,8 @@
    */
   import { SelectOption, QueryItem, SelectCity, TableOperate, ImagePreview } from '@/common';
   import { Constant, Config, DataHandle, Http } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
+  import { GlobalProvince } from '@/component';
 
   export default {
     name: "OrderList",
@@ -204,6 +212,7 @@
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'my-image-preview': ImagePreview,
+      'global-province': GlobalProvince,
     },
     mixins: [tableMixin],
     props: {
@@ -227,21 +236,22 @@
           num: 0,
           items: []
         },
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
       }
     },
     created() {
       this.initQuery();
-      if (this.auth.isAdmin || this.auth.GroupOrderExport) {
-        this.$data.offsetHeight = this.$data.offsetHeight + Constant.OFFSET_OPERATE;
-      }
     },
 
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(data){
+        this.$data.query.province_code = data.code;
+        this.orderQuery();
+      },
       initQuery() {
         this.$data.pickerValue = null;
         this.$data.query = {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           status: '',
           condition: '',
           begin_date: '',
@@ -249,6 +259,9 @@
           page: 1,
           page_size: Constant.PAGE_SIZE
         }
+      },
+      resetQuery(){
+        this.initQuery();
         this.orderQuery();
       },
       changeQuery() {

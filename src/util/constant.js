@@ -224,7 +224,9 @@ const Constant = {
       { key: 'amount_delivery', value: '运费退还' },
       { key: 'weight', value: '少称' },
       { key: 'not_match', value: '与SKU描述不相符' },
-      { key: 'num', value: '缺货/错货' },
+      { key: 'num', value: '缺货/错货' }, //新增时不显示
+      { key: 'num_short', value: '缺货' },
+      { key: 'num_error', value: '错货' },
       { key: 'big_order_bonus', value: '大单优惠' },
       { key: 'other', value: '其他' }
     ];
@@ -423,7 +425,8 @@ const Constant = {
   S_STATEMENT_STATUS: (type)=>{
     let data = [
       { key: 'init', value: '待确认' },
-      { key: 'confirmed', value: '待结款' },
+      { key: 'confirmed', value: '已确认' },
+      { key: 'wait_paid', value: '待结款' },
       { key: 'paid', value: '已结款' }
     ];
     return handleKeyValue(type, data);
@@ -432,6 +435,7 @@ const Constant = {
   S_STATEMENT_STATUS_TYPE: {
     init: 'primary',
     confirmed: 'warning',
+    wait_paid: 'warning',
     paid: 'regular'
   },
   //供应商流水类型

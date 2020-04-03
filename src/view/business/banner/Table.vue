@@ -66,7 +66,7 @@
 <script>
   import { ImagePreview } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
     name: 'Table',
@@ -76,6 +76,9 @@
     mixins: [tableMixin],
     created() {
       this.getData();
+    },
+    props: {
+      provinceCode: { type: String, default: '' }, //省code
     },
     data() {
       return {
@@ -100,7 +103,7 @@
       async getData(){
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.systemBannerList, {
-          province_code: this.province.code
+          province_code: this.provinceCode
         });
         this.$loading({isShow: false});
         if(res.code === 0){
@@ -137,8 +140,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import '@/container/table/table.scss';
+  @import '@/share/scss/table.scss';
 </style>
 <style lang="scss">
-  @import '@/container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

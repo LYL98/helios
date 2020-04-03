@@ -29,12 +29,15 @@
 </template>
 
 <script>
-  import addEditMixin from '@/container/addEdit/add.edit.mixin';
+  import addEditMixin from '@/share/mixin/add.edit.mixin';
   import { Http, Config } from '@/util';
 
   export default {
     name: "Operating",
     mixins: [addEditMixin],
+    props: {
+      provinceCode: { type: String, default: '' }, //省code
+    },
     data() {
       return{
         isEdit: false,
@@ -62,7 +65,7 @@
       //获取营业
       async basicdataOrderTimeGet() {
         let res = await Http.get(Config.api.basicdataOrderTime, {
-          province_code: this.province.code
+          province_code: this.provinceCode
         });
         if (res.code === 0) {
           let rd = res.data;
@@ -78,7 +81,7 @@
       async addEditData() {
         let { detail } = this;
         let res = await Http.post(Config.api.basicdataOrderTime, {
-          province_code: this.province.code,
+          province_code: this.provinceCode,
           order_start_time: detail.orderTimeRange[0],
           order_end_time: detail.orderTimeRange[1]
         });

@@ -12,7 +12,11 @@ const Config = (() => {
     api: {
       /*-- 基础信息 --*/
       tencentPresignedUrl: apiCommon + '/tencent/presigned_url',//腾讯Buckettoken
+      signMock: apiM + '/sign/mock',//用户登录(开发用测试用，生产没用)
       signLogin: apiM + '/sign/login',//用户登录
+      signQrconnectUrl: apiM + '/sign/qrconnect/url',// 获取登录二维码
+      signLoginConfirm: apiM + '/sign/login/confirm',// 轮询扫码状态
+      signWechatBind: apiM + '/sign/wechat/bind',// 轮询扫码状态
       signLogout: apiM + '/sign/logout',//用户退出
       signIsLogin: apiM + '/sign/is_login',//判断是否登录
       loginByToken: apiM + '/validate_user/by_token',//通过token登录
@@ -53,6 +57,7 @@ const Config = (() => {
       supPDistributeExport: apiM + '/sup_p_distribute/export', //调拨记录 sup_p_distribute/export  sup_p_distribute/export_check
       supBdetailExport: apiM + '/sup_bdetail/export', //供应商流水导出
       supOnGroundExport: apiM + '/sup_on_ground/export', //导出上架记录
+      supStockRecordExport: apiM + '/sup_stock_record/export', //导出全部记录
       basicDataListDeliveryExport: apiM + '/basicdata/line/delivery_export', //司机导出
 
       //供应商
@@ -125,6 +130,18 @@ const Config = (() => {
       itemCouponDistributeLog: apiM + '/coupon/distribute/log/query', // 优惠券发放记录
       itemCouponDistributeStatistic: apiM + '/coupon/distribute/merchants/query', // 优惠券发放记录
       itemCouponListExport: apiM + '/coupon/distribute/log/export', //优惠券导出
+
+      // 营销策略
+      businessMarketingStrategyCityQuery: apiM + '/item/city_price/query', // 县域定价查询
+      businessMarketingStrategyCityAdd: apiM + '/item/city_price/add', // 新增
+      businessMarketingStrategyCityModify: apiM + '/item/city_price/batch_edit', // 修改
+      businessMarketingStrategyCityDelete: apiM + '/item/city_price/delete', // 删除
+
+      businessMarketingStrategyStepQuery: apiM + '/item/query', // 阶梯定价查询，本质上查询的是商品接口，has_step_price = 1 表示过滤出具有阶梯定价的商品
+      businessMarketingStrategyStepAdd: apiM + '/item/step_price/add', // 新增
+      businessMarketingStrategyStepModify: apiM + '/item/step_price/batch_edit', // 修改
+      businessMarketingStrategyStepDelete: apiM + '/item/step_price/delete', // 删除
+
 
       //团购商品分类
       groupItemClassList: apiM + '/gb_item/category/list', //团购商品分类列表(组件共用)
@@ -332,7 +349,6 @@ const Config = (() => {
       baseMerchantList: apiM + '/common/merchant/list', //商品列表（组件共用）
       baseSupplierList: apiM + '/common/supplier/list', // 供应商列表(组件共用)
       baseItemDetail: apiM + '/common/item/detail', //商品列表（组件共用）
-      baseOrderShipList: apiM + '/common/shipper/list', //快递公司列表 （订单手动发货时用）
       baseSupStorehouseList: apiM + '/sup_storehouse/list', //根据登陆账号权限，返回仓列表
       baseStorehouseList: apiM + '/common/storehouse/list', //获取仓列表（组件共用）
       baseWarehouseList: apiM + '/common/warehouse/list', //获取库列表（组件共用）
@@ -463,6 +479,7 @@ const Config = (() => {
       operatorPwdModify: apiM + '/operator/password_modify', //运营人员修改密码（自己密码）
       operatorFreeze: apiM + '/operator/freeze', //运营人员冻结
       operatorUnFreeze: apiM + '/operator/unfreeze', //运营人员解冻
+      operatorWechatUnbound: apiM + '/operator/wechat/unbound', //解绑微信
 
       //常量
       basicdataConfirmTime: apiM + '/basicdata/constant/confirm/time', //截单时间 GET获取，POST设置
@@ -500,6 +517,7 @@ const Config = (() => {
       //统计
       statisticalOrderClassSum: apiM + '/statistical/order/class_sum', //统计分析 - 商品销售统计 - 分类别统计
       statisticalOrderItemSum: apiM + '/statistical/order/item_sum', //统计分析 - 商品销售统计 - 商品别统计
+      statisticalOrderProvinceSum: apiM + '/statistical/order/province_sum', //统计分析 - 客户订单统计 - 区域级别汇总
       statisticalOrderGradeSum: apiM + '/statistical/order/zone_sum', //统计分析 - 客户订单统计 - 片区级别汇总
       statisticalOrderCitySum: apiM + '/statistical/order/city_sum', //统计分析 - 客户订单统计 - 县域级别汇总
       statisticalOrderMerchantSum: apiM + '/statistical/order/store_sum', //统计分析 - 客户订单统计 - 商户别汇总
@@ -537,12 +555,6 @@ const Config = (() => {
     tencentUpPath: TencentUpPath, //腾讯Bucket上传地址
     tencentPath: TencentPath,//腾讯Bucket下载地址
     isPrintRequestLog: IsPrintRequestLog,// 打印请求日志
-    //授板登录(重新登录)
-    accreditLogin() {
-      setTimeout(() => {
-        window.location.replace('/');
-      }, 2000);
-    }
   }
 })();
 

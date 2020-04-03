@@ -15,7 +15,9 @@
       v-for="item in dataItem"
       :key="item.id"
       :label="item.title"
-      :value="item.id">
+      :value="item.id"
+      @click.native="handleSelectItem(item)"
+    >
     </el-option>
   </el-select>
 </template>
@@ -83,6 +85,9 @@
         }
         // console.log('cityId: ', cityId, ', ', cityName);
         this.$emit('changeCityName', cityName);
+      },
+      handleSelectItem(item) {
+        this.$emit('select-item', item);
       },
       //根据传进来的区域code 获取城市列表
       async baseCityList(){

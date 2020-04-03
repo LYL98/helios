@@ -137,7 +137,7 @@
                   <dt class="label">阶梯优惠:</dt>
                   <dd class="content">
                     <ul>
-                      <li v-for="rule in detailData.rules">
+                      <li v-for="(rule, index) in detailData.rules" :key="index">
                         <span>满{{rule.full}}件, </span><span>售{{returnPrice(rule.price)}}元/件</span>
                       </li>
                     </ul>
@@ -237,7 +237,7 @@
                   <dt class="label">阶梯优惠:</dt>
                   <dd class="content">
                     <ul>
-                      <li v-for="rule in detailMerchantData.rules">
+                      <li v-for="(rule, index) in detailMerchantData.rules" :key="index">
                         <span>满{{rule.full}}件, </span><span>售{{returnPrice(rule.price)}}元/件</span>
                       </li>
                     </ul>
@@ -277,12 +277,16 @@
 <script>
   import {Button, Pagination, Dialog, Form, FormItem, Message, MessageBox, Col, Row} from 'element-ui';
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import {QueryGroupBuy, TableGroupBuy, FormGroupBuy, TableGroupBuyDetail, TableGroupBuyMerchantDetail} from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import QueryGroupBuy from './QueryGroupBuy';
+  import TableGroupBuy from './TableGroupBuy';
+  import FormGroupBuy from './FormGroupBuy';
+  import TableGroupBuyDetail from './TableGroupBuyDetail';
+  import TableGroupBuyMerchantDetail from './TableGroupBuyMerchantDetail';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "BuyList",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-button': Button,
       'el-pagination': Pagination,
@@ -467,7 +471,7 @@
 
       initQuery() {
         this.$data.query = Object.assign({}, this.$data.query, {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           status: '',  //活动状态
           progress_status: '',  //活动进行状态
           condition: '',
@@ -478,7 +482,7 @@
 
       initDetailQuery() {
         this.$data.detailQuery = Object.assign({}, this.$data.detailQuery, {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           gb_activity_id: '',  //活动状态
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -487,7 +491,7 @@
 
       initDetailMerchantQuery() {
         this.$data.detailMerchantQuery = Object.assign({}, this.$data.detailMerchantQuery, {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           store_gb_activity_id: '',  //活动状态
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -558,7 +562,7 @@
         // 为需要编辑的活动对象进行初始化设置
         this.$data.groupBuyItem = {};
         this.$data.groupBuyItem = Object.assign({}, this.$data.groupBuyItem, {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           start_time: '',
           end_time: '',
           item_spec_unit: '',
@@ -578,7 +582,7 @@
         // console.log('edit item: ', item);
 
         let submitItem = {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           id: item.id,
           cover_image: item.cover_images[0],
           item_images: item.item_images,
@@ -623,7 +627,7 @@
         let item = this.$data.groupBuyItem;
 
         let submitItem = {
-          province_code: this.province.code,
+          province_code: this.$province.code,
           cover_image: item.cover_images[0],
           item_images: item.item_images,
           item_title: item.item_title,

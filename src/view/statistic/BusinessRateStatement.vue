@@ -16,7 +16,7 @@
     <div class="statistics-table-list-container">
       <el-table
         :data="dataItem.items"
-        :height="viewWindowHeight - offsetHeight"
+        :height="viewWindowHeight - 210"
         @sort-change="onSort"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
@@ -193,13 +193,13 @@
 <script>
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
 import { SelectZone } from '@/common';
-import { QueryBusinessFourRate } from '@/container';
+import QueryBusinessFourRate from './QueryBusinessFourRate';
 import { Http, Config, DataHandle, Constant } from '@/util';
-import viewMixin from '@/view/view.mixin';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "BusinessRateStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -216,10 +216,12 @@ export default {
   },
   data() {
     return {
-      dataItem: {},
+      dataItem: {
+        items: [],
+        num: 0
+      },
       selectArea: 'zone',
       maxLabelWidth: 80,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
       query: {
         page: 1,
         page_size: 20,

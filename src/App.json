@@ -178,12 +178,29 @@
               "name": "Banner"
             }
           ]
+        },
+        {
+          "title": "营销策略",
+          "name": "MarketingStrategy",
+          "type": "main",
+          "children": [
+            {
+              "title": "县域定价",
+              "upName": "MarketingStrategy",
+              "name": "MarketingStrategyCity"
+            },
+            {
+              "title": "阶梯定价",
+              "upName": "MarketingStrategy",
+              "name": "MarketingStrategyStep"
+            }
+          ]
         }
       ]
     },
     {
       "title": "仓库",
-      "icon": "&#xe75f;",
+      "icon": "&#xe64c;",
       "name": "Warehouse",
       "children": [
         {
@@ -357,52 +374,58 @@
           }
         ]
       }]
-    },{
-      "title": "团购",
-      "icon": "&#xe652;",
-      "name": "Group",
-      "children": [
-        {
-          "title": "团购活动",
-          "name": "GroupActivity"
-        },
-        {
-          "title": "商品列表",
-          "name": "GroupItem"
-        },
-        {
-          "title": "用户订单",
-          "name": "GroupOrderQuery"
-        },
-        {
-          "title": "门店订单",
-          "name": "GroupStoreOrder"
-        },
-        {
-          "title": "团购门店",
-          "name": "GroupHeadQuery"
-        },
-        {
-          "title": "团员列表",
-          "name": "GroupMemberQuery"
-        },
-        {
-          "title": "团购统计",
-          "name": "GroupBuyStatement"
-        },
-        {
-          "title": "商品分类",
-          "name": "GroupItemClass"
-        },
-        {
-          "title": "回收站",
-          "name": "GroupItemRecoverList"
-        },
-        {
-          "title": "Banner管理",
-          "name": "GroupBanner"
-        }
-      ]
+    }
+  ],
+  "gmenus": [
+    {
+      "title": "团购活动",
+      "name": "GroupActivity",
+      "icon": "&#xe61d;"
+    },
+    {
+      "title": "商品列表",
+      "name": "GroupItem",
+      "icon": "&#xe633;"
+    },
+    {
+      "title": "用户订单",
+      "name": "GroupOrderQuery",
+      "icon": "&#xe60f;"
+    },
+    {
+      "title": "门店订单",
+      "name": "GroupStoreOrder",
+      "icon": "&#xe6a3;"
+    },
+    {
+      "title": "团购门店",
+      "name": "GroupHeadQuery",
+      "icon": "&#xe60a;"
+    },
+    {
+      "title": "团员列表",
+      "name": "GroupMemberQuery",
+      "icon": "&#xe7e6;"
+    },
+    {
+      "title": "团购统计",
+      "name": "GroupBuyStatement",
+      "icon": "&#xe636;"
+    },
+    {
+      "title": "商品分类",
+      "name": "GroupItemClass",
+      "icon": "&#xe66c;"
+    },
+    {
+      "title": "回收站",
+      "name": "GroupItemRecoverList",
+      "icon": "&#xe61a;"
+    },
+    {
+      "title": "Banner管理",
+      "name": "GroupBanner",
+      "icon": "&#xe764;"
     }
   ]
 }

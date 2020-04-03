@@ -16,7 +16,6 @@
     <div class="statistics-table-list-container" style="position: relative;">
       <el-table
         :data="dataItem.items"
-        :height="viewWindowHeight - offsetHeight"
         :row-class-name="highlightRowClassName"
         @cell-mouse-enter="cellMouseEnter"
         @cell-mouse-leave="cellMouseLeave"
@@ -115,14 +114,14 @@
 
 <script>
   import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
-  import { QueryGroupBuyItemStatistics } from '@/container'
+  import QueryGroupBuyItemStatistics from './QueryGroupBuyItemStatistics';
   import Constant from "@/util/constant";
   import { DataHandle, Config, Http } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "GroupBuyItemStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   data() {
     return {
       dataItem: {
@@ -130,7 +129,6 @@ export default {
         num: 0
       },
       maxLabelWidth: 200,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
       /*
       * groupbuy_time: (YYYY-mm-dd HH:MM:ss)团购时间
         condition:
@@ -162,9 +160,6 @@ export default {
     'query-group-buy-item-statistics': QueryGroupBuyItemStatistics
   },
   created() {
-    if (!this.auth.isAdmin && !this.auth.GroupBuyItemStatementExport) {
-      this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-    }
   },
   methods: {
     indexMethod(index) {

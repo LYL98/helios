@@ -11,7 +11,7 @@
     <div class="statistics-table-list-container">
       <el-table
         :data="dataItem.items"
-        :height="viewWindowHeight - offsetHeight"
+        :height="viewWindowHeight - 255"
         :header-cell-style="{'backgroundColor': '#ffffff'}"
         @sort-change="onSort"
         :row-class-name="highlightRowClassName"
@@ -118,12 +118,12 @@
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, Input, Message } from 'element-ui';
 import { SelectZone, SelectCity } from '@/common';
 import { Http, Config, DataHandle, Constant } from '@/util';
-import { QueryBusinessStore } from '@/container';
-import viewMixin from '@/view/view.mixin';
+import QueryBusinessStore from './QueryBusinessStore';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "BusinessStoreAnalysisStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -144,7 +144,6 @@ export default {
     return {
       dataItem: {},
       maxLabelWidth: 80,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
       query: {
         page: 1,
         page_size: 20,

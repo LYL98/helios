@@ -2,8 +2,13 @@
 <template>
   <sub-menu>
     <div class="query" style="margin-bottom: 20px">
-      <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province v-model="query.province_code" type="select" @change="selectProvince"/>
+          </my-query-item>
+        </el-col>
+        <el-col :span="10">
           <my-query-item label="时间">
             <el-date-picker
               v-model="currentDateRange"
@@ -13,7 +18,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               size="small"
-              class="query-item-date"
+              style="width: 100%;"
               :picker-options="fixDateOptions"
               :clearable="false"
               @change="onChangeDate">
@@ -44,16 +49,7 @@
             prop="city_title">
             <template slot-scope="scope">
               <span>{{ scope.row.name }}</span>
-              <el-tooltip class="item" effect="dark" content="GMV： 订单商品金额 + 运费" placement="right" v-if="scope.row.name === 'GMV'">
-                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
-              </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="订单应付金额：GMV - 优惠金额 + 框金额" placement="right" v-if="scope.row.name === '订单应付金额'">
-                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
-              </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="客单价：GMV / 下单门店数" placement="right" v-if="scope.row.name === '客单价'">
-                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
-              </el-tooltip>
-              <el-tooltip class="item" effect="dark" content="订单数量：下单天数" placement="right" v-if="scope.row.name === '订单数量'">
+              <el-tooltip class="item" effect="dark" content="GMV = 订单商品金额 + 运费 + 筐 - 优惠金额" placement="right" v-if="scope.row.name === 'GMV'">
                 <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
               </el-tooltip>
             </template>
@@ -81,7 +77,8 @@
   import { DatePicker, Button, Table, Row, Col, TableColumn, Pagination, Select, Option, Input, Message, Tooltip } from 'element-ui';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import { QueryItem } from '@/common';
-  import viewMixin from '@/view/view.mixin';
+  import { GlobalProvince } from '@/component';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   import echarts from "echarts/lib/echarts";
   import 'echarts/lib/chart/line';
@@ -93,7 +90,7 @@
 
   export default {
     name: "OperationStatistics",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-button': Button,
       'el-date-picker': DatePicker,
@@ -107,27 +104,16 @@
       'el-input': Input,
       'my-query-item': QueryItem,
       'el-tooltip': Tooltip,
+      'global-province': GlobalProvince,
     },
     created() {
       documentTitle("统计 - 运营统计");
-
-      let { query, province } = this;
-
-      if (province) {
-        query.province_code = province.code;
-      }
 
       let endDate = new Date();
       let endDateStr = DataHandle.formatDate(endDate, 'yyyy-MM-dd');
       let beginDate = new Date(endDate.setDate(endDate.getDate() - 30));
       this.currentDateRange.push(DataHandle.formatDate(beginDate, 'yyyy-MM-dd'));
       this.currentDateRange.push(endDateStr);
-
-      let that = this;
-
-      that.loadOperationStatistics(() => {
-        that.initChart()
-      });
     },
     data() {
       return {
@@ -155,10 +141,8 @@
          * */
         indexNames: [
           'GMV',
-          '订单应付金额',
-          '客单价',
+          '订单商品金额',
           '下单门店数',
-          '订单数量',
           '下单件数',
           '下单商品数'
         ],
@@ -185,6 +169,12 @@
       }
     },
     methods: {
+      //查询选择区域后【初始化】
+      selectProvince(){
+        this.loadOperationStatistics(() => {
+          this.initChart()
+        });
+      },
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;
@@ -298,10 +288,8 @@
             selectedMode: 'single',
             selected: {
               'GMV': true,
-              '订单应付金额': false,
-              '发货金额': false,
+              '订单商品金额': false,
               '下单门店数': false,
-              '订单数量': false,
               '下单件数': false,
               '下单商品数': false,
             },
@@ -325,106 +313,36 @@
             //GMV
             {
               name:'GMV',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(0, xDates)
-            },
-            {
-              name:'GMV',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(0, xDates)
             },
 
-            //订单应付金额
+            //订单商品金额
             {
-              name:'订单应付金额',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(1, xDates)
-            },
-            {
-              name:'订单应付金额',
+              name:'订单商品金额',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(1, xDates)
             },
-
-            //客单价
+            //下单门店数
             {
-              name:'客单价',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(2, xDates)
-            },
-            {
-              name:'客单价',
+              name:'下单门店数',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(2, xDates)
             },
-
-            //下单门店数
             {
-              name:'下单门店数',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(3, xDates)
-            },
-            {
-              name:'下单门店数',
+              name:'下单件数',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(3, xDates)
             },
-
-            //订单数量
             {
-              name:'订单数量',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(4, xDates)
-            },
-            {
-              name:'订单数量',
+              name:'下单商品数',
               type:'bar',
               itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
               data:this.lineData(4, xDates)
-            },
-
-            //下单件数
-            {
-              name:'下单件数',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(5, xDates)
-            },
-            {
-              name:'下单件数',
-              type:'bar',
-              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
-              data:this.lineData(5, xDates)
-            },
-
-            //下单商品数
-            {
-              name:'下单商品数',
-              type:'line',
-              itemStyle: {normal: {color: lineColors[4], lineStyle: {color: lineColors[4]}}},
-              smooth: true,
-              data: this.lineData(6, xDates)
-            },
-            {
-              name:'下单商品数',
-              type:'bar',
-              itemStyle: {normal: {color: lineColors[3], lineStyle: {color: lineColors[3]}}},
-              data:this.lineData(6, xDates)
             },
           ]
         };
@@ -474,12 +392,10 @@
         switch (index) {
           case 0:
           case 1:
-          case 2:
             return DataHandle.returnPrice(value);
+          case 2:
           case 3:
           case 4:
-          case 5:
-          case 6:
             return value;
           default:
             return 0;
@@ -490,12 +406,10 @@
         switch (index) {
           case 0:
           case 1:
-          case 2:
             return this.returnPrice(value);
+          case 2:
           case 3:
           case 4:
-          case 5:
-          case 6:
             return this.formatValue(value);
           default:
             return 0;
@@ -525,21 +439,15 @@
             result = that.returnPrice(cellItem.gmv);
             break;
           case 1:
-            result = that.returnPrice(cellItem.real_price);
+            result = that.returnPrice(cellItem.amount_real);
             break;
           case 2:
-            result = that.returnPrice(cellItem.gmv / cellItem.store_num);
-            break;
-          case 3:
             result = that.formatValue(cellItem.store_num);
             break;
-          case 4:
-            result = that.formatValue(cellItem.order_num);
-            break;
-          case 5:
+          case 3:
             result = that.formatValue(cellItem.item_num);
             break;
-          case 6:
+          case 4:
             result = that.formatValue(cellItem.item_cat_num);
             break;
           default:
@@ -555,21 +463,15 @@
             result = cellItem.gmv;
             break;
           case 1:
-            result = cellItem.real_price;
+            result = cellItem.amount_real;
             break;
           case 2:
-            result = cellItem.gmv / cellItem.store_num;
-            break;
-          case 3:
             result = cellItem.store_num;
             break;
-          case 4:
-            result = cellItem.order_num;
-            break;
-          case 5:
+          case 3:
             result = cellItem.item_num;
             break;
-          case 6:
+          case 4:
             result = cellItem.item_cat_num
             break;
           default:

@@ -1,23 +1,34 @@
 <template>
-  <sub-menu class="b-c-fff" style="padding-top: 32px;">
-    <el-row style="margin-bottom: 32px;">
-      <el-col :span="12">
-        <operating :getPageComponents="viewGetPageComponents" ref="Operating"/>
-      </el-col>
-      <el-col :span="12">
-        <order-affirm :getPageComponents="viewGetPageComponents" ref="OrderAffirm"/>
-      </el-col>
-    </el-row>
-    <el-row style="margin-bottom: 32px;">
-      <el-col :span="12">
-        <freight :getPageComponents="viewGetPageComponents" ref="Freight"/>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="24">
-        <item-common-des :getPageComponents="viewGetPageComponents" ref="ItemCommonDes"/>
-      </el-col>
-    </el-row>
+  <sub-menu>
+    <div class="container-query">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province type="select" isRequired @change="selectProvince"/>
+          </my-query-item>
+        </el-col>
+      </el-row>
+    </div>
+    <div v-if="provinceCode !== ''" class="b-c-fff" style="padding-top: 20px;">
+      <el-row style="margin-bottom: 32px;">
+        <el-col :span="12">
+          <operating :getPageComponents="viewGetPageComponents" :provinceCode="provinceCode" ref="Operating"/>
+        </el-col>
+        <el-col :span="12">
+          <order-affirm :getPageComponents="viewGetPageComponents" :provinceCode="provinceCode" ref="OrderAffirm"/>
+        </el-col>
+      </el-row>
+      <el-row style="margin-bottom: 32px;">
+        <el-col :span="12">
+          <freight :getPageComponents="viewGetPageComponents" :provinceCode="provinceCode" ref="Freight"/>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <item-common-des :getPageComponents="viewGetPageComponents" :provinceCode="provinceCode" ref="ItemCommonDes"/>
+        </el-col>
+      </el-row>
+    </div>
   </sub-menu>
 </template>
 
@@ -27,27 +38,52 @@ import Operating from './Operating';
 import ItemCommonDes from './ItemCommonDes';
 import Freight from './Freight';
 import OrderAffirm from './OrderAffirm';
-import { Constant } from '@/util';
-import viewMixin from '@/view/view.mixin';
+import { GlobalProvince } from '@/component';
+import mainMixin from '@/share/mixin/main.mixin';
+import { QueryItem } from '@/common';
 
 export default {
   name: 'Main',
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-row': Row,
     'el-col': Col,
     'operating': Operating,
     'item-common-des': ItemCommonDes,
     'freight': Freight,
-    'order-affirm': OrderAffirm
-  },
-  created(){
-    let that = this;
-    documentTitle("设置 - 区域运营配置");
+    'order-affirm': OrderAffirm,
+    'global-province': GlobalProvince,
+    'my-query-item': QueryItem,
   },
   data(){
-    return{
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT,
+    return {
+      provinceCode: ''
+    }
+  },
+  created(){
+    documentTitle("设置 - 区域运营配置");
+  },
+  methods: {
+    //选择区域后
+    selectProvince(data){
+      if(this.provinceCode !== ''){
+        this.$data.provinceCode = data.code;
+        this.$nextTick(()=>{
+          let pc = this.viewGetPageComponents('Operating');
+          if(pc) pc.basicdataOrderTimeGet();
+
+          pc = this.viewGetPageComponents('OrderAffirm');
+          if(pc) pc.basicdataConfirmTime();
+
+          pc = this.viewGetPageComponents('Freight');
+          if(pc) pc.basicdataDeliveryInfoGet();
+
+          pc = this.viewGetPageComponents('ItemCommonDes');
+          if(pc) pc.getItemCommon();
+        });
+      }else{
+        this.$data.provinceCode = data.code;
+      }
     }
   }
 };
@@ -63,5 +99,4 @@ export default {
       margin-right: 20px;
     }
   }
-
 </style>

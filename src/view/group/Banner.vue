@@ -7,12 +7,14 @@
 </template>
 
 <script>
-  import { AddEditGroupBanner, TableGroupBanner, QueryGroupBanner } from '@/container';
-  import viewMixin from '@/view/view.mixin';
+  import AddEditGroupBanner from './AddEditGroupBanner';
+  import TableGroupBanner from './TableGroupBanner';
+  import QueryGroupBanner from './QueryGroupBanner';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "Banner",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'add-edit-group-banner': AddEditGroupBanner,
       'query-group-banner': QueryGroupBanner,

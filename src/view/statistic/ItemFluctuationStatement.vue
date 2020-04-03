@@ -18,7 +18,7 @@
           </el-select>
         </div>
         <el-table :data="dataItem.items"
-                  :height="viewWindowHeight - offsetHeight"
+                  :height="viewWindowHeight - 255"
                   :row-class-name="highlightRowClassName"
                   @cell-mouse-enter="cellMouseEnter"
                   @cell-mouse-leave="cellMouseLeave"
@@ -40,7 +40,7 @@
             min-width="100"
             align="left"
             v-for="(d, index) in dateRange()"
-            :key="d"
+            :key="index"
             :label="labelDate(d)">
             <template slot-scope="scope">
               <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.items, d) }}</span>
@@ -90,12 +90,12 @@
 import { DatePicker, Button, Table, TableColumn, Pagination, Select, Option, RadioGroup, Radio, Message } from 'element-ui';
 import { Http, Config, DataHandle, Constant } from '@/util';
 import ItemFluctuationChart from "./ItemFluctuationChart";
-import { QueryItemFluctuationAnalysis } from '@/container'
-import viewMixin from '@/view/view.mixin';
+import QueryItemFluctuationAnalysis from './QueryItemFluctuationAnalysis';
+import mainMixin from '@/share/mixin/main.mixin';
 
 export default {
   name: "ItemFluctuationStatement",
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'el-button': Button,
     'el-date-picker': DatePicker,
@@ -112,11 +112,13 @@ export default {
   data() {
     return {
       dateList: [],
-      dataItem: {},
+      dataItem: {
+        items: [],
+        num: 0
+      },
       selectArea: 'item',
       selectIndex: 0,
       maxLabelWidth: 120,
-      offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,  //242
       averagesItem: {},
       totalsItem: {},
       query: {

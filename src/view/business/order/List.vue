@@ -2,9 +2,11 @@
   <sub-menu>
     <query-order v-model="query" @change="changeQuery" :reset="resetQuery"></query-order>
     <div class="container-table">
-      <div class="table-top" v-if="auth.isAdmin || auth.OrderListExport || auth.OrderItemExport">
-        <div class="left"></div>
-        <div class="right">
+      <div class="table-top">
+        <div class="left">
+          <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="statusOptions"/>
+        </div>
+        <div class="right" v-if="auth.isAdmin || auth.OrderListExport || auth.OrderItemExport">
           <el-button
             v-if="auth.isAdmin || auth.OrderListExport"
             size="mini"
@@ -152,11 +154,13 @@
 
 <script>
   import { SelectOption, TableOperate, SelectCity } from '@/common';
-  import { QueryOrder } from '@/container';
   import {Config, DataHandle, Constant, Http} from '@/util';
-  import { DetailOrderList, DetailOrderAfterSale } from '@/container';
-  import tableMixin from '@/container/table/table.mixin';
-  import viewMixin from '@/view/view.mixin';
+  import QueryOrder from './QueryOrder';
+  import DetailOrderList from './DetailOrderList';
+  import DetailOrderAfterSale from '@/view/business/afterSale/DetailOrderAfterSale';
+  import tableMixin from '@/share/mixin/table.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: "OrderList",
@@ -167,12 +171,15 @@
       'detail-order-list': DetailOrderList,
       'detail-order-after-sale': DetailOrderAfterSale,
       'query-order': QueryOrder,
+      'query-tabs': queryTabs
     },
-    mixins: [tableMixin, viewMixin],
+    mixins: [tableMixin, mainMixin],
     created() {
       documentTitle('订单 - 订单列表');
       this.initQuery();
-      this.getOrderGetList(this.query);
+
+      //在Query组件初始化
+      //this.getOrderGetList(this.query);
     },
     data() {
       return {
@@ -192,6 +199,15 @@
           received: 'regular',
           order_done: 'regular',
           order_canceled: 'info'
+        },
+
+        statusOptions: {
+          '全部': '',
+          '待确认': 'wait_confirm',
+          '待发货': 'wait_delivery',
+          '待收货': 'deliveried',
+          '已完成': 'order_done',
+          '已取消': 'order_canceled'
         },
       }
     },
@@ -218,9 +234,12 @@
         window.scrollTo(0, 0);
       },
 
-      initQuery() {
+      initQuery(resetData) {
+        let provinceCode = '';
+        if(resetData && resetData.province_code) provinceCode = resetData.province_code;
+        
         this.$data.query = Object.assign({}, this.$data.query, {
-          province_code: this.province.code,
+          province_code: provinceCode,
           city_id: '',
           status: '',
           pay_status: '',
@@ -245,8 +264,8 @@
         this.getOrderGetList(this.query);
         window.scrollTo(0, 0);
       },
-      resetQuery() {
-        this.initQuery();
+      resetQuery(resetData) {
+        this.initQuery(resetData);
         this.getOrderGetList(this.query);
         window.scrollTo(0, 0);
       },
@@ -269,11 +288,11 @@
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
-          province_code: this.province.code,
+          province_code: this.query.province_code,
           ...query
         });
         if(res.code === 0){
-          let queryStr = `${api}?province_code=${this.province.code}`;
+          let queryStr = `${api}?province_code=${this.query.province_code}`;
           for (let item in query) {
             queryStr += `&${item}=${query[item]}`
           }
@@ -337,7 +356,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import '@/container/table/table.scss';
+  @import '@/share/scss/table.scss';
   .order-no {
     color: inherit;
     padding: 5px 10px 5px 0;
@@ -387,5 +406,5 @@
   }
 </style>
 <style lang="scss">
-  @import '@/container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>

@@ -50,7 +50,11 @@
     methods: {
       //获取数据
       async getData(){
-        let res = await Http.get(this.isAuth ? Config.api.baseSupStorehouseList : Config.api.baseStorehouseList, this.query);
+        let res = await Http.get(this.isAuth ? Config.api.baseSupStorehouseList : Config.api.baseStorehouseList, {
+          ...this.query,
+          province_code: this.provinceCode,
+          need_num: 200
+        });
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
@@ -60,6 +64,15 @@
         }
       },
     },
+    watch: {
+      //监听区域code
+      provinceCode: {
+        deep: true,
+        handler: function (a, b) {
+          this.getData();
+        }
+      }
+    }
   }
 </script>
 

@@ -7,6 +7,16 @@
         >
           客户订单统计
         </el-breadcrumb-item>
+        <el-breadcrumb-item
+          :to="{ path: '/statistic/client/province',
+          query: {
+          province_code: breadcrumb.province_code,
+          province_title: breadcrumb.province_title,
+          begin_date: breadcrumb.begin_date,
+          end_date: breadcrumb.end_date } }"
+        >
+          {{ breadcrumb.province_code === '' ? '全部省份' : breadcrumb.province_title }}
+        </el-breadcrumb-item>
         <el-breadcrumb-item>{{ query.zone_id === '' ? '全部片区' : query.zone_title }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -86,22 +96,12 @@
             ￥{{ returnPrice(scope.row.gmv) }}
           </template>
         </el-table-column>
-        <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="120">
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real" min-width="120">
           <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.real_price) }}
+            ￥{{ returnPrice(scope.row.amount_real) }}
           </template>
         </el-table-column>
-        <el-table-column label="框金额" sortable="custom" prop="fram_total_price">
-          <template slot-scope="scope">
-            ￥{{ returnPrice(scope.row.fram_total_price) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion">
-          <template slot-scope="scope">
-            {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
-          </template>
-        </el-table-column>
-        <el-table-column label="订单量" sortable="custom" prop="order_count">
+        <el-table-column label="下单门店数" sortable="custom" prop="store_num">
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="piece_num"/>
         <el-table-column label="占比" prop="percent">
@@ -131,11 +131,11 @@
   import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem } from 'element-ui';
   import { QueryItem, TableOperate, SelectZone } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: "ClientZone",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -215,30 +215,37 @@
       initBreadcrumb() {
         let zone_id = this.$route.query.zone_id;
         let zone_title = this.$route.query.zone_title;
+        let province_code = this.$route.query.province_code;
+        let province_title = this.$route.query.province_title;
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
           zone_id: zone_id,
           zone_title: zone_title,
+          province_code: province_code,
+          province_title: province_title,
           begin_date: begin_date,
           end_date: end_date
         })
       },
       initQuery() {
-        // console.log("当前的请求参数", this.$route.query);
+        console.log("当前的请求参数", this.$route.query);
         let pickerValue = [];
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
+        let province_code = this.$route.query.province_code;
+        let province_title = this.$route.query.province_title;
         pickerValue.push(begin_date);
         pickerValue.push(end_date);
         this.$data.pickerValue = pickerValue;
         this.$data.query = Object.assign(this.$data.query, {
-          province_code: this.province.code,
           begin_date: begin_date,
           end_date: end_date,
           sort: '-gmv',
           zone_id: this.$route.query.zone_id,
           zone_title: this.$route.query.zone_title,
+          province_code: province_code,
+          province_title: province_title,
           page: 1,
           page_size: Constant.PAGE_SIZE
         });
@@ -303,6 +310,8 @@
             city_title: item.city_title,
             zone_id: this.$data.query.zone_id,
             zone_title: this.$data.query.zone_title,
+            province_code: this.$data.breadcrumb.province_code,
+            province_title: this.$data.breadcrumb.province_title,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date
           }

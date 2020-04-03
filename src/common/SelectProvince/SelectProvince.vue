@@ -1,5 +1,6 @@
 <template>
   <el-select v-model="editValue" filterable placeholder="请选择" :disabled="disabled" :size="size" :clearable="clearable" style="width:100%;">
+    <el-option v-if="showAll" key="" value="" label="全部"/>
     <el-option v-if="nationwide" key="nationwide" value="nationwide" label="全国"/>
     <el-option v-for="item in dataItem" :key="item.code" :label="item.title" :value="item.code"/>
   </el-select>
@@ -19,8 +20,10 @@
       value: { type: [String, Number], default: '' },
       disabled: { type: Boolean, default: false },
       clearable: {type: Boolean, default: false},
+      showAll: {type: Boolean, default: false},
       size: { type: String, default: '' },
       nationwide: { type: Boolean, default: false }, //是否显示全国
+      isAuth: { type: Boolean, default: false }, //是否要求权限
     },
     model: {
       prop: 'value',
@@ -47,7 +50,7 @@
     methods: {
       //获取所有区域
       async baseProvinceList(){
-        let res = await Http.get(Config.api.baseProvinceList, {});
+        let res = await Http.get(this.isAuth ? Config.api.baseProvinceListMy : Config.api.baseProvinceList, {});
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;

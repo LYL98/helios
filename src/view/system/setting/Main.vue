@@ -5,12 +5,12 @@
 </template>
 
 <script>
-import viewMixin from '@/view/view.mixin';
+import mainMixin from '@/share/mixin/main.mixin';
 import Brand from './Brand';
 
 export default {
   name: 'Setting',
-  mixins: [viewMixin],
+  mixins: [mainMixin],
   components: {
     'brand': Brand
   },

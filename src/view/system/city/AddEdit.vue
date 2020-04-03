@@ -6,7 +6,7 @@
           <el-input v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
         <el-form-item label="所属区域" prop="province_code">
-          <my-select-province :value="detail.province_code" @change="changeProvince" :disabled="detail.id ? true: false"/>
+          <my-select-province isAuth :value="detail.province_code" @change="changeProvince" :disabled="detail.id ? true: false"/>
         </el-form-item>
         <el-form-item label="所属片区" prop="zone_id">
           <my-select-zone :provinceCode="detail.province_code" :value="detail.zone_id" @change="changeZone" :disabled="detail.id ? true: false"/>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import addEditMixin from '@/container/addEdit/add.edit.mixin';
+import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Verification } from '@/util';
 import { SelectProvince, SelectZone } from '@/common';
 

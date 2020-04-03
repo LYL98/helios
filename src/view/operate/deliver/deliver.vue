@@ -3,10 +3,10 @@
     <div class="query">
       <el-row :gutter="32">
         <el-col :span="7">
-          <my-query-item label="职务">
+          <my-query-item label="审核状态">
             <my-select-option
-              :options="{'全部': '', ...query_deliver_post}"
-              v-model="query.post"
+              :options="{'全部': '', '待审核': 0, '已审核': 1}"
+              v-model="query.is_audited"
               @change="changeQuery"
               size="small"
               clearable
@@ -15,10 +15,10 @@
           </my-query-item>
         </el-col>
         <el-col :span="7">
-          <my-query-item label="审核状态">
+          <my-query-item label="冻结状态">
             <my-select-option
-              :options="{'全部': '', '待审核': 0, '已审核': 1}"
-              v-model="query.is_audited"
+              :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
+              v-model="query.is_freeze"
               @change="changeQuery"
               size="small"
               clearable
@@ -38,27 +38,18 @@
           </my-query-item>
         </el-col>
       </el-row>
-      <el-row :gutter="32" style="margin-top: 16px">
-        <el-col :span="7">
-          <my-query-item label="冻结状态">
-            <my-select-option
-              :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
-              v-model="query.is_freeze"
-              @change="changeQuery"
-              size="small"
-              clearable
-              placeholder="全部"
-            />
-          </my-query-item>
-        </el-col>
-      </el-row>
     </div>
     <div class="container-table">
-      <div class="display-flex justify-content-end" v-if="$auth.isAdmin || $auth.DeliverAdd || $auth.DeliverExport">
-        <el-button type="primary" plain size="mini" @click.native="handleExport" v-if="$auth.isAdmin || $auth.DeliverExport">导出配送人员</el-button>
-        <el-button class="right" type="primary" size="mini" @click.native="handleAddItem" v-if="$auth.isAdmin || $auth.DeliverAdd">新增</el-button>
+      <div class="table-top">
+        <div class="left">
+          <query-tabs v-model="query.post" @change="changeQuery" :tab-panes="{'全部': '', ...query_deliver_post}"/>
+        </div>
+        <div class="right" v-if="$auth.isAdmin || $auth.DeliverAdd || $auth.DeliverExport">
+          <el-button type="primary" plain size="mini" @click.native="handleExport" v-if="$auth.isAdmin || $auth.DeliverExport">导出配送人员</el-button>
+          <el-button class="right" type="primary" size="mini" @click.native="handleAddItem" v-if="$auth.isAdmin || $auth.DeliverAdd">新增</el-button>
+        </div>
       </div>
-      <div class="mt-16 table-conter" @mousemove="handleTableMouseMove">
+      <div class="table-conter" @mousemove="handleTableMouseMove">
         <el-table
           :data="list.items"
           :row-class-name="highlightRowClassName"
@@ -237,7 +228,8 @@
   import { Row, Col, Button, Input, Select, Option, Table, TableColumn, Pagination, Dialog, Switch, Tag } from 'element-ui';
   import { Constant, Http, Config } from '@/util';
   import { QueryItem, QuerySearchInput, TableOperate, SelectOption } from '@/common';
-  import tableMixin from '@/container/table/table.mixin';
+  import tableMixin from '@/share/mixin/table.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
   import DeliverEdit from './deliver-edit';
   import DeliverDetail from './deliver-detail';
   import ResetPassword from './reset-password';
@@ -264,6 +256,7 @@
       'deliver-edit': DeliverEdit,
       'deliver-detail': DeliverDetail,
       'reset-password': ResetPassword,
+      'query-tabs': queryTabs
     },
     data() {
       return {
@@ -299,6 +292,7 @@
     },
     methods: {
       changeQuery() {
+        this.$data.query.page = 1;
         this.deliverQuery();
       },
       resetQuery() {
@@ -435,6 +429,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '@/share/scss/table.scss';
   .td-item{
     &.link-item, .link-item{
       text-decoration: underline;
@@ -452,10 +447,15 @@
   .display-flex {
     display: flex;
   }
+  .justify-space-between {
+    justify-content: space-between;
+  }
   .justify-content-end {
+
     justify-content: flex-end;
   }
   .align-items-center {
     align-items: center;
   }
 </style>
+

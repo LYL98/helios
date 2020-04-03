@@ -4,7 +4,7 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="仓">
-          <select-storehouse size="small" v-model="query.storehouse_id" clearable filterable @change="handleQuery('Table')"/>
+          <select-storehouse size="small" v-model="query.storehouse_id" isAuth clearable @change="handleQuery('Table')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -13,7 +13,7 @@
 
 <script>
   import { SelectStorehouse } from '@/component';
-  import queryMixin from '@/container/query/query.mixin';
+  import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
     name: "Query",

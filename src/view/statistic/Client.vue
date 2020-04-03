@@ -1,22 +1,31 @@
 <template>
   <sub-menu>
     <!-- 查询 -->
-    <div class="query" style="margin-bottom: 16px;">
-      <my-query-item label="时间">
-        <el-date-picker
-          v-model="pickerValue"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          size="small"
-          class="query-item-date"
-          :picker-options="fixDateOptions"
-          :clearable="false"
-          @change="changePicker">
-        </el-date-picker>
-      </my-query-item>
+    <div class="container-query" style="margin-bottom: 16px;">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province type="select" @change="selectProvince" />
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <my-query-item label="时间">
+            <el-date-picker
+              v-model="pickerValue"
+              type="daterange"
+              value-format="yyyy-MM-dd"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              size="small"
+              class="query-item-date"
+              :picker-options="fixDateOptions"
+              :clearable="false"
+              @change="changePicker">
+            </el-date-picker>
+          </my-query-item>
+        </el-col>
+      </el-row>
     </div>
 
     <div :style="'height:' + (viewWindowHeight - offsetHeight) + 'px; overflow-y: auto;'">
@@ -25,10 +34,10 @@
         <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
         <ul class="description">
           <li>GMV: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
-          <li>订单应付总金额: <span>{{ returnPrice(totalItemRealPrice) }}</span> 元</li>
+          <li>订单商品金额: <span>{{ returnPrice(totalOrderItemPrice) }}</span> 元</li>
           <li>筐总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
           <li>优惠总金额: <span>-{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
-          <li>订单总量: <span>{{ totalOrder }}</span> 单</li>
+          <li>下单门店数: <span>{{ totalOrderMerchantNum }}</span> 个</li>
           <li>总件数: <span>{{ totalPiece }}</span> 件</li>
         </ul>
       </div>
@@ -51,17 +60,17 @@
             label="序号"
             :index="indexMethod"
           />
-          <el-table-column label="片区" prop="zone_title" min-width="120">
+          <el-table-column label="区域" prop="province_title" min-width="120">
             <template slot-scope="scope">
               <a href="javascript:void(0)"
                 class="title"
                 @click="handleShowZoneDetail(scope.row)"
-                v-if="!!scope.row.zone_title && ( auth.isAdmin || auth.StatisticClientZone )"
+                v-if="!!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientProvince )"
               >
-                {{ scope.row.zone_title || '其它' }}
+                {{ scope.row.province_title || '其它' }}
               </a>
               <div v-else>
-                {{ scope.row.zone_title || '其它' }}
+                {{ scope.row.province_title || '其它' }}
               </div>
 
               <!--{{ scope.row.zone_title || '其它' }}-->
@@ -72,23 +81,12 @@
               ￥{{ returnPrice(scope.row.gmv) }}
             </template>
           </el-table-column>
-          <el-table-column label="订单应付金额" sortable="custom" prop="real_price" min-width="130">
+          <el-table-column label="订单商品金额" sortable="custom" prop="real_price" min-width="130">
             <template slot-scope="scope">
-              ￥{{ returnPrice(scope.row.real_price) }}
+              ￥{{ returnPrice(scope.row.amount_real) }}
             </template>
           </el-table-column>
-          <el-table-column label="框金额" sortable="custom" prop="fram_total_price" min-width="100">
-            <template slot-scope="scope">
-              ￥{{ returnPrice(scope.row.fram_total_price) }}
-            </template>
-          </el-table-column>
-          <el-table-column label="优惠金额" sortable="custom" prop="bonus_promotion" min-width="100">
-            <template slot-scope="scope">
-              {{ scope.row.bonus_promotion > 0 ? '-￥' : '￥' }}{{ returnPrice(scope.row.bonus_promotion) }}
-            </template>
-          </el-table-column>
-          
-          <el-table-column label="订单量" sortable="custom" prop="order_count"  min-width="100"/>
+          <el-table-column label="下单门店数" sortable="custom" prop="store_num"  min-width="100"/>
           <el-table-column label="件数" sortable="custom" prop="piece_num" min-width="100"></el-table-column>
           <el-table-column label="占比" prop="percent">
             <template slot-scope="scope">
@@ -101,7 +99,7 @@
                 :list="[
                   {
                     title: '查看',
-                    isDisplay: !!scope.row.zone_title && ( auth.isAdmin || auth.StatisticClientZone ),
+                    isDisplay: !!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientProvince ),
                     command: () => handleShowZoneDetail(scope.row)
                   }
                 ]"
@@ -117,8 +115,9 @@
 <script>
   import { Row, Col, DatePicker, Table, TableColumn, Pagination } from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
+  import { GlobalProvince } from '@/component';
   import { Http, Config, DataHandle, Constant } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
 
   import echarts from "echarts/lib/echarts";
   import "echarts/lib/chart/pie";
@@ -126,7 +125,7 @@
 
   export default {
     name: "Client",
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     components: {
       'el-row': Row,
       'el-col': Col,
@@ -135,7 +134,8 @@
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
       'my-query-item': QueryItem,
-      'my-table-operate': TableOperate
+      'my-table-operate': TableOperate,
+      'global-province': GlobalProvince,
     },
     data() {
       return {
@@ -143,14 +143,14 @@
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE,
         pickerValue: [],
         query: { },
-        areaType: 'zone',
+        areaType: 'province',
         listItem: [],
         orderClassSumData2: [],
         totalItemTotalPrice: 0,
         totalBonusPromotion: 0,
-        totalItemRealPrice: 0,
+        totalOrderItemPrice: 0,
         totalFramPrice: 0,
-        totalOrder: 0,
+        totalOrderMerchantNum: 0,
         totalPiece: 0,
         currentRow: {},
         chart: null,
@@ -183,11 +183,19 @@
       this.initQuery();
     },
     mounted() {
-      this.zoneOrderList(() => {
+      /*this.provinceOrderList(() => {
         this.initChart();
-      });
+      });*/
     },
     methods: {
+      //选择区域后【页面初始化】
+      selectProvince(data){
+        this.$data.query.province_code = data.code;
+        this.provinceOrderList(() => {
+          this.initChart();
+        });
+      },
+
       cellMouseEnter(row, column, cell, event) {
         if(row.id !== this.$data.currentRow.id) {
           this.$data.currentRow = row;
@@ -230,7 +238,7 @@
         pickerValue.push(end_date);
         this.$data.pickerValue = pickerValue;
         this.$data.query = Object.assign(this.$data.query, {
-          province_code: this.province.code,
+          province_code: "",
           begin_date: begin_date,
           end_date: end_date,
           sort: '-gmv',
@@ -248,7 +256,7 @@
           this.$data.query.end_date = '';
         }
         this.$data.query.page = 1;
-        this.zoneOrderList(() => {
+        this.provinceOrderList(() => {
           this.initChart();
         });
       },
@@ -262,15 +270,29 @@
           this.query.sort = ''
         }
         // this.$data.query.page = 1;
-        this.zoneOrderList();
+        this.provinceOrderList();
       },
 
-      //统计分析 - 商品销售统计 - 片区分类统计
-      async zoneOrderList(callback){
+      // //统计分析 - 商品销售统计 - 省份分类统计
+      // async zoneOrderList(callback){
+      //   let that = this;
+      //   let { query } = that;
+      //   this.$loading({ isShow: true, isWhole: true });
+      //   let res = await Http.get(Config.api.statisticalOrderGradeSum, query);
+      //   if(res.code === 0){
+      //     that.$data.listItem = res.data;
+      //     typeof callback === 'function' && callback();
+      //   }else{
+      //     this.$message({title: '提示', message: res.message, type: 'error'});
+      //   }
+      //   this.$loading({ isShow: false });
+      // },
+
+      async provinceOrderList(callback) {
         let that = this;
         let { query } = that;
         this.$loading({ isShow: true, isWhole: true });
-        let res = await Http.get(Config.api.statisticalOrderGradeSum, query);
+        let res = await Http.get(Config.api.statisticalOrderProvinceSum, query);
         if(res.code === 0){
           that.$data.listItem = res.data;
           typeof callback === 'function' && callback();
@@ -279,6 +301,7 @@
         }
         this.$loading({ isShow: false });
       },
+
       initChart() {
         let that = this;
         if (!that.$refs.myEchart) {
@@ -289,31 +312,31 @@
         let orderClassSumData = that.$data.listItem;
 
         let data = new Array(), data2 = new Array(), dataTemp = {value: 0, name: '其它'}, dataTemp2 = {},
-        totalItemTotalPrice = 0, totalBonusPromotion = 0, totalItemRealPrice = 0, totalFramPrice = 0, totalOrder = 0, totalPiece = 0;
+        totalItemTotalPrice = 0, totalBonusPromotion = 0, totalOrderItemPrice = 0, totalFramPrice = 0, totalOrderMerchantNum = 0, totalPiece = 0;
 
+        // 总计字段
         for (let i = 0; i < orderClassSumData.length; i++) {
-          //总数据
+          // 总数据
           totalItemTotalPrice += orderClassSumData[i].gmv;
           totalBonusPromotion += orderClassSumData[i].bonus_promotion;
-          totalItemRealPrice += orderClassSumData[i].real_price;
+          totalOrderItemPrice += orderClassSumData[i].amount_real;
           totalFramPrice += orderClassSumData[i].fram_total_price;
         }
 
+        // 饼图占比数据
         for(let i = 0; i < orderClassSumData.length; i++){
-
-          //饼图数据
           let percent = orderClassSumData[i].gmv / totalItemTotalPrice;
-          if(percent > 0.05 && (areaType === 'zone' ? orderClassSumData[i].zone_title : orderClassSumData[i].city_title) !== '其它'){
+          if(percent > 0.05 && this.chartTitle(orderClassSumData[i]) !== '其它'){
             data.push({
               value: that.returnPrice(orderClassSumData[i].gmv),
-              name: (areaType === 'zone' ? orderClassSumData[i].zone_title : orderClassSumData[i].city_title),
-              code: (areaType === 'zone' ? orderClassSumData[i].zone_id : orderClassSumData[i].city_id)
+              name: this.chartTitle(orderClassSumData[i]),
+              code: this.dataCode(orderClassSumData[i])
             });
           }else{
             dataTemp.value += orderClassSumData[i].gmv;
           }
 
-          totalOrder += orderClassSumData[i].order_count;
+          totalOrderMerchantNum += orderClassSumData[i].store_num;
           totalPiece += orderClassSumData[i].piece_num;
         }
 
@@ -325,9 +348,9 @@
         }
         that.$data.totalItemTotalPrice = totalItemTotalPrice;
         that.$data.totalBonusPromotion = totalBonusPromotion;
-        that.$data.totalItemRealPrice = totalItemRealPrice;
+        that.$data.totalOrderItemPrice = totalOrderItemPrice;
         that.$data.totalFramPrice = totalFramPrice;
-        that.$data.totalOrder = totalOrder;
+        that.$data.totalOrderMerchantNum = totalOrderMerchantNum;
         that.$data.totalPiece = totalPiece;
 
         that.chart = echarts.init(that.$refs.myEchart);
@@ -354,6 +377,7 @@
               type: "pie",
               radius : '70%',
               selectedMode: 'single',
+              avoidLabelOverlap: true,
               color: color,
               label: {
                 normal: {
@@ -389,10 +413,10 @@
             }
 
             that.$router.push({
-              path: '/statistic/client/zone',
+              path: '/statistic/client/province',
               query: {
-                zone_id: params.data.code,
-                zone_title: params.data.name,
+                province_code: params.data.code,
+                province_title: params.data.name,
                 begin_date: that.$data.query.begin_date,
                 end_date: that.$data.query.end_date
               }
@@ -401,14 +425,37 @@
           }
         });
       },
+
+      chartTitle(data) {
+        switch (this.$data.areaType) {
+          case "province":
+            return data.province_title
+          case "zone":
+            return data.zone_title
+          default:
+            return ""
+        }
+      },
+
+      dataCode(data) {
+        switch (this.$data.areaType) {
+          case "province":
+            return data.province_code
+          case "zone":
+            return data.zone_id
+          default:
+            return -1
+        }
+      },
+
       handleShowZoneDetail(item) {
-        let zone_id = item.zone_id;
-        let zone_title = item.zone_title;
+        let province_code = item.province_code;
+        let province_title = item.province_title;
         this.$router.push({
-          path: '/statistic/client/zone',
+          path: '/statistic/client/province',
           query: {
-            zone_id: zone_id,
-            zone_title: zone_title,
+            province_code: province_code,
+            province_title: province_title,
             begin_date: this.$data.query.begin_date,
             end_date: this.$data.query.end_date
           }

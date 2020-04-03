@@ -2,9 +2,11 @@
   <sub-menu>
     <query-merchant-store v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
-      <div class="table-top" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
-        <div class="left"></div>
-        <div class="right">
+      <div class="table-top">
+        <div class="left">
+          <query-tabs v-model="query.is_post_pay" @change="changeQuery" :tab-panes="{'全部': '', '协议': '1', '非协议': '0'}"/>
+        </div>
+        <div class="right" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
           <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出商户列表</el-button>
           <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="() => addMerchantDialogVisible = true" size="mini" type="primary">新增</el-button>
         </div>
@@ -23,7 +25,7 @@
         :getPageComponents="viewGetPageComponents"
         ref="TableMerchantList"
       />
-    
+
 
       <!-- 分页标签 -->
       <div class="footer" v-if="dataItem.num > 0">
@@ -54,9 +56,13 @@
 
 <script>
   import { MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
-  import { QueryMerchantStore, TableMerchantList, AddEditMerchantList, DetailMerchantList } from '@/container';
+  import QueryMerchantStore  from './QueryMerchantStore';
+  import TableMerchantList from './TableMerchantList';
+  import AddEditMerchantList from './AddEditMerchantList';
+  import DetailMerchantList from './DetailMerchantList';
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
-  import viewMixin from '@/view/view.mixin';
+  import mainMixin from '@/share/mixin/main.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: "MerchantList",
@@ -74,8 +80,9 @@
       'add-edit-merchant-list': AddEditMerchantList,
       'detail-merchant-list': DetailMerchantList,
       'query-merchant-store': QueryMerchantStore,
+      'query-tabs': queryTabs
     },
-    mixins: [viewMixin],
+    mixins: [mainMixin],
     created() {
       let that = this;
       documentTitle('业务 - 门店');
@@ -177,18 +184,19 @@
       /**
        * 清楚筛选条件
        */
-      resetQuery(){
+      resetQuery(resetData){
         let { page_size } = this.$data.query;
         this.$data.query = {
           is_audited: '',
           is_freeze: '',
           is_post_pay: '',
           gb_included: '',
-          province_code: this.province.code,
+          province_code: '',
           city_id: '',
           condition: '',
           page: 1,
-          page_size: page_size
+          page_size: page_size,
+          ...resetData
         };
         this.storeQuery();
       },
@@ -610,8 +618,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  @import './../../../container/table/table.scss';
+  @import '@/share/scss/table.scss';
 </style>
 <style lang="scss">
-  @import './../../../container/table/table.global.scss';
+  @import '@/share/scss/table.global.scss';
 </style>
