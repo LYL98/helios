@@ -38,7 +38,8 @@
         }
         this.$emit('change', {
           ...this.editQuery,
-          province_code: data.code
+          province_code: data.code,
+          province_title: data.title
         });
       },
       resetQuery() {

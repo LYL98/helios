@@ -2,7 +2,7 @@
   <div>
     <el-form label-position="right" label-width="80px" style="width: 540px; margin-top: -10px;">
       <el-form-item label="当前区域">
-        {{ province.title }}
+        {{ province.title || '全部区域' }}
       </el-form-item>
       <el-form-item label="选择日期">
         <el-date-picker
@@ -66,13 +66,13 @@
       'el-dialog': Dialog
     },
     props: {
-      close: { type: Function, required: true }
+      close: { type: Function, required: true },
+      province: { type: Object, default: {} }
     },
     data() {
       let d = DataHandle.returnDateStr();
       let nowDate = DataHandle.returnDateFormat(d, "yyyy-MM-dd");
       return {
-        province: this.$province,
         isShowPreview: false,
         pickerValue: [nowDate, nowDate],
         fixDateOptions: Constant.FIX_DATE_RANGE,
