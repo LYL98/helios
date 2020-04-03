@@ -55,7 +55,7 @@
             <template v-else-if="selectMenu === 'gbuy'">
               <template v-for="(item, index) in gmenus">
                 <el-menu-item :index="item.name" :key="index" v-if="auth.isAdmin || auth[item.name]" @click="(e) => clickMenu(e, item)">
-                  <i class="iconfont menu-icon" v-html="item.icon"></i>
+                  <i class="iconfont-tg menu-icon" v-html="item.icon"></i>
                   <span>{{item.title}}</span>
                 </el-menu-item>
               </template>
