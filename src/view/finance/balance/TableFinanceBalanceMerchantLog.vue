@@ -155,9 +155,11 @@
       'my-omission-text': OmissionText,
       'my-table-operate': TableOperate
     },
+    props: {
+      province: { type: Object, default: {} }
+    },
     data() {
       return {
-        province: this.$province,
         pickerValue: null,
         query: { },
         dataItem: {
