@@ -249,12 +249,16 @@ export default {
     //提交数据
     addEditData(){
       let { detail, priceData, pageType } = this;
-      if(pageType === 'edit' || detail.is_presale){
+      if(pageType === 'edit'){
         this.priceFix();
       }else{
         let str = '反采供应商尚未报价，确认报价后供应商将不可报价，是否确认报价';
         if(priceData.biddings.length > 0){
           str = '确认报价后，供应商的报价将不可更改，系统将根据该价格直接下单采购';
+        }
+        //预售
+        if(detail.is_presale){
+          str = '是否确认报价';
         }
         this.$messageBox.confirm(str, '提示', {
           confirmButtonText: '确定',
