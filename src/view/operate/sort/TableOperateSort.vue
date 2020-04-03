@@ -267,7 +267,6 @@
         });
         this.$loading({isWhole: false});
         if(res.code === 0){
-          this.$data.dataItem = res.data;
           let temp = Lodop.tempTruckBatch(res.data, delivery_date);
 
           temp && type === 'print' && temp.PRINT();
