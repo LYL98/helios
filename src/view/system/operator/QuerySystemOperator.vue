@@ -18,8 +18,10 @@
             size="small"
             @change="handleChangeQuery"
           >
-            <el-option label="全部" value="">全部</el-option>
-            <el-option label="总部" value="global">总部</el-option>
+            <template v-if="query.opt_type !== 'local'">
+              <el-option label="全部" value="">全部</el-option>
+              <el-option label="总部" value="global">总部</el-option>
+            </template>
             <el-option v-for="item in provinceList" :label="item.title" value="local" :key="item.code" @click.native="handleChangeProvince(item.code)"></el-option>
           </el-select>
         </my-query-item>

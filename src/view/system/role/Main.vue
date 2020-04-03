@@ -13,7 +13,7 @@
             <el-option v-for="(value, key) in roleAuthLevel" :key="key" :label="value" :value="key"></el-option>
           </el-select>
         </div>
-        <div class="content" :style="`height:${viewWindowHeight - 166}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
+        <div class="content" :style="`height:${viewWindowHeight - 126}px`" v-if="auth.isAdmin || auth.SystemRoleList" >
           <template v-for="(item,index) in dataItem">
             <div :class="`role-item ${detail.id === item.id && 'active'}`" @click="selectRoleItem(item, detail.id === item.id)" :key="index" v-if="selectRoleType === '' || selectRoleType === item.role_type">
               <div class="add-dot" :title="item.title">
@@ -42,10 +42,10 @@
             <el-checkbox v-model="detail.is_super_admin" @change="changeSuperAdmin" :disabled="$myInfo.is_admin && $myInfo.opt_type === 'global' && detail.role_type === 'global' ? false : true">超级管理员</el-checkbox>
           </span>
         </div>
-        <div class="content" :style="`height:${viewWindowHeight - 166}px;`">
+        <div class="content" :style="`height:${viewWindowHeight - 126}px;`">
           <div class="content-body" v-if="detail.is_super_admin"><div>超级管理员</div></div>
           <!--菜单权限start-->
-          <div class="per-item-body" :style="`height:${viewWindowHeight - 186}px; padding: 10px 0; border-bottom: 1px solid #f3f4f6;`">
+          <div class="per-item-body" :style="`height:${viewWindowHeight - 146}px; padding: 10px 0; border-bottom: 1px solid #f3f4f6;`">
             <el-tree
             v-if="isShowTree"
             :data="permissionTree"
