@@ -107,15 +107,15 @@ export default {
             LODOP.SET_PRINT_STYLE('Bold', 1);
             LODOP.SET_PRINT_STYLE('Alignment', 2);
             LODOP.ADD_PRINT_TEXT(5, 0, 226, 40, `${prefixInteger(item.line_index, 2)}-${prefixInteger(store.city_index, 2)}-${prefixInteger(store.store_index, 2)}`);
-            LODOP.SET_PRINT_STYLE('FontSize', 10);
+            LODOP.SET_PRINT_STYLE('FontSize', 9);
             LODOP.SET_PRINT_STYLE('Alignment', 1);
-            LODOP.ADD_PRINT_TEXT(45, 10, 116, 20, store.store.title);
+            LODOP.ADD_PRINT_TEXT(45, 5, 130, 20, (store.store.title || '').slice(0, 10));
             LODOP.SET_PRINT_STYLE('FontSize', 8);
-            LODOP.ADD_PRINT_TEXT(70, 10, 116, 50, `${d.item_code}/${d.item_title}`);
-            LODOP.ADD_PRINT_TEXT(125, 10, 116, 20, `${i+1} / ${store.num}`);
+            LODOP.ADD_PRINT_TEXT(70, 5, 125, 50, `${d.item_code}/${d.item_title}`);
+            LODOP.ADD_PRINT_TEXT(125, 5, 125, 20, `${i+1} / ${store.num}`);
             LODOP.SET_PRINT_STYLE('Alignment', 3);
-            LODOP.ADD_PRINT_TEXT(125, 10, 116, 20, `蒲公英${(delivery_date || '').slice(5, 10)}`);
-            LODOP.ADD_PRINT_BARCODE(45, 130, 95, 95, 'QRCode', qrcontent);
+            LODOP.ADD_PRINT_TEXT(125, 5, 125, 20, `蒲公英${(delivery_date || '').slice(5, 10)}`);
+            LODOP.ADD_PRINT_BARCODE(45, 135, 95, 95, 'QRCode', qrcontent);
             LODOP.SET_PRINT_STYLEA(0, 'QRCodeVersion');
           });
         })
