@@ -278,7 +278,7 @@
 
         let { selectMenu } = this;
         if(from.name === 'Login') selectMenu = '';
-        if((to.name.indexOf('Group') === 0 && gbuy) || selectMenu === 'gbuy'){
+        if((gbuy && !operate) || selectMenu === 'gbuy' || to.name.indexOf('Group') === 0){
           selectMenu = 'gbuy';
         }else if(operate){
           selectMenu = 'operate';
