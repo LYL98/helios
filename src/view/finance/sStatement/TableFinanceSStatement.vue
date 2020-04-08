@@ -53,7 +53,7 @@
               :list="[
                 {
                   title: '结款',
-                  isDisplay: (auth.isAdmin || auth.FinanceSStatementPay) && scope.row.status === 'confirmed',
+                  isDisplay: (auth.isAdmin || auth.FinanceSStatementPay) && scope.row.status === 'wait_paid',
                   command: () => supplierStatementPay(scope.row)
                 },
                 {

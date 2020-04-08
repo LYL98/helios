@@ -200,7 +200,7 @@
     },
     {
       "title": "仓库",
-      "icon": "&#xe75f;",
+      "icon": "&#xe64c;",
       "name": "Warehouse",
       "children": [
         {
@@ -380,52 +380,52 @@
     {
       "title": "团购活动",
       "name": "GroupActivity",
-      "icon": "&#xe75f;"
+      "icon": "&#xe61d;"
     },
     {
       "title": "商品列表",
       "name": "GroupItem",
-      "icon": "&#xe75f;"
+      "icon": "&#xe633;"
     },
     {
       "title": "用户订单",
       "name": "GroupOrderQuery",
-      "icon": "&#xe75f;"
+      "icon": "&#xe60f;"
     },
     {
       "title": "门店订单",
       "name": "GroupStoreOrder",
-      "icon": "&#xe75f;"
+      "icon": "&#xe6a3;"
     },
     {
       "title": "团购门店",
       "name": "GroupHeadQuery",
-      "icon": "&#xe75f;"
+      "icon": "&#xe60a;"
     },
     {
       "title": "团员列表",
       "name": "GroupMemberQuery",
-      "icon": "&#xe75f;"
+      "icon": "&#xe7e6;"
     },
     {
       "title": "团购统计",
       "name": "GroupBuyStatement",
-      "icon": "&#xe75f;"
+      "icon": "&#xe636;"
     },
     {
       "title": "商品分类",
       "name": "GroupItemClass",
-      "icon": "&#xe75f;"
+      "icon": "&#xe66c;"
     },
     {
       "title": "回收站",
       "name": "GroupItemRecoverList",
-      "icon": "&#xe75f;"
+      "icon": "&#xe61a;"
     },
     {
       "title": "Banner管理",
       "name": "GroupBanner",
-      "icon": "&#xe75f;"
+      "icon": "&#xe764;"
     }
   ]
 }

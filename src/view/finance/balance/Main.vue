@@ -75,38 +75,53 @@
         <div style="text-align: left; color: #606266; margin-top: -20px;">* 充值/扣款提交后，需在财务审核模块中审核通过才能生效。</div>
       </template>
     </el-dialog>
-    <el-dialog
-      :visible.sync="dialog.isShowApproveLog"
-      width="1200px"
+    <detail-layout
+      :isShow="dialog.isShowApproveLog"
+      direction="ttb"
       :title="item.title + ' 充值/扣款记录'"
+      type="drawer"
       append-to-body
+      :before-close="handleClose"
     >
-      <table-finance-balance-approve-log
-        v-if="dialog.isShowApproveLog"
-        :merchant_id="item.id"
-      />
-    </el-dialog>
-    <el-dialog
-      :visible.sync="dialog.isShowBalanceLog"
-      width="1200px"
-      :title="item.title + ' 流水变动记录'"
+      <div style="padding: 0 20px;">
+        <table-finance-balance-approve-log
+          v-if="dialog.isShowApproveLog"
+          :province="{ code: query.province_code, title: query.province_title}"
+          :merchant_id="item.id"
+        />
+      </div>
+    </detail-layout>
+    <detail-layout
+      :isShow="dialog.isShowBalanceLog"
+      direction="ttb"
+      :title="item.title + ' 账户流水记录'"
+      type="drawer"
       append-to-body
+      :before-close="handleClose"
     >
-      <table-finance-balance-log
-        v-if="dialog.isShowBalanceLog"
-        :merchant_id="item.id"
-      />
-    </el-dialog>
-    <el-dialog
-      :visible.sync="dialog.isShowMerchantLog"
-      width="1200px"
+      <div style="padding: 0 20px;">
+        <table-finance-balance-log
+          v-if="dialog.isShowBalanceLog"
+          :province="{ code: query.province_code, title: query.province_title}"
+          :merchant_id="item.id"
+        />
+      </div>
+    </detail-layout>
+    <detail-layout
+      :isShow="dialog.isShowMerchantLog"
       title="商户流水变动记录"
       append-to-body
+      direction="ttb"
+      type="drawer"
+      :before-close="handleClose"
     >
-      <table-finance-balance-merchant-log
-        v-if="dialog.isShowMerchantLog"
-      />
-    </el-dialog>
+      <div style="padding: 0 20px;">
+        <table-finance-balance-merchant-log
+          v-if="dialog.isShowMerchantLog"
+          :province="{ code: query.province_code, title: query.province_title}"
+        />
+      </div>
+    </detail-layout>
     <el-dialog
       :visible.sync="dialog.isShowBalanceMerchantLogExport"
       width="630px"
@@ -115,6 +130,7 @@
     >
       <form-finance-balance-merchant-log-export
         v-if="dialog.isShowBalanceMerchantLogExport"
+        :province="{ code: query.province_code, title: query.province_title}"
         :close="handleClose"
       />
     </el-dialog>
@@ -132,6 +148,7 @@
   import TableFinanceBalanceMerchantLog from './TableFinanceBalanceMerchantLog';
   import {Constant, DataHandle, Config, Http} from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
+  import Layout from '@/share/layout/Layout';
 
   export default {
     name: "Main",
@@ -147,12 +164,14 @@
       'table-finance-balance-approve-log': TableFinanceBalanceApproveLog,
       'table-finance-balance-log': TableFinanceBalanceLog,
       'table-finance-balance-merchant-log': TableFinanceBalanceMerchantLog,
+      'detail-layout': Layout
     },
     data() {
       return {
         auth: this.$auth,
         query: {
           province_code: '',
+          province_title: '',
           title: ''
         },
         dataItem: {
@@ -177,9 +196,16 @@
       //this.getData();
     },
     methods: {
-      initQuery() {
+      initQuery(resetData) {
+        let provinceCode = '', provinceTitle = '';
+        if(resetData && resetData.province_code){
+          provinceCode = resetData.province_code;
+          provinceTitle = resetData.province_title;
+        }
+
         this.$data.query = Object.assign(this.$data.query, {
-          province_code: '',
+          province_code: provinceCode,
+          province_title: provinceTitle,
           title: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -199,8 +225,8 @@
       changeQuery() {
         this.getData();
       },
-      resetQuery() {
-        this.initQuery();
+      resetQuery(resetData) {
+        this.initQuery(resetData);
         this.getData();
       },
 
@@ -280,7 +306,7 @@
           
           window.open(queryStr);
         }else{
-          this.$store.this.$message({ title: '提示', message: res.message, type: 'error' });
+          this.$message({ title: '提示', message: res.message, type: 'error' });
         }
         this.$loading({ isShow: false });
       },

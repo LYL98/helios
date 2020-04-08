@@ -47,8 +47,6 @@
       'global-province': GlobalProvince,
     },
     mixins: [queryMixin],
-    created() {
-    },
     data() {
       let initQuery = {
         province_code: '',
@@ -59,13 +57,18 @@
       }
       return {
         initQuery: initQuery,
-        query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
+        query: this.copyJson(initQuery)
       }
+    },
+    created() {
     },
     methods: {
       //查询选择区域后
-      selectProvince(){
-        this.query.city_id = '';
+      selectProvince(data, type){
+        this.$data.query.city_id = '';
+        if(type === 'init'){
+          this.$data.initQuery.province_code = data.code;
+        }
         this.handleQuery('TableMerchantRefund');
       },
     }

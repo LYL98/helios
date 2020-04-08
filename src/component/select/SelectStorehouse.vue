@@ -35,8 +35,6 @@
       placeholder: { type: String, default: '选择仓' },
       isAuth: { type: Boolean, default: false }, //是否要求权限
       initCallBack:  { type: Function }, //获取数据时回调，方便外边控制
-      isTarLimit: { type: Boolean, default: false }, //是否限制调入仓
-      isSrcLimit: { type: Boolean, default: false }, //是否限制调出仓
     },
     computed: {
       handleDataItem(){
@@ -55,8 +53,6 @@
         let res = await Http.get(this.isAuth ? Config.api.baseSupStorehouseList : Config.api.baseStorehouseList, {
           ...this.query,
           province_code: this.provinceCode,
-          is_tar_limit: this.isTarLimit ? 1 : 0,
-          is_src_limit: this.isSrcLimit ? 1 : 0,
           need_num: 200
         });
         if(res.code === 0){

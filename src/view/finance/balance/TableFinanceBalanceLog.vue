@@ -147,11 +147,11 @@
       'my-table-operate': TableOperate
     },
     props: {
-      merchant_id: { type: String | Number, required: true }
+      merchant_id: { type: String | Number, required: true },
+      province: { type: Object, default: {} }
     },
     data() {
       return {
-        province: this.$province,
         pickerValue: null,
         query: { },
         dataItem: {

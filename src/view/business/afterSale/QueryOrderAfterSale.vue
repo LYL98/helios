@@ -90,6 +90,7 @@
     data() {
       return {
         pickerValue: null,
+        initProvinceCode: ''
       }
     },
     computed: {
@@ -101,8 +102,11 @@
     },
     methods: {
       //选择区域后
-      selectProvince(data){
+      selectProvince(data, type){
         this.editQuery.city_id = '';
+        if(type === 'init'){
+          this.initProvinceCode = data.code;
+        }
         this.changeQuery();
       },
       //搜索日期
@@ -119,7 +123,7 @@
       },
       resetQuery() {
         this.$data.pickerValue = null;
-        this.$props.reset();
+        this.$props.reset({province_code: this.initProvinceCode});
       }
     }
   }

@@ -125,6 +125,7 @@
     -webkit-box-orient: vertical;
   }
 
+  /*运营*/
   @font-face {
     font-family: 'iconfont';  /* project id 1717462 */
     src: url('//at.alicdn.com/t/font_1717462_uvslgdmyzxh.eot');
@@ -134,9 +135,26 @@
     url('//at.alicdn.com/t/font_1717462_uvslgdmyzxh.ttf') format('truetype'),
     url('//at.alicdn.com/t/font_1717462_uvslgdmyzxh.svg#iconfont') format('svg');
   }
-
   .iconfont {
     font-family: "iconfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /*团购*/
+  @font-face {
+    font-family: 'iconfont-tg';  /* project id 1717475 */
+    src: url('//at.alicdn.com/t/font_1717475_5523jbz2gak.eot');
+    src: url('//at.alicdn.com/t/font_1717475_5523jbz2gak.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1717475_5523jbz2gak.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1717475_5523jbz2gak.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1717475_5523jbz2gak.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1717475_5523jbz2gak.svg#iconfont') format('svg');
+  }
+  .iconfont-tg{
+    font-family: "iconfont-tg" !important;
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -webkit-text-stroke-width: 0.2px;

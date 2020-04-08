@@ -55,7 +55,7 @@
             <template v-else-if="selectMenu === 'gbuy'">
               <template v-for="(item, index) in gmenus">
                 <el-menu-item :index="item.name" :key="index" v-if="auth.isAdmin || auth[item.name]" @click="(e) => clickMenu(e, item)">
-                  <i class="iconfont menu-icon" v-html="item.icon"></i>
+                  <i class="iconfont-tg menu-icon" v-html="item.icon"></i>
                   <span>{{item.title}}</span>
                 </el-menu-item>
               </template>
@@ -227,7 +227,7 @@
         } else if (command === 'editPassword') {
           PwdModify.show(); //修改密码
         } else if (command === 'reloadAuth') {
-          that.signLogin();
+          that.signMock();
         }
       },
       //登出
@@ -242,10 +242,12 @@
         }
       },
       //重新登录
-      async signLogin(){
+      async signMock(){
         let data = Method.getLocalStorage('loginData');
         this.$loading({ isShow: true });
-        let res = await Http.post(Config.api.signLogin, data, {throttle: false});
+        let res = await Http.get(Config.api.signMock, {
+          phone: data.login_name
+        }, {throttle: false});
         this.$loading({ isShow: false });
         if(res.code === 0){
           if(this.$route.name !== 'Home') this.$router.replace({ name: "Home" });
@@ -276,7 +278,7 @@
 
         let { selectMenu } = this;
         if(from.name === 'Login') selectMenu = '';
-        if((to.name.indexOf('Group') === 0 && gbuy) || selectMenu === 'gbuy'){
+        if((gbuy && !operate) || selectMenu === 'gbuy' || to.name.indexOf('Group') === 0){
           selectMenu = 'gbuy';
         }else if(operate){
           selectMenu = 'operate';

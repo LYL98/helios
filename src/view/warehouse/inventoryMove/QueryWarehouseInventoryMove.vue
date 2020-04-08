@@ -3,7 +3,7 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item :label="queryTitles[tabValue] || '仓库'">
-          <select-storehouse v-model="query.storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" isAuth :isSrcLimit="tabValue === 'distribute' ? true : false" @initCallBack="storehouseInit"/>
+          <select-storehouse v-model="query.storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -33,7 +33,7 @@
     <el-row :gutter="32" style="margin-top: 16px;" v-if="tabValue === 'distribute'">
       <el-col :span="7">
         <my-query-item label="调入仓库">
-          <select-storehouse v-model="query.tar_storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" clearable isTarLimit/>
+          <select-storehouse v-model="query.tar_storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" clearable />
         </my-query-item>
       </el-col>
     </el-row>
