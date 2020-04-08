@@ -416,7 +416,7 @@ export default {
         isAfterHave = true;
       }
       //调拨 到货数量 + 已入库数量
-      if(pageType === 'add_distribute' && detail.num !== inventoryData.num + detail.num_arrive){
+      if(pageType === 'add_distribute' && detail.num !== inventoryData.num_arrive + detail.num_in){
         isAfterHave = true;
       }
       
