@@ -38,7 +38,7 @@
           <li>筐总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
           <li>优惠总金额: <span>-{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
           <li>下单门店数: <span>{{ totalOrderMerchantNum }}</span> 个</li>
-          <li>总件数: <span>{{ totalPiece }}</span> 件</li>
+          <li>销售总量: <span>{{ totalPiece }}</span> 件</li>
         </ul>
       </div>
 
@@ -81,7 +81,7 @@
               ￥{{ returnPrice(scope.row.gmv) }}
             </template>
           </el-table-column>
-          <el-table-column label="订单商品金额" sortable="custom" prop="real_price" min-width="130">
+          <el-table-column label="订单商品金额" sortable="custom" prop="amount_real" min-width="130">
             <template slot-scope="scope">
               ￥{{ returnPrice(scope.row.amount_real) }}
             </template>

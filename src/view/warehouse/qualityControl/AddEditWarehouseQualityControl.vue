@@ -190,7 +190,7 @@
     <el-dialog title="品控确认" :visible="isShowAffirm" width="540px" :before-close="showHideAffirm">
       <div class="t-c">
         <div>{{pageType === 'add_distribute' ? '调拨' : '采购'}}数量：{{detail.num}}件，已收货：{{detail.num_in}}件</div>
-        <div style="margin: 6px 0 20px; color: #ff5252;">本次收货数量：{{inventoryData.num}}件，请确认</div>
+        <div style="margin: 6px 0 20px; color: #ff5252;">本次收货数量：{{pageType === 'add_distribute' ? inventoryData.num_arrive : inventoryData.num}}件，请确认</div>
         <el-radio v-model="inventoryData.accept_type" label="after_no" border>后面不会来货了</el-radio>
         <el-radio v-model="inventoryData.accept_type" label="after_have" border>后面会来货</el-radio>
       </div>
@@ -416,7 +416,7 @@ export default {
         isAfterHave = true;
       }
       //调拨 到货数量 + 已入库数量
-      if(pageType === 'add_distribute' && detail.num !== inventoryData.num + detail.num_arrive){
+      if(pageType === 'add_distribute' && detail.num !== inventoryData.num_arrive + detail.num_in){
         isAfterHave = true;
       }
       

@@ -2,10 +2,10 @@
   <sub-menu>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
-        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { begin_date: query.begin_date, end_date: query.end_date } }">
+        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date } }">
           商品销售统计
         </el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ name: 'StatisticMarketClass2', query: { begin_date: query.begin_date, end_date: query.end_date, system_class1: query.system_class1, system_class_code1: query.system_class_code1 } }">
+        <el-breadcrumb-item :to="{ name: 'StatisticMarketClass2', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date, system_class1: query.system_class1, system_class_code1: query.system_class_code1 } }">
           {{ query.system_class1 === '' ? '全部分类' : query.system_class1 }}
         </el-breadcrumb-item>
         <el-breadcrumb-item>{{ query.system_class === '' ? '全部分类' : query.system_class }}</el-breadcrumb-item>
