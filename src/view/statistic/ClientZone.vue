@@ -213,6 +213,7 @@
       },
 
       initBreadcrumb() {
+        // console.log("this.$route.query", this.$route.query);
         let zone_id = this.$route.query.zone_id;
         let zone_title = this.$route.query.zone_title;
         let province_code = this.$route.query.province_code;
