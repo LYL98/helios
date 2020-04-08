@@ -81,7 +81,7 @@
               ￥{{ returnPrice(scope.row.gmv) }}
             </template>
           </el-table-column>
-          <el-table-column label="订单商品金额" sortable="custom" prop="real_price" min-width="130">
+          <el-table-column label="订单商品金额" sortable="custom" prop="amount_real" min-width="130">
             <template slot-scope="scope">
               ￥{{ returnPrice(scope.row.amount_real) }}
             </template>
