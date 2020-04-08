@@ -201,17 +201,6 @@
         this.storeQuery();
       },
 
-      /**
-       * 根据城市 查询商户列表
-       */
-      selectMerchantByCondition() {
-        let { query, province } = this;
-        query.province_code = province.code; // 当前区域code
-        query.page = 1;
-        this.$data.query = query;
-        this.storeQuery();
-      },
-
       //搜索日期
       changePicker(value){
         let { query } = this;
@@ -247,11 +236,11 @@
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
-          province_code: this.province.code,
+          province_code: this.query.province_code,
           ...query
         });
         if(res.code === 0){
-          let queryStr = `${api}?province_code=${this.province.code}`;
+          let queryStr = `${api}?province_code=${this.query.province_code}`;
           for (let item in query) {
             queryStr += `&${item}=${query[item]}`
           }
