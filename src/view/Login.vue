@@ -12,6 +12,9 @@
             :src="qrconnect_url"
           >
           </iframe>
+          <div class="expiration-mask" v-if="isExpiration">
+            二维码已过期
+          </div>
           <div class="tips mt-30">
             请使用微信扫一扫{{ type==='qrcode' && step === 0 ? '登录' : '授权' }}
             <a class="ml-5" @click="signQrconnectUrl">刷新</a>
@@ -81,6 +84,7 @@ export default {
       isDev: Config.isDev,
       refreshing: false, // 刷新二维码
       loading: false, // 提交loading
+      isExpiration: false,
 
       login_key: '',
       qrconnect_url: '',
@@ -139,7 +143,7 @@ export default {
 
             if (res.code === 9) { // 表示二维码已过期
               this.interval && clearInterval(this.interval);
-              Message.error({ message: '二维码已过期，请刷新后重新扫描', offset: 100 });
+              this.$data.isExpiration = true;
               return;
             }
 
@@ -178,6 +182,7 @@ export default {
       this.$data.refreshing = false;
 
       if (res.code !== 0) return;
+      this.$data.isExpiration = false; // 二维码请求成功后，设定过期状态为false
       this.intervalConfirm(); // 二维码请求成功后，开始计时器
       this.$data.login_key = res.data.login_key;
       this.$data.qrconnect_url = res.data.qrconnect_url;
@@ -363,7 +368,6 @@ export default {
   }
 
   .body .qrcode-container {
-    text-align: center;
     margin-top: 28px;
     width: 300px;
     height: 330px;
@@ -376,6 +380,21 @@ export default {
       height: 100%;
       transform: scale(.7);
       margin-top: -82px;
+    }
+
+    .expiration-mask {
+      position: absolute;
+      z-index: 100;
+      width: 200px;
+      height: 200px;
+      line-height: 200px;
+      top: 0px;
+      left: 50px;
+      text-align: center;
+      font-size: 14px;
+      color: #5A5D64;
+      font-weight: 600;
+      background-color: rgba(255, 255, 255, 0.9);
     }
   }
 
