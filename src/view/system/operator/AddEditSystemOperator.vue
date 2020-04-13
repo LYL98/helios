@@ -83,7 +83,7 @@
         </el-form-item>
 
         <el-form-item
-          label="权限级别"
+          label="数据权限"
           v-if="detail.opt_type === 'local' && detail.province_code && ['salesman', 'other'].includes(detail.post)"
           required
         >

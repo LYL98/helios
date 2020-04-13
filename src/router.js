@@ -430,9 +430,26 @@ let myInfo = {}, nextPage = ()=>{}, auth = {}, page = '', pageName = '';
 
 //判断是否已登录
 const getIsLogin = async ()=>{
+
+  if (myInfo.id && myInfo._tokenExpirationDate > new Date().getTime()) {
+
+    if (judgeAuth()) {
+      nextPage();
+    } else {
+      Notification.error({
+        title: '提示',
+        message: '您没有权限访问',
+        offset: 50
+      });
+    }
+
+    return;
+  }
+
   let res = await Http.get(Config.api.signIsLogin, {});
   if(res.code === 0){
     myInfo = res.data;
+    myInfo._tokenExpirationDate = new Date().getTime() + 12 * 3600 * 1000;
     getAuthorityList();//用户权限
   }else if(res.code !== 200){
     //不包括登录已失效
@@ -440,6 +457,7 @@ const getIsLogin = async ()=>{
       type: 'error'
     });
   }
+
 }
 
 //路由跳转时是否有权限
