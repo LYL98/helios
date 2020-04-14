@@ -82,7 +82,7 @@
                 },
                 {
                   title: '关闭',
-                  isDisplay: (auth.isAdmin || auth.ItemGPurchaseClose) && judgeOrs(scope.row.status, ['init', 'success']),
+                  isDisplay: (auth.isAdmin || auth.ItemGPurchaseClose) && judgeOrs(scope.row.status, ['init', 'audit_success']),
                   command: () => handleShowForm('FormClose', { ids: [scope.row.id] })
                 }
               ]"
