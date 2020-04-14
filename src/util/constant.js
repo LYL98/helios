@@ -393,6 +393,23 @@ const Constant = {
     all_in: 'regular',
     closed: 'info'
   },
+  // 调拨计划状态
+  DISTRIBUTE_PLAN_STATUS: (type) => {
+    let data = [
+      { key: 'init', value: '待审核' },
+      { key: 'audit_success', value: '已完成' },
+      { key: 'audit_fail', value: '作废' },
+      { key: 'closed', value: '关闭' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  // 调拨计划状态(颜色)
+  DISTRIBUTE_PLAN_STATUS_TYPE: {
+    init: 'primary',
+    audit_success: 'success',
+    audit_fail: 'info',
+    closed: 'info'
+  },
   //调拨单状态
   DISTRIBUTE_STATUS: (type)=>{
     let data = [

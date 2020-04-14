@@ -84,6 +84,11 @@ const router = new Router({
       name: 'ItemLocalPurchase',
       component: () => import('@/view/item/localPurchase/Main')
     },
+    {
+      path: '/item/sup-distribute-plan',
+      name: 'itemSupDistributePlan',
+      component: () => import('@/view/item/distribute/distribute-plan')
+    },
 
     /*业务*/
     {
@@ -431,6 +436,7 @@ let myInfo = {}, nextPage = ()=>{}, auth = {}, page = '', pageName = '';
 //判断是否已登录
 const getIsLogin = async ()=>{
 
+  // 判断内存中，登录态是否超时
   if (myInfo.id && myInfo._tokenExpirationDate > new Date().getTime()) {
 
     if (judgeAuth()) {
@@ -445,6 +451,8 @@ const getIsLogin = async ()=>{
 
     return;
   }
+
+  myInfo = {}; // 如果内存中的登录态已经失效，则初始化登录信息。
 
   let res = await Http.get(Config.api.signIsLogin, {});
   if(res.code === 0){
@@ -499,7 +507,10 @@ const getAuthorityList = ()=>{
     install(Vue){
       Vue.prototype.$auth = a; //放入全局
       Vue.prototype.$myInfo = myInfo; //放入全局
-      //全局区域
+
+      // $province 缓存 用户选中的区域
+      // 如果为空，则默认使用权限所在区域
+      // 如果为空，则该字段缓存的省code就为空
       let province = Method.getLocalStorage('globalProvince');
       Vue.prototype.$province = province.code ? province : {province_code: myInfo.province_code};
     }
