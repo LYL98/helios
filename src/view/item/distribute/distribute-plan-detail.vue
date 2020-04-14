@@ -1,6 +1,6 @@
 <template>
   <el-form label-position="right" label-width="120px" size="mini">
-    <el-form-area label-position="left" :label="'调拨计划：' + item.id">
+    <el-form-area label-position="left" label="调拨信息">
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="调出仓：">
