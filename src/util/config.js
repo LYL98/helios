@@ -118,6 +118,7 @@ const Config = (() => {
       itemSupDistributePlanAdd: apiM + '/sup_distribute_plan/add', // 新增
       itemSupDistributePlanModify: apiM + '/sup_distribute_plan/edit', // 修改
       itemSupDistributePlanClose: apiM + '/sup_distribute_plan/close', // 关闭调拨计划
+      itemSupDistributePlanAudit: apiM + '/sup_distribute_plan/audit', // 关闭调拨计划
 
 
       // 促销活动

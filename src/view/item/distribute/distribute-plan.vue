@@ -39,6 +39,7 @@
               size="small"
               v-model="query.condition"
               placeholder="入库单号/商品编号/名称"
+              clearable
               @search="changeQuery"
               @reset="resetQuery"
             />
@@ -48,12 +49,12 @@
       <el-row :gutter="32" class="mt-16">
         <el-col :xl="7" :lg="7" :span="10">
           <my-query-item label="调出仓">
-            <select-storehouse size="small" v-model="query.src_storehouse_id" @change="changeQuery"/>
+            <select-storehouse clearable size="small" v-model="query.src_storehouse_id" @change="changeQuery"/>
           </my-query-item>
         </el-col>
         <el-col :xl="7" :lg="7" :span="10">
           <my-query-item label="调入仓">
-            <select-storehouse size="small" v-model="query.tar_storehouse_id" @change="changeQuery"/>
+            <select-storehouse clearable size="small" v-model="query.tar_storehouse_id" @change="changeQuery"/>
           </my-query-item>
         </el-col>
       </el-row>
@@ -69,7 +70,7 @@
         </div>
       </div>
 
-      <div @mousemove="handleTableMouseMove" class="mt-16 table-conter">
+      <div @mousemove="handleTableMouseMove" class="table-conter">
         <el-table
           class="list-table my-table-float"
           @cell-mouse-enter="cellMouseEnter"
@@ -88,7 +89,10 @@
           ></el-table-column>
           <el-table-column label="调拨计划单" prop="creator_id" min-width="200">
             <template slot-scope="scope">
-              {{ scope.row.creator_id }}
+              <div
+                :class="`td-item link-item`"
+                @click.prevent="handleDetailItem(scope.row)"
+              >{{ scope.row.code }}</div>
             </template>
           </el-table-column>
           <el-table-column label="调出仓" prop="src_storehouse_id" min-width="100">
@@ -126,12 +130,17 @@
                 :list="[
                   {
                     title: '修改',
-                    isDisplay: $auth.isAdmin || $auth.itemSupDistributePlanModify,
+                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.itemSupDistributePlanModify),
                     command: () => handleModifyItem(scope.row)
                   },
                   {
+                    title: '审核',
+                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.itemSupDistributePlanAudit),
+                    command: () => handleAuditItem(scope.row.id)
+                  },
+                  {
                     title: '关闭',
-                    isDisplay: $auth.isAdmin || $auth.itemSupDistributePlanClose,
+                    isDisplay: scope.row.status !== 'closed' && ($auth.isAdmin || $auth.itemSupDistributePlanClose),
                     command: () => handleCloseItem(scope.row.id)
                   },
                 ]"
@@ -164,11 +173,21 @@
       <distribute-plan-edit
         v-if="dialog.visible"
         :type="dialog.type"
-        :items="dialog.item"
+        :item="dialog.item"
         @submit="handleSubmitEdit"
         @cancel="handleCancelEdit"
       />
     </add-edit-layout>
+    <el-dialog
+      :title="'调拨计划 - ' + detail.item.code + ' 详情'"
+      :visible.sync="detail.visible"
+      width="800px"
+    >
+      <distribute-plan-detail
+        v-if="detail.visible"
+        :item="detail.item"
+      />
+    </el-dialog>
   </sub-menu>
 </template>
 
@@ -183,6 +202,7 @@
   import tableMixin from '@/share/mixin/table.mixin';
 
   import DistributePlanEdit from './distribute-plan-edit';
+  import DistributePlanDetail from './distribute-plan-detail';
   export default {
     name: 'distribute-plan',
     mixins: [mainMixin, tableMixin],
@@ -206,7 +226,8 @@
       'select-storehouse': SelectStorehouse,
       'query-search-input': QuerySearchInput,
       'query-tabs': queryTabs,
-      'distribute-plan-edit': DistributePlanEdit
+      'distribute-plan-edit': DistributePlanEdit,
+      'distribute-plan-detail': DistributePlanDetail,
     },
     data() {
       return {
@@ -217,12 +238,15 @@
         list: {
           items: []
         },
-        selectedList: [],
         dialog: {
           visible: false,
           type: 'add',
-          items: null
+          item: null
         },
+        detail: {
+          visible: false,
+          item: {}
+        }
       }
     },
     created() {
@@ -284,16 +308,35 @@
         this.$data.dialog = {
           visible: true,
           type: 'add',
-          items: null,
+          item: null,
         }
       },
 
-      handleModifyItem(item) {
-        this.$data.dialog = {
-          visible: true,
-          type: 'modify',
-          items: {...item},
-        };
+      async handleDetailItem(item) {
+        let res = await Http.get(Config.api.itemSupDistributePlanDetail, {id: item.id});
+        if (res.code === 0) {
+          console.log('res.data: ', res.data);
+          this.$data.detail = {
+            visible: true,
+            item: res.data,
+          };
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+
+      async handleModifyItem(item) {
+
+        let res = await Http.get(Config.api.itemSupDistributePlanDetail, {id: item.id});
+        if (res.code === 0) {
+          this.$data.dialog = {
+            visible: true,
+            type: 'modify',
+            item: res.data,
+          };
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
       },
 
       handleSubmitEdit() {
@@ -305,8 +348,29 @@
         this.$data.dialog = {
           visible: false,
           type: 'add',
-          items: null,
+          item: null,
         };
+      },
+
+      handleAuditItem(id) {
+        this.$messageBox.confirm('确认审核通过该调拨计划?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          let res = await Http.post(Config.api.itemSupDistributePlanAudit, {
+            ids: [id],
+            audit_status: 'audit_success'
+          });
+          if(res.code === 0){
+            this.$message({ title: '提示', message: '调拨计划审核成功', type: 'success'});
+            this.distributePlanQuery();
+          }else{
+            this.$message({title: '提示', message: res.message, type: 'error'});
+          }
+        }).catch(() => {
+          // console.log('取消');
+        });
       },
 
       handleCloseItem(id) {
@@ -316,7 +380,7 @@
           type: 'warning'
         }).then(async () => {
           let res = await Http.post(Config.api.itemSupDistributePlanClose, {
-            id: id
+            ids: [id]
           });
           if(res.code === 0){
             this.$message({ title: '提示', message: '调拨计划关闭成功', type: 'success'});
