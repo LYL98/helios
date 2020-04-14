@@ -68,7 +68,7 @@
                 },
                 {
                   title: '关闭',
-                  isDisplay: (auth.isAdmin || auth.ItemLocalPurchaseClose) && scope.row.status === 'success',
+                  isDisplay: (auth.isAdmin || auth.ItemLocalPurchaseClose) && scope.row.status === 'audit_success',
                   command: () => handleShowForm('FormClose', { ids: [scope.row.id] })
                 }
               ]"
