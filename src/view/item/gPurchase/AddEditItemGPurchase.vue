@@ -71,21 +71,21 @@
         </el-row>
       </el-form>
       <template v-if="pageType === 'detail'">
-        <template v-if="detail.instocks.length > 0">
-          <h6 class="subtitle">关联入库单</h6>
+        <template v-if="detail.out_stocks.length > 0">
+          <h6 class="subtitle">关联收货单</h6>
           <div style="padding: 0 30px; margin-bottom: 30px;">
-            <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
-              <el-table-column prop="code" label="入库单号">
+            <el-table :data="detail.out_stocks" :row-class-name="highlightRowClassName">
+              <el-table-column prop="code" label="收货单号">
                 <template slot-scope="scope">
                   <span v-if="(auth.isAdmin || auth.ItemGPurchaseDetailStock) && fromPage !== 'Inventory'" class="link-item"
                     @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)">{{scope.row.code}}</span>
                   <span v-else>{{scope.row.code}}</span>
                 </template>
               </el-table-column>
-              <el-table-column prop="num" label="入库数量">
+              <el-table-column prop="num" label="收货数量">
                 <template slot-scope="scope">{{scope.row.num}}件</template>
               </el-table-column>
-              <el-table-column prop="created" label="入库时间"></el-table-column>
+              <el-table-column prop="created" label="收货时间"></el-table-column>
               <el-table-column prop="status" label="状态" width="140">
                 <template slot-scope="scope">{{inventoryStatus[scope.row.status]}}</template>
               </el-table-column>
@@ -174,7 +174,7 @@ export default {
       num: '',
       price_buy: '',
       frame_price: 0,
-      instocks: [],
+      out_stocks: [],
       logs: []
     }
     return {
@@ -238,15 +238,7 @@ export default {
       let res = await Http.get(Config.api.fromSupplierOrderDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
-        let rd = res.data;
-        //场地收货的记录不显示关联入库单
-        for(let i = 0; i < rd.instocks.length; i++){
-          if(rd.instocks[i].qa_event === 'accept'){
-            rd.instocks.remove(i);
-            i = i - 1;
-          }
-        }
-        this.$data.detail = rd;
+        this.$data.detail = res.data;
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
