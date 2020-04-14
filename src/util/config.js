@@ -112,6 +112,14 @@ const Config = (() => {
       itemChgSupplier: apiM + '/item/chg_supplier', //修改反采商品的供应商
       itemPriceDetail: apiM + '/item/price/detail', //商品供应商报价列表
 
+      // 商品 - 调拨 - 调拨计划
+      itemSupDistributePlanQuery: apiM + '/sup_distribute_plan/query', // 查询
+      itemSupDistributePlanDetail: apiM + '/sup_distribute_plan/detail', // 详情
+      itemSupDistributePlanAdd: apiM + '/sup_distribute_plan/add', // 新增
+      itemSupDistributePlanModify: apiM + '/sup_distribute_plan/edit', // 修改
+      itemSupDistributePlanClose: apiM + '/sup_distribute_plan/close', // 关闭调拨计划
+
+
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询
       itemScopePromotionAdd: apiM + '/scope_promotion/add', // 创建促销活动
