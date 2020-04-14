@@ -376,8 +376,8 @@ const Constant = {
   PURCHASE_STATUS: (type)=>{
     let data = [
       { key: 'init', value: '待审核' },
-      { key: 'success', value: '待收货' },
-      { key: 'fail', value: '作废' },
+      { key: 'audit_success', value: '待收货' },
+      { key: 'audit_fail', value: '作废' },
       { key: 'part_in', value: '部分收货' },
       { key: 'all_in', value: '已完成' },
       { key: 'closed', value: '关闭' }
@@ -387,8 +387,8 @@ const Constant = {
   //采购订单状态(颜色)
   PURCHASE_STATUS_TYPE: {
     init: 'primary',
-    success: 'success',
-    fail: 'info',
+    audit_success: 'success',
+    audit_fail: 'info',
     part_in: 'warning',
     all_in: 'regular',
     closed: 'info'

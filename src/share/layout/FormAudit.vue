@@ -74,7 +74,7 @@ export default {
       let res = await Http.post(pages[page].api, {
         ...detail,
         remark: auditData.remark,
-        audit_status: auditData.audit_status
+        audit_status: page === 'ItemGPurchase' ? 'audit_' + auditData.audit_status : auditData.audit_status
       });
       this.$loading({isShow: false});
       if(res.code === 0){
