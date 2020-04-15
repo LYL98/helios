@@ -39,7 +39,11 @@
         stripe
         :data="item.p_items"
       >
-        <el-table-column prop="item_title" label="商品编号/名称" />
+        <el-table-column prop="item_title" label="商品编号/名称">
+          <template slot-scope="scope">
+            {{ scope.row.item_code }} / {{ scope.row.item_title }}
+          </template>
+        </el-table-column>
         <el-table-column prop="num" label="调拨数量" width="140">
           <template slot-scope="scope">
             <span v-if="!!scope.row.num">{{scope.row.num}}件</span>

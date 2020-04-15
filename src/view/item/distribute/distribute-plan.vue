@@ -65,7 +65,7 @@
         <div class="left">
           <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="statusOptions"/>
         </div>
-        <div class="right" v-if="$auth.isAdmin || $auth.itemSupDistributePlanAdd">
+        <div class="right" v-if="$auth.isAdmin || $auth.ItemSupDistributePlanAdd">
           <el-button @click="handleAddItem" size="mini" type="primary">新增</el-button>
         </div>
       </div>
@@ -130,22 +130,22 @@
                 :list="[
                   {
                     title: '修改',
-                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.itemSupDistributePlanModify),
+                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.ItemSupDistributePlanModify),
                     command: () => handleModifyItem(scope.row)
                   },
                   {
                     title: '审核',
-                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.itemSupDistributePlanAudit),
+                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.ItemSupDistributePlanAudit),
                     command: () => handleAuditItem(scope.row)
                   },
                   {
                     title: '生成调拨单',
-                    isDisplay: scope.row.status === 'audit_success' && ($auth.isAdmin || $auth.itemSupDistributeAdd),
+                    isDisplay: scope.row.status === 'audit_success' && ($auth.isAdmin || $auth.ItemSupDistributeAdd),
                     command: () => handleAddDistribute(scope.row)
                   },
                   {
                     title: '关闭',
-                    isDisplay: scope.row.status !== 'closed' && ($auth.isAdmin || $auth.itemSupDistributePlanClose),
+                    isDisplay: scope.row.status !== 'closed' && ($auth.isAdmin || $auth.ItemSupDistributePlanClose),
                     command: () => handleCloseItem(scope.row.id)
                   },
                 ]"
