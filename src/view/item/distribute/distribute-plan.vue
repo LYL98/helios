@@ -475,6 +475,7 @@
 
       async distributePlanQuery() {
         let query = {...this.$data.query};
+        delete query.picker_value;
         let res = await Http.get(Config.api.itemSupDistributePlanQuery, query);
         if (res.code !== 0) return;
         this.$data.list = res.data || { items: [] };

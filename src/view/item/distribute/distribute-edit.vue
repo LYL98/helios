@@ -43,7 +43,26 @@
               prop="driver_id"
               :rules="[ { required: true, message: '司机不能为空', trigger: 'change' } ]"
             >
-              <el-select-driver filterable :createdGetData="false" v-model="formData.driver_id" placeholder="请搜索指定司机" @change="changeDriver" />
+              <el-select
+                v-model="formData.driver_id"
+                remote
+                filterable
+                :remote-method="remoteDriver"
+                :loading="remoting"
+                placeholder="请搜索指定配送司机"
+                style="width: 100%"
+                no-match-text="没有符合条件的司机"
+                no-data-text="没有符合条件的司机"
+              >
+                <el-option
+                  v-for="item in driver_list"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  @click.native="changeDriver(item)"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :sm="10" :span="10">
@@ -130,9 +149,9 @@
 </template>
 
 <script>
-  import { Form, FormItem, Row, Col, Button, Input, Table, TableColumn, Switch } from "element-ui";
+  import { Form, FormItem, Row, Col, Button, Input, Table, TableColumn, Switch, Select, Option } from "element-ui";
   import {FormArea} from '@/common';
-  import {SelectStorehouse, SelectGItem, SelectDriver} from '@/component';
+  import {SelectStorehouse, SelectGItem} from '@/component';
   import {Http, Config, DataHandle} from '@/util';
   export default {
     name: "distribute-edit",
@@ -146,10 +165,11 @@
       'el-table': Table,
       'el-table-column': TableColumn,
       'el-switch': Switch,
+      'el-select': Select,
+      'el-option': Option,
       'el-form-area': FormArea,
       'el-select-storehouse': SelectStorehouse,
       'el-select-g-item': SelectGItem,
-      'el-select-driver': SelectDriver,
     },
     props: {
       type: { type: String, default: '' },
@@ -157,6 +177,9 @@
     },
     data() {
       return {
+        remoting: false,
+        driver_list: [],
+
         loading: false,
         formData: {
 
@@ -171,7 +194,9 @@
         this.$data.formData = {
           id: Number(formData.id), // 接口需要调拨计划的id
           code: formData.code,
+          src_storehouse_id: formData.src_storehouse_id,
           src_storehouse: formData.src_storehouse,
+          tar_storehouse_id: formData.tar_storehouse_id,
           tar_storehouse: formData.tar_storehouse,
           available_date: formData.available_date,
           estimate_arrive_at: formData.estimate_arrive_at,
@@ -207,12 +232,22 @@
     },
     methods: {
 
-      handleDeleteItem(i) {
-
-      },
-
-      handleAddItem() {
-
+      async remoteDriver(keywords) {
+        this.$data.remoting = true;
+        // 查询当日 该调出仓可用的司机
+        let res = await Http.get(Config.api.itemSupDistributeGetDriver, {
+          delivery_date: DataHandle.formatDate(new Date(), 'yyyy-MM-dd'),
+          condition: keywords,
+        });
+        this.$data.remoting = false;
+        if (res.code !== 0) return;
+        this.$data.driver_list = (res.data || []).map(item => ({
+          value: item.id,
+          label: item.realname,
+          phone: item.phone,
+          driver_car_num: item.driver_car_num,
+          driver_car_type: item.driver_car_type,
+        }));
       },
 
       changeDriver(item) {
@@ -236,7 +271,7 @@
           let formData = {...this.$data.formData};
           formData = {
             plan_id: Number(formData.id),
-            plan_detail_ids: formData.p_items.map(item => Number(item.id)),
+            plan_detail_ids: formData.p_items.filter(item => item.is_active).map(item => Number(item.id)),
             driver_id: Number(formData.driver_id),
             fee: DataHandle.handlePrice(formData.fee),
           };

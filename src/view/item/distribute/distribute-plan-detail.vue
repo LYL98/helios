@@ -76,12 +76,14 @@
         <el-table-column prop="created" label="时间" width="160"/>
         <el-table-column prop="category" label="操作内容" width="120">
           <template slot-scope="scope">
-            <span v-if="scope.row.category === 'add'">新增</span>
-            <span v-else-if="scope.row.category === 'audit'">审核通过</span>
-            <span v-else>-</span>
+            {{logTypes[scope.row.category]}}
           </template>
         </el-table-column>
-        <el-table-column prop="remark" label="备注" />
+        <el-table-column prop="remark" label="备注">
+          <template slot-scope="scope">
+            {{ returnRemark(scope.row) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="creator" label="操作人" width="140">
           <template slot-scope="scope">
             {{ scope.row.creator && scope.row.creator.realname || '-' }}
@@ -115,8 +117,24 @@
       return {
         distribulte_plan_status: Constant.DISTRIBUTE_PLAN_STATUS(), // 调拨计划列表状态
         distribulte_plan_status_type: Constant.DISTRIBUTE_PLAN_STATUS_TYPE,
+        logTypes: {
+          add: '新增',
+          edit: '修改',
+          manual_add: '新增',
+          audit_suc: '审核通过',
+          audit_fail: '作废',
+          close: '关闭'
+        },
       }
     },
+    methods: {
+      returnRemark(data){
+        if(data.remark) return data.remark;
+        if((data.category ==='audit_suc' || data.category ==='audit_fail') && data.after && data.after.audit_remark) return data.after.audit_remark;
+        if(data.category ==='close' && data.after && data.after.close_remark) return data.after.close_remark;
+        return '';
+      }
+    }
   }
 </script>
 
