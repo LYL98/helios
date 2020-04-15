@@ -139,6 +139,11 @@
                     command: () => handleAuditItem(scope.row.id)
                   },
                   {
+                    title: '生成调拨单',
+                    isDisplay: scope.row.status === 'audit_success' && ($auth.isAdmin || $auth.itemSupDistributeAdd),
+                    command: () => handleAddDistribute(scope.row)
+                  },
+                  {
                     title: '关闭',
                     isDisplay: scope.row.status !== 'closed' && ($auth.isAdmin || $auth.itemSupDistributePlanClose),
                     command: () => handleCloseItem(scope.row.id)
@@ -188,6 +193,19 @@
         :item="detail.item"
       />
     </el-dialog>
+    <add-edit-layout
+      :is-show="distribute.visible"
+      title="生成调拨单"
+      :before-close="handleCancelEdit"
+    >
+      <distribute-edit
+        v-if="distribute.visible"
+        :type="distribute.type"
+        :item="distribute.item"
+        @submit="handleSubmitEdit"
+        @cancel="handleCancelEdit"
+      />
+    </add-edit-layout>
   </sub-menu>
 </template>
 
@@ -203,6 +221,7 @@
 
   import DistributePlanEdit from './distribute-plan-edit';
   import DistributePlanDetail from './distribute-plan-detail';
+  import DistributeEdit from './distribute-edit';
   export default {
     name: 'distribute-plan',
     mixins: [mainMixin, tableMixin],
@@ -228,6 +247,7 @@
       'query-tabs': queryTabs,
       'distribute-plan-edit': DistributePlanEdit,
       'distribute-plan-detail': DistributePlanDetail,
+      'distribute-edit': DistributeEdit,
     },
     data() {
       return {
@@ -238,15 +258,23 @@
         list: {
           items: []
         },
+        // 编辑调拨计划弹层
         dialog: {
           visible: false,
           type: 'add',
           item: null
         },
+        // 详情弹层
         detail: {
           visible: false,
           item: {}
-        }
+        },
+        // 生成调拨单弹层
+        distribute: {
+          visible: false,
+          type: 'add',
+          item: null,
+        },
       }
     },
     created() {
@@ -339,13 +367,34 @@
         }
       },
 
+      async handleAddDistribute(item) {
+        let res = await Http.get(Config.api.itemSupDistributePlanDetail, {id: item.id});
+        if (res.code === 0) {
+          this.$data.distribute = {
+            visible: true,
+            type: 'add',
+            item: res.data,
+          };
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+
       handleSubmitEdit() {
         this.handleCancelEdit();
         this.distributePlanQuery();
       },
 
+      // 调拨计划编辑 与 调拨单生成 共用弹层退出 函数
       handleCancelEdit() {
+        // 初始化调拨计划编辑弹层
         this.$data.dialog = {
+          visible: false,
+          type: 'add',
+          item: null,
+        };
+        // 初始化调拨单生成弹层
+        this.$data.distribute = {
           visible: false,
           type: 'add',
           item: null,

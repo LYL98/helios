@@ -120,6 +120,9 @@ const Config = (() => {
       itemSupDistributePlanClose: apiM + '/sup_distribute_plan/close', // 关闭调拨计划
       itemSupDistributePlanAudit: apiM + '/sup_distribute_plan/audit', // 关闭调拨计划
 
+      itemSupDistributeAdd: apiM + '/sup_distribute/add', // 生成调拨单
+
+
 
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询

@@ -26,10 +26,10 @@
         </el-col>
       </el-row>
     </el-form-area>
-    <el-form-area class="mt-20" label-position="left" label="调拨商品" v-if="Array.isArray(item.plan_details)">
+    <el-form-area class="mt-20" label-position="left" label="调拨商品" v-if="Array.isArray(item.p_items)">
       <el-table
         stripe
-        :data="item.plan_details"
+        :data="item.p_items"
       >
         <el-table-column prop="item_title" label="商品编号/名称" />
         <el-table-column prop="num" label="调拨数量" width="180" >
@@ -46,8 +46,12 @@
         :data="item.distributes"
         empty-text="暂无关联的调拨单"
       >
-        <el-table-column prop="item_title" label="调拨单号" width="160"/>
-        <el-table-column prop="creator" label="创建人" width="120"/>
+        <el-table-column prop="code" label="调拨单号" width="160"/>
+        <el-table-column prop="creator" label="创建人" width="120">
+          <template slot-scope="scope">
+            {{ scope.row.creator && scope.row.creator.realname || '-' }}
+          </template>
+        </el-table-column>
         <el-table-column prop="created" label="创建时间" />
         <el-table-column prop="status" label="状态" width="120"/>
       </el-table>

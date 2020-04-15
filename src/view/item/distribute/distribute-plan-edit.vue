@@ -13,7 +13,7 @@
         </el-col>
         <el-col :sm="10" :span="10">
           <el-form-item
-            label="调出仓"
+            label="调入仓"
             prop="tar_storehouse_id"
             :rules="[ { required: true, message: '调入仓不能为空', trigger: 'change' } ]"
           >
