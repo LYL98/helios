@@ -136,7 +136,12 @@
                   {
                     title: '审核',
                     isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.itemSupDistributePlanAudit),
-                    command: () => handleAuditItem(scope.row.id)
+                    command: () => handleAuditItem(scope.row)
+                  },
+                  {
+                    title: '生成调拨单',
+                    isDisplay: scope.row.status === 'audit_success' && ($auth.isAdmin || $auth.itemSupDistributeAdd),
+                    command: () => handleAddDistribute(scope.row)
                   },
                   {
                     title: '关闭',
@@ -165,17 +170,32 @@
         </div>
       </div>
     </div>
+
+    <el-dialog
+      title="调拨计划审核"
+      :visible="audit.visible"
+      width="600px"
+      :before-close="handleCancel"
+    >
+      <distribute-plan-audit
+        v-if="audit.visible"
+        :item="audit.item"
+        @submit="handleSubmit"
+        @cancel="handleCancel"
+      />
+    </el-dialog>
+
     <add-edit-layout
       :is-show="dialog.visible"
       :title="`${dialog.type === 'add' ? '新增' : '修改'}调拨计划`"
-      :before-close="handleCancelEdit"
+      :before-close="handleCancel"
     >
       <distribute-plan-edit
         v-if="dialog.visible"
         :type="dialog.type"
         :item="dialog.item"
-        @submit="handleSubmitEdit"
-        @cancel="handleCancelEdit"
+        @submit="handleSubmit"
+        @cancel="handleCancel"
       />
     </add-edit-layout>
     <el-dialog
@@ -188,6 +208,19 @@
         :item="detail.item"
       />
     </el-dialog>
+    <add-edit-layout
+      :is-show="distribute.visible"
+      title="生成调拨单"
+      :before-close="handleCancel"
+    >
+      <distribute-edit
+        v-if="distribute.visible"
+        :type="distribute.type"
+        :item="distribute.item"
+        @submit="handleSubmit"
+        @cancel="handleCancel"
+      />
+    </add-edit-layout>
   </sub-menu>
 </template>
 
@@ -201,8 +234,10 @@
   import mainMixin from '@/share/mixin/main.mixin';
   import tableMixin from '@/share/mixin/table.mixin';
 
+  import DistributePlanAudit from './distribute-plan-audit';
   import DistributePlanEdit from './distribute-plan-edit';
   import DistributePlanDetail from './distribute-plan-detail';
+  import DistributeEdit from './distribute-edit';
   export default {
     name: 'distribute-plan',
     mixins: [mainMixin, tableMixin],
@@ -226,8 +261,10 @@
       'select-storehouse': SelectStorehouse,
       'query-search-input': QuerySearchInput,
       'query-tabs': queryTabs,
+      'distribute-plan-audit': DistributePlanAudit,
       'distribute-plan-edit': DistributePlanEdit,
       'distribute-plan-detail': DistributePlanDetail,
+      'distribute-edit': DistributeEdit,
     },
     data() {
       return {
@@ -238,15 +275,27 @@
         list: {
           items: []
         },
+        // 编辑调拨计划弹层
         dialog: {
           visible: false,
           type: 'add',
           item: null
         },
+        // 详情弹层
         detail: {
           visible: false,
           item: {}
-        }
+        },
+        audit: {
+          visible: false,
+          item: {},
+        },
+        // 生成调拨单弹层
+        distribute: {
+          visible: false,
+          type: 'add',
+          item: null,
+        },
       }
     },
     created() {
@@ -339,38 +388,69 @@
         }
       },
 
-      handleSubmitEdit() {
-        this.handleCancelEdit();
+      async handleAddDistribute(item) {
+        let res = await Http.get(Config.api.itemSupDistributePlanDetail, {id: item.id});
+        if (res.code === 0) {
+          this.$data.distribute = {
+            visible: true,
+            type: 'add',
+            item: res.data,
+          };
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+
+      handleSubmit() {
+        this.handleCancel();
         this.distributePlanQuery();
       },
 
-      handleCancelEdit() {
+      // 共用弹层退出 函数
+      handleCancel() {
+        // 初始化调拨计划编辑弹层
         this.$data.dialog = {
           visible: false,
           type: 'add',
           item: null,
         };
+        // 初始化调拨单生成弹层
+        this.$data.distribute = {
+          visible: false,
+          type: 'add',
+          item: null,
+        };
+        // 初始化审核弹层
+        this.$data.audit = {
+          visible: false,
+          item: {},
+        };
       },
 
-      handleAuditItem(id) {
-        this.$messageBox.confirm('确认审核通过该调拨计划?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          let res = await Http.post(Config.api.itemSupDistributePlanAudit, {
-            ids: [id],
-            audit_status: 'audit_success'
-          });
-          if(res.code === 0){
-            this.$message({ title: '提示', message: '调拨计划审核成功', type: 'success'});
-            this.distributePlanQuery();
-          }else{
-            this.$message({title: '提示', message: res.message, type: 'error'});
-          }
-        }).catch(() => {
-          // console.log('取消');
-        });
+      handleAuditItem(item) {
+        this.$data.audit = {
+          visible: true,
+          item: item
+        };
+
+        // this.$messageBox.confirm('确认审核通过该调拨计划?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(async () => {
+        //   let res = await Http.post(Config.api.itemSupDistributePlanAudit, {
+        //     ids: [id],
+        //     audit_status: 'audit_success'
+        //   });
+        //   if(res.code === 0){
+        //     this.$message({ title: '提示', message: '调拨计划审核成功', type: 'success'});
+        //     this.distributePlanQuery();
+        //   }else{
+        //     this.$message({title: '提示', message: res.message, type: 'error'});
+        //   }
+        // }).catch(() => {
+        //   // console.log('取消');
+        // });
       },
 
       handleCloseItem(id) {

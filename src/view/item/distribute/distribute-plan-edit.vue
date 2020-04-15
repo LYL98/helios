@@ -13,7 +13,7 @@
         </el-col>
         <el-col :sm="10" :span="10">
           <el-form-item
-            label="调出仓"
+            label="调入仓"
             prop="tar_storehouse_id"
             :rules="[ { required: true, message: '调入仓不能为空', trigger: 'change' } ]"
           >
@@ -102,7 +102,7 @@
     </el-form-area>
 
     <el-form-item>
-      <el-button size="mini" @click="handleAddItem()">新增调拨商品</el-button>
+      <el-button size="mini" @click="handleAddItem">新增调拨商品</el-button>
     </el-form-item>
 
     <el-form-item class="mt-30">
@@ -158,7 +158,7 @@
           estimate_arrive_at: formData.estimate_arrive_at,
           src_storehouse_id: Number(formData.src_storehouse_id),
           tar_storehouse_id: Number(formData.tar_storehouse_id),
-          p_items: formData.plan_details.map(item => ({
+          p_items: formData.p_items.map(item => ({
             p_item_id: Number(item.p_item_id),
             num: Number(item.num)
           }))

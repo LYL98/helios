@@ -105,13 +105,13 @@
         },
         {
           "title": "调拨",
-          "name": "itemSupDistribute",
+          "name": "ItemSupDistribute",
           "type": "main",
           "children": [
             {
               "title": "调拨计划",
               "upName": "ItemSupDistribute",
-              "name": "itemSupDistributePlan"
+              "name": "ItemSupDistributePlan"
             }
           ]
         }
