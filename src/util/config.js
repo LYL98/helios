@@ -121,6 +121,7 @@ const Config = (() => {
       itemSupDistributePlanAudit: apiM + '/sup_distribute_plan/audit', // 审核
 
       itemSupDistributeAdd: apiM + '/sup_distribute/add', // 生成调拨单
+      itemSupDistributeGetDriver: apiM + '/sup_distribute/get_driver', // 获取当前可用司机
 
 
 
