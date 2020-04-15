@@ -86,7 +86,7 @@ const router = new Router({
     },
     {
       path: '/item/sup-distribute-plan',
-      name: 'itemSupDistributePlan',
+      name: 'ItemSupDistributePlan',
       component: () => import('@/view/item/distribute/distribute-plan')
     },
 

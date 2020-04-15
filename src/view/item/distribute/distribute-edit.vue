@@ -43,7 +43,7 @@
               prop="driver_id"
               :rules="[ { required: true, message: '司机不能为空', trigger: 'change' } ]"
             >
-              <el-select-driver filterable :createdGetData="false" v-model="formData.driver_id" placeholder="请选择司机" @change="changeDriver" />
+              <el-select-driver filterable :createdGetData="false" v-model="formData.driver_id" placeholder="请搜索指定司机" @change="changeDriver" />
             </el-form-item>
           </el-col>
           <el-col :sm="10" :span="10">
@@ -78,7 +78,7 @@
             <el-form-item
               label="运费"
               prop="fee"
-              :rules="[ { required: true, message: '运费不能为空', trigger: 'change' } ]"
+              :rules="[ { required: true, message: '运费不能为空', trigger: 'change' }, { validator: validFee, trigger: 'blur' } ]"
             >
               <el-input
                 v-model="formData.fee"
@@ -99,10 +99,20 @@
               stripe
             >
               <el-table-column prop="item_title" label="商品编号/名称" />
-              <el-table-column prop="num" label="调拨数量" width="180" >
+              <el-table-column prop="num" label="调拨数量" width="180" align="center">
                 <template slot-scope="scope">
                   <span v-if="!!scope.row.num">{{scope.row.num}}件</span>
                   <span v-else>-</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="is_active" label="指定调拨商品" width="140" align="center">
+                <template slot-scope="scope">
+                  <el-switch
+                    v-model="scope.row.is_active"
+                    :active-value="true"
+                    :inactive-value="false"
+                  >
+                  </el-switch>
                 </template>
               </el-table-column>
             </el-table>
@@ -120,7 +130,7 @@
 </template>
 
 <script>
-  import { Form, FormItem, Row, Col, Button, Input, Table, TableColumn } from "element-ui";
+  import { Form, FormItem, Row, Col, Button, Input, Table, TableColumn, Switch } from "element-ui";
   import {FormArea} from '@/common';
   import {SelectStorehouse, SelectGItem, SelectDriver} from '@/component';
   import {Http, Config, DataHandle} from '@/util';
@@ -135,6 +145,7 @@
       'el-input': Input,
       'el-table': Table,
       'el-table-column': TableColumn,
+      'el-switch': Switch,
       'el-form-area': FormArea,
       'el-select-storehouse': SelectStorehouse,
       'el-select-g-item': SelectGItem,
@@ -148,16 +159,7 @@
       return {
         loading: false,
         formData: {
-          code: '',
-          available_date: '',
-          estimate_arrive_at: '',
-          driver_id: '',
-          phone: '',
-          driver_car_num: '',
-          driver_car_type: '',
-          p_items: [
-            { id: '', item_title: '', num: '' }
-          ]
+
         }
       }
     },
@@ -167,7 +169,7 @@
       if (this.$props.type === 'add') {
         let formData = {...this.$props.item};
         this.$data.formData = {
-          id: Number(formData.id),
+          id: Number(formData.id), // 接口需要调拨计划的id
           code: formData.code,
           src_storehouse: formData.src_storehouse,
           tar_storehouse: formData.tar_storehouse,
@@ -181,7 +183,8 @@
           p_items: formData.p_items.map(item => ({
             id: Number(item.id),
             item_title: item.item_title,
-            num: Number(item.num)
+            num: Number(item.num),
+            is_active: true,
           }))
         };
       }
@@ -216,6 +219,13 @@
         this.$data.formData.phone = item.phone;
         this.$data.formData.driver_car_num = item.driver_car_num;
         this.$data.formData.driver_car_type = item.driver_car_type;
+      },
+
+      validFee(rules, value, callback) {
+        if (Number(value) === 0 || /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{0,2})))$/.test(value)) {
+          return callback();
+        }
+        return callback('运费必须是数字，且只能够保留2位小数');
       },
 
       onSubmit() {

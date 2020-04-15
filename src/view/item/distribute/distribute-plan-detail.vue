@@ -1,6 +1,14 @@
 <template>
   <el-form label-position="right" label-width="120px" size="mini">
-    <el-form-area label-position="left" label="调拨信息">
+    <el-form-area label-position="left" label="调拨信息" style="position: relative;">
+      <el-tag
+        style="position: absolute; right: 0; top: 0;"
+        size="small"
+        :type="distribulte_plan_status_type[item.status]"
+        disable-transitions
+      >
+        {{ distribulte_plan_status[item.status] }}
+      </el-tag>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="调出仓：">
@@ -32,7 +40,7 @@
         :data="item.p_items"
       >
         <el-table-column prop="item_title" label="商品编号/名称" />
-        <el-table-column prop="num" label="调拨数量" width="180" >
+        <el-table-column prop="num" label="调拨数量" width="140">
           <template slot-scope="scope">
             <span v-if="!!scope.row.num">{{scope.row.num}}件</span>
             <span v-else>-</span>
@@ -53,7 +61,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="created" label="创建时间" />
-        <el-table-column prop="status" label="状态" width="120"/>
+        <el-table-column prop="status" label="状态" width="140"/>
       </el-table>
     </el-form-area>
     <el-form-area class="mt-20" label-position="left" label="操作时间" v-if="Array.isArray(item.logs)">
@@ -70,7 +78,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="remark" label="备注" />
-        <el-table-column prop="creator" label="操作人" width="120">
+        <el-table-column prop="creator" label="操作人" width="140">
           <template slot-scope="scope">
             {{ scope.row.creator && scope.row.creator.realname || '-' }}
           </template>
@@ -81,8 +89,9 @@
 </template>
 
 <script>
-  import {Form, FormItem, Row, Col, Table, TableColumn} from "element-ui";
+  import {Form, FormItem, Row, Col, Table, TableColumn, Tag} from "element-ui";
   import {FormArea} from '@/common';
+  import {Constant} from '@/util';
   export default {
     name: "distribute-plan-detail",
     components: {
@@ -91,11 +100,18 @@
       'el-row': Row,
       'el-col': Col,
       'el-form-area': FormArea,
+      'el-tag': Tag,
       'el-table': Table,
       'el-table-column': TableColumn,
     },
     props: {
       item: { type: Object, default: () => ({}) },
+    },
+    data() {
+      return {
+        distribulte_plan_status: Constant.DISTRIBUTE_PLAN_STATUS(), // 调拨计划列表状态
+        distribulte_plan_status_type: Constant.DISTRIBUTE_PLAN_STATUS_TYPE,
+      }
     },
   }
 </script>
