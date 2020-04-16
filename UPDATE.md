@@ -4,6 +4,15 @@
 
 ### 版本 （最新 - 旧）
 
+### 3.6.0
+```
+更新注意事项
+修改sys_permission表
+修改：
+   1、code == OperateTruckLoadMain  修改项: title【从dev数据库拷贝】
+
+```
+
 ### 3.5.0
 ```
 更新注意事项

@@ -307,6 +307,11 @@ const Config = (() => {
       supDeliveryLackHistoryStore: apiM + '/sup_delivery/lack_history/store', //确认分配之后用于查看缺货记录中某个商品在各个门店分配的详情
       lineOrderExport: apiM + '/line_order/export', //导出
 
+      //场地调拨装车
+      supDistributeDriverDetail: apiM + '/sup_distribute/driver_detail', //返回某个司机在某天需要调拨的商品汇总(也就是装车界面)
+      supDistributeAllocateLoading: apiM + '/sup_distribute_allocate/loading', //调拨装车进度
+      supDistributeAllocateDelaySortQuery: apiM + '/sup_distribute_allocate/delay_sort_query', //调拨装车延迟
+
       //线路
       operateLineAdd: apiM + '/basicdata/line/add', //线路新增
       operateLineEdit: apiM + '/basicdata/line/edit', //线路修改

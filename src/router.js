@@ -268,6 +268,21 @@ const router = new Router({
       component: () => import('@/view/operate/depart/Main')
     },
     {
+      path: '/operate/dis/truck/load',
+      name: 'OperateDisTruckLoad',
+      component: () => import('@/view/operate/dis-truck-load/main')
+    },
+    {
+      path: '/operate/dis/truck/load/progress',
+      name: 'OperateDisTruckLoadProgress',
+      component: () => import('@/view/operate/dis-truck-load-progress/main')
+    },
+    {
+      path: '/operate/dis/truck/load/delay',
+      name: 'OperateDisTruckLoadDelay',
+      component: () => import('@/view/operate/dis-truck-load-delay/main')
+    },
+    {
       path: '/operate/line/list',
       name: 'OperateLineList',
       component: () => import('@/view/operate/line/Main')
