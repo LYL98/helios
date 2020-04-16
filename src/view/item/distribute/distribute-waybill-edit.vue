@@ -4,7 +4,7 @@
       <el-form-area class="bg-grey py-10">
         <el-row :gutter="32">
           <el-col :sm="10" :span="10">
-            <el-form-item class="m-0" label="调拨计划单：">{{ formData.code || '-' }}</el-form-item>
+            <el-form-item class="m-0" label="调拨计划单：">{{ formData.plan_code || '-' }}</el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="32">
@@ -228,24 +228,24 @@
           available_date: formData.available_date,
           estimate_arrive_at: formData.estimate_arrive_at,
           driver_id: Number(formData.driver_id),
-          phone: '',
-          driver_car_num: '',
-          driver_car_type: '',
+          phone: formData.driver ? formData.driver.phone : '',
+          driver_car_num: formData.driver ? formData.driver.driver_car_num : '',
+          driver_car_type: formData.driver ? formData.driver.driver_car_type : '',
           fee: DataHandle.returnPrice(formData.fee),
           p_items: formData.distributes.map(item => ({
-            id: Number(item.plan_id),
+            id: Number(item.plan_detail_id),
             item_title: item.item_title,
             num: Number(item.num),
             is_active: true,
           }))
         }
 
-        this.remoteDriver('', 'init');
+        this.remoteDriver('');
       }
     },
     methods: {
 
-      async remoteDriver(keywords, type) {
+      async remoteDriver(keywords) {
         this.$data.remoting = true;
         // 查询当日 该调出仓可用的司机
         let res = await Http.get(Config.api.itemSupDistributeGetDriver, {
@@ -261,16 +261,6 @@
           driver_car_num: item.driver_car_num,
           driver_car_type: item.driver_car_type,
         }));
-
-        // 如果是编辑模式，初始化后，需要获取司机的信息
-        if (this.$props.type === 'modify' && type === 'init') {
-          let driver = (res.data || []).find(item => item.id === this.$props.item.driver_id);
-          if (driver) {
-            this.$data.formData.phone = driver.phone;
-            this.$data.formData.driver_car_num = driver.driver_car_num;
-            this.$data.formData.driver_car_type = driver.driver_car_type;
-          }
-        }
       },
 
       changeDriver(item) {
