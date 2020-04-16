@@ -112,6 +112,11 @@
               "title": "调拨计划",
               "upName": "ItemSupDistribute",
               "name": "ItemSupDistributePlan"
+            },
+            {
+              "title": "调拨单",
+              "upName": "ItemSupDistribute",
+              "name": "ItemSupDistributeWaybill"
             }
           ]
         }

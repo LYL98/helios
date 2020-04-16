@@ -120,9 +120,14 @@ const Config = (() => {
       itemSupDistributePlanClose: apiM + '/sup_distribute_plan/close', // 关闭
       itemSupDistributePlanAudit: apiM + '/sup_distribute_plan/audit', // 审核
 
-      itemSupDistributeAdd: apiM + '/sup_distribute/add', // 生成调拨单
+      itemSupDistributeWaybillAdd: apiM + '/sup_distribute/add', // 生成调拨单
       itemSupDistributeGetDriver: apiM + '/sup_distribute/get_driver', // 获取当前可用司机
 
+      // 商品 - 调拨 - 调拨单
+      itemSupDistributeWaybillQuery: apiM + '/sup_distribute/query', // 查询
+      itemSupDistributeWaybillDetail: apiM + '/sup_distribute/detail', // 详情
+      itemSupDistributeWaybillModify: apiM + '/sup_distribute/edit', // 修改
+      itemSupDistributeWaybillClose: apiM + '/sup_distribute/close', // 关闭
 
 
       // 促销活动

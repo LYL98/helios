@@ -65,8 +65,8 @@
         <div class="left">
           <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="statusOptions"/>
         </div>
-        <div class="right" v-if="$auth.isAdmin || $auth.ItemSupDistributePlanAdd">
-          <el-button @click="handleAddItem" size="mini" type="primary">新增</el-button>
+        <div class="right" v-if="$auth.isAdmin || $auth.ItemSupDistributeWaybillAdd">
+<!--          <el-button @click="handleAddItem" size="mini" type="primary">新增</el-button>-->
         </div>
       </div>
 
@@ -109,12 +109,6 @@
           </el-table-column>
           <el-table-column label="预计到货时间" prop="estimate_arrive_at" min-width="200">
           </el-table-column>
-<!--          <el-table-column label="生效时间" prop="step_prices_updated" min-width="100">-->
-<!--            <template slot-scope="scope">-->
-<!--              <div>{{ typeof scope.row.step_prices_updated === 'string' ? scope.row.step_prices_updated.substring(0, 10) : '-' }}</div>-->
-<!--              <div>{{ typeof scope.row.step_prices_updated === 'string' ? scope.row.step_prices_updated.substring(11) : '-' }}</div>-->
-<!--            </template>-->
-<!--          </el-table-column>-->
           <el-table-column label="状态" prop="status" min-width="100">
             <template slot-scope="scope">
               <el-tag size="small" :type="distribulte_plan_status_type[scope.row.status]" disable-transitions>
@@ -130,22 +124,12 @@
                 :list="[
                   {
                     title: '修改',
-                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.ItemSupDistributePlanModify),
+                    isDisplay: ($auth.isAdmin || $auth.ItemSupDistributeWaybillModify),
                     command: () => handleModifyItem(scope.row)
                   },
                   {
-                    title: '审核',
-                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.ItemSupDistributePlanAudit),
-                    command: () => handleAuditItem(scope.row)
-                  },
-                  {
-                    title: '生成调拨单',
-                    isDisplay: scope.row.status === 'audit_success' && ($auth.isAdmin || $auth.ItemSupDistributeWaybillAdd),
-                    command: () => handleAddDistribute(scope.row)
-                  },
-                  {
                     title: '关闭',
-                    isDisplay: scope.row.status !== 'closed' && ($auth.isAdmin || $auth.ItemSupDistributePlanClose),
+                    isDisplay: scope.row.status !== 'closed' && ($auth.isAdmin || $auth.ItemSupDistributeWaybillClose),
                     command: () => handleCloseItem(scope.row.id)
                   },
                 ]"
@@ -170,27 +154,12 @@
         </div>
       </div>
     </div>
-
-    <el-dialog
-      title="调拨计划审核"
-      :visible="audit.visible"
-      width="600px"
-      :before-close="handleCancel"
-    >
-      <distribute-plan-audit
-        v-if="audit.visible"
-        :item="audit.item"
-        @submit="handleSubmit"
-        @cancel="handleCancel"
-      />
-    </el-dialog>
-
     <add-edit-layout
       :is-show="dialog.visible"
-      :title="`${dialog.type === 'add' ? '新增' : '修改'}调拨计划`"
+      title="修改调拨单"
       :before-close="handleCancel"
     >
-      <distribute-plan-edit
+      <distribute-waybill-edit
         v-if="dialog.visible"
         :type="dialog.type"
         :item="dialog.item"
@@ -199,28 +168,15 @@
       />
     </add-edit-layout>
     <el-dialog
-      :title="'调拨计划 - ' + detail.item.code + ' 详情'"
+      :title="'调拨单 - ' + detail.item.code + ' 详情'"
       :visible.sync="detail.visible"
       width="800px"
     >
-      <distribute-plan-detail
+      <distribute-waybill-detail
         v-if="detail.visible"
         :item="detail.item"
       />
     </el-dialog>
-    <add-edit-layout
-      :is-show="distribute.visible"
-      title="生成调拨单"
-      :before-close="handleCancel"
-    >
-      <distribute-waybill-edit
-        v-if="distribute.visible"
-        :type="distribute.type"
-        :item="distribute.item"
-        @submit="handleSubmit"
-        @cancel="handleCancel"
-      />
-    </add-edit-layout>
   </sub-menu>
 </template>
 
@@ -234,9 +190,7 @@
   import mainMixin from '@/share/mixin/main.mixin';
   import tableMixin from '@/share/mixin/table.mixin';
 
-  import DistributePlanAudit from './distribute-plan-audit';
-  import DistributePlanEdit from './distribute-plan-edit';
-  import DistributePlanDetail from './distribute-plan-detail';
+  import DistributeWaybillDetail from './distribute-waybill-detail';
   import DistributeWaybillEdit from './distribute-waybill-edit';
   export default {
     name: 'distribute-plan',
@@ -261,9 +215,7 @@
       'select-storehouse': SelectStorehouse,
       'query-search-input': QuerySearchInput,
       'query-tabs': queryTabs,
-      'distribute-plan-audit': DistributePlanAudit,
-      'distribute-plan-edit': DistributePlanEdit,
-      'distribute-plan-detail': DistributePlanDetail,
+      'distribute-waybill-detail': DistributeWaybillDetail,
       'distribute-waybill-edit': DistributeWaybillEdit,
     },
     data() {
@@ -275,10 +227,10 @@
         list: {
           items: []
         },
-        // 编辑调拨计划弹层
+        // 编辑调拨单
         dialog: {
           visible: false,
-          type: 'add',
+          type: 'modify',
           item: null
         },
         // 详情弹层
@@ -286,25 +238,15 @@
           visible: false,
           item: {}
         },
-        audit: {
-          visible: false,
-          item: {},
-        },
-        // 生成调拨单弹层
-        distribute: {
-          visible: false,
-          type: 'add',
-          item: null,
-        },
       }
     },
     created() {
-      documentTitle('调拨 - 调拨计划');
+      documentTitle('调拨 - 调拨单');
       this.DataHandle = DataHandle;
       this.fixDateOptions = Constant.FIX_DATE_RANGE;
       // 判断是否具有促销活动的权限
       this.initQuery();
-      this.distributePlanQuery();
+      this.distributeWaybillQuery();
     },
     methods: {
       initQuery() {
@@ -322,12 +264,12 @@
 
       changeQuery() {
         this.$data.query.page = 1;
-        this.distributePlanQuery();
+        this.distributeWaybillQuery();
       },
 
       resetQuery() {
         this.initQuery();
-        this.distributePlanQuery();
+        this.distributeWaybillQuery();
       },
 
       changePicker(value){
@@ -339,32 +281,24 @@
           this.query.end_date = '';
         }
         this.$data.query = this.query;
-        this.distributePlanQuery();
+        this.distributeWaybillQuery();
       },
 
       changePage(page) {
         this.$data.query.page = page;
-        this.distributePlanQuery();
+        this.distributeWaybillQuery();
       },
 
       changePageSize(page_size) {
         this.$data.query.page = 1;
         this.$data.query.page_size = page_size;
-        this.distributePlanQuery();
-      },
-
-      handleAddItem() {
-        this.$data.dialog = {
-          visible: true,
-          type: 'add',
-          item: null,
-        }
+        this.distributeWaybillQuery();
       },
 
       async handleDetailItem(item) {
-        let res = await Http.get(Config.api.itemSupDistributePlanDetail, {id: item.id});
+        return;
+        let res = await Http.get(Config.api.itemSupDistributeWaybillDetail, {id: item.id});
         if (res.code === 0) {
-          console.log('res.data: ', res.data);
           this.$data.detail = {
             visible: true,
             item: res.data,
@@ -375,8 +309,9 @@
       },
 
       async handleModifyItem(item) {
+        return;
 
-        let res = await Http.get(Config.api.itemSupDistributePlanDetail, {id: item.id});
+        let res = await Http.get(Config.api.itemSupDistributeWaybillDetail, {id: item.id});
         if (res.code === 0) {
           this.$data.dialog = {
             visible: true,
@@ -388,22 +323,9 @@
         }
       },
 
-      async handleAddDistribute(item) {
-        let res = await Http.get(Config.api.itemSupDistributePlanDetail, {id: item.id});
-        if (res.code === 0) {
-          this.$data.distribute = {
-            visible: true,
-            type: 'add',
-            item: res.data,
-          };
-        } else {
-          this.$message({title: '提示', message: res.message, type: 'error'});
-        }
-      },
-
       handleSubmit() {
         this.handleCancel();
-        this.distributePlanQuery();
+        this.distributeWaybillQuery();
       },
 
       // 共用弹层退出 函数
@@ -414,57 +336,21 @@
           type: 'add',
           item: null,
         };
-        // 初始化调拨单生成弹层
-        this.$data.distribute = {
-          visible: false,
-          type: 'add',
-          item: null,
-        };
-        // 初始化审核弹层
-        this.$data.audit = {
-          visible: false,
-          item: {},
-        };
       },
 
-      handleAuditItem(item) {
-        this.$data.audit = {
-          visible: true,
-          item: item
-        };
-
-        // this.$messageBox.confirm('确认审核通过该调拨计划?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(async () => {
-        //   let res = await Http.post(Config.api.itemSupDistributePlanAudit, {
-        //     ids: [id],
-        //     audit_status: 'audit_success'
-        //   });
-        //   if(res.code === 0){
-        //     this.$message({ title: '提示', message: '调拨计划审核成功', type: 'success'});
-        //     this.distributePlanQuery();
-        //   }else{
-        //     this.$message({title: '提示', message: res.message, type: 'error'});
-        //   }
-        // }).catch(() => {
-        //   // console.log('取消');
-        // });
-      },
 
       handleCloseItem(id) {
-        this.$messageBox.confirm('确认关闭该调拨计划?', '提示', {
+        this.$messageBox.confirm('确认关闭该调拨单?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          let res = await Http.post(Config.api.itemSupDistributePlanClose, {
-            ids: [id]
+          let res = await Http.post(Config.api.itemSupDistributeWaybillClose, {
+            id: id
           });
           if(res.code === 0){
-            this.$message({ title: '提示', message: '调拨计划关闭成功', type: 'success'});
-            this.distributePlanQuery();
+            this.$message({ title: '提示', message: '调拨单关闭成功', type: 'success'});
+            this.distributeWaybillQuery();
           }else{
             this.$message({title: '提示', message: res.message, type: 'error'});
           }
@@ -473,10 +359,10 @@
         });
       },
 
-      async distributePlanQuery() {
+      async distributeWaybillQuery() {
         let query = {...this.$data.query};
         delete query.picker_value;
-        let res = await Http.get(Config.api.itemSupDistributePlanQuery, query);
+        let res = await Http.get(Config.api.itemSupDistributeWaybillQuery, query);
         if (res.code !== 0) return;
         this.$data.list = res.data || { items: [] };
       }
