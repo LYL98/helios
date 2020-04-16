@@ -89,6 +89,11 @@ const router = new Router({
       name: 'ItemSupDistributePlan',
       component: () => import('@/view/item/distribute/distribute-plan')
     },
+    {
+      path: '/item/sup-distribute-waybill',
+      name: 'ItemSupDistributeWaybill',
+      component: () => import('@/view/item/distribute/distribute-waybill')
+    },
 
     /*业务*/
     {

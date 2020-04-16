@@ -10,12 +10,12 @@
         <el-row :gutter="32">
           <el-col :sm="10" :span="10">
             <el-form-item class="m-0" label="调出仓：">
-              {{ formData.src_storehouse && formData.src_storehouse.title || '-' }}
+              {{ formData.src_storehouse_title }}
             </el-form-item>
           </el-col>
           <el-col :sm="10" :span="10">
             <el-form-item class="m-0" label="调入仓：">
-              {{ formData.tar_storehouse && formData.tar_storehouse.title || '-' }}
+              {{ formData.tar_storehouse_title }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -154,7 +154,7 @@
   import {SelectStorehouse, SelectGItem} from '@/component';
   import {Http, Config, DataHandle} from '@/util';
   export default {
-    name: "distribute-edit",
+    name: "distribute-waybill-edit",
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
@@ -192,12 +192,12 @@
       if (this.$props.type === 'add') {
         let formData = {...this.$props.item};
         this.$data.formData = {
-          id: Number(formData.id), // 接口需要调拨计划的id
+          plan_id: Number(formData.id), // 接口需要调拨计划的id
           code: formData.code,
           src_storehouse_id: formData.src_storehouse_id,
-          src_storehouse: formData.src_storehouse,
+          src_storehouse_title: formData.src_storehouse && formData.src_storehouse.title || '-',
           tar_storehouse_id: formData.tar_storehouse_id,
-          tar_storehouse: formData.tar_storehouse,
+          tar_storehouse_title: formData.tar_storehouse && formData.tar_storehouse.title || '-',
           available_date: formData.available_date,
           estimate_arrive_at: formData.estimate_arrive_at,
           driver_id: '',
@@ -218,21 +218,34 @@
         let formData = {...this.$props.item};
         this.$data.formData = {
           id: Number(formData.id),
+          plan_id: Number(formData.plan_id), // 接口需要调拨计划的id
+          code: formData.code,
+          plan_code: formData.plan_code,
+          src_storehouse_id: Number(formData.src_storehouse_id),
+          src_storehouse_title: formData.src_storehouse_title || '-',
+          tar_storehouse_id: Number(formData.tar_storehouse_id),
+          tar_storehouse_title: formData.tar_storehouse_title || '-',
           available_date: formData.available_date,
           estimate_arrive_at: formData.estimate_arrive_at,
-          src_storehouse_id: Number(formData.src_storehouse_id),
-          tar_storehouse_id: Number(formData.tar_storehouse_id),
-          p_items: formData.p_items.map(item => ({
-            id: Number(item.id),
+          driver_id: Number(formData.driver_id),
+          phone: '',
+          driver_car_num: '',
+          driver_car_type: '',
+          fee: DataHandle.returnPrice(formData.fee),
+          p_items: formData.distributes.map(item => ({
+            id: Number(item.plan_id),
             item_title: item.item_title,
-            num: Number(item.num)
+            num: Number(item.num),
+            is_active: true,
           }))
         }
+
+        this.remoteDriver('', 'init');
       }
     },
     methods: {
 
-      async remoteDriver(keywords) {
+      async remoteDriver(keywords, type) {
         this.$data.remoting = true;
         // 查询当日 该调出仓可用的司机
         let res = await Http.get(Config.api.itemSupDistributeGetDriver, {
@@ -248,6 +261,16 @@
           driver_car_num: item.driver_car_num,
           driver_car_type: item.driver_car_type,
         }));
+
+        // 如果是编辑模式，初始化后，需要获取司机的信息
+        if (this.$props.type === 'modify' && type === 'init') {
+          let driver = (res.data || []).find(item => item.id === this.$props.item.driver_id);
+          if (driver) {
+            this.$data.formData.phone = driver.phone;
+            this.$data.formData.driver_car_num = driver.driver_car_num;
+            this.$data.formData.driver_car_type = driver.driver_car_type;
+          }
+        }
       },
 
       changeDriver(item) {
@@ -270,15 +293,16 @@
           this.$data.loading = true;
           let formData = {...this.$data.formData};
           formData = {
-            plan_id: Number(formData.id),
+            id: formData.id,
+            plan_id: Number(formData.plan_id),
             plan_detail_ids: formData.p_items.filter(item => item.is_active).map(item => Number(item.id)),
             driver_id: Number(formData.driver_id),
             fee: DataHandle.handlePrice(formData.fee),
           };
 
           const API = this.$props.type === 'add'
-            ? Config.api.itemSupDistributeAdd
-            : Config.api.itemSupDistributePlanModify;
+            ? Config.api.itemSupDistributeWaybillAdd
+            : Config.api.itemSupDistributeWaybillModify;
 
           let res = await Http.post(API, formData);
           this.$data.loading = false;
