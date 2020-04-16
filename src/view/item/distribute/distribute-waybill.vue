@@ -111,8 +111,8 @@
           </el-table-column>
           <el-table-column label="状态" prop="status" min-width="100">
             <template slot-scope="scope">
-              <el-tag size="small" :type="distribulte_plan_status_type[scope.row.status]" disable-transitions>
-                {{ distribulte_plan_status[scope.row.status] }}
+              <el-tag size="small" :type="distribulte_waybill_status_type[scope.row.status]" disable-transitions>
+                {{ distribulte_waybill_status[scope.row.status] }}
               </el-tag>
             </template>
           </el-table-column>
@@ -220,9 +220,9 @@
     },
     data() {
       return {
-        statusOptions: {'全部': '', ...Constant.DISTRIBUTE_PLAN_STATUS('value_key')}, // 状态查询条件
-        distribulte_plan_status: Constant.DISTRIBUTE_PLAN_STATUS(), // 调拨计划列表状态
-        distribulte_plan_status_type: Constant.DISTRIBUTE_PLAN_STATUS_TYPE,
+        statusOptions: {'全部': '', ...Constant.DISTRIBUTE_WAYBIll_STATUS('value_key')}, // 状态查询条件
+        distribulte_waybill_status: Constant.DISTRIBUTE_WAYBIll_STATUS(), // 调拨计划列表状态
+        distribulte_waybill_status_type: Constant.DISTRIBUTE_WAYBIll_STATUS_TYPE,
         query: {},
         list: {
           items: []
@@ -310,7 +310,6 @@
 
       async handleModifyItem(item) {
         return;
-
         let res = await Http.get(Config.api.itemSupDistributeWaybillDetail, {id: item.id});
         if (res.code === 0) {
           this.$data.dialog = {

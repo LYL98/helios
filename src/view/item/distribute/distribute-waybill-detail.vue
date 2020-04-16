@@ -4,10 +4,10 @@
       <el-tag
         style="position: absolute; right: 0; top: 0;"
         size="small"
-        :type="distribulte_plan_status_type[item.status]"
+        :type="distribulte_waybill_status_type[item.status]"
         disable-transitions
       >
-        {{ distribulte_plan_status[item.status] }}
+        {{ distribulte_waybill_status[item.status] }}
       </el-tag>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
@@ -47,6 +47,30 @@
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
+          <el-form-item label="司机姓名：">
+            {{ item.driver && item.driver.realname || '-' }}
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="手机号：">
+            {{ item.driver && item.driver.phone || '-' }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="车牌号：">
+            {{ item.driver && item.driver.driver_car_num || '-' }}
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="车型：">
+            {{ item.driver && item.driver.driver_car_type || '-' }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
           <el-form-item label="费用：">
             <span v-if="!!item.fee">
               ¥{{ DataHandle.returnPrice(item.fee) }}
@@ -78,6 +102,36 @@
             <span v-else>-</span>
           </template>
         </el-table-column>
+        <!--  展开行  -->
+        <el-table-column type="expand">
+          <template slot-scope="scope">
+            <el-row
+              v-if="Array.isArray(scope.row.distribute_details)"
+              v-for="item in scope.row.distribute_details"
+            >
+              <el-col :xs="6">
+                <el-form-item label="批次：">
+                  <span>{{ item.batch_code }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="6">
+                <el-form-item label="调拨数量：">
+                  <span>{{ item.num }}件</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="6">
+                <el-form-item label="收货单号：">
+                  <span>{{ item.qaer_id }}</span>
+                </el-form-item>
+              </el-col>
+              <el-col :xs="6">
+                <el-form-item label="收货数量：">
+                  <span>{{ item.num_arrive }}件</span>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </template>
+        </el-table-column>
       </el-table>
     </el-form-area>
   </el-form>
@@ -105,8 +159,8 @@
     data() {
       return {
         DataHandle: DataHandle,
-        distribulte_plan_status: Constant.DISTRIBUTE_PLAN_STATUS(), // 调拨计划列表状态
-        distribulte_plan_status_type: Constant.DISTRIBUTE_PLAN_STATUS_TYPE,
+        distribulte_waybill_status: Constant.DISTRIBUTE_WAYBIll_STATUS(), // 调拨计划列表状态
+        distribulte_waybill_status_type: Constant.DISTRIBUTE_WAYBIll_STATUS_TYPE,
         logTypes: {
           add: '新增',
           edit: '修改',

@@ -393,7 +393,7 @@ const Constant = {
     all_in: 'regular',
     closed: 'info'
   },
-  // 调拨计划状态
+  // 商品 - 调拨 - 调拨计划状态
   DISTRIBUTE_PLAN_STATUS: (type) => {
     let data = [
       { key: 'init', value: '待审核' },
@@ -408,6 +408,27 @@ const Constant = {
     init: 'primary',
     audit_success: 'success',
     audit_fail: 'info',
+    closed: 'info'
+  },
+  // 商品 - 调拨 - 调拨单状态
+  DISTRIBUTE_WAYBIll_STATUS: (type) => {
+    let data = [
+      { key: 'init', value: '待装车' },
+      { key: 'sorting', value: '待发车' },
+      { key: 'deliveried', value: '待收货' },
+      { key: 'part_in', value: '部分收货' },
+      { key: 'all_in', value: '已完成' },
+      { key: 'closed', value: '关闭' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  // 调拨单状态(颜色)
+  DISTRIBUTE_WAYBIll_STATUS_TYPE: {
+    init: 'primary',
+    sorting: 'warning',
+    deliveried: 'regular',
+    all_in: 'success',
+    part_in: 'info',
     closed: 'info'
   },
   //调拨单状态
