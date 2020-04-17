@@ -303,6 +303,28 @@
           "name": "OperateDepart"
         },
         {
+          "title": "调拨装车",
+          "name": "OperateDisTruckLoadMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "装车",
+              "upName": "OperateDisTruckLoadMain",
+              "name": "OperateDisTruckLoad"
+            },
+            {
+              "title": "装车进度",
+              "upName": "OperateDisTruckLoadMain",
+              "name": "OperateDisTruckLoadProgress"
+            },
+            {
+              "title": "装车延时",
+              "upName": "OperateDisTruckLoadMain",
+              "name": "OperateDisTruckLoadDelay"
+            }
+          ]
+        },
+        {
           "title": "线路规划",
           "name": "OperateLineList"
         },
