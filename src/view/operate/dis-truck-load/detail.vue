@@ -1,97 +1,73 @@
 <template>
-  <el-form label-position="right" label-width="120px" size="mini">
-    <el-form-area label-position="left" label="调拨信息" style="position: relative;">
-      <el-tag
-        style="position: absolute; right: 0; top: 0;"
-        size="small"
-        :type="distribulte_plan_status_type[item.status]"
-        disable-transitions
-      >
-        {{ distribulte_plan_status[item.status] }}
-      </el-tag>
-      <el-row :gutter="32">
-        <el-col :sm="12" :span="10">
-          <el-form-item label="调出仓：">
-            {{ item.src_storehouse && item.src_storehouse.title || '-' }}
-          </el-form-item>
-        </el-col>
-        <el-col :sm="12" :span="10">
-          <el-form-item label="调入仓：">
-            {{ item.tar_storehouse && item.tar_storehouse.title || '-' }}
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="32">
-        <el-col :sm="12" :span="10">
-          <el-form-item label="销售日期：">
-            {{ item.available_date || '-' }}
-          </el-form-item>
-        </el-col>
-        <el-col :sm="12" :span="10">
-          <el-form-item label="预计到货：">
-            {{ item.estimate_arrive_at || '-' }}
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form-area>
-    <el-form-area class="mt-20" label-position="left" label="调拨商品" v-if="Array.isArray(item.p_items)">
-      <el-table
-        stripe
-        :data="item.p_items"
-      >
-        <el-table-column prop="item_title" label="商品编号/名称" />
-        <el-table-column prop="num" label="调拨数量" width="140">
+  <div>
+    <el-row style="padding: 20px 30px;">
+      <el-col :span="12">商品编号/名称：{{item.item_code}}/{{item.item_title}}</el-col>
+      <el-col :span="4">应出：{{item.sort_num ? item.sort_num + '件' : '-'}}</el-col>
+      <el-col :span="4">调拨：{{item.allocate_num ? item.allocate_num + '件' : '-'}}</el-col>
+      <el-col :span="4">装车：{{item.plan_num ? item.plan_num + '件' : '-'}}</el-col>
+    </el-row>
+    <div style="padding: 0 30px;">
+      <el-table :data="item.items" :row-class-name="highlightRowClassName">
+        <el-table-column label="批次" min-width="100">
+          <template slot-scope="scope">{{scope.row.batch_code}}</template>
+        </el-table-column>
+        <el-table-column label="调拨数量" min-width="80">
+          <template slot-scope="scope">{{scope.row.num ? scope.row.num + '件' : '-'}}</template>
+        </el-table-column>
+        <el-table-column label="调拨人" min-width="100">
+          <template slot-scope="scope">{{scope.row.creator && scope.row.creator.realname}}</template>
+        </el-table-column>
+        <el-table-column label="调拨时间" min-width="100">
+          <template slot-scope="scope">{{scope.row.created}}</template>
+        </el-table-column>
+        <el-table-column label="操作" width="100">
           <template slot-scope="scope">
-            <span v-if="!!scope.row.num">{{scope.row.num}}件</span>
-            <span v-else>-</span>
+            <my-table-operate
+              :list="[
+                {
+                  title: '打货',
+                  isDisplay: !item.confirmed && ($auth.isAdmin || $auth.OperateDisTruckLoadEditNum),
+                  command: () => handleShowEditNum(scope.row)
+                }
+              ]"
+            />
           </template>
         </el-table-column>
       </el-table>
-    </el-form-area>
-    <el-form-area class="mt-20" label-position="left" label="关联调拨单" v-if="Array.isArray(item.distributes)">
-      <el-table
-        stripe
-        :data="item.distributes"
-        empty-text="暂无关联的调拨单"
-      >
-        <el-table-column prop="code" label="调拨单号" width="160"/>
-        <el-table-column prop="creator" label="创建人" width="120">
-          <template slot-scope="scope">
-            {{ scope.row.creator && scope.row.creator.realname || '-' }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="created" label="创建时间" />
-        <el-table-column prop="status" label="状态" width="140"/>
-      </el-table>
-    </el-form-area>
-    <el-form-area class="mt-20" label-position="left" label="操作时间" v-if="Array.isArray(item.logs)">
-      <el-table
-        stripe
-        :data="item.logs"
-      >
-        <el-table-column prop="created" label="时间" width="160"/>
-        <el-table-column prop="category" label="操作内容" width="120">
-          <template slot-scope="scope">
-            <span v-if="scope.row.category === 'add'">新增</span>
-            <span v-else-if="scope.row.category === 'audit'">审核通过</span>
-            <span v-else>-</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="remark" label="备注" />
-        <el-table-column prop="creator" label="操作人" width="140">
-          <template slot-scope="scope">
-            {{ scope.row.creator && scope.row.creator.realname || '-' }}
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-form-area>
-  </el-form>
+    </div>
+    <el-dialog title="打货" :visible.sync="editNum.visible" append-to-body :before-close="handleCancelEditNum" width="520px">
+      <el-form label-position="right" label-width="110px" :model="editNum.item" ref="ruleForm" style="width: 440px;">
+        <el-form-item label="调拨数量">
+          <input-number size="medium" disabled :value="editNum.item.origin_num" unit="件"/>
+        </el-form-item>
+        <el-form-item
+          label="打货数量"
+          prop="opt_num"
+          :rules="[
+            { required: true, message: '请输入打货数量', trigger: 'change' },
+            { type: 'number', max: editNum.item.origin_num, message: '打货数量不能大于调拨数量', trigger: 'change' }
+          ]"
+        >
+          <input-number size="medium" v-model="editNum.item.opt_num" unit="件"/>
+        </el-form-item>
+        <el-form-item label="新调拨数量">
+          <input-number size="medium" disabled :value="editNum.item.origin_num - editNum.item.opt_num" unit="件"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click.native="handleCancelEditNum">取 消</el-button>
+        <el-button type="primary" @click.native="handleSubmitEditNum" :loading="loading">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
-  import {Form, FormItem, Row, Col, Table, TableColumn, Tag} from "element-ui";
-  import {FormArea} from '@/common';
-  import {Constant} from '@/util';
+  import { TableOperate } from '@/common';
+  import { Form, FormItem, Row, Col, Table, TableColumn, Dialog, Button } from "element-ui";
+  import { InputNumber, SelectOption } from '@/common';
+  import { Http, Config } from '@/util';
+
   export default {
     name: "detail",
     components: {
@@ -99,33 +75,80 @@
       'el-form-item': FormItem,
       'el-row': Row,
       'el-col': Col,
-      'el-form-area': FormArea,
-      'el-tag': Tag,
       'el-table': Table,
+      'el-dialog': Dialog,
       'el-table-column': TableColumn,
+      'el-button': Button,
+      'my-table-operate': TableOperate,
+      'input-number': InputNumber
     },
     props: {
-      item: { type: Object, default: () => ({}) },
+      item: { type: Object, default: { items: [], confirmed: false } }, //confirmed 是否已发车
     },
     data() {
       return {
-        distribulte_plan_status: Constant.DISTRIBUTE_PLAN_STATUS(), // 调拨计划列表状态
-        distribulte_plan_status_type: Constant.DISTRIBUTE_PLAN_STATUS_TYPE,
+        loading: false,
+        editNum: {
+          visible: false,
+          item: {}
+        },
       }
     },
+    methods: {
+      /**
+     * 斑马线的背景颜色样式
+     */
+      highlightRowClassName({row, rowIndex}) {
+        if (rowIndex % 2 == 0) {
+          return 'stripe-row';
+        } else if (rowIndex % 2 != 0) {
+          return 'default-row'
+        }
+        return '';
+      },
+
+      handleShowEditNum(item, index){
+        this.$data.editNum = {
+          visible: true,
+          item: {
+            detail_id: item.id,
+            origin_num: item.num
+          }
+        }
+      },
+
+      handleCancelEditNum(){
+        if(this.$refs['ruleForm']) this.$refs['ruleForm'].resetFields();
+        this.$data.editNum = {
+          visible: false,
+          item: {}
+        }
+      },
+
+      handleSubmitEditNum(){
+        this.$refs['ruleForm'] && this.$refs['ruleForm'].validate(async valid => {
+          if (!valid) return;
+          
+          this.$data.loading = true;
+          let { editNum } = this;
+          let res = await Http.post(Config.api.supDistributeAllocatedEditNum, {
+            detail_id: editNum.item.detail_id,
+            num: editNum.item.origin_num - editNum.item.opt_num
+          });
+          this.$data.loading = false;
+          if (res.code === 0) {
+            this.$message({message: '打货成功', type: 'success'});
+            this.handleCancelEditNum();
+            this.$emit('editNumSuccess');
+          } else {
+            this.$message({title: '提示', message: res.message, type: 'error'});
+          }
+
+        });
+      }
+    }
   }
 </script>
 
 <style lang="scss" scoped>
-  .mt-10 {
-    margin-top: 10px;
-  }
-
-  .mt-20 {
-    margin-top: 20px;
-  }
-
-  .mt-30 {
-    margin-top: 30px;
-  }
 </style>

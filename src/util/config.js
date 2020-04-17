@@ -309,6 +309,11 @@ const Config = (() => {
 
       //场地调拨装车
       supDistributeDriverDetail: apiM + '/sup_distribute/driver_detail', //返回某个司机在某天需要调拨的商品汇总(也就是装车界面)
+      supDistributeAllocatedDrivers: apiM + '/sup_distribute/allocated_drivers', //装车页面的司机下拉列表
+      supDistributeDeliveryLackItem: apiM + '/sup_distribute_delivery/lack_item', //调拨发车前确认的缺货列表
+      supDistributeDelivery: apiM + '/sup_distribute/delivery', //发车前确认
+      supDistributeDriverItemDetail: apiM + '/sup_distribute/driver_item_detail', //返回某个司机在某天 某个商品的调拨装车详情
+      supDistributeAllocatedEditNum: apiM + '/sup_distribute_allocate/edit_num', //修改调拨分配的数量(也就是打货)
       supDistributeAllocateLoading: apiM + '/sup_distribute_allocate/loading', //调拨装车进度
       supDistributeAllocateDelaySortQuery: apiM + '/sup_distribute_allocate/delay_sort_query', //调拨装车延迟
 
