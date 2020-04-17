@@ -149,7 +149,7 @@
 </template>
 
 <script>
-  import { Form, FormItem, Row, Col, Button, Input, Table, TableColumn, Switch, Select, Option } from "element-ui";
+  import { Form, FormItem, Row, Col, Button, Input, Table, TableColumn, Switch, Select, Option, Message } from "element-ui";
   import {FormArea} from '@/common';
   import {SelectStorehouse, SelectGItem} from '@/component';
   import {Http, Config, DataHandle} from '@/util';
@@ -294,7 +294,6 @@
         this.$refs['ruleForm'] && this.$refs['ruleForm'].validate(async valid => {
           if (!valid) return;
 
-          this.$data.loading = true;
           let formData = {...this.$data.formData};
           formData = {
             id: formData.id,
@@ -304,10 +303,16 @@
             fee: DataHandle.handlePrice(formData.fee),
           };
 
+          if (formData.plan_detail_ids.length <= 0) {
+            Message.warning({ message: '请指定调拨商品！', offset: 100 });
+            return;
+          };
+
           const API = this.$props.type === 'add'
             ? Config.api.itemSupDistributeWaybillAdd
             : Config.api.itemSupDistributeWaybillModify;
 
+          this.$data.loading = true;
           let res = await Http.post(API, formData);
           this.$data.loading = false;
           if (res.code === 0) {
