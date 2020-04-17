@@ -68,13 +68,27 @@
             :prop="'p_items.' + index + '.p_item_id'"
             :rules="[ { required: true, message: '商品编号/名称不能为空', trigger: 'change' } ]"
           >
-            <el-select-g-item
+
+            <el-select
               size="small"
-              filterable
-              clearable
               v-model="item.p_item_id"
-              placeholder="请选择需要调出的商品"
-            ></el-select-g-item>
+              remote
+              filterable
+              :remote-method="initItemList"
+              :loading="remoting"
+              placeholder="请搜索指定调拨商品"
+              style="width: 100%"
+              no-match-text="没有符合条件的商品"
+              no-data-text="没有符合条件的商品"
+            >
+              <el-option
+                v-for="item in filterItemList"
+                :key="item.id"
+                :label="item.code + '/' + item.title"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :sm="8" :span="10">
@@ -113,9 +127,9 @@
 </template>
 
 <script>
-  import { Form, FormItem, Row, Col, Button, Input, DatePicker } from "element-ui";
+  import { Form, FormItem, Row, Col, Button, Input, DatePicker, Select, Option } from "element-ui";
   import {FormArea} from '@/common';
-  import {SelectStorehouse, SelectGItem} from '@/component';
+  import {SelectStorehouse} from '@/component';
   import {Http, Config, DataHandle} from '@/util';
   export default {
     name: "distribute-plan-edit",
@@ -127,16 +141,25 @@
       'el-button': Button,
       'el-input': Input,
       'el-date-picker': DatePicker,
+      'el-select': Select,
+      'el-option': Option,
       'el-form-area': FormArea,
       'el-select-storehouse': SelectStorehouse,
-      'el-select-g-item': SelectGItem,
     },
     props: {
       type: { type: String, default: '' },
       item: { type: Object, default: () => ({}) },
     },
+    computed: {
+      filterItemList() {
+        return this.$data.itemList.filter(item => !this.$data.formData.p_items.some(d => d.p_item_id == item.id));
+      }
+    },
     data() {
       return {
+        remoting: false,
+        itemList: [],
+
         loading: false,
         formData: {
           available_date: '',
@@ -164,6 +187,9 @@
           }))
         }
       }
+
+      // 获取到商品列表
+      this.initItemList();
     },
     methods: {
 
@@ -176,6 +202,25 @@
           ...this.$data.formData.p_items,
           { p_item_id: '', num: '' }
         ];
+      },
+
+      async initItemList(condition){
+        this.$data.remoting = true;
+        let res = await Http.get(Config.api.baseGItemList, {
+          need_num: 20,
+          condition: condition,
+          id: '',
+          supplier_id: '',
+          sup_type: '',
+          is_deleted: 0
+        });
+        this.$data.remoting = false;
+        if(res.code === 0){
+          let rd = res.data;
+          this.$data.itemList = rd;
+        }else{
+          this.$messageBox.alert(res.message, '提示');
+        }
       },
 
       onSubmit() {

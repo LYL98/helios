@@ -260,6 +260,18 @@
           "name": "OperateReceiving"
         },
         {
+          "title": "场地商品",
+          "name": "OperateItem",
+          "type": "main",
+          "children": [
+            {
+              "title": "收货单",
+              "upName": "OperateItem",
+              "name": "OperateItemSupAccept"
+            }
+          ]
+        },
+        {
           "title": "分配装车",
           "name": "OperateTruckLoadMain",
           "type": "main",

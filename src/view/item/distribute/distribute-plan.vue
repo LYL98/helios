@@ -437,25 +437,6 @@
           visible: true,
           item: item
         };
-
-        // this.$messageBox.confirm('确认审核通过该调拨计划?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(async () => {
-        //   let res = await Http.post(Config.api.itemSupDistributePlanAudit, {
-        //     ids: [id],
-        //     audit_status: 'audit_success'
-        //   });
-        //   if(res.code === 0){
-        //     this.$message({ title: '提示', message: '调拨计划审核成功', type: 'success'});
-        //     this.distributePlanQuery();
-        //   }else{
-        //     this.$message({title: '提示', message: res.message, type: 'error'});
-        //   }
-        // }).catch(() => {
-        //   // console.log('取消');
-        // });
       },
 
       handleCloseItem(id) {
