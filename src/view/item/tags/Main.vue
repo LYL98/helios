@@ -4,6 +4,8 @@
     <template v-if="provinceCode !== ''">
       <table-item-tags :getPageComponents="viewGetPageComponents" :provinceCode="provinceCode" ref="TableItemTags"/>
       <add-edit-item-tags :getPageComponents="viewGetPageComponents" :provinceCode="provinceCode" ref="AddEditItemTags"/>
+      <detail-item-tags :getPageComponents="viewGetPageComponents" :provinceCode="provinceCode" ref="DetailItemTags"/>
+      
     </template>
   </sub-menu>
 </template>
@@ -11,6 +13,7 @@
 <script>
   import TableItemTags from './TableItemTags';
   import AddEditItemTags from './AddEditItemTags';
+  import Detail from './DetailItemTags'
   import { GlobalProvince } from '@/component';
   import mainMixin from '@/share/mixin/main.mixin';
 
@@ -20,6 +23,8 @@
       'table-item-tags': TableItemTags,
       'add-edit-item-tags': AddEditItemTags,
       'global-province': GlobalProvince,
+      'detail-item-tags': Detail,
+     
     },
     mixins: [mainMixin],
     data(){
@@ -28,7 +33,7 @@
       }
     },
     created() {
-      documentTitle("商品 - 商品运营标签");
+      documentTitle("商品 - 商品运营专区");
     },
     methods: {
       //选择区域后

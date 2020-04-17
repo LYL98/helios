@@ -101,6 +101,8 @@ const Config = (() => {
       itemEdit: apiM + '/item/edit', //商品编辑
       itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品加价标签修改
       itemQuery: apiM + '/item/query',//商品列表
+     
+      
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
       itemDetail: apiM + '/item/detail',//商品详情
@@ -389,6 +391,11 @@ const Config = (() => {
       basicdataItemTagsDelete: apiM + '/basicdata/item_tags/delete',//商品标签删除
       basicdataItemTagsIcons: apiM + '/common/tag_images/list', //商品icon默认标签
       basicdataItemTagsDetail: apiM + '/basicdata/item_tags/detail', //icon标签详情
+
+      itemQueryByItemTag: apiM + '/item/query/by_item_tag',//商品运营专区内查看商品
+      itemTagRankEdit: apiM + '/item/tag/rank/edit',//商品在运营专区内排名修改
+      itemTagAdd: apiM + '/item/tag/add',//将商品添加至指定的运营专区内(批量)
+      itemTagDelete: apiM + '/item/tag/delete',//将运营专区内查看商品删除
 
       basicdataItemInnerTagsAdd: apiM + '/basicdata/item_inner_tags/add',//商品加价标签新增
       basicdataItemInnerTagsEdit: apiM + '/basicdata/item_inner_tags/edit',//商品加价标签修改

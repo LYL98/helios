@@ -3,6 +3,18 @@
 #### 更新记录
 
 ### 版本 （最新 - 旧）
+### 3.6.0
+```
+更新注意事项
+修改sys_permission表
+修改：
+   code == ItemTags 修改项：title 【商品运营专区】
+新增：
+   ItemQueryByItemTag
+   ItemTagAdd
+   ItemTagRankEdit
+   ItemTagDelete
+```
 
 ### 3.5.0
 ```

@@ -6,7 +6,7 @@
     </el-drawer>
 
     <!--dialog-->
-    <el-dialog v-else-if="type === 'dialog'" :title="title" :visible="isShow" :before-close="beforeClose">
+    <el-dialog v-else-if="type === 'dialog'" :title="title" :visible="isShow" :before-close="beforeClose" :append-to-body='appendToBody' :width="width">
       <slot></slot>
     </el-dialog>
   </div>
@@ -27,6 +27,8 @@ export default {
     isShow: { type: Boolean, default: false }, //是否显示
     title: { type: String, default: '' }, //标题
     beforeClose: { type: Function }, //关闭前
+    appendToBody: {type: Boolean,default: false},//是否插入页面body
+    width:{type:String,default: ''}//宽度
   },
   data(){
     return {

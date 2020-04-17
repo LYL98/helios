@@ -2,7 +2,7 @@
   <sub-menu>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
-        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date } }">
+        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date ,totalItemTotalPrice:query.totalItemTotalPrice} }">
           商品销售统计
         </el-breadcrumb-item>
         <el-breadcrumb-item>{{ query.system_class === '' ? '全部分类' : query.system_class }}</el-breadcrumb-item>
@@ -188,8 +188,10 @@
           system_class: q.system_class1,
           system_class_code: q.system_class_code1,
           page: 1,
-          page_size: Constant.PAGE_SIZE
+          page_size: Constant.PAGE_SIZE,
+          totalItemTotalPrice:q.totalItemTotalPrice
         };
+        this.$data.totalItemTotalPrice = q.totalItemTotalPrice
       },
       // 改变查询日期
       changePicker(value) {
@@ -239,11 +241,11 @@
         let res = await Http.get(Config.api.statisticalOrderClassSum, query);
         if(res.code === 0){
           let rd = res.data, totalItemTotalPrice = 0;
-          for (let i = 0; i < rd.length; i++) {
-            //总数据
-            totalItemTotalPrice += rd[i].amount_real;
-          }
-          this.$data.totalItemTotalPrice = totalItemTotalPrice;
+          // for (let i = 0; i < rd.length; i++) {
+          //   //总数据
+          //   totalItemTotalPrice += rd[i].amount_real;
+          // }
+          // this.$data.totalItemTotalPrice = totalItemTotalPrice;
           this.$data.dataItem = rd;
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
@@ -261,7 +263,8 @@
             system_class_code2: item.system_class_code,
             begin_date: this.query.begin_date,
             end_date: this.query.end_date,
-            province_code: this.$route.query.province_code
+            province_code: this.$route.query.province_code,
+            totalItemTotalPrice:this.$route.query.totalItemTotalPrice
           }
         });
       }
