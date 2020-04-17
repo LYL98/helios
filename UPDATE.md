@@ -14,6 +14,15 @@
    ItemTagAdd
    ItemTagRankEdit
    ItemTagDelete
+   ItemSupDistributePlan
+   ItemSupDistributePlanAdd
+   ItemSupDistributePlanModify
+   ItemSupDistributePlanAudit
+   ItemSupDistributePlanClose
+   ItemSupDistributeWaybillAdd
+   ItemSupDistributeWaybill
+   ItemSupDistributeWaybillModify
+   ItemSupDistributeWaybillClose
 ```
 
 ### 3.5.0

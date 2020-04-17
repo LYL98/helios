@@ -65,9 +65,6 @@
         <div class="left">
           <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="statusOptions"/>
         </div>
-        <div class="right" v-if="$auth.isAdmin || $auth.ItemSupDistributeWaybillAdd">
-<!--          <el-button @click="handleAddItem" size="mini" type="primary">新增</el-button>-->
-        </div>
       </div>
 
       <div @mousemove="handleTableMouseMove" class="table-conter">
@@ -124,12 +121,12 @@
                 :list="[
                   {
                     title: '修改',
-                    isDisplay: ($auth.isAdmin || $auth.ItemSupDistributeWaybillModify),
+                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.ItemSupDistributeWaybillModify),
                     command: () => handleModifyItem(scope.row)
                   },
                   {
                     title: '关闭',
-                    isDisplay: scope.row.status !== 'closed' && ($auth.isAdmin || $auth.ItemSupDistributeWaybillClose),
+                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.ItemSupDistributeWaybillClose),
                     command: () => handleCloseItem(scope.row.id)
                   },
                 ]"
