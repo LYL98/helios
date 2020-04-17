@@ -90,9 +90,14 @@
           <el-table-column label="调拨计划单" prop="creator_id" min-width="200">
             <template slot-scope="scope">
               <div
-                :class="`td-item link-item`"
+                class="td-item link-item position-relative"
                 @click.prevent="handleDetailItem(scope.row)"
-              >{{ scope.row.code }}</div>
+              >
+                {{ scope.row.code }}
+                <span class="icon-count" v-if="scope.row.distribute_order_num > 0">
+                  {{ scope.row.distribute_order_num }}
+                </span>
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="调出仓" prop="src_storehouse_id" min-width="100">
@@ -488,6 +493,23 @@
   @import '@/share/scss/table.scss';
   .mt-16 {
     margin-top: 16px;
+  }
+  .position-relative {
+    position: relative;
+  }
+
+  .icon-count {
+    position: absolute;
+    font-size: 12px;
+    display: inline-block;
+    padding: 0 5px;
+    line-height: 16px;
+    left: 110px;
+    top: 0px;
+    background-color: #00ADE7;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
   }
 </style>
 <style lang="scss">
