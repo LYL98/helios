@@ -260,7 +260,7 @@
           "name": "OperateReceiving"
         },
         {
-          "title": "配送装车",
+          "title": "分配装车",
           "name": "OperateTruckLoadMain",
           "type": "main",
           "children": [
