@@ -150,7 +150,7 @@
                   },
                   {
                     title: '关闭',
-                    isDisplay: scope.row.status !== 'closed' && ($auth.isAdmin || $auth.ItemSupDistributePlanClose),
+                    isDisplay: scope.row.status !== 'closed' && scope.row.status !== 'audit_fail' && ($auth.isAdmin || $auth.ItemSupDistributePlanClose),
                     command: () => handleCloseItem(scope.row.id)
                   },
                 ]"
