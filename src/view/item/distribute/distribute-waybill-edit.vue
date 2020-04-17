@@ -281,9 +281,9 @@
       },
 
       validFee(rules, value, callback) {
-        if (Number(value) === 0) {
-          return callback('运费必须是大于0的数字，且只能够保留2位小数');
-        }
+        // if (Number(value) === 0) {
+        //   return callback('运费必须是大于0的数字，且只能够保留2位小数');
+        // }
         if (/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{0,2})))$/.test(value)) {
           return callback();
         }
