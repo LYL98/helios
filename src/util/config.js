@@ -283,6 +283,12 @@ const Config = (() => {
       operateItemSupAcceptDetail: apiM + '/sup_accept/detail', // 详情
       operateItemSupAcceptConfirm: apiM + '/sup_accept/confirm', // 详情
 
+      // 场地 - 场地商品 - 场地库存
+      operateItemSupStockQuery: apiM + '/sup_accept/stock/query', // 查询
+      operateItemSupStockGetDistributes: apiM + '/sup_distribute_allocate/get_distributes', // 调拨时，获取该商品关联的调拨单信息
+      operateItemSupStockDistribute: apiM + '/sup_distribute/allocate_num', // 调拨
+
+
       //场地收货
       supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询
 

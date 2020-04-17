@@ -28,11 +28,10 @@
     </div>
 
     <div class="container-table">
-      <div class="table-top">
-        <div class="left">
-          <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="{'全部': '', '待确认': '0', '已确认': '1', }"/>
-        </div>
-      </div>
+<!--      <div class="table-top">-->
+<!--        <div class="left">-->
+<!--        </div>-->
+<!--      </div>-->
 
       <div @mousemove="handleTableMouseMove" class="table-conter">
         <el-table
@@ -51,7 +50,7 @@
             label="序号"
             :index="indexMethod"
           ></el-table-column>
-          <el-table-column label="收货单号" prop="code" min-width="140">
+          <el-table-column label="批次" prop="code" min-width="140">
             <template slot-scope="scope">
               <div
                 :class="`td-item link-item`"
@@ -67,19 +66,12 @@
               <span v-else>-</span>
             </template>
           </el-table-column>
-          <el-table-column label="收货数量" prop="num" min-width="100">
+          <el-table-column label="场地库存" prop="num" min-width="100">
             <template slot-scope="scope">
               <span v-if="scope.row.num > 0">
                 {{ scope.row.num }}件
               </span>
               <span v-else>-</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="状态" prop="is_confirm" min-width="100">
-            <template slot-scope="scope">
-              <el-tag size="small" :type="scope.row.is_confirm ? 'info' : 'primary'" disable-transitions>
-                {{ scope.row.is_confirm ? '已确认' : '待确认' }}
-              </el-tag>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="100">
@@ -89,9 +81,9 @@
                 @command-visible="handleCommandVisible"
                 :list="[
                   {
-                    title: '确认',
-                    isDisplay: !scope.row.is_confirm && ($auth.isAdmin || $auth.OperateItemSupAcceptConfirm),
-                    command: () => handleConfirmItem(scope.row)
+                    title: '调拨',
+                    isDisplay: ($auth.isAdmin || $auth.OperateItemSupStockDistribute),
+                    command: () => handleDistributeItem(scope.row)
                   },
                 ]"
               />
@@ -115,12 +107,24 @@
         </div>
       </div>
     </div>
+    <add-edit-layout
+      :is-show="distribute.visible"
+      title="调拨"
+      :before-close="handleCancel"
+    >
+      <sup-stock-distribute
+        v-if="distribute.visible"
+        :item="distribute.item"
+        @submit="handleSubmit"
+        @cancel="handleCancel"
+      />
+    </add-edit-layout>
     <el-dialog
       :title="'收货单 - ' + detail.item.code + ' 详情'"
       :visible.sync="detail.visible"
       width="800px"
     >
-      <sup-accept-detail
+      <sup-stock-detail
         v-if="detail.visible"
         :item="detail.item"
       />
@@ -133,11 +137,12 @@
   import {QueryItem, QuerySearchInput, TableOperate} from '@/common';
   import { SelectStorehouse } from '@/component';
   import { Http, Config, Constant, DataHandle } from '@/util';
-  import queryTabs from '@/share/layout/QueryTabs';
+  import AddEditLayout from '@/share/layout/Layout';
   import mainMixin from '@/share/mixin/main.mixin';
   import tableMixin from '@/share/mixin/table.mixin';
 
-  import SupAcceptDetail from './sup-accept-detail';
+  import SupStockDetail from './sup-stock-detail';
+  import SupStockDistribute from './sup-stock-distribute';
   export default {
     name: 'sup-accept',
     mixins: [mainMixin, tableMixin],
@@ -153,10 +158,11 @@
       'el-pagination': Pagination,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
+      'add-edit-layout': AddEditLayout,
       'query-search-input': QuerySearchInput,
-      'query-tabs': queryTabs,
       'select-storehouse': SelectStorehouse,
-      'sup-accept-detail': SupAcceptDetail,
+      'sup-stock-detail': SupStockDetail,
+      'sup-stock-distribute': SupStockDistribute,
     },
     data() {
       return {
@@ -167,11 +173,15 @@
         detail: {
           visible: false,
           item: {}
+        },
+        distribute: {
+          visible: false,
+          items: {}
         }
       }
     },
     created() {
-      documentTitle('场地商品 - 收货单');
+      documentTitle('场地商品 - 场地库存');
       this.DataHandle = DataHandle;
       // 判断是否具有促销活动的权限
       this.initQuery();
@@ -181,7 +191,6 @@
       initQuery() {
         this.$data.query = {
           storehouse_id: '',
-          status: '',
           condition: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -195,48 +204,89 @@
         }else{
           this.$data.query.storehouse_id = dataItem[0].id;
         }
-        this.supAcceptQuery();
+        this.supStockQuery();
       },
 
       changeQuery() {
         this.$data.query.page = 1;
-        this.supAcceptQuery();
+        this.supStockQuery();
       },
 
       resetQuery() {
         this.initQuery();
-        this.supAcceptQuery();
+        this.supStockQuery();
       },
 
       changePage(page) {
         this.$data.query.page = page;
-        this.supAcceptQuery();
+        this.supStockQuery();
       },
 
       changePageSize(page_size) {
         this.$data.query.page = 1;
         this.$data.query.page_size = page_size;
-        this.supAcceptQuery();
+        this.supStockQuery();
       },
 
-      handleConfirmItem(item) {
-        this.$messageBox.confirm('确认该收货单?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(async () => {
-          let res = await Http.post(Config.api.operateItemSupAcceptConfirm, {
-            id: item.id
-          });
-          if(res.code === 0){
-            this.$message({ title: '提示', message: '确认收货单成功', type: 'success'});
-            this.supAcceptQuery();
-          }else{
-            this.$message({title: '提示', message: res.message, type: 'error'});
-          }
-        }).catch(() => {
-          // console.log('取消');
+      async handleDistributeItem(item) {
+
+        let res = await Http.get(Config.api.operateItemSupStockGetDistributes, {
+          src_storehouse_id: this.$data.query.storehouse_id,
+          item_code: item.p_item.code
         });
+
+        if (res.code !== 0) {
+          return;
+        }
+
+        console.log('res.data: ', res.data);
+        // return;
+
+        if (res.data && res.data.length == 1) {
+          const { id, num } = res.data[0];
+          this.$messageBox.confirm('是否确认调拨?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(async () => {
+            let res = await Http.post(Config.api.operateItemSupStockDistribute, {
+              batch_code: item.code,
+              distribute_id: id,
+              need_allocate_num: num // 如果只有一个关联调拨单的情况下，那么直接将该调拨单的数量作为场地需要分配的数量
+            });
+            if(res.code === 0){
+              this.$message({ title: '提示', message: '调拨成功', type: 'success'});
+              this.supStockQuery();
+            }else{
+              this.$message({title: '提示', message: res.message, type: 'error'});
+            }
+          }).catch(() => {
+            // console.log('取消');
+          });
+        } else {
+          this.$data.distribute = {
+            visible: true,
+            item: {
+              ...item,
+              distributes: res.data
+            },
+          };
+        }
+
+      },
+
+      handleSubmit() {
+        this.handleCancel();
+        this.supStockQuery();
+      },
+
+      // 共用弹层退出 函数
+      handleCancel() {
+        // 初始化调拨单生成弹层
+        this.$data.distribute = {
+          visible: false,
+          item: null,
+        };
       },
 
       async handleDetailItem(item) {
@@ -252,9 +302,9 @@
         }
       },
 
-      async supAcceptQuery() {
+      async supStockQuery() {
         let query = {...this.$data.query};
-        let res = await Http.get(Config.api.operateItemSupAcceptQuery, query);
+        let res = await Http.get(Config.api.operateItemSupStockQuery, query);
         if (res.code !== 0) return;
         this.$data.list = res.data || { items: [] };
       }
