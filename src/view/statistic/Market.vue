@@ -224,6 +224,8 @@
         let tmpDate = DataHandle.getFixDateRange(8)
         let begin_date = this.$route.query.begin_date || DataHandle.formatDate(tmpDate[0], 'yyyy-MM-dd');
         let end_date = this.$route.query.end_date || DataHandle.formatDate(tmpDate[1], 'yyyy-MM-dd');
+          
+        // let totalItemTotalPrice = this.$data.totalItemTotalPrice
         pickerValue.push(begin_date);
         pickerValue.push(end_date);
         this.$data.pickerValue = pickerValue;
@@ -233,7 +235,8 @@
           end_date: end_date,
           sort: '-amount_real',
           page: 1,
-          page_size: Constant.PAGE_SIZE
+          page_size: Constant.PAGE_SIZE,
+          totalItemTotalPrice:this.$route.query.totalItemTotalPrice
         });
       },
       // 改变查询日期
@@ -329,7 +332,7 @@
         that.$data.totalFramPrice = totalFramPrice;
         that.$data.totalOrderModifyPrice = totalOrderModifyPrice;
         that.$data.totalCount = totalCount;
-
+        that.$data.query.totalItemTotalPrice = totalItemTotalPrice
         let formatter = "{all|{b}：{c}元}  {per|{d}%}";
         let color = that.color;
         if (data && data.length === 0) {
@@ -402,6 +405,7 @@
       },
       handleShowClassDetail(item) {
         // console.log("query", this.$data.query)
+        let that = this
         this.$router.push({
           name: 'StatisticMarketClass2',
           query: {
@@ -409,7 +413,8 @@
             system_class_code1: item.system_class_code,
             begin_date: this.query.begin_date,
             end_date: this.query.end_date,
-            province_code: this.$data.query.province_code
+            province_code: this.$data.query.province_code,
+            totalItemTotalPrice:this.$data.query.totalItemTotalPrice
           }
         });
       }
