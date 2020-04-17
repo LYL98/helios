@@ -193,7 +193,7 @@
         let formData = {...this.$props.item};
         this.$data.formData = {
           plan_id: Number(formData.id), // 接口需要调拨计划的id
-          code: formData.code,
+          plan_code: formData.code,
           src_storehouse_id: formData.src_storehouse_id,
           src_storehouse_title: formData.src_storehouse && formData.src_storehouse.title || '-',
           tar_storehouse_id: formData.tar_storehouse_id,
@@ -232,15 +232,26 @@
           driver_car_num: formData.driver ? formData.driver.driver_car_num : '',
           driver_car_type: formData.driver ? formData.driver.driver_car_type : '',
           fee: DataHandle.returnPrice(formData.fee),
-          p_items: formData.distributes.map(item => ({
-            id: Number(item.plan_detail_id),
-            item_title: item.item_title,
-            num: Number(item.num),
-            is_active: true,
-          }))
+          p_items: formData.p_items.map(item => {
+            return {
+              id: Number(item.id),
+              item_title: item.item_title,
+              num: Number(item.num),
+              is_active: formData.distributes.some(d => d.plan_detail_id === item.id), // 如果该商品在调拨单中存在，则处于激活状态
+            }
+          })
         }
 
-        this.remoteDriver('');
+        if (formData.driver) {
+          const {id, realname, phone, driver_car_num, driver_car_type} = formData.driver;
+          this.$data.driver_list = [{
+            value: id,
+            label: realname,
+            phone: phone,
+            driver_car_num: driver_car_num,
+            driver_car_type: driver_car_type,
+          }];
+        }
       }
     },
     methods: {
@@ -270,10 +281,13 @@
       },
 
       validFee(rules, value, callback) {
-        if (Number(value) === 0 || /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{0,2})))$/.test(value)) {
+        if (Number(value) === 0) {
+          return callback('运费必须是大于0的数字，且只能够保留2位小数');
+        }
+        if (/^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{0,2})))$/.test(value)) {
           return callback();
         }
-        return callback('运费必须是数字，且只能够保留2位小数');
+        return callback('运费必须是大于0的数字，且只能够保留2位小数');
       },
 
       onSubmit() {

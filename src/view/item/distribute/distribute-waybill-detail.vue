@@ -159,8 +159,8 @@
     data() {
       return {
         DataHandle: DataHandle,
-        distribulte_waybill_status: Constant.DISTRIBUTE_WAYBIll_STATUS(), // 调拨计划列表状态
-        distribulte_waybill_status_type: Constant.DISTRIBUTE_WAYBIll_STATUS_TYPE,
+        distribulte_waybill_status: Constant.DISTRIBUTE_WAYBILL_STATUS(), // 调拨计划列表状态
+        distribulte_waybill_status_type: Constant.DISTRIBUTE_WAYBILL_STATUS_TYPE,
         logTypes: {
           add: '新增',
           edit: '修改',

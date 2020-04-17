@@ -411,7 +411,7 @@ const Constant = {
     closed: 'info'
   },
   // 商品 - 调拨 - 调拨单状态
-  DISTRIBUTE_WAYBIll_STATUS: (type) => {
+  DISTRIBUTE_WAYBILL_STATUS: (type) => {
     let data = [
       { key: 'init', value: '待装车' },
       { key: 'sorting', value: '待发车' },
@@ -423,7 +423,7 @@ const Constant = {
     return handleKeyValue(type, data);
   },
   // 调拨单状态(颜色)
-  DISTRIBUTE_WAYBIll_STATUS_TYPE: {
+  DISTRIBUTE_WAYBILL_STATUS_TYPE: {
     init: 'primary',
     sorting: 'warning',
     deliveried: 'regular',
