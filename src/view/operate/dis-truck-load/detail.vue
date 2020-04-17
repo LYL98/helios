@@ -2,9 +2,9 @@
   <div>
     <el-row style="padding: 20px 30px;">
       <el-col :span="12">商品编号/名称：{{item.item_code}}/{{item.item_title}}</el-col>
-      <el-col :span="4">应出：{{item.sort_num ? item.sort_num + '件' : '-'}}</el-col>
+      <el-col :span="4">应出：{{item.plan_num ? item.plan_num + '件' : '-'}}</el-col>
       <el-col :span="4">调拨：{{item.allocate_num ? item.allocate_num + '件' : '-'}}</el-col>
-      <el-col :span="4">装车：{{item.plan_num ? item.plan_num + '件' : '-'}}</el-col>
+      <el-col :span="4">装车：{{item.sort_num ? item.sort_num + '件' : '-'}}</el-col>
     </el-row>
     <div style="padding: 0 30px;">
       <el-table :data="item.items" :row-class-name="highlightRowClassName">
@@ -27,7 +27,7 @@
                 {
                   title: '打货',
                   isDisplay: !item.confirmed && ($auth.isAdmin || $auth.OperateDisTruckLoadEditNum),
-                  command: () => handleShowEditNum(scope.row)
+                  command: () => handleShowEditNum(scope.row, $index)
                 }
               ]"
             />
@@ -90,7 +90,8 @@
         loading: false,
         editNum: {
           visible: false,
-          item: {}
+          item: {},
+          index: 0
         },
       }
     },
@@ -108,12 +109,14 @@
       },
 
       handleShowEditNum(item, index){
+        return;
         this.$data.editNum = {
           visible: true,
           item: {
             detail_id: item.id,
             origin_num: item.num
-          }
+          },
+          index: index
         }
       },
 
@@ -121,7 +124,8 @@
         if(this.$refs['ruleForm']) this.$refs['ruleForm'].resetFields();
         this.$data.editNum = {
           visible: false,
-          item: {}
+          item: {},
+          index: 0
         }
       },
 
@@ -131,13 +135,15 @@
           
           this.$data.loading = true;
           let { editNum } = this;
+          let num = editNum.item.origin_num - editNum.item.opt_num;
           let res = await Http.post(Config.api.supDistributeAllocatedEditNum, {
             detail_id: editNum.item.detail_id,
-            num: editNum.item.origin_num - editNum.item.opt_num
+            num: num
           });
           this.$data.loading = false;
           if (res.code === 0) {
             this.$message({message: '打货成功', type: 'success'});
+            this.item.items[editNum.index].num = num;
             this.handleCancelEditNum();
             this.$emit('editNumSuccess');
           } else {

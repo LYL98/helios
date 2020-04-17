@@ -23,9 +23,6 @@
               :deliveryDate="query.delivery_date"
               :srcStorehouseId="query.src_storehouse_id"
             />
-            <div style="position: relative; height: 0;" v-if="query.driver_id_error">
-              <div class="el-form-item__error" style="margin-top: -2px;">{{query.driver_id_error}}</div>
-            </div>
           </my-query-item>
         </el-col>
         <el-col :span="10">
@@ -108,7 +105,7 @@
       <affirm v-if="affirm.visible" :list="affirm.list" :loading="affirm.loading" @submit="submitAffirm" @cancel="handleCancel"/>
     </add-edit-layout>
     <!--详情-->
-    <add-edit-layout :is-show="detail.visible" title="详情" :before-close="handleCancel" @editNumSuccess="editNumSuccess">
+    <add-edit-layout :is-show="detail.visible" title="详情" :before-close="handleCancel" @editNumSuccess="changeQuery">
       <detail v-if="detail.visible" :item="detail.item"/>
     </add-edit-layout>
   </sub-menu>
@@ -228,11 +225,6 @@
         }
       },
 
-      //打货成功后回调
-      editNumSuccess(){
-        this.changeQuery();
-      },
-
       async handleAffirm() {
         let { list } = this;
         //已全部分拣
@@ -309,10 +301,13 @@
       async supDistributeDriverDetail() {
         let { query } = this;
         if(!query.driver_id){
-          this.$data.query.driver_id_error = '请选择司机';
+          this.$data.list = {
+            items: [],
+            p_distribute: {}, //status === deliveried 表示已经发车
+            sorted: false, //是否已分配
+          }
           return;
         }
-        this.$data.query.driver_id_error = '';
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supDistributeDriverDetail, query);
         this.$loading({isShow: false});
