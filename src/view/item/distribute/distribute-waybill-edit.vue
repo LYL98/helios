@@ -209,7 +209,7 @@
             id: Number(item.id),
             item_title: item.item_title,
             num: Number(item.num),
-            is_active: true,
+            is_active: item.distribute_order_num === 0 ? true : false,
           }))
         };
       }

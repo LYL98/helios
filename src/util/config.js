@@ -101,8 +101,8 @@ const Config = (() => {
       itemEdit: apiM + '/item/edit', //商品编辑
       itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品加价标签修改
       itemQuery: apiM + '/item/query',//商品列表
-     
-      
+
+
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
       itemDetail: apiM + '/item/detail',//商品详情
@@ -277,6 +277,11 @@ const Config = (() => {
       supOutDetail: apiM + '/sup_out/detail', //出库单查询(变动记录详情)
 
       supOutPlanQuery: apiM + '/sup_out_plan/query', //出库计划查询
+
+      // 场地 - 场地商品 - 收货单
+      operateItemSupAcceptQuery: apiM + '/sup_accept/query', // 查询
+      operateItemSupAcceptDetail: apiM + '/sup_accept/detail', // 详情
+      operateItemSupAcceptConfirm: apiM + '/sup_accept/confirm', // 详情
 
       //场地收货
       supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询

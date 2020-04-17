@@ -248,6 +248,11 @@ const router = new Router({
       component: () => import('@/view/operate/receiving/Main')
     },
     {
+      path: '/operate/item-sup-accept',
+      name: 'OperateItemSupAccept',
+      component: () => import('@/view/operate/item/sup-accept')
+    },
+    {
       path: '/operate/sort',
       name: 'OperateSort',
       component: () => import('@/view/operate/sort/Main')
