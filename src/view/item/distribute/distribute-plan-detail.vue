@@ -65,7 +65,14 @@
           </template>
         </el-table-column>
         <el-table-column prop="created" label="创建时间" />
-        <el-table-column prop="status" label="状态" width="140"/>
+        <el-table-column prop="status" label="状态" width="140">
+          <template slot-scope="scope">
+            <el-tag size="small" :type="distribulte_waybill_status_type[scope.row.status]" disable-transitions v-if="!!scope.row.status">
+              {{ distribulte_waybill_status[scope.row.status] }}
+            </el-tag>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
       </el-table>
     </el-form-area>
     <el-form-area class="mt-20" label-position="left" label="操作时间" v-if="Array.isArray(item.logs)">
@@ -117,6 +124,8 @@
       return {
         distribulte_plan_status: Constant.DISTRIBUTE_PLAN_STATUS(), // 调拨计划列表状态
         distribulte_plan_status_type: Constant.DISTRIBUTE_PLAN_STATUS_TYPE,
+        distribulte_waybill_status: Constant.DISTRIBUTE_WAYBILL_STATUS(), // 调拨单状态
+        distribulte_waybill_status_type: Constant.DISTRIBUTE_WAYBILL_STATUS_TYPE,
         logTypes: {
           add: '新增',
           edit: '修改',

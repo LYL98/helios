@@ -220,9 +220,9 @@
     },
     data() {
       return {
-        statusOptions: {'全部': '', ...Constant.DISTRIBUTE_WAYBIll_STATUS('value_key')}, // 状态查询条件
-        distribulte_waybill_status: Constant.DISTRIBUTE_WAYBIll_STATUS(), // 调拨计划列表状态
-        distribulte_waybill_status_type: Constant.DISTRIBUTE_WAYBIll_STATUS_TYPE,
+        statusOptions: {'全部': '', ...Constant.DISTRIBUTE_WAYBILL_STATUS('value_key')}, // 状态查询条件
+        distribulte_waybill_status: Constant.DISTRIBUTE_WAYBILL_STATUS(), // 调拨计划列表状态
+        distribulte_waybill_status_type: Constant.DISTRIBUTE_WAYBILL_STATUS_TYPE,
         query: {},
         list: {
           items: []
@@ -296,7 +296,6 @@
       },
 
       async handleDetailItem(item) {
-        return;
         let res = await Http.get(Config.api.itemSupDistributeWaybillDetail, {id: item.id});
         if (res.code === 0) {
           this.$data.detail = {
@@ -309,7 +308,6 @@
       },
 
       async handleModifyItem(item) {
-        return;
         let res = await Http.get(Config.api.itemSupDistributeWaybillDetail, {id: item.id});
         if (res.code === 0) {
           this.$data.dialog = {
