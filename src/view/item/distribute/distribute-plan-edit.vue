@@ -96,8 +96,7 @@
             label="调拨数量"
             :prop="'p_items.' + index + '.num'"
             :rules="[
-              { required: true, message: '调拨数量不能为空' },
-              { type: 'number', min: 1, message: '调拨数量必须是大于零的整数' },
+              { required: true, type: 'number', min: 1, message: '调拨数量必须是大于零的整数', trigger: 'change' },
             ]"
           >
             <el-input

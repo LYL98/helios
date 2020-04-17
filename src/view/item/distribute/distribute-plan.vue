@@ -38,7 +38,7 @@
             <query-search-input
               size="small"
               v-model="query.condition"
-              placeholder="入库单号/商品编号/名称"
+              placeholder="调拨计划单号"
               clearable
               @search="changeQuery"
               @reset="resetQuery"

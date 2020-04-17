@@ -52,7 +52,7 @@
         </el-table-column>
       </el-table>
     </el-form-area>
-    <el-form-area class="mt-20" label-position="left" label="关联调拨单" v-if="Array.isArray(item.distributes)">
+    <el-form-area class="mt-20" label-position="left" label="关联调拨单" v-if="Array.isArray(item.distributes) && item.distributes.length > 0">
       <el-table
         stripe
         :data="item.distributes"

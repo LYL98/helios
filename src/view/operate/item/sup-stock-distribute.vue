@@ -1,6 +1,6 @@
 <template>
-  <el-form label-position="right" label-width="120px" :model="formData" ref="ruleForm" class="px-20">
-    <el-form-area class="bg-grey py-10">
+  <el-form label-position="right" label-width="140px" :model="formData" ref="ruleForm" class="px-20">
+    <el-form-area label="库存信息">
       <el-row :gutter="32">
         <el-col :sm="10" :span="10">
           <el-form-item class="m-0" label="商品编号/名称：">
@@ -20,21 +20,25 @@
           </el-form-item>
         </el-col>
       </el-row>
+    </el-form-area>
+    <el-form-area class="mt-20" label="调拨信息">
       <el-row :gutter="32">
         <el-col :sm="10" :span="10">
-          <el-form-item class="m-0" label="调拨总量：">
-            {{ formData.plan_num }}件
+          <el-form-item class="m-0" label="调拨总量">
+            <el-input disabled :value="formData.plan_num">
+              <template slot="append">件</template>
+            </el-input>
           </el-form-item>
         </el-col>
         <el-col :sm="10" :span="10">
-          <el-form-item class="m-0" label="已调拨装车：">
-            {{ formData.dist_num }}件
+          <el-form-item class="m-0" label="已调拨装车">
+            <el-input disabled :value="formData.dist_num">
+              <template slot="append">件</template>
+            </el-input>
           </el-form-item>
         </el-col>
       </el-row>
-    </el-form-area>
-    <el-form-area class="mt-20">
-      <el-row :gutter="32">
+      <el-row :gutter="32" class="mt-20">
         <el-col :sm="10" :span="10">
           <el-form-item
             label="司机"
@@ -49,10 +53,11 @@
               no-match-text="没有符合条件的司机"
             >
               <el-option
-                v-for="item in formData.drivers"
+                v-for="item in formData.distributes"
                 :key="item.distribute_id"
                 :label="item.driver_realname"
                 :value="item.distribute_id"
+                @click.native="changeDriver(item)"
               >
               </el-option>
             </el-select>
@@ -63,8 +68,8 @@
             label="调拨数量"
             prop="need_allocate_num"
             :rules="[
-              { required: true, message: '调拨数量不能为空' },
-              { type: 'number', min: 1, message: '调拨数量必须是大于零的整数' },
+              { required: true, type: 'number', min: 1, message: '调拨数量必须是大于零的整数', trigger: 'change' },
+              { validator: validLogic, trigger: 'blur' },
             ]"
           >
             <el-input
@@ -117,14 +122,35 @@
         num: this.$props.item.num,
         p_item: this.$props.item.p_item,
         distribute_id: '',
-        drivers: this.$props.item.distributes.map(distribute => ({
-          distribute_id: distribute.id,
-          driver_realname: distribute.driver.realname
+        distributes: this.$props.item.distributes.map(item => ({
+          distribute_id: item.id,
+          driver_realname: item.driver.realname,
+          plan_num: item.plan_num,
+          dist_num: item.dist_num,
         })),
+        plan_num: '',
+        dist_num: '',
         need_allocate_num: ''
       }
     },
     methods: {
+
+      changeDriver(item) {
+        this.$data.formData.plan_num = item.plan_num;
+        this.$data.formData.dist_num = item.dist_num;
+      },
+
+      validLogic(rules, value, callback) {
+        if (isNaN(value)) return;
+        if (!this.$data.formData.distribute_id) return;
+        if (value > this.$data.formData.num) {
+          return callback('调拨数量不能大于商品库存数量');
+        }
+        if (value > this.$data.formData.plan_num - this.$data.formData.dist_num) {
+          return callback('调拨数量不能大于调拨计划剩余数量');
+        }
+        callback();
+      },
 
       onSubmit() {
         this.$refs['ruleForm'] && this.$refs['ruleForm'].validate(async valid => {

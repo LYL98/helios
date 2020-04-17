@@ -235,14 +235,17 @@
           item_code: item.p_item.code
         });
 
-        if (res.code !== 0) {
+        if (res.code !== 0 || !Array.isArray(res.data)) {
           return;
         }
 
-        console.log('res.data: ', res.data);
-        // return;
+        if (res.data.length === 0) {
+          this.$message({title: '提示', message: '该商品没有关联的调拨单！', type: 'warning'});
+          return;
+        }
 
-        if (res.data && res.data.length == 1) {
+        // 如果只关联了一个调拨单，则直接调拨
+        if (res.data.length == 1) {
           const { id, num } = res.data[0];
           this.$messageBox.confirm('是否确认调拨?', '提示', {
             confirmButtonText: '确定',
@@ -252,7 +255,7 @@
             let res = await Http.post(Config.api.operateItemSupStockDistribute, {
               batch_code: item.code,
               distribute_id: id,
-              need_allocate_num: num // 如果只有一个关联调拨单的情况下，那么直接将该调拨单的数量作为场地需要分配的数量
+              need_allocate_num: num
             });
             if(res.code === 0){
               this.$message({ title: '提示', message: '调拨成功', type: 'success'});
@@ -263,15 +266,17 @@
           }).catch(() => {
             // console.log('取消');
           });
-        } else {
-          this.$data.distribute = {
-            visible: true,
-            item: {
-              ...item,
-              distributes: res.data
-            },
-          };
+
+          return;
         }
+
+        this.$data.distribute = {
+          visible: true,
+          item: {
+            ...item,
+            distributes: res.data
+          },
+        };
 
       },
 
