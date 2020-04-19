@@ -36,8 +36,8 @@
     </el-form-area>
     <el-form-area class="mt-20" label-position="left" label="调拨商品" v-if="Array.isArray(item.p_items)">
       <el-table
-        stripe
         :data="item.p_items"
+        :row-class-name="highlightRowClassName"
       >
         <el-table-column prop="item_title" label="商品编号/名称">
           <template slot-scope="scope">
@@ -54,7 +54,7 @@
     </el-form-area>
     <el-form-area class="mt-20" label-position="left" label="关联调拨单" v-if="Array.isArray(item.distributes) && item.distributes.length > 0">
       <el-table
-        stripe
+        :row-class-name="highlightRowClassName"
         :data="item.distributes"
         empty-text="暂无关联的调拨单"
       >
@@ -77,7 +77,7 @@
     </el-form-area>
     <el-form-area class="mt-20" label-position="left" label="操作时间" v-if="Array.isArray(item.logs)">
       <el-table
-        stripe
+        :row-class-name="highlightRowClassName"
         :data="item.logs"
       >
         <el-table-column prop="created" label="时间" width="160"/>
@@ -102,11 +102,13 @@
 </template>
 
 <script>
-  import {Form, FormItem, Row, Col, Table, TableColumn, Tag} from "element-ui";
+  import {Form, FormItem, Row, Col, Tag} from "element-ui";
   import {FormArea} from '@/common';
   import {Constant} from '@/util';
+  import tableMixin from '@/share/mixin/table.mixin';
   export default {
     name: "distribute-plan-detail",
+    mixins: [tableMixin],
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
@@ -114,8 +116,6 @@
       'el-col': Col,
       'el-form-area': FormArea,
       'el-tag': Tag,
-      'el-table': Table,
-      'el-table-column': TableColumn,
     },
     props: {
       item: { type: Object, default: () => ({}) },
@@ -148,6 +148,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '@/share/scss/table.scss';
   .mt-10 {
     margin-top: 10px;
   }
@@ -159,4 +160,8 @@
   .mt-30 {
     margin-top: 30px;
   }
+</style>
+<style lang="scss">
+  @import '@/share/scss/table.global.scss';
+
 </style>

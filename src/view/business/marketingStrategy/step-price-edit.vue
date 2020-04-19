@@ -365,7 +365,6 @@
       },
 
       changeSystemClassCodes(v, d) {
-        console.log('v: ', v);
         this.$data.query.system_class_codes = v;
         this.commonItemList();
       },

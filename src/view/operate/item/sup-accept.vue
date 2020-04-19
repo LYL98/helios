@@ -13,6 +13,16 @@
     </template>
     <div class="container-query">
       <el-row :gutter="32">
+        <el-col :xl="7" :lg="7" :span="7">
+          <my-query-item label="科学分类">
+            <my-select-system-class
+              clearable
+              :value="query.system_class_codes"
+              size="small"
+              @change="changeSystemClassCodes"
+            />
+          </my-query-item>
+        </el-col>
         <el-col :xl="10" :lg="10" :span="10">
           <my-query-item label="搜索">
             <query-search-input
@@ -130,7 +140,7 @@
 
 <script>
   import {Row, Col, Button, Input, Pagination, Table, TableColumn, Dialog, Tag} from 'element-ui';
-  import {QueryItem, QuerySearchInput, TableOperate} from '@/common';
+  import {QueryItem, QuerySearchInput, TableOperate, SelectSystemClass} from '@/common';
   import { SelectStorehouse } from '@/component';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import queryTabs from '@/share/layout/QueryTabs';
@@ -153,6 +163,7 @@
       'el-pagination': Pagination,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
+      'my-select-system-class': SelectSystemClass,
       'query-search-input': QuerySearchInput,
       'query-tabs': queryTabs,
       'select-storehouse': SelectStorehouse,
@@ -181,6 +192,7 @@
       initQuery() {
         this.$data.query = {
           storehouse_id: '',
+          system_class_codes: [],
           status: '',
           condition: '',
           page: 1,
@@ -196,6 +208,11 @@
           this.$data.query.storehouse_id = dataItem[0].id;
         }
         this.supAcceptQuery();
+      },
+
+      changeSystemClassCodes(v, d) {
+        this.$data.query.system_class_codes = v;
+        this.changeQuery();
       },
 
       changeQuery() {
@@ -240,7 +257,6 @@
       },
 
       async handleDetailItem(item) {
-        return;
         let res = await Http.get(Config.api.operateItemSupAcceptDetail, {id: item.id});
         if (res.code === 0) {
           this.$data.detail = {
@@ -254,6 +270,9 @@
 
       async supAcceptQuery() {
         let query = {...this.$data.query};
+        if (Array.isArray(query.system_class_codes) && query.system_class_codes.length > 0) {
+          query.system_class_code = query.system_class_codes[query.system_class_codes.length - 1];
+        }
         let res = await Http.get(Config.api.operateItemSupAcceptQuery, query);
         if (res.code !== 0) return;
         this.$data.list = res.data || { items: [] };

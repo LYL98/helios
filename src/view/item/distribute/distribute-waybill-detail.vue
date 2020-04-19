@@ -82,7 +82,7 @@
     </el-form-area>
     <el-form-area class="mt-20" label-position="left" label="调拨商品" v-if="Array.isArray(item.distributes)">
       <el-table
-        stripe
+        :row-class-name="highlightRowClassName"
         :data="item.distributes"
       >
         <el-table-column prop="item_title" label="商品编号/名称">
@@ -138,11 +138,13 @@
 </template>
 
 <script>
-  import {Form, FormItem, Row, Col, Table, TableColumn, Tag} from "element-ui";
+  import {Form, FormItem, Row, Col, Tag} from "element-ui";
   import {FormArea} from '@/common';
   import {Constant, DataHandle} from '@/util';
+  import tableMixin from '@/share/mixin/table.mixin';
   export default {
     name: "distribute-waybill-detail",
+    mixins: [tableMixin],
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
@@ -150,8 +152,6 @@
       'el-col': Col,
       'el-form-area': FormArea,
       'el-tag': Tag,
-      'el-table': Table,
-      'el-table-column': TableColumn,
     },
     props: {
       item: { type: Object, default: () => ({}) },
@@ -183,6 +183,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '@/share/scss/table.scss';
   .mt-10 {
     margin-top: 10px;
   }
@@ -194,4 +195,8 @@
   .mt-30 {
     margin-top: 30px;
   }
+</style>
+<style lang="scss">
+  @import '@/share/scss/table.global.scss';
+
 </style>

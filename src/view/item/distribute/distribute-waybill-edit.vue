@@ -115,7 +115,8 @@
           <el-col :sm="20" :span="10" style="padding-left: 60px">
             <el-table
               :data="formData.p_items"
-              stripe
+              :row-class-name="highlightRowClassName"
+              highlight-current-row="highlight-current-row"
             >
               <el-table-column prop="item_title" label="商品编号/名称" />
               <el-table-column prop="num" label="调拨数量" width="180" align="center">
@@ -149,12 +150,14 @@
 </template>
 
 <script>
-  import { Form, FormItem, Row, Col, Button, Input, Table, TableColumn, Switch, Select, Option, Message } from "element-ui";
+  import { Form, FormItem, Row, Col, Button, Input, Switch, Select, Option, Message } from "element-ui";
   import {FormArea} from '@/common';
   import {SelectStorehouse, SelectGItem} from '@/component';
   import {Http, Config, DataHandle} from '@/util';
+  import tableMixin from '@/share/mixin/table.mixin';
   export default {
     name: "distribute-waybill-edit",
+    mixins: [tableMixin],
     components: {
       'el-form': Form,
       'el-form-item': FormItem,
@@ -162,8 +165,6 @@
       'el-col': Col,
       'el-button': Button,
       'el-input': Input,
-      'el-table': Table,
-      'el-table-column': TableColumn,
       'el-switch': Switch,
       'el-select': Select,
       'el-option': Option,
@@ -333,6 +334,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '@/share/scss/table.scss';
   .bg-grey {
     background-color: #EEE;
   }
@@ -358,4 +360,9 @@
   .mt-30 {
     margin-top: 30px;
   }
+</style>
+
+<style lang="scss">
+  @import '@/share/scss/table.global.scss';
+
 </style>

@@ -3,19 +3,41 @@
     <el-form-area label-position="left" label="调拨信息">
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
-          <el-form-item label="调出仓：">
-          </el-form-item>
-        </el-col>
-        <el-col :sm="12" :span="10">
-          <el-form-item label="调入仓：">
+          <el-form-item label="调拨单号：">
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
-          <el-form-item label="销售日期：">
+          <el-form-item label="商品编号/名称：">
           </el-form-item>
         </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="供应商：">
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="调出仓：">
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="调拨数量：">
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="调入仓：">
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="可售日期：">
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="预计到货：">
           </el-form-item>

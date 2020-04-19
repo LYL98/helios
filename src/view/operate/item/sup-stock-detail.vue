@@ -3,21 +3,43 @@
     <el-form-area label-position="left" label="调拨信息">
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
-          <el-form-item label="调出仓：">
-          </el-form-item>
-        </el-col>
-        <el-col :sm="12" :span="10">
-          <el-form-item label="调入仓：">
+          <el-form-item label="商品编号/名称：">
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
-          <el-form-item label="销售日期：">
+          <el-form-item label="批次：">
           </el-form-item>
         </el-col>
         <el-col :sm="12" :span="10">
-          <el-form-item label="预计到货：">
+          <el-form-item label="供应商：">
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="商品过期时间：">
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="库存过期时间：">
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="库存数量：">
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="入场人：">
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="入场时间：">
           </el-form-item>
         </el-col>
       </el-row>
