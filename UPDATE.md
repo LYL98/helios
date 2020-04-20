@@ -9,6 +9,7 @@
 修改sys_permission表
 修改：
    code == ItemTags 修改项：title 【商品运营专区】
+   code == ItemGPurchaseAdd 修改项：urls 【商品 - 采购 - 预采】
 新增：
    ItemQueryByItemTag
    ItemTagAdd
