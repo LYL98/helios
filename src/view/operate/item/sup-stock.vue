@@ -153,7 +153,7 @@
     <el-dialog
       title="场地库存详情"
       :visible.sync="detail.visible"
-      width="800px"
+      width="900px"
     >
       <sup-stock-detail
         v-if="detail.visible"
@@ -389,16 +389,11 @@
       },
 
       async handleDetailItem(item) {
-        return;
-        let res = await Http.get(Config.api.operateItemSupAcceptDetail, {id: item.id});
-        if (res.code === 0) {
-          this.$data.detail = {
-            visible: true,
-            item: res.data,
-          };
-        } else {
-          this.$message({title: '提示', message: res.message, type: 'error'});
-        }
+        console.log('item: ', item);
+        this.$data.detail = {
+          visible: true,
+          item: item,
+        };
       },
 
       async supStockQuery() {
