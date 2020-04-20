@@ -3,7 +3,7 @@
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date,total:breadcrumb.total } }"
         >
           客户订单统计
         </el-breadcrumb-item>
@@ -13,7 +13,8 @@
           province_code: breadcrumb.province_code,
           province_title: breadcrumb.province_title,
           begin_date: breadcrumb.begin_date,
-          end_date: breadcrumb.end_date } }"
+          end_date: breadcrumb.end_date,
+          total:breadcrumb.total } }"
         >
           {{ breadcrumb.province_code === '' ? '全部省份' : breadcrumb.province_title }}
         </el-breadcrumb-item>
@@ -220,13 +221,16 @@
         let province_title = this.$route.query.province_title;
         let begin_date = this.$route.query.begin_date;
         let end_date = this.$route.query.end_date;
+        let total = this.$route.query.total
+
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
           zone_id: zone_id,
           zone_title: zone_title,
           province_code: province_code,
           province_title: province_title,
           begin_date: begin_date,
-          end_date: end_date
+          end_date: end_date,
+          total: total
         })
       },
       initQuery() {
@@ -248,8 +252,12 @@
           province_code: province_code,
           province_title: province_title,
           page: 1,
-          page_size: Constant.PAGE_SIZE
+          page_size: Constant.PAGE_SIZE,
+          total:this.$route.query.total
+
         });
+        this.$data.total = this.$route.query.total
+
       },
       // 改变查询日期
       changePicker(value) {
@@ -292,10 +300,10 @@
         this.$loading({ isShow: true, isWhole: true });
         let res = await Http.get(Config.api.statisticalOrderCitySum, query);
         if(res.code === 0){
-          this.total = 0
-          res.data.map(item => {
-            this.total += item.gmv
-          })
+          // this.total = 0
+          // res.data.map(item => {
+          //   this.total += item.gmv
+          // })
           that.$data.listItem = res.data;
           typeof callback === 'function' && callback();
         }else{
@@ -314,7 +322,9 @@
             province_code: this.$data.breadcrumb.province_code,
             province_title: this.$data.breadcrumb.province_title,
             begin_date: this.$data.query.begin_date,
-            end_date: this.$data.query.end_date
+            end_date: this.$data.query.end_date,
+            total:this.$data.query.total
+
           }
         });
       }

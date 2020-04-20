@@ -232,7 +232,7 @@
           page_size: Constant.PAGE_SIZE,
           totalItemTotalPrice:q.totalItemTotalPrice
         };
-         this.$data.totalItemTotalPrice = q.totalItemTotalPrice
+        //  this.$data.totalItemTotalPrice = q.totalItemTotalPrice
       },
       // 改变查询日期
       changePicker(value) {
@@ -303,7 +303,7 @@
             begin_date: this.query.begin_date,
             end_date: this.query.end_date,
             province_code: this.$route.query.province_code,
-            otalItemTotalPrice:this.query.totalItemTotalPrice
+            totalItemTotalPrice:this.$route.query.totalItemTotalPrice
           }
         });
       }

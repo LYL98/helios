@@ -166,7 +166,7 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="商品标签" prop="tags">
+        <el-form-item label="商品专区" prop="tags">
           <select-item-tags v-model="detail.tags"/>
         </el-form-item>
         <!--供应商信息-->

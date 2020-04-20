@@ -1,6 +1,6 @@
 <template>
   <!-- 如果只有一项操作，则列出单项 -->
-  <div>
+  <div >
     <a
       class="single-item no-pre"
       v-if="displayItemList.length >= 1"

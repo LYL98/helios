@@ -47,7 +47,7 @@
         <el-table-column prop="title" label="商品名称" align="center"></el-table-column>
         <el-table-column label="定价" prop="price_sale" min-width="100" align="center">
           <template slot-scope="scope">
-            {{ !!scope.row.price_sale ? '￥' + DataHandle.returnPrice(scope.row.price_sale) : '未报价' }}
+            {{ !!scope.row.price_sale ? '￥' + DataHandle.returnPrice(scope.row.price_sale) : '-' }}
              <!-- <input-weight size="medium"  unit="元" :placeholder="`${scope.row.price_sale}`" :disabled="true"/> -->
           </template>
         </el-table-column>
@@ -158,13 +158,13 @@ import { InputWeight ,InputNumber} from '@/common';
 
     created() {
       this.DataHandle = DataHandle;
-      console.log(this.$props.tag);
+      // console.log(this.$props.tag);
       
       
       
       if (this.$props.type === 'add') {
         this.initQuery();
-        console.log(this.query);
+        // console.log(this.query);
         this.commonItemList();
       } else {
 
