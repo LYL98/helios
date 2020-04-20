@@ -72,17 +72,6 @@ export default {
   },
   data(){
     let initDetail = {};
-    //数量校验
-    const validNum = (rules, value, callback)=>{
-      let { detail } = this;
-      if(Number(value) > detail.num) {
-        return callback(new Error('出库数量不能大于库存'));
-      }
-      if(Number(value) > detail.num - detail.num_out) {
-        return callback(new Error('出库数量不能大于应出库数量'));
-      }
-      callback();
-    }
     return{
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -122,7 +111,7 @@ export default {
       this.$loading({isShow: true, isWhole: true});
       let res = await Http.get(Config.api.wareTrayItemQeruy, {
         item_code: detail.item_code,
-        storehouse_id: detail.storehouse.id
+        storehouse_id: detail.src_storehouse_id
       });
       this.$loading({isShow: false});
       if(res.code === 0){
