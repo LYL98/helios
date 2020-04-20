@@ -14,6 +14,7 @@ export { default as InputPrice } from './InputPrice';
 export { default as InputPercent } from './InputPercent';
 export { default as InputWeight } from './InputWeight';
 export { default as Label } from './Label';
+export { default as LocationPicker } from './LocationPicker';
 export { default as NumberKey } from './NumberKey';
 export { default as OmissionText } from './OmissionText';
 export { default as Pagination } from './Pagination';

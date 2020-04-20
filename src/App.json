@@ -102,6 +102,23 @@
               "name": "ItemLocalPurchase"
             }
           ]
+        },
+        {
+          "title": "调拨",
+          "name": "ItemSupDistribute",
+          "type": "main",
+          "children": [
+            {
+              "title": "调拨计划",
+              "upName": "ItemSupDistribute",
+              "name": "ItemSupDistributePlan"
+            },
+            {
+              "title": "调拨单",
+              "upName": "ItemSupDistribute",
+              "name": "ItemSupDistributeWaybill"
+            }
+          ]
         }
       ]
     },
@@ -243,6 +260,23 @@
           "name": "OperateReceiving"
         },
         {
+          "title": "场地商品",
+          "name": "OperateItem",
+          "type": "main",
+          "children": [
+            {
+              "title": "收货单",
+              "upName": "OperateItem",
+              "name": "OperateItemSupAccept"
+            },
+            {
+              "title": "场地库存",
+              "upName": "OperateItem",
+              "name": "OperateItemSupStock"
+            }
+          ]
+        },
+        {
           "title": "分配装车",
           "name": "OperateTruckLoadMain",
           "type": "main",
@@ -267,6 +301,28 @@
         {
           "title": "发车",
           "name": "OperateDepart"
+        },
+        {
+          "title": "调拨装车",
+          "name": "OperateDisTruckLoadMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "装车",
+              "upName": "OperateDisTruckLoadMain",
+              "name": "OperateDisTruckLoad"
+            },
+            {
+              "title": "装车进度",
+              "upName": "OperateDisTruckLoadMain",
+              "name": "OperateDisTruckLoadProgress"
+            },
+            {
+              "title": "装车延时",
+              "upName": "OperateDisTruckLoadMain",
+              "name": "OperateDisTruckLoadDelay"
+            }
+          ]
         },
         {
           "title": "线路规划",

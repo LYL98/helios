@@ -58,7 +58,7 @@
         tableName: 'TableOperateTruckLoadDelay',
         tableColumn: [
           { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
-          { label: '线路', key: 'line', width: '1', isShow: true },
+          { label: '线路', key: 'line', width: '2', isShow: true },
           { label: '分配时间', key: 'minutes', width: '1', isShow: true }
         ]
       }

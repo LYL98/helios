@@ -84,6 +84,16 @@ const router = new Router({
       name: 'ItemLocalPurchase',
       component: () => import('@/view/item/localPurchase/Main')
     },
+    {
+      path: '/item/sup-distribute-plan',
+      name: 'ItemSupDistributePlan',
+      component: () => import('@/view/item/distribute/distribute-plan')
+    },
+    {
+      path: '/item/sup-distribute-waybill',
+      name: 'ItemSupDistributeWaybill',
+      component: () => import('@/view/item/distribute/distribute-waybill')
+    },
 
     /*业务*/
     {
@@ -238,6 +248,16 @@ const router = new Router({
       component: () => import('@/view/operate/receiving/Main')
     },
     {
+      path: '/operate/item-sup-accept',
+      name: 'OperateItemSupAccept',
+      component: () => import('@/view/operate/item/sup-accept')
+    },
+    {
+      path: '/operate/item-sup-stock',
+      name: 'OperateItemSupStock',
+      component: () => import('@/view/operate/item/sup-stock')
+    },
+    {
       path: '/operate/sort',
       name: 'OperateSort',
       component: () => import('@/view/operate/sort/Main')
@@ -256,6 +276,21 @@ const router = new Router({
       path: '/operate/depart',
       name: 'OperateDepart',
       component: () => import('@/view/operate/depart/Main')
+    },
+    {
+      path: '/operate/dis/truck/load',
+      name: 'OperateDisTruckLoad',
+      component: () => import('@/view/operate/dis-truck-load/main')
+    },
+    {
+      path: '/operate/dis/truck/load/progress',
+      name: 'OperateDisTruckLoadProgress',
+      component: () => import('@/view/operate/dis-truck-load-progress/main')
+    },
+    {
+      path: '/operate/dis/truck/load/delay',
+      name: 'OperateDisTruckLoadDelay',
+      component: () => import('@/view/operate/dis-truck-load-delay/main')
     },
     {
       path: '/operate/line/list',
@@ -430,9 +465,29 @@ let myInfo = {}, nextPage = ()=>{}, auth = {}, page = '', pageName = '';
 
 //判断是否已登录
 const getIsLogin = async ()=>{
+
+  // 判断内存中，登录态是否超时
+  if (myInfo.id && myInfo._tokenExpirationDate > new Date().getTime()) {
+
+    if (judgeAuth()) {
+      nextPage();
+    } else {
+      Notification.error({
+        title: '提示',
+        message: '您没有权限访问',
+        offset: 50
+      });
+    }
+
+    return;
+  }
+
+  myInfo = {}; // 如果内存中的登录态已经失效，则初始化登录信息。
+
   let res = await Http.get(Config.api.signIsLogin, {});
   if(res.code === 0){
     myInfo = res.data;
+    myInfo._tokenExpirationDate = new Date().getTime() + 12 * 3600 * 1000;
     getAuthorityList();//用户权限
   }else if(res.code !== 200){
     //不包括登录已失效
@@ -440,6 +495,7 @@ const getIsLogin = async ()=>{
       type: 'error'
     });
   }
+
 }
 
 //路由跳转时是否有权限
@@ -481,7 +537,10 @@ const getAuthorityList = ()=>{
     install(Vue){
       Vue.prototype.$auth = a; //放入全局
       Vue.prototype.$myInfo = myInfo; //放入全局
-      //全局区域
+
+      // $province 缓存 用户选中的区域
+      // 如果为空，则默认使用权限所在区域
+      // 如果为空，则该字段缓存的省code就为空
       let province = Method.getLocalStorage('globalProvince');
       Vue.prototype.$province = province.code ? province : {province_code: myInfo.province_code};
     }

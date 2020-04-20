@@ -70,7 +70,7 @@
           :default-sort = "{prop: 'discount', order: ''}"
         >
           <el-table-column
-            v-if="$auth.isAdmin || $auth.MarketingStrategyStepModify || MarketingStrategyStepDelete"
+            v-if="$auth.isAdmin || $auth.MarketingStrategyStepModify || $auth.MarketingStrategyStepDelete"
             align="center"
             type="selection"
             width="50">

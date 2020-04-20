@@ -101,8 +101,8 @@ const Config = (() => {
       itemEdit: apiM + '/item/edit', //商品编辑
       itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品加价标签修改
       itemQuery: apiM + '/item/query',//商品列表
-     
-      
+
+
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
       itemDetail: apiM + '/item/detail',//商品详情
@@ -113,6 +113,24 @@ const Config = (() => {
       itemPriceAudit: apiM + '/item/price/audit', //商品定价审核
       itemChgSupplier: apiM + '/item/chg_supplier', //修改反采商品的供应商
       itemPriceDetail: apiM + '/item/price/detail', //商品供应商报价列表
+
+      // 商品 - 调拨 - 调拨计划
+      itemSupDistributePlanQuery: apiM + '/sup_distribute_plan/query', // 查询
+      itemSupDistributePlanDetail: apiM + '/sup_distribute_plan/detail', // 详情
+      itemSupDistributePlanAdd: apiM + '/sup_distribute_plan/add', // 新增
+      itemSupDistributePlanModify: apiM + '/sup_distribute_plan/edit', // 修改
+      itemSupDistributePlanClose: apiM + '/sup_distribute_plan/close', // 关闭
+      itemSupDistributePlanAudit: apiM + '/sup_distribute_plan/audit', // 审核
+
+      itemSupDistributeWaybillAdd: apiM + '/sup_distribute/add', // 生成调拨单
+      itemSupDistributeGetDriver: apiM + '/sup_distribute/get_driver', // 获取当前可用司机
+
+      // 商品 - 调拨 - 调拨单
+      itemSupDistributeWaybillQuery: apiM + '/sup_distribute/query', // 查询
+      itemSupDistributeWaybillDetail: apiM + '/sup_distribute/detail', // 详情
+      itemSupDistributeWaybillModify: apiM + '/sup_distribute/edit', // 修改
+      itemSupDistributeWaybillClose: apiM + '/sup_distribute/close', // 关闭
+
 
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询
@@ -260,6 +278,17 @@ const Config = (() => {
 
       supOutPlanQuery: apiM + '/sup_out_plan/query', //出库计划查询
 
+      // 场地 - 场地商品 - 收货单
+      operateItemSupAcceptQuery: apiM + '/sup_accept/query', // 查询
+      operateItemSupAcceptDetail: apiM + '/sup_accept/detail', // 详情
+      operateItemSupAcceptConfirm: apiM + '/sup_accept/confirm', // 详情
+
+      // 场地 - 场地商品 - 场地库存
+      operateItemSupStockQuery: apiM + '/sup_accept/stock/query', // 查询
+      operateItemSupStockGetDistributes: apiM + '/sup_distribute_allocate/get_distributes', // 调拨时，获取该商品关联的调拨单信息
+      operateItemSupStockDistribute: apiM + '/sup_distribute/allocate_num', // 调拨
+
+
       //场地收货
       supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询
 
@@ -290,6 +319,16 @@ const Config = (() => {
       supDeliveryLackHistoryItem: apiM + '/sup_delivery/lack_history/item', //商品缺货缺货历史记录
       supDeliveryLackHistoryStore: apiM + '/sup_delivery/lack_history/store', //确认分配之后用于查看缺货记录中某个商品在各个门店分配的详情
       lineOrderExport: apiM + '/line_order/export', //导出
+
+      //场地调拨装车
+      supDistributeDriverDetail: apiM + '/sup_distribute/driver_detail', //返回某个司机在某天需要调拨的商品汇总(也就是装车界面)
+      supDistributeAllocatedDrivers: apiM + '/sup_distribute/allocated_drivers', //装车页面的司机下拉列表
+      supDistributeDeliveryLackItem: apiM + '/sup_distribute_delivery/lack_item', //调拨发车前确认的缺货列表
+      supDistributeDelivery: apiM + '/sup_distribute/delivery', //发车前确认
+      supDistributeDriverItemDetail: apiM + '/sup_distribute/driver_item_detail', //返回某个司机在某天 某个商品的调拨装车详情
+      supDistributeAllocatedEditNum: apiM + '/sup_distribute_allocate/edit_num', //修改调拨分配的数量(也就是打货)
+      supDistributeAllocateLoading: apiM + '/sup_distribute_allocate/loading', //调拨装车进度
+      supDistributeAllocateDelaySortQuery: apiM + '/sup_distribute_allocate/delay_sort_query', //调拨装车延迟
 
       //线路
       operateLineAdd: apiM + '/basicdata/line/add', //线路新增
