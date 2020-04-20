@@ -4,12 +4,14 @@
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="商品编号/名称：">
+            {{ item.p_item.code }} / {{ item.p_item.title }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="批次：">
+            {{ item.batch_code }}
           </el-form-item>
         </el-col>
         <el-col :sm="12" :span="10">

@@ -126,7 +126,7 @@
     <el-dialog
       title="收货单详情"
       :visible.sync="detail.visible"
-      width="800px"
+      width="900px"
     >
       <sup-accept-detail
         v-if="detail.visible"

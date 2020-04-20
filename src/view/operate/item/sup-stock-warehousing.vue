@@ -5,7 +5,7 @@
     :model="formData"
     ref="ruleForm"
   >
-    <el-table 
+    <el-table
       :data="formData.items"
       :row-class-name="highlightRowClassName"
       highlight-current-row="highlight-current-row"
@@ -44,12 +44,12 @@
     <el-form-item
       class="mt-20"
       label="仓库"
-      prop="storehouse_id"
+      prop="warehouse_id"
       :rules="[{ required: true, message: '仓库不能为空' }]"
     >
       <el-select-storehouse
         style="width: 300px"
-        v-model="formData.storehouse_id"
+        v-model="formData.warehouse_id"
         placeholder="请选择仓库"
       />
     </el-form-item>
@@ -96,7 +96,7 @@ export default {
     return {
       loading: false,
       formData: {
-        storehouse_id: "",
+        warehouse_id: "",
         items: []
       }
     };
@@ -111,6 +111,22 @@ export default {
       this.$refs['ruleForm'] && this.$refs['ruleForm'].validate(async valid => {
         if (!valid) return;
 
+        let formData = {...this.$data.formData};
+        formData.ids = formData.items.map(item => item.id);
+
+        console.log('formData.items: ', formData.items);
+
+        return;
+        this.$data.loading = true;
+        let res = Http.post(Config.api.operateItemSupStockInStock, formData);
+        this.$data.loading = false;
+
+        if (res.code === 0) {
+          this.$message({message: '入库成功', type: 'success'});
+          this.$emit('submit');
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
 
       })
     },

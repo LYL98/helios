@@ -26,14 +26,14 @@
           </el-col>
           <el-col :sm="12" :span="10">
             <el-form-item label="采购日期：">
-              {{ item.relate_order.order_date }}
+              {{ item.relate_order && item.relate_order.order_date || '-' }}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
             <el-form-item label="预计到货：">
-              {{ item.relate_order.estimate_arrive_at }}
+              {{ item.relate_order && item.relate_order.estimate_arrive_at || '-' }}
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
@@ -50,7 +50,7 @@
           </el-col>
           <el-col :sm="12" :span="10">
             <el-form-item label="送达仓：">
-              {{ item.relate_order.storehouse.title }}
+              {{ item.relate_order && item.relate_order.storehouse && item.relate_order.storehouse.title || '-' }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -95,7 +95,7 @@
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
             <el-form-item label="品控人：">
-              {{ item.creator.realname}}
+              {{ item.creator && item.creator.realname || '-'}}
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
@@ -107,7 +107,7 @@
         <el-row :gutter="32" v-if="!!item.confirmer_id">
           <el-col :sm="12" :span="10">
             <el-form-item label="确认人：">
-              {{ item.confirmer.realname}}
+              {{ item.confirmer && item.confirmer.realname || '-'}}
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
@@ -152,31 +152,31 @@
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
             <el-form-item label="调出仓：">
-              {{  }}
+              {{ item.relate_order && item.relate_order.src_storehouse && item.relate_order.src_storehouse.title || '-' }}
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
             <el-form-item label="调拨数量：">
-              {{ item.num }}
+              {{ item.num }}件
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
             <el-form-item label="调入仓：">
-              {{  }}
+              {{ item.relate_order && item.relate_order.tar_storehouse && item.relate_order.tar_storehouse.title || '-' }}
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
             <el-form-item label="可售日期：">
-              {{  }}
+              {{ item.relate_order && item.relate_order.available_date || '-' }}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
             <el-form-item label="预计到货：">
-              {{ }}
+              {{ item.relate_order && item.relate_order.estimate_arrive_at || '-' }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -237,7 +237,7 @@
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
             <el-form-item label="品控人：">
-              {{ item.creator.realname}}
+              {{ item.creator && item.creator.realname || '-'}}
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
@@ -249,7 +249,7 @@
         <el-row :gutter="32" v-if="!!item.confirmer_id">
           <el-col :sm="12" :span="10">
             <el-form-item label="确认人：">
-              {{ item.confirmer.realname}}
+              {{ item.confirmer && item.confirmer.realname || '-'}}
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">

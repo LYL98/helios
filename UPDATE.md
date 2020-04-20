@@ -31,6 +31,10 @@
    ItemSupDistributeWaybillModify
    ItemSupDistributeWaybillClose
 
+   OperateItem
+   OperateItemSupAccept
+   OperateItemSupAcceptConfirm
+
    OperateDisTruckLoadMain
    OperateDisTruckLoad
    OperateDisTruckLoadProgress
