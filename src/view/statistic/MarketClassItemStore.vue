@@ -18,7 +18,6 @@
         </el-breadcrumb-item>
         <el-breadcrumb-item :to="{ name: 'StatisticMarketClass3', query: {
             totalItemTotalPrice:query.totalItemTotalPrice,
-
             province_code: query.province_code,
             begin_date: query.begin_date,
             end_date: query.end_date,
@@ -242,7 +241,7 @@
           page: 1,
           page_size: Constant.PAGE_SIZE,
         };
-        this.$data.totalItemTotalPrice = q.totalItemTotalPrice
+        // this.$data.totalItemTotalPrice = q.totalItemTotalPrice
       },
       // 改变查询日期
       changePicker(value) {

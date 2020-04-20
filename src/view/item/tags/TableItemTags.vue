@@ -84,7 +84,7 @@
     },
     created() {
       this.getData();
-      console.log(this.auth);
+      // console.log(this.auth);
       
     },
     data() {
@@ -110,7 +110,7 @@
 
       //重写删除数据提示
       handleDelete(data){
-      this.$messageBox.confirm(`慎用：该专区内的运营商品会被全部删除`, '确定删除这项运营标签？', {
+      this.$messageBox.confirm(`慎用：该专区内的运营商品会被全部删除`, '确定删除这项运营专区？', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',

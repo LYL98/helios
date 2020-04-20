@@ -133,6 +133,8 @@ export default {
     //提交数据
     async addEditData(){
       let { detail } = this;
+      //将rank值转为数字类型
+      detail.rank = Number(detail.rank)
       let req = JSON.parse(JSON.stringify(detail));
       if(req.image && typeof req.image != 'string') {
         req.image = req.image.join();

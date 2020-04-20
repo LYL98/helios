@@ -9,17 +9,7 @@
     <div style="padding: 0 30px; ">
       <div class="container-query">
         <el-row :gutter="32">
-          <el-col :span="8">
-            <my-query-item label="科学分类">
-              <select-system-class
-                v-model="query.system_class_codes"
-                @change="selectSystemClass"
-                :clearable="false"
-                size="small"
-              />
-            </my-query-item>
-          </el-col>
-          <el-col :span="12">
+           <el-col :span="12">
             <my-query-item label="搜索">
               <query-search-input
                 v-model="query.condition"
@@ -30,6 +20,17 @@
               />
             </my-query-item>
           </el-col>
+          <el-col :span="8">
+            <my-query-item label="科学分类">
+              <select-system-class
+                v-model="query.system_class_codes"
+                @change="selectSystemClass"
+                :clearable="false"
+                size="small"
+              />
+            </my-query-item>
+          </el-col>
+         
         </el-row>
       </div>
       <div class="container-table">
@@ -45,23 +46,24 @@
             width="42"
             v-if="(auth.isAdmin || auth.ItemQueryByItemTag)"
           ></el-table-column>
-          <el-table-column label="商品名称" prop="title" width="400" align="center" />
+          <el-table-column label="商品名称" prop="title"  align="center" />
           <!-- 序号 -->
           <!-- type="index" :index="indexMethod" -->
-          <el-table-column width="150" label="排序" prop="rank" align="center"></el-table-column>
+          <el-table-column label="排序" prop="rank" align="center"></el-table-column>
           <el-table-column label="定价" width="150" align="center" prop="price_sale">
             <template slot-scope="scope">
-              <input-weight
+              <!-- <input-weight
                 size="medium"
                 unit="元"
                 :placeholder="`${DataHandle.returnPrice(scope.row.price_sale)}`"
                 :disabled="true"
-              />
+              /> -->
+              {{ !!scope.row.price_sale ? '￥' + DataHandle.returnPrice(scope.row.price_sale) : '-' }}
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="created" width="300" align="center" />
+          <el-table-column label="创建时间" prop="created"  align="center" />
 
-          <el-table-column label="操作内容" >
+          <el-table-column label="操作内容"  >
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
@@ -274,7 +276,7 @@ export default {
     },
     //获取数据（选择科学分类时触发）
     async getData() {
-      console.log(233);
+      // console.log(233);
       this.pItemModifyDetail();
     },
       //重写删除数据提示

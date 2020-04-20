@@ -3,7 +3,7 @@
     <!-- 查询 -->
     <div class="query" style="margin-bottom: 16px;">
       <el-row :gutter="32">
-        <el-col :span="7">
+        <el-col :span="6">
           <my-query-item label="区域">
             <global-province
               type="select"
@@ -26,6 +26,15 @@
               :clearable="false"
               @change="changePicker">
             </el-date-picker>
+          </my-query-item>
+        </el-col>
+         <el-col :span="7">
+          <my-query-item label="运营专区" >
+            <el-select v-module="selectValue" placeholder="请选择" size="small">
+              <!-- <el-option>
+
+              </el-option> -->
+            </el-select>
           </my-query-item>
         </el-col>
       </el-row>
@@ -108,7 +117,7 @@
 </template>
 
 <script>
-  import { Row, Col, DatePicker, Table, TableColumn, Pagination } from 'element-ui';
+  import { Row, Col, DatePicker, Table, TableColumn, Pagination ,Select} from 'element-ui';
   import { QueryItem, TableOperate } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
@@ -128,6 +137,7 @@
       'el-table': Table,
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
+      'el-select':Select,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'global-province': GlobalProvince,
@@ -137,6 +147,7 @@
         fixDateOptions: Constant.FIX_DATE_RANGE,
         offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE,
         pickerValue: [],
+        selectValue:'',
         query: { },
         listItem: [],
         orderClassSumData2: [],
@@ -397,7 +408,9 @@
                 system_class_code1: params.data.system_class_code,
                 begin_date: that.query.begin_date,
                 end_date: that.query.end_date,
-                province_code: this.$data.query.province_code
+                province_code: that.$data.query.province_code,
+                totalItemTotalPrice:that.$data.query.totalItemTotalPrice
+
               }
             });
           }

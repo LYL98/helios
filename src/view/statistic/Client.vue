@@ -243,7 +243,8 @@
           end_date: end_date,
           sort: '-gmv',
           page: 1,
-          page_size: Constant.PAGE_SIZE
+          page_size: Constant.PAGE_SIZE,
+          total:this.$route.query.total
         });
       },
       // 改变查询日期
@@ -352,6 +353,8 @@
         that.$data.totalFramPrice = totalFramPrice;
         that.$data.totalOrderMerchantNum = totalOrderMerchantNum;
         that.$data.totalPiece = totalPiece;
+      
+        that.$data.query.total = totalItemTotalPrice
 
         that.chart = echarts.init(that.$refs.myEchart);
 
@@ -418,7 +421,8 @@
                 province_code: params.data.code,
                 province_title: params.data.name,
                 begin_date: that.$data.query.begin_date,
-                end_date: that.$data.query.end_date
+                end_date: that.$data.query.end_date,
+                total:that.$data.query.total
               }
             });
 
@@ -457,7 +461,8 @@
             province_code: province_code,
             province_title: province_title,
             begin_date: this.$data.query.begin_date,
-            end_date: this.$data.query.end_date
+            end_date: this.$data.query.end_date,
+            total:this.$data.query.total
           }
         });
       }
