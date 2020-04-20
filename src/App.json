@@ -238,7 +238,20 @@
         },
         {
           "title": "出库计划",
-          "name": "WarehouseOutStorage"
+          "name": "OutStoragePlanMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "销售出库",
+              "upName": "OutStoragePlanMain",
+              "name": "WarehouseOutStorage"
+            },
+            {
+              "title": "调拨出库",
+              "upName": "OutStoragePlanMain",
+              "name": "DistributeOutStorage"
+            }
+          ]
         },
         {
           "title": "调拨单",
@@ -272,7 +285,7 @@
           ]
         },
         {
-          "title": "分配装车",
+          "title": "配送装车",
           "name": "OperateTruckLoadMain",
           "type": "main",
           "children": [

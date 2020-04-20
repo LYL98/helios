@@ -2,11 +2,11 @@
   <sub-menu>
     <query-warehouse-inventory :getPageComponents="viewGetPageComponents" ref="QueryWarehouseInventory"/>
     <table-warehouse-inventory :getPageComponents="viewGetPageComponents" ref="TableWarehouseInventory"/>
-    <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" ref="DetailWarehouseInventory" fromPage="Inventory"/>
+    <detail-warehouse-inventory :getPageComponents="viewGetPageComponents" ref="DetailWarehouseInventory"/>
     <form-warehouse-inventory-distribute :getPageComponents="viewGetPageComponents" ref="FormWarehouseInventoryDistribute"/>
     <form-warehouse-inventory-check :getPageComponents="viewGetPageComponents" ref="FormWarehouseInventoryCheck"/>
     <form-warehouse-inventory-move :getPageComponents="viewGetPageComponents" ref="FormWarehouseInventoryMove"/>
-    <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" ref="FormWarehouseInventoryOutStorage" fromPage="Inventory"/>
+    <form-warehouse-inventory-out-storage :getPageComponents="viewGetPageComponents" ref="FormWarehouseInventoryOutStorage"/>
     <form-warehouse-inventory-variation :getPageComponents="viewGetPageComponents" ref="FormWarehouseInventoryVariation"/>
     <detail-item-g-purchase :getPageComponents="viewGetPageComponents" ref="AddEditItemGPurchase" fromPage="Inventory"/>
     <detail-item-local-purchase :getPageComponents="viewGetPageComponents" ref="AddEditItemLocalPurchase" fromPage="Inventory"/>

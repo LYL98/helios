@@ -276,7 +276,12 @@ const Config = (() => {
       supMoveDetail: apiM + '/sup_move/detail', //移库查询(变动记录详情)
       supOutDetail: apiM + '/sup_out/detail', //出库单查询(变动记录详情)
 
+      //出库计划
       supOutPlanQuery: apiM + '/sup_out_plan/query', //出库计划查询
+      supDistributeOutPlanQuery: apiM + '/sup_distribute_out_plan/query', //调拨计划
+      wareTrayItemList: apiM + '/ware_tray_item/list', //查询具体托盘的库存list
+      supOutAddWithSalePlan: apiM + '/sup_out/add_with_sale_out_plan', //根据销售出库计划进行出库的操作
+      supOutAddWithDistPlan: apiM + '/sup_out/add_with_dist_plan', //根据出库计划出库
 
       // 场地 - 场地商品 - 收货单
       operateItemSupAcceptQuery: apiM + '/sup_accept/query', // 查询
