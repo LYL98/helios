@@ -118,7 +118,7 @@
     },
     created() {
       this.$data.formData = {
-        batch_code: this.$props.item.code,
+        batch_code: this.$props.item.batch_code,
         num: this.$props.item.num,
         p_item: this.$props.item.p_item,
         distribute_id: '',

@@ -40,10 +40,10 @@
     <div class="container-table">
       <div class="table-top">
         <div class="left">
-          <el-button 
-            size="mini" 
-            type="primary" 
-            :disabled="selectedList.length <= 0" 
+          <el-button
+            size="mini"
+            type="primary"
+            :disabled="selectedList.length <= 0"
             v-if="$auth.isAdmin || $auth.MarketingStrategyCityModify"
             @click="handleWarehousingItems(selectedList)"
           >批量入库</el-button>
@@ -175,7 +175,7 @@
       width="1000px"
       :before-close="handleCancel"
     >
-      <sup-stock-warehousing 
+      <sup-stock-warehousing
         v-if="warehousing.visible"
         :items="warehousing.items"
         @submit="handleSubmit"
@@ -345,7 +345,7 @@
             type: 'warning'
           }).then(async () => {
             let res = await Http.post(Config.api.operateItemSupStockDistribute, {
-              batch_code: item.code,
+              batch_code: item.batch_code,
               distribute_id: id,
               need_allocate_num: num
             });
