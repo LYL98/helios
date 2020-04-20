@@ -10,7 +10,7 @@
               value-format="yyyy-MM-dd"
               @change="changeQuery"
               style="width: 100%;"
-              placeholder="配送日期"
+              placeholder="请选择日期"
               :clearable="false"
             />
           </my-query-item>
@@ -269,7 +269,7 @@
     methods: {
       initQuery() {
         this.$data.query = {
-          available_date: DataHandle.formatDate(new Date(), 'yyyy-MM-dd'),
+          available_date: '',
           src_storehouse_id: '', // 调出仓
           tar_storehouse_id: '', // 调入仓
           status: '',
