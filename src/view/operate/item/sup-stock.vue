@@ -13,6 +13,16 @@
     </template>
     <div class="container-query">
       <el-row :gutter="32">
+        <el-col :xl="7" :lg="7" :span="7">
+          <my-query-item label="科学分类">
+            <my-select-system-class
+              clearable
+              :value="query.system_class_codes"
+              size="small"
+              @change="changeSystemClassCodes"
+            />
+          </my-query-item>
+        </el-col>
         <el-col :xl="10" :lg="10" :span="10">
           <my-query-item label="搜索">
             <query-search-input
@@ -28,10 +38,21 @@
     </div>
 
     <div class="container-table">
-<!--      <div class="table-top">-->
-<!--        <div class="left">-->
-<!--        </div>-->
-<!--      </div>-->
+      <div class="table-top">
+        <div class="left">
+          <el-button
+            size="mini"
+            type="primary"
+            :disabled="selectedList.length <= 0"
+            v-if="$auth.isAdmin || $auth.MarketingStrategyCityModify"
+            @click="handleWarehousingItems(selectedList)"
+          >批量入库</el-button>
+          <el-button size="mini" type="primary" :disabled="selectedList.length <= 0" v-if="$auth.isAdmin || $auth.MarketingStrategyCityDelete">批量分配</el-button>
+        </div>
+        <div class="right">
+          <el-button @click="handleChangeRecord" size="mini" type="primary" plain>场地变动记录</el-button>
+        </div>
+      </div>
 
       <div @mousemove="handleTableMouseMove" class="table-conter">
         <el-table
@@ -43,7 +64,14 @@
           highlight-current-row="highlight-current-row"
           :row-key="rowIdentifier"
           :current-row-key="clickedRow[rowIdentifier]"
+          @selection-change="handleSelectionChange"
         >
+          <el-table-column
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockDistribute || $auth.OperateItemSupStockDistribute"
+            align="center"
+            type="selection"
+            width="50">
+          </el-table-column>
           <el-table-column
             type="index"
             :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
@@ -55,7 +83,7 @@
               <div
                 :class="`td-item link-item`"
                 @click.prevent="handleDetailItem(scope.row)"
-              >{{ scope.row.code }}</div>
+              >{{ scope.row.batch_code }}</div>
             </template>
           </el-table-column>
           <el-table-column label="商品编号/名称" prop="p_item" min-width="300">
@@ -85,6 +113,11 @@
                     isDisplay: ($auth.isAdmin || $auth.OperateItemSupStockDistribute),
                     command: () => handleDistributeItem(scope.row)
                   },
+                  {
+                    title: '入库',
+                    isDisplay: ($auth.isAdmin || $auth.OperateItemSupStockWarehousing),
+                    command: () => handleWarehousingItems([scope.row])
+                  }
                 ]"
               />
             </template>
@@ -120,7 +153,7 @@
       />
     </add-edit-layout>
     <el-dialog
-      :title="'收货单 - ' + detail.item.code + ' 详情'"
+      title="场地库存详情"
       :visible.sync="detail.visible"
       width="800px"
     >
@@ -129,12 +162,32 @@
         :item="detail.item"
       />
     </el-dialog>
+    <el-dialog
+      title="场地变动记录"
+      :visible.sync="record.visible"
+      width="1000px"
+    >
+      <sup-stock-record v-if="record.visible"/>
+    </el-dialog>
+    <el-dialog
+      title="入库"
+      :visible="warehousing.visible"
+      width="1000px"
+      :before-close="handleCancel"
+    >
+      <sup-stock-warehousing
+        v-if="warehousing.visible"
+        :items="warehousing.items"
+        @submit="handleSubmit"
+        @cancel="handleCancel"
+      />
+    </el-dialog>
   </sub-menu>
 </template>
 
 <script>
   import {Row, Col, Button, Input, Pagination, Table, TableColumn, Dialog, Tag} from 'element-ui';
-  import {QueryItem, QuerySearchInput, TableOperate} from '@/common';
+  import {QueryItem, QuerySearchInput, TableOperate, SelectSystemClass} from '@/common';
   import { SelectStorehouse } from '@/component';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import AddEditLayout from '@/share/layout/Layout';
@@ -143,6 +196,8 @@
 
   import SupStockDetail from './sup-stock-detail';
   import SupStockDistribute from './sup-stock-distribute';
+  import SupStockRecord from './sup-stock-record';
+  import SupStockWarehousing from './sup-stock-warehousing';
   export default {
     name: 'sup-accept',
     mixins: [mainMixin, tableMixin],
@@ -159,10 +214,13 @@
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'add-edit-layout': AddEditLayout,
+      'my-select-system-class': SelectSystemClass,
       'query-search-input': QuerySearchInput,
       'select-storehouse': SelectStorehouse,
       'sup-stock-detail': SupStockDetail,
       'sup-stock-distribute': SupStockDistribute,
+      'sup-stock-record': SupStockRecord,
+      'sup-stock-warehousing': SupStockWarehousing,
     },
     data() {
       return {
@@ -170,13 +228,28 @@
         list: {
           items: []
         },
+        selectedList: [],
+
+        // 调拨
+        distribute: {
+          visible: false,
+          items: {}
+        },
+
+        // 详情
         detail: {
           visible: false,
           item: {}
         },
-        distribute: {
+
+        // 场地变动记录
+        record: {
           visible: false,
-          items: {}
+        },
+
+        warehousing: {
+          visible: false,
+          items: []
         }
       }
     },
@@ -188,9 +261,23 @@
       // this.supAcceptQuery();
     },
     methods: {
+
+      handleSelectionChange(val) {
+        this.$data.selectedList = val;
+      },
+
+      handleWarehousingItems(items) {
+
+        this.$data.warehousing = {
+          visible: true,
+          items: items
+        };
+      },
+
       initQuery() {
         this.$data.query = {
           storehouse_id: '',
+          system_class_codes: [],
           condition: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -205,6 +292,11 @@
           this.$data.query.storehouse_id = dataItem[0].id;
         }
         this.supStockQuery();
+      },
+
+      changeSystemClassCodes(v, d) {
+        this.$data.query.system_class_codes = v;
+        this.changeQuery();
       },
 
       changeQuery() {
@@ -253,7 +345,7 @@
             type: 'warning'
           }).then(async () => {
             let res = await Http.post(Config.api.operateItemSupStockDistribute, {
-              batch_code: item.code,
+              batch_code: item.batch_code,
               distribute_id: id,
               need_allocate_num: num
             });
@@ -292,6 +384,15 @@
           visible: false,
           item: null,
         };
+
+        this.$data.warehousing = {
+          visible: false,
+          items: []
+        }
+      },
+
+      handleChangeRecord() {
+        this.$data.record.visible = true;
       },
 
       async handleDetailItem(item) {
@@ -309,6 +410,10 @@
 
       async supStockQuery() {
         let query = {...this.$data.query};
+        if (Array.isArray(query.system_class_codes) && query.system_class_codes.length > 0) {
+          query.system_class_code = query.system_class_codes[query.system_class_codes.length - 1];
+        }
+        delete query.system_class_codes;
         let res = await Http.get(Config.api.operateItemSupStockQuery, query);
         if (res.code !== 0) return;
         this.$data.list = res.data || { items: [] };
