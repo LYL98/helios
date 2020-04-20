@@ -287,12 +287,13 @@ const Config = (() => {
       // 场地 - 场地商品 - 收货单
       operateItemSupAcceptQuery: apiM + '/sup_accept/query', // 查询
       operateItemSupAcceptDetail: apiM + '/sup_accept/detail', // 详情
-      operateItemSupAcceptConfirm: apiM + '/sup_accept/confirm', // 详情
+      operateItemSupAcceptConfirm: apiM + '/sup_accept/confirm', // 确认
 
       // 场地 - 场地商品 - 场地库存
       operateItemSupStockQuery: apiM + '/sup_accept/stock/query', // 查询
       operateItemSupStockGetDistributes: apiM + '/sup_distribute_allocate/get_distributes', // 调拨时，获取该商品关联的调拨单信息
       operateItemSupStockDistribute: apiM + '/sup_distribute/allocate_num', // 调拨
+      operateItemSupStockInStock: apiM + '/sup_accept/in_stock', // 入库
 
 
       //场地收货
