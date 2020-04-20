@@ -45,7 +45,13 @@
             v-if="$auth.isAdmin || $auth.MarketingStrategyCityModify"
             @click="handleWarehousingItems(selectedList)"
           >批量入库</el-button>
-          <el-button size="mini" type="primary" :disabled="selectedList.length <= 0" v-if="$auth.isAdmin || $auth.MarketingStrategyCityDelete">批量分配</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            :disabled="selectedList.length <= 0"
+            v-if="$auth.isAdmin || $auth.MarketingStrategyCityAllocate"
+            @click="handleAllocateItems(selectedList)"
+          >批量分配</el-button>
         </div>
         <div class="right">
           <el-button @click="handleChangeRecord" size="mini" type="primary" plain>场地变动记录</el-button>
@@ -115,6 +121,11 @@
                     title: '入库',
                     isDisplay: ($auth.isAdmin || $auth.OperateItemSupStockWarehousing),
                     command: () => handleWarehousingItems([scope.row])
+                  },
+                  {
+                    title: '分配',
+                    isDisplay: ($auth.isAdmin || $auth.OperateItemSupStockAllocate),
+                    command: () => handleAllocateItems([scope.row])
                   }
                 ]"
               />
@@ -176,6 +187,7 @@
       <sup-stock-warehousing
         v-if="warehousing.visible"
         :items="warehousing.items"
+        :storehouse_id="query.storehouse_id"
         @submit="handleSubmit"
         @cancel="handleCancel"
       />
@@ -270,6 +282,22 @@
           visible: true,
           items: items
         };
+      },
+
+      async handleAllocateItems(items) {
+        let formData = {
+          storehouse_id: this.$data.query.storehouse_id,
+          records: items.map(item => ({
+            batch_code: item.batch_code,
+            p_item_id: Number(item.p_item_id),
+          }))
+        };
+        let res = await Http.post(Config.api.operateItemSupStockAllocate, formData);
+        if (res.code === 0) {
+          this.$message({message: '分配成功', type: 'success'});
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
       },
 
       initQuery() {

@@ -294,6 +294,7 @@ const Config = (() => {
       operateItemSupStockGetDistributes: apiM + '/sup_distribute_allocate/get_distributes', // 调拨时，获取该商品关联的调拨单信息
       operateItemSupStockDistribute: apiM + '/sup_distribute/allocate_num', // 调拨
       operateItemSupStockInStock: apiM + '/sup_accept/in_stock', // 入库
+      operateItemSupStockAllocate: apiM + '/sup_accept/allocate', // 分配
 
 
       //场地收货

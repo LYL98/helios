@@ -47,11 +47,20 @@
       prop="warehouse_id"
       :rules="[{ required: true, message: '仓库不能为空' }]"
     >
-      <el-select-storehouse
-        style="width: 300px"
+
+      <el-select
         v-model="formData.warehouse_id"
         placeholder="请选择仓库"
-      />
+        style="width: 300px"
+      >
+        <el-option
+          v-for="item in warehouseList"
+          :key="item.id"
+          :label="item.title"
+          :value="item.id"
+          >
+        </el-option>
+      </el-select>
     </el-form-item>
 
     <el-form-item class="mt-30">
@@ -65,9 +74,8 @@
 </template>
 
 <script>
-  import {Form, FormItem, Row, Col, Button, Switch} from "element-ui";
+  import {Form, FormItem, Row, Col, Button, Switch, Select, Option} from "element-ui";
   import {FormArea} from "@/common";
-  import {SelectStorehouse} from "@/component";
   import {Http, Config, DataHandle} from "@/util";
   import tableMixin from '@/share/mixin/table.mixin';
 
@@ -79,13 +87,15 @@
       "el-form-item": FormItem,
       "el-row": Row,
       "el-col": Col,
+      'el-select': Select,
+      'el-option': Option,
       "el-button": Button,
       "el-switch": Switch,
-      "el-form-area": FormArea,
-      "el-select-storehouse": SelectStorehouse
+      "el-form-area": FormArea
     },
     props: {
-      items: {type: Array, default: () => []}
+      items: {type: Array, default: () => []},
+      storehouse_id: { type: Number, default: '' },
     },
     data() {
       return {
@@ -93,15 +103,29 @@
         formData: {
           warehouse_id: "",
           records: []
-        }
+        },
+        warehouseList: []
       };
     },
     created() {
       this.$data.formData.records = this.$props.items.map(item => {
         return {...item, is_active: true};
       });
+      this.commonWarehouseList();
     },
     methods: {
+
+      async commonWarehouseList() {
+        let res = await Http.get(Config.api.baseWarehouseList, {
+          storehouse_id: this.$props.storehouse_id
+        });
+        if (res.code === 0) {
+          this.$data.warehouseList = res.data;
+        } else {
+          this.$messageBox.alert(res.message, '提示');
+        }
+      },
+
       onSubmit() {
         this.$refs['ruleForm'] && this.$refs['ruleForm'].validate(async valid => {
           if (!valid) return;
@@ -112,7 +136,7 @@
             p_item_id: Number(item.p_item_id),
           }));
           this.$data.loading = true;
-          let res = Http.post(Config.api.operateItemSupStockInStock, formData);
+          let res = await Http.post(Config.api.operateItemSupStockInStock, formData);
           this.$data.loading = false;
 
           if (res.code === 0) {
