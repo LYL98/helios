@@ -36,70 +36,68 @@
 </template>
 
 <script>
-import {
-  Form,
-  FormItem,
-  Row,
-  Col,
-  Table,
-  TableColumn,
-  DatePicker
-} from "element-ui";
-import { FormArea, QuerySearchInput, QueryItem } from "@/common";
-import tableMixin from "@/share/mixin/table.mixin";
-import { Http, Config, Constant, DataHandle } from "@/util";
-export default {
-  name: "sup-stock-record",
-  mixins: [tableMixin],
-  components: {
-    "el-form": Form,
-    "el-form-item": FormItem,
-    "el-row": Row,
-    "el-col": Col,
-    "el-form-area": FormArea,
-    "el-table": Table,
-    "el-table-column": TableColumn,
-    "el-date-picker": DatePicker,
-    "my-query-item": QueryItem,
-    "query-search-input": QuerySearchInput
-  },
-  props: {
-    items: { type: Object, default: () => ({}) }
-  },
-  data() {
-    return {
-      query: {
-        picker_value: null
+  import {Form, FormItem, Row, Col, Table, TableColumn, DatePicker} from "element-ui";
+  import {FormArea, QuerySearchInput, QueryItem} from "@/common";
+  import tableMixin from "@/share/mixin/table.mixin";
+  import {Http, Config, Constant, DataHandle} from "@/util";
+
+  export default {
+    name: "sup-stock-record",
+    mixins: [tableMixin],
+    components: {
+      "el-form": Form,
+      "el-form-item": FormItem,
+      "el-row": Row,
+      "el-col": Col,
+      "el-form-area": FormArea,
+      "el-table": Table,
+      "el-table-column": TableColumn,
+      "el-date-picker": DatePicker,
+      "my-query-item": QueryItem,
+      "query-search-input": QuerySearchInput
+    },
+    props: {
+      items: {type: Object, default: () => ({})}
+    },
+    data() {
+      return {
+        query: {
+          picker_value: null
+        }
+      };
+    },
+    created() {
+      this.fixDateOptions = Constant.FIX_DATE_RANGE;
+    },
+    methods: {
+      initQuery() {
+      },
+      resetQuery() {
+      },
+      changeQuery() {
+      },
+      changePicker(value) {
+        if (value && value.length === 2) {
+          this.query.begin_date = value[0];
+          this.query.end_date = value[1];
+        } else {
+          this.query.begin_date = "";
+          this.query.end_date = "";
+        }
+        this.$data.query = this.query;
+        // this.distributePlanQuery();
       }
-    };
-  },
-  created() {
-    this.fixDateOptions = Constant.FIX_DATE_RANGE;
-  },
-  methods: {
-    initQuery() {},
-    resetQuery() {},
-    changeQuery() {},
-    changePicker(value) {
-      if (value && value.length === 2) {
-        this.query.begin_date = value[0];
-        this.query.end_date = value[1];
-      } else {
-        this.query.begin_date = "";
-        this.query.end_date = "";
-      }
-      this.$data.query = this.query;
-      // this.distributePlanQuery();
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss" scoped>
   @import "@/share/scss/table.scss";
+
   .mt-16 {
     margin-top: 16px;
   }
+
   .mt-10 {
     margin-top: 10px;
   }

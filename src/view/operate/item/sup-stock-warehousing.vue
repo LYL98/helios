@@ -6,7 +6,7 @@
     ref="ruleForm"
   >
     <el-table
-      :data="formData.items"
+      :data="formData.records"
       :row-class-name="highlightRowClassName"
       highlight-current-row="highlight-current-row"
     >
@@ -57,89 +57,84 @@
     <el-form-item class="mt-30">
       <el-button @click="onCancel">取消</el-button>
       <el-button type="primary" :loading="loading" @click="onSubmit"
-        >确认</el-button
+      >确认
+      </el-button
       >
     </el-form-item>
   </el-form>
 </template>
 
 <script>
-import {
-  Form,
-  FormItem,
-  Row,
-  Col,
-  Button,
-  Switch
-} from "element-ui";
-import { FormArea } from "@/common";
-import { SelectStorehouse } from "@/component";
-import { Http, Config, DataHandle } from "@/util";
-import tableMixin from '@/share/mixin/table.mixin';
-export default {
-  name: "distribute-plan-edit",
-  mixins: [tableMixin],
-  components: {
-    "el-form": Form,
-    "el-form-item": FormItem,
-    "el-row": Row,
-    "el-col": Col,
-    "el-button": Button,
-    "el-switch": Switch,
-    "el-form-area": FormArea,
-    "el-select-storehouse": SelectStorehouse
-  },
-  props: {
-    items: { type: Array, default: () => [] }
-  },
-  data() {
-    return {
-      loading: false,
-      formData: {
-        warehouse_id: "",
-        items: []
-      }
-    };
-  },
-  created() {
-    this.$data.formData.items = this.$props.items.map(item => {
-      return { ...item, is_active: true };
-    });
-  },
-  methods: {
-    onSubmit() {
-      this.$refs['ruleForm'] && this.$refs['ruleForm'].validate(async valid => {
-        if (!valid) return;
+  import {Form, FormItem, Row, Col, Button, Switch} from "element-ui";
+  import {FormArea} from "@/common";
+  import {SelectStorehouse} from "@/component";
+  import {Http, Config, DataHandle} from "@/util";
+  import tableMixin from '@/share/mixin/table.mixin';
 
-        let formData = {...this.$data.formData};
-        formData.ids = formData.items.map(item => item.id);
-
-        console.log('formData.items: ', formData.items);
-
-        return;
-        this.$data.loading = true;
-        let res = Http.post(Config.api.operateItemSupStockInStock, formData);
-        this.$data.loading = false;
-
-        if (res.code === 0) {
-          this.$message({message: '入库成功', type: 'success'});
-          this.$emit('submit');
-        } else {
-          this.$message({title: '提示', message: res.message, type: 'error'});
-        }
-
-      })
+  export default {
+    name: "distribute-plan-edit",
+    mixins: [tableMixin],
+    components: {
+      "el-form": Form,
+      "el-form-item": FormItem,
+      "el-row": Row,
+      "el-col": Col,
+      "el-button": Button,
+      "el-switch": Switch,
+      "el-form-area": FormArea,
+      "el-select-storehouse": SelectStorehouse
     },
+    props: {
+      items: {type: Array, default: () => []}
+    },
+    data() {
+      return {
+        loading: false,
+        formData: {
+          warehouse_id: "",
+          records: []
+        }
+      };
+    },
+    created() {
+      this.$data.formData.records = this.$props.items.map(item => {
+        return {...item, is_active: true};
+      });
+    },
+    methods: {
+      onSubmit() {
+        this.$refs['ruleForm'] && this.$refs['ruleForm'].validate(async valid => {
+          if (!valid) return;
 
-    onCancel() {
-      this.$emit("cancel");
+          let formData = {...this.$data.formData};
+          formData.records = formData.records.map(item => ({
+            batch_code: item.batch_code,
+            p_item_id: Number(item.p_item_id),
+          }));
+          this.$data.loading = true;
+          let res = Http.post(Config.api.operateItemSupStockInStock, formData);
+          this.$data.loading = false;
+
+          if (res.code === 0) {
+            this.$message({message: '入库成功', type: 'success'});
+            this.$emit('submit');
+          } else {
+            this.$message({title: '提示', message: res.message, type: 'error'});
+          }
+
+        })
+      },
+
+      onCancel() {
+        this.$emit("cancel");
+      }
     }
-  }
-};
+  };
 </script>
 
 <style lang="scss" scoped>
   @import '@/share/scss/table.scss';
+
   .mt-10 {
     margin-top: 10px;
   }

@@ -58,6 +58,7 @@
 <script>
   import {Form, FormItem, Row, Col} from "element-ui";
   import {FormArea} from '@/common';
+
   export default {
     name: "sup-stock-detail",
     components: {
@@ -68,7 +69,7 @@
       'el-form-area': FormArea,
     },
     props: {
-      item: { type: Object, default: () => ({}) },
+      item: {type: Object, default: () => ({})},
     },
   }
 </script>

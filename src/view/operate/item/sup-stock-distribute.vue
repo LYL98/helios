@@ -93,6 +93,7 @@
   import {Form, FormItem, Row, Col, Button, Input, DatePicker, Select, Option} from "element-ui";
   import {FormArea} from '@/common';
   import {Http, Config, DataHandle} from '@/util';
+
   export default {
     name: "sup-stock-distribute",
     components: {
@@ -108,7 +109,7 @@
       'el-form-area': FormArea,
     },
     props: {
-      item: { type: Object, default: () => ({}) },
+      item: {type: Object, default: () => ({})},
     },
     data() {
       return {
@@ -187,17 +188,21 @@
   .bg-grey {
     background-color: #EEE;
   }
+
   .px-20 {
     padding-left: 20px;
     padding-right: 20px;
   }
+
   .py-10 {
     padding-top: 10px;
     padding-bottom: 10px;
   }
+
   .m-0 {
     margin: 0;
   }
+
   .mt-10 {
     margin-top: 10px;
   }
