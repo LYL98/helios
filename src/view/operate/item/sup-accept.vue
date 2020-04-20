@@ -1,13 +1,11 @@
 <template>
   <sub-menu>
     <template slot="left-query">
-      <select-storehouse
+      <global-storehouse
         style="width: 120px"
         size="small"
-        borderless
         v-model="query.storehouse_id"
         @change="changeQuery"
-        isAuth
         @initCallBack="storehouseInit"
       />
     </template>
@@ -40,7 +38,7 @@
     <div class="container-table">
       <div class="table-top">
         <div class="left">
-          <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="{'全部': '', '待确认': '0', '已确认': '1', }"/>
+          <query-tabs v-model="query.is_confirm" @change="changeQuery" :tab-panes="{'全部': '', '待确认': '0', '已确认': '1', }"/>
         </div>
       </div>
 
@@ -126,7 +124,7 @@
       </div>
     </div>
     <el-dialog
-      :title="'收货单 - ' + detail.item.code + ' 详情'"
+      title="收货单详情"
       :visible.sync="detail.visible"
       width="800px"
     >
@@ -141,7 +139,7 @@
 <script>
   import {Row, Col, Button, Input, Pagination, Table, TableColumn, Dialog, Tag} from 'element-ui';
   import {QueryItem, QuerySearchInput, TableOperate, SelectSystemClass} from '@/common';
-  import { SelectStorehouse } from '@/component';
+  import { GlobalStorehouse } from '@/component';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import queryTabs from '@/share/layout/QueryTabs';
   import mainMixin from '@/share/mixin/main.mixin';
@@ -166,7 +164,7 @@
       'my-select-system-class': SelectSystemClass,
       'query-search-input': QuerySearchInput,
       'query-tabs': queryTabs,
-      'select-storehouse': SelectStorehouse,
+      'global-storehouse': GlobalStorehouse,
       'sup-accept-detail': SupAcceptDetail,
     },
     data() {
@@ -193,20 +191,15 @@
         this.$data.query = {
           storehouse_id: '',
           system_class_codes: [],
-          status: '',
+          is_confirm: '',
           condition: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
         };
       },
 
-      storehouseInit(dataItem){
-        let d = dataItem.filter(item => item.province_code === this.$province.code);
-        if(d.length > 0){
-          this.$data.query.storehouse_id = d[0].id;
-        }else{
-          this.$data.query.storehouse_id = dataItem[0].id;
-        }
+      storehouseInit(item){
+        this.$data.query.storehouse_id = item.id;
         this.supAcceptQuery();
       },
 
