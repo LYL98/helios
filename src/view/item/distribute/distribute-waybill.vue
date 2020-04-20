@@ -38,7 +38,7 @@
             <query-search-input
               size="small"
               v-model="query.condition"
-              placeholder="入库单号/商品编号/名称"
+              placeholder="调拨单号"
               clearable
               @search="changeQuery"
               @reset="resetQuery"
@@ -84,7 +84,7 @@
             label="序号"
             :index="indexMethod"
           ></el-table-column>
-          <el-table-column label="调拨计划单" prop="creator_id" min-width="200">
+          <el-table-column label="调拨单" prop="creator_id" min-width="200">
             <template slot-scope="scope">
               <div
                 :class="`td-item link-item`"
@@ -128,6 +128,11 @@
                     title: '关闭',
                     isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.ItemSupDistributeWaybillClose),
                     command: () => handleCloseItem(scope.row.id)
+                  },
+                  {
+                    title: '司机轨迹',
+                    isDisplay: scope.row.status === 'deliveried' && ($auth.isAdmin || $auth.ItemSupDistributeWaybillLocation),
+                    command: () => handleLocationItem(scope.row)
                   },
                 ]"
               />
@@ -174,12 +179,22 @@
         :item="detail.item"
       />
     </el-dialog>
+    <el-dialog
+      title="司机轨迹"
+      :visible.sync="location.visible"
+      width="800px"
+    >
+      <el-location
+        v-if="location.visible"
+        :center="location.item.last_geo"
+      />
+    </el-dialog>
   </sub-menu>
 </template>
 
 <script>
   import {Row, Col, Button, Input, Select, Option, Pagination, Table, TableColumn, Dialog, DatePicker, Tag} from 'element-ui';
-  import {SelectOption, QueryItem, QuerySearchInput, TableOperate} from '@/common';
+  import {SelectOption, QueryItem, QuerySearchInput, TableOperate, Location} from '@/common';
   import {SelectStorehouse} from '@/component';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import AddEditLayout from '@/share/layout/Layout';
@@ -205,6 +220,7 @@
       'el-tag': Tag,
       'el-date-picker': DatePicker,
       'el-pagination': Pagination,
+      'el-location': Location,
       'add-edit-layout': AddEditLayout,
       'select-option': SelectOption,
       'my-query-item': QueryItem,
@@ -232,6 +248,11 @@
         },
         // 详情弹层
         detail: {
+          visible: false,
+          item: {}
+        },
+
+        location: {
           visible: false,
           item: {}
         },
@@ -310,6 +331,19 @@
           this.$data.dialog = {
             visible: true,
             type: 'modify',
+            item: res.data,
+          };
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+
+      async handleLocationItem(item) {
+
+        let res = await Http.get(Config.api.itemSupDistributeWaybillDetail, {id: item.id});
+        if (res.code === 0) {
+          this.$data.location = {
+            visible: true,
             item: res.data,
           };
         } else {

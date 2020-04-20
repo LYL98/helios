@@ -114,7 +114,7 @@
           <el-row :gutter="32">
             <el-col :span="12">
               <el-form-item label="采购价">
-                <el-input size="small" :value="!!item.amount && !!item.num ? returnPrice(item.amount / item.num) : ''" disabled>
+                <el-input size="small" :value="!!item.amount && !!item.num ? returnPrice(item.amount / item.num - item.frame_price) : ''" disabled>
                   <template slot="append">元</template>
                 </el-input>
               </el-form-item>
