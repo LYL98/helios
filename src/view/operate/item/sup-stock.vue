@@ -1,13 +1,11 @@
 <template>
   <sub-menu>
     <template slot="left-query">
-      <select-storehouse
+      <global-storehouse
         style="width: 120px"
         size="small"
-        borderless
         v-model="query.storehouse_id"
         @change="changeQuery"
-        isAuth
         @initCallBack="storehouseInit"
       />
     </template>
@@ -188,7 +186,7 @@
 <script>
   import {Row, Col, Button, Input, Pagination, Table, TableColumn, Dialog, Tag} from 'element-ui';
   import {QueryItem, QuerySearchInput, TableOperate, SelectSystemClass} from '@/common';
-  import { SelectStorehouse } from '@/component';
+  import { GlobalStorehouse } from '@/component';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import AddEditLayout from '@/share/layout/Layout';
   import mainMixin from '@/share/mixin/main.mixin';
@@ -216,7 +214,7 @@
       'add-edit-layout': AddEditLayout,
       'my-select-system-class': SelectSystemClass,
       'query-search-input': QuerySearchInput,
-      'select-storehouse': SelectStorehouse,
+      'global-storehouse': GlobalStorehouse,
       'sup-stock-detail': SupStockDetail,
       'sup-stock-distribute': SupStockDistribute,
       'sup-stock-record': SupStockRecord,
@@ -284,13 +282,8 @@
         };
       },
 
-      storehouseInit(dataItem){
-        let d = dataItem.filter(item => item.province_code === this.$province.code);
-        if(d.length > 0){
-          this.$data.query.storehouse_id = d[0].id;
-        }else{
-          this.$data.query.storehouse_id = dataItem[0].id;
-        }
+      storehouseInit(item){
+        this.$data.query.storehouse_id = item.id;
         this.supStockQuery();
       },
 

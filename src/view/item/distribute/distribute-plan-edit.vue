@@ -82,10 +82,11 @@
               no-data-text="没有符合条件的商品"
             >
               <el-option
-                v-for="item in filterItemList"
-                :key="item.id"
-                :label="item.code + '/' + item.title"
-                :value="item.id"
+                v-for="d in itemList"
+                :key="d.id"
+                :label="d.code + '/' + d.title"
+                :value="d.id"
+                :disabled="formData.p_items.some(p_item => p_item.p_item_id === d.id)"
               >
               </el-option>
             </el-select>
@@ -108,7 +109,7 @@
             </el-input>
           </el-form-item>
         </el-col>
-        <el-col :sm="4" :span="10" v-if="index !== 0">
+        <el-col :sm="4" :span="4" v-if="index !== 0">
           <el-button type="text" icon="el-icon-delete" @click="handleDeleteItem(index)">移除</el-button>
         </el-col>
       </el-row>
@@ -149,11 +150,6 @@
       type: { type: String, default: '' },
       item: { type: Object, default: () => ({}) },
     },
-    computed: {
-      filterItemList() {
-        return this.$data.itemList.filter(item => !this.$data.formData.p_items.some(d => d.p_item_id == item.id));
-      }
-    },
     data() {
       return {
         remoting: false,
@@ -172,6 +168,13 @@
       }
     },
     created() {
+
+      if (this.$props.type === 'add') {
+        // 获取到商品列表
+        this.initItemList();
+        return;
+      }
+
       if (this.$props.type === 'modify') {
         let formData = {...this.$props.item};
         this.$data.formData = {
@@ -184,11 +187,15 @@
             p_item_id: Number(item.p_item_id),
             num: Number(item.num)
           }))
-        }
-      }
+        };
 
-      // 获取到商品列表
-      this.initItemList();
+        // 如果是修改模式，则将详情中的商品列表作为商品列表初始化数据
+        this.$data.itemList = this.$props.item.p_items.map(item => ({
+          id: item.p_item_id,
+          title: item.item_title,
+          code: item.item_code
+        }));
+      }
     },
     methods: {
 
@@ -203,7 +210,8 @@
         ];
       },
 
-      async initItemList(condition){
+      async initItemList(condition = ''){
+
         this.$data.remoting = true;
         let res = await Http.get(Config.api.baseGItemList, {
           need_num: 20,
@@ -215,8 +223,12 @@
         });
         this.$data.remoting = false;
         if(res.code === 0){
-          let rd = res.data;
-          this.$data.itemList = rd;
+          let rd = res.data || [];
+          this.$data.itemList = rd.map(item => ({
+            id: item.id,
+            code: item.code,
+            title: item.title
+          }));
         }else{
           this.$messageBox.alert(res.message, '提示');
         }

@@ -3,7 +3,7 @@
     <el-row :gutter="32">
       <el-col :span="7">
         <my-query-item label="仓库">
-          <select-storehouse v-model="selectStorehouseId" size="small" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
+          <select-storehouse v-model="query.storehouse_id" size="small" @change="changeStorehouse" isAuth @initCallBack="storehouseInit"/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
@@ -12,7 +12,7 @@
             size="small"
             v-model="query.delivery_date"
             value-format="yyyy-MM-dd"
-            @change="handleQuery('TableWarehouseOutStorage')"
+            @change="handleQuery('Table')"
             style="width: 100%;"
             placeholder="配送日期"
             :clearable="false"
@@ -21,7 +21,7 @@
       </el-col>
       <el-col :span="10">
         <my-query-item label="搜索">
-          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('TableWarehouseOutStorage')" @reset="handleClearQuery('TableWarehouseOutStorage')"/>
+          <query-search-input v-model="query.condition" placeholder="商品编号/名称" size="small" @search="handleQuery('Table')" @reset="handleClearQuery('Table')"/>
         </my-query-item>
       </el-col>
     </el-row>
@@ -35,7 +35,7 @@
   import { Constant } from '@/util';
 
   export default {
-    name: "QueryWarehouseOutStorage",
+    name: "Query",
     components: {
       'select-option': SelectOption,
       'select-storehouse': SelectStorehouse
@@ -47,12 +47,11 @@
     },
     data() {
       let initQuery = {
+        storehouse_id: '',
         delivery_date: '',
-        condition: '',
-        province_code: '',
+        condition: ''
       }
       return {
-        selectStorehouseId: '',
         initQuery: initQuery,
         query: Object.assign({}, initQuery), //只有一层，可以用Object.assign深拷贝
       }
@@ -61,20 +60,19 @@
       //选择仓库
       changeStorehouse(data){
         let { query } = this;
-        query.province_code = data.province_code;
+        query.storehouse_id = data.id;
         this.$data.query = query;
-        this.handleQuery('TableWarehouseOutStorage');
+        this.handleQuery('Table');
       },
       //选择仓库时【仓库 初始化】
       storehouseInit(dataItem){
-        let d = dataItem.length > 0 ? dataItem[0] : {id: '', province_code: '' };
+        let d = dataItem.length > 0 ? dataItem[0] : {id: ''};
         let { initQuery, query } = this;
-        initQuery.province_code = d.province_code;
-        query.province_code = d.province_code;
-        this.$data.selectStorehouseId = d.id;
+        initQuery.storehouse_id = d.id;
+        query.storehouse_id = d.id;
         this.$data.initQuery = initQuery;
         this.$data.query = query;
-        this.handleQuery('TableWarehouseOutStorage');
+        this.handleQuery('Table');
       }
     }
   }

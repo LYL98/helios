@@ -6,7 +6,7 @@
       </div>
       <div class="right">
         <el-button v-if="auth.isAdmin || auth.ItemGPurchaseExport" @click.native="handleExport('fromSupplierOrderExport', {...query, status})" size="mini" type="primary" plain>导出预采单</el-button>
-        <el-button v-if="auth.isAdmin || auth.ItemGPurchaseAdd" @click="handleShowAddEdit('AddEditItemGPurchase')" size="mini" type="primary">新增</el-button>
+        <el-button v-if="auth.isAdmin || auth.ItemGPurchaseAdd" @click="handleShowAddEdit('BatchAddItemGPurchase')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
