@@ -12,14 +12,6 @@
         <el-col :span="12">
           <el-form-item label="库存数量">{{detail.num}}件</el-form-item>
         </el-col>
-        <template v-if="fromPage === 'OutStorage'">
-          <el-col :span="12">
-            <el-form-item label="应出库">{{detail.o_num}}件</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="已出库">{{detail.o_num_out}}件</el-form-item>
-          </el-col>
-        </template>
         <el-col :span="12">
           <el-form-item label="出库">场地</el-form-item>
         </el-col>
@@ -43,9 +35,6 @@ import { InputNumber } from '@/common';
 export default {
   name: "FormWarehouseInventoryOutStorage",
   mixins: [formMixin],
-  props: {
-    fromPage: { type: String, default: 'Inventory' }, //OutStorage 出库计划、Inventory 库存
-  },
   created() {
   },
   components: {
@@ -53,29 +42,20 @@ export default {
   },
   data(){
     let initDetail = {}
-    let numOut = [
-      { required: true, message: '请输入出库数量', trigger: 'change' }
-    ]
-
     //数量校验
     const validNum = (rules, value, callback)=>{
-      let { detail, fromPage } = this;
+      let { detail } = this;
       if(Number(value) > detail.num) {
         return callback(new Error('出库数量不能大于库存'));
       }
-      if(fromPage === 'OutStorage' && Number(value) > detail.o_num - detail.o_num_out) {
-        return callback(new Error('出库数量不能大于应出库数量'));
-      }
       callback();
-    }
-    if(this.fromPage === 'OutStorage'){
-      numOut.push(
-        { validator: validNum, trigger: 'blur' }
-      );
     }
     return{
       rules: {
-        num_out: numOut
+        num_out: [
+          { required: true, message: '请输入出库数量', trigger: 'change' },
+          { validator: validNum, trigger: 'blur' }
+        ]
       },
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -108,10 +88,7 @@ export default {
         //刷新库存列表
         pc = this.getPageComponents('TableWarehouseInventory');
         if(pc) pc.getData(pc.query);
-
-        //刷新仓库出库计划列表
-        pc = this.getPageComponents('TableWarehouseOutStorage');
-        if(pc) pc.getData(pc.query);
+        
       }else{
         this.$message({message: res.message, type: 'error'});
       }
