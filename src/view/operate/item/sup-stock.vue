@@ -338,7 +338,7 @@
 
         // 如果只关联了一个调拨单，则直接调拨
         if (res.data.length == 1) {
-          const { id, num } = res.data[0];
+          const { id, plan_num, dist_num } = res.data[0];
           this.$messageBox.confirm('是否确认调拨?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -347,7 +347,7 @@
             let res = await Http.post(Config.api.operateItemSupStockDistribute, {
               batch_code: item.batch_code,
               distribute_id: id,
-              need_allocate_num: num
+              need_allocate_num: plan_num - dist_num
             });
             if(res.code === 0){
               this.$message({ title: '提示', message: '调拨成功', type: 'success'});

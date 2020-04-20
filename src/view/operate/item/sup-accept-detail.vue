@@ -1,45 +1,97 @@
 <template>
   <el-form label-position="right" label-width="120px" size="mini">
-    <el-form-area label-position="left" label="调拨信息">
-      <el-row :gutter="32">
-        <el-col :sm="12" :span="10">
-          <el-form-item label="调拨单号：">
-          </el-form-item>
-        </el-col>
-      </el-row>
+    <!--  表示采购品控  -->
+    <el-form-area label-position="left" label="采购信息" v-if="item.out_type === 'pur'">
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="商品编号/名称：">
-          </el-form-item>
-        </el-col>
-        <el-col :sm="12" :span="10">
-          <el-form-item label="供应商：">
+            {{ item.item_code }} / {{ item.item_title }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
-          <el-form-item label="调出仓：">
+          <el-form-item label="采购单号：">
+            {{ item.relate_order.code }}
           </el-form-item>
         </el-col>
         <el-col :sm="12" :span="10">
-          <el-form-item label="调拨数量：">
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="32">
-        <el-col :sm="12" :span="10">
-          <el-form-item label="调入仓：">
-          </el-form-item>
-        </el-col>
-        <el-col :sm="12" :span="10">
-          <el-form-item label="可售日期：">
+          <el-form-item label="采购日期：">
+            {{ item.relate_order.order_date }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="预计到货：">
+            {{ item.relate_order.estimate_arrive_at }}
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="供应商：">
+            {{ item.supplier_title }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="采购数量：">
+            {{ item.num }}
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="送达仓：">
+            {{ item.relate_order.storehouse.title }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form-area>
+    <el-form-area label-position="left" label="品控信息" v-if="item.out_type === 'pur'">
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="到货数量：">
+            {{ item.num_arrive }}件
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="品控数量：">
+            {{ item.qa_num }}件
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="合格数量：">
+            {{ item.num_arrive - item.un_qa_num }}件
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="保质期：">
+            {{ item.shelf_life }}天
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="库存期：">
+            {{ item.stock_life }}天
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="备注：">
+            {{ item.remark }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32">
+        <el-col :sm="12" :span="10">
+          <el-form-item label="品控人：">
+            {{ item.creator.realname}}件
+          </el-form-item>
+        </el-col>
+        <el-col :sm="12" :span="10">
+          <el-form-item label="品控时间：">
+            {{ item.created }}
           </el-form-item>
         </el-col>
       </el-row>
