@@ -77,6 +77,7 @@ const Config = (() => {
 
       //采购 预采 反采
       fromSupplierOrderQuery: apiM + '/from_supplier/order/query', //订单列表
+      fromSupplierOrderBatchAdd: apiM + '/from_supplier/order/batch_add', //批量采购
       fromSupplierOrderAdd: apiM + '/from_supplier/order/add', //订单新增
       fromSupplierOrderEdit: apiM + '/from_supplier/order/edit', //订单修改
       fromSupplierOrderAudit: apiM + '/from_supplier/order/audit', //预采采购单审核

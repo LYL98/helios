@@ -108,7 +108,7 @@
             </el-input>
           </el-form-item>
         </el-col>
-        <el-col :sm="4" :span="10" v-if="index !== 0">
+        <el-col :sm="4" :span="4" v-if="index !== 0">
           <el-button type="text" icon="el-icon-delete" @click="handleDeleteItem(index)">移除</el-button>
         </el-col>
       </el-row>
