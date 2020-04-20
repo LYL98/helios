@@ -16,32 +16,38 @@
         </el-col>
         <el-col :sm="12" :span="10">
           <el-form-item label="供应商：">
+            {{ item.supplier_title }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="商品过期时间：">
+            {{ item.due_date }}
           </el-form-item>
         </el-col>
         <el-col :sm="12" :span="10">
           <el-form-item label="库存过期时间：">
+            {{ item.stock_due_date }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="库存数量：">
+            {{ item.num }}件
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="入场人：">
+            {{ item.creator && item.creator.realname || '-' }}
           </el-form-item>
         </el-col>
         <el-col :sm="12" :span="10">
           <el-form-item label="入场时间：">
+            {{ item.created }}
           </el-form-item>
         </el-col>
       </el-row>
