@@ -28,7 +28,7 @@
         <el-col :span="7">
           <my-query-item label="运营专区">
             <!-- v-module="selectValue" -->
-            <el-select  v-model="selectValue" placeholder="请选择" size="small">
+            <el-select  v-model="selectValue"  @change="selectTagChange" placeholder="请选择" size="small">
               <el-option
                 v-for="item in tagsOptions"
                 :key="item.id"
@@ -256,11 +256,9 @@ export default {
       let pickerValue = [];
       let tmpDate = DataHandle.getFixDateRange(8);
       let begin_date =
-        this.$route.query.begin_date ||
-        DataHandle.formatDate(tmpDate[0], "yyyy-MM-dd");
+        this.$route.query.begin_date || DataHandle.formatDate(tmpDate[0], "yyyy-MM-dd");
       let end_date =
-        this.$route.query.end_date ||
-        DataHandle.formatDate(tmpDate[1], "yyyy-MM-dd");
+        this.$route.query.end_date || DataHandle.formatDate(tmpDate[1], "yyyy-MM-dd");
 
       // let totalItemTotalPrice = this.$data.totalItemTotalPrice
       pickerValue.push(begin_date);
@@ -273,7 +271,8 @@ export default {
         sort: "-amount_real",
         page: 1,
         page_size: Constant.PAGE_SIZE,
-        totalItemTotalPrice: this.$route.query.totalItemTotalPrice
+        totalItemTotalPrice: this.$route.query.totalItemTotalPrice,//用于传递计算占比的总数据
+
       });
     },
     // 改变查询日期
@@ -482,6 +481,10 @@ export default {
         }else{
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
+    },
+    //切换运营专区
+    selectTagChange(){
+      
     }
   }
 };
