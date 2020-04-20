@@ -1,19 +1,15 @@
 <template>
-  <detail-layout :title="fromPage === 'OutStorage' ? '出库' : '库存管理'" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <detail-layout title="库存管理" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-row style="margin: 10px 20px;">
       <el-col :span="12">商品编号/名称：{{detail.item_code}}/{{detail.item_title}}</el-col>
       <el-col :span="4">总库存：{{detail.stock_num}}件</el-col>
-      <template v-if="fromPage === 'OutStorage'">
-        <el-col :span="4">应出库：{{detail.o_num}}件</el-col>
-        <el-col :span="4">已出库：{{detail.o_num_out}}件</el-col>
-      </template>
     </el-row>
     <div style="margin: 0 20px;">
       <el-table :data="dataItem.items" width="100%">
         <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
         <el-table-column label="批次" prop="batch_code">
           <template slot-scope="scope">
-            <span v-if="(auth.isAdmin || auth.WarehouseInventoryDetailBuyDetail) && fromPage === 'Inventory'" class="link-item"
+            <span v-if="auth.isAdmin || auth.WarehouseInventoryDetailBuyDetail" class="link-item"
               @click="handleShowBuyDetail(scope.row)">{{scope.row.batch_code}}</span>
             <span v-else>{{scope.row.batch_code}}</span>
           </template>
@@ -35,27 +31,27 @@
             :list="[
               {
                 title: '盘点',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryCheck) && fromPage !== 'OutStorage',
+                isDisplay: auth.isAdmin || auth.WarehouseInventoryCheck,
                 command: () => handleShowForm('FormWarehouseInventoryCheck', scope.row)
               },
               {
                 title: scope.row.warehouse.ware_type === 'tmp' ? '上架' : '移库',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryMoveOp) && fromPage !== 'OutStorage',
+                isDisplay: auth.isAdmin || auth.WarehouseInventoryMoveOp,
                 command: () => handleShowForm('FormWarehouseInventoryMove', scope.row)
               },
               {
                 title: '变动',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryVariation) && fromPage !== 'OutStorage',
+                isDisplay: auth.isAdmin || auth.WarehouseInventoryVariation ,
                 command: () => handleShowForm('FormWarehouseInventoryVariation', scope.row)
               },
               {
                 title: '调拨',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryDistribute) && fromPage !== 'OutStorage' && scope.row.warehouse.ware_type === 'tmp',
+                isDisplay: (auth.isAdmin || auth.WarehouseInventoryDistribute) && scope.row.warehouse.ware_type === 'tmp',
                 command: () => handleShowForm('FormWarehouseInventoryDistribute', scope.row)
               },
               {
                 title: '出库',
-                isDisplay: auth.isAdmin || (auth.WarehouseOutStorageAdd && fromPage === 'OutStorage') || (auth.WarehouseInventoryOutStorage && fromPage === 'Inventory'),
+                isDisplay: auth.isAdmin || auth.WarehouseInventoryOutStorage,
                 command: () => handleShowForm('FormWarehouseInventoryOutStorage', {...scope.row, plan_out_id: detail.plan_out_id, o_num: detail.o_num, o_num_out: detail.o_num_out})
               }
             ]"
@@ -87,9 +83,6 @@
   export default {
     name: "DetailWarehouseInventory",
     mixins: [detailMixin],
-    props: {
-      fromPage: { type: String, default: 'Inventory' }, //OutStorage 出库计划、Inventory 库存
-    },
     components: {
       'my-table-operate': TableOperate
     },
@@ -119,21 +112,10 @@
         };
         let { query, detail } = this;
         query.page = 1;
-        //如果来自 场地 - 收货
-        if(this.fromPage === 'OutStorage'){
-          query.sub_item_id = data.item_id;
-          detail.item_title = data.item_title;
-          detail.item_code = data.item_code;
-          detail.plan_out_id = data.id; //根据出库计划出库的时候，传递这个参数
-          detail.o_num = data.num; //应出库
-          detail.o_num_out = data.num_out; //已出库
-        }else{
-          query.p_item_id = data.p_item.id;
-          query.storehouse_id = data.storehouse_id;
-          detail.item_title = data.p_item.title;
-          detail.item_code = data.p_item.code;
-          detail.plan_out_id = ''; //根据出库计划出库的时候，传递这个参数
-        }
+        query.p_item_id = data.p_item.id;
+        query.storehouse_id = data.storehouse_id;
+        detail.item_title = data.p_item.title;
+        detail.item_code = data.p_item.code;
         this.$data.query = query;
         if(data){
           this.$data.detail = this.copyJson(detail);

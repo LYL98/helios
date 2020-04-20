@@ -49,12 +49,7 @@
                 {
                   title: '出库',
                   isDisplay: (auth.isAdmin || auth.WarehouseOutStorageAdd) && scope.row.num_out < scope.row.num,
-                  command: () => handleShowDetail('DetailWarehouseInventory', {
-                    ...scope.row,
-                    p_item: {
-                      id: scope.row.item_id
-                    }
-                  })
+                  command: () => handleShowForm('OutStorage', scope.row)
                 }
               ]"
             />
@@ -78,19 +73,19 @@
   import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
-    name: 'TableWarehouseOutStorage',
+    name: 'Table',
     components: {
       'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     created() {
       //初始化在Query组件
-      //let pc = this.getPageComponents('QueryWarehouseOutStorage');
+      //let pc = this.getPageComponents('Query');
       //this.getData(pc.query);
     },
     data() {
       return {
-        tableName: 'TableWarehouseOutStorage',
+        tableName: 'Table',
         tableColumn: [
           { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
           { label: '仓库', key: 'warehouse_titles', width: '4', isShow: true },
@@ -115,7 +110,7 @@
     methods: {
       //切换记录tab
       changeTab(){
-        let pc = this.getPageComponents('QueryWarehouseOutStorage');
+        let pc = this.getPageComponents('Query');
         this.getData(pc.query);
       },
       //返回状态

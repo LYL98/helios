@@ -10,6 +10,12 @@
 修改：
    code == ItemTags 修改项：title 【商品运营专区】
    code == ItemGPurchaseAdd 修改项：urls 【商品 - 采购 - 预采】
+   code == OperateLineList 修改项：rank 【5】
+   code == Deliver 修改项：rank 【6】
+   code == OperateRefundFrame 修改项：rank 【7】
+   code == OperateTruckLoadMain 修改项：title 【配送专区】
+   code == WarehouseOutStorageAdd 修改项：title, url、upper_code
+
 新增：
    ItemQueryByItemTag
    ItemTagAdd
@@ -24,6 +30,18 @@
    ItemSupDistributeWaybill
    ItemSupDistributeWaybillModify
    ItemSupDistributeWaybillClose
+
+   OperateDisTruckLoadMain
+   OperateDisTruckLoad
+   OperateDisTruckLoadProgress
+   OperateDisTruckLoadDelay
+   OperateDisTruckLoadEditNum
+   OperateDisTruckLoadDetail
+   OperateDisTruckLoadAffirm
+
+   OutStoragePlanMain
+   DistributeOutStorage
+   DistributeOutStorageAdd
 ```
 
 ### 3.6.0
