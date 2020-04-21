@@ -105,8 +105,8 @@
       <affirm v-if="affirm.visible" :list="affirm.list" :loading="affirm.loading" @submit="submitAffirm" @cancel="handleCancel"/>
     </add-edit-layout>
     <!--详情-->
-    <add-edit-layout :is-show="detail.visible" title="详情" :before-close="handleCancel" @editNumSuccess="changeQuery">
-      <detail v-if="detail.visible" :item="detail.item"/>
+    <add-edit-layout :is-show="detail.visible" title="详情" :before-close="handleCancel">
+      <detail v-if="detail.visible" :item="detail.item" @editNumSuccess="changeQuery"/>
     </add-edit-layout>
   </sub-menu>
 </template>
