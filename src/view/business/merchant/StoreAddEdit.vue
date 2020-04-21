@@ -24,6 +24,9 @@
         </el-form-item>
       </el-col>
     </el-row>
+<!--    <el-form-item label="地理位置" prop="geo">-->
+<!--      <my-location-picker v-model="addEditData.geo" @change="changeLocation"></my-location-picker>-->
+<!--    </el-form-item>-->
     <el-form-item label="收货地址" prop="address">
       <el-input v-model="addEditData.address" :maxlength="30" placeholder="请输入收货地址"></el-input>
     </el-form-item>
@@ -54,7 +57,7 @@
     RadioGroup,
   } from 'element-ui';
   import {Http, Config, Constant, DataHandle, Method, Verification} from '@/util';
-  import {SelectProvince, SelectCity} from '@/common';
+  import {SelectProvince, SelectCity, LocationPicker} from '@/common';
   import { UploadImg } from '@/component';
 
   export default {
@@ -74,6 +77,7 @@
       'el-radio': Radio,
       'el-radio-group': RadioGroup,
       'my-select-province': SelectProvince,
+      'my-location-picker': LocationPicker,
       'my-select-city': SelectCity,
       'my-upload-img': UploadImg
     },
@@ -104,7 +108,7 @@
         } else {
           callback(new Error('请上传门店图片'));
         }
-      }
+      };
       return {
         province: this.$province,
         tencentPath: Config.tencentPath,
@@ -117,6 +121,11 @@
           province_code: '',
           zone_id: '',
           city_id: '',
+          geo: {
+            lng: '',
+            lat: '',
+            poi: ''
+          },
           address: '',
           linkman: '',
           phone: '',
@@ -153,6 +162,11 @@
       };
     },
     methods: {
+
+      changeLocation(location) {
+        console.log('location: ', location);
+      },
+
       /**
        * 根据门店的id 获取门店详情，用于编辑门店信息时使用。
        */

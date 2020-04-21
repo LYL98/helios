@@ -152,7 +152,8 @@
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
             <el-form-item label="调出仓：">
-              {{ item.relate_order && item.relate_order.src_storehouse && item.relate_order.src_storehouse.title || '-' }}
+              {{ item.relate_order && item.relate_order.src_storehouse && item.relate_order.src_storehouse.title || '-'
+              }}
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
@@ -164,7 +165,8 @@
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
             <el-form-item label="调入仓：">
-              {{ item.relate_order && item.relate_order.tar_storehouse && item.relate_order.tar_storehouse.title || '-' }}
+              {{ item.relate_order && item.relate_order.tar_storehouse && item.relate_order.tar_storehouse.title || '-'
+              }}
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
@@ -267,6 +269,7 @@
 <script>
   import {Form, FormItem, Row, Col, Tag} from "element-ui";
   import {FormArea} from '@/common';
+
   export default {
     name: "sup-accept-detail",
     components: {
@@ -278,7 +281,7 @@
       'el-form-area': FormArea,
     },
     props: {
-      item: { type: Object, default: () => ({}) },
+      item: {type: Object, default: () => ({})},
     },
     data() {
       return {
