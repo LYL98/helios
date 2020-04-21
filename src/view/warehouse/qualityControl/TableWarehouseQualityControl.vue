@@ -62,7 +62,7 @@
               :list="[
                 {
                   title: '品控',
-                  isDisplay: pageAuth.add && judgeOrs(scope.row.status, ['success', 'part_in']),
+                  isDisplay: pageAuth.add && judgeOrs(scope.row.status, ['audit_success', 'part_in']),
                   command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'add_' + query.type)
                 },
                 {
@@ -82,7 +82,7 @@
                 },
                 {
                   title: '关闭',
-                  isDisplay: pageAuth.close && query.type === 'purchase' && judgeOrs(scope.row.status, ['success', 'part_in']),
+                  isDisplay: pageAuth.close && query.type === 'purchase' && judgeOrs(scope.row.status, ['audit_success', 'part_in']),
                   command: () => handleShowForm('FormClose', {
                     id: scope.row.id,
                     close_hint: '是否确认关闭采购单，如是，请填写关闭采购单的原因'
@@ -121,7 +121,7 @@
     },
     data() {
       return {
-        tabValue: 'success',
+        tabValue: 'audit_success',
         qCStatus: Constant.Q_C_STATUS(),
         qCStatusType: Constant.Q_C_STATUS_TYPE,
         tableName: 'TableWarehouseQualityControl',
@@ -241,7 +241,7 @@
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ]);
         this.$data.tableColumn = tableColumn;
-        this.$data.tabValue = 'success';
+        this.$data.tabValue = 'audit_success';
       },
       //查看详情
       tableShowDetail(data){
