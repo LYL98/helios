@@ -91,6 +91,7 @@
           <el-table-column label="占比" prop="percent">
             <template slot-scope="scope">
               {{returnPercentage(scope.row.gmv, totalItemTotalPrice)}}%
+            <!-- {{ scope.row.ratio }}% -->
             </template>
           </el-table-column>
           <el-table-column label="操作" width="100">

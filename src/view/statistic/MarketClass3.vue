@@ -87,7 +87,8 @@
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
           <template slot-scope="scope">
-            {{ returnPercentage(scope.row.amount_real, totalItemTotalPrice) }}%
+            <!-- {{ returnPercentage(scope.row.amount_real, totalItemTotalPrice) }}% -->
+            {{ scope.row.ratio }}%
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">

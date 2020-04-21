@@ -140,7 +140,9 @@
         <el-table-column label="件数" sortable="custom" prop="piece_num"/>
         <el-table-column label="占比" prop="percent">
           <template slot-scope="scope">
-            {{returnPercentage(scope.row.gmv, total)}}%
+            <!-- {{returnPercentage(scope.row.gmv, total)}}% -->
+            {{ scope.row.ratio }}%
+
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
