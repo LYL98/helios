@@ -490,7 +490,7 @@ const Constant = {
   //品控单状态
   Q_C_STATUS: (type)=>{
     let data = [
-      { key: 'success', value: '待收货' },
+      { key: 'audit_success', value: '待收货' },
       { key: 'part_in', value: '部分收货' },
       { key: 'all_in', value: '已完成' },
       { key: 'closed', value: '关闭' }
@@ -499,7 +499,7 @@ const Constant = {
   },
   //品控单状态颜色
   Q_C_STATUS_TYPE: {
-    success: 'primary',
+    audit_success: 'primary',
     part_in: 'warning',
     all_in: 'regular',
     closed: 'info'

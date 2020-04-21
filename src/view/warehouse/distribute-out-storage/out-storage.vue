@@ -103,13 +103,13 @@ export default {
         num: 0,
         sock_num: 0
       };
-      this.wareTrayItemQeruy();
+      this.wareTrayItemList();
     },
     //获取库存列表
-    async wareTrayItemQeruy(){
+    async wareTrayItemList(){
       let { addData, detail } = this;
       this.$loading({isShow: true, isWhole: true});
-      let res = await Http.get(Config.api.wareTrayItemQeruy, {
+      let res = await Http.get(Config.api.wareTrayItemList, {
         item_code: detail.item_code,
         storehouse_id: detail.src_storehouse_id
       });
