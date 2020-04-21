@@ -8,7 +8,7 @@
       <el-input v-model="addEditData.title" :maxlength="10" placeholder="请输入门店名称"></el-input>
     </el-form-item>
     <el-form-item label="县域" prop="province" class="required">
-      <my-select-province style="width: 150px;" v-model="addEditData.province_code" :disabled="isEditStore"/>
+      <my-select-province style="width: 150px;" v-model="addEditData.province_code" :disabled="isEditStore" @select="changeProvince"/>
       <my-select-city style="width: 200px;margin-left: 5px" v-model="addEditData.city_id" :provinceCode="addEditData.province_code"
                       @change="changeCity" :disabled="isEditStore || addEditData.province_code === ''" placeholder="请选择县域"/>
     </el-form-item>
@@ -162,6 +162,10 @@
       };
     },
     methods: {
+
+      changeProvince(province) {
+        console.log('province: ', province);
+      },
 
       changeLocation(location) {
         console.log('location: ', location);

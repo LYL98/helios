@@ -21,6 +21,14 @@
             />
           </my-query-item>
         </el-col>
+        <el-col :xl="7" :lg="7" :span="7">
+          <my-query-item label="操作类型">
+            <el-select clearable v-model="query.opt_type" placeholder="操作类型" size="small" style="width: 100%" @change="changeQuery">
+              <el-option value="distribute" label="调拨" />
+              <el-option value="allocate" label="分配" />
+            </el-select>
+          </my-query-item>
+        </el-col>
         <el-col :xl="10" :lg="10" :span="10">
           <my-query-item label="搜索">
             <query-search-input
@@ -40,23 +48,30 @@
         <div class="left">
           <el-button
             size="mini"
+            plain
             type="primary"
             :disabled="selectedList.length <= 0"
-            v-if="$auth.isAdmin || $auth.MarketingStrategyCityModify"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockWarehousing"
             @click="handleWarehousingItems(selectedList)"
           >批量入库
           </el-button>
           <el-button
             size="mini"
+            plain
             type="primary"
             :disabled="selectedList.length <= 0"
-            v-if="$auth.isAdmin || $auth.MarketingStrategyCityAllocate"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"
             @click="handleAllocateItems(selectedList)"
           >批量分配
           </el-button>
         </div>
         <div class="right">
-          <el-button @click="handleChangeRecord" size="mini" type="primary" plain>场地变动记录</el-button>
+          <el-button
+            @click="handleChangeRecord"
+            size="mini"
+            type="primary"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockRecord"
+          >场地变动记录</el-button>
         </div>
       </div>
 
@@ -73,7 +88,7 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column
-            v-if="$auth.isAdmin || $auth.OperateItemSupStockDistribute || $auth.OperateItemSupStockDistribute"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockWarehousing || $auth.OperateItemSupStockAllocate"
             align="center"
             type="selection"
             width="50">
@@ -87,10 +102,12 @@
           <el-table-column label="批次" prop="code" min-width="140">
             <template slot-scope="scope">
               <div
-                :class="`td-item link-item`"
+                class="td-item link-item position-relative"
                 @click.prevent="handleDetailItem(scope.row)"
               >
                 {{ scope.row.batch_code }}
+                <span class="icon-marker warning" v-if="scope.row.unqualified">不合格</span>
+                <span class="icon-marker primary" v-if="!scope.row.unqualified && scope.row.out_type === 'distribute_ac_edit'">打货</span>
               </div>
             </template>
           </el-table-column>
@@ -104,7 +121,7 @@
           </el-table-column>
           <el-table-column label="场地库存" prop="num" min-width="100">
             <template slot-scope="scope">
-              <span v-if="scope.row.num > 0">
+              <span v-if="!!scope.row.num">
                 {{ scope.row.num }}件
               </span>
               <span v-else>-</span>
@@ -139,6 +156,26 @@
       </div>
 
       <div class="footer">
+        <div class="left">
+          <el-button
+            size="mini"
+            plain
+            type="primary"
+            :disabled="selectedList.length <= 0"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockWarehousing"
+            @click="handleWarehousingItems(selectedList)"
+          >批量入库
+          </el-button>
+          <el-button
+            size="mini"
+            plain
+            type="primary"
+            :disabled="selectedList.length <= 0"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"
+            @click="handleAllocateItems(selectedList)"
+          >批量分配
+          </el-button>
+        </div>
         <div class="table-pagination">
           <el-pagination
             background
@@ -203,7 +240,7 @@
 </template>
 
 <script>
-  import {Row, Col, Button, Input, Pagination, Table, TableColumn, Dialog, Tag} from 'element-ui';
+  import {Row, Col, Button, Input, Pagination, Table, TableColumn, Dialog, Tag, Select, Option} from 'element-ui';
   import {QueryItem, QuerySearchInput, TableOperate, SelectSystemClass} from '@/common';
   import {GlobalStorehouse} from '@/component';
   import {Http, Config, Constant, DataHandle} from '@/util';
@@ -229,6 +266,8 @@
       'el-dialog': Dialog,
       'el-tag': Tag,
       'el-pagination': Pagination,
+      'el-select': Select,
+      'el-option': Option,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'add-edit-layout': AddEditLayout,
@@ -312,6 +351,7 @@
         this.$data.query = {
           storehouse_id: '',
           system_class_codes: [],
+          opt_type: '',
           condition: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
@@ -425,7 +465,6 @@
       },
 
       async handleDetailItem(item) {
-        console.log('item: ', item);
         this.$data.detail = {
           visible: true,
           item: item,
@@ -451,6 +490,30 @@
 
   .mt-16 {
     margin-top: 16px;
+  }
+
+  .position-relative {
+    position: relative;
+  }
+
+  .icon-marker {
+    position: absolute;
+    font-size: 12px;
+    display: inline-block;
+    padding: 0 10px;
+    line-height: 18px;
+    left: 110px;
+    top: 0px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+
+    &.primary {
+      background-color: #00ADE7;
+    }
+    &.warning {
+      background-color: #DCA450;
+    }
   }
 </style>
 <style lang="scss">

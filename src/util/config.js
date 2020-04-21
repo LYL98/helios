@@ -295,7 +295,7 @@ const Config = (() => {
       operateItemSupStockDistribute: apiM + '/sup_distribute/allocate_num', // 调拨
       operateItemSupStockInStock: apiM + '/sup_accept/in_stock', // 入库
       operateItemSupStockAllocate: apiM + '/sup_accept/allocate', // 分配
-      operateItemSupStockRecord: apiM + '/sup_accept/stock/record/query', // 分配
+      operateItemSupStockRecord: apiM + '/sup_accept/stock/record/query', // 变动记录
 
 
       //场地收货

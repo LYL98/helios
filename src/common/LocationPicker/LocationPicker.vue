@@ -60,7 +60,7 @@
     props: {
       province: { type: String, default: '' },
       city: { type: String, default: '' },
-      geo: { type: Object, default() { return { lng: '', lat: '', poi: '' } } }
+      geo: { type: Object, default: () => ({ lng: 114.061866, lat: 22.632913, poi: '' }) }
     },
     data() {
       return {
@@ -175,7 +175,6 @@
         listeners.push(
           AMap.event.addListener(marker, 'dragend', (e) => {
             this.map.setCenter(e.lnglat);
-            console.log('e: ', e);
             this.onCenterRegeo(e.lnglat);
           })
         );
@@ -189,7 +188,6 @@
         if (!this.map) return;
         this.geoCoder.getAddress(new AMap.LngLat(lng, lat), (status, result) => {
           if (status === 'complete' && result.info === 'OK') {
-            console.log("result.regeocode: ", result.regeocode);
             this.$data.centerRegeo = result.regeocode;
             this.initKeywords();
           }
@@ -235,7 +233,7 @@
 
   .location-picker {
     display: inline-block;
-    width: 500px;
+    width: 100%;
   }
 
   .location-picker .selected {
@@ -256,11 +254,16 @@
     transition: .3s;
     font-weight: 500;
     user-select: none;
-    line-height: 32px;
-    height: 32px;
     padding: 0 15px;
     font-size: 13px;
     border-radius: 4px;
+    line-height: 40px;
+    height: 40px;
+
+    &.small {
+      line-height: 32px;
+      height: 32px;
+    }
 
     .placeholder {
       color: #B8BCC5;

@@ -4,38 +4,44 @@
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="商品编号/名称：">
-            {{ item.p_item.code }} / {{ item.p_item.title }}
+            <span v-if="item.p_item && item.p_item.code && item.p_item.title">
+              {{ item.p_item.code }} / {{ item.p_item.title }}
+            </span>
+            <span v-else>-</span>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="批次：">
-            {{ item.batch_code }}
+            {{ item.batch_code || '-' }}
           </el-form-item>
         </el-col>
         <el-col :sm="12" :span="10">
           <el-form-item label="供应商：">
-            {{ item.supplier_title }}
+            {{ item.supplier_title || '-' }}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="商品过期时间：">
-            {{ item.due_date }}
+            {{ item.due_date || '-' }}
           </el-form-item>
         </el-col>
         <el-col :sm="12" :span="10">
           <el-form-item label="库存过期时间：">
-            {{ item.stock_due_date }}
+            {{ item.stock_due_date || '-'}}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
         <el-col :sm="12" :span="10">
           <el-form-item label="库存数量：">
-            {{ item.num }}件
+             <span v-if="!!item.num">
+                {{ item.num }}件
+              </span>
+            <span v-else>-</span>
           </el-form-item>
         </el-col>
       </el-row>
