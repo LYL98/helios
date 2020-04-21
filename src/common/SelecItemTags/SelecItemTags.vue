@@ -6,6 +6,7 @@
       v-for="(item, index) in dataItem"
       :key="index"
       style="margin-right: 5px; margin-bottom: 5px; "
+      :class="judgeTag(item.title)?'':'mytag'"
      >
         {{item.title}}
     </el-tag>
@@ -97,5 +98,7 @@ export default {
 </script>
 
 <style scoped>
-
+.mytag{
+  display: none;
+}
 </style>

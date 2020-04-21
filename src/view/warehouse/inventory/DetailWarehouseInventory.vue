@@ -6,12 +6,12 @@
     </el-row>
     <div style="margin: 0 20px;">
       <el-table :data="dataItem.items" width="100%">
-        <el-table-column type="index" :index="indexMethod" width="100" label="序号"></el-table-column>
+        <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
         <el-table-column label="批次" prop="batch_code">
           <template slot-scope="scope">
-            <span v-if="auth.isAdmin || auth.WarehouseInventoryDetailBuyDetail" class="link-item"
-              @click="handleShowBuyDetail(scope.row)">{{scope.row.batch_code}}</span>
-            <span v-else>{{scope.row.batch_code}}</span>
+            <span style="margin-right: 5px;">{{scope.row.batch_code}}</span>
+            <span v-if="scope.row.out_type === 'dt_ac_edit'" class="is-mark">打货商品</span>
+            <span v-if="scope.row.unqualified" class="is-mark">不合格商品</span>
           </template>
         </el-table-column>
         <el-table-column label="供应商" prop="supplier_title" min-width="100"/>
@@ -122,12 +122,12 @@
         }else{
           this.$data.detail = this.copyJson(this.initDetail);
         }
-        this.wareTrayItemQeruy();
+        this.wareTrayItemQuery();
       },
       //获取明细列表
-      async wareTrayItemQeruy(){
+      async wareTrayItemQuery(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.wareTrayItemQeruy, this.query);
+        let res = await Http.get(Config.api.wareTrayItemQuery, this.query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.isShow = true;
@@ -142,34 +142,33 @@
       changePageSize(pageSize) {
         this.$data.query.page_size = pageSize;
         this.$data.query.page = 1;
-        this.wareTrayItemQeruy();
+        this.wareTrayItemQuery();
       },
 
       //翻页
       changePage(page) {
         this.$data.query.page = page;
-        this.wareTrayItemQeruy();
+        this.wareTrayItemQuery();
       },
-
-      //显示详情采购
-      handleShowBuyDetail(data){
-        if(data.purchase_order_type === 'global_pur'){
-          this.handleShowAddEdit('AddEditItemGPurchase', {
-            id: data.purchase_order_id
-          }, 'detail');
-        }else{
-          this.handleShowAddEdit('AddEditItemLocalPurchase', {
-            id: data.purchase_order_id
-          }, 'detail');
-        }
-        
-      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
   @import "@/share/scss/detail.scss";
+  .is-mark{
+    color: #fff;
+    background: #FFA349;
+    font-size: 12px;
+    display: inline-block;
+    text-align: center;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 3px;
+    position: relative;
+    top: -2px;
+    padding: 0 5px;
+  }
   .link-item{
     text-decoration: underline;
     cursor: pointer;

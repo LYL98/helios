@@ -132,6 +132,10 @@ const Config = (() => {
       itemSupDistributeWaybillModify: apiM + '/sup_distribute/edit', // 修改
       itemSupDistributeWaybillClose: apiM + '/sup_distribute/close', // 关闭
 
+      // 商品 - 库存销售
+      supModifyStockSaleQuery: apiM + '/sup_modify_stock/sale_query', //库存销售查询
+      supModifyStockEditSaleAmount: apiM + '/sup_modify_stock/edit_sale_amount', //确认销售
+      supModifyStockSaleExport: apiM + '/sup_modify_stock/sale_export', //库存销售导出
 
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询
@@ -237,12 +241,13 @@ const Config = (() => {
 
       //仓库库存
       wareTrayQeruy: apiM + '/sup_stock/query', //查询库存
-      wareTrayItemQeruy: apiM + '/ware_tray_item/query', //查询具体托盘的库存
+      wareTrayItemQuery: apiM + '/ware_tray_item/query', //查询具体托盘的库存
 
       supOutAdd: apiM + '/sup_out/add', //出库
       supCheckAdd: apiM + '/sup_check/add', //盘点
       supMoveAdd: apiM + '/sup_move/add', //移库
       supModifyAdd: apiM + '/sup_modify/add', //变动
+      supModifyStockQa: apiM + '/sup_modify/stock_qa', //变动(库内品控)
       supDistributeAdd: apiM + '/sup_distribute/add', //调拨单
 
       //品控待入库、调拨单

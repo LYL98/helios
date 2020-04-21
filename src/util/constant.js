@@ -490,7 +490,7 @@ const Constant = {
   //品控单状态
   Q_C_STATUS: (type)=>{
     let data = [
-      { key: 'success', value: '待收货' },
+      { key: 'audit_success', value: '待收货' },
       { key: 'part_in', value: '部分收货' },
       { key: 'all_in', value: '已完成' },
       { key: 'closed', value: '关闭' }
@@ -499,7 +499,7 @@ const Constant = {
   },
   //品控单状态颜色
   Q_C_STATUS_TYPE: {
-    success: 'primary',
+    audit_success: 'primary',
     part_in: 'warning',
     all_in: 'regular',
     closed: 'info'
@@ -555,6 +555,7 @@ const Constant = {
       { key: 'damage_sale', value: '报损销售' },
       { key: 'sale_offline', value: '线下销售' },
       { key: 'refund', value: '退货入库' },
+      { key: 'stocked_qa', value: '库内品控' },
       { key: 'refund_to_supplier', value: '退货给供应商' }
     ];
     return handleKeyValue(type, data);
@@ -565,6 +566,7 @@ const Constant = {
     damage_sale: 'info',
     sale_offline: 'info',
     refund: 'info',
+    stocked_qa: 'info',
     refund_to_supplier: 'info'
   },
   //发车状态
@@ -634,6 +636,19 @@ const Constant = {
     global: 'info',
     local: 'info'
   },
+  //库存销售状态
+  INVENTORY_SALE_STATUS: (type)=>{
+    let data = [
+      { key: 'wait_sale', value: '待销售' },
+      { key: 'saled', value: '已销售' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //库存销售状态(颜色)
+  INVENTORY_SALE_STATUS_TYPE: {
+    wait_sale: 'primary',
+    saled: 'regular'
+  }
 };
 
 //处理key value
