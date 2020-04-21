@@ -157,7 +157,7 @@ export default {
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('DetailWarehouseInventory');
-        pc.wareTrayItemQeruy();
+        pc.wareTrayItemQuery();
       }else{
         this.$message({message: res.message, type: 'error'});
       }

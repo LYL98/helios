@@ -80,7 +80,7 @@ export default {
         let pc = this.getPageComponents('DetailWarehouseInventory');
         if(pc){
           pc.$data.detail.o_num_out = pc.detail.o_num_out + detail.num_out;
-          pc.wareTrayItemQeruy();
+          pc.wareTrayItemQuery();
         }
 
         this.handleCancel(); //隐藏(先算num_out)

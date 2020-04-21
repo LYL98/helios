@@ -237,7 +237,7 @@ const Config = (() => {
 
       //仓库库存
       wareTrayQeruy: apiM + '/sup_stock/query', //查询库存
-      wareTrayItemQeruy: apiM + '/ware_tray_item/query', //查询具体托盘的库存
+      wareTrayItemQuery: apiM + '/ware_tray_item/query', //查询具体托盘的库存
 
       supOutAdd: apiM + '/sup_out/add', //出库
       supCheckAdd: apiM + '/sup_check/add', //盘点

@@ -122,12 +122,12 @@
         }else{
           this.$data.detail = this.copyJson(this.initDetail);
         }
-        this.wareTrayItemQeruy();
+        this.wareTrayItemQuery();
       },
       //获取明细列表
-      async wareTrayItemQeruy(){
+      async wareTrayItemQuery(){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.wareTrayItemQeruy, this.query);
+        let res = await Http.get(Config.api.wareTrayItemQuery, this.query);
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.isShow = true;
@@ -142,13 +142,13 @@
       changePageSize(pageSize) {
         this.$data.query.page_size = pageSize;
         this.$data.query.page = 1;
-        this.wareTrayItemQeruy();
+        this.wareTrayItemQuery();
       },
 
       //翻页
       changePage(page) {
         this.$data.query.page = page;
-        this.wareTrayItemQeruy();
+        this.wareTrayItemQuery();
       },
 
       //显示详情采购
