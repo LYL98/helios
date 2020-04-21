@@ -14,6 +14,7 @@
           start-placeholder="开始日期"
           end-placeholder="结束日期"
           @change="changePicker"
+          :clearable="false"
           style="width: 100%;"
         />
       </el-col>
@@ -26,10 +27,12 @@
           style="width: 100%"
           @change="changeQuery"
         >
-          <el-option label="收货" value="accept"/>
-          <el-option label="入库" value="in_stock"/>
-          <el-option label="分配" value="allocate"/>
-          <el-option label="调拨" value="distribute"/>
+          <el-option
+            v-for="(value, key) of statusOptions"
+            :key="value"
+            :label="key"
+            :value="value"
+          />
         </el-select>
       </el-col>
       <el-col :span="10">
@@ -49,6 +52,7 @@
         <el-table
           class="list-table my-table-float"
           :data="list.items"
+          :row-class-name="highlightRowClassName"
           highlight-current-row="highlight-current-row"
           style="min-height: 300px"
         >
@@ -58,23 +62,35 @@
             label="序号"
             :index="indexMethod"
           ></el-table-column>
-          <el-table-column label="商品编号/名称">
-
+          <el-table-column label="商品编号/名称" min-width="160">
+            <template  slot-scope="scope">
+              <span v-if="scope.row.p_item && scope.row.p_item.code && scope.row.p_item.title">
+                {{ scope.row.p_item.code }} / {{ scope.row.p_item.title }}
+              </span>
+              <span v-else>-</span>
+            </template>
           </el-table-column>
-          <el-table-column label="批次" prop="batch_code">
-
+          <el-table-column label="批次" prop="batch_code" width="140">
           </el-table-column>
-          <el-table-column label="类型" prop="opt_type">
-
+          <el-table-column label="类型" prop="opt_type" width="100">
+            <template slot-scope="scope">
+              {{ sup_stock_record_type[scope.row.opt_type] }}
+            </template>
           </el-table-column>
-          <el-table-column label="数量" prop="num">
-
+          <el-table-column label="数量" prop="num" width="100">
+            <template  slot-scope="scope">
+              <span v-if="!!scope.row.num">
+                {{ scope.row.reckon_flg * scope.row.num }}件
+              </span>
+              <span v-else>-</span>
+            </template>
           </el-table-column>
-          <el-table-column label="操作人" prop="creator">
-
+          <el-table-column label="操作人" prop="creator" width="100">
+            <template slot-scope="scope">
+              {{ scope.row.creator && scope.row.creator.realname || '-' }}
+            </template>
           </el-table-column>
-          <el-table-column label="操作时间" prop="created">
-
+          <el-table-column label="操作时间" prop="created" width="160">
           </el-table-column>
         </el-table>
       </div>
@@ -127,6 +143,8 @@
     },
     data() {
       return {
+        statusOptions: {...Constant.SUP_STOCK_RECORD_TYPE('value_key')}, // 状态查询条件
+        sup_stock_record_type: Constant.SUP_STOCK_RECORD_TYPE(), // 调拨计划列表状态
         query: {},
         list: {
           items: [],
@@ -143,9 +161,11 @@
       initQuery() {
         this.$data.query = {
           storehouse_id: this.$props.storehouse_id,
-          picker_value: null,
+          picker_value: [DataHandle.formatDate(new Date(), 'yyyy-MM-dd'), DataHandle.formatDate(new Date(), 'yyyy-MM-dd')],
           condition: '',
           opt_type: '',
+          begin_date: DataHandle.formatDate(new Date(), 'yyyy-MM-dd'),
+          end_date: DataHandle.formatDate(new Date(), 'yyyy-MM-dd'),
           page: 1,
           page_size: 10,
         }

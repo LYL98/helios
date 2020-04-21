@@ -536,6 +536,18 @@ const Constant = {
     allocate: 'info',
     refund: 'info'
   },
+  SUP_STOCK_RECORD_TYPE: (type) => {
+    let data = [
+      { key: 'accept', value: '收货' },
+      { key: 'dt_ac_edit', value: '打货' },
+      { key: 'return', value: '退货' },
+      { key: 'in_stock', value: '入库' },
+      { key: 'allocate', value: '分配' },
+      { key: 'distribute', value: '调拨' },
+      { key: 'out_stock', value: '出库' },
+    ];
+    return handleKeyValue(type, data);
+  },
   //变动类型
   SUP_OPT_TYPES: (type)=>{
     let data = [
