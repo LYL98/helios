@@ -15,6 +15,7 @@
    code == OperateRefundFrame 修改项：rank 【7】
    code == OperateTruckLoadMain 修改项：title 【配送专区】
    code == WarehouseOutStorageAdd 修改项：title, url、upper_code
+   code == WarehouseInventoryVariation 修改项：url
 
 新增：
    ItemQueryByItemTag
@@ -42,6 +43,14 @@
    OutStoragePlanMain
    DistributeOutStorage
    DistributeOutStorageAdd
+
+   InventoryMarket
+   InventoryMarketExport
+   InventoryMarketAdd
+   InventoryMarketDetail
+
+删除：
+   WarehouseInventoryDetailBuyDetail
 ```
 
 ### 3.6.0
