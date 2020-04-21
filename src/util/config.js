@@ -250,19 +250,6 @@ const Config = (() => {
       supModifyStockQa: apiM + '/sup_modify/stock_qa', //变动(库内品控)
       supDistributeAdd: apiM + '/sup_distribute/add', //调拨单
 
-      //品控待入库、调拨单
-      supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括预采和反采订单
-      supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
-      supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
-      supDistributeDetail: apiM + '/sup_distribute/detail', //调拨单详情
-      supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
-      supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //反采购入库单关闭
-      supInStockEditNum: apiM + '/sup_in_stock/edit_num', //修改品控入库数量
-
-      supAcceptAdd: apiM + '/sup_accept/add', //场地收货
-      supOutStockEditNum: apiM + '/sup_out_stock/edit_num', //场地修改品控数量
-
-
       //仓管待入库
       supInStockShMonitorQuery: apiM + '/sup_in_stock/sh_monitor_query', //待入库
       supInStockShMonitorAdd: apiM + '/sup_in_stock/sh_monitor_add', //确认入库
@@ -303,8 +290,19 @@ const Config = (() => {
       operateItemSupStockRecord: apiM + '/sup_accept/stock/record/query', // 分配
 
 
-      //场地收货
+      //场地品控收货(采购)
       supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询
+      supAcceptPurAdd: apiM + '/sup_accept/pur/add', //场地收货(采购)
+      supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //品控单关闭
+
+      //场地品控收货(调拨)
+      supAcceptDistributeAdd: apiM + '/sup_accept/distribute/add', //场地收货(调拨)
+      supAcceptDistDetail: apiM + '/sup_accept/dist_detail', //场地的调拨品控收货详情
+      supAcceptEditDistributeDetailAdd: apiM + '/sup_accept/edit_distribute_detail/add', //场地的调拨品控收货
+      
+      //场地品控收货(共用)
+      supOutStockEditNum: apiM + '/sup_out_stock/edit_num', //场地修改品控数量
+      supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
 
       supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
       supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情

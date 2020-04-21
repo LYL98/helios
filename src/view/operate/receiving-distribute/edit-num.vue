@@ -38,7 +38,7 @@ import { Http, Config, Constant } from '@/util';
 import { InputNumber, InputPrice, SelectOption } from '@/common';
 
 export default {
-  name: "FormWarehouseQualityControlEditNum",
+  name: "FormEditNum",
   mixins: [formMixin],
   components: {
     'input-number': InputNumber,
@@ -46,9 +46,6 @@ export default {
     'select-option': SelectOption
   },
   created() {
-  },
-  props: {
-    fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
   },
   computed: {
     //处理类型
@@ -114,11 +111,7 @@ export default {
     async submitData(){
       let { detail } = this;
       this.$loading({isShow: true});
-      let apis = {
-        'in_stock': Config.api.supInStockEditNum,
-        'accept': Config.api.supOutStockEditNum
-      }
-      let res = await Http.post(apis[detail.qa_event], {
+      let res = await Http.post(Config.api.supOutStockEditNum, {
         id: detail.id,
         num: detail.num,
         un_qa_num: detail.un_qa_num,
@@ -131,13 +124,13 @@ export default {
         this.$message({message: '已修改', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据
-        let pc = this.getPageComponents('DetailWarehouseQualityControlP');
+        let pc = this.getPageComponents('DetailP');
         if(pc && pc.isShow) pc.fromSupplierOrderDetail();
 
-        pc = this.getPageComponents('DetailWarehouseQualityControlD');
-        if(pc && pc.isShow) pc.supDistributeDetail();
+        pc = this.getPageComponents('DetailD');
+        if(pc && pc.isShow) pc.itemSupDistributeWaybillDetail();
 
-        pc = this.getPageComponents('TableWarehouseQualityControl');
+        pc = this.getPageComponents('Table');
         if(pc) pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

@@ -95,12 +95,12 @@
     methods: {
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.supDistributeDetail(data.id);
+        this.itemSupDistributeWaybillDetail(data.id);
       },
       //获取明细列表
-      async supDistributeDetail(id){
+      async itemSupDistributeWaybillDetail(id){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supDistributeDetail, { id });
+        let res = await Http.get(Config.api.itemSupDistributeWaybillDetail, { id });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;
