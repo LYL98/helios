@@ -105,7 +105,7 @@
               <el-form-item
                 label="采购数量"
                 :prop="'p_items.' + index + '.amount'"
-                :rules="[ { required: true, message: '采购数量不能为空', trigger: 'change' } ]"
+                :rules="[ { required: true, min: 1, message: '采购数量必须为大于零的整数', trigger: 'change' } ]"
               >
                 <input-number size="medium" v-model="item.num" unit="件" />
               </el-form-item>

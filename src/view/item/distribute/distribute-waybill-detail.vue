@@ -105,31 +105,35 @@
         <!--  展开行  -->
         <el-table-column type="expand">
           <template slot-scope="scope">
-            <el-row
+            <el-form
+              size="mini"
+              label-position="left"
               v-if="Array.isArray(scope.row.distribute_details)"
               v-for="item in scope.row.distribute_details"
             >
-              <el-col :xs="6">
-                <el-form-item label="批次：">
-                  <span>{{ item.batch_code }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :xs="6">
-                <el-form-item label="调拨数量：">
-                  <span>{{ item.num }}件</span>
-                </el-form-item>
-              </el-col>
-              <el-col :xs="6">
-                <el-form-item label="收货单号：">
-                  <span>{{ item.qaer_id }}</span>
-                </el-form-item>
-              </el-col>
-              <el-col :xs="6">
-                <el-form-item label="收货数量：">
-                  <span>{{ item.num_arrive }}件</span>
-                </el-form-item>
-              </el-col>
-            </el-row>
+              <el-row :gutter="32">
+                <el-col :span="9">
+                  <el-form-item label="批次：">
+                    <span>{{ item.batch_code }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="5">
+                  <el-form-item label="调拨数量：">
+                    <span>{{ item.num }}件</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="5">
+                  <el-form-item label="收货单号：">
+                    <span>{{ item.qaer_id }}</span>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="5">
+                  <el-form-item label="收货数量：">
+                    <span>{{ item.num_arrive }}件</span>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
           </template>
         </el-table-column>
       </el-table>
