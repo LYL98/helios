@@ -28,7 +28,7 @@
         <el-col :span="7">
           <my-query-item label="运营专区">
             <!-- v-module="selectValue" -->
-            <el-select  v-model="selectValue"  @change="selectTagChange" placeholder="请选择" size="small">
+            <el-select  v-model="selectValue"  @change="selectTagChange" placeholder="请选择" size="small" clearable>
               <el-option
                 v-for="item in tagsOptions"
                 :key="item.id"
@@ -102,9 +102,11 @@
         <!--</el-table-column>-->
         <el-table-column label="件数" sortable="custom" prop="count_real" />
         <el-table-column label="占比">
-          <template
-            slot-scope="scope"
-          >{{ returnPercentage(scope.row.amount_real, totalItemTotalPrice) }}%</template>
+          <template slot-scope="scope">
+            <!-- {{ returnPercentage(scope.row.amount_real, totalItemTotalPrice) }}% -->
+            {{ scope.row.ratio }}%
+
+          </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
           <template slot-scope="scope">
@@ -248,7 +250,7 @@ export default {
       return DataHandle.returnPrice(price);
     },
     //返回百分比
-    returnPercentage(item_num, sun) {
+    returnPercentage(value) {
       return DataHandle.returnPercentage(item_num, sun);
     },
     // 初始化查询对象
@@ -271,6 +273,7 @@ export default {
         sort: "-amount_real",
         page: 1,
         page_size: Constant.PAGE_SIZE,
+        item_tag_id:'',
         totalItemTotalPrice: this.$route.query.totalItemTotalPrice,//用于传递计算占比的总数据
 
       });
@@ -347,6 +350,7 @@ export default {
             name: orderClassSumData[i].item_system_class,
             system_class_code: orderClassSumData[i].system_class_code
           });
+          
         } else {
           dataTemp.value += orderClassSumData[i].amount_real;
         }
@@ -483,8 +487,14 @@ export default {
         }
     },
     //切换运营专区
-    selectTagChange(){
-      
+    selectTagChange(value){
+      console.log(value);
+      let that = this;
+      let { query } = that;
+      query.item_tag_id = value
+      this.saleClassList(()=>{
+        this.initChart()
+      })
     }
   }
 };
