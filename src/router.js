@@ -55,6 +55,11 @@ const router = new Router({
       component: () => import('@/view/item/pricing/Main')
     },
     {
+      path: '/item/inventory/market',
+      name: 'InventoryMarket',
+      component: () => import('@/view/item/inventory-market/main')
+    },
+    {
       path: '/item/supplier',
       name: 'ItemSupplier',
       component: () => import('@/view/item/supplier/Main')

@@ -58,7 +58,7 @@
           :key="item.id"
           :label="item.title"
           :value="item.id"
-          >
+        >
         </el-option>
       </el-select>
     </el-form-item>
@@ -95,7 +95,7 @@
     },
     props: {
       items: {type: Array, default: () => []},
-      storehouse_id: { type: Number, default: '' },
+      storehouse_id: {type: Number, default: ''},
     },
     data() {
       return {

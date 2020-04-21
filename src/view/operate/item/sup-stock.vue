@@ -21,6 +21,14 @@
             />
           </my-query-item>
         </el-col>
+        <el-col :xl="7" :lg="7" :span="7">
+          <my-query-item label="操作类型">
+            <el-select clearable v-model="query.opt_type" placeholder="操作类型" size="small" style="width: 100%" @change="changeQuery">
+              <el-option value="distribute" label="调拨" />
+              <el-option value="allocate" label="分配" />
+            </el-select>
+          </my-query-item>
+        </el-col>
         <el-col :xl="10" :lg="10" :span="10">
           <my-query-item label="搜索">
             <query-search-input
@@ -40,21 +48,30 @@
         <div class="left">
           <el-button
             size="mini"
+            plain
             type="primary"
             :disabled="selectedList.length <= 0"
-            v-if="$auth.isAdmin || $auth.MarketingStrategyCityModify"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockWarehousing"
             @click="handleWarehousingItems(selectedList)"
-          >批量入库</el-button>
+          >批量入库
+          </el-button>
           <el-button
             size="mini"
+            plain
             type="primary"
             :disabled="selectedList.length <= 0"
-            v-if="$auth.isAdmin || $auth.MarketingStrategyCityAllocate"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"
             @click="handleAllocateItems(selectedList)"
-          >批量分配</el-button>
+          >批量分配
+          </el-button>
         </div>
         <div class="right">
-          <el-button @click="handleChangeRecord" size="mini" type="primary" plain>场地变动记录</el-button>
+          <el-button
+            @click="handleChangeRecord"
+            size="mini"
+            type="primary"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockRecord"
+          >场地变动记录</el-button>
         </div>
       </div>
 
@@ -71,7 +88,7 @@
           @selection-change="handleSelectionChange"
         >
           <el-table-column
-            v-if="$auth.isAdmin || $auth.OperateItemSupStockDistribute || $auth.OperateItemSupStockDistribute"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockWarehousing || $auth.OperateItemSupStockAllocate"
             align="center"
             type="selection"
             width="50">
@@ -85,9 +102,13 @@
           <el-table-column label="批次" prop="code" min-width="140">
             <template slot-scope="scope">
               <div
-                :class="`td-item link-item`"
+                class="td-item link-item position-relative"
                 @click.prevent="handleDetailItem(scope.row)"
-              >{{ scope.row.batch_code }}</div>
+              >
+                {{ scope.row.batch_code }}
+                <span class="icon-marker warning" v-if="scope.row.unqualified">不合格</span>
+                <span class="icon-marker primary" v-if="!scope.row.unqualified && scope.row.out_type === 'distribute_ac_edit'">打货</span>
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="商品编号/名称" prop="p_item" min-width="300">
@@ -100,7 +121,7 @@
           </el-table-column>
           <el-table-column label="场地库存" prop="num" min-width="100">
             <template slot-scope="scope">
-              <span v-if="scope.row.num > 0">
+              <span v-if="!!scope.row.num">
                 {{ scope.row.num }}件
               </span>
               <span v-else>-</span>
@@ -135,6 +156,26 @@
       </div>
 
       <div class="footer">
+        <div class="left">
+          <el-button
+            size="mini"
+            plain
+            type="primary"
+            :disabled="selectedList.length <= 0"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockWarehousing"
+            @click="handleWarehousingItems(selectedList)"
+          >批量入库
+          </el-button>
+          <el-button
+            size="mini"
+            plain
+            type="primary"
+            :disabled="selectedList.length <= 0"
+            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"
+            @click="handleAllocateItems(selectedList)"
+          >批量分配
+          </el-button>
+        </div>
         <div class="table-pagination">
           <el-pagination
             background
@@ -176,7 +217,10 @@
       :visible.sync="record.visible"
       width="1000px"
     >
-      <sup-stock-record v-if="record.visible"/>
+      <sup-stock-record
+        v-if="record.visible"
+        :storehouse_id="query.storehouse_id"
+      />
     </el-dialog>
     <el-dialog
       title="入库"
@@ -196,10 +240,10 @@
 </template>
 
 <script>
-  import {Row, Col, Button, Input, Pagination, Table, TableColumn, Dialog, Tag} from 'element-ui';
+  import {Row, Col, Button, Input, Pagination, Table, TableColumn, Dialog, Tag, Select, Option} from 'element-ui';
   import {QueryItem, QuerySearchInput, TableOperate, SelectSystemClass} from '@/common';
-  import { GlobalStorehouse } from '@/component';
-  import { Http, Config, Constant, DataHandle } from '@/util';
+  import {GlobalStorehouse} from '@/component';
+  import {Http, Config, Constant, DataHandle} from '@/util';
   import AddEditLayout from '@/share/layout/Layout';
   import mainMixin from '@/share/mixin/main.mixin';
   import tableMixin from '@/share/mixin/table.mixin';
@@ -208,6 +252,7 @@
   import SupStockDistribute from './sup-stock-distribute';
   import SupStockRecord from './sup-stock-record';
   import SupStockWarehousing from './sup-stock-warehousing';
+
   export default {
     name: 'sup-accept',
     mixins: [mainMixin, tableMixin],
@@ -221,6 +266,8 @@
       'el-dialog': Dialog,
       'el-tag': Tag,
       'el-pagination': Pagination,
+      'el-select': Select,
+      'el-option': Option,
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'add-edit-layout': AddEditLayout,
@@ -268,7 +315,6 @@
       this.DataHandle = DataHandle;
       // 判断是否具有促销活动的权限
       this.initQuery();
-      // this.supAcceptQuery();
     },
     methods: {
 
@@ -295,6 +341,7 @@
         let res = await Http.post(Config.api.operateItemSupStockAllocate, formData);
         if (res.code === 0) {
           this.$message({message: '分配成功', type: 'success'});
+          this.supStockQuery();
         } else {
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
@@ -304,13 +351,14 @@
         this.$data.query = {
           storehouse_id: '',
           system_class_codes: [],
+          opt_type: '',
           condition: '',
           page: 1,
           page_size: Constant.PAGE_SIZE
         };
       },
 
-      storehouseInit(item){
+      storehouseInit(item) {
         this.$data.query.storehouse_id = item.id;
         this.supStockQuery();
       },
@@ -358,8 +406,8 @@
         }
 
         // 如果只关联了一个调拨单，则直接调拨
-        if (res.data.length == 1) {
-          const { id, plan_num, dist_num } = res.data[0];
+        if (res.data.length === 1) {
+          const {id, plan_num, dist_num} = res.data[0];
           this.$messageBox.confirm('是否确认调拨?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -368,12 +416,12 @@
             let res = await Http.post(Config.api.operateItemSupStockDistribute, {
               batch_code: item.batch_code,
               distribute_id: id,
-              need_allocate_num: plan_num - dist_num
+              need_allocate_num: plan_num - dist_num > item.num ? item.num : plan_num - dist_num
             });
-            if(res.code === 0){
-              this.$message({ title: '提示', message: '调拨成功', type: 'success'});
+            if (res.code === 0) {
+              this.$message({title: '提示', message: '调拨成功', type: 'success'});
               this.supStockQuery();
-            }else{
+            } else {
               this.$message({title: '提示', message: res.message, type: 'error'});
             }
           }).catch(() => {
@@ -417,7 +465,6 @@
       },
 
       async handleDetailItem(item) {
-        console.log('item: ', item);
         this.$data.detail = {
           visible: true,
           item: item,
@@ -432,7 +479,7 @@
         delete query.system_class_codes;
         let res = await Http.get(Config.api.operateItemSupStockQuery, query);
         if (res.code !== 0) return;
-        this.$data.list = res.data || { items: [] };
+        this.$data.list = res.data || {items: []};
       }
     }
   };
@@ -440,8 +487,33 @@
 
 <style lang="scss" scoped>
   @import '@/share/scss/table.scss';
+
   .mt-16 {
     margin-top: 16px;
+  }
+
+  .position-relative {
+    position: relative;
+  }
+
+  .icon-marker {
+    position: absolute;
+    font-size: 12px;
+    display: inline-block;
+    padding: 0 10px;
+    line-height: 18px;
+    left: 110px;
+    top: 0px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+
+    &.primary {
+      background-color: #00ADE7;
+    }
+    &.warning {
+      background-color: #DCA450;
+    }
   }
 </style>
 <style lang="scss">

@@ -60,8 +60,7 @@
     props: {
       province: { type: String, default: '' },
       city: { type: String, default: '' },
-      address: { type: String, default: '' },
-      geo: { type: Object, default() { return { lng: 114.061866, lat: 22.632913 } } }
+      geo: { type: Object, default: () => ({ lng: 114.061866, lat: 22.632913, poi: '' }) }
     },
     data() {
       return {
@@ -184,11 +183,11 @@
         this.map.add(marker);
       },
 
+      // 根据中心点位置，获取附近的建筑物
       onCenterRegeo({ lng, lat }) {
         if (!this.map) return;
         this.geoCoder.getAddress(new AMap.LngLat(lng, lat), (status, result) => {
           if (status === 'complete' && result.info === 'OK') {
-            console.log("result.regeocode: ", result.regeocode);
             this.$data.centerRegeo = result.regeocode;
             this.initKeywords();
           }
@@ -210,7 +209,8 @@
 
       onSearch() {
         if (!this.placeSearch) return;
-        this.placeSearch.search(this.$data.keywords, (status, result) => {
+        let keywords = this.$props.province + this.$props.city + this.$data.keywords;
+        this.placeSearch.search(keywords, (status, result) => {
           if (status === 'complete' && result.info === 'OK') {
             this.$data.poiList = result.poiList.pois || [];
           }
@@ -233,7 +233,7 @@
 
   .location-picker {
     display: inline-block;
-    width: 500px;
+    width: 100%;
   }
 
   .location-picker .selected {
@@ -254,12 +254,16 @@
     transition: .3s;
     font-weight: 500;
     user-select: none;
-    line-height: 32px;
-    height: 32px;
     padding: 0 15px;
     font-size: 13px;
-    line-height: 1;
     border-radius: 4px;
+    line-height: 40px;
+    height: 40px;
+
+    &.small {
+      line-height: 32px;
+      height: 32px;
+    }
 
     .placeholder {
       color: #B8BCC5;
@@ -342,7 +346,7 @@
       overflow-y: overlay;
 
       li {
-        height: 40px;
+        line-height: 20px;
         padding: 10px 20px;
         display: flex;
         flex-direction: column;
