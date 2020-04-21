@@ -63,7 +63,7 @@
                 {
                   title: '品控',
                   isDisplay: pageAuth.add && judgeOrs(scope.row.status, ['audit_success', 'part_in']),
-                  command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'add_' + query.type)
+                  command: () => handleShowAddEdit('AddEdit', scope.row, 'add_' + query.type)
                 },
                 {
                   title: '打印',
@@ -111,20 +111,17 @@
   import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
-    name: 'TableWarehouseQualityControl',
+    name: 'Table',
     components: {
       'query-tabs': queryTabs
     },
     mixins: [tableMixin],
-    props: {
-      fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
-    },
     data() {
       return {
         tabValue: 'audit_success',
         qCStatus: Constant.Q_C_STATUS(),
         qCStatusType: Constant.Q_C_STATUS_TYPE,
-        tableName: 'TableWarehouseQualityControl',
+        tableName: 'Table',
         tableColumn: [],
         pageAuth: {}
       }
@@ -134,12 +131,12 @@
       //仓库品控、来自场地 初始化在query组件
 
       //处理权限
-      let { fromPage, auth, pageAuth } = this;
+      let { auth, pageAuth } = this;
       this.$data.pageAuth  = {
-        add: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlAdd)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingAdd)),
-        detail: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlDetail)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingDetail)),
-        close: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlClose)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingClose)),
-        print: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlPrint)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingPrint))
+        add: auth.isAdmin || auth.OperateReceivingAdd,
+        detail: auth.isAdmin || auth.OperateReceivingDetail,
+        close: auth.isAdmin || auth.OperateReceivingClose,
+        print: auth.isAdmin || auth.OperateReceivingPrint
       }
     },
     computed: {
@@ -180,12 +177,8 @@
           this.$data.query = this.copyJson(query); //赋值，minxin用
         }
         let apis = {
-          purchase: Config.api.supPurchaseQuery,
-          distribute: Config.api.supDistributeQuery
-        }
-        //来自场地页面
-        if(this.fromPage === 'Receiving'){
-          apis.purchase = Config.api.supPurchaseQueryForAccept;
+          purchase: Config.api.supPurchaseQueryForAccept,
+          distribute: Config.api.itemSupDistributeWaybillQuery
         }
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(apis[query.type], {
@@ -201,7 +194,7 @@
       },
       //切换记录tab
       changeTab(){
-        let pc = this.getPageComponents('QueryWarehouseQualityControl');
+        let pc = this.getPageComponents('Query');
         this.getData(pc.query);
       },
       //处理表头(query组件也使用)
@@ -247,8 +240,8 @@
       tableShowDetail(data){
         let { query } = this;
         let detailPages = {
-          purchase: 'DetailWarehouseQualityControlP',
-          distribute: 'DetailWarehouseQualityControlD'
+          purchase: 'DetailP',
+          distribute: 'DetailD'
         }
         let pc = this.getPageComponents(detailPages[query.type]);
         pc.showDetail(data);

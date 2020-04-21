@@ -55,6 +55,12 @@
 
 删除：
    WarehouseInventoryDetailBuyDetail
+   WarehouseQualityControl
+   WarehouseQualityControlDetail
+   WarehouseQualityControlEditNum
+   WarehouseQualityControlAdd
+   WarehouseQualityControlClose
+   WarehouseQualityControlPrint
 ```
 
 ### 3.6.0
