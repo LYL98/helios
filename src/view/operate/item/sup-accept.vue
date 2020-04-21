@@ -38,7 +38,8 @@
     <div class="container-table">
       <div class="table-top">
         <div class="left">
-          <query-tabs v-model="query.is_confirm" @change="changeQuery" :tab-panes="{'全部': '', '待确认': '0', '已确认': '1', }"/>
+          <query-tabs v-model="query.is_confirm" @change="changeQuery"
+                      :tab-panes="{'全部': '', '待确认': '0', '已确认': '1', }"/>
         </div>
       </div>
 
@@ -64,7 +65,8 @@
               <div
                 :class="`td-item link-item`"
                 @click.prevent="handleDetailItem(scope.row)"
-              >{{ scope.row.code }}</div>
+              >{{ scope.row.code }}
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="商品编号/名称" prop="p_item" min-width="300">
@@ -139,13 +141,14 @@
 <script>
   import {Row, Col, Button, Input, Pagination, Table, TableColumn, Dialog, Tag} from 'element-ui';
   import {QueryItem, QuerySearchInput, TableOperate, SelectSystemClass} from '@/common';
-  import { GlobalStorehouse } from '@/component';
-  import { Http, Config, Constant, DataHandle } from '@/util';
+  import {GlobalStorehouse} from '@/component';
+  import {Http, Config, Constant, DataHandle} from '@/util';
   import queryTabs from '@/share/layout/QueryTabs';
   import mainMixin from '@/share/mixin/main.mixin';
   import tableMixin from '@/share/mixin/table.mixin';
 
   import SupAcceptDetail from './sup-accept-detail';
+
   export default {
     name: 'sup-accept',
     mixins: [mainMixin, tableMixin],
@@ -184,7 +187,6 @@
       this.DataHandle = DataHandle;
       // 判断是否具有促销活动的权限
       this.initQuery();
-      // this.supAcceptQuery();
     },
     methods: {
       initQuery() {
@@ -198,7 +200,7 @@
         };
       },
 
-      storehouseInit(item){
+      storehouseInit(item) {
         this.$data.query.storehouse_id = item.id;
         this.supAcceptQuery();
       },
@@ -238,10 +240,10 @@
           let res = await Http.post(Config.api.operateItemSupAcceptConfirm, {
             id: item.id
           });
-          if(res.code === 0){
-            this.$message({ title: '提示', message: '确认收货单成功', type: 'success'});
+          if (res.code === 0) {
+            this.$message({title: '提示', message: '确认收货单成功', type: 'success'});
             this.supAcceptQuery();
-          }else{
+          } else {
             this.$message({title: '提示', message: res.message, type: 'error'});
           }
         }).catch(() => {
@@ -268,7 +270,7 @@
         }
         let res = await Http.get(Config.api.operateItemSupAcceptQuery, query);
         if (res.code !== 0) return;
-        this.$data.list = res.data || { items: [] };
+        this.$data.list = res.data || {items: []};
       }
     }
   };
@@ -276,6 +278,7 @@
 
 <style lang="scss" scoped>
   @import '@/share/scss/table.scss';
+
   .mt-16 {
     margin-top: 16px;
   }

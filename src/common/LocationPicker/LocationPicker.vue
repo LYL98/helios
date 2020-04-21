@@ -60,8 +60,7 @@
     props: {
       province: { type: String, default: '' },
       city: { type: String, default: '' },
-      address: { type: String, default: '' },
-      geo: { type: Object, default() { return { lng: 114.061866, lat: 22.632913 } } }
+      geo: { type: Object, default() { return { lng: '', lat: '', poi: '' } } }
     },
     data() {
       return {
@@ -176,6 +175,7 @@
         listeners.push(
           AMap.event.addListener(marker, 'dragend', (e) => {
             this.map.setCenter(e.lnglat);
+            console.log('e: ', e);
             this.onCenterRegeo(e.lnglat);
           })
         );
@@ -184,6 +184,7 @@
         this.map.add(marker);
       },
 
+      // 根据中心点位置，获取附近的建筑物
       onCenterRegeo({ lng, lat }) {
         if (!this.map) return;
         this.geoCoder.getAddress(new AMap.LngLat(lng, lat), (status, result) => {
@@ -210,7 +211,8 @@
 
       onSearch() {
         if (!this.placeSearch) return;
-        this.placeSearch.search(this.$data.keywords, (status, result) => {
+        let keywords = this.$props.province + this.$props.city + this.$data.keywords;
+        this.placeSearch.search(keywords, (status, result) => {
           if (status === 'complete' && result.info === 'OK') {
             this.$data.poiList = result.poiList.pois || [];
           }
@@ -258,7 +260,6 @@
     height: 32px;
     padding: 0 15px;
     font-size: 13px;
-    line-height: 1;
     border-radius: 4px;
 
     .placeholder {
@@ -342,7 +343,7 @@
       overflow-y: overlay;
 
       li {
-        height: 40px;
+        line-height: 20px;
         padding: 10px 20px;
         display: flex;
         flex-direction: column;
