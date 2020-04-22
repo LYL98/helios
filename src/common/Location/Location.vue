@@ -1,5 +1,5 @@
 <template>
-  <div style="min-width: 500px; height: 500px">
+  <div style="min-width: 500px; height: 500px; margin: -30px -20px">
     <div id="amap"></div>
   </div>
 </template>
@@ -7,12 +7,14 @@
 <script>
 
   const MAP_STYLE = 'amap://styles/light';
-  const ICON_CENTER_POINT = require('./center-marker.png');
+  const ICON_CENTER_POINT = require('./center.png');
+  const ICON_MARKER_POINT = require('./marker.png');
 
   export default {
     name: "Location",
     props: {
-      center: { type: Object, default() { return { lng: 114.061866, lat: 22.632913 } } }
+      marker: { type: Array, default: () => [] },
+      center: { type: Object, default: () => ({ lng: '', lat: '' }) }
     },
     data() {
       return {
@@ -31,7 +33,16 @@
             }
           }
         }
-      }
+      },
+      marker: {
+        deep: true,
+        immediate: false,
+        handler: function (next, pre) {
+          if (this.map) {
+            this.$data.mapComplete && this.initMarkerPoint(next);
+          }
+        }
+      },
     },
     mounted() {
       this.initMap();
@@ -60,6 +71,7 @@
           if (center && center.lng && center.lat) {
             this.initCenterPoint(center.lng, center.lat);
           }
+          this.initMarkerPoint(this.$props.marker);
         });
       },
       destroyMap() {
@@ -77,13 +89,25 @@
         let marker = new AMap.Marker({
           position: new AMap.LngLat(lng, lat),
           icon: ICON_CENTER_POINT,
-          offset: new AMap.Pixel(-16, -38),
+          offset: new AMap.Pixel(-38, -76),
           draggable: false
         });
 
         this.centerPoint = marker;
         this.map.add(marker);
       },
+
+      initMarkerPoint(values) {
+        values.forEach(v => {
+          let marker = new AMap.Marker({
+            position: new AMap.LngLat(v.lng, v.lat),
+            icon: ICON_MARKER_POINT,
+            offset: new AMap.Pixel(-26, -52),
+            draggable: false
+          });
+          this.map.add(marker);
+        });
+      }
 
     }
   }
