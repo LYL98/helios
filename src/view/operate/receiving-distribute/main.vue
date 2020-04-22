@@ -1,16 +1,17 @@
 <template>
   <sub-menu>
     <template slot="left-query">
-      <global-storehouse @change="changeStorehouse" style="width: 140px;"/>
+      <global-storehouse v-model="storehouseId" @change="changeStorehouse" style="width: 140px;"/>
     </template>
-    <query-view :getPageComponents="viewGetPageComponents" ref="Query"/>
-    <ttable-view :getPageComponents="viewGetPageComponents" ref="Table"/>
-    <add-edit-view :getPageComponents="viewGetPageComponents" ref="AddEdit"/>
-    <print-view :getPageComponents="viewGetPageComponents" ref="PrintWarehouseStockPending"/>
-    <form-close :getPageComponents="viewGetPageComponents" ref="FormClose" title="关闭"/>
-    <detail-d-view :getPageComponents="viewGetPageComponents" ref="DetailD"/>
-    <detail-p-view :getPageComponents="viewGetPageComponents" ref="DetailP"/>
-    <form-edit-num-view :getPageComponents="viewGetPageComponents" ref="FormEditNum"/>
+    <template v-if="storehouseId">
+      <query-view :getPageComponents="viewGetPageComponents" ref="Query"/>
+      <table-view :getPageComponents="viewGetPageComponents" :storehouseId="storehouseId" ref="Table"/>
+      <add-edit-view :getPageComponents="viewGetPageComponents" ref="AddEdit"/>
+      <print-view :getPageComponents="viewGetPageComponents" ref="PrintWarehouseStockPending"/>
+      <form-close :getPageComponents="viewGetPageComponents" ref="FormClose" title="关闭"/>
+      <detail-view :getPageComponents="viewGetPageComponents" ref="Detail"/>
+      <form-edit-num-view :getPageComponents="viewGetPageComponents" ref="FormEditNum"/>
+    </template>
   </sub-menu>
 </template>
 
@@ -20,8 +21,7 @@ import { GlobalStorehouse } from '@/component';
   import Query from './query';
   import Table from './table';
   import AddEdit from './add-edit';
-  import DetailD from './detail-d';
-  import DetailP from './detail-p';
+  import Detail from './detail';
   import FormEditNum from './edit-num';
   import PrintWarehouseStockPending from '@/view/warehouse/stockPending/PrintWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
@@ -31,12 +31,11 @@ import { GlobalStorehouse } from '@/component';
     components: {
       'global-storehouse': GlobalStorehouse,
       'query-view': Query,
-      'ttable-view': Table,
+      'table-view': Table,
       'add-edit-view': AddEdit,
       'print-view': PrintWarehouseStockPending,
       'form-close': FormClose,
-      'detail-d-view': DetailD,
-      'detail-p-view': DetailP,
+      'detail-view': Detail,
       'form-edit-num-view': FormEditNum
     },
     mixins: [mainMixin],
@@ -46,13 +45,13 @@ import { GlobalStorehouse } from '@/component';
       }
     },
     created() {
-      documentTitle('场地 - 收货');
+      documentTitle('场地 - 品控收货 - 调拨');
     },
     methods: {
       //选择仓后
       changeStorehouse(data){
         if(this.storehouseId !== ''){
-          this.$data.storehouseId = data.code;
+          this.$data.storehouseId = data.id;
           this.$nextTick(()=>{
             let pc = this.viewGetPageComponents('Table');
             pc.query.page = 1;
@@ -60,7 +59,7 @@ import { GlobalStorehouse } from '@/component';
             if(pc) pc.getData(pc.query);
           });
         }else{
-          this.$data.storehouseId = data.code;
+          this.$data.storehouseId = data.id;
         }
       }
     }

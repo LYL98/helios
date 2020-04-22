@@ -27,7 +27,6 @@
     },
     data() {
       let initQuery = {
-        for_accept: 1, //来自场地
         condition: ''
       }
       return {

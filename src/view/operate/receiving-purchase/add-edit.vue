@@ -34,7 +34,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="到货数量" prop="num_arrive">
-                <input-number size="medium" :min="1" v-model="inventoryData.num_arrive" unit="件"/>
+                <input-number size="medium" :min="0" v-model="inventoryData.num_arrive" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -49,7 +49,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="合格数量" prop="num">
-                <input-number size="medium" :min="1" v-model="inventoryData.num" unit="件"/>
+                <input-number size="medium" :min="0" v-model="inventoryData.num" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">

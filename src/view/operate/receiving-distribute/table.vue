@@ -2,7 +2,7 @@
   <div class="container-table">
     <div class="table-top">
       <div class="left">
-        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="qCStatusTab"/>
+        <query-tabs v-model="tabValue" @change="changeTab" :tab-panes="distributeWaybillStatusTab"/>
       </div>
       <div class="right"></div>
     </div>
@@ -21,32 +21,28 @@
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
-              <!--采购编号、调拨单号-->
+              <!--调拨编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
                 <div v-if="pageAuth.detail"
-                  class="td-item link-item add-dot2" @click="tableShowDetail(scope.row)">
+                  class="td-item link-item add-dot2" @click="handleShowDetail('Detail', scope.row)">
                   <span>{{scope.row.code}}</span>
-                  <span v-if="scope.row.creator_id === 0" class="local-pur-label">反采</span>
                 </div>
                 <div class="td-item add-dot2" v-else>
                   <span>{{scope.row.code}}</span>
-                  <span v-if="scope.row.creator_id === 0" class="local-pur-label">反采</span>
                 </div>
               </div>
               <!--商品名称-->
               <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
-              <!--采购、调拨数量-->
+              <!--调拨、调拨数量-->
               <div v-else-if="item.key === 'num'" class="td-item add-dot2">{{scope.row.num}}件</div>
               <!--已收货-->
               <div v-else-if="item.key === 'num_in'" class="td-item add-dot2">{{returnUnit(scope.row.num_in, '件', '-')}}</div>
-              <!--缺货-->
-              <div v-else-if="item.key === 'stockout'" class="td-item add-dot2">{{returnStockout(scope.row)}}</div>
               <!--调出仓、调入仓-->
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--状态-->
               <div class="td-item add-dot2" v-else-if="item.key === 'status'">
-                <el-tag size="small" :type="qCStatusType[scope.row.status]" disable-transitions>
-                  {{qCStatus[scope.row.status]}}
+                <el-tag size="small" :type="distributeWaybillStatusType[scope.row.status]" disable-transitions>
+                  {{distributeWaybillStatus[scope.row.status]}}
                 </el-tag>
               </div>
               <!--正常情况-->
@@ -62,30 +58,30 @@
               :list="[
                 {
                   title: '品控',
-                  isDisplay: pageAuth.add && judgeOrs(scope.row.status, ['audit_success', 'part_in']),
-                  command: () => handleShowAddEdit('AddEdit', scope.row, 'add_' + query.type)
+                  isDisplay: pageAuth.add && judgeOrs(scope.row.status, ['deliveried', 'part_in']),
+                  command: () => handleShowAddEdit('AddEdit', scope.row, 'add_distribute')
                 },
                 {
                   title: '打印',
                   isDisplay: pageAuth.print && scope.row.status !== 'closed',
-                  command: () => handlePrint({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: query.type === 'purchase' ? 'pur' : 'distribute'})
+                  command: () => handlePrint({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: 'distribute'})
                 },
                 {
                   title: '打印预览',
                   isDisplay: pageAuth.print && scope.row.status !== 'closed',
-                  command: () => handlePrintPreview({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: query.type === 'purchase' ? 'pur' : 'distribute'})
+                  command: () => handlePrintPreview({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: 'distribute'})
                 },
                 {
                   title: '详情',
                   isDisplay: pageAuth.detail,
-                  command: () => tableShowDetail(scope.row)
+                  command: () => handleShowDetail('Detail', scope.row)
                 },
                 {
                   title: '关闭',
-                  isDisplay: pageAuth.close && query.type === 'purchase' && judgeOrs(scope.row.status, ['audit_success', 'part_in']),
+                  isDisplay: judgeOrs(scope.row.status, ['deliveried', 'part_in']),
                   command: () => handleShowForm('FormClose', {
                     id: scope.row.id,
-                    close_hint: '是否确认关闭采购单，如是，请填写关闭采购单的原因'
+                    close_hint: '是否确认关闭调拨单，如是，请填写关闭调拨单的原因'
                   })
                 },
               ]"
@@ -116,20 +112,32 @@
       'query-tabs': queryTabs
     },
     mixins: [tableMixin],
+    props: {
+      storehouseId: { type: String | Number, default: '' }
+    },
     data() {
       return {
-        tabValue: 'audit_success',
-        qCStatus: Constant.Q_C_STATUS(),
-        qCStatusType: Constant.Q_C_STATUS_TYPE,
+        tabValue: 'deliveried',
+        distributeWaybillStatus: Constant.DISTRIBUTE_WAYBILL_STATUS(),
+        distributeWaybillStatusType: Constant.DISTRIBUTE_WAYBILL_STATUS_TYPE,
         tableName: 'Table',
-        tableColumn: [],
+        tableColumn: [
+          { label: '调拨单号', key: 'code', width: '3', isShow: true },
+          { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+          { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
+          { label: '调拨数量', key: 'num', width: '2', isShow: true },
+          { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: false },
+          { label: '销售日期', key: 'available_date', width: '2', isShow: true },
+          { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true },
+          { label: '已收货', key: 'num_in', width: '2', isShow: true },
+          { label: '创建时间', key: 'created', width: '3', isShow: false },
+          { label: '更新时间', key: 'updated', width: '3', isShow: false }
+        ],
         pageAuth: {}
       }
     },
     created() {
-      this.handleTableColumn();
-      //仓库品控、来自场地 初始化在query组件
-
       //处理权限
       let { auth, pageAuth } = this;
       this.$data.pageAuth  = {
@@ -138,12 +146,16 @@
         close: auth.isAdmin || auth.OperateReceivingClose,
         print: auth.isAdmin || auth.OperateReceivingPrint
       }
+      let pc = this.getPageComponents('Query');
+      this.getData(pc.query);
     },
     computed: {
       //tab状态
-      qCStatusTab(){
-        let d = Constant.Q_C_STATUS('value_key');
-        if(this.query.type === 'distribute') delete d['关闭'];
+      distributeWaybillStatusTab(){
+        let d = Constant.DISTRIBUTE_WAYBILL_STATUS('value_key');
+        delete d['待装车'];
+        delete d['待发车'];
+        delete d['关闭'];
         return d;
       }
     },
@@ -152,37 +164,13 @@
       getRowIdentifier(row){
         return row.id + (row.order_type || '');
       },
-      //返回缺货
-      returnStockout(data){
-        //调拨
-        if(this.query.type === 'distribute'){
-          if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_arrive <= 0 || data.num_arrive >= data.num){
-            return '-';
-          }
-          return (data.num - data.num_arrive) + '件';
-        }else{
-          if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_in <= 0 || data.num_in >= data.num){
-            return '-';
-          }
-          return (data.num - data.num_in) + '件';
-        }
-
-      },
       //获取数据
       async getData(query, type){
-        if(query.type !== this.query.type || type === 'clear'){
-          this.$data.query = this.copyJson(query); //赋值，minxin用
-          this.handleTableColumn();
-        }else{
-          this.$data.query = this.copyJson(query); //赋值，minxin用
-        }
-        let apis = {
-          purchase: Config.api.supPurchaseQueryForAccept,
-          distribute: Config.api.itemSupDistributeWaybillQuery
-        }
+        this.$data.query = this.copyJson(query); //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(apis[query.type], {
+        let res = await Http.get(Config.api.supDistributeQueryForAccept, {
           ...query,
+          src_storehouse_id: this.storehouseId,
           status: this.tabValue
         });
         this.$loading({isShow: false});
@@ -196,55 +184,6 @@
       changeTab(){
         let pc = this.getPageComponents('Query');
         this.getData(pc.query);
-      },
-      //处理表头(query组件也使用)
-      handleTableColumn(){
-        let { tableColumn, query } = this;
-        this.$data.dataItem = {
-          items: [],
-          num: 0
-        };
-        tableColumn = [];
-        //调拨
-        if(query.type === 'distribute'){
-          tableColumn = tableColumn.concat([
-            { label: '调拨单号', key: 'code', width: '3', isShow: true },
-            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-            { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
-            { label: '调拨数量', key: 'num', width: '2', isShow: true },
-            { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: false },
-            { label: '销售日期', key: 'available_date', width: '2', isShow: true },
-            { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
-          ]);
-        }else{
-        //采购
-          tableColumn = tableColumn.concat([
-            { label: '采购单号', key: 'code', width: '3', isShow: true },
-            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-            { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
-            { label: '采购数量', key: 'num', width: '2', isShow: true },
-            { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
-          ]);
-        }
-        tableColumn = tableColumn.concat([
-          { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '已收货', key: 'num_in', width: '2', isShow: true },
-          { label: '缺货', key: 'stockout', width: '2', isShow: true },
-          { label: '创建时间', key: 'created', width: '3', isShow: false },
-          { label: '更新时间', key: 'updated', width: '3', isShow: false }
-        ]);
-        this.$data.tableColumn = tableColumn;
-        this.$data.tabValue = 'audit_success';
-      },
-      //查看详情
-      tableShowDetail(data){
-        let { query } = this;
-        let detailPages = {
-          purchase: 'DetailP',
-          distribute: 'DetailD'
-        }
-        let pc = this.getPageComponents(detailPages[query.type]);
-        pc.showDetail(data);
       },
       handlePrint(item) {
         let temp = Lodop.tempGoodsCode(item);
@@ -261,15 +200,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import '@/share/scss/table.scss';
-  .local-pur-label{
-    background: #ff5252;
-    color: #fff;
-    font-size: 12px;
-    border-radius: 3px;
-    padding: 0 2px;
-    text-decoration: none !important;
-    margin-left: 5px;
-  }
 </style>
 <style lang="scss">
   @import '@/share/scss/table.global.scss';

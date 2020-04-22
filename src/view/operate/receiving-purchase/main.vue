@@ -45,7 +45,7 @@ import { GlobalStorehouse } from '@/component';
       }
     },
     created() {
-      documentTitle('场地 - 收货');
+      documentTitle('场地 - 品控收货 - 采购');
     },
     methods: {
       //选择仓后
@@ -59,7 +59,7 @@ import { GlobalStorehouse } from '@/component';
             if(pc) pc.getData(pc.query);
           });
         }else{
-          this.$data.storehouseId = data.code;
+          this.$data.storehouseId = data.id;
         }
       }
     }

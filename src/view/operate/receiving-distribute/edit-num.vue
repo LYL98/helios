@@ -127,7 +127,7 @@ export default {
         let pc = this.getPageComponents('DetailP');
         if(pc && pc.isShow) pc.fromSupplierOrderDetail();
 
-        pc = this.getPageComponents('DetailD');
+        pc = this.getPageComponents('Detail');
         if(pc && pc.isShow) pc.itemSupDistributeWaybillDetail();
 
         pc = this.getPageComponents('Table');

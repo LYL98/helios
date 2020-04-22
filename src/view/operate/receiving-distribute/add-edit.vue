@@ -2,35 +2,9 @@
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="inventoryData" :rules="rules" ref="ruleForm">
-        <!--采购、详情-->
-        <el-row v-if="judgeOrs(pageType, ['add_purchase', 'detail_purchase'])">
-          <h6 class="subtitle">采购信息</h6>
-          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
-          <el-col :span="12">
-            <el-form-item label="采购单号">{{detail.code}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="采购日期">{{detail.order_date}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="销售日期">{{detail.available_date}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="预计送达">{{detail.estimate_arrive_at}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="采购数量">{{detail.num}}件</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="可收货数量">{{detail.num - detail.num_in}}件</el-form-item>
-          </el-col>
-        </el-row>
 
         <!--调拨、详情-->
-        <el-row v-else-if="judgeOrs(pageType, ['add_distribute', 'detail_distribute'])">
+        <el-row>
           <h6 class="subtitle">调拨信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
           <el-col :span="12">
@@ -56,7 +30,7 @@
           </el-col>
         </el-row>
 
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_distribute'])">
+        <template v-if="judgeOrs(pageType, ['add_distribute'])">
           <h6 class="subtitle">品控信息</h6>
           <el-row>
             <el-col :span="12">
@@ -176,7 +150,7 @@
       </el-form>
 
       <div class="bottom-btn">
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_distribute'])">
+        <template v-if="judgeOrs(pageType, ['add_distribute'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">收 货</el-button>
         </template>
@@ -185,20 +159,6 @@
         </template>
       </div>
     </add-edit-layout>
-
-    <!--品控确认-->
-    <el-dialog title="品控确认" :visible="isShowAffirm" width="540px" :before-close="showHideAffirm">
-      <div class="t-c">
-        <div>{{pageType === 'add_distribute' ? '调拨' : '采购'}}数量：{{detail.num}}件，已收货：{{detail.num_in}}件</div>
-        <div style="margin: 6px 0 20px; color: #ff5252;">本次收货数量：{{pageType === 'add_distribute' ? inventoryData.num_arrive : inventoryData.num}}件，请确认</div>
-        <el-radio v-model="inventoryData.accept_type" label="after_no" border>后面不会来货了</el-radio>
-        <el-radio v-model="inventoryData.accept_type" label="after_have" border>后面会来货</el-radio>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click.native="showHideAffirm">取 消</el-button>
-        <el-button type="primary" @click.native="supInStockAdd">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -320,7 +280,6 @@ export default {
         detail_purchase: '品控详情',
         detail_distribute: '品控详情',
       },
-      isShowAffirm: false
     }
   },
   computed: {
@@ -400,42 +359,8 @@ export default {
         }
       }
     },
-    //显示或隐藏确认
-    showHideAffirm(){
-      this.$data.isShowAffirm = !this.isShowAffirm;
-    },
     //提交数据
-    addEditData(){
-      let { detail, inventoryData, pageType } = this;
-      let isAfterHave = false; //后面是否会来货
-      //采购
-      if(pageType === 'add_purchase' && detail.num !== inventoryData.num + detail.num_in){
-        isAfterHave = true;
-      }
-      //调拨 到货数量 + 已入库数量
-      if(pageType === 'add_distribute' && detail.num !== inventoryData.num_arrive + detail.num_in){
-        isAfterHave = true;
-      }
-      
-      if(isAfterHave){
-        this.$data.inventoryData.accept_type = 'after_have'; //后面会来货
-        this.showHideAffirm();
-      }else{
-        this.$messageBox.confirm(`${pageType === 'add_distribute' ? '调拨' : '采购'}数量:${detail.num}件、实际收货:${detail.num}件,确认收货后该采购单将 采购完成`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$data.inventoryData.accept_type = 'all_accept'; //全部收货
-          this.supInStockAdd();
-        }).catch(() => {
-          //console.log('取消');
-        });
-      }
-    },
-    //发送收货请求
-    async supInStockAdd(){
-      this.$data.isShowAffirm = false; //隐藏确认提示
+    async addEditData(){
       let { inventoryData } = this;
       this.$loading({isShow: true});
       let res = await Http.post(Config.api.supAcceptPurAdd, {
@@ -452,7 +377,7 @@ export default {
       }else{
         this.$message({message: res.message, type: 'error'});
       }
-    }
+    },
   },
 };
 </script>
