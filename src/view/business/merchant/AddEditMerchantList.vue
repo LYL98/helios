@@ -230,9 +230,16 @@
       //选择区域
       changProvince(){
         this.$data.detail.city_id = '';
+        this.$data.detail.geo.lng = '';
+        this.$data.detail.geo.lat = '';
+        this.$data.detail.geo.city_title = '';
+        this.$data.detail.geo.poi = '';
       },
       //选择县域
       changCity() {
+        this.$data.detail.geo.lng = '';
+        this.$data.detail.geo.lat = '';
+        this.$data.detail.geo.poi = '';
         if (arguments[0] !== "") {
           this.$refs['ruleForm'].clearValidate(['province']);
         }

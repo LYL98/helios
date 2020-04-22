@@ -205,7 +205,6 @@
       initLogic() {
 
         const {province_title, city_title, lng, lat} = this.$props.location;
-        console.log('location 变更: ', this.$props.location);
         // 如果中心点存在，则可以： 初始化地图、初始化中心点、根据中心点geo逆地理编码，再根据编码后的第一个地理位置获取poilist
         if (lng && lat) {
 

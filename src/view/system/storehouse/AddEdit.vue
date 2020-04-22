@@ -10,7 +10,7 @@
         <el-form-item label="所属区域" prop="province_code">
           <!-- 此处添加v-if 解决dialog 不关闭情况下，无法重新打开组件 sync province 的问题 -->
           <my-select-province v-if="isShow" size="medium" v-model="detail.province_code" nationwide
-                              :disabled="pageType === 'add' ? false : true" @sync="syncProvince"/>
+                              :disabled="pageType === 'add' ? false : true" @change="changeProvince" @sync="syncProvince"/>
         </el-form-item>
         <el-form-item label="地理位置" prop="geo">
           <my-location-picker :disabled="pageType === 'detail'" size="small" level="province" v-model="detail.geo" @change="changeGeo"></my-location-picker>
@@ -80,6 +80,13 @@
       syncProvince(province) {
         this.$set(this.$data.detail.geo, 'province_title', province.title);
       },
+
+      changeProvince() {
+        this.$data.detail.geo.lng = '';
+        this.$data.detail.geo.lat = '';
+        this.$data.detail.geo.poi = '';
+      },
+
       changeGeo() {
         this.$refs['ruleForm'].validateField('geo');
       },

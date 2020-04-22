@@ -8,7 +8,7 @@
       <el-input v-model="addEditData.title" :maxlength="10" placeholder="请输入门店名称"></el-input>
     </el-form-item>
     <el-form-item label="县域" prop="province" class="required">
-      <my-select-province style="width: 150px;" v-model="addEditData.province_code" :disabled="isEditStore" @sync="syncProvince"/>
+      <my-select-province style="width: 150px;" v-model="addEditData.province_code" :disabled="isEditStore" @change="changProvince" @sync="syncProvince"/>
       <my-select-city style="width: 200px;margin-left: 5px" v-model="addEditData.city_id" :provinceCode="addEditData.province_code"
                       @change="changeCity" :disabled="isEditStore || addEditData.province_code === ''" placeholder="请选择县域" @sync="syncCity"/>
     </el-form-item>
@@ -177,8 +177,33 @@
         this.$set(this.$data.addEditData.geo, 'city_title', city.title);
       },
 
+      //选择区域
+      changProvince(){
+        this.$data.addEditData.city_id = '';
+        this.$data.addEditData.geo.lng = '';
+        this.$data.addEditData.geo.lat = '';
+        this.$data.addEditData.geo.city_title = '';
+        this.$data.addEditData.geo.poi = '';
+      },
+
+      /**
+       * 在用户切换选择城市时，触发。
+       */
+      changeCity() {
+        this.$data.addEditData.geo.lng = '';
+        this.$data.addEditData.geo.lat = '';
+        this.$data.addEditData.geo.poi = '';
+        if (arguments[0] !== "") {
+          this.$refs['ruleForm'].clearValidate(['province']);
+        }
+      },
+
       changeGeo() {
         this.$refs['ruleForm'].validateField('geo');
+      },
+
+      changeImages() {
+        this.$refs['ruleForm'].validateField('images');
       },
 
       /**
@@ -192,26 +217,13 @@
         });
         if (res.code === 0) {
           let rd = res.data;
-          if (Object.keys(rd.geo).length === 0) {
+          if (!rd.geo || Object.keys(rd.geo).length === 0) {
             rd.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
           }
           that.$data.addEditData = rd;
         } else {
           Message.warning(res.message);
         }
-      },
-
-      /**
-       * 在用户切换选择城市时，触发。
-       */
-      changeCity() {
-        if (arguments[0] !== "") {
-          this.$refs['ruleForm'].clearValidate(['province']);
-        }
-      },
-
-      changeImages() {
-        this.$refs['ruleForm'].validateField('images');
       },
 
       //修改门店
