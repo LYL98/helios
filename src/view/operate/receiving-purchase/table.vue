@@ -145,10 +145,10 @@
       //处理权限
       let { auth, pageAuth } = this;
       this.$data.pageAuth  = {
-        add: auth.isAdmin || auth.OperateReceivingAdd,
-        detail: auth.isAdmin || auth.OperateReceivingDetail,
-        close: auth.isAdmin || auth.OperateReceivingClose,
-        print: auth.isAdmin || auth.OperateReceivingPrint
+        add: auth.isAdmin || auth.OperateReceivingPurchaseAdd,
+        detail: auth.isAdmin || auth.OperateReceivingPurchaseDetail,
+        close: auth.isAdmin || auth.OperateReceivingPurchaseClose,
+        print: auth.isAdmin || auth.OperateReceivingPurchasePrint
       }
       let pc = this.getPageComponents('Query');
       this.getData(pc.query);

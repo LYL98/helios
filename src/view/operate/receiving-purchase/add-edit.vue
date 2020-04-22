@@ -178,7 +178,7 @@ export default {
       - shelf_life: 保质期
       - stock_life: 库存期
       - remark:
-      in_type: 'pur'
+      order_type: 'pur'
       accept_type:
         * all_accept: 全部收货
        * after_no: 后面不会来货了
@@ -188,7 +188,7 @@ export default {
       province_code: this.$province.code,
       produce_date: '',
       produce_date_disabled: false,
-      in_type: '',
+      order_type: 'pur',
       accept_type: '',
       relate_order_id: '',
       num_arrive: '',
@@ -275,7 +275,7 @@ export default {
         produce_date_disabled: data.produce_date ? true : false,
         shelf_life: data.shelf_life,
         stock_life: data.stock_life,
-        in_type: 'pur'
+        order_type: 'pur'
       });
       this.supPItemDetail();
       this.$data.isShow = true;
@@ -331,10 +331,7 @@ export default {
       this.$data.isShowAffirm = false; //隐藏确认提示
       let { inventoryData } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supAcceptPurAdd, {
-        ...inventoryData,
-        order_type: inventoryData.in_type, //仓库用: in_type，场地用：order_type
-      });
+      let res = await Http.post(Config.api.supAcceptPurAdd, inventoryData);
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '收货成功', type: 'success'});

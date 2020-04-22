@@ -431,6 +431,19 @@ const Constant = {
     part_in: 'info',
     closed: 'info'
   },
+  // 场地 - 品控收货 - 调拨
+  DISTRIBUTE_RECEIVE_STATUS: (type) => {
+    let data = [
+      { key: 'init', value: '待收货' },
+      { key: 'all_in', value: '已收货' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  // 场地 - 品控收货 - 调拨(颜色)
+  DISTRIBUTE_RECEIVE_STATUS_TYPE: {
+    init: 'primary',
+    all_in: 'regular'
+  },
   //调拨单状态
   DISTRIBUTE_STATUS: (type)=>{
     let data = [
