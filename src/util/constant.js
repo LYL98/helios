@@ -414,7 +414,7 @@ const Constant = {
   DISTRIBUTE_WAYBILL_STATUS: (type) => {
     let data = [
       { key: 'init', value: '待装车' },
-      { key: 'sorting', value: '待发车' },
+      { key: 'wait_delivery', value: '待发车' },
       { key: 'deliveried', value: '待收货' },
       { key: 'part_in', value: '部分收货' },
       { key: 'all_in', value: '已完成' },
@@ -425,7 +425,7 @@ const Constant = {
   // 调拨单状态(颜色)
   DISTRIBUTE_WAYBILL_STATUS_TYPE: {
     init: 'primary',
-    sorting: 'warning',
+    wait_delivery: 'warning',
     deliveried: 'regular',
     all_in: 'success',
     part_in: 'info',

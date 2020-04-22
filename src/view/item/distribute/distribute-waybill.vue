@@ -121,12 +121,12 @@
                 :list="[
                   {
                     title: '修改',
-                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.ItemSupDistributeWaybillModify),
+                    isDisplay: (scope.row.status === 'init' || scope.row.status === 'wait_delivery') && ($auth.isAdmin || $auth.ItemSupDistributeWaybillModify),
                     command: () => handleModifyItem(scope.row)
                   },
                   {
                     title: '关闭',
-                    isDisplay: scope.row.status === 'init' && ($auth.isAdmin || $auth.ItemSupDistributeWaybillClose),
+                    isDisplay: (scope.row.status === 'init' || scope.row.status === 'wait_delivery') && ($auth.isAdmin || $auth.ItemSupDistributeWaybillClose),
                     command: () => handleCloseItem(scope.row.id)
                   },
                   {
