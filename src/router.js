@@ -268,19 +268,24 @@ const router = new Router({
       component: () => import('@/view/operate/item/sup-stock')
     },
     {
-      path: '/operate/sort',
-      name: 'OperateSort',
-      component: () => import('@/view/operate/sort/Main')
+      path: '/operate/print-order',
+      name: 'OperatePrintOrder',
+      component: () => import('@/view/operate/print-order/main')
     },
     {
       path: '/operate/truck/load',
       name: 'OperateTruckLoad',
-      component: () => import('@/view/operate/truckLoad/Main')
+      component: () => import('@/view/operate/truck-load/main')
+    },
+    {
+      path: '/operate/truck-load-progress',
+      name: 'OperateTruckLoadProgress',
+      component: () => import('@/view/operate/truck-load-progress/main')
     },
     {
       path: '/operate/truck/load/delay',
       name: 'OperateTruckLoadDelay',
-      component: () => import('@/view/operate/truckLoadDelay/Main')
+      component: () => import('@/view/operate/truck-load-delay/main')
     },
     {
       path: '/operate/depart',

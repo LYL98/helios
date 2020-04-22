@@ -19,6 +19,7 @@ export default {
     value: { type: Number | Object, default: null }, //如果 === null,没传值，类型 === String,已传值
     filterable: { type: Boolean, default: false },
     size: { type: String, default: 'small' },
+    showNationwide: { type: Boolean, default: true }, //是否显示全国仓
     change: { type: Function },
     initCallBack: { type: Function }
   },
@@ -74,6 +75,10 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
+        //不显示全国仓
+        if(!this.showNationwide){
+          rd = rd.filter(item => item.province_code !== 'nationwide');
+        }
         this.$data.dataItem = rd;
         //如果没有仓
         if(rd.length === 0){
@@ -82,8 +87,13 @@ export default {
         }
         let p = this.$province;
         let s = this.$storehouse;
-        //如果已选择过仓
+        let judge = false;
         if(s && s.id){
+          let slist = rd.filter(item => item.id === s.id);
+          if(slist.length > 0) judge = true;
+        }
+        //如果已选择过仓
+        if(s && s.id && judge){
           this.changeStorehouse(s, 'init');
         }
         //否则如果选了省

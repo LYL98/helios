@@ -1,28 +1,25 @@
 <template>
-  <detail-layout title="商品分配详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <div>
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <el-form-item label="商品编号/名称">
-        {{detail.code}}/{{detail.title}}
-        <span class="label-hint" v-if="detail.after">还会来货</span>
+        {{item.code}}/{{item.title}}
+        <span class="label-hint" v-if="item.after">还会来货</span>
       </el-form-item>
       <el-row>
         <el-col :span="6">
-          <el-form-item label="应出">{{returnUnit(detail.count_real, '件', '-')}}</el-form-item>
+          <el-form-item label="应出">{{item.count_real ? item.count_real + '件' : '-'}}</el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="入场">{{returnUnit(detail.num, '件', '-')}}</el-form-item>
+          <el-form-item label="分配">{{item.allocated_num ? item.allocated_num + '件' : '-'}}</el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="分配">{{returnUnit(detail.allocated_num, '件', '-')}}</el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item label="装车">{{returnUnit(detail.sort_num, '件', '-')}}</el-form-item>
+          <el-form-item label="装车">{{item.sort_num ? item.sort_num + '件' : '-'}}</el-form-item>
         </el-col>
       </el-row>
     </el-form>
     
     <div style="padding: 0 30px;">
-      <el-table :data="dataItem" :row-class-name="highlightRowClassName" border>
+      <el-table :data="item.items" :row-class-name="highlightRowClassName" border>
         <el-table-column label="线路" width="160">
           <template slot-scope="scope">{{scope.row.line_id}}/{{scope.row.line_title}}</template>
         </el-table-column>
@@ -55,9 +52,9 @@
             <template slot-scope="scope">
               <div v-for="c in scope.row.cities" :key="scope.row.line_id + c.city_id" class="citie-item">
                 <div>
-                  <span class="sort-num">{{c.out_stocks[index].sort_num || '-'}}</span>
+                  <span class="sort-num">{{c.batches[index].sort_num || '-'}}</span>
                   <span>&nbsp;/&nbsp;</span>
-                  <span class="allocate-num">{{c.out_stocks[index].num || '-'}}</span>
+                  <span class="allocate-num">{{c.batches[index].num || '-'}}</span>
                 </div>
               </div>
             </template>
@@ -71,13 +68,8 @@
                 :list="[
                   {
                     title: '详情',
-                    isDisplay: auth.isAdmin || auth.OperateSortDetailCity,
-                    command: () => handleShowDetail('DetailOperateSortCity', {
-                      ...item,
-                      item_id: detail.id,
-                      city_id: item.city_id,
-                      delivery_date: detail.delivery_date
-                    })
+                    isDisplay: $auth.isAdmin || $auth.OperatePrintOrderDetailCity,
+                    command: () => handleShowDetailCity(item)
                   }
                 ]"
               />
@@ -86,42 +78,65 @@
         </el-table-column>
       </el-table>
     </div>
-    <!---->
-    <div></div>
-  </detail-layout>
+    <el-dialog
+      :title="returnTitle"
+      :visible.sync="dialog.visible"
+      width="600px"
+      append-to-body
+    >
+      <detail-city v-if="dialog.visible" :list="dialog.list" @cancel="handleCancel" />
+    </el-dialog>
+    
+  </div>
 </template>
 
 <script>
   import { TableOperate } from '@/common';
-  import detailMixin from '@/share/mixin/detail.mixin';
-  import { Http, Config, Constant } from '@/util';
+  import { Form, FormItem, Row, Col, Table, TableColumn, Dialog, Button } from "element-ui";
+  import { InputNumber, SelectOption } from '@/common';
+  import { Http, Config } from '@/util';
+  import detailCity from './detail-city';
 
   export default {
-    name: "DetailOperateSort",
-    mixins: [detailMixin],
+    name: "detail",
     components: {
-      'my-table-operate': TableOperate
+      'el-form': Form,
+      'el-form-item': FormItem,
+      'el-row': Row,
+      'el-col': Col,
+      'el-table': Table,
+      'el-dialog': Dialog,
+      'el-table-column': TableColumn,
+      'el-button': Button,
+      'my-table-operate': TableOperate,
+      'detail-city': detailCity
+    },
+    props: {
+      item: { type: Object, default: { items: [] } },
     },
     data() {
-      let initDetail = {
-        allocates: [],
-        out_stock: {},
-        creator: {}
-      }
       return {
-        initDetail: initDetail,
-        detail: this.copyJson(initDetail),
-        dataItem: []
+        dialog: {
+          visible: false,
+          list: []
+        },
       }
     },
     computed: {
+      //标题
+      returnTitle(){
+        let { dialog } = this;
+        let t = (dialog.city_id || '') + '/';
+        t += (dialog.city_title || '') + ' - 门店详情';
+        return t;
+      },
       //批数量
       batchNum(){
-        let { dataItem } = this;
-        if(dataItem.length === 0) return 0;
-        if(dataItem[0].cities.length === 0) return 0;
-        if(dataItem[0].cities[0].out_stocks.length === 0) return 0;
-        return dataItem[0].cities[0].out_stocks.length;
+        let { item } = this;
+        if(item.items.length === 0) return 0;
+        if(item.items[0].cities.length === 0) return 0;
+        if(item.items[0].cities[0].batches.length === 0) return 0;
+        return item.items[0].cities[0].batches.length;
       },
     },
     methods: {
@@ -135,42 +150,50 @@
         }
         return '';
       },
-      //显示新增修改(重写mixin)
-      showDetail(data){
-        this.$data.dataItem = [];
-        this.$data.detail = this.copyJson(data);
-        this.supAllocateDetail();
+      /**
+     * 斑马线的背景颜色样式
+     */
+      highlightRowClassName({row, rowIndex}) {
+        if (rowIndex % 2 == 0) {
+          return 'stripe-row';
+        } else if (rowIndex % 2 != 0) {
+          return 'default-row'
+        }
+        return '';
       },
-      //获取明细列表
-      async supAllocateDetail(){
-        let { detail } = this;
+
+      async handleShowDetailCity(data){
+        let { item } = this;
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supAllocateDetail, {
-          item_id: detail.id,
-          delivery_date: detail.delivery_date
+        let res = await Http.get(Config.api.supAllocateCityDetail, {
+          item_id: item.id,
+          delivery_date: item.delivery_date,
+          city_id: data.city_id
         });
         this.$loading({isShow: false});
-        if(res.code === 0){
-          let rd = res.data;
-          this.$data.dataItem = rd;
-          this.$data.isShow = true;
-        }else{
-          this.$message({message: res.message, type: 'error'});
+        if (res.code === 0) {
+          this.$data.dialog = {
+            city_id: data.city_id,
+            city_title: data.city_title,
+            visible: true,
+            list: res.data
+          };
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+
+      handleCancel(){
+        this.$data.dialog = {
+          visible: false,
+          list: []
+        }
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  @import "@/share/scss/detail.scss";
-  .label-hint{
-    border: 1px solid #ff5252;
-    color: #ff5252;
-    border-radius: 3px;
-    padding: 0 2px;
-    font-size: 12px;
-  }
   .citie-item{
     position: relative;
     padding-bottom: 8px;
@@ -220,10 +243,5 @@
       color: #ff5252;
       font-weight: bold;
     }
-  }
-</style>
-<style lang="scss">
-  .el-table th.sort-head{
-    padding: 2px 0;
   }
 </style>

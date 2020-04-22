@@ -307,14 +307,19 @@ const Config = (() => {
       //场地品控收货(共用)
       supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
 
-      supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
-      supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情
-
+      
       //分配
       supOutAllocateQuery: apiM + '/sup_out/allocate_query', //待分配记录查询
       supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
 
+      //打单
+      supItemQueryForPrint: apiM + '/sup_item/query_for_print', //配送装车的打印功能-查询
+      supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
+      supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情
       supAllocateDetailPrint: apiM + '/sup_allocate/detail_print', //打印
+
+      //装车进度
+      supOutAllocateLoadingQuery: apiM + '/sup_out/allocate_loading_query', //场地装车进度查询
 
       //装车延时
       supAllocateDelaySortQuery: apiM + '/sup_allocate/delay_sort_query', //装车延时

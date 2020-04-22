@@ -308,14 +308,19 @@
           "type": "main",
           "children": [
             {
-              "title": "分配",
+              "title": "打单",
               "upName": "OperateTruckLoadMain",
-              "name": "OperateSort"
+              "name": "OperatePrintOrder"
             },
             {
               "title": "装车",
               "upName": "OperateTruckLoadMain",
               "name": "OperateTruckLoad"
+            },
+            {
+              "title": "装车进度",
+              "upName": "OperateTruckLoadMain",
+              "name": "OperateTruckLoadProgress"
             },
             {
               "title": "装车延时",
