@@ -27,13 +27,11 @@
   import DetailOperateTruckLoad from './DetailOperateTruckLoad';
   import FormOperateTruckLoadEditNum from './FormOperateTruckLoadEditNum';
   import { GlobalStorehouse, GlobalDeliveryDate } from '@/component';
-  import MenuQuery from '@/view/operate/sort/MenuQuery';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Main',
     components: {
-      'menu-query': MenuQuery,
       'query-operate-tuck-load': QueryOperateTruckLoad,
       'table-operate-tuck-load': TableOperateTruckLoad,
       'form-operate-tuck-load-affirm': FormOperateTruckLoadAffirm,
