@@ -29,39 +29,12 @@
           </el-col>
         </el-row>
 
-        <!--调拨、详情-->
-        <el-row v-else-if="judgeOrs(pageType, ['add_distribute', 'detail_distribute'])">
-          <h6 class="subtitle">调拨信息</h6>
-          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
-          <el-col :span="12">
-            <el-form-item label="调拨单号">{{detail.code}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="调出仓">{{detail.src_storehouse.title}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="销售日期">{{detail.available_date}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="预计送达">{{detail.estimate_arrive_at}}</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="可收货数量">{{detail.num - detail.num_arrive}}件</el-form-item>
-          </el-col>
-        </el-row>
-
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_distribute'])">
+        <template v-if="judgeOrs(pageType, ['add_purchase'])">
           <h6 class="subtitle">品控信息</h6>
           <el-row>
             <el-col :span="12">
               <el-form-item label="到货数量" prop="num_arrive">
-                <input-number size="medium" :min="1" v-model="inventoryData.num_arrive" unit="件"/>
+                <input-number size="medium" :min="0" v-model="inventoryData.num_arrive" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -76,7 +49,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="合格数量" prop="num">
-                <input-number size="medium" :min="pageType === 'add_distribute' ? 0 : 1" v-model="inventoryData.num" unit="件"/>
+                <input-number size="medium" :min="0" v-model="inventoryData.num" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">
@@ -105,33 +78,6 @@
               </el-form-item>
             </el-col>
           </el-row>
-
-          <!--调拨，不合格商品处理-->
-          <template v-if="isShowNo">
-            <h6 class="subtitle">不合格商品处理</h6>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="处理数量">
-                  <input-number size="medium" disabled :value="inventoryData.un_qa_num" unit="件"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="处理类型" prop="un_qa_type">
-                  <select-option
-                    size="medium"
-                    placeholder="请选择处理类型"
-                    v-model="inventoryData.un_qa_type"
-                    :options="supOptTypes"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col :span="12" v-if="judgeOrs(inventoryData.un_qa_type, ['damage_sale', 'sale_offline'])">
-                <el-form-item label="处理金额" prop="un_qa_amount">
-                  <input-price size="medium" v-model="inventoryData.un_qa_amount" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </template>
 
           <el-form-item label="备注" prop="remark">
             <el-input v-model="inventoryData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
@@ -176,7 +122,7 @@
       </el-form>
 
       <div class="bottom-btn">
-        <template v-if="judgeOrs(pageType, ['add_purchase', 'add_distribute'])">
+        <template v-if="judgeOrs(pageType, ['add_purchase'])">
           <el-button size="medium" @click.native="handleCancel">取 消</el-button>
           <el-button size="medium" type="primary" @click.native="handleAddEdit">收 货</el-button>
         </template>
@@ -189,8 +135,8 @@
     <!--品控确认-->
     <el-dialog title="品控确认" :visible="isShowAffirm" width="540px" :before-close="showHideAffirm">
       <div class="t-c">
-        <div>{{pageType === 'add_distribute' ? '调拨' : '采购'}}数量：{{detail.num}}件，已收货：{{detail.num_in}}件</div>
-        <div style="margin: 6px 0 20px; color: #ff5252;">本次收货数量：{{pageType === 'add_distribute' ? inventoryData.num_arrive : inventoryData.num}}件，请确认</div>
+        <div>采购数量：{{detail.num}}件，已收货：{{detail.num_in}}件</div>
+        <div style="margin: 6px 0 20px; color: #ff5252;">本次收货数量：{{inventoryData.num}}件，请确认</div>
         <el-radio v-model="inventoryData.accept_type" label="after_no" border>后面不会来货了</el-radio>
         <el-radio v-model="inventoryData.accept_type" label="after_have" border>后面会来货</el-radio>
       </div>
@@ -208,16 +154,13 @@ import { Http, Config, Constant } from '@/util';
 import { InputNumber, InputPrice, SelectOption, ImagePreview } from '@/common';
 
 export default {
-  name: "AddEditWarehouseQualityControl",
+  name: "AddEdit",
   mixins: [addEditMixin],
   components: {
     'input-number': InputNumber,
     'input-price': InputPrice,
     'select-option': SelectOption,
     'image-preview': ImagePreview,
-  },
-  props: {
-    fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
   },
   created() {
   },
@@ -234,11 +177,8 @@ export default {
 
       - shelf_life: 保质期
       - stock_life: 库存期
-      - un_qa_num: 不合格处理数量
-      - un_qa_type: 不合格商品处理类型 damage/damage_sale/sale_offline
       - remark:
-      - un_qa_amount:
-      in_type: 两种枚举类型:pur, distribute。其中 pur 表示采购，distribute表示调拨
+      in_type: 'pur'
       accept_type:
         * all_accept: 全部收货
        * after_no: 后面不会来货了
@@ -255,21 +195,13 @@ export default {
       num: '',
       shelf_life: null,
       stock_life: null,
-      un_qa_num: 0,
-      un_qa_type: '',
-      un_qa_amount: 0,
       remark: '',
     }
 
     //到货数量校验
     const validNumArrive = (rules, value, callback)=>{
-      let { detail, pageType } = this;
-      //采购
-      if(pageType === 'add_purchase' && Number(value) > detail.num - detail.num_in) {
-        return callback(new Error('不能大于可收货数量'));
-      }
-      //调拨 到货数量 + 已入库数量
-      if(pageType === 'add_distribute' && Number(value) > detail.num - detail.num_arrive) {
+      let { detail } = this;
+      if(Number(value) > detail.num - detail.num_in) {
         return callback(new Error('不能大于可收货数量'));
       }
       callback();
@@ -311,29 +243,18 @@ export default {
           { required: true, message: '请输入合格数量', trigger: 'change' },
           { validator: validNum, trigger: 'blur' }
         ],
-        un_qa_type: { required: true, message: '请选择处理类型', trigger: 'change' },
-        un_qa_amount: { required: true, message: '请输入处理金额', trigger: 'change' },
         remark: [
           { required: true, message: '请输入备注', trigger: 'change' }
         ],
       },
       pageTitles: {
         add_purchase: '品控',
-        add_distribute: '品控',
         detail_purchase: '品控详情',
-        detail_distribute: '品控详情',
       },
       isShowAffirm: false
     }
   },
   computed: {
-    //处理类型
-    supOptTypes(){
-      let d = Constant.SUP_OPT_TYPES('value_key');
-      delete d['退货入库']; //删除退货入库
-      delete d['退货给供应商']; //删除退货给供应商
-      return d;
-    },
     //库存期、保质期禁用
     lifeDesabled(){
       let { itemData, detail } = this;
@@ -341,39 +262,12 @@ export default {
       if(itemData.fisrt_system_class.has_produce_date) return true;
       return false;
     },
-    //是否显示不合格处理
-    isShowNo(){
-      let { inventoryData, detail, pageType } = this;
-      //到货数量小于或等于可到货数量 && 到货数量大于合格数量
-      if(pageType === 'add_distribute' &&
-        typeof inventoryData.num_arrive === 'number' && typeof inventoryData.num === 'number' &&
-        inventoryData.num_arrive <= detail.num - detail.num_in &&
-        inventoryData.num_arrive > inventoryData.num){
-          inventoryData.un_qa_num = inventoryData.num_arrive - inventoryData.num;
-          inventoryData.un_qa_type = '';
-          inventoryData.un_qa_amount = null;
-          this.$data.inventoryData = inventoryData;
-        return true;
-      }
-      inventoryData.un_qa_num = 0;
-      inventoryData.un_qa_type = '';
-      inventoryData.un_qa_amount = 0;
-      this.$data.inventoryData = inventoryData;
-      return false;
-    }
   },
   methods: {
     //显示新增修改(重写) (数据，类型)
     showAddEdit(data, type){
-      this.$data.isShowNo = false;
       this.$data.pageType = type;
       this.$data.detail = data;
-      let inTypes = {
-        add_purchase: 'pur',
-        add_distribute: 'distribute',
-        detail_purchase: 'pur',
-        detail_distribute: 'distribute',
-      }
       this.$data.inventoryData = this.copyJson({
         ...this.initInventoryData,
         relate_order_id: data.id,
@@ -381,7 +275,7 @@ export default {
         produce_date_disabled: data.produce_date ? true : false,
         shelf_life: data.shelf_life,
         stock_life: data.stock_life,
-        in_type: inTypes[type]
+        in_type: 'pur'
       });
       this.supPItemDetail();
       this.$data.isShow = true;
@@ -411,12 +305,8 @@ export default {
     addEditData(){
       let { detail, inventoryData, pageType } = this;
       let isAfterHave = false; //后面是否会来货
-      //采购
-      if(pageType === 'add_purchase' && detail.num !== inventoryData.num + detail.num_in){
-        isAfterHave = true;
-      }
-      //调拨 到货数量 + 已入库数量
-      if(pageType === 'add_distribute' && detail.num !== inventoryData.num_arrive + detail.num_in){
+ 
+      if(detail.num !== inventoryData.num + detail.num_in){
         isAfterHave = true;
       }
       
@@ -424,7 +314,7 @@ export default {
         this.$data.inventoryData.accept_type = 'after_have'; //后面会来货
         this.showHideAffirm();
       }else{
-        this.$messageBox.confirm(`${pageType === 'add_distribute' ? '调拨' : '采购'}数量:${detail.num}件、实际收货:${detail.num}件,确认收货后该采购单将 采购完成`, '提示', {
+        this.$messageBox.confirm(`采购数量:${detail.num}件、实际收货:${detail.num}件,确认收货后该采购单将 采购完成`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -439,13 +329,9 @@ export default {
     //发送收货请求
     async supInStockAdd(){
       this.$data.isShowAffirm = false; //隐藏确认提示
-      let { inventoryData, fromPage } = this;
+      let { inventoryData } = this;
       this.$loading({isShow: true});
-      let apis = {
-        QualityControl: Config.api.supInStockAdd,
-        Receiving: Config.api.supAcceptAdd
-      }
-      let res = await Http.post(apis[fromPage], {
+      let res = await Http.post(Config.api.supAcceptPurAdd, {
         ...inventoryData,
         order_type: inventoryData.in_type, //仓库用: in_type，场地用：order_type
       });
@@ -454,7 +340,7 @@ export default {
         this.$message({message: '收货成功', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据(列表)
-        let pc = this.getPageComponents('TableWarehouseQualityControl');
+        let pc = this.getPageComponents('Table');
         pc.getData(pc.query);
       }else{
         this.$message({message: res.message, type: 'error'});

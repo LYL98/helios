@@ -127,7 +127,7 @@
         }
         this.$data.query = query; //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supDistributeQuery, {...query, status: this.$data.status});
+        let res = await Http.get(Config.api.itemSupDistributeWaybillQuery, {...query, status: this.$data.status});
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.dataItem = res.data;

@@ -68,10 +68,10 @@
       </template>
     </el-form>
 
-    <template v-if="detail.instocks.length > 0">
+    <template v-if="detail.out_stocks.length > 0">
       <h6 class="subtitle">品控记录</h6>
       <div style="padding: 0 30px;">
-        <el-table :data="detail.instocks" :row-class-name="highlightRowClassName">
+        <el-table :data="detail.out_stocks" :row-class-name="highlightRowClassName">
           <el-table-column label="到货数量" width="90">
             <template slot-scope="scope">{{scope.row.num_arrive}}件</template>
           </el-table-column>
@@ -81,7 +81,7 @@
           <el-table-column label="合格数量" width="120">
             <template slot-scope="scope">
               <span>{{scope.row.num}}件</span>
-              <a v-if="editAuth(scope.row)" style="margin-left: 10px;" href="javascript:void(0);" @click="handleShowForm('FormWarehouseQualityControlEditNum', scope.row)">修改</a>
+              <a v-if="editAuth(scope.row)" style="margin-left: 10px;" href="javascript:void(0);" @click="handleShowForm('FormEditNum', scope.row)">修改</a>
             </template>
           </el-table-column>
           <el-table-column label="备注" prop="remark"></el-table-column>
@@ -102,18 +102,15 @@
   import { Http, Config, Constant } from '@/util';
 
   export default {
-    name: "DetailWarehouseQualityControlP",
+    name: "Detail",
     mixins: [detailMixin],
     components: {
-    },
-    props: {
-      fromPage: { type: String, default: '' }, //Receiving 场地收货  QualityControl 仓库入库
     },
     data() {
       let initDetail = {
         supplier: {},
         storehouse: {},
-        instocks: []
+        out_stocks: []
       }
       return {
         qCStatus: Constant.Q_C_STATUS(),
@@ -160,11 +157,8 @@
       },
       //修改权限
       editAuth(data){
-        let { fromPage, auth } = this;
-        if(fromPage === 'Receiving' && data.allocator_id === 0 && (auth.isAdmin || auth.OperateReceivingEditNum)){
-          return true;
-        }
-        if(fromPage === 'QualityControl' && data.status === 'success' && (auth.isAdmin || auth.WarehouseQualityControlEditNum)){
+        let { auth } = this;
+        if(data.allocator_id === 0 && (auth.isAdmin || auth.OperateReceivingEditNum)){
           return true;
         }
       }

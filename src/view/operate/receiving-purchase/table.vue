@@ -24,7 +24,7 @@
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
                 <div v-if="pageAuth.detail"
-                  class="td-item link-item add-dot2" @click="tableShowDetail(scope.row)">
+                  class="td-item link-item add-dot2" @click="handleShowDetail('Detail', scope.row)">
                   <span>{{scope.row.code}}</span>
                   <span v-if="scope.row.creator_id === 0" class="local-pur-label">反采</span>
                 </div>
@@ -63,26 +63,26 @@
                 {
                   title: '品控',
                   isDisplay: pageAuth.add && judgeOrs(scope.row.status, ['audit_success', 'part_in']),
-                  command: () => handleShowAddEdit('AddEditWarehouseQualityControl', scope.row, 'add_' + query.type)
+                  command: () => handleShowAddEdit('AddEdit', scope.row, 'add_purchase')
                 },
                 {
                   title: '打印',
                   isDisplay: pageAuth.print && scope.row.status !== 'closed',
-                  command: () => handlePrint({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: query.type === 'purchase' ? 'pur' : 'distribute'})
+                  command: () => handlePrint({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: 'pur'})
                 },
                 {
                   title: '打印预览',
                   isDisplay: pageAuth.print && scope.row.status !== 'closed',
-                  command: () => handlePrintPreview({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: query.type === 'purchase' ? 'pur' : 'distribute'})
+                  command: () => handlePrintPreview({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: 'pur'})
                 },
                 {
                   title: '详情',
                   isDisplay: pageAuth.detail,
-                  command: () => tableShowDetail(scope.row)
+                  command: () => handleShowDetail('Detail', scope.row)
                 },
                 {
                   title: '关闭',
-                  isDisplay: pageAuth.close && query.type === 'purchase' && judgeOrs(scope.row.status, ['audit_success', 'part_in']),
+                  isDisplay: pageAuth.close && judgeOrs(scope.row.status, ['audit_success', 'part_in']),
                   command: () => handleShowForm('FormClose', {
                     id: scope.row.id,
                     close_hint: '是否确认关闭采购单，如是，请填写关闭采购单的原因'
@@ -111,44 +111,47 @@
   import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
-    name: 'TableWarehouseQualityControl',
+    name: 'Table',
     components: {
       'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     props: {
-      fromPage: { type: String, default: 'QualityControl' }, //仓库品控 QualityControl，场地品控 Receiving
+      storehouseId: { type: String | Number, default: '' }
     },
     data() {
       return {
         tabValue: 'audit_success',
+        qCStatusTab: Constant.Q_C_STATUS('value_key'),
         qCStatus: Constant.Q_C_STATUS(),
         qCStatusType: Constant.Q_C_STATUS_TYPE,
-        tableName: 'TableWarehouseQualityControl',
-        tableColumn: [],
+        tableName: 'Table',
+        tableColumn: [
+          { label: '采购单号', key: 'code', width: '3', isShow: true },
+          { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+          { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
+          { label: '采购数量', key: 'num', width: '2', isShow: true },
+          { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true },
+          { label: '已收货', key: 'num_in', width: '2', isShow: true },
+          { label: '缺货', key: 'stockout', width: '2', isShow: true },
+          { label: '创建时间', key: 'created', width: '3', isShow: false },
+          { label: '更新时间', key: 'updated', width: '3', isShow: false }
+        ],
         pageAuth: {}
       }
     },
     created() {
-      this.handleTableColumn();
-      //仓库品控、来自场地 初始化在query组件
-
       //处理权限
-      let { fromPage, auth, pageAuth } = this;
+      let { auth, pageAuth } = this;
       this.$data.pageAuth  = {
-        add: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlAdd)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingAdd)),
-        detail: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlDetail)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingDetail)),
-        close: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlClose)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingClose)),
-        print: (fromPage === 'QualityControl' && (auth.isAdmin || auth.WarehouseQualityControlPrint)) || (fromPage === 'Receiving' && (auth.isAdmin || auth.OperateReceivingPrint))
+        add: auth.isAdmin || auth.OperateReceivingAdd,
+        detail: auth.isAdmin || auth.OperateReceivingDetail,
+        close: auth.isAdmin || auth.OperateReceivingClose,
+        print: auth.isAdmin || auth.OperateReceivingPrint
       }
-    },
-    computed: {
-      //tab状态
-      qCStatusTab(){
-        let d = Constant.Q_C_STATUS('value_key');
-        if(this.query.type === 'distribute') delete d['关闭'];
-        return d;
-      }
+      let pc = this.getPageComponents('Query');
+      this.getData(pc.query);
     },
     methods: {
       //key
@@ -157,39 +160,18 @@
       },
       //返回缺货
       returnStockout(data){
-        //调拨
-        if(this.query.type === 'distribute'){
-          if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_arrive <= 0 || data.num_arrive >= data.num){
-            return '-';
-          }
-          return (data.num - data.num_arrive) + '件';
-        }else{
-          if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_in <= 0 || data.num_in >= data.num){
-            return '-';
-          }
-          return (data.num - data.num_in) + '件';
+        if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_in <= 0 || data.num_in >= data.num){
+          return '-';
         }
-
+        return (data.num - data.num_in) + '件';
       },
       //获取数据
-      async getData(query, type){
-        if(query.type !== this.query.type || type === 'clear'){
-          this.$data.query = this.copyJson(query); //赋值，minxin用
-          this.handleTableColumn();
-        }else{
-          this.$data.query = this.copyJson(query); //赋值，minxin用
-        }
-        let apis = {
-          purchase: Config.api.supPurchaseQuery,
-          distribute: Config.api.supDistributeQuery
-        }
-        //来自场地页面
-        if(this.fromPage === 'Receiving'){
-          apis.purchase = Config.api.supPurchaseQueryForAccept;
-        }
+      async getData(query){
+        this.$data.query = this.copyJson(query); //赋值，minxin用
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(apis[query.type], {
+        let res = await Http.get(Config.api.supPurchaseQueryForAccept, {
           ...query,
+          storehouse_id: this.storehouseId,
           status: this.tabValue
         });
         this.$loading({isShow: false});
@@ -201,57 +183,8 @@
       },
       //切换记录tab
       changeTab(){
-        let pc = this.getPageComponents('QueryWarehouseQualityControl');
+        let pc = this.getPageComponents('Query');
         this.getData(pc.query);
-      },
-      //处理表头(query组件也使用)
-      handleTableColumn(){
-        let { tableColumn, query } = this;
-        this.$data.dataItem = {
-          items: [],
-          num: 0
-        };
-        tableColumn = [];
-        //调拨
-        if(query.type === 'distribute'){
-          tableColumn = tableColumn.concat([
-            { label: '调拨单号', key: 'code', width: '3', isShow: true },
-            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-            { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
-            { label: '调拨数量', key: 'num', width: '2', isShow: true },
-            { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: false },
-            { label: '销售日期', key: 'available_date', width: '2', isShow: true },
-            { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
-          ]);
-        }else{
-        //采购
-          tableColumn = tableColumn.concat([
-            { label: '采购单号', key: 'code', width: '3', isShow: true },
-            { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
-            { label: '供应商', key: 'supplier_title', width: '3', isShow: true },
-            { label: '采购数量', key: 'num', width: '2', isShow: true },
-            { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true }
-          ]);
-        }
-        tableColumn = tableColumn.concat([
-          { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '已收货', key: 'num_in', width: '2', isShow: true },
-          { label: '缺货', key: 'stockout', width: '2', isShow: true },
-          { label: '创建时间', key: 'created', width: '3', isShow: false },
-          { label: '更新时间', key: 'updated', width: '3', isShow: false }
-        ]);
-        this.$data.tableColumn = tableColumn;
-        this.$data.tabValue = 'audit_success';
-      },
-      //查看详情
-      tableShowDetail(data){
-        let { query } = this;
-        let detailPages = {
-          purchase: 'DetailWarehouseQualityControlP',
-          distribute: 'DetailWarehouseQualityControlD'
-        }
-        let pc = this.getPageComponents(detailPages[query.type]);
-        pc.showDetail(data);
       },
       handlePrint(item) {
         let temp = Lodop.tempGoodsCode(item);

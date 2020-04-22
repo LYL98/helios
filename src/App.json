@@ -229,10 +229,6 @@
           "name": "WarehouseInventory"
         },
         {
-          "title": "品控收货",
-          "name": "WarehouseQualityControl"
-        },
-        {
           "title": "入库",
           "name": "WarehouseStockPending"
         },
@@ -274,7 +270,20 @@
       "children": [
         {
           "title": "品控收货",
-          "name": "OperateReceiving"
+          "name": "OperateReceivingMain",
+          "type": "main",
+          "children": [
+            {
+              "title": "采购",
+              "upName": "OperateReceivingMain",
+              "name": "OperateReceivingPurchase"
+            },
+            {
+              "title": "调拨",
+              "upName": "OperateReceivingMain",
+              "name": "OperateReceivingDistribute"
+            }
+          ]
         },
         {
           "title": "场地商品",

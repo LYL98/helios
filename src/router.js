@@ -211,11 +211,6 @@ const router = new Router({
 
     /*仓库*/
     {
-      path: '/warehouse/quality/control',
-      name: 'WarehouseQualityControl',
-      component: () => import('@/view/warehouse/qualityControl/Main')
-    },
-    {
       path: '/warehouse/stock/pending',
       name: 'WarehouseStockPending',
       component: () => import('@/view/warehouse/stockPending/Main')
@@ -253,9 +248,14 @@ const router = new Router({
 
     /*场地*/
     {
-      path: '/operate/receiving',
-      name: 'OperateReceiving',
-      component: () => import('@/view/operate/receiving/Main')
+      path: '/operate/receiving-purchase',
+      name: 'OperateReceivingPurchase',
+      component: () => import('@/view/operate/receiving-purchase/main')
+    },
+    {
+      path: '/operate/receiving-distribute',
+      name: 'OperateReceivingDistribute',
+      component: () => import('@/view/operate/receiving-distribute/main')
     },
     {
       path: '/operate/item-sup-accept',
