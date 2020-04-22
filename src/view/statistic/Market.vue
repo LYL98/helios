@@ -28,7 +28,7 @@
         <el-col :span="7">
           <my-query-item label="运营专区">
             <!-- v-module="selectValue" -->
-            <el-select  v-model="selectValue"  @change="selectTagChange" placeholder="请选择" size="small" clearable>
+            <el-select :disabled="flag" v-model="selectValue"  @change="selectTagChange" placeholder="请选择" size="small" clearable>
               <el-option
                 v-for="item in tagsOptions"
                 :key="item.id"
@@ -164,6 +164,7 @@ export default {
   },
   data() {
     return {
+      flag:true, //运营专区默认不可选
       fixDateOptions: Constant.FIX_DATE_RANGE,
       offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE,
       pickerValue: [],
@@ -205,7 +206,7 @@ export default {
   created() {
     documentTitle("统计 - 商品销售统计");
     this.initQuery();
-    this.getTagsOptions()
+    // this.getTagsOptions()
   },
   mounted() {
     this.saleClassList(() => {
@@ -216,6 +217,13 @@ export default {
     //选择区域后【页面初始化】
     selectProvince(data) {
       this.$data.query.province_code = data.code;
+      // console.log(typeof data.code);
+      if(this.$data.query.province_code != '') {
+        this.$data.flag = false
+        }else{
+          this.$data.flag = true
+        }
+      this.getTagsOptions()
       this.saleClassList(() => {
         this.initChart();
       });
@@ -449,7 +457,8 @@ export default {
               begin_date: that.query.begin_date,
               end_date: that.query.end_date,
               province_code: that.$data.query.province_code,
-              totalItemTotalPrice: that.$data.query.totalItemTotalPrice
+              totalItemTotalPrice: that.$data.query.totalItemTotalPrice,
+              item_tag_id:that.$data.query.item_tag_id,
             }
           });
         }
@@ -466,6 +475,7 @@ export default {
           begin_date: this.query.begin_date,
           end_date: this.query.end_date,
           province_code: this.$data.query.province_code,
+          item_tag_id:this.$data.query.item_tag_id,
           totalItemTotalPrice: this.$data.query.totalItemTotalPrice
         }
       });
@@ -475,7 +485,7 @@ export default {
       let that = this
        this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.basicdataItemTagsList, {
-          province_code: ''
+          province_code: that.$data.query.province_code
         });
         this.$loading({isShow: false});
         if(res.code === 0){
