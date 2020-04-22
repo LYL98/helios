@@ -15,7 +15,38 @@
         :highlight-current-row="true"
         :row-key="getRowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
+        default-expand-all
       >
+        <el-table-column type="expand">
+          <template slot-scope="props">
+            <div class="dist-detail">
+              <div v-for="(item) in props.row.distribute_details" :key="item.id" class="dist-detail-item">
+                <div class="item-title">{{item.item_code}}/{{item.item_title}}</div>
+                <div class="batch-code">批次：{{item.batch_code}}</div>
+                <div class="num">调拨数量：{{item.num}}件</div>
+                <div class="status">状态：{{distributeReceiveStatus[item.status]}}</div>
+                <div class="option">
+                  <my-table-operate
+                    @command-click="handleCommandClick(item)"
+                    @command-visible="handleCommandVisible"
+                    :list="[
+                      {
+                        title: '品控',
+                        isDisplay: pageAuth.add && item.status === 'init',
+                        command: () => handleShowAddEdit('AddEdit', item, 'add')
+                      },
+                      {
+                        title: '详情',
+                        isDisplay: pageAuth.detail,
+                        command: () => handleShowDetail('Detail', item)
+                      }
+                    ]"
+                  />
+                </div>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
@@ -23,20 +54,10 @@
             <div slot-scope="scope" class="my-td-item">
               <!--调拨编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
-                <div v-if="pageAuth.detail"
-                  class="td-item link-item add-dot2" @click="handleShowDetail('Detail', scope.row)">
-                  <span>{{scope.row.code}}</span>
-                </div>
-                <div class="td-item add-dot2" v-else>
+                <div class="td-item add-dot2">
                   <span>{{scope.row.code}}</span>
                 </div>
               </div>
-              <!--商品名称-->
-              <div v-else-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
-              <!--调拨、调拨数量-->
-              <div v-else-if="item.key === 'num'" class="td-item add-dot2">{{scope.row.num}}件</div>
-              <!--已收货-->
-              <div v-else-if="item.key === 'num_in'" class="td-item add-dot2">{{returnUnit(scope.row.num_in, '件', '-')}}</div>
               <!--调出仓、调入仓-->
               <div v-else-if="judgeOrs(item.key, ['src_storehouse', 'tar_storehouse'])" class="td-item add-dot2">{{scope.row[item.key].title}}</div>
               <!--状态-->
@@ -50,44 +71,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="100">
-          <template slot-scope="scope">
-            <my-table-operate
-              @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
-              :list="[
-                {
-                  title: '品控',
-                  isDisplay: pageAuth.add && judgeOrs(scope.row.status, ['deliveried', 'part_in']),
-                  command: () => handleShowAddEdit('AddEdit', scope.row, 'add_distribute')
-                },
-                {
-                  title: '打印',
-                  isDisplay: pageAuth.print && scope.row.status !== 'closed',
-                  command: () => handlePrint({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: 'distribute'})
-                },
-                {
-                  title: '打印预览',
-                  isDisplay: pageAuth.print && scope.row.status !== 'closed',
-                  command: () => handlePrintPreview({...scope.row, batch_code: scope.row.batch_code || scope.row.code, order_type: 'distribute'})
-                },
-                {
-                  title: '详情',
-                  isDisplay: pageAuth.detail,
-                  command: () => handleShowDetail('Detail', scope.row)
-                },
-                {
-                  title: '关闭',
-                  isDisplay: judgeOrs(scope.row.status, ['deliveried', 'part_in']),
-                  command: () => handleShowForm('FormClose', {
-                    id: scope.row.id,
-                    close_hint: '是否确认关闭调拨单，如是，请填写关闭调拨单的原因'
-                  })
-                },
-              ]"
-            />
-          </template>
-        </el-table-column>
+        <el-table-column label="操作" width="100">-</el-table-column>
       </el-table>
     </div>
     <div class="table-bottom">
@@ -120,19 +104,13 @@
         tabValue: 'deliveried',
         distributeWaybillStatus: Constant.DISTRIBUTE_WAYBILL_STATUS(),
         distributeWaybillStatusType: Constant.DISTRIBUTE_WAYBILL_STATUS_TYPE,
+        distributeReceiveStatus: Constant.DISTRIBUTE_RECEIVE_STATUS(),
         tableName: 'Table',
         tableColumn: [
-          { label: '调拨单号', key: 'code', width: '3', isShow: true },
-          { label: '商品编号/名称', key: 'item', width: '4', isShow: true },
+          { label: '调拨单号', key: 'code', width: '2', isShow: true },
           { label: '调出仓', key: 'src_storehouse', width: '2', isShow: true },
-          { label: '调拨数量', key: 'num', width: '2', isShow: true },
-          { label: '调入仓', key: 'tar_storehouse', width: '2', isShow: false },
-          { label: '销售日期', key: 'available_date', width: '2', isShow: true },
-          { label: '预计到货', key: 'estimate_arrive_at', width: '3', isShow: true },
-          { label: '状态', key: 'status', width: '2', isShow: true },
-          { label: '已收货', key: 'num_in', width: '2', isShow: true },
-          { label: '创建时间', key: 'created', width: '3', isShow: false },
-          { label: '更新时间', key: 'updated', width: '3', isShow: false }
+          { label: '预计到货', key: 'estimate_arrive_at', width: '2', isShow: true },
+          { label: '状态', key: 'status', width: '2', isShow: true }
         ],
         pageAuth: {}
       }
@@ -141,10 +119,9 @@
       //处理权限
       let { auth, pageAuth } = this;
       this.$data.pageAuth  = {
-        add: auth.isAdmin || auth.OperateReceivingAdd,
-        detail: auth.isAdmin || auth.OperateReceivingDetail,
-        close: auth.isAdmin || auth.OperateReceivingClose,
-        print: auth.isAdmin || auth.OperateReceivingPrint
+        add: auth.isAdmin || auth.OperateReceivingDistributeAdd,
+        detail: auth.isAdmin || auth.OperateReceivingDistributeDetail,
+        close: auth.isAdmin || auth.OperateReceivingDistributeClose
       }
       let pc = this.getPageComponents('Query');
       this.getData(pc.query);
@@ -185,14 +162,6 @@
         let pc = this.getPageComponents('Query');
         this.getData(pc.query);
       },
-      handlePrint(item) {
-        let temp = Lodop.tempGoodsCode(item);
-        temp && temp.PRINT();
-      },
-      handlePrintPreview(item) {
-        let temp = Lodop.tempGoodsCode(item);
-        temp && temp.PREVIEW();
-      },
     }
   };
 </script>
@@ -200,6 +169,33 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import '@/share/scss/table.scss';
+  .dist-detail{
+    margin-bottom: 20px;
+  }
+  .dist-detail-item{
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    &:hover{
+      background: #FBFBFD;
+    }
+    >.item-title{
+      width: 40%;
+    }
+    >.batch-code{
+      width: 20%;
+    }
+    >.num{
+      width: 15%;
+    }
+    >.status{
+      width: 15%;
+    }
+    >.option{
+      width: 10%;
+      text-align: right;
+    }
+  }
 </style>
 <style lang="scss">
   @import '@/share/scss/table.global.scss';

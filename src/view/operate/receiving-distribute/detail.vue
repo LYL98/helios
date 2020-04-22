@@ -2,8 +2,8 @@
   <detail-layout title="品控详情" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <div class="f-r" style="position: relative; right: -84px;">
-        <el-tag size="small" :type="qCStatusType[detail.status]" disable-transitions>
-          {{qCStatus[detail.status]}}
+        <el-tag size="small" :type="distributeReceiveStatusType[detail.status]" disable-transitions>
+          {{distributeReceiveStatus[detail.status]}}
         </el-tag>
       </div>
       <h6 class="subtitle">调拨信息</h6>
@@ -32,7 +32,7 @@
         </el-col>
       </el-row>
 
-      <template v-if="judgeOrs(detail.status, ['part_in', 'all_in'])">
+      <template v-if="detail.status === 'all_in'">
         <h6 class="subtitle">品控信息</h6>
         <el-row>
           <el-col :span="12">
@@ -53,36 +53,33 @@
       </template>
     </el-form>
 
-    <template v-if="detail.out_stocks.length > 0">
-      <h6 class="subtitle">品控信息</h6>
+    <template v-if="detail.status === 'all_in'">
+      <h6 class="subtitle">品控记录</h6>
       <div style="padding: 0 30px;">
-        <el-table :data="detail.out_stocks" :row-class-name="highlightRowClassName">
-          <el-table-column label="到货数量" width="90">
+        <el-table :data="[detail]" :row-class-name="highlightRowClassName">
+          <el-table-column label="到货数量" min-width="90">
             <template slot-scope="scope">{{scope.row.num_arrive}}件</template>
           </el-table-column>
-          <el-table-column label="品控抽检" width="90">
-            <template slot-scope="scope">{{scope.row.qa_num}}件</template>
+          <el-table-column label="品控数量" min-width="90">
+            <template slot-scope="scope">{{returnUnit(scope.row.qa_sample_num, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="合格数量" width="120">
+          <el-table-column label="合格数量" min-width="120">
             <template slot-scope="scope">
-              <span>{{scope.row.num}}件</span>
+              <span>{{scope.row.qualified_num}}件</span>
               <a v-if="editAuth(scope.row)" style="margin-left: 10px;" href="javascript:void(0);" @click="handleShowForm('FormEditNum', scope.row)">修改</a>
             </template>
           </el-table-column>
-          <el-table-column label="处理数量" width="90">
-            <template slot-scope="scope">{{returnUnit(scope.row.un_qa_num, '件', '-')}}</template>
+          <el-table-column label="不合格数量" min-width="90">
+            <template slot-scope="scope">{{returnUnit(scope.row.unqualified_num, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="处理类型" width="120">
+          <el-table-column label="处理类型" min-width="120">
             <template slot-scope="scope">{{scope.row.un_qa_type ? supOptTypes[scope.row.un_qa_type] : '-'}}</template>
           </el-table-column>
-          <el-table-column label="处理金额" width="120">
-            <template slot-scope="scope">{{scope.row.un_qa_amount ? '￥' + returnPrice(scope.row.un_qa_amount) : '-'}}</template>
+          <el-table-column label="备注" prop="qa_remark" min-width="120"></el-table-column>
+          <el-table-column label="品控人" min-width="100">
+            <template slot-scope="scope">{{scope.row.qaer.realname}}</template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark"></el-table-column>
-          <el-table-column label="品控人" width="100">
-            <template slot-scope="scope">{{scope.row.creator.realname}}</template>
-          </el-table-column>
-          <el-table-column label="品控时间" width="160">
+          <el-table-column label="品控时间" min-width="140">
             <template slot-scope="scope">{{scope.row.created}}</template>
           </el-table-column>
         </el-table>
@@ -101,12 +98,10 @@
     components: {
     },
     data() {
-      let initDetail = {
-        out_stocks: []
-      }
+      let initDetail = {}
       return {
-        qCStatus: Constant.Q_C_STATUS(),
-        qCStatusType: Constant.Q_C_STATUS_TYPE,
+        distributeReceiveStatus: Constant.DISTRIBUTE_RECEIVE_STATUS(),
+        distributeReceiveStatusType: Constant.DISTRIBUTE_RECEIVE_STATUS_TYPE,
         supOptTypes: Constant.SUP_OPT_TYPES(),
         initDetail: initDetail,
         detail: this.copyJson(initDetail),
@@ -146,7 +141,8 @@
       //修改权限
       editAuth(data){
         let { auth } = this;
-        if(data.allocator_id === 0 && (auth.isAdmin || auth.OperateReceivingEditNum)){
+        //can_be_edit 是否可编辑
+        if(data.can_be_edit && (auth.isAdmin || auth.OperateReceivingDistributeEditNum)){
           return true;
         }
       }

@@ -1,8 +1,14 @@
 <template>
   <form-layout title="修改合格数量" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
     <el-form class="custom-form" size="mini" label-position="right" label-width="110px" :model="detail" ref="ruleForm" :rules="rules">
-      <el-form-item label="合格数量" prop="num">
-        <input-number size="medium" :min="detail.in_type === 'distribute' ? 0 : 1" v-model="detail.num" unit="件"/>
+      <el-form-item label="调拨数量">
+        <input-number size="medium" :value="detail.num" unit="件" disabled/>
+      </el-form-item>
+      <el-form-item label="到货数量" prop="num_arrive">
+        <input-number size="medium" :min="0" v-model="detail.num_arrive" unit="件"/>
+      </el-form-item>
+      <el-form-item label="合格数量" prop="qualified_num">
+        <input-number size="medium" :min="0" v-model="detail.qualified_num" unit="件"/>
       </el-form-item>
       <template v-if="isShowNo">
         <h6 class="subtitle">不合格商品处理</h6>
@@ -17,12 +23,11 @@
             :options="supOptTypes"
           />
         </el-form-item>
-        <el-form-item label="处理金额" prop="un_qa_amount" v-if="judgeOrs(detail.un_qa_type, ['damage_sale', 'sale_offline'])">
-          <input-price size="medium" v-model="detail.un_qa_amount" />
+        <!---
+        <el-form-item label="备注" prop="qa_remark">
+          <el-input v-model="detail.qa_remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="detail.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
-        </el-form-item>
+        -->
       </template>
     </el-form>
     <div style="margin-left: 110px; margin-top: 20px;">
@@ -53,37 +58,44 @@ export default {
       let d = Constant.SUP_OPT_TYPES('value_key');
       delete d['退货入库']; //删除退货入库
       delete d['退货给供应商']; //删除退货给供应商
+      delete d['库内品控']; //删除库内品控
       return d;
     },
     //是否显示不合格处理
     isShowNo(){
       let { detail } = this;
       //到货数量小于或等于可到货数量 && 到货数量大于合格数量
-      if(detail.in_type === 'distribute' &&
-        typeof detail.num_arrive === 'number' && typeof detail.num === 'number' &&
-        detail.num_arrive > detail.num){
-          detail.un_qa_num = detail.num_arrive - detail.num;
+      if(typeof detail.num_arrive === 'number' && typeof detail.qualified_num === 'number' &&
+        detail.num_arrive > detail.qualified_num){
+          detail.un_qa_num = detail.num_arrive - detail.qualified_num;
           detail.un_qa_type = '';
-          detail.un_qa_amount = null;
           this.$data.detail = detail;
         return true;
       }
       detail.un_qa_num = 0;
       detail.un_qa_type = '';
-      detail.un_qa_amount = 0;
       this.$data.detail = detail;
       return false;
     }
   },
   data(){
     let initDetail = {
+      num_arrive: 0,
+      qualified_num: 0,
       un_qa_num: 0,
       un_qa_type: '',
-      un_qa_amount: 0,
-      remark: ''
+      qa_remark: ''
     }
     //品控抽样、合格数量校验
-    const validNum = (rules, value, callback)=>{
+    const validNumArrive = (rules, value, callback)=>{
+      let { detail } = this;
+      if (Number(value) > detail.num) {
+        return callback(new Error('不能大于调拨数量'));
+      }
+      callback();
+    }
+    //品控抽样、合格数量校验
+    const validNumQualified = (rules, value, callback)=>{
       let { detail } = this;
       if (Number(value) > detail.num_arrive) {
         return callback(new Error('不能大于到货数量'));
@@ -92,13 +104,16 @@ export default {
     }
     return{
       rules: {
-        num: [
+        num_arrive: [
+          { required: true, message: '请输入到货数量', trigger: 'change' },
+          { validator: validNumArrive, trigger: 'blur' }
+        ],
+        qualified_num: [
           { required: true, message: '请输入数量', trigger: 'change' },
-          { validator: validNum, trigger: 'blur' }
+          { validator: validNumQualified, trigger: 'blur' }
         ],
         un_qa_type: { required: true, message: '请选择处理类型', trigger: 'change' },
-        un_qa_amount: { required: true, message: '请输入处理金额', trigger: 'change' },
-        remark: [
+        qa_remark: [
           { required: true, message: '请输入备注', trigger: 'change' }
         ],
       },
@@ -111,24 +126,21 @@ export default {
     async submitData(){
       let { detail } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supOutStockEditNum, {
+      let res = await Http.post(Config.api.supAcceptEditDistributeDetail, {
         id: detail.id,
-        num: detail.num,
+        num_arrive: detail.num_arrive,
+        qualified_num: detail.qualified_num,
         un_qa_num: detail.un_qa_num,
         un_qa_type: detail.un_qa_type,
-        un_qa_amount: detail.un_qa_amount,
-        remark: detail.remark
+        remark: detail.qa_remark
       });
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '已修改', type: 'success'});
         this.handleCancel(); //隐藏
         //刷新数据
-        let pc = this.getPageComponents('DetailP');
-        if(pc && pc.isShow) pc.fromSupplierOrderDetail();
-
-        pc = this.getPageComponents('Detail');
-        if(pc && pc.isShow) pc.itemSupDistributeWaybillDetail();
+        let pc = this.getPageComponents('Detail');
+        if(pc && pc.isShow) pc.supAcceptDistDetail();
 
         pc = this.getPageComponents('Table');
         if(pc) pc.getData(pc.query);

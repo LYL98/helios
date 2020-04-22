@@ -294,15 +294,17 @@ const Config = (() => {
       supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询
       supAcceptPurAdd: apiM + '/sup_accept/pur/add', //场地收货(采购)
       supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //品控单关闭
+      supOutStockEditNum: apiM + '/sup_out_stock/edit_num', //场地修改品控数量
 
       //场地品控收货(调拨)
       supDistributeQueryForAccept: apiM + '/sup_distribute/query_for_accept', //场地调拨列表
       supAcceptDistributeAdd: apiM + '/sup_accept/distribute/add', //场地收货(调拨)
       supAcceptDistDetail: apiM + '/sup_accept/dist_detail', //场地的调拨品控收货详情
       supAcceptEditDistributeDetailAdd: apiM + '/sup_accept/edit_distribute_detail/add', //场地的调拨品控收货
+      supAcceptEditDistributeDetail: apiM + '/sup_accept/edit_distribute_detail', //场地的调拨品控收货修改
+
       
       //场地品控收货(共用)
-      supOutStockEditNum: apiM + '/sup_out_stock/edit_num', //场地修改品控数量
       supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
 
       supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息

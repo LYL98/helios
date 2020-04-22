@@ -17,6 +17,8 @@
    code == WarehouseOutStorageAdd 修改项：title, url、upper_code
    code == WarehouseInventoryVariation 修改项：url
 
+   code == OperateReceiving => OperateReceivingMain
+
 新增：
    ItemQueryByItemTag
    ItemTagAdd
@@ -52,6 +54,9 @@
    InventoryMarketExport
    InventoryMarketAdd
    InventoryMarketDetail
+
+   OperateReceivingPurchase
+   OperateReceivingDistribute
 
 删除：
    WarehouseInventoryDetailBuyDetail
