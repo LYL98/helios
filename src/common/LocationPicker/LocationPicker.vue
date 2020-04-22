@@ -49,7 +49,7 @@
   import { Input, Button, Autocomplete } from 'element-ui';
 
   const MAP_STYLE = 'amap://styles/light';
-  const ICON_CENTER_POINT = require('./center-marker.png');
+  const ICON_CENTER_POINT = require('./center.png');
 
   const debounce = function (func, wait) {
     let timeout;
@@ -251,7 +251,7 @@
         let marker = new AMap.Marker({
           position: new AMap.LngLat(lng, lat),
           icon: ICON_CENTER_POINT,
-          offset: new AMap.Pixel(-16, -38),
+          offset: new AMap.Pixel(-26, -52),
           draggable: true
         });
 
