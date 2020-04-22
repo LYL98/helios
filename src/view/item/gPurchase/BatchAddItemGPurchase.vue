@@ -98,7 +98,7 @@
                 :prop="'p_items.' + index + '.amount'"
                 :rules="[ { required: true, message: '采购商品金额不能为空', trigger: 'change' } ]"
               >
-                <input-price size="medium" v-model="item.amount" unit="元" />
+                <input-price size="medium" min="1" v-model="item.amount" unit="元" @change="changePItem(item)"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -107,14 +107,18 @@
                 :prop="'p_items.' + index + '.num'"
                 :rules="[ { required: true, message: '采购数量不能为空', trigger: 'change' } ]"
               >
-                <input-number size="medium" min="1" v-model="item.num" unit="件" />
+                <input-number size="medium" min="1" v-model="item.num" unit="件" @change="changePItem(item)"/>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row :gutter="32">
             <el-col :span="12">
-              <el-form-item label="采购价">
-                <el-input size="small" :value="!!item.amount && !!item.num ? returnPrice(item.amount / item.num - item.frame_price) : ''" disabled>
+              <el-form-item
+                label="采购价"
+                :prop="'p_items.' + index + '.price_buy'"
+                :rules="[ { validator: validPriceBuy, message: '采购价必须为大于零的数字', trigger: 'change' } ]"
+              >
+                <el-input size="small" :value="item.price_buy" disabled>
                   <template slot="append">元</template>
                 </el-input>
               </el-form-item>
@@ -127,8 +131,12 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="采购总金额">
-                <el-input size="small" :value="!!item.amount && !!item.num ? returnPrice(item.amount - item.frame_price * item.num) : ''" disabled>
+              <el-form-item
+                label="采购总金额"
+                :prop="'p_items.' + index + '.item_total_price'"
+                :rules="[ { validator: validItemTotalPrice, trigger: 'change' } ]"
+              >
+                <el-input size="small" :value="item.item_total_price" disabled>
                   <template slot="append">元</template>
                 </el-input>
               </el-form-item>
@@ -153,7 +161,7 @@
 <script>
   import { Input, Select, Option } from 'element-ui';
   import addEditMixin from '@/share/mixin/add.edit.mixin';
-  import { Http, Config, Constant } from '@/util';
+  import { Http, Config, Constant, DataHandle } from '@/util';
   import { InputNumber, InputPrice, FormArea } from '@/common';
   import { SelectSupplier, SelectGItem, LogModifiedDetail, SelectStorehouse } from '@/component';
 
@@ -197,7 +205,7 @@
         supplier_id: '',
         storehouse_id: '',
         p_items: [
-          {p_item_id: '', amount: '', num: '', frame_id: '', frame_price: ''}
+          {p_item_id: '', amount: '', num: '', price_buy: '', frame_id: '', frame_price: '', item_total_price: ''}
         ],
       };
       return {
@@ -214,12 +222,36 @@
       handleAddItem() {
         this.$data.detail.p_items = [
           ...this.$data.detail.p_items,
-          {p_item_id: '', amount: '', num: '', frame_id: '', frame_price: ''}
+          {p_item_id: '', amount: '', num: '', price_buy: '', frame_id: '', frame_price: '', item_total_price: ''}
         ]
       },
 
       handleDeleteItem(i) {
         this.$data.detail.p_items = this.$data.detail.p_items.filter((item, index) => index !== i);
+      },
+
+      changePItem(item) {
+        if (item.amount && item.num) {
+          item.price_buy = DataHandle.returnPrice(item.amount / item.num - item.frame_price);
+          item.item_total_price = DataHandle.returnPrice(item.amount - item.frame_price * item.num);
+        } else {
+          item.price_buy = '';
+          item.item_total_price = '';
+        }
+      },
+
+      validPriceBuy(rules, value, callback) {
+        if (value <= 0) {
+          return callback(new Error('采购价必须为大于零的数字'));
+        }
+        callback();
+      },
+
+      validItemTotalPrice(rules, value, callback) {
+        if (value <= 0) {
+          return callback(new Error('采购总金额必须为大于零的数字'));
+        }
+        callback();
       },
 
       //显示新增修改(重写) (数据，类型)
@@ -271,7 +303,7 @@
         detail.p_items = detail.p_items.map(item => ({
           p_item_id: Number(item.p_item_id),
           num: Number(item.num),
-          item_total_price: Math.round(item.amount - item.frame_price * item.num),
+          item_total_price: DataHandle.handlePrice(item.item_total_price),
         }));
         let res = await Http.post(Config.api.fromSupplierOrderBatchAdd, detail);
         this.$loading({isShow: false});
