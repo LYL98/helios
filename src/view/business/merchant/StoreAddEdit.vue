@@ -8,9 +8,15 @@
       <el-input v-model="addEditData.title" :maxlength="10" placeholder="请输入门店名称"></el-input>
     </el-form-item>
     <el-form-item label="县域" prop="province" class="required">
-      <my-select-province style="width: 150px;" v-model="addEditData.province_code" :disabled="isEditStore" @select="changeProvince"/>
+      <my-select-province style="width: 150px;" v-model="addEditData.province_code" :disabled="isEditStore" @sync="syncProvince"/>
       <my-select-city style="width: 200px;margin-left: 5px" v-model="addEditData.city_id" :provinceCode="addEditData.province_code"
-                      @change="changeCity" :disabled="isEditStore || addEditData.province_code === ''" placeholder="请选择县域"/>
+                      @change="changeCity" :disabled="isEditStore || addEditData.province_code === ''" placeholder="请选择县域" @sync="syncCity"/>
+    </el-form-item>
+    <el-form-item label="地理位置" prop="geo">
+      <my-location-picker v-model="addEditData.geo" @change="changeGeo"></my-location-picker>
+    </el-form-item>
+    <el-form-item label="收货地址" prop="address">
+      <el-input v-model="addEditData.address" :maxlength="30" placeholder="请输入收货地址"></el-input>
     </el-form-item>
     <el-row>
       <el-col :span="12">
@@ -24,12 +30,6 @@
         </el-form-item>
       </el-col>
     </el-row>
-<!--    <el-form-item label="地理位置" prop="geo">-->
-<!--      <my-location-picker v-model="addEditData.geo" @change="changeLocation"></my-location-picker>-->
-<!--    </el-form-item>-->
-    <el-form-item label="收货地址" prop="address">
-      <el-input v-model="addEditData.address" :maxlength="30" placeholder="请输入收货地址"></el-input>
-    </el-form-item>
     <el-form-item style="text-align: right;">
     <el-button @click="editStoreCancel">取消</el-button>
     <el-button type="primary" :loading="isSending" @click="submitEdit">确认</el-button>
@@ -109,6 +109,12 @@
           callback(new Error('请上传门店图片'));
         }
       };
+      let validLocation = function(rules, value, callback) {
+        if (!value.lng && !value.lat) {
+          return callback(new Error('地理位置不能为空'));
+        }
+        callback();
+      };
       return {
         province: this.$province,
         tencentPath: Config.tencentPath,
@@ -121,11 +127,7 @@
           province_code: '',
           zone_id: '',
           city_id: '',
-          geo: {
-            lng: '',
-            lat: '',
-            poi: ''
-          },
+          geo: { lng: '', lat: '', province_title: '', city_title: '', poi: '' },
           address: '',
           linkman: '',
           phone: '',
@@ -154,6 +156,9 @@
             { required: true, message: '联系方式不能为空', trigger: 'change' },
             { pattern: Verification.testStrs.checkMobile, message: '请输入11位手机号码', trigger: 'blur' }
           ],
+          geo: [
+            { required: true, validator: validLocation, trigger: 'change' },
+          ],
           address: [
             { required: true, message: '收货地址不能为空', trigger: 'change' },
             { max: 30, message: '请输入30个以内的字符', trigger: 'blur' }
@@ -163,12 +168,17 @@
     },
     methods: {
 
-      changeProvince(province) {
-        console.log('province: ', province);
+      syncProvince(province) {
+        this.$set(this.$data.addEditData.geo, 'province_title', province.title);
+        this.$set(this.$data.addEditData.geo, 'city_title', '');
       },
 
-      changeLocation(location) {
-        console.log('location: ', location);
+      syncCity(city) {
+        this.$set(this.$data.addEditData.geo, 'city_title', city.title);
+      },
+
+      changeGeo() {
+        this.$refs['ruleForm'].validateField('geo');
       },
 
       /**
@@ -182,6 +192,9 @@
         });
         if (res.code === 0) {
           let rd = res.data;
+          if (Object.keys(rd.geo).length === 0) {
+            rd.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
+          }
           that.$data.addEditData = rd;
         } else {
           Message.warning(res.message);

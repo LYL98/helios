@@ -85,9 +85,11 @@
         }
         // console.log('cityId: ', cityId, ', ', cityName);
         this.$emit('changeCityName', cityName);
+        !cityId && this.$emit('sync', { code: '', title: '' });
       },
       handleSelectItem(item) {
         this.$emit('select-item', item);
+        this.$emit('sync', { code: item.id, title: item.title });
       },
       //根据传进来的区域code 获取城市列表
       async baseCityList(){
@@ -98,6 +100,12 @@
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
+
+          let value = this.$props.value;
+          if (value) {
+            let city = rd.find(item => item.id === value);
+            city && this.$emit('sync', { code: city.id, title: city.title });
+          }
         }else{
           this.$messageBox.alert(res.message, '提示');
         }

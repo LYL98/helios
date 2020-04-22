@@ -41,6 +41,21 @@
         },
         set(v) {
           this.$emit('change', v);
+
+          if (v && v === 'nationwide') {
+            this.$emit('sync', { code: 'nationwide', title: '中国' });
+            return;
+          }
+
+          if (v) {
+            let province = this.$data.dataItem.find(item => item.code === v);
+            province && this.$emit('sync', { code: province.code, title: province.title });
+            return;
+          }
+
+          if (!v) {
+            this.$emit('sync', { code: '', title: '' });
+          }
         }
       }
     },
@@ -57,7 +72,24 @@
           //如果只有一个区域，默认选择，页面不显示
           if(rd.length === 1){
             this.editValue = rd[0].code;
+            let province = rd[0].code === 'nationwide'
+              ? { code: 'nationwide', title: '中国' }
+              : { code: rd[0].code, title: rd[0].title };
+            this.$emit('sync', province);
             // that.changeProvince(rd[0].code, true);
+            return;
+          }
+
+          let value = this.$props.value;
+
+          if (value && value === 'nationwide') {
+            this.$emit('sync', { code: 'nationwide', title: '中国' });
+            return;
+          }
+
+          if (value) {
+            let province = rd.find(item => item.code === value);
+            province && this.$emit('sync', { code: province.code, title: province.title });
           }
         }else{
           MessageBox.alert(res.message, '提示');
