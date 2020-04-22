@@ -41,20 +41,18 @@
 <script>
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
-  import queryTabs from '@/share/layout/QueryTabs';
 
   export default {
     name: 'TableOperateTruckLoadDelay',
     components: {
-      'query-tabs': queryTabs
     },
     mixins: [tableMixin],
     props: {
-      provinceCode: { type: String, default: '' }, //省code
+      storehouseId: { type: String | Number, default: '' },
+      deliveryDate: { type: String, default: '' }
     },
     data() {
       return {
-        tabValue: 'truck_delay',
         tableName: 'TableOperateTruckLoadDelay',
         tableColumn: [
           { label: '商品编号/名称', key: 'item', width: '3', isShow: true },
@@ -64,7 +62,7 @@
       }
     },
     created() {
-      this.getData(this.query);
+      this.getData();
     },
     methods: {
       //返回tabile key
@@ -72,15 +70,11 @@
         return `${d.id}${d.line.id}`;
       },
       //获取数据
-      async getData(query){
-        //从MenuQuery组件取数据
-        let pc = this.getPageComponents('MenuQuery');
-        if(pc) query.delivery_date = pc.query.delivery_date;
-        this.$data.query = query; //赋值，minxin用
+      async getData(){
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supAllocateDelaySortQuery, {
-          ...query,
-          province_code: this.provinceCode
+          storehouse_id: this.storehouseId,
+          delivery_date: this.deliveryDate
         });
         this.$loading({isShow: false});
         if(res.code === 0){

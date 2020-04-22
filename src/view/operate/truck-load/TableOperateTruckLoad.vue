@@ -103,14 +103,14 @@
     },
     mixins: [tableMixin],
     props: {
-      provinceCode: { type: String, default: '' }, //省code
+      storehouseId: { type: String | Number, default: '' },
+      deliveryDate: { type: String, default: '' }
     },
     created() {
       //在QueryOperateTruckLoad组件里初始化
     },
     data() {
       return {
-        tabValue: 'truck'
       }
     },
     computed: {
@@ -157,18 +157,16 @@
       },
       //获取数据
       async getData(query){
-        //从MenuQuery组件取数据
-        let pc = this.getPageComponents('MenuQuery');
-        if(pc) query.delivery_date = pc.query.delivery_date;
-
+        
         this.$data.query = query; //赋值，minxin用
         //如不满足条件
-        if(!query.delivery_date || !query.line_id) return;
+        if(!query.line_id) return;
         
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supDeliveryLineDetail, {
           ...query,
-          province_code: this.provinceCode
+          storehouse_id: this.storehouseId,
+          delivery_date: this.deliveryDate
         });
         this.$loading({isShow: false});
         if(res.code === 0){
