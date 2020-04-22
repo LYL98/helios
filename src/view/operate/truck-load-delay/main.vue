@@ -23,13 +23,11 @@
 <script>
   import Table from './table';
   import { GlobalStorehouse, GlobalDeliveryDate } from '@/component';
-  import MenuQuery from '@/view/operate/sort/MenuQuery';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
     name: 'Main',
     components: {
-      'menu-query': MenuQuery,
       'table-view': Table,
       'global-storehouse': GlobalStorehouse,
       'global-delivery-date': GlobalDeliveryDate,
