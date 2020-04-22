@@ -2,10 +2,10 @@
   <sub-menu>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
-        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date,totalItemTotalPrice:query.totalItemTotalPrice } }">
+        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date,totalItemTotalPrice:query.totalItemTotalPrice,item_tag_id: query.item_tag_id} }">
           商品销售统计
         </el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ name: 'StatisticMarketClass2', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date, system_class1: query.system_class1, system_class_code1: query.system_class_code1,totalItemTotalPrice:query.totalItemTotalPrice} }">
+        <el-breadcrumb-item :to="{ name: 'StatisticMarketClass2', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date, system_class1: query.system_class1, system_class_code1: query.system_class_code1,totalItemTotalPrice:query.totalItemTotalPrice,item_tag_id: query.item_tag_id} }">
           {{ query.system_class1 === '' ? '全部分类' : query.system_class1 }}
         </el-breadcrumb-item>
         <el-breadcrumb-item>{{ query.system_class === '' ? '全部分类' : query.system_class }}</el-breadcrumb-item>
@@ -13,7 +13,7 @@
     </div>
     <div class="query" style="margin-bottom: 20px;">
       <el-row>
-        <el-col :span="7">
+        <el-col :span="6">
           <my-query-item label="时间">
             <el-date-picker
               size="small"
@@ -32,7 +32,7 @@
             />
           </my-query-item>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="4">
           <my-query-item label="二级分类">
             <select-system-class-list
               v-model="query.system_class_code"
@@ -43,7 +43,19 @@
             />
           </my-query-item>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="4">
+          <my-query-item label="运营专区">
+            <el-select  v-model="query.item_tag_id"  @change="selectTagChange" placeholder="请选择" size="small" clearable>
+              <el-option
+                v-for="item in tagsOptions"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </my-query-item>
+        </el-col>
+        <el-col :span="4">
           <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
         </el-col>
       </el-row>
@@ -110,7 +122,7 @@
 </template>
 
 <script>
-  import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button } from 'element-ui';
+  import { Row, Col, DatePicker, Table, TableColumn, Pagination, Breadcrumb, BreadcrumbItem, Button,Select,Option } from 'element-ui';
   import { QueryItem, TableOperate, SelectSystemClassList } from '@/common';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
@@ -126,6 +138,8 @@
       'el-date-picker': DatePicker,
       'el-table': Table,
       'el-button': Button,
+      "el-select": Select,
+      "el-option":Option,
       'el-table-column': TableColumn,
       'el-pagination': Pagination,
       'my-query-item': QueryItem,
@@ -141,12 +155,15 @@
         breadcrumb: {},
         query: {},
         dataItem: [],
-        currentRow: {}
+        currentRow: {},
+        tagsOptions:[],//运营专区数据
+
       }
     },
     created() {
       documentTitle("统计 - 商品销售统计");
       this.initQuery();
+      this.getTagsOptions()
       this.statisticalOrderClassSum();
     },
     methods: {
@@ -196,6 +213,7 @@
           system_class_code: q.system_class_code2,
           page: 1,
           page_size: Constant.PAGE_SIZE,
+          item_tag_id:q.item_tag_id,
           totalItemTotalPrice:q.totalItemTotalPrice
         };
         this.$data.totalItemTotalPrice = q.totalItemTotalPrice
@@ -273,9 +291,35 @@
             begin_date: this.query.begin_date,
             end_date: this.query.end_date,
             province_code: this.$route.query.province_code,
+            item_tag_id: this.query.item_tag_id,
+
             totalItemTotalPrice: this.$route.query.totalItemTotalPrice
           }
         });
+      },
+
+          //获取商品运营专区数据
+   async getTagsOptions(){
+      let that = this
+       this.$loading({isShow: true, isWhole: true});
+        let res = await Http.get(Config.api.basicdataItemTagsList, {
+          province_code: that.$data.query.province_code
+        });
+        this.$loading({isShow: false});
+        if(res.code === 0){
+          this.$data.tagsOptions = res.data;
+          // console.log(this.$data.tagsOptions);
+          
+        }else{
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+    },
+      //改变运营专区
+      selectTagChange(value){
+          let that = this;
+      let { query } = that;
+      query.item_tag_id = value
+      that.statisticalOrderClassSum()
       }
     }
   }
