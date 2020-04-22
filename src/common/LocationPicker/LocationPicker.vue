@@ -1,7 +1,7 @@
 <template>
   <div class="location-picker">
-    <div class="selected" @click="toggleVisible">
-      <span v-if="selectedItem && selectedItem.address">{{ selectedItem.address }}</span>
+    <div :class="`selected${size === 'small' ? ' small' : ''}${isDisabled ? ' disabled' : ''}`" @click="toggleVisible">
+      <span v-if="location && location.poi">{{ location.poi }}</span>
       <span class="placeholder" v-else>请选择地址</span>
       <i class="el-icon-location"></i>
     </div>
@@ -21,7 +21,7 @@
           size="small"
           style="width: 500px;"
           clearable
-          @change="changeSearchwords"
+          @input="changeSearchwords"
         ></el-input>
       </nav>
       <div class="content">
@@ -46,21 +46,61 @@
 
 <script>
 
-  import { Input, Button } from 'element-ui';
+  import { Input, Button, Autocomplete } from 'element-ui';
 
   const MAP_STYLE = 'amap://styles/light';
   const ICON_CENTER_POINT = require('./center-marker.png');
+
+  const debounce = function (func, wait) {
+    let timeout;
+
+    return function () {
+      let context = this;
+      let args = arguments;
+
+      if (timeout) clearTimeout(timeout);
+
+      timeout = setTimeout(() => {
+        func.apply(context, args)
+      }, wait);
+    }
+  };
 
   export default {
     name: "LocationPicker",
     components: {
       'el-input': Input,
+      'el-autocomplete': Autocomplete,
       'el-button': Button
     },
     props: {
-      province: { type: String, default: '' },
-      city: { type: String, default: '' },
-      geo: { type: Object, default: () => ({ lng: 114.061866, lat: 22.632913, poi: '' }) }
+      location: { type: Object, default: () => ({
+          lng: '',
+          lat: '',
+          province_title: '',
+          city_title: '',
+          poi: ''
+        })
+      },
+      size: { type: String, default: '' },
+      level: { type: String, default: 'city' }, // province | city
+      disabled: { type: Boolean, default: false }
+    },
+    model: {
+      prop: 'location',
+      event: 'change'
+    },
+    computed: {
+      isDisabled() {
+        // 如果外部设置了disabled 属性，则直接禁用
+        if (this.$props.disabled) return true;
+
+        const { lng, lat, province_title, city_title  } = this.$props.location;
+        if (lng && lat) return false;
+        if (this.$props.level === 'city' && province_title && city_title) return false;
+        if (this.$props.level === 'province' && province_title) return false;
+        return true;
+      }
     },
     data() {
       return {
@@ -76,6 +116,14 @@
       }
     },
     watch: {
+      location: {
+        deep: true,
+        immediate: false,
+        handler: function (next, prev) {
+          this.$data.mapComplete && this.initLogic();
+        }
+      },
+      // 输入搜索词时，执行搜索poi的逻辑
       keywords: {
         deep: true,
         immediate: true,
@@ -83,6 +131,7 @@
           this.onSearch();
         }
       },
+      // 切换选中项时，设置地图中心点位置
       selectedItem: {
         deep: true,
         immediate: false,
@@ -119,6 +168,7 @@
     },
     methods: {
       toggleVisible() {
+        if (this.isDisabled) return;
         this.$data.visible = !this.$data.visible;
       },
       initMap() {
@@ -129,20 +179,15 @@
           mapStyle: MAP_STYLE
         };
 
-        let center = this.$props.geo;
-        if (center && center.lng && center.lat) {
-          config.center = [center.lng, center.lat];
-          this.map = new AMap.Map('amap', config);
-          this.onCenterRegeo(center);
-        } else {
-          this.map = new AMap.Map('amap', config);
+        const {location} = this.$props;
+        if (location && location.lag && location.lat) {
+          config.center = [location.lng, location.lat];
         }
 
+        this.map = new AMap.Map('amap', config);
         this.map.on('complete', () => {
           this.$data.mapComplete = true;
-          if (center && center.lng && center.lat) {
-            this.initCenterPoint(center.lng, center.lat);
-          }
+          this.initLogic();
         });
       },
       destroyMap() {
@@ -154,6 +199,50 @@
         }
         this.centerPoint && this.map.remove(this.centerPoint);
         this.map && this.map.destroy();
+      },
+
+      // 初始化地图后执行的选点逻辑。
+      initLogic() {
+
+        const {province_title, city_title, lng, lat} = this.$props.location;
+        console.log('location 变更: ', this.$props.location);
+        // 如果中心点存在，则可以： 初始化地图、初始化中心点、根据中心点geo逆地理编码，再根据编码后的第一个地理位置获取poilist
+        if (lng && lat) {
+
+          this.map.setCenter([lng, lat]);
+          this.initCenterPoint(lng, lat);
+          this.geoCoder.getAddress(new AMap.LngLat(lng, lat), (status, result) => {
+            if (status === 'complete' && result.info === 'OK') {
+              this.$data.centerRegeo = result.regeocode;
+              this.initKeywords();
+            }
+          });
+          return;
+        }
+
+        // 如果存在省份、城市，则初始化地图、根据 省份 + 城市名称 获取 poilist
+        if (this.$props.level === 'city' && province_title && city_title) {
+          this.placeSearch.search(province_title + city_title, (status, result) => {
+            if (status === 'complete' && result.info === 'OK') {
+              this.$data.poiList = result.poiList.pois || [];
+              let poi = this.$data.poiList[0];
+              this.map.setCenter([poi.location.lng, poi.location.lat]);
+              this.initCenterPoint(poi.location.lng, poi.location.lat);
+            }
+          });
+          return;
+        }
+
+        if (this.$props.level === 'province' && province_title) {
+          this.placeSearch.search(province_title, (status, result) => {
+            if (status === 'complete' && result.info === 'OK') {
+              this.$data.poiList = result.poiList.pois || [];
+              let poi = this.$data.poiList[0];
+              this.map.setCenter([poi.location.lng, poi.location.lat]);
+              this.initCenterPoint(poi.location.lng, poi.location.lat);
+            }
+          });
+        }
       },
 
       // 初始化中心点
@@ -183,7 +272,7 @@
         this.map.add(marker);
       },
 
-      // 根据中心点位置，获取附近的建筑物
+      // 根据中心点位置，逆地理位置编码
       onCenterRegeo({ lng, lat }) {
         if (!this.map) return;
         this.geoCoder.getAddress(new AMap.LngLat(lng, lat), (status, result) => {
@@ -195,11 +284,22 @@
       },
 
       changeSearchwords(v) {
-        if (v) {
-          this.$data.keywords = v;
-        } else {
+
+        if (!v) {
           this.initKeywords();
+          return;
         }
+
+        if (this.debounceInput) {
+          this.debounceInput(v);
+          return;
+        }
+
+        // 注册防抖函数
+        this.debounceInput = debounce(function (value) {
+          this.$data.keywords = value;
+        }, 300);
+
       },
 
       initKeywords() {
@@ -209,7 +309,14 @@
 
       onSearch() {
         if (!this.placeSearch) return;
-        let keywords = this.$props.province + this.$props.city + this.$data.keywords;
+        let keywords = this.$data.keywords || '';
+        const {province_title, city_title} = this.$props.location;
+        if (this.$props.level === 'city' && keywords.indexOf(city_title) < 0) {
+          keywords = city_title + keywords;
+        }
+        if (keywords.indexOf(province_title) < 0) {
+          keywords = province_title + keywords;
+        }
         this.placeSearch.search(keywords, (status, result) => {
           if (status === 'complete' && result.info === 'OK') {
             this.$data.poiList = result.poiList.pois || [];
@@ -222,12 +329,27 @@
       },
 
       onSubmit() {
-        this.$emit('change', this.$data.selectedItem);
+        let item = this.$data.selectedItem;
+
+        this.$emit('change', {
+          ...this.$props.location,
+          lng: item.location.lng,
+          lat: item.location.lat,
+          poi: item.address
+        });
         this.$data.visible = false;
       }
     }
   }
 </script>
+
+<style lang="scss">
+  .input-keywords {
+    .el-input__inner {
+      border-color: #dcdfe6 !important;
+    }
+  }
+</style>
 
 <style lang="scss" scoped>
 
@@ -252,10 +374,8 @@
     outline: none;
     margin: 0;
     transition: .3s;
-    font-weight: 500;
     user-select: none;
     padding: 0 15px;
-    font-size: 13px;
     border-radius: 4px;
     line-height: 40px;
     height: 40px;
@@ -265,15 +385,21 @@
       height: 32px;
     }
 
+    &.disabled {
+      background-color: #F5F7FA;
+      border-color: #E4E7ED;
+      cursor: not-allowed;
+    }
+
     .placeholder {
       color: #B8BCC5;
     }
 
-    &:hover {
+    &:not(.disabled):hover {
       border-color: #c0c4cc;
     }
 
-    &:active {
+    &:not(.disabled):active {
       border-color: #409eff;
     }
   }

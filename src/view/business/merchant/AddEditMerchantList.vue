@@ -30,11 +30,19 @@
           <el-input v-model="detail.store_title" :maxlength="10" style="width: 260px;" placeholder="请输入门店名称"></el-input>
         </el-form-item>
         <el-form-item label="县域" prop="province">
-          <my-select-province style="width: 110px;" v-model="detail.province_code" @change="changProvince" clearable isAuth/>
+          <my-select-province style="width: 110px;" v-model="detail.province_code" @change="changProvince" isAuth @sync="syncProvince"/>
           <my-select-city style="width: 140px; margin-left: 6px;" v-model="detail.city_id" :provinceCode="detail.province_code"
-                          placeholder="请选择县域" @change="changCity" :disabled="detail.province_code === '' ? true : false"/>
+                          placeholder="请选择县域" @change="changCity" :disabled="detail.province_code === '' ? true : false" @sync="syncCity"/>
         </el-form-item>
       </div>
+      <div>
+        <el-form-item label="地理位置" prop="geo">
+          <el-location-picker v-model="detail.geo" @change="changeGeo"/>
+        </el-form-item>
+      </div>
+      <el-form-item label="收货地址" prop="address">
+        <el-input v-model="detail.address" :maxlength="30" placeholder="请输入收货地址"></el-input>
+      </el-form-item>
       <div style="display: flex; justify-content: space-between;">
         <el-form-item label="收货人" prop="linkman">
           <el-input v-model="detail.linkman" :maxlength="10" placeholder="请输入收货人" style="width: 260px;"></el-input>
@@ -43,9 +51,6 @@
           <el-input v-model="detail.store_phone" :maxlength="11" placeholder="请输入联系方式" style="width: 260px;"></el-input>
         </el-form-item>
       </div>
-      <el-form-item label="收货地址" prop="address">
-        <el-input v-model="detail.address" :maxlength="30" placeholder="请输入收货地址"></el-input>
-      </el-form-item>
     </my-form-area>
 
     <my-form-area label="用户信息" v-if="!this.isModify">
@@ -73,7 +78,7 @@
 
 <script>
   import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio, RadioGroup, DatePicker} from 'element-ui';
-  import {FormArea, SelectProvince, SelectCity} from '@/common';
+  import {FormArea, SelectProvince, SelectCity, LocationPicker} from '@/common';
   import { UploadImg } from '@/component';
   import {Http, Config, DataHandle, Verification} from '@/util';
   import md5 from 'md5';
@@ -89,6 +94,7 @@
       'el-radio': Radio,
       'el-radio-group': RadioGroup,
       'el-date-picker': DatePicker,
+      'el-location-picker': LocationPicker,
       'my-select-province': SelectProvince,
       'my-select-city': SelectCity,
       'my-upload-img': UploadImg,
@@ -111,7 +117,8 @@
         credit_limit: 10000,
         gender: 1,
         province_code: '',
-        city_id: ''
+        city_id: '',
+        geo: { lng: '', lat: '', province_title: '', city_title: '', poi: '' }
       };
 
       let validImages = function (rules, value, callback) {
@@ -120,6 +127,13 @@
         } else {
           callback(new Error('请上传门店图片'));
         }
+      };
+
+      let validLocation = function(rules, value, callback) {
+        if (!value.lng && !value.lat) {
+          return callback(new Error('地理位置不能为空'));
+        }
+        callback();
       };
 
       let validCreditLimit = function (rules, value, callback) {
@@ -176,6 +190,9 @@
             {required: true, message: '联系方式不能为空', trigger: 'change'},
             {pattern: Verification.testStrs.checkMobile, message: '请输入11位手机号码', trigger: 'blur'}
           ],
+          geo: [
+            { required: true, validator: validLocation, trigger: 'change' },
+          ],
           address: [
             {required: true, message: '收货地址不能为空', trigger: 'change'},
             {max: 30, message: '请输入30个以内的字符', trigger: 'blur'}
@@ -196,6 +213,20 @@
       }
     },
     methods: {
+
+      syncProvince(province) {
+        this.$set(this.$data.detail.geo, 'province_title', province.title);
+        this.$set(this.$data.detail.geo, 'city_title', '');
+      },
+
+      syncCity(city) {
+        this.$set(this.$data.detail.geo, 'city_title', city.title);
+      },
+
+      changeGeo() {
+        this.$refs['ruleForm'].validateField('geo');
+      },
+
       //选择区域
       changProvince(){
         this.$data.detail.city_id = '';
