@@ -48,7 +48,7 @@
               :list="[
                 {
                   title: '出库',
-                  isDisplay: (auth.isAdmin || auth.DistributeOutStorageAdd) && scope.row.num_out < scope.row.num,
+                  isDisplay: (auth.isAdmin || auth.DistributeOutStorageAdd) && scope.row.num_out < scope.row.num && scope.row.warehouse_titles.length > 0,
                   command: () => handleShowForm('OutStorage', scope.row)
                 }
               ]"
