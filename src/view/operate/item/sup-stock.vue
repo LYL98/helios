@@ -333,10 +333,7 @@
       async handleAllocateItems(items) {
         let formData = {
           storehouse_id: this.$data.query.storehouse_id,
-          records: items.map(item => ({
-            batch_code: item.batch_code,
-            p_item_id: Number(item.p_item_id),
-          }))
+          batch_codes: items.map(item => item.batch_code)
         };
         let res = await Http.post(Config.api.operateItemSupStockAllocate, formData);
         if (res.code === 0) {

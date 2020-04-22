@@ -74,7 +74,7 @@
 </template>
 
 <script>
-  import {Form, FormItem, Row, Col, Button, Switch, Select, Option} from "element-ui";
+  import {Form, FormItem, Row, Col, Button, Switch, Select, Option, Message} from "element-ui";
   import {FormArea} from "@/common";
   import {Http, Config, DataHandle} from "@/util";
   import tableMixin from '@/share/mixin/table.mixin';
@@ -131,12 +131,14 @@
           if (!valid) return;
 
           let formData = {...this.$data.formData};
-          formData.records = formData.records.map(item => ({
-            batch_code: item.batch_code,
-            p_item_id: Number(item.p_item_id),
-          }));
+          let batch_codes = formData.records.filter(item => item.is_active).map(item => item.batch_code);
+          if (batch_codes.length <= 0) {
+            Message.warning({ message: '入库商品不能为空', offset: 100 });
+            return;
+          }
+
           this.$data.loading = true;
-          let res = await Http.post(Config.api.operateItemSupStockInStock, formData);
+          let res = await Http.post(Config.api.operateItemSupStockInStock, { warehouse_id: formData.warehouse_id, batch_codes: batch_codes });
           this.$data.loading = false;
 
           if (res.code === 0) {
