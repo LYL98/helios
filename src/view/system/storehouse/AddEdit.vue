@@ -56,7 +56,7 @@
       };
       return {
         initDetail: {
-          geo: { lng: '', lat: '', province_title: '', poi: '' },
+          geo: { lng: '', lat: '', province_title: '', city_title: '', poi: '' },
         },
         detail: {
         },
@@ -85,6 +85,7 @@
         this.$data.detail.geo.lng = '';
         this.$data.detail.geo.lat = '';
         this.$data.detail.geo.poi = '';
+        this.$data.detail.geo.city_title = '';
       },
 
       changeGeo() {
@@ -95,7 +96,7 @@
         if(data){
           let d = this.copyJson(data);
           if (Object.keys(d.geo).length === 0) {
-            d.geo = {lng: '', lat: '', province_title: '', poi: ''};
+            d.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
           }
           this.$data.detail = d;
         }else{

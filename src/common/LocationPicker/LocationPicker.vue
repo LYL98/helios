@@ -1,7 +1,7 @@
 <template>
   <div class="location-picker">
     <div :class="`selected${size === 'small' ? ' small' : ''}${isDisabled ? ' disabled' : ''}`" @click="toggleVisible">
-      <span v-if="location && location.poi">{{ location.poi }}</span>
+      <span v-if="location && location.poi">{{ level === 'province' ? location.city_title + location.poi : location.poi }}</span>
       <span class="placeholder" v-else>请选择地址</span>
       <i class="el-icon-location"></i>
     </div>
@@ -106,9 +106,7 @@
       return {
         visible: false,
         mapComplete: false,
-        centerRegeo: {},
         searchwords: '',
-        keywords: '',
 
         selectedItem: {},
 
@@ -120,16 +118,7 @@
         deep: true,
         immediate: false,
         handler: function (next, prev) {
-          console.log('location: ', next);
           this.$data.mapComplete && this.initLogic();
-        }
-      },
-      // 输入搜索词时，执行搜索poi的逻辑
-      keywords: {
-        deep: true,
-        immediate: true,
-        handler: function(next, prev) {
-          this.onSearch();
         }
       },
       // 切换选中项时，设置地图中心点位置
@@ -213,8 +202,13 @@
           this.initCenterPoint(lng, lat);
           this.geoCoder.getAddress(new AMap.LngLat(lng, lat), (status, result) => {
             if (status === 'complete' && result.info === 'OK') {
-              this.$data.centerRegeo = result.regeocode;
-              this.initKeywords();
+              const {aois, formattedAddress} = result.regeocode;
+              const keywords = Array.isArray(aois) && aois.length > 0 ? aois[0].name : formattedAddress;
+              this.placeSearch.search(keywords, (status, result) => {
+                if (status === 'complete' && result.info === 'OK') {
+                  this.$data.poiList = result.poiList.pois || [];
+                }
+              })
             }
           });
           return;
@@ -222,6 +216,7 @@
 
         // 如果存在省份、城市，则初始化地图、根据 省份 + 城市名称 获取 poilist
         if (this.$props.level === 'city' && province_title && city_title) {
+
           this.placeSearch.search(province_title + city_title, (status, result) => {
             if (status === 'complete' && result.info === 'OK') {
               this.$data.poiList = result.poiList.pois || [];
@@ -234,7 +229,8 @@
         }
 
         if (this.$props.level === 'province' && province_title) {
-          this.placeSearch.search(province_title, (status, result) => {
+
+          this.placeSearch.search(province_title + (city_title || ''), (status, result) => {
             if (status === 'complete' && result.info === 'OK') {
               this.$data.poiList = result.poiList.pois || [];
               let poi = this.$data.poiList[0];
@@ -277,8 +273,15 @@
         if (!this.map) return;
         this.geoCoder.getAddress(new AMap.LngLat(lng, lat), (status, result) => {
           if (status === 'complete' && result.info === 'OK') {
-            this.$data.centerRegeo = result.regeocode;
-            this.initKeywords();
+
+            const {aois, formattedAddress} = result.regeocode;
+            const keywords = Array.isArray(aois) && aois.length > 0 ? aois[0].name : formattedAddress;
+            this.placeSearch.search(keywords, (status, result) => {
+              if (status === 'complete' && result.info === 'OK') {
+                this.$data.poiList = result.poiList.pois || [];
+              }
+            })
+
           }
         })
       },
@@ -286,7 +289,6 @@
       changeSearchwords(v) {
 
         if (!v) {
-          this.initKeywords();
           return;
         }
 
@@ -296,20 +298,15 @@
         }
 
         // 注册防抖函数
-        this.debounceInput = debounce(function (value) {
-          this.$data.keywords = value;
+        this.debounceInput = debounce( () => {
+          this.onSearch();
         }, 300);
 
       },
 
-      initKeywords() {
-        let {aois, formattedAddress} = this.$data.centerRegeo;
-        this.$data.keywords = Array.isArray(aois) && aois.length > 0 ? aois[0].name : formattedAddress;
-      },
-
       onSearch() {
         if (!this.placeSearch) return;
-        let keywords = this.$data.keywords || '';
+        let keywords = this.$data.searchwords || '';
         const {province_title, city_title} = this.$props.location;
         if (this.$props.level === 'city' && keywords.indexOf(city_title) < 0) {
           keywords = city_title + keywords;
@@ -331,12 +328,23 @@
       onSubmit() {
         let item = this.$data.selectedItem;
 
-        this.$emit('change', {
-          ...this.$props.location,
-          lng: item.location.lng,
-          lat: item.location.lat,
-          poi: item.address
-        });
+        if (item.location && item.location.lng && item.location.lat) {
+
+          let location = {
+            ...this.$props.location,
+            lng: item.location.lng,
+            lat: item.location.lat,
+            poi: item.address
+          };
+
+          // 如果是省级选择，则添加城市
+          if (this.$props.level === 'province') {
+            location.city_title = item.cityname;
+          }
+
+          this.$emit('change', location);
+        }
+
         this.$data.visible = false;
       }
     }
