@@ -96,7 +96,7 @@
       }
     },
     created() {
-      documentTitle('场地 - 调拨装车 - 装车进度');
+      documentTitle('场地 - 调拨装车 - 总览');
       this.initQuery();
     },
     methods: {

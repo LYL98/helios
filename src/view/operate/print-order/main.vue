@@ -428,16 +428,17 @@
       flex: initial !important;
       position: relative;
       >.print-sign{
-        background: #ff5252;
+        font-size: 12px;
+        background: #00ADE7;
         color: #fff;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        line-height: 20px;
+        border-radius: 3px;
+        min-width: 16px;
+        height: 16px;
+        line-height: 16px;
         text-align: center;
         position: absolute;
         right: -15px;
-        top: -5px;
+        top: 1px;
       }
     }
   }
