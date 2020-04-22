@@ -120,6 +120,7 @@
         deep: true,
         immediate: false,
         handler: function (next, prev) {
+          console.log('location: ', next);
           this.$data.mapComplete && this.initLogic();
         }
       },

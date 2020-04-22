@@ -54,6 +54,13 @@
       }
     },
     watch: {
+      value: {
+        deep: true,
+        immediate: true,
+        handler: function (next, prev) {
+          this.handleSync();
+        }
+      },
       provinceCode: {
         deep: true,
         immediate: true,
@@ -85,12 +92,23 @@
         }
         // console.log('cityId: ', cityId, ', ', cityName);
         this.$emit('changeCityName', cityName);
-        !cityId && this.$emit('sync', { code: '', title: '' });
       },
       handleSelectItem(item) {
         this.$emit('select-item', item);
-        this.$emit('sync', { code: item.id, title: item.title });
       },
+
+      handleSync() {
+        let value = this.$props.value;
+
+        if (!value) {
+          this.$emit('sync', {code: '', title: ''});
+          return;
+        }
+
+        let city = this.$data.dataItem.find(item => item.id === value);
+        city && this.$emit('sync', {code: city.id, title: city.title});
+      },
+
       //根据传进来的区域code 获取城市列表
       async baseCityList(){
         let res = await Http.get(Config.api.baseCityList, {
@@ -100,12 +118,7 @@
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
-
-          let value = this.$props.value;
-          if (value) {
-            let city = rd.find(item => item.id === value);
-            city && this.$emit('sync', { code: city.id, title: city.title });
-          }
+          this.handleSync();
         }else{
           this.$messageBox.alert(res.message, '提示');
         }
