@@ -158,7 +158,7 @@
       //修改权限
       editAuth(data){
         let { auth } = this;
-        if(data.allocator_id === 0 && (auth.isAdmin || auth.OperateReceivingEditNum)){
+        if(data.allocator_id === 0 && (auth.isAdmin || auth.OperateReceivingPurchaseEditNum)){
           return true;
         }
       }

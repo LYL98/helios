@@ -2,8 +2,6 @@
   <div>
     <add-edit-layout :title="pageTitles[pageType]" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
       <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="inventoryData" :rules="rules" ref="ruleForm">
-
-        <!--调拨、详情-->
         <el-row>
           <h6 class="subtitle">调拨信息</h6>
           <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
@@ -14,7 +12,7 @@
             <el-form-item label="供应商">{{detail.supplier_title}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="调出仓">{{detail.src_storehouse.title}}</el-form-item>
+            <el-form-item label="调出仓">{{detail.src_storehouse_title}}</el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="调拨数量">{{detail.num}}件</el-form-item>
@@ -25,138 +23,123 @@
           <el-col :span="12">
             <el-form-item label="预计送达">{{detail.estimate_arrive_at}}</el-form-item>
           </el-col>
+        </el-row>
+
+        <h6 class="subtitle">品控信息</h6>
+        <el-row>
           <el-col :span="12">
-            <el-form-item label="可收货数量">{{detail.num - detail.num_arrive}}件</el-form-item>
+            <el-form-item label="到货数量" prop="num_arrive">
+              <input-number size="medium" :min="0" v-model="inventoryData.num_arrive" unit="件"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="品控抽检">
+              <input-number
+                size="medium"
+                disabled
+                :value="!!inventoryData.num_arrive ? Math.floor(inventoryData.num_arrive * ((itemData.system_class && itemData.system_class.qa_rate) || 0) / 1000) : ''"
+                unit="件"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="合格数量" prop="qualified_num">
+              <input-number size="medium" :min="0" v-model="inventoryData.qualified_num" unit="件"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">
+            <el-form-item label="生产日期" prop="produce_date">
+              <el-date-picker
+                size="medium"
+                style="width: 100%;"
+                placeholder="生产日期"
+                v-model="inventoryData.produce_date"
+                type="date"
+                value-format="yyyy-MM-dd"
+                :disabled="inventoryData.produce_date_disabled"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="保质期" prop="shelf_life">
+              <input-number size="medium" :disabled="lifeDesabled" v-model="inventoryData.shelf_life" unit="天"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="库存期" prop="stock_life">
+              <input-number size="medium" :disabled="lifeDesabled" v-model="inventoryData.stock_life" unit="天"/>
+            </el-form-item>
           </el-col>
         </el-row>
 
-        <template v-if="judgeOrs(pageType, ['add_distribute'])">
-          <h6 class="subtitle">品控信息</h6>
+        <!--调拨，不合格商品处理-->
+        <template v-if="isShowNo">
+          <h6 class="subtitle">不合格商品处理</h6>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="到货数量" prop="num_arrive">
-                <input-number size="medium" :min="1" v-model="inventoryData.num_arrive" unit="件"/>
+              <el-form-item label="处理数量">
+                <input-number size="medium" disabled :value="inventoryData.un_qa_num" unit="件"/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="品控抽检">
-                <input-number
+              <el-form-item label="处理类型" prop="un_qa_type">
+                <select-option
                   size="medium"
-                  disabled
-                  :value="!!inventoryData.num_arrive ? Math.floor(inventoryData.num_arrive * ((itemData.system_class && itemData.system_class.qa_rate) || 0) / 1000) : ''"
-                  unit="件"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="合格数量" prop="num">
-                <input-number size="medium" :min="pageType === 'add_distribute' ? 0 : 1" v-model="inventoryData.num" unit="件"/>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12" v-if="itemData.fisrt_system_class.has_produce_date">
-              <el-form-item label="生产日期" prop="produce_date">
-                <el-date-picker
-                  size="medium"
-                  style="width: 100%;"
-                  placeholder="生产日期"
-                  v-model="inventoryData.produce_date"
-                  type="date"
-                  value-format="yyyy-MM-dd"
-                  :disabled="inventoryData.produce_date_disabled"
+                  placeholder="请选择处理类型"
+                  v-model="inventoryData.un_qa_type"
+                  :options="supOptTypes"
                 />
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="保质期" prop="shelf_life">
-                <input-number size="medium" :disabled="lifeDesabled" v-model="inventoryData.shelf_life" unit="天"/>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="库存期" prop="stock_life">
-                <input-number size="medium" :disabled="lifeDesabled" v-model="inventoryData.stock_life" unit="天"/>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <!--调拨，不合格商品处理-->
-          <template v-if="isShowNo">
-            <h6 class="subtitle">不合格商品处理</h6>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="处理数量">
-                  <input-number size="medium" disabled :value="inventoryData.un_qa_num" unit="件"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="处理类型" prop="un_qa_type">
-                  <select-option
-                    size="medium"
-                    placeholder="请选择处理类型"
-                    v-model="inventoryData.un_qa_type"
-                    :options="supOptTypes"
-                  />
-                </el-form-item>
-              </el-col>
-              <el-col :span="12" v-if="judgeOrs(inventoryData.un_qa_type, ['damage_sale', 'sale_offline'])">
-                <el-form-item label="处理金额" prop="un_qa_amount">
-                  <input-price size="medium" v-model="inventoryData.un_qa_amount" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </template>
-
-          <el-form-item label="备注" prop="remark">
-            <el-input v-model="inventoryData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
-          </el-form-item>
-          <el-form-item label="品控标准">
-            <div v-if="itemData.system_class.qa_standard" v-html="itemData.system_class.qa_standard" class="qa-standard"></div>
-            <div v-else class="qa-standard">暂无品控标准</div>
-          </el-form-item>
-          <el-form-item label="商品详情">
-            <div style="margin-bottom: 16px;">
-              <image-preview>
-                <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in itemData.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
-              </image-preview>
-            </div>
-            <el-row>
-              <el-col :span="5">
-                <el-form-item label="产地" label-width="60px">{{itemData.origin_place}}</el-form-item>
-              </el-col>
-              <el-col :span="5">
-                <el-form-item label="规格" label-width="60px">{{itemData.item_spec || '-'}}</el-form-item>
-              </el-col>
-              <el-col :span="5">
-                <el-form-item label="重量" label-width="60px">
-                  <span v-if="!!itemData.weight_s">{{returnWeight(itemData.weight_s)}}
-                    <span v-if="!!itemData.weight_e"> - {{returnWeight(itemData.weight_e)}}</span> 斤
-                  </span>
-                </el-form-item>
-              </el-col>
-              <el-col :span="4">
-                <el-form-item label="筐" label-width="60px">
-                  <template v-if="itemData.frame_id">含筐</template>
-                  <template v-else>-</template>
-                </el-form-item>
-              </el-col>
-              <el-col :span="5">
-                <el-form-item label="包装规格" label-width="80px">{{itemData.package_spec}}</el-form-item>
-              </el-col>
-            </el-row>
-            <div class="my-content-div" v-html="itemData.content"></div>
-          </el-form-item>
         </template>
+
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="inventoryData.remark" type="textarea" :maxlength="50" placeholder="请输入50位以内的字符"></el-input>
+        </el-form-item>
+        <el-form-item label="品控标准">
+          <div v-if="itemData.system_class.qa_standard" v-html="itemData.system_class.qa_standard" class="qa-standard"></div>
+          <div v-else class="qa-standard">暂无品控标准</div>
+        </el-form-item>
+        <el-form-item label="商品详情">
+          <div style="margin-bottom: 16px;">
+            <image-preview>
+              <img style="width: 64px; height: 64px; margin-right: 10px" v-for="(item, index) in itemData.images" :key="index" :src="tencentPath + item + '_min200x200'" alt=""/>
+            </image-preview>
+          </div>
+          <el-row>
+            <el-col :span="5">
+              <el-form-item label="产地" label-width="60px">{{itemData.origin_place}}</el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="规格" label-width="60px">{{itemData.item_spec || '-'}}</el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="重量" label-width="60px">
+                <span v-if="!!itemData.weight_s">{{returnWeight(itemData.weight_s)}}
+                  <span v-if="!!itemData.weight_e"> - {{returnWeight(itemData.weight_e)}}</span> 斤
+                </span>
+              </el-form-item>
+            </el-col>
+            <el-col :span="4">
+              <el-form-item label="筐" label-width="60px">
+                <template v-if="itemData.frame_id">含筐</template>
+                <template v-else>-</template>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item label="包装规格" label-width="80px">{{itemData.package_spec}}</el-form-item>
+            </el-col>
+          </el-row>
+          <div class="my-content-div" v-html="itemData.content"></div>
+        </el-form-item>
       </el-form>
 
       <div class="bottom-btn">
-        <template v-if="judgeOrs(pageType, ['add_distribute'])">
-          <el-button size="medium" @click.native="handleCancel">取 消</el-button>
-          <el-button size="medium" type="primary" @click.native="handleAddEdit">收 货</el-button>
-        </template>
-        <template v-else>
-          <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
-        </template>
+        <el-button size="medium" @click.native="handleCancel">取 消</el-button>
+        <el-button size="medium" type="primary" @click.native="handleAddEdit">收 货</el-button>
       </div>
     </add-edit-layout>
   </div>
@@ -194,8 +177,7 @@ export default {
       - un_qa_num: 不合格处理数量
       - un_qa_type: 不合格商品处理类型 damage/damage_sale/sale_offline
       - remark:
-      - un_qa_amount:
-      in_type: 两种枚举类型:pur, distribute。其中 pur 表示采购，distribute表示调拨
+      order_type: distribute
       accept_type:
         * all_accept: 全部收货
        * after_no: 后面不会来货了
@@ -205,7 +187,7 @@ export default {
       province_code: this.$province.code,
       produce_date: '',
       produce_date_disabled: false,
-      in_type: '',
+      order_type: 'distribute',
       accept_type: '',
       relate_order_id: '',
       num_arrive: '',
@@ -214,20 +196,14 @@ export default {
       stock_life: null,
       un_qa_num: 0,
       un_qa_type: '',
-      un_qa_amount: 0,
       remark: '',
     }
 
     //到货数量校验
     const validNumArrive = (rules, value, callback)=>{
-      let { detail, pageType } = this;
-      //采购
-      if(pageType === 'add_purchase' && Number(value) > detail.num - detail.num_in) {
-        return callback(new Error('不能大于可收货数量'));
-      }
-      //调拨 到货数量 + 已入库数量
-      if(pageType === 'add_distribute' && Number(value) > detail.num - detail.num_arrive) {
-        return callback(new Error('不能大于可收货数量'));
+      let { detail } = this;
+      if(Number(value) > detail.num - detail.num_arrive) {
+        return callback(new Error('不能大于调拨数量'));
       }
       callback();
     }
@@ -240,6 +216,7 @@ export default {
       callback();
     }
     return {
+      id: null,
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       initInventoryData: initInventoryData,
@@ -264,21 +241,18 @@ export default {
           { required: true, message: '请输入到货数量', trigger: 'change' },
           { validator: validNumArrive, trigger: 'blur' }
         ],
-        num: [
+        qualified_num: [
           { required: true, message: '请输入合格数量', trigger: 'change' },
           { validator: validNum, trigger: 'blur' }
         ],
         un_qa_type: { required: true, message: '请选择处理类型', trigger: 'change' },
-        un_qa_amount: { required: true, message: '请输入处理金额', trigger: 'change' },
         remark: [
           { required: true, message: '请输入备注', trigger: 'change' }
         ],
       },
       pageTitles: {
-        add_purchase: '品控',
-        add_distribute: '品控',
-        detail_purchase: '品控详情',
-        detail_distribute: '品控详情',
+        add: '品控',
+        detail: '品控详情'
       },
     }
   },
@@ -299,21 +273,17 @@ export default {
     },
     //是否显示不合格处理
     isShowNo(){
-      let { inventoryData, detail, pageType } = this;
+      let { inventoryData, detail } = this;
       //到货数量小于或等于可到货数量 && 到货数量大于合格数量
-      if(pageType === 'add_distribute' &&
-        typeof inventoryData.num_arrive === 'number' && typeof inventoryData.num === 'number' &&
-        inventoryData.num_arrive <= detail.num - detail.num_in &&
-        inventoryData.num_arrive > inventoryData.num){
-          inventoryData.un_qa_num = inventoryData.num_arrive - inventoryData.num;
+      if(typeof inventoryData.num_arrive === 'number' && typeof inventoryData.qualified_num === 'number' &&
+        inventoryData.num_arrive <= detail.num && inventoryData.num_arrive > inventoryData.qualified_num){
+          inventoryData.un_qa_num = inventoryData.num_arrive - inventoryData.qualified_num;
           inventoryData.un_qa_type = '';
-          inventoryData.un_qa_amount = null;
           this.$data.inventoryData = inventoryData;
         return true;
       }
       inventoryData.un_qa_num = 0;
       inventoryData.un_qa_type = '';
-      inventoryData.un_qa_amount = 0;
       this.$data.inventoryData = inventoryData;
       return false;
     }
@@ -323,24 +293,30 @@ export default {
     showAddEdit(data, type){
       this.$data.isShowNo = false;
       this.$data.pageType = type;
-      this.$data.detail = data;
-      let inTypes = {
-        add_purchase: 'pur',
-        add_distribute: 'distribute',
-        detail_purchase: 'pur',
-        detail_distribute: 'distribute',
+      this.$data.id = data.id;
+      this.supAcceptDistDetail();
+    },
+    //调拨详情
+    async supAcceptDistDetail(){
+      this.$loading({isShow: true, isWhole: true});
+      let res = await Http.get(Config.api.supAcceptDistDetail, { id: this.id });
+      this.$loading({isShow: false});
+      if(res.code === 0){
+        let rd = res.data;
+        this.$data.detail = rd;
+        this.$data.inventoryData = this.copyJson({
+          ...this.initInventoryData,
+          relate_order_id: rd.id,
+          produce_date: rd.produce_date || '',
+          produce_date_disabled: rd.produce_date ? true : false,
+          shelf_life: rd.shelf_life,
+          stock_life: rd.stock_life
+        });
+        this.$data.isShow = true;
+        this.supPItemDetail();
+      }else{
+        this.$message({message: res.message, type: 'error'});
       }
-      this.$data.inventoryData = this.copyJson({
-        ...this.initInventoryData,
-        relate_order_id: data.id,
-        produce_date: data.produce_date || '',
-        produce_date_disabled: data.produce_date ? true : false,
-        shelf_life: data.shelf_life,
-        stock_life: data.stock_life,
-        in_type: inTypes[type]
-      });
-      this.supPItemDetail();
-      this.$data.isShow = true;
     },
     //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
     async supPItemDetail(){
@@ -363,10 +339,7 @@ export default {
     async addEditData(){
       let { inventoryData } = this;
       this.$loading({isShow: true});
-      let res = await Http.post(Config.api.supAcceptPurAdd, {
-        ...inventoryData,
-        order_type: inventoryData.in_type, //仓库用: in_type，场地用：order_type
-      });
+      let res = await Http.post(Config.api.supAcceptDistributeAdd, inventoryData);
       this.$loading({isShow: false});
       if(res.code === 0){
         this.$message({message: '收货成功', type: 'success'});
