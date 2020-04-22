@@ -17,6 +17,11 @@
           </el-select>
           <div style="color: #7f1305;">注：可快速复制现有角色的功能</div>
         </el-form-item>
+        <el-form-item label="仓库权限" v-if="detail.role_type === 'global'" class="is-required">
+          <el-radio v-model="detail.storehouse_permission_type" label="all">全部仓库</el-radio>
+          <el-radio v-model="detail.storehouse_permission_type" label="global">全国仓</el-radio>
+          <el-radio v-model="detail.storehouse_permission_type" label="local">区域仓</el-radio>
+        </el-form-item>
         <el-form-item label="超级管理员" v-if="detail.role_type === 'global'" class="is-required">
           <el-radio v-model="detail.is_super_admin" :label="true" :disabled="$myInfo.is_admin && $myInfo.opt_type === 'global' ? false : true">是</el-radio>
           <el-radio v-model="detail.is_super_admin" :label="false" :disabled="$myInfo.is_admin && $myInfo.opt_type === 'global' ? false : true">否</el-radio>
@@ -71,7 +76,8 @@ export default {
       this.$data.dataItem = dataItem;
       this.$data.detail = JSON.parse(JSON.stringify({
         ...roleDetail,
-        role_type: roleDetail.role_type || 'global'
+        role_type: roleDetail.role_type || 'global',
+        storehouse_permission_type: roleDetail.role_type === 'local' ? 'local' : (roleDetail.storehouse_permission_type || 'all')
       }));
       this.$data.selectRoleVal = '';
       this.$data.isShow = true;
@@ -94,9 +100,15 @@ export default {
       this.$data.detail = detail;
     },
     //选择类别
-    changeRoleType(){
+    changeRoleType(v){
       this.$data.detail.is_super_admin = false;
       this.$data.selectRoleVal = '';
+      console.log('v: ', v);
+      if (v === 'local') {
+        this.$data.detail.storehouse_permission_type = 'local';
+      } else {
+        this.$data.detail.storehouse_permission_type = 'all';
+      }
     },
     //确认提交
     submitAddEdit(e){
