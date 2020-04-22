@@ -3,7 +3,7 @@
     <template slot="left-query">
       <div class="menu-left-query">
         <div class="left">
-          <global-storehouse v-if="query.delivery_date" v-model="query.src_storehouse_id" :show-nationwide="false" @initCallBack="initStorehouse" @change="changeQuery"/>
+          <global-storehouse v-if="query.delivery_date" v-model="query.storehouse_id" :show-nationwide="false" @initCallBack="initStorehouse" @change="changeQuery"/>
         </div>
         <div class="right">
           <global-delivery-date v-model="query.delivery_date" @change="changeQuery"/>
@@ -104,7 +104,7 @@
       return {
         query: {
           delivery_date: '',
-          src_storehouse_id: '',
+          storehouse_id: '',
           condition: ''
         },
         list: {
