@@ -3,16 +3,16 @@
     <template slot="left-query">
       <div class="menu-left-query">
         <div class="left">
-          <global-province slot="left-query" type="default" isRequired @change="selectProvince"/>
+          <global-storehouse v-model="storehouseId" @change="changeStorehouse" @initCallBack="initChangeStorehouse" :show-nationwide="false"/>
         </div>
         <div class="right">
-          <menu-query :getPageComponents="viewGetPageComponents" ref="MenuQuery" fromPage="TruckLoad"/>
+          <global-delivery-date v-model="deliveryDate" @change="changeQuery"/>
         </div>
       </div>
     </template>
-    <template v-if="provinceCode !== ''">
+    <template v-if="storehouseId && deliveryDate">
       <query-operate-tuck-load :getPageComponents="viewGetPageComponents" :provinceCode="provinceCode" ref="QueryOperateTruckLoad"/>
-      <table-operate-tuck-load :getPageComponents="viewGetPageComponents" :provinceCode="provinceCode" ref="TableOperateTruckLoad"/>
+      <table-operate-tuck-load :getPageComponents="viewGetPageComponents" :storehouseId="storehouseId" :deliveryDate="deliveryDate" ref="TableOperateTruckLoad"/>
       <form-operate-tuck-load-affirm :getPageComponents="viewGetPageComponents" ref="FormOperateTruckLoadAffirm"/>
       <detail-operate-tuck-load :getPageComponents="viewGetPageComponents" ref="DetailOperateTruckLoad"/>
       <form-operate-tuck-load-edit-num :getPageComponents="viewGetPageComponents" ref="FormOperateTruckLoadEditNum"/>
@@ -26,7 +26,7 @@
   import FormOperateTruckLoadAffirm from './FormOperateTruckLoadAffirm';
   import DetailOperateTruckLoad from './DetailOperateTruckLoad';
   import FormOperateTruckLoadEditNum from './FormOperateTruckLoadEditNum';
-  import { GlobalProvince } from '@/component';
+  import { GlobalStorehouse, GlobalDeliveryDate } from '@/component';
   import MenuQuery from '@/view/operate/sort/MenuQuery';
   import mainMixin from '@/share/mixin/main.mixin';
 
@@ -39,21 +39,36 @@
       'form-operate-tuck-load-affirm': FormOperateTruckLoadAffirm,
       'detail-operate-tuck-load': DetailOperateTruckLoad,
       'form-operate-tuck-load-edit-num': FormOperateTruckLoadEditNum,
-      'global-province': GlobalProvince,
+      'global-storehouse': GlobalStorehouse,
+      'global-delivery-date': GlobalDeliveryDate,
     },
     mixins: [mainMixin],
     data(){
       return {
-        provinceCode: ''
+        provinceCode: '',
+        storehouseId: '',
+        deliveryDate: ''
       }
     },
     created() {
-      documentTitle('场地 - 装车');
+      documentTitle('场地 - 配送装车 - 装车');
     },
     methods: {
-      //选择区域后
-      selectProvince(data){
-        this.$data.provinceCode = data.code;
+      changeQuery(){
+        this.$nextTick(()=>{
+          let pc = this.viewGetPageComponents('TableOperateTruckLoad');
+          if(pc){
+            pc.$data.query.page = 1;
+            pc.getData(pc.query);
+          }
+        });
+      },
+      changeStorehouse(data){
+        this.$data.provinceCode = data.province_code;
+        this.changeQuery();
+      },
+      initChangeStorehouse(data){
+        this.$data.provinceCode = data.province_code;
       }
     }
   };
@@ -62,6 +77,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .menu-left-query{
+    width: 280px;
     display: flex;
     align-items: center;
     >.left{
