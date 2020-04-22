@@ -43,6 +43,7 @@
               prop="driver_id"
               :rules="[ { required: true, message: '司机不能为空', trigger: 'change' } ]"
             >
+              <!--  待发车的调拨单 不可再次编辑司机信息 -->
               <el-select
                 v-model="formData.driver_id"
                 remote
@@ -53,6 +54,7 @@
                 style="width: 100%"
                 no-match-text="没有符合条件的司机"
                 no-data-text="没有符合条件的司机"
+                :disabled="item && item.status === 'wait_delivery'"
               >
                 <el-option
                   v-for="item in driver_list"
@@ -99,9 +101,11 @@
               prop="fee"
               :rules="[ { required: true, message: '运费不能为空', trigger: 'change' }, { validator: validFee, trigger: 'blur' } ]"
             >
+              <!--  待发车的调拨单 不可再次编辑司机信息 -->
               <el-input
                 v-model="formData.fee"
                 placeholder="请输入运费"
+                :disabled="item && item.status === 'wait_delivery'"
               >
                 <template slot="append">元</template>
               </el-input>
