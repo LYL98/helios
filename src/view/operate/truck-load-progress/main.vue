@@ -42,16 +42,16 @@
             <template slot-scope="scope">{{scope.row.item_code}}/{{scope.row.item_title}}</template>
           </el-table-column>
           <el-table-column label="应出" min-width="2">
-            <template slot-scope="scope">{{scope.row.plan_num ? scope.row.plan_num + '件' : '-'}}</template>
+            <template slot-scope="scope">{{scope.row.count_pre ? scope.row.count_pre + '件' : '-'}}</template>
           </el-table-column>
           <el-table-column label="场地" min-width="2">
-            <template slot-scope="scope">{{scope.row.palace_stock_num ? scope.row.palace_stock_num + '件' : '-'}}</template>
+            <template slot-scope="scope">{{scope.row.accept_stock_num ? scope.row.accept_stock_num + '件' : '-'}}</template>
           </el-table-column>
           <el-table-column label="分配" min-width="2">
             <template slot-scope="scope">{{scope.row.allocated_num ? scope.row.allocated_num + '件' : '-'}}</template>
           </el-table-column>
           <el-table-column label="仓库剩余库存" min-width="2">
-            <template slot-scope="scope">{{scope.row.ware_stock_num ? scope.row.ware_stock_num + '件' : '-'}}</template>
+            <template slot-scope="scope">{{scope.row.stock_num ? scope.row.stock_num + '件' : '-'}}</template>
           </el-table-column>
         </el-table>
       </div>
@@ -114,7 +114,7 @@
       }
     },
     created() {
-      documentTitle('场地 - 调拨装车 - 装车进度');
+      documentTitle('场地 - 调拨装车 - 总览');
       this.initQuery();
     },
     methods: {

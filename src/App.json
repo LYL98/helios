@@ -318,7 +318,7 @@
               "name": "OperateTruckLoad"
             },
             {
-              "title": "装车进度",
+              "title": "总览",
               "upName": "OperateTruckLoadMain",
               "name": "OperateTruckLoadProgress"
             },
@@ -344,7 +344,7 @@
               "name": "OperateDisTruckLoad"
             },
             {
-              "title": "装车进度",
+              "title": "总览",
               "upName": "OperateDisTruckLoadMain",
               "name": "OperateDisTruckLoadProgress"
             },
