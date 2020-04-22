@@ -318,8 +318,8 @@ const Config = (() => {
       supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情
       supAllocateDetailPrint: apiM + '/sup_allocate/detail_print', //打印
 
-      //装车进度
-      supOutAllocateLoadingQuery: apiM + '/sup_out/allocate_loading_query', //场地装车进度查询
+      //总览
+      supOutAllocateLoadingQuery: apiM + '/sup_out/allocate_loading_query', //场地总览查询
 
       //装车延时
       supAllocateDelaySortQuery: apiM + '/sup_allocate/delay_sort_query', //装车延时
@@ -347,7 +347,7 @@ const Config = (() => {
       supDistributeDelivery: apiM + '/sup_distribute/delivery', //发车前确认
       supDistributeDriverItemDetail: apiM + '/sup_distribute/driver_item_detail', //返回某个司机在某天 某个商品的调拨装车详情
       supDistributeAllocatedEditNum: apiM + '/sup_distribute_allocate/edit_num', //修改调拨分配的数量(也就是打货)
-      supDistributeAllocateLoading: apiM + '/sup_distribute_allocate/loading', //调拨装车进度
+      supDistributeAllocateLoading: apiM + '/sup_distribute_allocate/loading', //调拨总览
       supDistributeAllocateDelaySortQuery: apiM + '/sup_distribute_allocate/delay_sort_query', //调拨装车延迟
 
       //线路
