@@ -27,7 +27,7 @@
         <el-col :span="12">
           <el-form-item label="变动类型" prop="opt_type">
             <select-option
-              size="small"
+              size="medium"
               v-model="detail.opt_type"
               :options="supOptTypes"
               placeholder="请选择变动类型"

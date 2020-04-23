@@ -1,9 +1,10 @@
 <template>
-  <form-layout title="盘点" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <form-layout title="盘点" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog" width="840px">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" ref="ruleForm" :rules="rules">
-      <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
-      <h6 class="subtitle">盘点信息</h6>
       <el-row>
+        <el-col :span="12">
+          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
+        </el-col>
         <el-col :span="12">
           <el-form-item label="批次">{{detail.batch_code}}</el-form-item>
         </el-col>
@@ -12,6 +13,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="库存数量">{{detail.num}}件</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="商品过期时间">{{detail.due_date || '-'}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="库存过期时间">{{detail.stock_due_date || '-'}}</el-form-item>
         </el-col>
       </el-row>
       <el-row>
