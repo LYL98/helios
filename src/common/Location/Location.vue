@@ -45,6 +45,10 @@
       },
     },
     mounted() {
+      console.log(this.$props.center);
+      console.log(this.$props.marker);
+      
+      
       this.initMap();
     },
     beforeDestroy() {
