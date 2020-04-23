@@ -86,7 +86,7 @@ export default {
     LODOP.PRINT_INIT('打印装车批次');
 
     list.forEach(d => {
-      let qrcontent = `{"type":"sort","out_stock_id":${d.id}}`;
+      let qrcontent = `{"type":"sort","out_stock_id":${d.id},"item_id":${d.item_id}}`;
       d.items.forEach(item => {
         LODOP.NewPage();
         LODOP.SET_PRINT_PAGESIZE(1, 600, 400);
