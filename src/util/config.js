@@ -339,6 +339,7 @@ const Config = (() => {
       supDeliveryLackHistoryItem: apiM + '/sup_delivery/lack_history/item', //商品缺货缺货历史记录
       supDeliveryLackHistoryStore: apiM + '/sup_delivery/lack_history/store', //确认分配之后用于查看缺货记录中某个商品在各个门店分配的详情
       lineOrderExport: apiM + '/line_order/export', //导出
+      supDeliveryDeliverLocus:apiM + '/sup_delivery/deliver/locus',//配送司机轨迹查询
 
       //场地调拨装车
       supDistributeDriverDetail: apiM + '/sup_distribute/driver_detail', //返回某个司机在某天需要调拨的商品汇总(也就是装车界面)

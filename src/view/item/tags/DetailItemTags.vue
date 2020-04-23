@@ -61,7 +61,7 @@
               {{ !!scope.row.price_sale ? '￥' + DataHandle.returnPrice(scope.row.price_sale) : '-' }}
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="created"  align="center" />
+          <el-table-column label="创建时间" prop="updated"  align="center" />
 
           <el-table-column label="操作内容"  >
             <template slot-scope="scope">
