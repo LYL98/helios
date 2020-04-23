@@ -37,6 +37,11 @@
    OperateItem
    OperateItemSupAccept
    OperateItemSupAcceptConfirm
+   OperateItemSupStock
+   OperateItemSupStockDistribute
+   OperateItemSupStockWarehousing
+   OperateItemSupStockAllocate
+   OperateItemSupStockRecord
 
    OperateDisTruckLoadMain
    OperateDisTruckLoad
@@ -57,6 +62,8 @@
 
    OperateReceivingPurchase
    OperateReceivingDistribute
+
+   SystemRoleExport
 
 删除：
    WarehouseInventoryDetailBuyDetail
