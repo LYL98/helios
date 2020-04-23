@@ -300,7 +300,6 @@ const Config = (() => {
       supDistributeQueryForAccept: apiM + '/sup_distribute/query_for_accept', //场地调拨列表
       supAcceptDistributeAdd: apiM + '/sup_accept/distribute/add', //场地收货(调拨)
       supAcceptDistDetail: apiM + '/sup_accept/dist_detail', //场地的调拨品控收货详情
-      supAcceptEditDistributeDetailAdd: apiM + '/sup_accept/edit_distribute_detail/add', //场地的调拨品控收货
       supAcceptEditDistributeDetail: apiM + '/sup_accept/edit_distribute_detail', //场地的调拨品控收货修改
 
 

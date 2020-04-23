@@ -258,7 +258,7 @@ export default {
     //库存期、保质期禁用
     lifeDesabled(){
       let { itemData, detail } = this;
-      if(detail.status !== 'success') return true;
+      if(detail.status !== 'audit_success') return true;
       if(itemData.fisrt_system_class.has_produce_date) return true;
       return false;
     },
@@ -290,7 +290,7 @@ export default {
         let rd = res.data;
         this.$data.itemData = rd;
         //待入库
-        if(detail.status === 'success'){
+        if(detail.status === 'audit_success'){
           inventoryData.shelf_life = rd.shelf_life;
           inventoryData.stock_life = rd.stock_life;
           this.$data.inventoryData = inventoryData;
