@@ -4,14 +4,17 @@
       <el-col :span="8">
         账单时间：{{detail.begin_term}}&nbsp;至&nbsp;{{detail.end_term}}
       </el-col>
-      <el-col :span="7">
+      <el-col :span="6">
         账单金额：&yen;&nbsp;{{returnPrice(detail.bill_amount)}}
       </el-col>
-      <el-col :span="7">
+      <el-col :span="6">
         结款日期：{{detail.bill_date || '-'}}
       </el-col>
       <el-col :span="2">
         <el-tag size="small" :type="statusType[detail.status]" disable-transitions>{{status[detail.status]}}</el-tag>
+      </el-col>
+      <el-col :span="2">
+        <el-tag style="cursor: pointer;" size="small" effect="dark" type="primary" @click.native="handleExport">导出详情</el-tag>
       </el-col>
     </el-row>
     <div class="" style="border-bottom: 8px solid #eee; margin: 0 16px 16px;"></div>
@@ -107,6 +110,19 @@
           this.$data.detail = res.data;
         }else{
           this.$message({message: res.message, type: 'error'});
+        }
+      },
+
+      async handleExport() {
+        //判断是否可导出
+        this.$loading({ isShow: true });
+        let res = await Http.get(Config.api.financeSupBillDetailExportCheck, { id: this.$data.detail.id });
+        this.$loading({ isShow: false });
+        if(res.code === 0){
+          let queryStr = `${Config.api.financeSupBillDetailExport}?id=${this.$data.detail.id}`;
+          window.open(queryStr);
+        }else{
+          this.$message({ title: '提示', message: res.message, type: 'error' });
         }
       },
     }

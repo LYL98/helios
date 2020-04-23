@@ -575,6 +575,8 @@ const Config = (() => {
 
       financeSupBillQuery: apiM + '/sup_bill/query', //对账单查询
       financeSupBillDetail: apiM + '/sup_bill/detail', //对账单详情
+      financeSupBillDetailExportCheck: apiM + '/sup_bill/detail/export_check', //对账单详情导出检查
+      financeSupBillDetailExport: apiM + '/sup_bill/detail/export', //对账单详情导出
       financeSupBillPay: apiM + '/sup_bill/pay', //批量结款
 
       financeSupBDetailQuery: apiM + '/sup_bdetail/query', //账单明细详情查询

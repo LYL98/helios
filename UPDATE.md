@@ -16,6 +16,7 @@
    code == OperateTruckLoadMain 修改项：title 【配送专区】
    code == WarehouseOutStorageAdd 修改项：title, url、upper_code
    code == WarehouseInventoryVariation 修改项：url
+   code == FinanceSStatementDetail 修改项：url
 
    code == OperateReceiving => OperateReceivingMain
 
