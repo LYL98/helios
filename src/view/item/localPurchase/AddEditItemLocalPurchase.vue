@@ -67,7 +67,7 @@
               <el-table-column prop="code" label="收货单号">
                 <template slot-scope="scope">
                   <span v-if="(auth.isAdmin || auth.ItemLocalPurchaseDetailStock) && fromPage !== 'Inventory'" class="link-item"
-                    @click="handleShowAddEdit('AddEditWarehouseStockPending', scope.row, 'detail_' + scope.row.in_type)">{{scope.row.code}}</span>
+                    @click="handleDetailItem(scope.row)">{{scope.row.code}}</span>
                   <span v-else>{{scope.row.code}}</span>
                 </template>
               </el-table-column>
@@ -76,7 +76,7 @@
               </el-table-column>
               <el-table-column prop="created" label="收货时间"></el-table-column>
               <el-table-column prop="status" label="状态" width="140">
-                <template slot-scope="scope">{{inventoryStatus[scope.row.status]}}</template>
+                <template>已确认</template>
               </el-table-column>
             </el-table>
           </div>
@@ -106,6 +106,17 @@
         <el-button size="medium" @click.native="handleCancel">关 闭</el-button>
       </div>
     </add-edit-layout>
+    <!--收货单详情-->
+    <el-dialog
+      title="收货单详情"
+      :visible.sync="dialog.visible"
+      width="900px"
+    >
+      <sup-accept-detail
+        v-if="dialog.visible"
+        :item="dialog.item"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -114,6 +125,7 @@ import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Constant } from '@/util';
 import { InputNumber, InputPrice } from '@/common';
 import { SelectSupplier, SelectItem, LogModifiedDetail } from '@/component';
+import supAcceptDetail from '@/view/operate/item/sup-accept-detail';
 
 export default {
   name: "AddEditItemLocalPurchase",
@@ -123,7 +135,8 @@ export default {
     'select-item': SelectItem,
     'input-number': InputNumber,
     'input-price': InputPrice,
-    'log-modified-detail': LogModifiedDetail
+    'log-modified-detail': LogModifiedDetail,
+    'sup-accept-detail': supAcceptDetail
   },
   props: {
     fromPage: { type: String, defalut: '' }, //来自页面 fromPage：Inventory 库存
@@ -146,7 +159,10 @@ export default {
     return {
       purchaseStatus: Constant.PURCHASE_STATUS(),
       purchaseStatusType: Constant.PURCHASE_STATUS_TYPE,
-      inventoryStatus: Constant.INVENTORY_STATUS(),
+      dialog: {
+        visible: false,
+        item: {}
+      },
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
       rules: {
@@ -196,7 +212,9 @@ export default {
       let res = await Http.get(Config.api.fromSupplierOrderDetail, { id: id });
       this.$loading({isShow: false});
       if(res.code === 0){
-        this.$data.detail = res.data;
+        let rd = res.data;
+        rd.out_stocks = rd.out_stocks.filter(item => !!item.confirmer_id); //只显示已确认的收货单
+        this.$data.detail = rd;
         this.$data.isShow = true;
       }else{
         this.$message({message: res.message, type: 'error'});
@@ -218,7 +236,21 @@ export default {
       if((data.category ==='audit_suc' || data.category ==='audit_fail') && data.after && data.after.audit_remark) return data.after.audit_remark;
       if(data.category ==='close' && data.after && data.after.close_remark) return data.after.close_remark;
       return '';
-    }
+    },
+
+    async handleDetailItem(item) {
+      this.$loading({isShow: true});
+      let res = await Http.get(Config.api.operateItemSupAcceptDetail, {id: item.id});
+      this.$loading({isShow: false});
+      if (res.code === 0) {
+        this.$data.dialog = {
+          visible: true,
+          item: res.data,
+        };
+      } else {
+        this.$message({title: '提示', message: res.message, type: 'error'});
+      }
+    },
   },
 };
 </script>

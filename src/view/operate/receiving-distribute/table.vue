@@ -147,7 +147,7 @@
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supDistributeQueryForAccept, {
           ...query,
-          src_storehouse_id: this.storehouseId,
+          tar_storehouse_id: this.storehouseId,
           status: this.tabValue
         });
         this.$loading({isShow: false});
