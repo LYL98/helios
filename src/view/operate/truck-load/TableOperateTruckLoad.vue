@@ -58,7 +58,7 @@
                   isDisplay: (auth.isAdmin || auth.OperateTruckLoadDetail) && !scope.row.allocated_time,
                   command: () => handleShowDetail('DetailOperateTruckLoad', {
                     ...scope.row,
-                    delivery_date: query.delivery_date,
+                    delivery_date: deliveryDate,
                     line_id: query.line_id,
                     confirmed: dataItem.confirmed
                   })
@@ -81,7 +81,7 @@
       <div class="right">
         <el-button v-if="auth.isAdmin || auth.OperateTruckLoadAffirm"
           @click.native="handleShowForm('FormOperateTruckLoadAffirm', {
-            delivery_date: query.delivery_date,
+            delivery_date: deliveryDate,
             line_id: query.line_id,
             ...dataItem
           })" size="mini" type="primary" :disabled="dataItem.confirmed">{{dataItem.confirmed ? '已确认' : '发车前确认'}}</el-button>

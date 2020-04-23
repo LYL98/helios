@@ -377,9 +377,9 @@ const Constant = {
     let data = [
       { key: 'init', value: '待审核' },
       { key: 'audit_success', value: '待收货' },
-      { key: 'audit_fail', value: '作废' },
       { key: 'part_in', value: '部分收货' },
       { key: 'all_in', value: '已完成' },
+      { key: 'audit_fail', value: '作废' },
       { key: 'closed', value: '关闭' }
     ];
     return handleKeyValue(type, data);
@@ -388,9 +388,9 @@ const Constant = {
   PURCHASE_STATUS_TYPE: {
     init: 'primary',
     audit_success: 'success',
-    audit_fail: 'info',
     part_in: 'warning',
     all_in: 'regular',
+    audit_fail: 'info',
     closed: 'info'
   },
   // 商品 - 调拨 - 调拨计划状态

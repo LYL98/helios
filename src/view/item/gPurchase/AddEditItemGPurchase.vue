@@ -137,6 +137,7 @@ import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Constant } from '@/util';
 import { InputNumber, InputPrice } from '@/common';
 import { SelectSupplier, SelectGItem, LogModifiedDetail, SelectStorehouse } from '@/component';
+import supAcceptDetail from '@/view/operate/item/sup-accept-detail';
 
 export default {
   name: "AddEditItemGPurchase",
@@ -147,7 +148,8 @@ export default {
     'input-number': InputNumber,
     'input-price': InputPrice,
     'log-modified-detail': LogModifiedDetail,
-    'select-storehouse': SelectStorehouse
+    'select-storehouse': SelectStorehouse,
+    'sup-accept-detail': supAcceptDetail
   },
   props: {
     fromPage: { type: String, defalut: '' }, //来自页面 fromPage：Inventory 库存

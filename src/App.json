@@ -229,10 +229,6 @@
           "name": "WarehouseInventory"
         },
         {
-          "title": "入库",
-          "name": "WarehouseStockPending"
-        },
-        {
           "title": "库存变动记录",
           "name": "WarehouseInventoryMove"
         },
@@ -252,10 +248,6 @@
               "name": "DistributeOutStorage"
             }
           ]
-        },
-        {
-          "title": "调拨单",
-          "name": "WarehouseDistribute"
         },
         {
           "title": "库",
