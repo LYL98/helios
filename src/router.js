@@ -211,11 +211,6 @@ const router = new Router({
 
     /*仓库*/
     {
-      path: '/warehouse/stock/pending',
-      name: 'WarehouseStockPending',
-      component: () => import('@/view/warehouse/stockPending/Main')
-    },
-    {
       path: '/warehouse/inventory',
       name: 'WarehouseInventory',
       component: () => import('@/view/warehouse/inventory/Main')
@@ -234,11 +229,6 @@ const router = new Router({
       path: '/warehouse/distribute/out/storage',
       name: 'DistributeOutStorage',
       component: () => import('@/view/warehouse/distribute-out-storage/main')
-    },
-    {
-      path: '/warehouse/distribute',
-      name: 'WarehouseDistribute',
-      component: () => import('@/view/warehouse/distribute/Main')
     },
     {
       path: '/warehouse/list',

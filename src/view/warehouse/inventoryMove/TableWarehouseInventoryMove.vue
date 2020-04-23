@@ -114,7 +114,6 @@
           '盘点': 'check',
           '上架': 'putaway',
           '变动': 'variation',
-          '调拨': 'distribute',
           '移库': 'move',
           '出库': 'out_storage',
         },
@@ -136,12 +135,6 @@
             api: Config.api.supModifyQuery,
             export_api: 'supModifyExport',
             export_srt: '导出变动记录'
-          },
-          distribute: {
-            detail: 'DetailWarehouseInventoryMoveDistribute',
-            api: Config.api.supDistributeRecordQuery,
-            export_api: 'supPDistributeExport',
-            export_srt: '导出调拨记录'
           },
           move: {
             detail: 'DetailWarehouseInventoryMoveMove',
@@ -229,15 +222,6 @@
             { label: '变动类型', key: 'opt_type', width: '2', isShow: true },
             { label: '变动数量', key: 'chg_num', width: '3', isShow: true },
             { label: '处理金额', key: 'amount', width: '3', isShow: true }
-          ]);
-        }
-        //调拨
-        else if(tabValue === 'distribute'){
-          tableColumn = tableColumn.concat([
-            { label: '调出仓', key: 'src_storehouse', width: '3', isShow: true },
-            { label: '调拨数量', key: 'num', width: '2', isShow: true },
-            { label: '调入仓', key: 'tar_storehouse', width: '3', isShow: true },
-            { label: '销售日期', key: 'date', width: '3', isShow: true }
           ]);
         }
         //移库

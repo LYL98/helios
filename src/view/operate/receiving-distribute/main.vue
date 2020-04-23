@@ -7,7 +7,6 @@
       <query-view :getPageComponents="viewGetPageComponents" ref="Query"/>
       <table-view :getPageComponents="viewGetPageComponents" :storehouseId="storehouseId" ref="Table"/>
       <add-edit-view :getPageComponents="viewGetPageComponents" ref="AddEdit"/>
-      <print-view :getPageComponents="viewGetPageComponents" ref="PrintWarehouseStockPending"/>
       <form-close :getPageComponents="viewGetPageComponents" ref="FormClose" title="关闭"/>
       <detail-view :getPageComponents="viewGetPageComponents" ref="Detail"/>
       <form-edit-num-view :getPageComponents="viewGetPageComponents" ref="FormEditNum"/>
@@ -23,7 +22,6 @@ import { GlobalStorehouse } from '@/component';
   import AddEdit from './add-edit';
   import Detail from './detail';
   import FormEditNum from './edit-num';
-  import PrintWarehouseStockPending from '@/view/warehouse/stockPending/PrintWarehouseStockPending';
   import mainMixin from '@/share/mixin/main.mixin';
 
   export default {
@@ -33,7 +31,6 @@ import { GlobalStorehouse } from '@/component';
       'query-view': Query,
       'table-view': Table,
       'add-edit-view': AddEdit,
-      'print-view': PrintWarehouseStockPending,
       'form-close': FormClose,
       'detail-view': Detail,
       'form-edit-num-view': FormEditNum
