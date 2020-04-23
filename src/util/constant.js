@@ -586,7 +586,7 @@ const Constant = {
   DEPART_STATUS: (type)=>{
     let data = [
       { key: 'wait_confirm', value: '待确认' },
-      { key: 'wait_delivery', value: '待发车' },
+      // { key: 'wait_delivery', value: '待发车' },
       { key: 'delivering', value: '配送中' },
       { key: 'done', value: '已完成' }
     ];
@@ -595,7 +595,7 @@ const Constant = {
   //发车状态(颜色)
   DEPART_STATUS_TYPE: {
     wait_confirm: 'primary',
-    wait_delivery: 'primary',
+    // wait_delivery: 'primary',
     delivering: 'warning',
     done: 'refund'
   },
