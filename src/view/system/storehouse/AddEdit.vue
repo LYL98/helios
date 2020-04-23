@@ -95,7 +95,7 @@
       showAddEdit(data, type){
         if(data){
           let d = this.copyJson(data);
-          if (Object.keys(d.geo).length === 0) {
+          if (!d.geo || Object.keys(d.geo).length < 5) {
             d.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
           }
           this.$data.detail = d;

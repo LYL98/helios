@@ -54,7 +54,7 @@
         </el-col>
         <el-col :xl="7" :lg="7" :span="10">
           <my-query-item label="调入仓">
-            <select-storehouse clearable size="small" v-model="query.tar_storehouse_id" @change="changeQuery"/>
+            <select-storehouse isAuth clearable size="small" v-model="query.tar_storehouse_id" @change="changeQuery"/>
           </my-query-item>
         </el-col>
       </el-row>

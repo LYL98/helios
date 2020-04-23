@@ -39,7 +39,7 @@
         <query-search-input
           size="small"
           v-model="query.condition"
-          placeholder="调拨计划单号"
+          placeholder="商品编号/名称、批次"
           clearable
           @search="changeQuery"
           @reset="resetQuery"

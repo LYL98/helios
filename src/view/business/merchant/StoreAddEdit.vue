@@ -217,7 +217,7 @@
         });
         if (res.code === 0) {
           let rd = res.data;
-          if (!rd.geo || Object.keys(rd.geo).length === 0) {
+          if (!rd.geo || Object.keys(rd.geo).length < 5) {
             rd.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
           }
           that.$data.addEditData = rd;
