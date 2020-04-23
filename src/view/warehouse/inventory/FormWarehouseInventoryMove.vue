@@ -1,8 +1,10 @@
 <template>
-  <form-layout :title="pageType === 'move' ? '移库' : '上架'" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="110px" :model="addData" ref="ruleForm" :rules="rules">
-      <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
+  <form-layout :title="pageType === 'move' ? '移库' : '上架'" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog" width="840px">
+    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="addData" ref="ruleForm" :rules="rules">
       <el-row>
+        <el-col :span="12">
+          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
+        </el-col>
         <el-col :span="12">
           <el-form-item label="批次">{{detail.batch_code}}</el-form-item>
         </el-col>
@@ -11,6 +13,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="库存数量">{{detail.num}}件</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="商品过期时间">{{detail.due_date || '-'}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="库存过期时间">{{detail.stock_due_date || '-'}}</el-form-item>
         </el-col>
       </el-row>
       <el-row v-for="(item, index) in addData.trays" :key="index">
@@ -36,7 +44,7 @@
         <div v-if="addData.remark_error" class="el-form-item__error">{{addData.remark_error}}</div>
       </el-form-item>
     </el-form>
-    <div style="margin-left: 110px; margin-top: 20px;">
+    <div style="margin-left: 140px; margin-top: 20px;">
       <el-button @click.native="handleCancel">取 消</el-button>
       <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
     </div>
