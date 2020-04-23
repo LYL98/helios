@@ -303,11 +303,11 @@ const Config = (() => {
       supAcceptEditDistributeDetailAdd: apiM + '/sup_accept/edit_distribute_detail/add', //场地的调拨品控收货
       supAcceptEditDistributeDetail: apiM + '/sup_accept/edit_distribute_detail', //场地的调拨品控收货修改
 
-      
+
       //场地品控收货(共用)
       supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
 
-      
+
       //分配
       supOutAllocateQuery: apiM + '/sup_out/allocate_query', //待分配记录查询
       supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
@@ -529,6 +529,8 @@ const Config = (() => {
       roleDetail: apiM + '/system/role/detail',//角色详情
       roleList: apiM + '/system/role/list',//查询权限角色
       roleDelete: apiM + '/system/role/delete',//删除权限角色
+      roleExportCheck: apiM + '/system/role/export_check',//导出检查
+      roleExport: apiM + '/system/role/export',//导出
 
       //banner管理
       systemBannerList: apiM + '/system/banner/list',  // banner列表
