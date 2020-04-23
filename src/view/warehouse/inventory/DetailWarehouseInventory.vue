@@ -45,11 +45,6 @@
                 command: () => handleShowForm('FormWarehouseInventoryVariation', scope.row)
               },
               {
-                title: '调拨',
-                isDisplay: (auth.isAdmin || auth.WarehouseInventoryDistribute) && scope.row.warehouse.ware_type === 'tmp',
-                command: () => handleShowForm('FormWarehouseInventoryDistribute', scope.row)
-              },
-              {
                 title: '出库',
                 isDisplay: auth.isAdmin || auth.WarehouseInventoryOutStorage,
                 command: () => handleShowForm('FormWarehouseInventoryOutStorage', {...scope.row, plan_out_id: detail.plan_out_id, o_num: detail.o_num, o_num_out: detail.o_num_out})
