@@ -8,20 +8,22 @@
           </my-query-item>
         </el-col>
         <el-col :span="7">
-          <el-date-picker
-            size="small"
-            v-model="pickerValue"
-            type="daterange"
-            align="right"
-            value-format="yyyy-MM-dd"
-            unlink-panels
-            :picker-options="fixDateOptions"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            @change="changePicker"
-            style="width: 100%;"
-          />
+          <my-query-item label="日期">
+            <el-date-picker
+              size="small"
+              v-model="pickerValue"
+              type="daterange"
+              align="right"
+              value-format="yyyy-MM-dd"
+              unlink-panels
+              :picker-options="fixDateOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              @change="changePicker"
+              style="width: 100%;"
+            />
+          </my-query-item>
         </el-col>
         <el-col :span="10">
           <my-query-item label="搜索">
