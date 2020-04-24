@@ -22,7 +22,23 @@
       </el-row>
 
       <h6 class="subtitle">变动信息</h6>
-      <el-row>
+      <!--库内品控-->
+      <el-row v-if="detail.opt_type === 'stocked_qa'">
+        <el-col :span="12">
+          <el-form-item label="商品过期时间">{{detail.due_date_before || '-'}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="库存过期时间">{{detail.stock_due_date_before || '-'}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="新商品过期时间">{{detail.due_date || '-'}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="新库存过期时间">{{detail.stock_due_date || '-'}}</el-form-item>
+        </el-col>
+      </el-row>
+      <!--其它-->
+      <el-row v-else>
         <el-col :span="12">
           <el-form-item label="变动数量">{{detail.chg_num}}件</el-form-item>
         </el-col>
@@ -33,15 +49,12 @@
           <el-form-item label="变动后库存">{{detail.num_after}}件</el-form-item>
         </el-col>
       </el-row>
-
-      <h6 class="subtitle">处理结果</h6>
       <el-row>
-        <el-col :span="12">
-          <el-form-item label="处理金额">&yen;{{returnPrice(detail.amount)}}</el-form-item>
-        </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="备注">{{detail.remark}}</el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
           <el-form-item label="变动人">{{detail.creator.realname}}</el-form-item>
         </el-col>

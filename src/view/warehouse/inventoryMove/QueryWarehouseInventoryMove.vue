@@ -30,13 +30,6 @@
         </my-query-item>
       </el-col>
     </el-row>
-    <el-row :gutter="32" style="margin-top: 16px;" v-if="tabValue === 'distribute'">
-      <el-col :span="7">
-        <my-query-item label="调入仓库">
-          <select-storehouse v-model="query.tar_storehouse_id" @change="handleQuery('TableWarehouseInventoryMove')" size="small" clearable />
-        </my-query-item>
-      </el-col>
-    </el-row>
   </div>
 </template>
 
@@ -58,18 +51,16 @@
         begin_date: '',
         end_date: '',
         storehouse_id: '',
-        src_storehouse_id: '', //调拨记录用
-        tar_storehouse_id: '', //调拨记录用
         condition: '',
         picker_value: null,
       }
       return {
         tabValue: '', //由table控制
         queryTitles: {
+          'in_storage': '仓库',
           'check': '仓库',
           'putaway': '仓库',
           'variation': '仓库',
-          'distribute': '调出仓库',
           'move': '原仓库',
           'out_storage': '仓库'
         },
@@ -97,7 +88,7 @@
         let storehouseId = null;
         d.length > 0 ? storehouseId = d[0].id : storehouseId = dataItem[0].id;
         this.$data.initQuery.storehouse_id = storehouseId;
-          this.$data.query.storehouse_id = storehouseId;
+        this.$data.query.storehouse_id = storehouseId;
         this.handleQuery('TableWarehouseInventoryMove');
       }
     }

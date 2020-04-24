@@ -60,7 +60,7 @@
         <el-row v-for="(item, index) in moveTrays" :key="index">
           <el-col :span="12">
             <el-form-item label="移入仓库" class="is-required">
-              <cascader-warehouse-tray v-if="isShow" size="medium" isShowTmpWarehouse :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
+              <cascader-warehouse-tray v-if="isShow" size="medium" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
               <div v-if="item.tray_ids_error" class="el-form-item__error">{{item.tray_ids_error}}</div>
             </el-form-item>
           </el-col>
