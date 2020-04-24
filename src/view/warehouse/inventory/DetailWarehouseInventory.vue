@@ -20,7 +20,7 @@
         </el-table-column>
         <el-table-column label="仓库">
           <template slot-scope="scope">
-            {{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}<span v-if="scope.row.warehouse.ware_type !== 'tmp'">/{{scope.row.tray.code}}</span>
+            {{scope.row.storehouse.title}}/{{scope.row.warehouse.title}}<span v-if="scope.row.tray.tray_type !== 'tmp'">/{{scope.row.tray.code}}</span>
           </template>
         </el-table-column>
         <el-table-column label="商品过期时间" prop="due_date"/>
@@ -35,7 +35,7 @@
                 command: () => handleShowForm('FormWarehouseInventoryCheck', scope.row)
               },
               {
-                title: scope.row.warehouse.ware_type === 'tmp' ? '上架' : '移库',
+                title: scope.row.tray.tray_type === 'tmp' ? '上架' : '移库',
                 isDisplay: auth.isAdmin || auth.WarehouseInventoryMoveOp,
                 command: () => handleShowForm('FormWarehouseInventoryMove', scope.row)
               },
