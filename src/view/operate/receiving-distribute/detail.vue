@@ -36,7 +36,7 @@
         <h6 class="subtitle">品控信息</h6>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="合格数量">{{detail.num_in}}件</el-form-item>
+            <el-form-item label="合格数量">{{detail.qualified_num}}件</el-form-item>
           </el-col>
           <el-col :span="12" v-if="itemData.fisrt_system_class && itemData.fisrt_system_class.has_produce_date">
             <el-form-item label="生产日期">{{detail.produce_date}}</el-form-item>
