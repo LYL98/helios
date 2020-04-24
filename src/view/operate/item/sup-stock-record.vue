@@ -175,7 +175,7 @@
         this.$data.query.page = 1;
         this.recordQuery();
       },
-      
+
       resetQuery() {
         this.initQuery();
         this.recordQuery();

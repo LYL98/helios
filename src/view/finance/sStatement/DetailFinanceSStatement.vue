@@ -27,9 +27,8 @@
         <el-table-column label="采购价" min-width="100">
           <template slot-scope="scope">
             <div class="amount" v-if="scope.row.bill_reason === 'local_buy'">
-              <div v-if="scope.row.item_price_buy === 0">&yen;{{returnPrice(scope.row.item_price_buy)}}</div>
-              <div class="up" v-else-if="scope.row.item_price_buy > 0">&yen;{{returnPrice(scope.row.item_price_buy)}}</div>
-              <div class="down" v-else>&yen;{{returnPrice(Math.abs(scope.row.item_price_buy))}}</div>
+              <div v-if="!!scope.row.item_price_buy">&yen;{{returnPrice(scope.row.item_price_buy)}}</div>
+              <div v-else>-</div>
             </div>
             <div v-else>-</div>
           </template>
@@ -37,9 +36,8 @@
         <el-table-column label="销售价" min-width="100">
           <template slot-scope="scope">
             <div class="amount" v-if="scope.row.bill_reason === 'local_buy'">
-              <div v-if="scope.row.item_price_sale === 0">&yen;{{returnPrice(scope.row.item_price_sale)}}</div>
-              <div class="up" v-else-if="scope.row.item_price_sale > 0">&yen;{{returnPrice(scope.row.item_price_sale)}}</div>
-              <div class="down" v-else>&yen;{{returnPrice(Math.abs(scope.row.item_price_sale))}}</div>
+              <div v-if="!!scope.row.item_price_sale">&yen;{{returnPrice(scope.row.item_price_sale)}}</div>
+              <div v-else>-</div>
             </div>
             <div v-else>-</div>
           </template>
