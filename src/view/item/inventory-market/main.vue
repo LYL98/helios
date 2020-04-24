@@ -4,7 +4,7 @@
       <el-row :gutter="32">
         <el-col :span="7">
           <my-query-item label="仓库">
-            <select-storehouse size="small" v-model="query.storehouse_id" @change="changeQuery" isAuth @initCallBack="storehouseInit"/>
+            <select-storehouse size="small" v-model="query.storehouse_id" showAll clearable @change="changeQuery"/>
           </my-query-item>
         </el-col>
         <el-col :span="7">
@@ -196,26 +196,13 @@
     },
     created() {
       documentTitle('商品 - 库存销售');
+      this.resetQuery();
     },
     methods: {
       //返回状态
       returnSaleStatus(item){
         if(item.amount) return 'saled';
         return 'wait_sale';
-      },
-      //初始化选择仓库时
-      storehouseInit(dataItem){
-        let d = dataItem.filter(item => item.province_code === this.$province.code);
-        let { query } = this;
-        if(d.length > 0){
-          query.init_storehouse_id = d[0].id;
-          query.storehouse_id = d[0].id;
-        }else{
-          query.init_storehouse_id = dataItem[0].id;
-          query.storehouse_id = dataItem[0].id;
-        }
-        this.$data.query = query;
-        this.resetQuery();
       },
 
       //搜索日期
@@ -236,7 +223,7 @@
       initQuery() {
         this.$data.query = {
           ...this.query,
-          storehouse_id: this.query.init_storehouse_id,
+          storehouse_id: '',
           sale_status: '',
           condition: '',
           begin_date: '',
