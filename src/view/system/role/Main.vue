@@ -362,6 +362,11 @@
           let rd = res.data;
           this.$data.dataItem = rd;
 
+          // 如果存在已经选中的 角色项
+          if (this.$data.detail.id) {
+            return;
+          }
+
           if (rd.length > 0) {
             this.getRoleDetail(rd[0]);
           }
