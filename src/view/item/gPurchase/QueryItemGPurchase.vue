@@ -20,7 +20,7 @@
     <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="供应商">
-          <select-supplier supplierType="global_pur" size="small" v-model="query.supplier_id" @change="handleQuery('TableItemGPurchase')" filterable/>
+          <select-supplier size="small" v-model="query.supplier_id" @change="handleQuery('TableItemGPurchase')" filterable/>
         </my-query-item>
       </el-col>
       <el-col :span="7">
