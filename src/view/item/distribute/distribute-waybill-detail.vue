@@ -103,7 +103,7 @@
           </template>
         </el-table-column>
         <!--  展开行  -->
-        <el-table-column type="expand">
+        <el-table-column type="expand" style="padding: 0;">
           <template slot-scope="scope">
             <el-form
               size="mini"
@@ -111,8 +111,8 @@
               v-if="Array.isArray(scope.row.distribute_details)"
               v-for="item in scope.row.distribute_details"
             >
-              <el-row :gutter="32">
-                <el-col :span="9">
+              <el-row :gutter="16" style="margin: 0 -45px;">
+                <el-col :span="5">
                   <el-form-item label="批次：">
                     <span>{{ item.batch_code }}</span>
                   </el-form-item>
@@ -125,14 +125,17 @@
                     <span v-else>-</span>
                   </el-form-item>
                 </el-col>
-                <el-col :span="5">
+                <el-col :span="9">
                   <el-form-item label="收货单号：">
                     <span>{{ item.out_stock_codes }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="5">
                   <el-form-item label="收货数量：">
-                    <span>{{ item.num_arrive }}件</span>
+                    <span v-if="!!item.num_arrive">
+                      {{ item.num_arrive }}件
+                    </span>
+                    <span v-else>-</span>
                   </el-form-item>
                 </el-col>
               </el-row>
