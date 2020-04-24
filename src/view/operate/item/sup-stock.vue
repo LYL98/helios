@@ -99,7 +99,7 @@
             label="序号"
             :index="indexMethod"
           ></el-table-column>
-          <el-table-column label="批次" prop="code" min-width="140">
+          <el-table-column label="批次" prop="code" min-width="160">
             <template slot-scope="scope">
               <div
                 class="td-item link-item position-relative"
