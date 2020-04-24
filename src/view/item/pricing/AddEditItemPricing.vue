@@ -109,10 +109,7 @@
           <el-table-column label="调拨数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="待入库数量" width="140">
-            <template slot-scope="scope">{{returnUnit(scope.row.wait_in_num, '件', '-')}}</template>
-          </el-table-column>
-          <el-table-column label="创建时间" width="180" prop="created"></el-table-column>
+          <el-table-column label="发车时间" width="180" prop="created"></el-table-column>
         </el-table>
       </div>
 
@@ -130,8 +127,8 @@
           <el-table-column label="采购数量" width="140">
             <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="待入库数量" width="140">
-            <template slot-scope="scope">{{returnUnit(scope.row.wait_in_num, '件', '-')}}</template>
+          <el-table-column label="待收货数量" width="140">
+            <template slot-scope="scope">{{returnUnit(scope.row.num - scope.row.num_in_stock, '件', '-')}}</template>
           </el-table-column>
           <el-table-column label="创建时间" width="180" prop="created"></el-table-column>
         </el-table>
