@@ -23,14 +23,13 @@
             <div slot-scope="scope" class="my-td-item">
               <!--采购编号、调拨单号-->
               <div v-if="item.key === 'code'" class="td-item add-dot2">
-                <div v-if="pageAuth.detail"
-                  class="td-item link-item add-dot2" @click="handleShowDetail('Detail', scope.row)">
-                  <span>{{scope.row.code}}</span>
-                  <span v-if="scope.row.creator_id === 0" class="local-pur-label">反采</span>
+                <div v-if="pageAuth.detail" class="td-item link-item add-dot2" @click="handleShowDetail('Detail', scope.row)">
+                  {{scope.row.code}}
+                  <span v-if="scope.row.creator_id === 0" class="local-pur-label no-pre">反采</span>
                 </div>
                 <div class="td-item add-dot2" v-else>
-                  <span>{{scope.row.code}}</span>
-                  <span v-if="scope.row.creator_id === 0" class="local-pur-label">反采</span>
+                  {{scope.row.code}}
+                  <span v-if="scope.row.creator_id === 0" class="local-pur-label no-pre">反采</span>
                 </div>
               </div>
               <!--商品名称-->
@@ -160,7 +159,7 @@
       },
       //返回缺货
       returnStockout(data){
-        if(this.judgeOrs(data.status, ['all_in', 'closed']) || data.num_in <= 0 || data.num_in >= data.num){
+        if(this.judgeOrs(data.status, ['closed']) || data.num_in <= 0 || data.num_in >= data.num){
           return '-';
         }
         return (data.num - data.num_in) + '件';
