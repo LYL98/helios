@@ -468,6 +468,10 @@ const router = new Router({
 
 let myInfo = {}, nextPage = ()=>{}, auth = {}, page = '', pageName = '';
 
+export const clearLoginCache = () => {
+  myInfo = {};
+}
+
 //判断是否已登录
 const getIsLogin = async ()=>{
 
