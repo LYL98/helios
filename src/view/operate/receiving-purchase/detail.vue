@@ -72,20 +72,20 @@
       <h6 class="subtitle">品控记录</h6>
       <div style="padding: 0 30px;">
         <el-table :data="detail.out_stocks" :row-class-name="highlightRowClassName">
-          <el-table-column label="到货数量" width="90">
+          <el-table-column label="到货数量" min-width="90">
             <template slot-scope="scope">{{scope.row.num_arrive}}件</template>
           </el-table-column>
-          <el-table-column label="品控抽检" width="90">
-            <template slot-scope="scope">{{scope.row.qa_num}}件</template>
+          <el-table-column label="品控抽检" min-width="90">
+            <template slot-scope="scope">{{returnUnit(scope.row.qa_num, '件', '-')}}</template>
           </el-table-column>
-          <el-table-column label="合格数量" width="120">
+          <el-table-column label="合格数量" min-width="120">
             <template slot-scope="scope">
               <span>{{scope.row.num}}件</span>
               <a v-if="editAuth(scope.row)" style="margin-left: 10px;" href="javascript:void(0);" @click="handleShowForm('FormEditNum', scope.row)">修改</a>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark"></el-table-column>
-          <el-table-column label="品控人" width="100">
+          <el-table-column label="备注" prop="remark" min-width="160"></el-table-column>
+          <el-table-column label="品控人" min-width="100">
             <template slot-scope="scope">{{scope.row.creator.realname}}</template>
           </el-table-column>
           <el-table-column label="品控时间" width="160">
@@ -158,7 +158,7 @@
       //修改权限
       editAuth(data){
         let { auth } = this;
-        if(data.allocator_id === 0 && (auth.isAdmin || auth.OperateReceivingPurchaseEditNum)){
+        if(data.confirmer_id === 0 && (auth.isAdmin || auth.OperateReceivingPurchaseEditNum)){
           return true;
         }
       }
