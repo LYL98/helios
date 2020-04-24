@@ -228,6 +228,7 @@ const Constant = {
       { key: 'num_short', value: '缺货' },
       { key: 'num_error', value: '错货' },
       { key: 'big_order_bonus', value: '大单优惠' },
+      { key: 'betray_low_price', value: '违反低价承诺' },
       { key: 'other', value: '其他' }
     ];
     return handleKeyValue(type, data);
