@@ -60,7 +60,8 @@
           </el-collapse-item>
         </el-collapse>
       </div>
-      <h6 class="subtitle">库存信息</h6>
+      
+      <h6 class="subtitle">仓库信息</h6>
       <div style="padding: 0 0 30px 30px;">
         <el-table :data="priceData.stocks" width="100%" size="mini" :row-class-name="highlightRowClassName">
           <el-table-column label="批次">
@@ -69,6 +70,23 @@
           <el-table-column label="采购价" width="240">
             <template slot-scope="scope">
               &yen;{{returnPrice(scope.row.price)}}
+            </template>
+          </el-table-column>
+          <el-table-column label="库存" width="180">
+            <template slot-scope="scope">{{returnUnit(scope.row.num, '件', '-')}}</template>
+          </el-table-column>
+        </el-table>
+      </div>
+
+      <h6 class="subtitle">场地信息</h6>
+      <div style="padding: 0 0 30px 30px;">
+        <el-table :data="priceData.accept_stocks" width="100%" size="mini" :row-class-name="highlightRowClassName">
+          <el-table-column label="批次">
+            <template slot-scope="scope">{{scope.row.batch_code}}</template>
+          </el-table-column>
+          <el-table-column label="采购价" width="240">
+            <template slot-scope="scope">
+              &yen;{{returnPrice(scope.row.price_buy)}}
             </template>
           </el-table-column>
           <el-table-column label="库存" width="180">
@@ -185,6 +203,7 @@ export default {
       },
       priceData: {
         stocks: [],
+        accept_stocks: [],
         distributes: [],
         p_orders: [],
         biddings: []
