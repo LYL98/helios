@@ -24,7 +24,7 @@
       <el-row v-for="(item, index) in addData.trays" :key="index">
         <el-col :span="12">
           <el-form-item :label="`${pageType === 'move' ? '移入仓库' : '上架托盘'}`" class="is-required">
-            <cascader-warehouse-tray v-if="isShow" size="medium" :isShowTmpWarehouse="pageType === 'move' ? true : false" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
+            <cascader-warehouse-tray v-if="isShow" size="medium" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
             <div v-if="item.tray_ids_error" class="el-form-item__error">{{item.tray_ids_error}}</div>
           </el-form-item>
         </el-col>
@@ -96,7 +96,7 @@ export default {
         this.$data.storehouseId = pc.query.storehouse_id;
       }
       this.$data.addData = this.copyJson(this.initAddData);
-      this.$data.pageType = data.warehouse.ware_type === 'tmp' ? 'putaway' : 'move';
+      this.$data.pageType = data.tray.tray_type === 'tmp' ? 'putaway' : 'move';
       this.$data.isShow = true;
     },
     //提交
