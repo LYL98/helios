@@ -134,9 +134,9 @@
                 @command-visible="handleCommandVisible"
                 :list="[
                   {
-                    title: '调拨',
-                    isDisplay: ($auth.isAdmin || $auth.OperateItemSupStockDistribute),
-                    command: () => handleDistributeItem(scope.row)
+                    title: '分配',
+                    isDisplay: ($auth.isAdmin || $auth.OperateItemSupStockAllocate),
+                    command: () => handleAllocateItems([scope.row])
                   },
                   {
                     title: '入库',
@@ -144,9 +144,9 @@
                     command: () => handleWarehousingItems([scope.row])
                   },
                   {
-                    title: '分配',
-                    isDisplay: ($auth.isAdmin || $auth.OperateItemSupStockAllocate),
-                    command: () => handleAllocateItems([scope.row])
+                    title: '调拨',
+                    isDisplay: ($auth.isAdmin || $auth.OperateItemSupStockDistribute),
+                    command: () => handleDistributeItem(scope.row)
                   }
                 ]"
               />
