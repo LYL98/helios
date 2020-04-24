@@ -225,7 +225,7 @@
           </el-col>
           <el-col :sm="12" :span="10">
             <el-form-item label="处理类型：">
-              {{ accept_type_staus[item.accept_type] }}
+              {{ accept_type_staus[item.un_qa_type] }}
             </el-form-item>
           </el-col>
         </el-row>
@@ -269,6 +269,7 @@
 <script>
   import {Form, FormItem, Row, Col, Tag} from "element-ui";
   import {FormArea} from '@/common';
+  import {Constant} from '@/util';
 
   export default {
     name: "sup-accept-detail",
@@ -285,11 +286,7 @@
     },
     data() {
       return {
-        accept_type_staus: {
-          all_accept: '全部收货',
-          after_no: '后面不会来货了',
-          after_have: '后面会来货',
-        }
+        accept_type_staus: Constant.SUP_OPT_TYPES()
       }
     }
   }
