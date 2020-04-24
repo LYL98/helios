@@ -119,12 +119,15 @@
                 </el-col>
                 <el-col :span="5">
                   <el-form-item label="调拨数量：">
-                    <span>{{ item.num }}件</span>
+                    <span v-if="!!item.num">
+                      {{ item.num }}件
+                    </span>
+                    <span v-else>-</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="5">
                   <el-form-item label="收货单号：">
-                    <span>{{ item.qaer_id }}</span>
+                    <span>{{ item.out_stock_codes }}</span>
                   </el-form-item>
                 </el-col>
                 <el-col :span="5">
