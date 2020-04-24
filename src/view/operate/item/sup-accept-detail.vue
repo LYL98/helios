@@ -158,7 +158,7 @@
           </el-col>
           <el-col :sm="12" :span="10">
             <el-form-item label="调拨数量：">
-              {{ item.num }}件
+              {{ item.distribute_num }}件
             </el-form-item>
           </el-col>
         </el-row>
@@ -198,8 +198,9 @@
         </el-row>
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
-            <el-form-item label="合格数量：">
-              {{ item.num_arrive - item.un_qa_num }}件
+            <el-form-item label="合格数量："> 
+              <!-- 如果存在不合格商品，则需要 减掉 不合格商品 -->
+              {{ item.unqualified ? item.num_arrive - item.num : item.num }}件
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
@@ -216,11 +217,11 @@
           </el-col>
         </el-row>
       </el-form-area>
-      <el-form-area label-position="left" label="不合格商品处理">
+      <el-form-area label-position="left" label="不合格商品处理" v-if="item.unqualified">
         <el-row :gutter="32">
           <el-col :sm="12" :span="10">
             <el-form-item label="不合格数量：">
-              {{ item.un_qa_num}}件
+              {{ item.num}}件
             </el-form-item>
           </el-col>
           <el-col :sm="12" :span="10">
