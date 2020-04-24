@@ -170,13 +170,17 @@
           page_size: 10,
         }
       },
+
+      changeQuery() {
+        this.$data.query.page = 1;
+        this.recordQuery();
+      },
+      
       resetQuery() {
         this.initQuery();
         this.recordQuery();
       },
-      changeQuery() {
-        this.recordQuery();
-      },
+
       changePage(page) {
         this.$data.query.page = page;
         this.recordQuery();
