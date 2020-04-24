@@ -60,12 +60,14 @@
             label="序号"
             :index="indexMethod"
           ></el-table-column>
-          <el-table-column label="收货单号" prop="code" min-width="140">
+          <el-table-column label="收货单号" prop="code" min-width="160">
             <template slot-scope="scope">
               <div
-                :class="`td-item link-item`"
+                class="td-item link-item position-relative"
                 @click.prevent="handleDetailItem(scope.row)"
-              >{{ scope.row.code }}
+              >
+                {{ scope.row.code }}
+                <span class="icon-marker warning" v-if="scope.row.unqualified">不合格</span>
               </div>
             </template>
           </el-table-column>
@@ -281,6 +283,30 @@
 
   .mt-16 {
     margin-top: 16px;
+  }
+
+  .position-relative {
+    position: relative;
+  }
+
+  .icon-marker {
+    position: absolute;
+    font-size: 12px;
+    display: inline-block;
+    padding: 0 10px;
+    line-height: 18px;
+    left: 110px;
+    top: 0px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+
+    &.primary {
+      background-color: #00ADE7;
+    }
+    &.warning {
+      background-color: #DCA450;
+    }
   }
 </style>
 <style lang="scss">

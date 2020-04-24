@@ -186,7 +186,8 @@
     >
       <el-location
         v-if="location.visible"
-        :center="location.item.last_geo"
+        :center="location.item.center"
+        :marker="location.item.marker"
       />
     </el-dialog>
   </sub-menu>
@@ -340,11 +341,17 @@
 
       async handleLocationItem(item) {
 
-        let res = await Http.get(Config.api.itemSupDistributeWaybillDetail, {id: item.id});
+        const res = await Http.get(Config.api.itemSupDistributeWaybillDetail, {id: item.id});
         if (res.code === 0) {
+
+          const item = { 
+            center: res.data && res.data.driver && res.data.driver.last_geo || {}, 
+            marker: [ res.data && res.data.tar_storehouse_geo || {} ] 
+          }
+          
           this.$data.location = {
             visible: true,
-            item: res.data,
+            item: item,
           };
         } else {
           this.$message({title: '提示', message: res.message, type: 'error'});
