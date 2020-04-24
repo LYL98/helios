@@ -172,7 +172,7 @@
     <el-dialog
       :title="'调拨单 - ' + detail.item.code + ' 详情'"
       :visible.sync="detail.visible"
-      width="800px"
+      width="1000px"
     >
       <distribute-waybill-detail
         v-if="detail.visible"
