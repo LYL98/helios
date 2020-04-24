@@ -327,6 +327,7 @@
 
       onSubmit() {
         let item = this.$data.selectedItem;
+        
 
         if (item.location && item.location.lng && item.location.lat) {
 
@@ -334,7 +335,7 @@
             ...this.$props.location,
             lng: item.location.lng,
             lat: item.location.lat,
-            poi: item.address
+            poi: item.name
           };
 
           // 如果是省级选择，则添加城市
