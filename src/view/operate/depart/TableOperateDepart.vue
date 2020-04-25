@@ -98,6 +98,10 @@
       :visible.sync="location.visible"
       width="800px"
     >
+        <!-- :center="location.item.storehouse.geo" -->
+        
+        <!-- :marker="location.marker" -->
+
       <el-location
         v-if="location.visible"
         :center="location.item.storehouse.geo"
@@ -192,8 +196,8 @@
         // console.log(item);
         
         let delivery_date = this.$data.query.delivery_date
-        // let line_id = item.id
-        let line_id = 51
+        let line_id = item.id
+        // let line_id = 51
 
         let res = await Http.get(Config.api.supDeliveryDeliverLocus, {delivery_date: delivery_date,line_id:line_id});
         if (res.code === 0) {
