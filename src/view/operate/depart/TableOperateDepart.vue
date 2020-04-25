@@ -101,7 +101,6 @@
       type="drawer"
       direction="ttb"
       :before-close="handleCancel"
-
     >
         <!-- :center="location.item.storehouse.geo" -->
         <!-- :marker="location.marker" -->
@@ -109,7 +108,7 @@
         v-if="location.visible"
         :center="location.item.storehouse.geo"
         :marker="location.marker"
-        :isDraw="true"
+        style="height:100%;padding:0 15px"
       />
     </detail-layout>
   </div>
@@ -129,7 +128,7 @@
     components: {
       'query-tabs': queryTabs,
       'el-location': Location,
-      'detail-layout': detailLayout
+      'detail-layout': detailLayout,
     },
     mixins: [tableMixin],
     created() {
