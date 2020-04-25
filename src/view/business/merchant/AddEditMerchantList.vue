@@ -2,7 +2,7 @@
   <el-form label-position="right" label-width="100px" style="width: 740px;" :model="detail" :rules="rules" ref="ruleForm">
     <my-form-area label="商户信息">
       <el-form-item label="商户名称" prop="merchant_title">
-        <el-input v-model="detail.merchant_title" :maxlength="10" placeholder="请输入商户名称" style="width: 260px;"/>
+        <el-input v-model="detail.merchant_title" :maxlength="10" placeholder="请输入商户名称" class="w-240"/>
       </el-form-item>
       <el-form-item label="协议商户" class="required">
         <ul style="display: flex;">
@@ -12,7 +12,7 @@
           </li>
           <li v-if="detail.is_post_pay === true">
             <el-form-item label="授信额度" prop="credit_limit">
-              <el-input v-model="detail.credit_limit" style="width: 260px;" placeholder="请输入授信额度">
+              <el-input v-model="detail.credit_limit" placeholder="请输入授信额度" class="w-240">
                 <template slot="append">元</template>
               </el-input>
             </el-form-item>
@@ -27,28 +27,33 @@
       </el-form-item>
       <div style="display: flex; justify-content: space-between;">
         <el-form-item label="门店名称" prop="store_title">
-          <el-input v-model="detail.store_title" :maxlength="10" style="width: 260px;" placeholder="请输入门店名称"></el-input>
+          <el-input v-model="detail.store_title" :maxlength="10" placeholder="请输入门店名称" class="w-240"></el-input>
         </el-form-item>
-        <el-form-item label="县域" prop="province">
-          <my-select-province style="width: 110px;" v-model="detail.province_code" @change="changProvince" isAuth @sync="syncProvince"/>
-          <my-select-city style="width: 140px; margin-left: 6px;" v-model="detail.city_id" :provinceCode="detail.province_code"
+        <el-form-item label="县域" prop="province" class="flex-grow-1">
+          <my-select-province style="width: 120px;" v-model="detail.province_code" @change="changProvince" isAuth @sync="syncProvince"/>
+          <my-select-city style="width: 175px; margin-left: 5px;" v-model="detail.city_id" :provinceCode="detail.province_code"
                           placeholder="请选择县域" @change="changCity" :disabled="detail.province_code === '' ? true : false" @sync="syncCity"/>
         </el-form-item>
       </div>
-      <div>
-        <el-form-item label="地理位置" prop="geo">
+      <div class="d-flex-between">
+        <el-form-item label="客户经理" prop="store_csm_id">
+          <el-select :disabled="!detail.city_id" v-model="detail.store_csm_id" filterable placeholder="请选择门店客户经理" class="w-240">
+            <el-option v-for="d in salesmanList" :key="d.id" :label="d.title" :value="d.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="地理位置" prop="geo" class="flex-grow-1">
           <el-location-picker v-model="detail.geo" @change="changeGeo"/>
         </el-form-item>
       </div>
       <el-form-item label="收货地址" prop="address">
         <el-input v-model="detail.address" :maxlength="30" placeholder="请输入收货地址"></el-input>
       </el-form-item>
-      <div style="display: flex; justify-content: space-between;">
+      <div class="d-flex-between">
         <el-form-item label="收货人" prop="linkman">
-          <el-input v-model="detail.linkman" :maxlength="10" placeholder="请输入收货人" style="width: 260px;"></el-input>
+          <el-input v-model="detail.linkman" :maxlength="10" placeholder="请输入收货人" class="w-240"></el-input>
         </el-form-item>
-        <el-form-item label="联系方式" prop="store_phone">
-          <el-input v-model="detail.store_phone" :maxlength="11" placeholder="请输入联系方式" style="width: 260px;"></el-input>
+        <el-form-item label="联系方式" prop="store_phone" class="flex-grow-1">
+          <el-input v-model="detail.store_phone" :maxlength="11" placeholder="请输入联系方式"></el-input>
         </el-form-item>
       </div>
     </my-form-area>
@@ -57,17 +62,14 @@
       <el-form-item label="上传头像">
         <my-upload-img :limit="1" module="merchant" v-model="detail.avatar"></my-upload-img>
       </el-form-item>
-      <div style="display: flex; justify-content: space-between;">
+      <div class="d-flex-between">
         <el-form-item label="登录手机" prop="login_phone">
-          <el-input v-model="detail.login_phone" :maxlength="11" placeholder="请输入登录手机" style="width: 260px;"></el-input>
+          <el-input v-model="detail.login_phone" :maxlength="11" placeholder="请输入登录手机" class="w-240"></el-input>
         </el-form-item>
-        <el-form-item label="姓名" prop="realname">
-          <el-input v-model="detail.realname" :maxlength="10" placeholder="请输入姓名" autocomplete='new-password' style="width: 260px;"></el-input>
+        <el-form-item label="姓名" prop="realname" class="flex-grow-1">
+          <el-input v-model="detail.realname" :maxlength="10" placeholder="请输入姓名" autocomplete='new-password'></el-input>
         </el-form-item>
       </div>
-      <el-form-item label="登录密码" prop="password">
-        <el-input v-model="detail.password" :maxlength="15" type="password" autocomplete='new-password' placeholder="请输入登录密码" style="width: 260px;"></el-input>
-      </el-form-item>
     </my-form-area>
     <el-form-item style="text-align: right;">
       <el-button @click="editMerchantCancel">取消</el-button>
@@ -77,7 +79,7 @@
 </template>
 
 <script>
-  import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio, RadioGroup, DatePicker} from 'element-ui';
+  import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio, RadioGroup, DatePicker, Select, Option} from 'element-ui';
   import {FormArea, SelectProvince, SelectCity, LocationPicker} from '@/common';
   import { UploadImg } from '@/component';
   import {Http, Config, DataHandle, Verification} from '@/util';
@@ -95,6 +97,8 @@
       'el-radio-group': RadioGroup,
       'el-date-picker': DatePicker,
       'el-location-picker': LocationPicker,
+      'el-select': Select,
+      'el-option': Option,
       'my-select-province': SelectProvince,
       'my-select-city': SelectCity,
       'my-upload-img': UploadImg,
@@ -118,7 +122,8 @@
         gender: 1,
         province_code: '',
         city_id: '',
-        geo: { lng: '', lat: '', province_title: '', city_title: '', poi: '' }
+        geo: { lng: '', lat: '', province_title: '', city_title: '', poi: '' },
+        store_csm_id: ''
       };
 
       let validImages = function (rules, value, callback) {
@@ -157,6 +162,9 @@
       };
 
       return {
+
+        salesmanList: [],
+
         isModify: false,
         isSending: false,
         id: 0,
@@ -204,10 +212,6 @@
           login_phone: [
             {required: true, message: '登录手机不能为空', trigger: 'change'},
             {pattern: Verification.testStrs.checkMobile, message: '请输入11位手机号码', trigger: 'blur'}
-          ],
-          password: [
-            {required: true, message: '登录密码不能为空', trigger: 'change'},
-            {min: 6, max: 15, message: '请输入6-15位的非中文字符', trigger: 'blur'}
           ]
         }
       }
@@ -221,6 +225,11 @@
 
       syncCity(city) {
         this.$set(this.$data.detail.geo, 'city_title', city.title);
+
+        // 在city 切换时，重置 salesman 列表查询。
+        if (city.code) {
+          this.initSalesmanList();
+        }
       },
 
       changeGeo() {
@@ -234,12 +243,18 @@
         this.$data.detail.geo.lat = '';
         this.$data.detail.geo.city_title = '';
         this.$data.detail.geo.poi = '';
+
+        this.$data.salesmanList = [];
+        this.$data.detail.store_csm_id = '';
       },
       //选择县域
       changCity() {
         this.$data.detail.geo.lng = '';
         this.$data.detail.geo.lat = '';
         this.$data.detail.geo.poi = '';
+
+        this.$data.salesmanList = [];
+        this.$data.detail.store_csm_id = '';
         if (arguments[0] !== "") {
           this.$refs['ruleForm'].clearValidate(['province']);
         }
@@ -247,6 +262,19 @@
 
       changeImages() {
         this.$refs['ruleForm'].validateField('images');
+      },
+
+      async initSalesmanList() {
+        let res = await Http.get(Config.api.operatorList, {city_id: this.$data.detail.city_id});
+        if(res.code === 0){
+          let rd = res.data || [];
+          this.$data.salesmanList = rd.map(item => ({
+            id: item.id,
+            title: item.realname
+          }));
+        }else{
+          this.$messageBox.alert(res.message, '提示');
+        }
       },
 
       //新增商户
@@ -281,7 +309,7 @@
             if (!isModify) {
               detail = {
                 ...detail,
-                password: md5(detail.password),  // 新增模式下，对用户的登录密码进行md5处理
+                store_csm_id: Number(detail.store_csm_id),
                 avatar: detail.avatar.length === 0 ? '' : detail.avatar[0],  // 如果用户没有上传头像，则向后端发送 '' 否则发送一个字符串
                 credit_limit: detail.is_post_pay ? DataHandle.handlePrice(detail.credit_limit) : 0
               }
@@ -308,7 +336,9 @@
                   is_post_pay: false,
                   credit_limit: 10000,
                   gender: 1,
-                  province_code: ''
+                  province_code: '',
+                  geo: { lng: '', lat: '', province_title: '', city_title: '', poi: '' },
+                  store_csm_id: ''
                 };
               }
             } else {
@@ -326,4 +356,18 @@
 </script>
 
 <style lang="scss" scoped>
+
+  .w-240 {
+    width: 240px;
+  }
+
+  .d-flex-between {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .flex-grow-1 {
+    flex-grow: 1;
+  }
+
 </style>

@@ -2,7 +2,7 @@
   <div class="location-picker">
     <div :class="`selected${size === 'small' ? ' small' : ''}${isDisabled ? ' disabled' : ''}`" @click="toggleVisible">
       <span v-if="location && location.poi">{{ level === 'province' ? location.city_title + location.poi : location.poi }}</span>
-      <span class="placeholder" v-else>请选择地址</span>
+      <span class="placeholder" v-else>请选择地理位置</span>
       <i class="el-icon-location"></i>
     </div>
 
@@ -327,7 +327,7 @@
 
       onSubmit() {
         let item = this.$data.selectedItem;
-        
+
 
         if (item.location && item.location.lng && item.location.lat) {
 
@@ -388,6 +388,13 @@
     border-radius: 4px;
     line-height: 40px;
     height: 40px;
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
 
     &.small {
       line-height: 32px;
