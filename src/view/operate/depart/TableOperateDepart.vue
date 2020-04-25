@@ -93,21 +93,24 @@
       </el-table>
     </div>
     <!-- 表格end -->
-     <el-dialog
+      
+    <!--  width="800px"-->
+     <detail-layout
       title="司机轨迹"
-      :visible.sync="location.visible"
-      width="800px"
+      :isShow="location.visible"
+      type="drawer"
+      direction="ttb"
+      :before-close="handleCancel"
     >
         <!-- :center="location.item.storehouse.geo" -->
-        
         <!-- :marker="location.marker" -->
-
       <el-location
         v-if="location.visible"
         :center="location.item.storehouse.geo"
         :marker="location.marker"
+        style="height:100%;padding:0 15px"
       />
-    </el-dialog>
+    </detail-layout>
   </div>
 </template>
 
@@ -118,13 +121,14 @@
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
   import queryTabs from '@/share/layout/QueryTabs';
+  import detailLayout from "@/share/layout/Layout";
 
   export default {
     name: 'TableOperateDepart',
     components: {
       'query-tabs': queryTabs,
       'el-location': Location,
-
+      'detail-layout': detailLayout,
     },
     mixins: [tableMixin],
     created() {
@@ -219,6 +223,14 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+      //关闭司机轨迹
+      handleCancel(){
+        let that = this
+        this.$data.location = {
+            visible: false,
+            item: [],
+          };
+      }
     }
   };
 </script>

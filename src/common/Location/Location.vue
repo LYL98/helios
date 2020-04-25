@@ -1,5 +1,5 @@
 <template>
-  <div style="min-width: 500px; height: 500px; margin: -30px -20px">
+  <div style="min-width: 500px; min-height: 300px;" >
     <div id="amap"></div>
   </div>
 </template>
@@ -123,5 +123,4 @@
     width: 100%;
     height: 100%;
   }
-
 </style>
