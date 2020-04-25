@@ -41,8 +41,8 @@
             <el-option v-for="d in salesmanList" :key="d.id" :label="d.title" :value="d.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="地理位置" prop="geo" class="flex-grow-1">
-          <el-location-picker v-model="detail.geo" @change="changeGeo"/>
+        <el-form-item label="地理位置" prop="geo">
+          <el-location-picker v-model="detail.geo" @change="changeGeo" style="width: 300px"/>
         </el-form-item>
       </div>
       <el-form-item label="收货地址" prop="address">

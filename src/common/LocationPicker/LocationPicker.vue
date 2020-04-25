@@ -1,8 +1,8 @@
 <template>
   <div class="location-picker">
     <div :class="`selected${size === 'small' ? ' small' : ''}${isDisabled ? ' disabled' : ''}`" @click="toggleVisible">
-      <span v-if="location && location.poi">{{ level === 'province' ? location.city_title + location.poi : location.poi }}</span>
-      <span class="placeholder" v-else>请选择地理位置</span>
+      <div class="overflow-ellipsis" v-if="location && location.poi">{{ level === 'province' ? location.city_title + location.poi : location.poi }}</div>
+      <div class="overflow-ellipsis placeholder" v-else>请选择地理位置</div>
       <i class="el-icon-location"></i>
     </div>
 
@@ -362,6 +362,12 @@
 
 <style lang="scss" scoped>
 
+  .overflow-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .location-picker {
     display: inline-block;
     width: 100%;
@@ -372,7 +378,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    white-space: nowrap;
     cursor: pointer;
     background: #fff;
     border: 1px solid #dcdfe6;
@@ -388,13 +393,6 @@
     border-radius: 4px;
     line-height: 40px;
     height: 40px;
-
-    span {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: block;
-    }
 
     &.small {
       line-height: 32px;

@@ -183,7 +183,6 @@
       },
 
       syncCity(city) {
-        console.log('city: ', city);
         this.$set(this.$data.addEditData.geo, 'city_title', city.title);
 
         // 在city 切换时，重置 salesman 列表查询。
