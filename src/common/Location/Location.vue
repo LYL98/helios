@@ -1,5 +1,5 @@
 <template>
-  <div style="min-width: 500px; height: 500px; margin: -30px -20px">
+  <div style="min-width: 500px; height: 500px; margin: -30px -20px" :class="{'isDraw':isDraw}">
     <div id="amap"></div>
   </div>
 </template>
@@ -13,6 +13,7 @@
   export default {
     name: "Location",
     props: {
+      isDraw:{ type: Boolean, default: false },
       marker: { type: Array, default: () => [] },
       center: { type: Object, default: () => ({ lng: '', lat: '' }) }
     },
@@ -123,5 +124,11 @@
     width: 100%;
     height: 100%;
   }
+.isDraw {
+  width: 100% !important; 
+  height: 100% !important;
+  margin: 0  !important;
+  padding: 10px;
 
+}
 </style>
