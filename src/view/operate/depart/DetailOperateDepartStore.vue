@@ -82,6 +82,7 @@
         let res = await Http.get(Config.api.supDeliveryStoreDetail, {
           delivery_date: data.delivery_date,
           city_id: data.city.id,
+          line_id: data.line_id
         });
         this.$loading({isShow: false});
         if(res.code === 0){
