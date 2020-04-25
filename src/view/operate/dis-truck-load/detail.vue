@@ -27,7 +27,7 @@
                 {
                   title: '打货',
                   isDisplay: !item.confirmed && ($auth.isAdmin || $auth.OperateDisTruckLoadEditNum),
-                  command: () => handleShowEditNum(scope.row, $index)
+                  command: () => handleShowEditNum(scope.row, scope.$index)
                 }
               ]"
             />
@@ -109,7 +109,6 @@
       },
 
       handleShowEditNum(item, index){
-        return;
         this.$data.editNum = {
           visible: true,
           item: {
