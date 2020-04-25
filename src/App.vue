@@ -84,7 +84,7 @@
   import { Menu, Submenu, MenuItem, Dropdown, DropdownMenu, DropdownItem, Backtop, Form, Notification } from 'element-ui';
   import { Http, Config, Method, DataHandle } from '@/util';
   import { PwdModify } from '@/component';
-  import { clearLoginCache } from '@/router';
+  import { resetLoginCache } from '@/router';
   import AppJson from './App.json';
 
   export default {
@@ -235,7 +235,7 @@
       async loginOut(){
         this.$loading({ isShow: true });
         let res = await Http.get(Config.api.signLogout, {});
-        clearLoginCache();
+        resetLoginCache();
         this.$loading({ isShow: false });
         if(res.code === 0){
           this.$router.replace({ name: "Login" });

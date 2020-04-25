@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { MessageBox } from 'element-ui';
 import Config from './config';
-import { clearLoginCache } from '../router';
+import { resetLoginCache } from '../router';
 let logoutNum = 0;
 
 //处理发送前事件
@@ -27,7 +27,7 @@ function errHandling(err) {
 
 //登出事件
 function logout() {
-    clearLoginCache();
+  resetLoginCache();
     if(logoutNum > 0) return;
     MessageBox.alert('登录已失效，请重新登录', '提示', {
         type: 'error',
