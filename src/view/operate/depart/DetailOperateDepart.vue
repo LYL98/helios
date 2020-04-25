@@ -56,6 +56,7 @@
                   isDisplay: auth.isAdmin || auth.OperateDepartDetail,
                   command: () => handleShowDetail('DetailOperateDepartStore', {
                     ...scope.row,
+                    line_id: detail.line_id,
                     delivery_date: detail.delivery_date,
                     layoutTitle: layoutTitle + '/' + scope.row.city.title
                   })
