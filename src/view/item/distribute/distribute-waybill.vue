@@ -179,17 +179,18 @@
         :item="detail.item"
       />
     </el-dialog>
-    <el-dialog
+    <add-edit-layout
       title="司机轨迹"
-      :visible.sync="location.visible"
-      width="800px"
+      :is-show="location.visible"
+      :before-close="handleCancel"
     >
       <el-location
+        style="height: 100%; padding: 0 15px;"
         v-if="location.visible"
         :center="location.item.center"
         :marker="location.item.marker"
       />
-    </el-dialog>
+    </add-edit-layout>
   </sub-menu>
 </template>
 
@@ -344,11 +345,11 @@
         const res = await Http.get(Config.api.itemSupDistributeWaybillDetail, {id: item.id});
         if (res.code === 0) {
 
-          const item = { 
-            center: res.data && res.data.driver && res.data.driver.last_geo || {}, 
-            marker: [ res.data && res.data.tar_storehouse_geo || {} ] 
-          }
-          
+          const item = {
+            center: res.data && res.data.driver && res.data.driver.last_geo || {},
+            marker: [ res.data && res.data.tar_storehouse_geo || {} ]
+          };
+
           this.$data.location = {
             visible: true,
             item: item,
@@ -370,6 +371,11 @@
           visible: false,
           type: 'add',
           item: null,
+        };
+
+        this.$data.location = {
+          visible: false,
+          item: {}
         };
       },
 

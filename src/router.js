@@ -468,9 +468,9 @@ const router = new Router({
 
 let myInfo = {}, nextPage = ()=>{}, auth = {}, page = '', pageName = '';
 
-export const clearLoginCache = () => {
-  myInfo = {};
-}
+export const resetLoginCache = () => {
+  myInfo && (myInfo._tokenExpirationDate = 0);
+};
 
 //判断是否已登录
 const getIsLogin = async ()=>{

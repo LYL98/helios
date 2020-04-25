@@ -204,6 +204,7 @@
 
       storehouseInit(item) {
         this.$data.query.storehouse_id = item.id;
+        if (!item.id) return;
         this.supAcceptQuery();
       },
 
