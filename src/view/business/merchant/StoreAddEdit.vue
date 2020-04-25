@@ -18,6 +18,11 @@
     <el-form-item label="收货地址" prop="address">
       <el-input v-model="addEditData.address" :maxlength="30" placeholder="请输入收货地址"></el-input>
     </el-form-item>
+    <el-form-item label="客户经理" prop="csm_id">
+      <el-select :disabled="!addEditData.city_id" v-model="addEditData.csm_id" filterable placeholder="请选择门店客户经理" style="width: 100%">
+        <el-option v-for="d in salesmanList" :key="d.id" :label="d.title" :value="d.id" />
+      </el-select>
+    </el-form-item>
     <el-row>
       <el-col :span="12">
         <el-form-item label="收货人" prop="linkman">
@@ -74,6 +79,7 @@
       'el-form-item': FormItem,
       'el-input': Input,
       'el-select': Select,
+      'el-option': Option,
       'el-radio': Radio,
       'el-radio-group': RadioGroup,
       'my-select-province': SelectProvince,
@@ -116,6 +122,8 @@
         callback();
       };
       return {
+        salesmanList: [],
+
         province: this.$province,
         tencentPath: Config.tencentPath,
         isSending: false,
@@ -129,6 +137,7 @@
           city_id: '',
           geo: { lng: '', lat: '', province_title: '', city_title: '', poi: '' },
           address: '',
+          csm_id: '',
           linkman: '',
           phone: '',
           merchant_id: merchant_id,
@@ -174,16 +183,26 @@
       },
 
       syncCity(city) {
+        console.log('city: ', city);
         this.$set(this.$data.addEditData.geo, 'city_title', city.title);
+
+        // 在city 切换时，重置 salesman 列表查询。
+        if (city.code) {
+          this.initSalesmanList();
+        }
+
       },
 
       //选择区域
-      changProvince(){
+      changProvince() {
         this.$data.addEditData.city_id = '';
         this.$data.addEditData.geo.lng = '';
         this.$data.addEditData.geo.lat = '';
         this.$data.addEditData.geo.city_title = '';
         this.$data.addEditData.geo.poi = '';
+
+        this.$data.salesmanList = [];
+        this.$data.addEditData.csm_id = '';
       },
 
       /**
@@ -193,6 +212,9 @@
         this.$data.addEditData.geo.lng = '';
         this.$data.addEditData.geo.lat = '';
         this.$data.addEditData.geo.poi = '';
+
+        this.$data.salesmanList = [];
+        this.$data.addEditData.csm_id = '';
         if (arguments[0] !== "") {
           this.$refs['ruleForm'].clearValidate(['province']);
         }
@@ -204,6 +226,19 @@
 
       changeImages() {
         this.$refs['ruleForm'].validateField('images');
+      },
+
+      async initSalesmanList() {
+        let res = await Http.get(Config.api.operatorList, {city_id: this.$data.addEditData.city_id});
+        if(res.code === 0){
+          let rd = res.data || [];
+          this.$data.salesmanList = rd.map(item => ({
+            id: item.id,
+            title: item.realname
+          }));
+        }else{
+          this.$messageBox.alert(res.message, '提示');
+        }
       },
 
       /**
@@ -220,6 +255,7 @@
           if (!rd.geo || Object.keys(rd.geo).length < 5) {
             rd.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
           }
+          rd.csm_id = rd.csm_id || '';
           that.$data.addEditData = rd;
         } else {
           Message.warning(res.message);
@@ -255,6 +291,7 @@
           }
 
           if (valid) {
+            addEditData.csm_id = Number(addEditData.csm_id);
             that.isSending = true;
             let res = await Http.post(Config.api[id ? 'storeEdit' : 'storeAdd'], addEditData);
             that.isSending = false;

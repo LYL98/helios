@@ -107,7 +107,7 @@
               >
                 {{ scope.row.batch_code }}
                 <span class="icon-marker warning" v-if="scope.row.unqualified">不合格</span>
-                <span class="icon-marker primary" v-if="!scope.row.unqualified && scope.row.out_type === 'distribute_ac_edit'">打货</span>
+                <span class="icon-marker primary" v-if="!scope.row.unqualified && ['sale_ac_edit', 'dt_ac_edit'].includes(scope.row.out_type)">打货</span>
               </div>
             </template>
           </el-table-column>

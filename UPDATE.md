@@ -17,6 +17,9 @@
    code == WarehouseOutStorageAdd 修改项：title, url、upper_code
    code == WarehouseInventoryVariation 修改项：url
    code == FinanceSStatementDetail 修改项：url
+   code == MerchantAdd       修改项：url
+   code == MerchantStoreAdd  修改项：url
+   code == MerchantStoreEdit 修改项：url
 
    code == OperateReceiving => OperateReceivingMain
 

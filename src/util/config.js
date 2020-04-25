@@ -543,7 +543,8 @@ const Config = (() => {
 
       //运营人员
       operatorAdd: apiM + '/operator/add', //运营人员新增
-      operatorList: apiM + '/operator/query', //运营人员列表
+      operatorQuery: apiM + '/operator/query', //运营人员列表，分页查询
+      operatorList: apiM + '/operator/list', // 运营人员列表，可以根据条件 过滤出对应的人员。post = salesman(业务员)
       operatorEdit: apiM + '/operator/edit', //运营人员修改
       operatorDetail: apiM + '/operator/detail', //运营人员详情
       operatorPwdReset: apiM + '/operator/password_reset', //运营人员重置密码
