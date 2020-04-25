@@ -554,7 +554,6 @@ const Constant = {
     let data = [
       { key: 'accept', value: '收货' },
       { key: 'dt_ac_edit', value: '打货' },
-      { key: 'return', value: '退货' },
       { key: 'in_stock', value: '入库' },
       { key: 'allocate', value: '分配' },
       { key: 'distribute', value: '调拨' },
