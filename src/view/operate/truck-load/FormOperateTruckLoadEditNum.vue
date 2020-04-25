@@ -1,11 +1,11 @@
 <template>
-  <form-layout title="退货" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
+  <form-layout title="打货" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" ref="ruleForm" :rules="rules">
       <el-form-item label="门店名称">{{detail.store.title}}</el-form-item>
       <el-form-item label="原分配数量">
         <input-number size="medium" disabled :value="detail.allocated_num" unit="件"/>
       </el-form-item>
-      <el-form-item label="退货数量" prop="num">
+      <el-form-item label="打货数量" prop="num">
         <input-number size="medium" v-model="detail.num" :min="1" :max="detail.allocated_num" unit="件"/>
       </el-form-item>
     </el-form>
