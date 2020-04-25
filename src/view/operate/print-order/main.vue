@@ -57,7 +57,7 @@
                     <el-checkbox :value="judgeSelect(item)" @change="(v)=>changeSelect(v, item)">批{{props.row.batches.length - i}}</el-checkbox>
                   </div>
                   <div>分配：{{returnUnit(item.allocated_num, '件', '-')}}</div>
-                  <div>分配人：{{(item.allocator && item.creator.realname) || '-'}}</div>
+                  <div>分配人：{{(item.creator && item.creator.realname) || '-'}}</div>
                   <div>分配时间：{{returnDateFormat(item.created, 'HH:mm:ss') || '-'}}</div>
                   <div>装车：{{returnUnit(item.sort_num, '件', '-')}}</div>
                   <div class="option">
