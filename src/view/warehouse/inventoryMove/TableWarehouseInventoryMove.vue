@@ -29,7 +29,10 @@
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
             <div slot-scope="scope" class="my-td-item">
               <!--商品名称-->
-              <div v-if="item.key === 'item'" class="td-item add-dot2">{{scope.row.item_code}}/{{scope.row.item_title}}</div>
+              <div v-if="item.key === 'item'" class="td-item add-dot2">
+                <template v-if="scope.row.p_item">{{scope.row.p_item.title}}/{{scope.row.p_item.code}}</template>
+                <template v-else>{{scope.row.item_code}}/{{scope.row.item_title}}</template>
+              </div>
               <!--数量-->
               <div v-else-if="judgeOrs(item.key, ['num', 'num_in', 'num_before', 'num_after'])" class="td-item add-dot2">{{scope.row[item.key]}}件</div>
               <!--盘点数量-->
@@ -127,8 +130,8 @@
         types: {
           in_storage: {
             detail: 'DetailWarehouseInventoryMoveInStorage',
-            api: Config.api.supInQuery,
-            export_api: 'supInExport',
+            api: Config.api.supInStockQuery,
+            export_api: 'supInStockExport',
             export_srt: '导出入库记录'
           },
           check: {
@@ -211,8 +214,8 @@
         //入库
         if(tabValue === 'in_storage'){
           tableColumn = tableColumn.concat([
-            { label: '仓库', key: 'storehouse_warehouse_tray', width: '3', isShow: true },
-            { label: '入库数量', key: 'num_in', width: '2', isShow: true },
+            { label: '仓库', key: 'storehouse_warehouse', width: '3', isShow: true },
+            { label: '入库数量', key: 'num', width: '2', isShow: true },
           ]);
         }
         //盘点

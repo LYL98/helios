@@ -94,8 +94,8 @@
         </div>
         <div class="right">
           <template v-if="auth.isAdmin || auth.OperateDisTruckLoadAffirm">
-            <el-button v-if="list.p_distribute && list.p_distribute.status === 'deliveried'" size="mini" type="primary" disabled>已确认</el-button>
-            <el-button v-else @click.native="handleAffirm" size="mini" type="primary">发车前确认</el-button>
+            <el-button v-if="list.p_distribute && judgeOrs(list.p_distribute.status, ['init', 'wait_delivery'])" @click.native="handleAffirm" size="mini" type="primary">发车前确认</el-button>
+            <el-button v-else size="mini" type="primary" disabled>已确认</el-button>
           </template>
         </div>
       </div>

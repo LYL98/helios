@@ -46,7 +46,7 @@ const Config = (() => {
       //导出相关接口
       supplierExport: apiM + '/supplier/export', //供应商导出 supplier/export.  supplier/export_check.
       supOutExport: apiM + '/sup_out/export', //出库记录 sup_out/export. sup_out/export_check
-      supInExport: apiM + '/sup_in/export', //出库记录 sup_in/export. sup_in/export_check
+      supInStockExport: apiM + '/sup_in_stock/export', //出库记录 sup_in_stock/export. sup_in_stock/export_check
       supModifyExport: apiM + '/sup_modify/export', //变动记录  sup_modify/export   sup_modify/export_check
       fromSupplierOrderExport: apiM + '/from_supplier/order/export', //采购单  from_supplier/order/export. from_supplier/order/export_check
       supBillExport: apiM + '/sup_bill/export', //对账单 sup_bill/export. sup_bill/export_check
@@ -251,13 +251,8 @@ const Config = (() => {
       supModifyStockQa: apiM + '/sup_modify/stock_qa', //变动(库内品控)
       supDistributeAdd: apiM + '/sup_distribute/add', //调拨单
 
-      //仓管待入库
-      supInStockShMonitorQuery: apiM + '/sup_in_stock/sh_monitor_query', //待入库
-      supInStockShMonitorAdd: apiM + '/sup_in_stock/sh_monitor_add', //确认入库
-      supInStockDetail: apiM + '/sup_in_stock/detail', //品控单详情
-      supInStockExport: apiM + '/sup_in_stock/export', //入库单导出
-
-      supInQuery: apiM + '/sup_in/query', //入库单查询(变动记录)
+      //变动记录
+      supInStockQuery: apiM + '/sup_in_stock/query', //入库单查询(变动记录)
       supCheckQuery: apiM + '/sup_check/query', //盘点查询(变动记录)
       supModifyQuery: apiM + '/sup_modify/query', //变动查询(变动记录)
       supDistributeRecordQuery: apiM + '/sup_p_distribute/query', //调拨单查询(变动记录)
@@ -265,7 +260,7 @@ const Config = (() => {
       supOutQuery: apiM + '/sup_out/query', //出库单查询(变动记录)(场地)
       supOnGroundQuery: apiM + '/sup_on_ground/query', //上架记录(变动记录)
 
-      supInDetail: apiM + '/sup_in/detail', //出库单查询(变动记录详情)
+      supInStockDetail: apiM + '/sup_in_stock/detail', //入库单查询(变动记录详情)
       supCheckDetail: apiM + '/sup_check/detail', //盘点查询(变动记录详情)
       supModifyDetail: apiM + '/sup_modify/detail', //变动查询(变动记录详情)
       supDistributeRecordDetail: apiM + '/sup_p_distribute/detail', //调拨单查询(变动记录详情)
