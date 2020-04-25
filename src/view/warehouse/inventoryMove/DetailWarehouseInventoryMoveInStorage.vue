@@ -3,9 +3,7 @@
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px">
       <el-row>
         <h6 class="subtitle">商品信息</h6>
-        <el-col :span="12">
-          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
-        </el-col>
+        <el-form-item label="商品编号/名称">{{detail.p_item.code}}/{{detail.p_item.title}}</el-form-item>
         <el-col :span="12">
           <el-form-item label="批次">{{detail.batch_code}}</el-form-item>
         </el-col>
@@ -26,7 +24,7 @@
           <el-form-item label="入库数量">{{detail.num}}件</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="仓库">{{detail.storehouse.title}}/{{detail.warehouse.title}}/{{detail.tray.code}}</el-form-item>
+          <el-form-item label="仓库">{{detail.storehouse.title}}/{{detail.warehouse.title}}</el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="入库人">{{detail.creator.realname}}</el-form-item>
@@ -50,6 +48,7 @@
     },
     data() {
       let initDetail = {
+        p_item: {},
         storehouse: {},
         warehouse: {},
         tray: {},
@@ -74,12 +73,12 @@
       },
       //显示新增修改(重写mixin)
       showDetail(data){
-        this.supCheckDetail(data.id);
+        this.supInStockDetail(data.id);
       },
       //获取详情
-      async supCheckDetail(id){
+      async supInStockDetail(id){
         this.$loading({isShow: true, isWhole: true});
-        let res = await Http.get(Config.api.supCheckDetail, { id });
+        let res = await Http.get(Config.api.supInStockDetail, { id });
         this.$loading({isShow: false});
         if(res.code === 0){
           this.$data.detail = res.data;
