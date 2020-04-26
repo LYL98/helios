@@ -134,7 +134,7 @@
       :title="`${dialog.type === 'add' ? '新增' : '修改'}意向客户`"
       :before-close="handleCancelEdit"
     >
-      <intended-edit
+      <merchant-edit
         v-if="dialog.visible"
         :type="dialog.type"
         :item="dialog.item"
@@ -178,7 +178,7 @@
   import mainMixin from '@/share/mixin/main.mixin';
   import tableMixin from '@/share/mixin/table.mixin';
 
-  import IntendedEdit from './intended-edit';
+  import MerchantEdit from './merchant-edit';
   import IntendedDetail from './intended-detail';
 
   export default {
@@ -203,7 +203,7 @@
       'global-province': GlobalProvince,
       'query-search-input': QuerySearchInput,
       'query-tabs': queryTabs,
-      'intended-edit': IntendedEdit,
+      'merchant-edit': MerchantEdit,
       'intended-detail': IntendedDetail,
     },
     data() {
