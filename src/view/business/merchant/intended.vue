@@ -11,7 +11,7 @@
           <my-query-item label="县域">
             <select-city
               size="small"
-              :disabled="query.province_code ? false : true"
+              :disabled="!query.province_code"
               clearable
               showAll
               v-model="query.city_id"
@@ -214,7 +214,7 @@
           items: []
         },
         dialog: {
-          visible: false,
+          visible: true,
           type: 'add',
           item: null
         },

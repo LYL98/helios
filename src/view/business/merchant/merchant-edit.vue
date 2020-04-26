@@ -3,7 +3,14 @@
     <el-form-area label="商户信息">
       <el-row :gutter="32">
         <el-col :span="10">
-          <el-form-item label="商户名称" prop="merchant_title">
+          <el-form-item
+            label="商户名称"
+            prop="merchant_title"
+            :rules="[
+              {required: true, message: '商户名称不能为空', trigger: 'change'},
+              {max: 10, message: '请输入10个以内的字符', trigger: 'blur'}
+            ]"
+          >
             <el-input v-model="formData.merchant_title" :maxlength="10" placeholder="请输入商户名称"/>
           </el-form-item>
         </el-col>
@@ -15,7 +22,7 @@
                 <el-radio v-model="formData.is_post_pay" border size="small" :label="false">否</el-radio>
               </li>
               <li v-if="formData.is_post_pay === true">
-                <el-form-item label="授信额度" prop="credit_limit">
+                <el-form-item label="授信额度" prop="credit_limit" :rules="[{validator: validCreditLimit, trigger: 'change'}]">
                   <el-input v-model="formData.credit_limit" placeholder="请输入授信额度" class="w-200">
                     <template slot="append">元</template>
                   </el-input>
@@ -30,16 +37,29 @@
     <el-form-area label="门店信息">
       <el-row :gutter="32">
         <el-col :span="10">
-          <el-form-item label="门店图片" prop="images">
-            <el-upload-img :limit="6" module="merchant" v-model="formData.images"
-                           @change="changeImages"></el-upload-img>
+          <el-form-item
+            label="门店图片"
+            prop="images"
+            :rules="[
+              {validator: validImages, trigger: 'change'},
+              {required: true, message: '请上传门店图片', trigger: 'blur'}
+            ]"
+          >
+            <el-upload-img :limit="6" module="merchant" v-model="formData.images" @change="changeImages" />
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row :gutter="32">
         <el-col :span="10">
-          <el-form-item label="门店名称" prop="store_title">
+          <el-form-item
+            label="门店名称"
+            prop="store_title"
+            :rules="[
+              {required: true, message: '门店名称不能为空', trigger: 'change'},
+              {max: 10, message: '请输入10个以内的字符', trigger: 'blur'}
+            ]"
+          >
             <el-input v-model="formData.store_title" :maxlength="10" placeholder="请输入门店名称"></el-input>
           </el-form-item>
         </el-col>
@@ -55,7 +75,11 @@
 
       <el-row :gutter="32">
         <el-col :span="10">
-          <el-form-item label="县域" prop="province">
+          <el-form-item
+            label="县域"
+            prop="province"
+            :rules="[{required: true, message: '请选择县域', trigger: 'blur'}]"
+          >
             <div style="display: flex;">
               <el-select-province
                 style="width: 200px;"
@@ -77,14 +101,97 @@
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="客户经理" prop="store_csm_id">
-            <el-select :disabled="!formData.city_id" v-model="formData.store_csm_id" filterable placeholder="请选择门店客户经理"
-                       style="width: 100%">
-              <el-option v-for="d in salesmanList" :key="d.id" :label="d.title" :value="d.id"/>
-            </el-select>
+          <el-form-item
+            label="地理位置"
+            prop="geo"
+            :rules="[{ required: true, validator: validLocation, trigger: 'change' }]"
+          >
+            <el-location-picker v-model="formData.geo" @change="changeGeo" style="width: 100%"/>
           </el-form-item>
         </el-col>
       </el-row>
+
+      <el-row :gutter="32">
+        <el-col :span="20">
+          <el-form-item
+            label="收货地址"
+            prop="address"
+            :rules="[
+              {required: true, message: '收货地址不能为空', trigger: 'change'},
+              {max: 30, message: '请输入30个以内的字符', trigger: 'blur'}
+            ]"
+          >
+            <el-input v-model="formData.address" :maxlength="30" placeholder="请输入收货地址" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="32">
+        <el-col :span="10">
+          <el-form-item
+            label="收货人"
+            prop="linkman"
+            :rules="[
+              {required: true, message: '收货人不能为空', trigger: 'change'},
+              {max: 10, message: '请输入10个以内的字符', trigger: 'blur'}
+            ]"
+          >
+            <el-input v-model="formData.linkman" :maxlength="10" placeholder="请输入收货人" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="10">
+          <el-form-item
+            label="联系方式"
+            prop="store_phone"
+            :rules="[
+              {required: true, message: '联系方式不能为空', trigger: 'change'},
+              {pattern: Verification.testStrs.checkMobile, message: '请输入11位手机号码', trigger: 'blur'}
+            ]"
+          >
+            <el-input v-model="formData.store_phone" :maxlength="11" placeholder="请输入联系方式" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+    </el-form-area>
+
+    <el-form-area label="用户信息">
+      <el-row :gutter="32">
+        <el-col :span="10">
+          <el-form-item label="上传头像">
+            <el-upload-img :limit="1" module="merchant" v-model="formData.avatar" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="32">
+        <el-col :span="10">
+          <el-form-item
+            label="登录手机"
+            prop="login_phone"
+            :rules="[
+              {required: true, message: '登录手机不能为空', trigger: 'change'},
+              {pattern: Verification.testStrs.checkMobile, message: '请输入11位手机号码', trigger: 'blur'}
+            ]"
+          >
+            <el-input v-model="formData.login_phone" :maxlength="11" placeholder="请输入登录手机" />
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="10">
+          <el-form-item
+            label="姓名"
+            prop="realname"
+            :rules="[
+              {required: true, message: '姓名不能为空', trigger: 'change'},
+              {max: 10, message: '请输入10个以内的字符', trigger: 'blur'}
+            ]"
+          >
+            <el-input v-model="formData.realname" :maxlength="10" placeholder="请输入姓名" autocomplete='new-password' />
+          </el-form-item>
+        </el-col>
+      </el-row>
+
     </el-form-area>
     <el-form-item class="mt-20">
       <el-button @click="onCancel">取消</el-button>
@@ -97,7 +204,7 @@
   import {Form, FormItem, Row, Col, Button, Input, Radio, RadioGroup, Select, Option} from "element-ui";
   import {FormArea, SelectProvince, SelectCity, LocationPicker} from '@/common';
   import {UploadImg} from '@/component';
-  import {Http, Config, DataHandle} from '@/util';
+  import {Http, Config, DataHandle, Verification} from '@/util';
 
   export default {
     name: "merchant-edit",
@@ -123,6 +230,7 @@
       item: {type: Object, default: () => ({})},
     },
     data() {
+
       return {
         loading: false,
         formData: {
@@ -135,12 +243,14 @@
           images: [], // 图片
           store_title: '', // 门店名称
           store_csm_id: '', // 客户经理
-
-          avatar: [],
-          gender: 1,
           province_code: '',
           city_id: '',
           geo: {lng: '', lat: '', province_title: '', city_title: '', poi: ''},
+          address: '',
+
+          avatar: [],
+          login_phone: '',
+          realname: ''
         },
 
         salesmanList: []
@@ -149,6 +259,8 @@
       }
     },
     created() {
+      this.Verification = Verification;
+
       if (this.$props.type === 'modify') {
         this.$data.formData = {...this.$props.item};
       }
@@ -221,28 +333,64 @@
         this.$refs['ruleForm'] && this.$refs['ruleForm'].validate(async valid => {
           if (!valid) return;
 
-          this.$data.loading = true;
-          let formData = {...this.$data.formData};
-
-          const API = this.$props.type === 'add'
-            ? Config.api.itemSupDistributePlanAdd
-            : Config.api.itemSupDistributePlanModify;
-
-          let res = await Http.post(API, formData);
-          this.$data.loading = false;
-          if (res.code === 0) {
-            this.$message({message: `${this.$props.type === 'add' ? '新增' : '编辑'}成功`, type: 'success'});
-            this.$emit('submit');
-          } else {
-            this.$message({title: '提示', message: res.message, type: 'error'});
-          }
+          // this.$data.loading = true;
+          // let formData = {...this.$data.formData};
+          //
+          // const API = this.$props.type === 'add'
+          //   ? Config.api.itemSupDistributePlanAdd
+          //   : Config.api.itemSupDistributePlanModify;
+          //
+          // let res = await Http.post(API, formData);
+          // this.$data.loading = false;
+          // if (res.code === 0) {
+          //   this.$message({message: `${this.$props.type === 'add' ? '新增' : '编辑'}成功`, type: 'success'});
+          //   this.$emit('submit');
+          // } else {
+          //   this.$message({title: '提示', message: res.message, type: 'error'});
+          // }
 
         });
       },
 
       onCancel() {
         this.$emit('cancel');
-      }
+      },
+
+      validCreditLimit (rules, value, callback) {
+        if (!this.$data.formData.is_post_pay) { // 如果不是协议用户，则不对该项做校验
+          return callback();
+        }
+        if (!value) {
+          return callback(new Error('授信额度不能为空'));
+        }
+        if (!!value && (isNaN(value) || value <= 0)) {
+          return callback(new Error('授信额度必须为大于零的纯数字'));
+        }
+        if (!!value && !/^[0-9]+([.]\d{0,2})?$/.test(value)) {
+          return callback(new Error('授信额度最多只能输入两位小数'));
+        }
+
+        if (value > 1000000) {
+          return callback(new Error('授信额度不能超过1000000'));
+        }
+        callback();
+      },
+
+      validImages (rules, value, callback) {
+        if (Array.isArray(value) && value.length > 0) {
+          callback();
+        } else {
+          callback(new Error('请上传门店图片'));
+        }
+      },
+
+      validLocation (rules, value, callback) {
+        if (!value.lng && !value.lat) {
+          return callback(new Error('地理位置不能为空'));
+        }
+        callback();
+      },
+
     }
   }
 </script>
