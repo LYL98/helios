@@ -133,10 +133,10 @@
             <el-col :span="12">
               <el-form-item
                 label="采购总金额"
-                :prop="'p_items.' + index + '.item_total_price'"
+                :prop="'p_items.' + index + '.total_price'"
                 :rules="[ { validator: validItemTotalPrice, trigger: 'change' } ]"
               >
-                <el-input size="small" :value="item.item_total_price" disabled>
+                <el-input size="small" :value="item.total_price" disabled>
                   <template slot="append">元</template>
                 </el-input>
               </el-form-item>
@@ -192,7 +192,7 @@
         return selectSupplierData.province_code;
       },
       filterItemList() {
-        return this.$data.itemList.filter(item => !this.$data.detail.p_items.some(d => d.p_item_id == item.id));
+        return this.$data.itemList.filter(item => !this.$data.detail.p_items.some(d => d.p_item_id === item.id));
       },
     },
     created() {
@@ -205,7 +205,7 @@
         supplier_id: '',
         storehouse_id: '',
         p_items: [
-          {p_item_id: '', amount: '', num: '', price_buy: '', frame_id: '', frame_price: '', item_total_price: ''}
+          {p_item_id: '', amount: '', num: '', price_buy: '', frame_id: '', frame_price: '', total_price: ''}
         ],
       };
       return {
@@ -222,7 +222,7 @@
       handleAddItem() {
         this.$data.detail.p_items = [
           ...this.$data.detail.p_items,
-          {p_item_id: '', amount: '', num: '', price_buy: '', frame_id: '', frame_price: '', item_total_price: ''}
+          {p_item_id: '', amount: '', num: '', price_buy: '', frame_id: '', frame_price: '', total_price: ''}
         ]
       },
 
@@ -232,11 +232,11 @@
 
       changePItem(item) {
         if (item.amount && item.num) {
-          item.price_buy = DataHandle.returnPrice(item.amount / item.num - item.frame_price);
-          item.item_total_price = DataHandle.returnPrice(item.amount - item.frame_price * item.num);
+          item.price_buy = DataHandle.returnPrice(item.amount / item.num); // 采购商品金额 / 采购数量
+          item.total_price = DataHandle.returnPrice(item.amount + item.frame_price * item.num); // 采购商品金额 + 筐金额
         } else {
           item.price_buy = '';
-          item.item_total_price = '';
+          item.total_price = '';
         }
       },
 
@@ -264,6 +264,9 @@
       changeSupplier(data) {
         this.$data.selectSupplierData = data;
         this.$data.detail.storehouse_id = '';
+        this.$data.detail.p_items = [
+          {p_item_id: '', amount: '', num: '', price_buy: '', frame_id: '', frame_price: '', total_price: ''}
+        ];
       },
 
       async initItemList(condition){
@@ -277,7 +280,7 @@
         });
         this.$data.remoting = false;
         if(res.code === 0){
-          let rd = res.data;
+          let rd = res.data || [];
           this.$data.itemList = rd;
         }else{
           this.$messageBox.alert(res.message, '提示');
@@ -286,14 +289,19 @@
 
       //选择商品时
       selectGItem(data, item){
+
+        item.amount = '';
+        item.num = '';
+        item.price_buy = '';
+        item.frame_id = '';
+        item.frame_price = '';
+        item.total_price = '';
+
         //如果有筐
         if(data.frame_id){
 
           item.frame_id = data.frame_id;
           item.frame_price = data.frame.price;
-        } else {
-          item.frame_id = '';
-          item.frame_price = '';
         }
       },
       //提交数据
@@ -303,7 +311,7 @@
         detail.p_items = detail.p_items.map(item => ({
           p_item_id: Number(item.p_item_id),
           num: Number(item.num),
-          item_total_price: DataHandle.handlePrice(item.item_total_price),
+          item_total_price: item.amount,
         }));
         let res = await Http.post(Config.api.fromSupplierOrderBatchAdd, detail);
         this.$loading({isShow: false});
