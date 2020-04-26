@@ -272,17 +272,10 @@ const Constant = {
       { key: 'buyer', value: '商品' },
       { key: 'salesman', value: '业务' },
       { key: 'supply', value: '供应链' },
+      { key: 'service', value: '客服' },
       { key: 'other', value: '其他' },
     ];
     return handleKeyValue(type, data);
-  },
-  //运营人员职务 颜色
-  OPERATOR_POST_TYPE: {
-    salesman: 'info',
-    buyer: 'info',
-    deliver: 'info',
-    sorter: 'info',
-    local_distributor: 'info'
   },
   // 退筐记录的状态
   OPERATE_REFUND_FRAME_STATUS: {
