@@ -158,14 +158,13 @@ export default {
       phone: '', // 手机号
       password: '', // 密码
       avatar: [], // 头像
-      post: 'buyer', // 职务 buyer(商品) salesman(业务) supply(供应链) other(其他)
+      post: 'buyer', // 职务 buyer(商品) salesman(业务) supply(供应链) service(客服) other(其他)
       role_ids: [],
       data_level: '1', // 数据权限 1:总部 2:区域 3:片区 4:县域
       data_value: [], //  数据权限范围 1:空白 2:province_codes 3:zone_ids 4:city_ids
       remark: ''
     }
     return {
-      operatorPost: Constant.OPERATOR_POST(),
       dataLevel: Constant.OPERATOR_DATA_LEVEL,
       provinceList: [],
       roleList: [],
@@ -199,6 +198,11 @@ export default {
         return this.$data.provinceList.filter(item => item.code === this.$myInfo.province_code);
       }
       return this.$data.provinceList;
+    },
+    operatorPost(){
+      let d = Constant.OPERATOR_POST();
+      if(this.detail.opt_type === 'local') delete d['service'];
+      return d;
     }
   },
   methods: {
@@ -215,6 +219,7 @@ export default {
           this.handleChangePost(this.$data.detail.post);
           break;
       }
+      this.$data.detail.post = 'buyer';
     },
     //区域改变
     changeProvince() {
