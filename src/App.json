@@ -142,6 +142,11 @@
               "name": "MerchantStoreQuery"
             },
             {
+              "title": "意向客户",
+              "upName": "MerchantMain",
+              "name": "MerchantIntendedQuery"
+            },
+            {
               "title": "门店筐",
               "upName": "MerchantMain",
               "name": "MerchantRefundQuery"
