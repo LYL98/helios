@@ -67,7 +67,7 @@
   import { Input, Button, Table, TableColumn, Pagination, Message, Popover } from 'element-ui';
   import { OmissionText } from '@/common';
   import { Constant, Config, Http } from '@/util';
-  
+
   export default {
     name: "TableMarketingCouponLog",
     components: {
@@ -112,7 +112,7 @@
         });
         if(res.code === 0){
           let queryStr = `${api}?province_code=${this.$province.code}&coupon_id=${this.query.coupon_id}`;
-          
+
           window.open(queryStr);
         }else{
           this.$message({ title: '提示', message: res.message, type: 'error' });
@@ -183,17 +183,21 @@
         let dis_scope_str = '';
         switch(row.dis_type) {
           case 'type_grade':
-            dis_scope_str = row.grades.map(item => item.title).join('、');
+            dis_scope_str = (row.grades || []).map(item => item.title).join('、');
             break;
           case 'type_city_grade':
-            dis_scope_str = row.cities.map(item => item.title).join('、') + '&' + row.grades.map(item => item.title).join('、')
+            dis_scope_str = (row.cities || []).map(item => item.title).join('、');
+            if (Array.isArray(row.grades) && row.grades.length > 0) {
+              dis_scope_str += '&';
+              dis_scope_str += row.grades.map(item => item.title).join('、');
+            }
             break;
           case 'type_city':
-            dis_scope_str = row.cities.map(item => item.title).join('、');
+            dis_scope_str = (row.cities || []).map(item => item.title).join('、');
             break;
           case 'type_merchant':
           case 'type_auto':
-            dis_scope_str = row.merchants.map(item => item.title).join('、');
+            dis_scope_str = (row.merchants || []).map(item => item.title).join('、');
             break;
           default:
             break;
