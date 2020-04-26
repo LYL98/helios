@@ -48,9 +48,19 @@
       <detail-merchant-list :storeQuery="storeQuery" v-if="detailDialog.isShow" :merchant_id="merchant_id"/>
     </el-dialog>
 
-    <el-dialog title="新增商户" width="808px" :close-on-click-modal="false" :visible.sync="addMerchantDialogVisible" append-to-body>
-      <add-edit-merchant-list v-if="addMerchantDialogVisible" :editMerchantSuccess="addMerchantSuccess" :editMerchantCancel="addMerchantCancel"/>
-    </el-dialog>
+    <add-edit-layout
+      title="新增商户"
+      :is-show="addMerchantDialogVisible"
+      :before-close="addMerchantCancel"
+    >
+      <merchant-edit
+        module="merchant"
+        type="add"
+        v-if="addMerchantDialogVisible"
+        @submit="addMerchantSuccess"
+        @cancel="addMerchantCancel"
+      />
+    </add-edit-layout>
   </sub-menu>
 </template>
 
@@ -58,11 +68,12 @@
   import { MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
   import QueryMerchantStore  from './QueryMerchantStore';
   import TableMerchantList from './TableMerchantList';
-  import AddEditMerchantList from './AddEditMerchantList';
+  import MerchantEdit from './merchant-edit';
   import DetailMerchantList from './DetailMerchantList';
-  import { Config, Constant, DataHandle, Method, Http } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
   import queryTabs from '@/share/layout/QueryTabs';
+  import AddEditLayout from '@/share/layout/Layout';
+  import { Config, Constant, DataHandle, Method, Http } from '@/util';
 
   export default {
     name: "MerchantList",
@@ -77,10 +88,11 @@
       'el-tag': Tag,
       'el-pagination': Pagination,
       'table-merchant-list': TableMerchantList,
-      'add-edit-merchant-list': AddEditMerchantList,
       'detail-merchant-list': DetailMerchantList,
       'query-merchant-store': QueryMerchantStore,
-      'query-tabs': queryTabs
+      'query-tabs': queryTabs,
+      'add-edit-layout': AddEditLayout,
+      'merchant-edit': MerchantEdit,
     },
     mixins: [mainMixin],
     created() {

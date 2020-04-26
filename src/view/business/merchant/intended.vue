@@ -214,7 +214,7 @@
           items: []
         },
         dialog: {
-          visible: true,
+          visible: false,
           type: 'add',
           item: null
         },
