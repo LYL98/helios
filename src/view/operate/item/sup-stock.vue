@@ -372,7 +372,9 @@
       },
 
       resetQuery() {
+        let storehouse_id = this.$data.query.storehouse_id;
         this.initQuery();
+        this.$data.query.storehouse_id = storehouse_id;
         this.supStockQuery();
       },
 
