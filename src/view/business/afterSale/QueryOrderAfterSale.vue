@@ -216,7 +216,7 @@
       }
       //超过两小时
       &.grade2{
-        background: #ff884d;
+        background: #aa94c4;
         color: #fff;
       }
     }

@@ -8,8 +8,8 @@
           <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="afterSaleStatusTab"/>
         </div>
         <div class="right" v-if="auth.isAdmin || auth.OrderAftersaleExport">
-          <el-button size="mini" type="primary" @click="afterSaleListExport" plain>导出售后汇总表</el-button>
-          <el-button size="mini" type="primary" @click="afterSaleListExport" plain>导出售后追责表</el-button>
+          <el-button size="mini" type="primary" @click="handleExport('aftersaleListExport', query)" plain>导出售后汇总表</el-button>
+          <el-button size="mini" type="primary" @click="handleExport('aftersaleRespListExport', query)" plain>导出售后追责表</el-button>
         </div>
       </div>
       <!-- 表格start -->
@@ -24,7 +24,7 @@
           @selection-change="handleSelectionChange"
           :current-row-key="clickedRow[rowIdentifier]"
         >
-          <el-table-column type="selection" width="42"></el-table-column>
+          <el-table-column type="selection" :selectable="returnSelectStatus" width="42" disabled="false" v-if="auth.isAdmin || auth.OrderAfterSaleAllocate"></el-table-column>
           <el-table-column type="index" width="88" label="序号">
             <template slot-scope="scope">
               <span>{{indexMethod(scope.$index)}}</span>
@@ -67,14 +67,14 @@
           <el-table-column label="处理进度" min-width="100">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
-                {{ afterSaleHandleLoading[scope.row.handle_loading] }}
+                {{ scope.row.handle_loading ? afterSaleHandleLoading[scope.row.handle_loading] : '-' }}
               </div>
             </template>
           </el-table-column>
           <el-table-column label="处理类型" min-width="140">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
-                {{ afterSaleOptType[scope.row.opt_type] }}
+                {{ scope.row.opt_type === 'init' || !scope.row.opt_type ? '-' : afterSaleOptType[scope.row.opt_type] }}
               </div>
             </template>
           </el-table-column>
@@ -94,18 +94,18 @@
                   :list="[
                     {
                       title: '分配',
-                      isDisplay: scope.row.status !== 'init' && (auth.isAdmin || auth.OrderAfterSaleUpdate),
+                      isDisplay: scope.row.status === 'init' && (auth.isAdmin || auth.OrderAfterSaleAllocate),
                       command: () => orderShowHideAllocateClose([scope.row.id])
                     },
                     {
-                      title: scope.row.status === 'waiting_dispose' ? '待处理' : '详情',
-                      isDisplay: scope.row.status === 'waiting_dispose' && (auth.isAdmin || auth.OrderAfterSaleUpdate),
+                      title: judgeOrs(scope.row.status, ['waiting_dispose', 'handling']) ? (scope.row.status === 'waiting_dispose' ? '待处理' : '处理') : '详情',
+                      isDisplay: judgeOrs(scope.row.status, ['waiting_dispose', 'handling']) && (auth.isAdmin || auth.OrderAfterSaleUpdate),
                       command: () => orderShowHideAfterSaleDetail(scope.row)
                     },
                     {
                       title: '二次处理',
-                      isDisplay: scope.row.status === 'close' && (auth.isAdmin || auth.OrderAfterSaleUpdate),
-                      command: () => orderShowHideAfterSaleDetail(scope.row)
+                      isDisplay: scope.row.status === 'close' && retuHandleSecond(scope.row) && (auth.isAdmin || auth.OrderAfterSaleHandleSecond),
+                      command: () => orderShowHideHandleSecond(scope.row)
                     }
                   ]"
                 >
@@ -123,7 +123,7 @@
             size="mini"
             type="primary"
             :disabled="multipleSelection.length <= 0"
-            v-if="$auth.isAdmin || $auth.xxx"
+            v-if="auth.isAdmin || auth.OrderAfterSaleAllocate"
             @click.native="orderShowHideAllocateClose(returnListKeyList('id',multipleSelection))"
           >批量分配</el-button>
         </div>
@@ -147,6 +147,8 @@
     <add-edit-item-detail :getPageComponents="viewGetPageComponents" ref="AddEditItemList" page="after-sale-detail"/>
     <form-order-after-sale-close :getPageComponents="viewGetPageComponents" ref="FormOrderAfterSaleClose" />
     <allocate :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="Allocate" />
+    <handle-loading :getPageComponents="viewGetPageComponents" ref="HandleLoading"/>
+    <handle-second :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="HandleSecond"/>
   </sub-menu>
 </template>
 
@@ -159,6 +161,8 @@ import FormOrderAfterSaleClose from './FormOrderAfterSaleClose';
 import DetailOrderList from '@/view/business/order/DetailOrderList';
 import AddEditItemList from '@/view/item/list/AddEditItemList';
 import Allocate from './Allocate';
+import HandleLoading from './HandleLoading';
+import HandleSecond from './HandleSecond';
 import { Config, DataHandle, Constant, Http } from '@/util';
 import tableMixin from '@/share/mixin/table.mixin';
 import mainMixin from '@/share/mixin/main.mixin';
@@ -180,6 +184,8 @@ export default {
     'add-edit-item-detail': AddEditItemList,
     'form-order-after-sale-close': FormOrderAfterSaleClose,
     'allocate': Allocate,
+    'handle-loading': HandleLoading,
+    'handle-second': HandleSecond,
     'my-table-operate': TableOperate,
     'query-tabs': queryTabs
   },
@@ -212,7 +218,6 @@ export default {
     }
   },
   methods: {
-
     initQuery(resetData) {
       let provinceCode = '';
       if(resetData && resetData.province_code) provinceCode = resetData.province_code;
@@ -264,37 +269,6 @@ export default {
     myCallBack(res){
       this.orderAfterSaleQuery();
     },
-    //导出
-    async afterSaleListExport() {
-      let api = Config.api.afterSaleListExport;
-      let {city_id, status, opt_type, condition, item, begin_date, end_date} = this.query;
-      let query = {
-        city_id,
-        status,
-        opt_type,
-        condition,
-        item,
-        begin_date,
-        end_date
-      }
-
-      //判断是否可导出
-      this.$loading({ isShow: true,  isWhole: true });
-      let res = await Http.get(`${api}_check`, {
-        province_code: this.query.province_code,
-        ...query
-      });
-      if(res.code === 0){
-        let queryStr = `${api}?province_code=${this.query.province_code}`;
-        for (let item in query) {
-          queryStr += `&${item}=${query[item]}`
-        }
-        window.open(queryStr);
-      }else{
-        this.$message({ title: '提示', message: res.message, type: 'error' });
-      }
-      this.$loading({ isShow: false });
-    },
     //获取售后列表
     async orderAfterSaleQuery(){
       this.$loading({isShow: true, isWhole: true});
@@ -307,14 +281,36 @@ export default {
       }
     },
     //售后详情
-    orderShowHideAfterSaleDetail(data){
+    orderShowHideAfterSaleDetail(item){
       let pc = this.viewGetPageComponents('DetailOrderAfterSale');
-      pc.orderShowHideAfterSaleDetail(data);
+      pc.orderShowHideAfterSaleDetail(item);
     },
     //分配
     orderShowHideAllocateClose(ids){
       let pc = this.viewGetPageComponents('Allocate');
       pc.orderShowHideAllocateClose(ids);
+    },
+    //二次处理
+    orderShowHideHandleSecond(item){
+      let pc = this.viewGetPageComponents('HandleSecond');
+      pc.orderShowHideHandleSecond(item);
+    },
+
+    //是否禁用选择
+    returnSelectStatus(item){
+      return item.status === 'init' ? true : false;
+    },
+
+    //返回是否二次退货
+    retuHandleSecond(item){
+      //如已二次处理
+      if(item.handle_second_time) return;
+
+      //完成小于72小时，可二次处理
+      let date = DataHandle.returnDateStr();
+      let hours = DataHandle.dateTimeCalc(item.done_time, date, 'hours');
+      if(hours < 72) return true;
+      return false;
     }
   }
 };
@@ -355,15 +351,15 @@ export default {
     .grade7, .grade2{
       display: inline-block;
       width: 6px;
-      height: 6px;
+      height: 12px;
       margin-left: 5px;
-      border-radius: 50%;
       position: relative;
+      top: 1px;
       &.grade7{
         background: #ff5252;
       }
       &.grade2{
-        background: #ff884d;
+        background: #aa94c4;
       }
     }
 </style>

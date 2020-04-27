@@ -38,11 +38,15 @@ const Config = (() => {
       orderCancel: apiM + '/order/cancel', //取消订单
 
       afterSaleQuery: apiM + '/aftersale/query', //获取负责处理的售后单
-      afterSaleListExport: apiM + '/aftersale/list/export', // 售后单列表导出
       afterSaleDetail: apiM + '/aftersale/detail', //获取售后单详情
-      afterSaleUpdate: apiM + '/aftersale/update', //售后处理
+      afterSaleUpdate: apiM + '/aftersale/handle_done', //售后处理
       aftersaleAppend: apiM + '/aftersale/append', //售后单回复
       aftersaleAllocateToOperator: apiM + '/aftersale/allocate_to_operator', //批量将售后单分配给客服人员以待处理
+      aftersaleHandleLoading: apiM + '/aftersale/handle_loading', //更新售后单处理进度
+      aftersaleHandleSecondTime: apiM + '/aftersale/handle_second_time', //二次处理
+      aftersaleListExport: apiM +'/aftersale/list/export', //售后汇总表导出
+      aftersaleRespListExport: apiM +'/aftersale_resp/list/export', //售后追责表导出
+
 
       //导出相关接口
       supplierExport: apiM + '/supplier/export', //供应商导出 supplier/export.  supplier/export_check.

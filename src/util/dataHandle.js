@@ -250,11 +250,18 @@ const dataHandle = {
       + (t.prefixInteger(myDate.getMinutes(), 2)) + ":"
       + (t.prefixInteger(myDate.getSeconds(), 2)));
   },
-  //计算相差天数
-  dayDifferCalc(begintime, endtime) {
+
+  //日期时间计算相差 type day, hours, 
+  dateTimeCalc(begintime, endtime, type) {
     var begintime_ms = new Date(begintime.replace(/-/g, "/")); //begintime 为开始时间
     var endtime_ms = new Date(endtime.replace(/-/g, "/"));   // endtime 为结束时间
     var difference = endtime_ms.getTime() - begintime_ms.getTime();//时间差的毫秒数
+    //计算出相差小时数
+    if(type === 'hours'){
+      var hours = Math.floor(difference / (3600 * 1000));
+      return hours;
+    }
+    
     //计算出相差天数
     var days = Math.floor(difference / (24 * 3600 * 1000));
     return days;

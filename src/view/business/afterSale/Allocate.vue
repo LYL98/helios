@@ -10,8 +10,8 @@
           <select-operator v-model="editData.operator_id" size="medium" placeholder="请选择客服" post="service" clearable filterable/>
         </el-form-item>
         <el-form-item label="">
-          <el-button @click.native="cancel">取消</el-button>
-          <el-button type="primary" @click.native="submit">确认</el-button>
+          <el-button @click.native="cancel">取 消</el-button>
+          <el-button type="primary" @click.native="submit">确 认</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -50,14 +50,10 @@ export default {
   },
   computed: {
     judgeAuth() {
-      return this.$auth.isAdmin || this.$auth.xxxxx;
+      return this.$auth.isAdmin || this.$auth.OrderAfterSaleAllocateToService;
     },
   },
   methods: {
-    allocateMe(){
-
-    },
-
     initEditDate() {
       this.editData = {
         ids: [],
@@ -86,7 +82,7 @@ export default {
       let { editData, allocateType } = this;
       this.$loading({isShow: true, isWhole: true});
       let res = await Http.post(Config.api.aftersaleAllocateToOperator, {
-        operator_id: allocateType === 'my' ? $myInfo.id : editData.operator_id,
+        operator_id: allocateType === 'my' ? this.$myInfo.id : editData.operator_id,
         ids: editData.ids
       });
       this.$loading({isShow: false});
