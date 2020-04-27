@@ -1,30 +1,199 @@
 <template>
   <sub-menu>
-    <merchant-query v-model="query" @change="changeQuery" :reset="resetQuery"/>
+    <div class="container-query">
+      <el-row :gutter="32">
+        <el-col :span="7">
+          <my-query-item label="区域">
+            <global-province v-model="query.province_code" type="select" @change="selectProvince"/>
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <my-query-item label="县域">
+            <my-select-city
+              :disabled="!query.province_code"
+              size="small"
+              showAll
+              clearable
+              v-model="query.city_id"
+              :provinceCode="query.province_code"
+              @change="changeQuery"
+            />
+          </my-query-item>
+        </el-col>
+        <el-col :span="10">
+          <my-query-item label="搜索">
+            <query-search-input
+              size="small"
+              placeholder="门店名称/用户名称/电话"
+              v-model="query.condition"
+              @search="changeQuery"
+              @reset="resetQuery"
+            />
+          </my-query-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32" style="margin-top: 16px;">
+        <el-col :span="7">
+          <my-query-item label="审核状态">
+            <select-option
+              :options="{'全部': '', '待审核': 0, '已审核': 1}"
+              v-model="query.is_audited"
+              @change="changeQuery"
+              size="small"
+            />
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <my-query-item label="冻结状态">
+            <select-option
+              :options="{'全部': '', '未冻结': 0, '已冻结': 1}"
+              v-model="query.is_freeze"
+              @change="changeQuery"
+              size="small"
+            />
+          </my-query-item>
+        </el-col>
+        <el-col :span="7">
+          <my-query-item label="团购门店">
+            <select-option
+              :options="{'全部': '', '非团购': 0, '团购': 1}"
+              v-model="query.gb_included"
+              @change="changeQuery"
+              size="small"
+            />
+          </my-query-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="32" style="margin-top: 16px;">
+        <el-col :span="7">
+          <my-query-item label="创建时间">
+            <el-date-picker
+              size="small"
+              v-model="query.pickerValue"
+              style="width: 100%;"
+              type="daterange"
+              align="right"
+              value-format="yyyy-MM-dd"
+              unlink-panels
+              :picker-options="fixDateOptions"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              @change="changePicker"
+            />
+          </my-query-item>
+        </el-col>
+      </el-row>
+    </div>
     <div class="container-table">
       <div class="table-top">
         <div class="left">
           <query-tabs v-model="query.is_post_pay" @change="changeQuery" :tab-panes="{'全部': '', '协议': '1', '非协议': '0'}"/>
         </div>
         <div class="right" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
-          <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出商户列表</el-button>
-          <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="() => addMerchantDialogVisible = true" size="mini" type="primary">新增</el-button>
+          <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="merchantListExport" size="mini" type="primary" plain >导出商户列表</el-button>
+          <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="handleAddItem" size="mini" type="primary">新增</el-button>
         </div>
       </div>
       <!-- 头部end -->
 
-      <!-- 列表渲染 -->
-      <merchant-table
-        :dataItemTemp="dataItem"
-        :page="query.page"
-        :pageSize="query.page_size"
-        :deleteStore="deleteStore"
-        :showDetail="showDetail"
-        :affirmStoreFreeze="affirmStoreFreeze"
-        :affirmStoreUnFreeze="affirmStoreUnFreeze"
-        :getPageComponents="viewGetPageComponents"
-        ref="TableMerchantList"
-      />
+      <div @mousemove="handleTableMouseMove" class="table-conter">
+        <el-table
+          class="list-table my-table-float"
+          :data="dataItem.items"
+          @cell-mouse-enter="cellMouseEnter"
+          @cell-mouse-leave="cellMouseLeave"
+          :row-class-name="highlightRowClassName"
+          :highlight-current-row="true"
+          :row-key="rowIdentifier"
+          :current-row-key="clickedRow[rowIdentifier]"
+        >
+          <!-- 表格宽度： 860 / 830（带全选） -->
+          <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (page - 1) * query.page_size <= 999950 ? 68 : 88" label="序号" :index="indexMethod">
+          </el-table-column>
+          <el-table-column label="门店名称" min-width="150" prop="title">
+            <template slot-scope="scope">
+          <span v-if="auth.isAdmin || auth.MerchantAuditDetail">
+            <a :class="`title ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="showDetail(scope.row)">
+              {{ scope.row.title }}
+            </a>
+          </span>
+              <span v-else :class="isEllipsis(scope.row)">
+            {{ scope.row.title }}
+          </span>
+            </template>
+          </el-table-column>
+          <el-table-column label="商户名称" min-width="120">
+
+            <template slot-scope="scope">
+          <span v-if="auth.isAdmin || auth.MerchantAuditDetail">
+            <a :class="`title ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="showMerchantDetail(scope.row)">
+              {{ scope.row.merchant.title }}
+            </a>
+          </span>
+              <span v-else :class="isEllipsis(scope.row)">
+            {{ scope.row.merchant.title }}
+          </span>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="协议商户" min-width="80">
+            <template slot-scope="scope">
+              <el-tag disable-transitions :type="scope.row.merchant && scope.row.merchant.is_post_pay ? 'regular' : 'info'" size="small"
+              >{{scope.row.merchant && scope.row.merchant.is_post_pay ? '是' : '否'}}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="县域" min-width="80" prop="city.title">
+            <template slot-scope="scope">
+              <div :class="isEllipsis(scope.row)">
+                {{ scope.row.city && scope.row.city.title }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="审核状态" min-width="80">
+            <template slot-scope="scope">
+              <el-tag disable-transitions :type="scope.row.is_audited ? 'regular' : 'info'" size="small"
+              >{{scope.row.is_audited ? '已审核' : '未审核'}}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="冻结状态" min-width="80">
+            <template slot-scope="scope">
+              <el-tag disable-transitions :type="scope.row.is_freeze ? 'regular' : 'info'" size="small"
+              >{{scope.row.is_freeze ? '已冻结' : '未冻结'}}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="100">
+            <template slot-scope="scope">
+              <my-table-operate
+                @command-click="handleCommandClick(scope.row)"
+                @command-visible="handleCommandVisible"
+                :list="[
+              {
+                title: '审核通过',
+                isDisplay: (auth.isAdmin || auth.MerchantStoreApprove) && !scope.row.is_audited,
+                command: () => affirmApprove(scope.row)
+              },
+              {
+                title: '冻结',
+                isDisplay: (auth.isAdmin || auth.MerchantStoreFreeze) && !scope.row.is_freeze,
+                command: () => affirmStoreFreeze(scope.row)
+              },
+              {
+                title: '解冻',
+                isDisplay: (auth.isAdmin || auth.MerchantStoreUnFreeze) && scope.row.is_freeze,
+                command: () => affirmStoreUnFreeze(scope.row)
+              },
+              {
+                title: '删除',
+                isDisplay: auth.isAdmin || auth.MerchantStoreDelete,
+                command: () => deleteStore(scope.row)
+              }
+            ]"
+              />
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
 
 
       <!-- 分页标签 -->
@@ -44,30 +213,33 @@
       </div>
     </div>
 
-    <el-dialog title="商户详情" width="1200px" :visible.sync="detailDialog.isShow" append-to-body>
-      <merchant-detail :storeQuery="storeQuery" v-if="detailDialog.isShow" :merchant_id="merchant_id" />
+    <el-dialog title="商户详情" width="1200px" :visible.sync="detail.visible" append-to-body>
+      <merchant-detail :storeQuery="storeQuery" v-if="detail.visible" :merchant_id="detail.merchant_id" />
     </el-dialog>
 
     <add-edit-layout
       title="新增商户"
-      :is-show="addMerchantDialogVisible"
-      :before-close="addMerchantCancel"
+      :is-show="dialog.visible"
+      :before-close="handleCancel"
     >
       <merchant-edit
         module="merchant"
-        type="add"
-        v-if="addMerchantDialogVisible"
-        @submit="addMerchantSuccess"
-        @cancel="addMerchantCancel"
+        :type="dialog.type"
+        v-if="dialog.visible"
+        @submit="handleSubmit"
+        @cancel="handleCancel"
       />
     </add-edit-layout>
   </sub-menu>
 </template>
 
 <script>
-  import { MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
-  import MerchantQuery  from './merchant-query';
-  import MerchantTable from './merchant-table';
+  import { MessageBox, Message, Row, Col, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination, DatePicker } from 'element-ui';
+
+  import {SelectOption, QueryItem, QuerySearchInput, TableOperate} from '@/common';
+  import { GlobalProvince, SelectCity } from '@/component';
+  import tableMixin from '@/share/mixin/table.mixin';
+
   import MerchantEdit from './merchant-edit';
   import MerchantDetail from './merchant-detail';
   import mainMixin from '@/share/mixin/main.mixin';
@@ -76,8 +248,10 @@
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
 
   export default {
-    name: "MerchantList",
+    name: "Merchant",
     components: {
+      'el-row': Row,
+      'el-col': Col,
       'el-form': Form,
       'el-form-item': FormItem,
       'el-button': Button,
@@ -87,72 +261,71 @@
       'el-dialog': Dialog,
       'el-tag': Tag,
       'el-pagination': Pagination,
+      'el-date-picker': DatePicker,
+      'my-query-item': QueryItem,
+      'select-option': SelectOption,
+      'my-select-city': SelectCity,
+      'global-province': GlobalProvince,
+      'query-search-input': QuerySearchInput,
       'query-tabs': queryTabs,
       'add-edit-layout': AddEditLayout,
-      'merchant-query': MerchantQuery,
-      'merchant-table': MerchantTable,
       'merchant-edit': MerchantEdit,
       'merchant-detail': MerchantDetail,
+      'my-table-operate': TableOperate,
     },
-    mixins: [mainMixin],
+    mixins: [mainMixin, tableMixin],
     created() {
-      let that = this;
+      this.fixDateOptions = Constant.FIX_DATE_RANGE;
       documentTitle('业务 - 门店');
-      let p = that.province;
-      if (p.code) {
-        that.$data.query.province_code = p.code;
-        that.storeQuery();
-      }
+      this.initQuery();
+      this.storeQuery();
     },
     data() {
       return {
-        merchant_id: '',
-        province: this.$province,
+
         auth: this.$auth,
         tencentPath: Config.tencentPath,
-        provinceList: [],//区域列表
-        query: {
-          is_audited: '',
-          is_freeze: '',
-          is_post_pay: '',
-          gb_included: '',
-          province_code: '',
-          city_id: '',
-          condition: '',
-          page: 1,
-          page_size: Constant.PAGE_SIZE,
-        },
+        query: {  },
+
         dataItem: {
           items: [],
           num: 0
         },
-        isShowDetail: false,
-        detailDialog: {
-          isShow: false,
-          item: {}
+
+        dialog: {
+          visible: false,
+          type: 'add',
+          item: {},
         },
-        searchKeywords: {
-          title: '',
-          address: '',
-          operator: ''
+
+        detail: {
+          visible: false,
+          merchant_id: 0
         },
-        selectData: {},
-        isShowTag: false,
-        innerTags: [], //内标签
-        outerTags: [], //外标签
-        gradeList: [], //等级
-        gradeTagData: {},
-        addMerchantDialogVisible: false,
-        groupBuyMerchantIds: []
       }
     },
     methods: {
       //刷新
-      refresh() {
-        let {query} = this;
-        query.page = 1;
-        query.is_audited = '';
-        this.$data.query = query;
+      initQuery() {
+        this.$data.query = {
+          is_audited: '',
+          is_freeze: '',
+          is_post_pay: '',
+          gb_included: '',
+          province_code: this.$province.code,
+          city_id: '',
+          condition: '',
+          pickerValue: null,
+          begin_date: '',
+          end_date: '',
+          page: 1,
+          page_size: Constant.PAGE_SIZE,
+        };
+      },
+
+      changePage(page) {
+        window.scrollTo(0, 0);
+        this.$data.query.page = page;
         this.storeQuery();
       },
 
@@ -163,28 +336,22 @@
         this.storeQuery();
       },
 
-      /**
-       * 翻页 的 按钮事件
-       * 1、设置组件中 query.page的值
-       * 2、调用merchantList 重新加载商户列表信息
-       */
-      changePage(page) {
-        window.scrollTo(0, 0);
-        this.$data.query.page = page;
-        this.storeQuery();
-      },
 
-      /**
-       * 切换区域 的按钮事件
-       * 1、设置当前的区域code
-       * 2、设置page属性为1
-       * 3、重新加载商户列表
-       */
-      selectProvince(code) {
-        let {query} = this;
-        query.province_code = code;
-        query.page = 1;
-        this.$data.query = query;
+      //查询选择区域后
+      selectProvince(data, type){
+        this.$data.query.city_id = '';
+        this.changeQuery();
+      },
+      //搜索日期
+      changePicker(value){
+        if(value && value.length === 2){
+          this.query.begin_date = value[0];
+          this.query.end_date = value[1];
+        }else{
+          this.query.begin_date = '';
+          this.query.end_date = '';
+        }
+        this.query.page = 1;
         this.storeQuery();
       },
 
@@ -193,40 +360,34 @@
         this.query.page = 1;
         this.storeQuery();
       },
-      /**
-       * 清楚筛选条件
-       */
-      resetQuery(resetData){
-        let { page_size } = this.$data.query;
-        this.$data.query = {
-          is_audited: '',
-          is_freeze: '',
-          is_post_pay: '',
-          gb_included: '',
-          province_code: '',
-          city_id: '',
-          condition: '',
-          page: 1,
-          page_size: page_size,
-          ...resetData
-        };
+
+      resetQuery() {
+        window.scrollTo(0, 0);
+        this.initQuery();
         this.storeQuery();
       },
 
-      //搜索日期
-      changePicker(value){
-        let { query } = this;
-        if(value && value.length === 2){
-          query.begin_date = value[0];
-          query.end_date = value[1];
-        }else{
-          query.begin_date = '';
-          query.end_date = '';
+      handleAddItem() {
+        this.$data.dialog = {
+          visible: true,
+          type: 'add',
+          item: {}
         }
-        query.page = 1;
-        this.$data.query = query;
+      },
+
+      handleSubmit() {
+        this.handleCancel();
         this.storeQuery();
       },
+
+      handleCancel() {
+        this.$data.dialog = {
+          visible: false,
+          type: 'add',
+          item: {}
+        }
+      },
+
       //商户列表导出
       async merchantListExport() {
         let api = Config.api.merchantExport;
@@ -248,7 +409,7 @@
         //判断是否可导出
         this.$loading({ isShow: true,  isWhole: true });
         let res = await Http.get(`${api}_check`, {
-          province_code: this.query.province_code,
+          province_code: this.$data.query.province_code,
           ...query
         });
         if(res.code === 0){
@@ -262,41 +423,6 @@
         }
         this.$loading({ isShow: false });
       },
-      /**
-       * 根据审核状态，筛选商户列表
-       * 1、设置审核状态
-       * 2、设置page属性为1
-       * 3、重新加载商户列表信息
-       */
-      selectApprove(type) {
-        let {query} = this;
-        query.is_audited = type;
-        query.page = 1;
-        this.$data.query = query;
-        this.storeQuery();
-      },
-
-      /**
-       * 根据冻结状态，筛选商户列表
-       * 1、设置审核状态
-       * 2、设置page属性为1
-       * 3、重新加载商户列表信息
-       */
-      selectFreeze(type) {
-        let {query} = this;
-        query.is_freeze = type;
-        query.page = 1;
-        this.$data.query = query;
-        this.storeQuery();
-      },
-
-      selectPostPay(type) {
-        let {query} = this;
-        query.is_post_pay = type;
-        query.page = 1;
-        this.$data.query = query;
-        this.storeQuery();
-      },
 
       /**
        * 获取商户列表信息：
@@ -304,16 +430,42 @@
        * 2、将获取的data数据，赋值给组件的dataItem
        */
       async storeQuery() {
-        let that = this;
-        let {query} = that;
+        let query = {...this.$data.query};
+        delete query.picker_value;
         // get merchant list data
         let res = await Http.get(Config.api.storeQuery, query);
         // 如果返回结果正确，则将该数据 赋值给 dataItem；
         if (res.code === 0) {
-          that.$data.dataItem = res.data;
+          this.$data.dataItem = res.data;
           window.scrollTo(0, 0);
         } else { // 如果返回值不正确，则提示弹窗
           Message.warning(res.message);
+        }
+      },
+
+      //确认审核
+      affirmApprove(item) {
+        this.$messageBox.confirm('确认通过审核?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let that = this;
+          that.storeApprove(item);
+        }).catch(() => {
+          // console.log('取消');
+        });
+
+      },
+
+      //商户审核
+      async storeApprove(item) {
+        let res = await Http.post(Config.api.storeApprove, {id: item.id});
+        if (res.code === 0) {
+          this.$message({ message: '商户审核通过！', type: 'success' });
+          item.is_audited = true;
+        } else {
+          this.$message({ message: res.message, type: 'error' });
         }
       },
 
@@ -328,8 +480,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          let that = this;
-          that.storeFreeze(data);
+          this.storeFreeze(data);
         }).catch(() => {
           // console.log('取消');
         });
@@ -342,15 +493,12 @@
        *
        */
       async storeFreeze(data) {
-        let that = this;
-        let res = await Http.post(Config.api.storeFreeze, {
-          id: data.id
-        });
+        let res = await Http.post(Config.api.storeFreeze, {id: data.id});
         if (res.code === 0) {
-          that.storeQuery();
-          Message.success('门店已经冻结！');
+          this.storeQuery();
+          this.$message({ message: '门店已经冻结！', type: 'success' });
         } else {
-          Message.warning(res.message);
+          this.$message({ message: res.message, type: 'error' });
         }
       },
 
@@ -385,138 +533,10 @@
         });
         if (res.code === 0) {
           that.storeQuery();
-          Message.success('门店已经解冻！');
+          this.$message({ message: '门店已经解冻！', type: 'success' });
         } else {
-          Message.warning(res.message);
+          this.$message({ message: res.message, type: 'error' });
         }
-      },
-      /**
-       * 获取可以添加给商户的 内标签
-       * 1、请求api
-       * 2、将可用的内标签，赋值给组件的 innerTags 属性
-       */
-      async baseMerchantInnerTagsList() {
-        let that = this;
-        let res = await Http.get(Config.api.baseMerchantInnerTagsList, {});
-        if (res.code === 0) {
-          that.$data.innerTags = res.data;
-        } else {
-          Message.warning(res.message);
-        }
-      },
-      /**
-       * 获取可以添加给商户的 外标签
-       * 1、请求api
-       * 2、将可用的外标签，赋值给组件的 outerTags 属性
-       */
-      async baseMerchantOuterTagsList(data) {
-        let that = this;
-        let res = await Http.get(Config.api.baseMerchantOuterTagsList, {});
-        if (res.code === 0) {
-          that.$data.outerTags = res.data;
-        } else {
-          Message.warning(res.message);
-        }
-      },
-      /**
-       * 判断商户的 标签 是否处于选中状态。接受两个参数：标签对象 和 标签类型
-       * 1、根据标签类型，获取商户 已拥有的、该类型的 标签列表
-       * 2、判断商户拥有的标签列表中，是否有该标签
-       * 3、如果有；返回 true，如果没有：返回false
-       */
-      judgeOuterTag(data, type) {
-        let {gradeTagData} = this;
-        let d = type === 'inner' ? gradeTagData.inner_tags : gradeTagData.outer_tags;
-        return d.some(item => item === data.title);
-        // for(let i = 0; i < d.length; i++){
-        //   if(d[i] === data.title){
-        //     return true;
-        //   }
-        // }
-        // return false;
-      },
-
-      /**
-       * 设置商户的标签。接受两个参数：用户选择的标签对象、标签类型
-       * 1、根据标签类型，获取该商户 已拥有的 该类型 的标签列表
-       * 2、判断用户所选择的标签 是否在标签列表中？ 如果在，则表示取消；如果不在，则表示添加。
-       * 3、将新设置的 商户标签描述对象 重新赋值给 组件的 gradeTagData
-       * 4、强制组件重新渲染 UI
-       */
-      selectTag(data, type) {
-        let that = this;
-        // gradeTagData 是 商户拥有的标签描述对象。
-        // 该对象的数据结构为：{ grade_code: "", inner_tags: [], outer_tags: [] }
-        // 分别代表的函数已：    商户等级         已拥有的 内标签   已拥有的 外标签
-        let {gradeTagData} = this;
-        let d = type === 'inner' ? gradeTagData.inner_tags : gradeTagData.outer_tags;
-        // console.log(data, type, d);
-        if (d.length === 0) {
-          d.push(data.title);
-        } else {
-          for (let i = 0; i < d.length; i++) {
-            if (data.title === d[i]) {
-              d.remove(i);
-              break;
-            }
-            if (i === d.length - 1) {
-              d.push(data.title);
-              break;
-            }
-          }
-        }
-        type === 'inner' ? gradeTagData.inner_tags = d : gradeTagData.outer_tags = d;
-        that.$data.gradeTagData = gradeTagData;
-        that.$forceUpdate(); //强制渲染
-      },
-
-      /**
-       * 获取描述等级信息的数据列表
-       * 1、请求api
-       * 2、将描述等级信息的数据 赋值给 组件的 gradeList
-       */
-      async baseMerchantGradeList(data) {
-        let that = this;
-        let res = await Http.get(Config.api.baseMerchantGradeList, {});
-        if (res.code === 0) {
-          that.$data.gradeList = res.data;
-        } else {
-          Message.warning(res.message);
-        }
-      },
-
-      /**
-       * 设置等级。接受一个参数，等级对象信息
-       * 将用户选中的等级对象的 code，赋值给组件的 gradeTagData.grade_code
-       */
-      selectGrade(data) {
-        let {gradeTagData} = this;
-        gradeTagData.grade_code = data.code;
-        this.$data.gradeTagData = gradeTagData;
-      },
-
-      /**
-       * 响应 【修改等级、标签】的按钮事件。接受一个参数：商户对象
-       * 1、加载商户等级列表信息
-       * 2、加载商户内标签信息
-       * 3、加载商户外标签信息
-       *
-       * 4、设置组件的 selectData属性 为 传递进来的参数 (即：商户对象)
-       * 5、设置组件的 gradeTagData属性 为 商户对象的对应信息
-       * 6、设置组件的 isShowTag属性 为 true。(即：修改等级、标签 的弹窗 为 显示状态。)
-       */
-      showTag(data) {
-        this.baseMerchantInnerTagsList();//商户内标签
-        this.baseMerchantOuterTagsList();//商户外标签
-        this.baseMerchantGradeList();//商户等级列表
-        this.$data.selectData = data;
-        let gradeTagData = {
-          grade_code: data.grade_code,
-          inner_tags: data.inner_tags,
-          outer_tags: data.outer_tags
-        }
-        this.$data.gradeTagData = gradeTagData;
-        this.$data.isShowTag = true;
       },
 
       //确认删除门店
@@ -542,75 +562,29 @@
           id: data.id
         });
         if(res.code === 0){
-          Message.success('门店已删除！');
           that.storeQuery();
+          this.$message({ message: '门店已删除！', type: 'success' });
         }else{
-          Message.warning(res.message);
+          this.$message({ message: res.message, type: 'error' });
         }
       },
 
-      /**
-       * 【修改等级、标签】弹窗 的【取消】 按钮事件。
-       *  设置组件的isShowTag 属性为 false
-       */
-      cancelTag() {
-        this.$data.isShowTag = false;
-      },
-
-      /**
-       * 【修改等级、标签】弹窗 的【确认】 按钮事件。
-       *  调用merchantGradeTagsEdit方法
-       */
-      affirmTag() {
-        let that = this;
-        that.merchantGradeTagsEdit();
-      },
-
-      showDetail(item) {
-        this.detailDialog.item = item;
-        this.$data.merchant_id = item.merchant_id;
-        this.detailDialog.isShow = true;
-      },
-
-      cacelDetail() {
-        this.detailDialog.isShow = false;
-        this.detailDialog.item = {};
-        this.merchantInitState();
-
-      },
-
-      /**
-       * 修改商户的 标签和等级 信息
-       * 1、获取已经修改好的 数据
-       * 2、请求api。传递商户id 和 需要修改的数据值，进行修改。并等待响应结果
-       * 3、如果响应正常。调用关闭 弹窗事件；并重新加载商户列表信息
-       * 4、否则，提示异常信息。
-       */
-      async merchantGradeTagsEdit() {
-        let that = this;
-        let {selectData, gradeTagData} = that;
-        let res = await Http.post(Config.api.merchantGradeTagsEdit, {
-          id: selectData.id,
-          ...gradeTagData
-        });
+      async showDetail(item) {
+        return;
+        let res = await Http.get(Config.api.merchantDetail, { id: item.merchant_id });
         if (res.code === 0) {
-          Message.success('等级及标签修改完成！');
-          that.cancelTag();
-          that.storeQuery();
+          this.$data.dialog = { visible: true, item: res.data, type: 'detail' };
         } else {
-          Message.warning(res.message);
+          this.$message({ message: res.message, type: 'error' });
         }
       },
 
-      // 新增用户成功
-      addMerchantSuccess() {
-        this.addMerchantDialogVisible = false;
-        this.refresh();
-      },
+      showMerchantDetail(item) {
+        this.$data.detail = {
+          visible: true,
+          merchant_id: item.merchant_id,
+        };
 
-      // 取消新增商户
-      addMerchantCancel() {
-        this.addMerchantDialogVisible = false;
       },
 
     }
@@ -620,6 +594,17 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   @import '@/share/scss/table.scss';
+
+  .title {
+    color: inherit;
+    padding: 5px 10px 5px 0;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .title:hover {
+    font-weight: 600;
+  }
 </style>
 <style lang="scss">
   @import '@/share/scss/table.global.scss';
