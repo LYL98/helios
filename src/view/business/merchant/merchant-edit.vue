@@ -422,19 +422,18 @@
 
         salesmanList: []
 
-
       }
     },
     created() {
       this.Verification = Verification;
 
-      if (this.$props.type === 'modify') {
+      // 如果是编辑 或 详情模式下
+      if (['modify', 'detail'].includes(this.$props.type)) {
         this.$data.formData = {...this.$props.item};
       }
 
       if (this.$props.module === 'store') {
         this.$data.formData.merchant_id = this.$props.merchant_id;
-        console.log('this.$data.formData.merchant_id： ', this.$data.formData.merchant_id);
       }
     },
     methods: {
