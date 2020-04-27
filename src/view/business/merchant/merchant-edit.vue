@@ -387,12 +387,15 @@
       module: { type: String, default: 'merchant' }, // 调用该表单的模块： merchant | intended | store
       type: {type: String, default: ''}, // 调用类型： add ｜ modify ｜ detail
       item: {type: Object, default: () => ({})},
+      merchant_id: { type: Number, default: 0 }, // 当门店编辑时，需要指定merchant_id
     },
     data() {
 
       return {
         loading: false,
         formData: {
+          merchant_id: 0, // 在store 编辑模式下需要用到的字段
+
           // 商户字段 ，在 新增商户 和 激活潜在客户时 ，需要存在
           merchant_title: '',
           is_post_pay: false,
@@ -427,6 +430,11 @@
 
       if (this.$props.type === 'modify') {
         this.$data.formData = {...this.$props.item};
+      }
+
+      if (this.$props.module === 'store') {
+        this.$data.formData.merchant_id = this.$props.merchant_id;
+        console.log('this.$data.formData.merchant_id： ', this.$data.formData.merchant_id);
       }
     },
     methods: {

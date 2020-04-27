@@ -1,6 +1,6 @@
 <template>
   <sub-menu>
-    <query-merchant-store v-model="query" @change="changeQuery" :reset="resetQuery"/>
+    <merchant-query v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <div class="table-top">
         <div class="left">
@@ -14,7 +14,7 @@
       <!-- 头部end -->
 
       <!-- 列表渲染 -->
-      <table-merchant-list
+      <merchant-table
         :dataItemTemp="dataItem"
         :page="query.page"
         :pageSize="query.page_size"
@@ -45,7 +45,7 @@
     </div>
 
     <el-dialog title="商户详情" width="1200px" :visible.sync="detailDialog.isShow" append-to-body>
-      <detail-merchant-list :storeQuery="storeQuery" v-if="detailDialog.isShow" :merchant_id="merchant_id"/>
+      <merchant-detail :storeQuery="storeQuery" v-if="detailDialog.isShow" :merchant_id="merchant_id" />
     </el-dialog>
 
     <add-edit-layout
@@ -66,10 +66,10 @@
 
 <script>
   import { MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
-  import QueryMerchantStore  from './QueryMerchantStore';
-  import TableMerchantList from './TableMerchantList';
+  import MerchantQuery  from './merchant-query';
+  import MerchantTable from './merchant-table';
   import MerchantEdit from './merchant-edit';
-  import DetailMerchantList from './DetailMerchantList';
+  import MerchantDetail from './merchant-detail';
   import mainMixin from '@/share/mixin/main.mixin';
   import queryTabs from '@/share/layout/QueryTabs';
   import AddEditLayout from '@/share/layout/Layout';
@@ -87,12 +87,12 @@
       'el-dialog': Dialog,
       'el-tag': Tag,
       'el-pagination': Pagination,
-      'table-merchant-list': TableMerchantList,
-      'detail-merchant-list': DetailMerchantList,
-      'query-merchant-store': QueryMerchantStore,
       'query-tabs': queryTabs,
       'add-edit-layout': AddEditLayout,
+      'merchant-query': MerchantQuery,
+      'merchant-table': MerchantTable,
       'merchant-edit': MerchantEdit,
+      'merchant-detail': MerchantDetail,
     },
     mixins: [mainMixin],
     created() {

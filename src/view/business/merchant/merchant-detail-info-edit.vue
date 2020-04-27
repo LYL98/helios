@@ -1,5 +1,6 @@
 <template>
-  <el-form label-position="right" label-width="100px" style="width: 580px;" :model="detail" :rules="rules" ref="ruleForm">
+  <el-form label-position="right" label-width="100px" style="width: 580px;" :model="detail" :rules="rules"
+           ref="ruleForm">
     <el-form-item label="商户名称" prop="title">
       <el-input v-model="detail.title" :maxlength="10" placeholder="请输入商户名称"></el-input>
     </el-form-item>
@@ -25,8 +26,8 @@
   </el-form>
 </template>
 <script>
-  import { Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio } from 'element-ui';
-  import { Http, Config, DataHandle, Verification } from '@/util';
+  import {Form, FormItem, Button, Input, MessageBox, Message, Dialog, Radio} from 'element-ui';
+  import {Http, Config, DataHandle, Verification} from '@/util';
 
   export default {
     name: 'MerchantEdit',
@@ -39,7 +40,7 @@
       'el-radio': Radio
     },
     props: {
-      merchantDetail: {type: Object, required: false }, // 只有在编辑模式下才需要
+      merchantDetail: {type: Object, required: false}, // 只有在编辑模式下才需要
       editMerchantSuccess: Function,
       editMerchantCancel: Function
     },
@@ -52,7 +53,7 @@
         is_post_pay: is_post_pay,
         credit_limit: is_post_pay ? DataHandle.returnPrice(credit_limit) : 10000, // 如果之前是授信用户，则获取授信额度；如果之前是非授信用户，则给一个初始值10000
       };
-      let validCreditLimit = function(rules, value, callback) {
+      let validCreditLimit = function (rules, value, callback) {
         if (!detail.is_post_pay) { // 如果不是协议用户，则不对该项做校验
           return callback();
         }
@@ -77,11 +78,11 @@
         detail: detail,
         rules: {
           title: [
-            {required: true, message: '商户名称不能为空', trigger: 'change' },
-            {max: 10, message: '请输入10个以内的字符', trigger: 'blur' }
+            {required: true, message: '商户名称不能为空', trigger: 'change'},
+            {max: 10, message: '请输入10个以内的字符', trigger: 'blur'}
           ],
           credit_limit: [
-            { validator: validCreditLimit, trigger: 'change' }
+            {validator: validCreditLimit, trigger: 'change'}
           ],
         }
       }
@@ -89,9 +90,9 @@
     methods: {
 
       //修改商户信息
-      async merchantEdit(){
+      async merchantEdit() {
         let that = this;
-        let { id, title, is_post_pay, credit_limit } = that.detail;
+        let {id, title, is_post_pay, credit_limit} = that.detail;
         credit_limit = is_post_pay ? DataHandle.handlePrice(credit_limit) : 0;
 
         that.$refs['ruleForm'].validate(async (valid) => {
@@ -99,11 +100,11 @@
             that.isSending = true;
             let res = await Http.post(Config.api.merchantEdit, {id, title, is_post_pay, credit_limit});
             that.isSending = false;
-            if(res.code === 0){
+            if (res.code === 0) {
               that.$refs['ruleForm'].resetFields();
               this.editMerchantSuccess();
               Message.success(`商户信息修改成功！`, '提示');
-            }else{
+            } else {
               // this.editMerchantCancel();
               Message.warning(res.message);
             }

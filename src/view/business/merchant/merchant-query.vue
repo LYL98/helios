@@ -9,7 +9,7 @@
       <el-col :span="7">
         <my-query-item label="县域">
           <my-select-city
-            :disabled="editQuery.province_code ? false : true"
+            :disabled="!editQuery.province_code"
             size="small"
             showAll
             clearable
@@ -93,7 +93,7 @@
   import queryMixin from '@/share/mixin/query.mixin';
 
   export default {
-    name: "QueryMerchantStore",
+    name: "MerchantQuery",
     components: {
       'el-row': Row,
       'el-col': Col,

@@ -142,16 +142,6 @@
         @cancel="handleCancelEdit"
       />
     </add-edit-layout>
-    <el-dialog
-      title="意向客户详情"
-      :visible.sync="detail.visible"
-      width="800px"
-    >
-      <intended-detail
-        v-if="detail.visible"
-        :item="detail.item"
-      />
-    </el-dialog>
   </sub-menu>
 </template>
 
@@ -179,7 +169,6 @@
   import tableMixin from '@/share/mixin/table.mixin';
 
   import MerchantEdit from './merchant-edit';
-  import IntendedDetail from './intended-detail';
 
   export default {
     name: 'intended',
@@ -204,7 +193,6 @@
       'query-search-input': QuerySearchInput,
       'query-tabs': queryTabs,
       'merchant-edit': MerchantEdit,
-      'intended-detail': IntendedDetail,
     },
     data() {
       return {
@@ -218,10 +206,6 @@
           type: 'add',
           item: null
         },
-        detail: {
-          visible: false,
-          item: {}
-        }
       }
     },
     created() {

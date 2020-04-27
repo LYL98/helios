@@ -117,15 +117,6 @@
       append-to-body
       :before-close="editStoreCancel"
     >
-<!--      <store-add-edit-->
-<!--        :type="dialog.type"-->
-<!--        :merchant_id="query.merchant_id"-->
-<!--        :store_id="store_id"-->
-<!--        :editStoreSuccess="editStoreSuccess"-->
-<!--        :editStoreCancel="editStoreCancel"-->
-<!--      >-->
-<!--      </store-add-edit>-->
-
       <merchant-edit
         module="store"
         :type="dialog.type"
@@ -144,7 +135,6 @@
   import { Table, TableColumn, MessageBox, Message, Button, Tag, Dialog, Pagination, Form, FormItem, Input, Select} from 'element-ui';
   import {TableOperate, OmissionText, SelectProvince} from '@/common';
   import {Http, Config, Constant, DataHandle, Method} from '@/util';
-  import StoreAddEdit from './StoreAddEdit';
   import MerchantEdit from './merchant-edit';
   import tableMixin from '@/share/mixin/table.mixin';
 
@@ -163,7 +153,6 @@
       'el-input': Input,
       'el-select': Select,
       'my-select-province': SelectProvince,
-      'store-add-edit': StoreAddEdit,
       'merchant-edit': MerchantEdit,
       'my-table-operate': TableOperate,
       'my-omission-text': OmissionText
