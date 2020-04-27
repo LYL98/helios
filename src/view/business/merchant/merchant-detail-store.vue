@@ -108,28 +108,26 @@
       </el-table>
     </div>
 
-    <!-- 分页标签 -->
-    <div class="table-bottom" v-if="dataItem.num > 0">
-      <div class="table-pagination">
-        <el-pagination background layout="total, prev, pager, next"
-                       @current-change="changePage"
-                       :total="dataItem.num" :page-size="query.page_size" :current-page="query.page"/>
-      </div>
-    </div>
-
-    <!--<div v-else class="load-none">暂无数据</div>-->
-
-    <el-dialog title="编辑门店" :close-on-click-modal="false" width="640px" :visible.sync="editDialogVisible" v-if="editDialogVisible" append-to-body>
-      <store-add-edit
-        :isEditStore="isEditStore"
+    <el-dialog
+      title="编辑门店"
+      :close-on-click-modal="false"
+      width="1000px"
+      :visible.sync="dialog.visible"
+      v-if="dialog.visible"
+      append-to-body
+      :before-close="editStoreCancel"
+    >
+      <merchant-edit
+        module="store"
+        :type="dialog.type"
         :merchant_id="query.merchant_id"
-        :store_id="store_id"
-        :editStoreSuccess="editStoreSuccess"
-        :editStoreCancel="editStoreCancel"
+        :item="dialog.item"
+        @submit="editStoreSuccess"
+        @cancel="editStoreCancel"
       >
-      </store-add-edit>
+      </merchant-edit>
     </el-dialog>
-    
+
   </div>
 </template>
 
@@ -137,7 +135,7 @@
   import { Table, TableColumn, MessageBox, Message, Button, Tag, Dialog, Pagination, Form, FormItem, Input, Select} from 'element-ui';
   import {TableOperate, OmissionText, SelectProvince} from '@/common';
   import {Http, Config, Constant, DataHandle, Method} from '@/util';
-  import StoreAddEdit from './StoreAddEdit';
+  import MerchantEdit from './merchant-edit';
   import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
@@ -155,7 +153,7 @@
       'el-input': Input,
       'el-select': Select,
       'my-select-province': SelectProvince,
-      'store-add-edit': StoreAddEdit,
+      'merchant-edit': MerchantEdit,
       'my-table-operate': TableOperate,
       'my-omission-text': OmissionText
     },
@@ -181,10 +179,19 @@
           page_size: Constant.PAGE_SIZE,
         },
         dataItem: [],
+
         store_id: '',
         isEditStore: false,
         editDialogVisible: false,
-        currentRow: {}
+
+        currentRow: {},
+
+        dialog: {
+          visible: false,
+          type: 'add',
+          item: {},
+        }
+
       }
     },
     watch: {
@@ -205,10 +212,9 @@
         //this.$data.addData.sales_man = '';
       },
       //翻页
-      changePage(type) {
-        let {query} = this;
-        type === 'next' ? query.page++ : query.page--;
-        this.$data.query = query;
+      changePage(page) {
+        console.log('page', page);
+        this.$data.query.page = page;
         this.storeList();
       },
       //门店列表
@@ -254,27 +260,44 @@
       },
       // 开始新增门店
       addStore() {
-        this.isEditStore = false;
-        this.editDialogVisible = true;
+        this.$data.dialog = {
+          visible: true,
+          type: 'add',
+          item: rd,
+        };
       },
       // 开始编辑门店
-      editStore(item) {
-        this.isEditStore = true;
-        this.store_id = item.id;
-        this.editDialogVisible = true;
-        // 要修改哪个门店？设置需要修改的门店 id
+      async editStore(item) {
+        let res = await Http.get(Config.api.storeDetail, {id: item.id});
+        if (res.code === 0) {
+          let rd = res.data;
+          if (!rd.geo || Object.keys(rd.geo).length < 5) {
+            rd.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
+          }
+          rd.csm_id = rd.csm_id || '';
+          this.$data.dialog = {
+            visible: true,
+            type: 'modify',
+            item: rd,
+          };
+        } else {
+          Message.warning(res.message);
+        }
+
       },
       // 编辑门店完成
       editStoreSuccess() {
-        this.store_id = '';
-        this.editDialogVisible = false;
+        this.editStoreCancel();
         this.refresh();
         this.storeQuery();
       },
       // 退出编辑门店
       editStoreCancel() {
-        this.store_id = '';
-        this.editDialogVisible = false;
+        this.$data.dialog = {
+          visible: false,
+          type: 'add',
+          item: {},
+        };
       },
 
       //确认删除门店
@@ -364,16 +387,7 @@
           Message.warning(res.message);
         }
       },
-      /**
-       * 翻页 的 按钮事件
-       * 1、设置组件中 query.page的值
-       * 2、调用merchantList 重新加载商户列表信息
-       */
-      changePage(page) {
-        window.scrollTo(0, 0);
-        this.$data.query.page = page;
-        this.storeList();
-      },
+
     }
   };
 </script>

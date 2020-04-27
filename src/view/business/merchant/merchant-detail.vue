@@ -102,90 +102,97 @@
 
     <el-tabs v-model="activeTab" class="edit-card" @tab-click="handleTabClick">
       <el-tab-pane label="门店管理" v-if="auth.isAdmin || auth.MerchantStoreEdit || auth.MerchantStoreList" name="store">
-        <merchant-store :merchant_id="merchant_id" :storeQuery="storeQuery" :updateCount="updateCount"></merchant-store>
+        <merchant-detail-store :merchant_id="merchant_id" :storeQuery="storeQuery" :updateCount="updateCount" />
       </el-tab-pane>
       <el-tab-pane label="用户管理" :lazy="true" v-if="auth.isAdmin || auth.MerchantMemberList" name="member">
-        <merchant-member :merchant_id="merchant_id" :updateCount="updateCount"></merchant-member>
+        <merchant-detail-member :merchant_id="merchant_id" :updateCount="updateCount" />
       </el-tab-pane>
     </el-tabs>
-    
+
     <el-dialog title="修改等级、标签" :visible.sync="isShowTag" width="680px" append-to-body :close-on-click-modal="false">
-      <merchant-tags-edit
+      <merchant-detail-tags-edit
+        v-if="isShowTag"
         :merchantDetail="merchantDetail"
         :affirmTag="affirmTag"
         :cancelTag="cancelTag"
-      >
-      </merchant-tags-edit>
+      />
     </el-dialog>
 
-    <el-dialog 
-      title="修改商户信息" 
-      :visible.sync="editMerchantDialogVisible" 
-      v-if="editMerchantDialogVisible" 
-      width="640px" 
-      append-to-body 
+    <el-dialog
+      title="修改商户信息"
+      :visible.sync="editMerchantDialogVisible"
+      width="640px"
+      append-to-body
       :close-on-click-modal="false"
     >
-      <merchant-edit
+      <merchant-detail-info-edit
+        v-if="editMerchantDialogVisible"
         :merchantDetail="merchantDetail"
         :editMerchantSuccess="editMerchantSuccess"
         :editMerchantCancel="editMerchantCancel"
-      >
-      </merchant-edit>
+      />
     </el-dialog>
 
-    <el-dialog title="充值 / 扣款" :visible.sync="isShowBalanceEdit" v-if="isShowBalanceEdit" width="640px" append-to-body>
-      <merchant-balance-edit
-        :merchant_title="merchantDetail.title"
-        :cancelBalanceEdit="cancelBalanceEdit"
-        :confirmBalanceEdit="confirmBalanceEdit"
-      >
-      </merchant-balance-edit>
-    </el-dialog>
-
-    <el-dialog title="新增门店" :close-on-click-modal="false" :visible.sync="editStoreDialogVisible" v-if="editStoreDialogVisible" width="640px" append-to-body>
-      <store-add-edit
-        :isEditStore="isEditStore"
+    <el-dialog
+      title="新增门店"
+      :close-on-click-modal="false"
+      :visible.sync="editStoreDialogVisible"
+      v-if="editStoreDialogVisible"
+      width="1000px"
+      append-to-body
+    >
+      <merchant-edit
+        v-if="editStoreDialogVisible"
+        module="store"
+        type="add"
         :merchant_id="merchant_id"
-        :store_id="store_id"
-        :editStoreSuccess="editStoreSuccess"
-        :editStoreCancel="editStoreCancel"
-      >
-      </store-add-edit>
+        @submit="editStoreSuccess"
+        @cancel="editStoreCancel"
+      />
     </el-dialog>
 
-    <el-dialog title="新增用户" :close-on-click-modal="false" :visible.sync="addMemberDialogVisible" v-if="addMemberDialogVisible" width="640px" append-to-body>
-      <member-add-edit
+    <el-dialog
+      title="新增用户"
+      :close-on-click-modal="false"
+      :visible.sync="addMemberDialogVisible"
+      v-if="addMemberDialogVisible"
+      width="640px"
+      append-to-body
+    >
+      <merchant-detail-member-edit
+        v-if="addMemberDialogVisible"
         :merchant_id="merchant_id"
         :editMemberSuccess="editMemberSuccess"
         :editMemberCancel="editMemberCancel"
-      >
-      </member-add-edit>
+      />
     </el-dialog>
 
   </div>
 </template>
 
 <script>
-  import detailMixin from '@/share/mixin/detail.mixin';
   import {TableOperate, ToPrice, OmissionText} from '@/common';
-  import TagsEdit from '@/view/business/merchant/TagsEdit';
-  import MerchantStore from '@/view/business/merchant/Store';
-  import MerchantMember from '@/view/business/merchant/Member';
-  import MerchantEdit from '@/view/business/merchant/Edit';
-  import MemberAddEdit from '@/view/business/merchant/MemberAddEdit';
-  import StoreAddEdit from '@/view/business/merchant/StoreAddEdit';
+  import detailMixin from '@/share/mixin/detail.mixin';
   import { Http, Config, DataHandle } from '@/util';
+
+  import MerchantDetailInfoEdit from './merchant-detail-info-edit';
+  import MerchantDetailTagsEdit from './merchant-detail-tags-edit';
+
+  import MerchantEdit from './merchant-edit';
+  import MerchantDetailStore from './merchant-detail-store';
+
+  import MerchantDetailMember from './merchant-detail-member';
+  import MerchantDetailMemberEdit from './merchant-detail-member-edit';
 
   export default {
     mixins: [detailMixin],
     components: {
-      'merchant-tags-edit': TagsEdit,
+      'merchant-detail-info-edit': MerchantDetailInfoEdit,
+      'merchant-detail-tags-edit': MerchantDetailTagsEdit,
       'merchant-edit': MerchantEdit,
-      'merchant-store': MerchantStore,
-      'merchant-member': MerchantMember,
-      'member-add-edit': MemberAddEdit,
-      'store-add-edit': StoreAddEdit,
+      'merchant-detail-store': MerchantDetailStore,
+      'merchant-detail-member': MerchantDetailMember,
+      'merchant-detail-member-edit': MerchantDetailMemberEdit,
       'my-table-operate': TableOperate,
       'my-to-price': ToPrice,
       'my-omission-text': OmissionText
@@ -209,7 +216,6 @@
         outer_tags: []
       },
       isShowTag: false,
-      isShowBalanceEdit: false,
       storeEditDailog: {
         isShow: false,
         store_id: ''
@@ -281,21 +287,6 @@
         let that = this;
         this.isShowTag = false;
         that.getMerchantDetail();
-      },
-
-      /**
-       * 充值/扣款
-       */
-      balanceEdit() {
-        this.isShowBalanceEdit = true;
-      },
-      cancelBalanceEdit() {
-        this.isShowBalanceEdit = false;
-      },
-      confirmBalanceEdit(data) {
-        this.isShowBalanceEdit = false;
-        this.updateCount++;
-        this.merchantDetail.balance = data.balance; // 设置当前商户的余额显示
       },
 
       /**

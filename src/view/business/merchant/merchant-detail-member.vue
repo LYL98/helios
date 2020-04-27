@@ -81,7 +81,7 @@
     </el-dialog>
 
     <el-dialog title="新增用户" :close-on-click-modal="false" width="640px" :visible.sync="addMemberDialogVisible" append-to-body>
-      <member-add-edit :editMemberCancel="editMemberCancel" :editMemberSuccess="editMemberSuccess"></member-add-edit>
+      <merchant-detail-member-edit :editMemberCancel="editMemberCancel" :editMemberSuccess="editMemberSuccess" />
     </el-dialog>
 
   </div>
@@ -91,9 +91,10 @@
   import {Table, TableColumn, Tag, Form, FormItem, Message, MessageBox, Button, Dialog, Input, Pagination} from 'element-ui';
   import {TableOperate} from '@/common';
   import {Config, Constant, DataHandle, Method, Http} from '@/util';
-  import md5 from 'md5';
-  import MemberAddEdit from './MemberAddEdit';
   import tableMixin from '@/share/mixin/table.mixin';
+
+  import md5 from 'md5';
+  import MerchantDetailMemberEdit from './merchant-detail-member-edit';
 
   export default {
     name: "MerchantAdd",
@@ -107,7 +108,7 @@
       'el-dialog': Dialog,
       'el-input': Input,
       'el-pagination': Pagination,
-      'member-add-edit': MemberAddEdit,
+      'merchant-detail-member-edit': MerchantDetailMemberEdit,
       'my-table-operate': TableOperate
     },
     mixins: [tableMixin],

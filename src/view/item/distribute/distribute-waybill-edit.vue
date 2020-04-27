@@ -311,7 +311,7 @@
           if (formData.plan_detail_ids.length <= 0) {
             Message.warning({ message: '请指定调拨商品！', offset: 100 });
             return;
-          };
+          }
 
           const API = this.$props.type === 'add'
             ? Config.api.itemSupDistributeWaybillAdd
