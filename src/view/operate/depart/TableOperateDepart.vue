@@ -106,7 +106,7 @@
         <!-- :marker="location.marker" -->
       <el-location
         v-if="location.visible"
-        :center="location.item.storehouse.geo"
+        :center="location.item.deliver.last_geo.geo"
         :marker="location.marker"
         style="height:100%;padding:0 15px"
       />
@@ -206,6 +206,7 @@
         let res = await Http.get(Config.api.supDeliveryDeliverLocus, {delivery_date: delivery_date,line_id:line_id});
         if (res.code === 0) {
           console.log(res.data);
+
           this.$data.location = {
             visible: true,
             item: res.data,
