@@ -212,9 +212,21 @@ const Constant = {
     update_amount: '手动改价'
   },
   //售后单状态
-  AFTER_SALE_STATUS: {
-    waiting_dispose: '待处理',
-    close: '已完成',
+  AFTER_SALE_STATUS: (type) => {
+    let data = [
+      { key: 'init', value: '待分配' },
+      { key: 'waiting_dispose', value: '待处理' },
+      { key: 'handling', value: '处理中' },
+      { key: 'close', value: '已完成' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //售后状态颜色
+  AFTER_SALE_STATUS_TYPE: {
+    init: 'primary',
+    waiting_dispose: 'warning',
+    handling: 'warning',
+    close: 'regular'
   },
   // 售后单处理类型
   AFTER_SALE_OPT_TYPE: (type) => {
@@ -230,6 +242,16 @@ const Constant = {
       { key: 'big_order_bonus', value: '大单优惠' },
       { key: 'betray_low_price', value: '违反低价承诺' },
       { key: 'other', value: '其他' }
+    ];
+    return handleKeyValue(type, data);
+  },
+
+  //售后处理进度
+  AFTER_SALE_HANDLE_LOADING: (type) => {
+    let data = [
+      { key: 'supplement_material', value: '素材补充' },
+      { key: 'verify_offline', value: '线下核实' },
+      { key: 'restoring', value: '退货中' }
     ];
     return handleKeyValue(type, data);
   },

@@ -42,6 +42,7 @@ const Config = (() => {
       afterSaleDetail: apiM + '/aftersale/detail', //获取售后单详情
       afterSaleUpdate: apiM + '/aftersale/update', //售后处理
       aftersaleAppend: apiM + '/aftersale/append', //售后单回复
+      aftersaleAllocateToOperator: apiM + '/aftersale/allocate_to_operator', //批量将售后单分配给客服人员以待处理
 
       //导出相关接口
       supplierExport: apiM + '/supplier/export', //供应商导出 supplier/export.  supplier/export_check.
@@ -400,6 +401,7 @@ const Config = (() => {
       baseMerchantGradeList: apiM + '/common/grade/list', //商户级别列表（组件共用）
       baseMerchantInnerTagsList: apiM + '/common/merchant_inner_tags/list', //商户内标签列表（组件共用）
       baseMerchantOuterTagsList: apiM + '/common/merchant_outer_tags/list', //商户外标签列表（组件共用）
+      baseCommonOperatorList: apiM + '/common/operator/list', //运营人员列表（组件共用）
       baseCommonBuyerList: apiM + '/common/buyer/list', //采购员列表（组件共用）
       baseDistributorList: apiM + '/common/distributor/list', //配送人员列表（组件共用）
       baseItemList: apiM + '/common/item/list', //商品列表（组件共用）
