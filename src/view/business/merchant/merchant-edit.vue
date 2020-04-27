@@ -1,6 +1,6 @@
 <template>
-  <el-form label-position="right" size="small" label-width="120px" :model="formData" ref="ruleForm">
-    <el-form-area label="商户信息" v-if="module === 'merchant'">
+  <el-form label-position="right" size="small" label-width="120px" :model="formData" ref="ruleForm" :disabled="type === 'detail'">
+    <el-form-area label="商户信息" v-if="module === 'merchant' || (module === 'intention' && type === 'audit')">
       <el-row :gutter="32">
         <el-col :span="10">
           <el-form-item
@@ -17,13 +17,13 @@
         <el-col :span="14">
           <el-form-item label="协议商户" class="required">
             <ul class="d-flex">
-              <li class="w-200">
+              <li class="w-170">
                 <el-radio v-model="formData.is_post_pay" border size="mini" :label="true">是</el-radio>
                 <el-radio v-model="formData.is_post_pay" border size="mini" :label="false">否</el-radio>
               </li>
               <li v-if="formData.is_post_pay === true">
-                <el-form-item label="授信额度" prop="credit_limit" :rules="[{validator: validCreditLimit, trigger: 'change'}]">
-                  <el-input v-model="formData.credit_limit" placeholder="请输入授信额度" class="w-200">
+                <el-form-item style="margin-bottom: 0" label="授信额度" prop="credit_limit" :rules="[{validator: validCreditLimit, trigger: 'change'}]">
+                  <el-input v-model="formData.credit_limit" placeholder="请输入授信额度" class="w-170">
                     <template slot="append">元</template>
                   </el-input>
                 </el-form-item>
@@ -51,7 +51,7 @@
       <el-row :gutter="32">
         <el-col :span="10">
           <el-form-item
-            v-if="module === 'merchant'"
+            v-if="module !== 'store'"
             label="门店名称"
             prop="store_title"
             :rules="[
@@ -62,7 +62,7 @@
             <el-input v-model="formData.store_title" :maxlength="10" placeholder="请输入门店名称"></el-input>
           </el-form-item>
           <el-form-item
-            v-if="module !== 'merchant'"
+            v-if="module === 'store'"
             label="门店名称"
             prop="title"
             :rules="[
@@ -106,7 +106,7 @@
 
       <el-row :gutter="32">
         <el-col :span="10">
-          <el-form-item label="客户经理" prop="store_csm_id" v-if="module === 'merchant'">
+          <el-form-item label="客户经理" prop="store_csm_id" v-if="module !== 'store'">
             <el-select
               :disabled="!formData.city_id"
               v-model="formData.store_csm_id"
@@ -117,7 +117,7 @@
               <el-option v-for="d in salesmanList" :key="d.id" :label="d.title" :value="d.id"/>
             </el-select>
           </el-form-item>
-          <el-form-item label="客户经理" prop="csm_id" v-if="module !== 'merchant'">
+          <el-form-item label="客户经理" prop="csm_id" v-if="module === 'store'">
             <el-select
               :disabled="!formData.city_id"
               v-model="formData.csm_id"
@@ -136,7 +136,7 @@
             prop="geo"
             :rules="[{ validator: validLocation, trigger: 'change' }]"
           >
-            <el-location-picker size="small" v-model="formData.geo" @change="changeGeo" style="width: 100%"/>
+            <el-location-picker :disabled="type === 'detail'" size="small" v-model="formData.geo" @change="changeGeo" style="width: 100%"/>
           </el-form-item>
         </el-col>
       </el-row>
@@ -171,7 +171,7 @@
         </el-col>
         <el-col :span="10">
           <el-form-item
-            v-if="module === 'merchant'"
+            v-if="module !== 'store'"
             label="联系方式"
             prop="store_phone"
             :rules="[
@@ -182,7 +182,7 @@
             <el-input v-model="formData.store_phone" :maxlength="11" placeholder="请输入联系方式" />
           </el-form-item>
           <el-form-item
-            v-if="module !== 'merchant'"
+            v-if="module === 'store'"
             label="联系方式"
             prop="phone"
             :rules="[
@@ -201,21 +201,21 @@
     <el-form-area label="其他信息">
       <el-row :gutter="32">
         <el-col :span="10">
-          <el-form-item label="门店类型">
-            <el-select style="width: 100%" value="">
-              <el-option label="精品水果店" value="精品水果店"/>
-              <el-option label="商超系统" value="商超系统"/>
-              <el-option label="便利系统" value="便利系统"/>
-              <el-option label="大众水果店" value="大众水果店"/>
-              <el-option label="微商" value="微商"/>
-              <el-option label="员工内部账号" value="员工内部账号"/>
-              <el-option label="其他" value="其他"/>
+          <el-form-item label="门店类型" prop="store_type">
+            <el-select style="width: 100%" v-model="formData.store_type">
+              <el-option label="精品水果店" value="boutique_fruit_shop"/>
+              <el-option label="商超系统" value="business_super_system"/>
+              <el-option label="便利系统" value="convenience_system"/>
+              <el-option label="大众水果店" value="volkswagen_fruit_shop"/>
+              <el-option label="微商" value="microboss"/>
+              <el-option label="员工内部账号" value="inner_test_account"/>
+              <el-option label="其他" value="other"/>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="经营面积">
-            <el-select style="width: 100%" value="">
+          <el-form-item label="经营面积" prop="business_ares">
+            <el-select style="width: 100%" v-model="formData.business_ares">
               <el-option label="<50平米" value="<50平米"/>
               <el-option label="50-100平米" value="50-100平米"/>
               <el-option label=">100平米" value=">100平米"/>
@@ -226,14 +226,14 @@
 
       <el-row :gutter="32">
         <el-col :span="10">
-          <el-form-item label="KP性别">
-            <el-radio value="男" border size="mini" label="男">男</el-radio>
-            <el-radio value="男" border size="mini" label="女">女</el-radio>
+          <el-form-item label="KP性别" prop="kp_gender">
+            <el-radio v-model="formData.kp_gender" border size="mini" :label="0">男</el-radio>
+            <el-radio v-model="formData.kp_gender" border size="mini" :label="1">女</el-radio>
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="KP年龄">
-            <el-select style="width: 100%" value="">
+          <el-form-item label="KP年龄" prop="kp_age">
+            <el-select style="width: 100%" v-model="formData.kp_age">
               <el-option label="70前" value="70前"/>
               <el-option label="70后" value="70后"/>
               <el-option label="80后" value="80后"/>
@@ -245,20 +245,20 @@
 
       <el-row :gutter="32">
         <el-col :span="10">
-          <el-form-item label="其他采购渠道">
-            <el-select style="width: 100%" value="">
-              <el-option label="互联网服务商" value="互联网服务商"/>
-              <el-option label="县级批发商" value="县级批发商"/>
-              <el-option label="市级批发市场" value="市级批发市场"/>
-              <el-option label="省级批发市场" value="省级批发市场"/>
-              <el-option label="连锁店总部统一配送" value="连锁店总部统一配送"/>
-              <el-option label="其他" value="其他"/>
+          <el-form-item label="其他采购渠道" prop="pur_channels">
+            <el-select style="width: 100%" v-model="formData.pur_channels">
+              <el-option label="互联网服务商" value="inter_service_provider"/>
+              <el-option label="县级批发商" value="county_wholesalers"/>
+              <el-option label="市级批发市场" value="city_wholesalers"/>
+              <el-option label="省级批发市场" value="province_wholesalers"/>
+              <el-option label="连锁店总部统一配送" value="host_distribution"/>
+              <el-option label="其他" value="other"/>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="经营年限">
-            <el-select style="width: 100%" value="">
+          <el-form-item label="经营年限" prop="business_years">
+            <el-select style="width: 100%" v-model="formData.business_years">
               <el-option label="<1年" value="<1年"/>
               <el-option label="1-2年" value="1-2年"/>
               <el-option label="3-5年" value="3-5年"/>
@@ -270,19 +270,31 @@
 
       <el-row :gutter="32">
         <el-col :span="10">
-          <el-form-item label="一体化收银机">
-            <el-radio value="男" border size="mini" label="是">是</el-radio>
-            <el-radio value="男" border size="mini" label="否">否</el-radio>
+          <el-form-item label="一体化收银机" prop="is_pos">
+            <el-radio v-model="formData.is_pos" border size="mini" :label="true">是</el-radio>
+            <el-radio v-model="formData.is_pos" border size="mini" :label="false">否</el-radio>
           </el-form-item>
         </el-col>
         <el-col :span="10">
-          <el-form-item label="线上销售工具">
-            <el-select style="width: 100%" value="">
+          <el-form-item label="线上销售工具" prop="online_sale_tool">
+            <el-select style="width: 100%" v-model="formData.online_sale_tool">
               <el-option label="无" value="无"/>
-              <el-option label="朋友圈+微信群" value="朋友圈+微信群"/>
-              <el-option label="外卖平台" value="外卖平台"/>
-              <el-option label="社区团购" value="社区团购"/>
-              <el-option label="其他电商平台" value="其他电商平台"/>
+              <el-option label="朋友圈+微信群" value="wechat_group_friends"/>
+              <el-option label="外卖平台" value="takeaway"/>
+              <el-option label="社区团购" value="group_pur"/>
+              <el-option label="其他电商平台" value="other"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="32">
+        <el-col :span="10">
+          <el-form-item label="营业状态" prop="business_status">
+            <el-select style="width: 100%" v-model="formData.business_status">
+              <el-option label="营业中" value="business"/>
+              <el-option label="已关闭" value="closed"/>
+              <el-option label="因客户恶意情况需要冻结" value="need_to_freeze"/>
             </el-select>
           </el-form-item>
         </el-col>
@@ -290,26 +302,26 @@
 
       <el-row :gutter="32">
         <el-col :span="22">
-          <el-form-item label="经营品类">
-            <el-checkbox-group :value="['零食坚果', '奶制品', '米面粮油']" size="mini">
-              <el-checkbox label="零食坚果" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="酒水饮料" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="奶制品" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="蔬菜" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="鲜肉" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="冻品" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="米面粮油" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="干货调料" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="鸡蛋" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="小百货" border style="margin-left: 0; width: 100px"/>
-              <el-checkbox label="水果" border style="margin-left: 0; width: 100px"/>
+          <el-form-item label="经营品类" prop="business_category">
+            <el-checkbox-group v-model="formData.business_category" size="mini">
+              <el-checkbox label="零食坚果" border class="tag"/>
+              <el-checkbox label="酒水饮料" border class="tag"/>
+              <el-checkbox label="奶制品" border class="tag"/>
+              <el-checkbox label="蔬菜" border class="tag"/>
+              <el-checkbox label="鲜肉" border class="tag"/>
+              <el-checkbox label="冻品" border class="tag"/>
+              <el-checkbox label="米面粮油" border class="tag"/>
+              <el-checkbox label="干货调料" border class="tag"/>
+              <el-checkbox label="鸡蛋" border class="tag"/>
+              <el-checkbox label="小百货" border class="tag"/>
+              <el-checkbox label="水果" border class="tag"/>
             </el-checkbox-group>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form-area>
 
-    <el-form-area label="用户信息" v-if="module === 'merchant'">
+    <el-form-area label="用户信息" v-if="module === 'merchant' || (module === 'intention' && type === 'audit')">
       <el-row :gutter="32">
         <el-col :span="10">
           <el-form-item label="上传头像">
@@ -348,7 +360,7 @@
 
     </el-form-area>
 
-    <el-form-item class="mt-20">
+    <el-form-item class="mt-20" v-if="type !== 'detail'">
       <el-button @click="onCancel">取消</el-button>
       <el-button type="primary" :loading="loading" @click="onSubmit">确认</el-button>
     </el-form-item>
@@ -384,7 +396,7 @@
       'el-select-city': SelectCity,
     },
     props: {
-      module: { type: String, default: 'merchant' }, // 调用该表单的模块： merchant | intended | store
+      module: { type: String, default: 'merchant' }, // 调用该表单的模块： merchant | intention | store
       type: {type: String, default: ''}, // 调用类型： add ｜ modify ｜ detail
       item: {type: Object, default: () => ({})},
       merchant_id: { type: Number, default: 0 }, // 当门店编辑时，需要指定merchant_id
@@ -415,6 +427,17 @@
           shore_phone: '', // 门店联系电话 在编辑 商户的表单中
           phone: '', // 门店联系电话 在编辑 门店的表单中
 
+          store_type: '', // 门店类型
+          business_ares: '', // 经营面积
+          kp_gender: 0, // KP性别
+          kp_age: '', // KP年龄
+          pur_channels: '', // 采购渠道
+          business_years: '', // 经营年限
+          is_pos: true, // 是否一体化POS机
+          online_sale_tool: '', // 线上销售工具
+          business_status: '', // 经营状态
+          business_category: [], // 经营品类
+
           avatar: [],
           login_phone: '',
           realname: ''
@@ -428,8 +451,8 @@
       this.Verification = Verification;
 
       // 如果是编辑 或 详情模式下
-      if (['modify', 'detail'].includes(this.$props.type)) {
-        this.$data.formData = {...this.$props.item};
+      if (['modify', 'detail', 'audit'].includes(this.$props.type)) {
+        this.$data.formData = Object.assign(this.$data.formData, this.$props.item);
       }
 
       if (this.$props.module === 'store') {
@@ -515,7 +538,8 @@
             case 'store':
               this.storeEdit();
               break;
-            case 'intended':
+            case 'intention':
+              this.intentionEdit();
               break;
           }
 
@@ -526,6 +550,30 @@
         this.$emit('cancel');
       },
 
+      async intentionEdit() {
+
+        let formData = {...this.$data.formData};
+        formData.store_csm_id = Number(formData.store_csm_id);
+        formData.avatar = (Array.isArray(formData.avatar) && formData.avatar.length > 0) ? formData.avatar[0] : '';
+
+        const API = this.$props.type === 'add'
+          ? 'intentionMerchantAdd' : this.$props.type === 'modify'
+          ? 'intentionMerchantEdit' : 'intentionMerchantAudit';
+
+        this.$data.loading = true;
+        let res = await Http.post(Config.api[API], formData);
+        this.$data.loading = false;
+
+        if (res.code === 0) {
+          this.$message({message: `${this.$props.type === 'add' ? '商户创建' : '商户激活'}成功`, type: 'success'});
+          this.$emit('submit');
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+
+      },
+
+
       async merchantEdit() {
 
         let formData = {...this.$data.formData};
@@ -534,7 +582,7 @@
         formData.avatar = Array.isArray(formData.avatar) && formData.avatar.length >= 1 ? formData.avatar[0] : '';
 
         this.$data.loading = true;
-        let res = await Http.post(Config.api[this.$props.type === 'add' ? 'merchantAdd' : 'merchantEdit'], data);
+        let res = await Http.post(Config.api[this.$props.type === 'add' ? 'merchantAdd' : 'merchantEdit'], formData);
         this.$data.loading = false;
 
         if (res.code === 0) {
@@ -611,12 +659,22 @@
 
 <style lang="scss" scoped>
 
+  .tag {
+    margin-left: 0 !important;
+    width: 90px;
+  }
+
   .d-flex {
     display: flex;
   }
 
   .mt-20 {
     margin-top: 20px;
+  }
+
+  .w-170 {
+    width: 170px;
+    min-width: 170px;
   }
 
   .w-200 {

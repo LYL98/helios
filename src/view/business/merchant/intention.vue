@@ -38,8 +38,7 @@
       <div class="table-top">
         <div class="left">
         </div>
-        <div class="right" v-if="$auth.isAdmin || $auth.itemSupDistributePlanAdd">
-          <el-button size="mini" type="primary" plain>导出意向客户</el-button>
+        <div class="right" v-if="$auth.isAdmin || $auth.IntentionMerchantAdd">
           <el-button @click="handleAddItem" size="mini" type="primary">新增</el-button>
         </div>
       </div>
@@ -61,14 +60,14 @@
           ></el-table-column>
           <el-table-column label="门店名称" min-width="150" prop="title">
             <template slot-scope="scope">
-              <span v-if="auth.isAdmin || auth.MerchantAuditDetail">
+              <span v-if="auth.isAdmin || auth.IntentionMerchantDetail">
                 <a :class="`title ${isEllipsis(scope.row)}`" href="javascript:void(0);"
-                   @click.prevent="showDetail(scope.row)">
-                  {{ scope.row.title }}
+                   @click.prevent="handleDetailItem(scope.row)">
+                  {{ scope.row.store_title }}
                 </a>
               </span>
               <span v-else :class="isEllipsis(scope.row)">
-                {{ scope.row.title }}
+                {{ scope.row.store_title }}
               </span>
             </template>
           </el-table-column>
@@ -94,17 +93,17 @@
                 :list="[
                   {
                     title: '修改',
-                    isDisplay: (auth.isAdmin || auth.MerchantStoreFreeze),
+                    isDisplay: (auth.isAdmin || auth.IntentionMerchantEdit),
                     command: () => handleModifyItem(scope.row)
                   },
                   {
                     title: '激活',
-                    isDisplay: (auth.isAdmin || auth.MerchantStoreUnFreeze),
-                    command: () => {}
+                    isDisplay: (auth.isAdmin || auth.IntentionMerchantAudit),
+                    command: () => handleAuditItem(scope.row)
                   },
                   {
                     title: '删除',
-                    isDisplay: auth.isAdmin || auth.MerchantStoreDelete,
+                    isDisplay: auth.isAdmin || auth.IntentionMerchantDelete,
                     command: () => handleDeleteItem(scope.row)
                   }
                 ]"
@@ -135,6 +134,7 @@
       :before-close="handleCancelEdit"
     >
       <merchant-edit
+        :module="dialog.module"
         v-if="dialog.visible"
         :type="dialog.type"
         :item="dialog.item"
@@ -202,14 +202,15 @@
           items: []
         },
         dialog: {
+          module: 'intention',
           visible: false,
           type: 'add',
-          item: null
+          item: {}
         },
       }
     },
     created() {
-      documentTitle('商户 - 意向客户');
+      documentTitle('业务 - 意向客户');
       this.DataHandle = DataHandle;
       // 判断是否具有促销活动的权限
       this.initQuery();
@@ -237,11 +238,11 @@
       },
 
       //查询选择区域后
-      changeProvince(data) {
-        console.log('data: ', data);
+      changeProvince(data, type) {
         this.$data.query.city_id = '';
-        this.$data.query.province_code = data.code;
-        console.log('change province');
+        if(type === 'init'){
+          this.$data.query.province_code = data.code;
+        }
         this.changeQuery();
       },
 
@@ -258,6 +259,7 @@
 
       handleAddItem() {
         this.$data.dialog = {
+          module: 'intention',
           visible: true,
           type: 'add',
           item: null,
@@ -265,10 +267,12 @@
       },
 
       async handleDetailItem(item) {
-        let res = await Http.get(Config.api.itemSupDistributePlanDetail, {id: item.id});
+        let res = await Http.get(Config.api.intentionMerchantDetail, {id: item.id});
         if (res.code === 0) {
-          this.$data.detail = {
+          this.$data.dialog = {
+            module: 'intention',
             visible: true,
+            type: 'detail',
             item: res.data,
           };
         } else {
@@ -278,15 +282,30 @@
 
       async handleModifyItem(item) {
 
-        return;
-
-        let res = await Http.get(Config.api.itemSupDistributePlanDetail, {id: item.id});
+        let res = await Http.get(Config.api.intentionMerchantDetail, {id: item.id});
         if (res.code === 0) {
           this.$data.dialog = {
+            module: 'intention',
             visible: true,
             type: 'modify',
             item: res.data,
           };
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+
+      async handleAuditItem(item) {
+        let res = await Http.get(Config.api.intentionMerchantDetail, {id: item.id});
+        if (res.code === 0) {
+          this.$data.dialog = {
+            module: 'intention',
+            visible: true,
+            type: 'audit',
+            item: {...res.data, intention_merchant_id: item.id },
+          };
+          console.log('item: ', item);
+          console.log('this.$data.dialog.item: ', this.$data.dialog.item);
         } else {
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
@@ -299,28 +318,27 @@
 
       handleCancelEdit() {
         this.$data.dialog = {
+          module: 'intention',
           visible: false,
           type: 'add',
           item: null,
         };
       },
 
-      handleDeleteItem(id) {
+      handleDeleteItem(item) {
 
         this.$messageBox.confirm('确认删除意向客户?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          // let res = await Http.post(Config.api.itemSupDistributePlanClose, {
-          //   ids: [id]
-          // });
-          // if (res.code === 0) {
-          //   this.$message({title: '提示', message: '调拨计划关闭成功', type: 'success'});
-          //   this.intendedQuery();
-          // } else {
-          //   this.$message({title: '提示', message: res.message, type: 'error'});
-          // }
+          let res = await Http.post(Config.api.intentionMerchantDelete, {id: item.id });
+          if (res.code === 0) {
+            this.$message({title: '提示', message: '意向客户删除成功', type: 'success'});
+            this.intendedQuery();
+          } else {
+            this.$message({title: '提示', message: res.message, type: 'error'});
+          }
         }).catch(() => {
           // console.log('取消');
         });
@@ -328,7 +346,7 @@
 
       async intendedQuery() {
         let query = {...this.$data.query};
-        let res = await Http.get(Config.api.storeQuery, query);
+        let res = await Http.get(Config.api.intentionMerchantQuery, query);
         if (res.code !== 0) return;
         this.$data.list = res.data || {items: []};
       }
