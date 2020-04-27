@@ -106,7 +106,7 @@
         <!-- :marker="location.marker" -->
       <el-location
         v-if="location.visible"
-        :center="location.item.deliver.last_geo"
+        :center="location.item.deliver.last_geo.geo"
         :marker="location.marker"
         style="height:100%;padding:0 15px"
       />
