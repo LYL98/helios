@@ -150,6 +150,11 @@
               "title": "门店筐",
               "upName": "MerchantMain",
               "name": "MerchantRefundQuery"
+            },
+            {
+              "title": "客户提报",
+              "upName": "MerchantMain",
+              "name": "MerchantCustomerQuery"
             }
           ]
         },

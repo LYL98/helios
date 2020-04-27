@@ -117,6 +117,11 @@ const router = new Router({
       component: () => import('@/view/business/merchantRefund/Refund')
     },
     {
+      path: '/business/merchant/customer/query',
+      name: 'MerchantCustomerQuery',
+      component: () => import('@/view/business/merchantCustomer/Customer')
+    },
+    {
       path: '/business/merchant/grade',
       name: 'MerchantGrade',
       component: () => import('@/view/business/merchantGrade/Main')
