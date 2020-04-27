@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <detail-layout title="售后单详情" :isShow="isShow" direction="ttb" :before-close="cancel" type="drawer">
+  <detail-layout title="售后单详情" :isShow="isShow" direction="ttb" :before-close="cancel" type="drawer">
+    <div style="padding: 10px 20px;">
       <div class="after-title">
         <div class="title">
           <span>申请时间：{{detail.created}}</span>
@@ -28,6 +28,20 @@
           <li>处理描述：<span style="word-break: break-word;">{{ detail.opt_detail || '无' }}</span></li>
         </ul>
         <p style="color: #999;" v-if="detail.status === 'waiting_dispose'">售后单正在处理中...</p>
+        <!--二次处理结果-->
+        <template>
+          <h6 class="title" style="margin-top: 16px;">二次处理结果</h6>
+          <ul>
+            <li>
+              <span class="item">
+                退款金额：<span style="color: #ff3724;">&yen;{{ returnPrice(detail.handle_second_refund_amount) }}</span>
+              </span>
+              <span class="item">
+                处理描述：<span style="word-break: break-word;">{{ detail.handle_second_opt_detail || '无' }}</span>
+              </span>
+            </li>
+          </ul>
+        </template>
       </div>
       <div class="item-detail">
         <h6 class="title">售后商品</h6>
@@ -171,8 +185,8 @@
         <el-button @click.native="cancel">关闭</el-button>
         <el-button type="primary" @click.native="orderShowHideAfterSaleClose()" v-if="detail.status === 'waiting_dispose' && (auth.isAdmin || auth.OrderAfterSaleUpdate)">处理完成</el-button>
       </div>
-    </detail-layout>
-  </div>
+    </div>
+  </detail-layout>
 </template>
 
 <script>
@@ -205,7 +219,8 @@ export default {
       detail: {},
       orderStatus: Constant.ORDER_STATUS,
       priceChange: Constant.PRICE_CHANGE,
-      afterSaleStatus: Constant.AFTER_SALE_STATUS,
+      afterSaleStatus: Constant.AFTER_SALE_STATUS(),
+      afterSaleStatusType: Constant.AFTER_SALE_STATUS_TYPE,
       afterSaleResult: Constant.AFTER_SALE_RESULT,
       afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE(),
       defaultAvatar: Constant.IMGS.defaultAvatar,
