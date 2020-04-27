@@ -20,10 +20,19 @@
    code == MerchantAdd       修改项：url
    code == MerchantStoreAdd  修改项：url
    code == MerchantStoreEdit 修改项：url
+   code == MerchantRefundQuery 修改项：rank
 
    code == OperateReceiving => OperateReceivingMain
 
 新增：
+
+   IntentionMerchantQuery
+   IntentionMerchantAdd
+   IntentionMerchantEdit
+   IntentionMerchantAudit
+   IntentionMerchantDetail
+   IntentionMerchantDelete
+
    ItemQueryByItemTag
    ItemTagAdd
    ItemTagRankEdit

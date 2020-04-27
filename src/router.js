@@ -107,9 +107,9 @@ const router = new Router({
       component: () => import('@/view/business/merchant/merchant')
     },
     {
-      path: '/business/merchant/intended/query',
-      name: 'MerchantIntendedQuery',
-      component: () => import('@/view/business/merchant/intended')
+      path: '/business/merchant/intention/query',
+      name: 'IntentionMerchantQuery',
+      component: () => import('@/view/business/merchant/intention')
     },
     {
       path: '/business/merchant/refund/query',

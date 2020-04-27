@@ -488,6 +488,14 @@ const Config = (() => {
       basicdataWarehouseTrayEdit: apiM + '/sup_ware_tray/edit', //托盘新增
       basicdataWarehouseTrayDelete: apiM + '/sup_ware_tray/delete', //删除
 
+      // 意向客户
+      intentionMerchantQuery: apiM + '/intention_merchant/query', // 查询
+      intentionMerchantAdd: apiM + '/intention_merchant/add', // 新增
+      intentionMerchantEdit: apiM + '/intention_merchant/edit', // 修改
+      intentionMerchantDetail: apiM + '/intention_merchant/detail', // 详情
+      intentionMerchantAudit: apiM + '/intention_merchant/audit', // 激活 id: intention_merchant_id
+      intentionMerchantDelete: apiM + '/intention_merchant/delete', // 删除
+
       // 商户管理
       merchantList: apiM + '/merchant/list', //商户列表
       merchantAdd: apiM + '/merchant/add', //新增商户

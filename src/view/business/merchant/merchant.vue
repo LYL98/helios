@@ -114,7 +114,7 @@
           <el-table-column label="门店名称" min-width="150" prop="title">
             <template slot-scope="scope">
           <span v-if="auth.isAdmin || auth.MerchantAuditDetail">
-            <a :class="`title ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="showDetail(scope.row)">
+            <a :class="`title ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="showMerchantDetail(scope.row)">
               {{ scope.row.title }}
             </a>
           </span>
@@ -126,14 +126,9 @@
           <el-table-column label="商户名称" min-width="120">
 
             <template slot-scope="scope">
-          <span v-if="auth.isAdmin || auth.MerchantAuditDetail">
-            <a :class="`title ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="showMerchantDetail(scope.row)">
-              {{ scope.row.merchant.title }}
-            </a>
-          </span>
-              <span v-else :class="isEllipsis(scope.row)">
-            {{ scope.row.merchant.title }}
-          </span>
+              <span :class="isEllipsis(scope.row)">
+                {{ scope.row.merchant && scope.row.merchant.title || '-' }}
+              </span>
             </template>
           </el-table-column>
 
@@ -278,7 +273,6 @@
       this.fixDateOptions = Constant.FIX_DATE_RANGE;
       documentTitle('业务 - 门店');
       this.initQuery();
-      this.storeQuery();
     },
     data() {
       return {
@@ -312,7 +306,7 @@
           is_freeze: '',
           is_post_pay: '',
           gb_included: '',
-          province_code: this.$province.code,
+          province_code: '',
           city_id: '',
           condition: '',
           pickerValue: null,
@@ -336,10 +330,12 @@
         this.storeQuery();
       },
 
-
       //查询选择区域后
-      selectProvince(data, type){
+      selectProvince(data, type) {
         this.$data.query.city_id = '';
+        if(type === 'init'){
+          this.$data.query.province_code = data.code;
+        }
         this.changeQuery();
       },
       //搜索日期
@@ -351,8 +347,7 @@
           this.query.begin_date = '';
           this.query.end_date = '';
         }
-        this.query.page = 1;
-        this.storeQuery();
+        this.changeQuery();
       },
 
       changeQuery() {

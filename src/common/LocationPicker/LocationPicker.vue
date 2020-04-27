@@ -402,6 +402,7 @@
     &.disabled {
       background-color: #F5F7FA;
       border-color: #E4E7ED;
+      color: #B8BCC5;
       cursor: not-allowed;
     }
 

@@ -144,7 +144,7 @@
             {
               "title": "意向客户",
               "upName": "MerchantMain",
-              "name": "MerchantIntendedQuery"
+              "name": "IntentionMerchantQuery"
             },
             {
               "title": "门店筐",
