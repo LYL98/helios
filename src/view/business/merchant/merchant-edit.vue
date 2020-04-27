@@ -501,8 +501,6 @@
         this.$data.formData.store_csm_id = '';
         this.$data.formData.csm_id = '';
 
-        console.log('this.$data.city: ', this.$data.formData.city_id);
-
         // 当city 选择后，清除掉 province 的校验信息
         if (arguments[0] !== "") {
           this.$refs['ruleForm'].clearValidate(['province']);
@@ -556,16 +554,23 @@
         formData.store_csm_id = Number(formData.store_csm_id);
         formData.avatar = (Array.isArray(formData.avatar) && formData.avatar.length > 0) ? formData.avatar[0] : '';
 
-        const API = this.$props.type === 'add'
-          ? 'intentionMerchantAdd' : this.$props.type === 'modify'
-          ? 'intentionMerchantEdit' : 'intentionMerchantAudit';
+        let API = 'intentionMerchantAdd';
+        let MSG = '意向客户创建成功';
+        if (this.$props.type === 'modify') {
+          API = 'intentionMerchantEdit';
+          MSG = '意向客户编辑成功'
+        }
+        if (this.$props.type === 'audit') {
+          API = 'intentionMerchantAudit';
+          MSG = '意向客户激活成功'
+        }
 
         this.$data.loading = true;
         let res = await Http.post(Config.api[API], formData);
         this.$data.loading = false;
 
         if (res.code === 0) {
-          this.$message({message: `${this.$props.type === 'add' ? '商户创建' : '商户激活'}成功`, type: 'success'});
+          this.$message({message: MSG, type: 'success'});
           this.$emit('submit');
         } else {
           this.$message({title: '提示', message: res.message, type: 'error'});
@@ -582,11 +587,11 @@
         formData.avatar = Array.isArray(formData.avatar) && formData.avatar.length >= 1 ? formData.avatar[0] : '';
 
         this.$data.loading = true;
-        let res = await Http.post(Config.api[this.$props.type === 'add' ? 'merchantAdd' : 'merchantEdit'], formData);
+        let res = await Http.post(Config.api.merchantAdd, formData);
         this.$data.loading = false;
 
         if (res.code === 0) {
-          this.$message({message: `${this.$props.type === 'add' ? '商户创建' : '商户激活'}成功`, type: 'success'});
+          this.$message({message: '商户创建成功', type: 'success'});
           this.$emit('submit');
         } else {
           this.$message({title: '提示', message: res.message, type: 'error'});

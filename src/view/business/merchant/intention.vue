@@ -262,7 +262,7 @@
           module: 'intention',
           visible: true,
           type: 'add',
-          item: null,
+          item: {},
         }
       },
 
@@ -304,8 +304,6 @@
             type: 'audit',
             item: {...res.data, intention_merchant_id: item.id },
           };
-          console.log('item: ', item);
-          console.log('this.$data.dialog.item: ', this.$data.dialog.item);
         } else {
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
