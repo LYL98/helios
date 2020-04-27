@@ -258,14 +258,6 @@
           Message.warning(res.message);
         }
       },
-      // 开始新增门店
-      addStore() {
-        this.$data.dialog = {
-          visible: true,
-          type: 'add',
-          item: rd,
-        };
-      },
       // 开始编辑门店
       async editStore(item) {
         let res = await Http.get(Config.api.storeDetail, {id: item.id});
