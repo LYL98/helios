@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <detail-layout title="售后单详情" :isShow="isShow" direction="ttb" :before-close="cancel" type="drawer">
+  <detail-layout title="售后单详情" :isShow="isShow" direction="ttb" :before-close="cancel" type="drawer">
+    <div style="padding: 10px 20px;">
       <div class="after-title">
         <div class="title">
           <span>申请时间：{{detail.created}}</span>
@@ -20,14 +20,35 @@
         <ul v-if="detail.status === 'close'">
           <li>
             <span class="item">处理类型：{{ afterSaleOptType[detail.opt_type] }}</span>
+            <span class="item">
+              是否退货：{{detail.if_restore ? '是' : '否'}}
+            </span>
             <span class="item" v-if="detail.amount_refund">
               退款金额：<span style="color: #ff3724;">&yen;{{ returnPrice(detail.amount_refund) }}</span>
             </span>
-            <span class="item">处理件数：{{ detail.num }} 件</span>
           </li>
-          <li>处理描述：<span style="word-break: break-word;">{{ detail.opt_detail || '无' }}</span></li>
+          <li>
+            <span class="item">处理件数：{{ detail.num }} 件</span>
+            <span class="item">
+              处理描述：<span style="word-break: break-word;">{{ detail.opt_detail || '无' }}</span>
+            </span>
+          </li>
         </ul>
         <p style="color: #999;" v-if="detail.status === 'waiting_dispose'">售后单正在处理中...</p>
+        <!--二次处理结果-->
+        <template v-if="detail.handle_second_time">
+          <h6 class="title" style="margin-top: 16px;">二次处理结果</h6>
+          <ul>
+            <li>
+              <span class="item">
+                退款金额：<span style="color: #ff3724;">&yen;{{ returnPrice(detail.handle_second_refund_amount) }}</span>
+              </span>
+              <span class="item">
+                处理描述：<span style="word-break: break-word;">{{ detail.handle_second_remark || '无' }}</span>
+              </span>
+            </li>
+          </ul>
+        </template>
       </div>
       <div class="item-detail">
         <h6 class="title">售后商品</h6>
@@ -122,7 +143,11 @@
                 </span>
               </div>
               <div style="margin-left: 50px; padding: 10px; background: #FAFAFB; border-radius: 2px">
-                <p class="content"><font v-if="detail.reason && index === 0">【{{detail.reason}}】</font>{{item.content}}</p>
+                <p class="content">
+                  <font v-if="detail.reason && index === 0">【{{detail.reason}}】</font>
+                  <font v-if="index === 0">【{{returnWeight(detail.weight_at_created)}}斤】</font>
+                  {{item.content}}
+                </p>
                 <p class="images">
                   <my-image-preview v-if="item.images.length > 0">
                     <img v-for="img in item.images" :key="img" onerror="this.style.display='none'" :src="tencentPath + img + '_min200x200'"/>
@@ -168,11 +193,12 @@
         </div>
       </div>
       <div style="margin-left: 20px;">
-        <el-button @click.native="cancel">关闭</el-button>
-        <el-button type="primary" @click.native="orderShowHideAfterSaleClose()" v-if="detail.status === 'waiting_dispose' && (auth.isAdmin || auth.OrderAfterSaleUpdate)">处理完成</el-button>
+        <el-button @click.native="cancel">取 消</el-button>
+        <el-button type="primary" plain @click.native="handleShowHindeLoading()" v-if="judgeOrs(detail.status, ['waiting_dispose', 'handling']) && (auth.isAdmin || auth.OrderAfterSaleHandleLoading)">处理进度</el-button>
+        <el-button type="primary" @click.native="orderShowHideAfterSaleClose()" v-if="judgeOrs(detail.status, ['waiting_dispose', 'handling']) && (auth.isAdmin || auth.OrderAfterSaleUpdate)">处理完成</el-button>
       </div>
-    </detail-layout>
-  </div>
+    </div>
+  </detail-layout>
 </template>
 
 <script>
@@ -205,7 +231,8 @@ export default {
       detail: {},
       orderStatus: Constant.ORDER_STATUS,
       priceChange: Constant.PRICE_CHANGE,
-      afterSaleStatus: Constant.AFTER_SALE_STATUS,
+      afterSaleStatus: Constant.AFTER_SALE_STATUS(),
+      afterSaleStatusType: Constant.AFTER_SALE_STATUS_TYPE,
       afterSaleResult: Constant.AFTER_SALE_RESULT,
       afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE(),
       defaultAvatar: Constant.IMGS.defaultAvatar,
@@ -283,6 +310,11 @@ export default {
     orderShowHideAfterSaleClose(){
       let pc = this.getPageComponents('FormOrderAfterSaleClose');
       pc.orderShowHideAfterSaleClose(this.detail);
+    },
+    //处理理度
+    handleShowHindeLoading(){
+      let pc = this.getPageComponents('HandleLoading');
+      pc.handleShowHindeLoading(this.detail);
     },
     //查看进度
     orderShowHideAfterSaleDetail(aftersale){
