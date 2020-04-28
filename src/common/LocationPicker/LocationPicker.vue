@@ -194,6 +194,9 @@
       // 初始化地图后执行的选点逻辑。
       initLogic() {
 
+        console.log('this.$props.location: ', this.$props.location);
+        
+
         const {province_title, city_title, lng, lat} = this.$props.location;
         // 如果中心点存在，则可以： 初始化地图、初始化中心点、根据中心点geo逆地理编码，再根据编码后的第一个地理位置获取poilist
         if (lng && lat) {
@@ -203,7 +206,13 @@
           this.geoCoder.getAddress(new AMap.LngLat(lng, lat), (status, result) => {
             if (status === 'complete' && result.info === 'OK') {
               const {aois, formattedAddress} = result.regeocode;
-              const keywords = Array.isArray(aois) && aois.length > 0 ? aois[0].name : formattedAddress;
+              let keywords = Array.isArray(aois) && aois.length > 0 ? aois[0].name : formattedAddress;
+              if (keywords.indexOf(city_title) < 0) {
+                keywords = city_title + keywords;
+              }
+              if (keywords.indexOf(province_title) < 0) {
+                keywords = province_title + keywords;
+              }
               this.placeSearch.search(keywords, (status, result) => {
                 if (status === 'complete' && result.info === 'OK') {
                   this.$data.poiList = result.poiList.pois || [];
@@ -275,7 +284,14 @@
           if (status === 'complete' && result.info === 'OK') {
 
             const {aois, formattedAddress} = result.regeocode;
-            const keywords = Array.isArray(aois) && aois.length > 0 ? aois[0].name : formattedAddress;
+            let keywords = Array.isArray(aois) && aois.length > 0 ? aois[0].name : formattedAddress;
+            const {province_title, city_title} = this.$props.location;
+            if (this.$props.level === 'city' && keywords.indexOf(city_title) < 0) {
+              keywords = city_title + keywords;
+            }
+            if (keywords.indexOf(province_title) < 0) {
+              keywords = province_title + keywords;
+            }
             this.placeSearch.search(keywords, (status, result) => {
               if (status === 'complete' && result.info === 'OK') {
                 this.$data.poiList = result.poiList.pois || [];
