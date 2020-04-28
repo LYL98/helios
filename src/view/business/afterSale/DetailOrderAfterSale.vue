@@ -34,7 +34,7 @@
             </span>
           </li>
         </ul>
-        <p style="color: #999;" v-if="detail.status === 'waiting_dispose'">售后单正在处理中...</p>
+        <p style="color: #999;" v-if="judgeOrs(detail.status, ['waiting_dispose', 'handling'])">售后单正在处理中...</p>
         <!--二次处理结果-->
         <template v-if="detail.handle_second_time">
           <h6 class="title" style="margin-top: 16px;">二次处理结果</h6>
@@ -175,7 +175,7 @@
           </div>
         </div>
 
-        <div class="audit-input" v-if="(auth.isAdmin || auth.OrderAfterSaleAppend) && detail.status === 'waiting_dispose' ">
+        <div class="audit-input" v-if="(auth.isAdmin || auth.OrderAfterSaleAppend) && judgeOrs(detail.status, ['waiting_dispose', 'handling'])">
           <el-form label-position="right" :model="editData" :rules="rules" ref="ruleForm">
             <el-form-item label="" prop="content">
               <div style="display: flex; align-items: center;">
@@ -214,14 +214,6 @@ export default {
     'my-image-preview': ImagePreview
   },
   computed: {
-    stepActive() {
-      let {detail} = this;
-      switch(detail.status) {
-        case 'waiting_dispose': return 2;
-        case 'close': return 3;
-        default: return 1;
-      }
-    },
     tableData() {
       return [ this.detail ]
     }
