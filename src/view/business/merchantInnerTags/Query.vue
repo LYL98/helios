@@ -1,5 +1,19 @@
 <template>
-  
+  <div class="container-query">
+    <el-row :gutter="32">
+      <el-col :span="10">
+        <my-query-item label="搜索">
+          <query-search-input
+            size="small"
+            placeholder="标签名称"
+            v-model="query.condition"
+            @search="handleQuery('Table')"
+            @reset="handleClearQuery('Table')"
+          />
+        </my-query-item>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -14,7 +28,7 @@
     },
     data() {
       let initQuery = {
-        condition: '', //手机号、姓名
+        condition: '',
       }
       return {
         initQuery: initQuery,

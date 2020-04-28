@@ -28,7 +28,7 @@
         </template>
       </el-table-column>
       <el-table-column width="100" align="left" label="商户等级">
-        <template slot-scope="scope">
+        <template>
           <my-omission-text
             v-if="merchantDetail.grade_code && merchantDetail.grade.title"
             :content="merchantDetail.grade.title"
@@ -40,8 +40,8 @@
       <el-table-column width="140" align="left" label="内标签">
         <template slot-scope="scope">
           <ul style="display: flex; flex-direction: column; justify-content: center;">
-            <li v-for="tag in scope.row.inner_tags" :key="tag + '-' + scope.row.id">
-              <el-tag disable-transitions size="mini" type="primary">{{ tag }}</el-tag>
+            <li v-for="(tag, i) in scope.row.inner_tags" :key="i">
+              <el-tag disable-transitions size="mini" type="primary" style="white-space: pre-wrap; height: auto;">{{ tag.title }}</el-tag>
             </li>
           </ul>
         </template>
@@ -49,8 +49,8 @@
       <el-table-column width="160" align="left" label="外标签">
         <template slot-scope="scope">
           <ul style="display: flex; flex-direction: column; align-items: flex-start;">
-            <li v-for="tag in scope.row.outer_tags" :key="tag + '-' + scope.row.id">
-              <el-tag disable-transitions size="mini" type="primary">{{ tag }}</el-tag>
+            <li v-for="(tag, i) in scope.row.outer_tags" :key="i">
+              <el-tag disable-transitions size="mini" type="primary" style="white-space: pre-wrap; height: auto;">{{ tag }}</el-tag>
             </li>
           </ul>
         </template>
@@ -68,7 +68,7 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" width="80">
-        <template slot-scope="scope">
+        <template>
           <my-table-operate
             :list="[
               {

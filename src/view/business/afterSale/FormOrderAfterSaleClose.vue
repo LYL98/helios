@@ -19,7 +19,7 @@
           <el-radio v-model="editData.if_refund" :label="false" border size="small">否</el-radio>
         </el-form-item>
         <el-form-item label="退款金额" prop="refund" v-if="editData.if_refund">
-          <input-price v-model="editData.refund" :min="0.01" :max="returnPrice(detail.max_refund_amount)" :unit="`最多可退款金额：${returnPrice(detail.max_refund_amount)} 元`"/>
+          <input-price v-model="editData.refund" :min="0.01" :max="returnPrice(detail.amount_real)" :unit="`最多可退款金额：${returnPrice(detail.amount_real)} 元`"/>
         </el-form-item>
         <el-form-item label="处理描述" prop="opt_detail">
           <el-input v-model.trim="editData.opt_detail" type="textarea" :rows="3" resize="none"></el-input>
@@ -145,6 +145,7 @@ export default {
     //关闭显示
     orderShowHideAfterSaleClose(data){
       if(data){
+        this.$data.editData.refund = data.max_refund_amount;
         this.$data.detail = data;
         this.$data.rules.num[1].max = data.count_real;
         this.$data.rules.num[1].message = `件数不能大于${data.count_real}件`;
