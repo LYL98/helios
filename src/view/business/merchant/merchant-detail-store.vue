@@ -46,10 +46,13 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="创建日期" width="120" prop="created">
+        <el-table-column label="门店标签" width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnDate(scope.row.created)}}</div>
-            <div v-if="scope.row.id === currentRow.id">{{returnTime(scope.row.created)}}</div>
+            <ul style="display: flex; flex-direction: column; justify-content: center;">
+              <li v-for="(tag, i) in scope.row.tags" :key="i">
+                <el-tag disable-transitions size="mini" type="primary" style="white-space: pre-wrap; height: auto;">{{ tag.title }}</el-tag>
+              </li>
+            </ul>
           </template>
         </el-table-column>
         <el-table-column label="审核状态" width="100" prop="is_audited">
@@ -97,6 +100,11 @@
                 command: () => editStore(scope.row)
               },
               {
+                title: '修改标签',
+                isDisplay: auth.isAdmin || auth.MerchantStoreEditTag,
+                command: () => editStoreTag(scope.row)
+              },
+              {
                 title: '删除',
                 isDisplay: auth.isAdmin || auth.MerchantStoreDelete,
                 command: () => deleteStore(scope.row)
@@ -128,6 +136,23 @@
       </merchant-edit>
     </el-dialog>
 
+    <el-dialog
+      title="编辑标签"
+      :close-on-click-modal="false"
+      width="680px"
+      :visible.sync="dialogTag.visible"
+      v-if="dialogTag.visible"
+      append-to-body
+      :before-close="editStoreCancel"
+    >
+      <merchant-edit-tag
+        :item="dialogTag.item"
+        :affirmTag="editStoreSuccess"
+        :cancelTag="editStoreCancel"
+      >
+      </merchant-edit-tag>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -136,6 +161,7 @@
   import {TableOperate, OmissionText, SelectProvince} from '@/common';
   import {Http, Config, Constant, DataHandle, Method} from '@/util';
   import MerchantEdit from './merchant-edit';
+  import MerchantEditTag from './merchant-detail-store-tags-edit';
   import tableMixin from '@/share/mixin/table.mixin';
 
   export default {
@@ -154,6 +180,7 @@
       'el-select': Select,
       'my-select-province': SelectProvince,
       'merchant-edit': MerchantEdit,
+      'merchant-edit-tag': MerchantEditTag,
       'my-table-operate': TableOperate,
       'my-omission-text': OmissionText
     },
@@ -190,7 +217,12 @@
           visible: false,
           type: 'add',
           item: {},
-        }
+        },
+
+        dialogTag: {
+          visible: false,
+          item: {},
+        },
 
       }
     },
@@ -289,6 +321,18 @@
           visible: false,
           type: 'add',
           item: {},
+        };
+        this.$data.dialogTag = {
+          visible: false,
+          item: {},
+        };
+      },
+
+      //编辑标签
+      editStoreTag(data){
+        this.$data.dialogTag = {
+          visible: true,
+          item: this.copyJson(data),
         };
       },
 
