@@ -41,7 +41,7 @@
         <template slot-scope="scope">
           <ul style="display: flex; flex-direction: column; justify-content: center;">
             <li v-for="(tag, i) in scope.row.inner_tags" :key="i">
-              <el-tag disable-transitions size="mini" type="primary">{{ tag.title }}</el-tag>
+              <el-tag disable-transitions size="mini" type="primary" style="white-space: pre-wrap; height: auto;">{{ tag.title }}</el-tag>
             </li>
           </ul>
         </template>
@@ -50,7 +50,7 @@
         <template slot-scope="scope">
           <ul style="display: flex; flex-direction: column; align-items: flex-start;">
             <li v-for="(tag, i) in scope.row.outer_tags" :key="i">
-              <el-tag disable-transitions size="mini" type="primary">{{ tag }}</el-tag>
+              <el-tag disable-transitions size="mini" type="primary" style="white-space: pre-wrap; height: auto;">{{ tag }}</el-tag>
             </li>
           </ul>
         </template>
