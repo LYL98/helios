@@ -88,6 +88,7 @@
                 v-model="formData.province_code"
                 @change="changProvince"
                 isAuth
+                :autoselect="false"
                 @sync="syncProvince"
               />
               <el-select-city
@@ -380,6 +381,11 @@
 
     </el-form-area>
 
+    <el-row v-if="type === 'detail'">
+      <el-col :span="10"><el-form-item label="创建人: ">{{ formData.creator.realname }}</el-form-item></el-col>
+      <el-col :span="10"><el-form-item label="创建时间: ">{{ formData.created }}</el-form-item></el-col>
+    </el-row>
+
     <el-form-item class="mt-20" v-if="type !== 'detail'">
       <el-button @click="onCancel">取消</el-button>
       <el-button type="primary" :loading="loading" @click="onSubmit">确认</el-button>
@@ -444,7 +450,7 @@
           geo: {lng: '', lat: '', province_title: '', city_title: '', poi: ''},
           address: '',
           linkman: '',
-          shore_phone: '', // 门店联系电话 在编辑 商户的表单中
+          store_phone: '', // 门店联系电话 在编辑 商户的表单中
           phone: '', // 门店联系电话 在编辑 门店的表单中
 
           store_type: '', // 门店类型
@@ -471,12 +477,23 @@
     created() {
       this.Verification = Verification;
 
+      let { module, type, item } = this.$props;
+
       // 如果是编辑 或 详情模式下
-      if (['modify', 'detail', 'audit'].includes(this.$props.type)) {
-        this.$data.formData = Object.assign(this.$data.formData, this.$props.item);
+      if (['modify', 'detail', 'audit'].includes(type)) {
+
+        // 兼容历史数据，没有客户经理 和 地理位置的情况
+        if (!item.geo || Object.keys(item.geo).length < 5) {
+          item.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
+        }
+        item.csm_id = !!item.csm_id ? item.csm_id : '';
+        item.store_csm_id = !!item.store_csm_id ? item.store_csm_id : '';
+
+        this.$data.formData = Object.assign(this.$data.formData, item);
+        // this.initSalesmanList();
       }
 
-      if (this.$props.module === 'store') {
+      if (module === 'store') {
         this.$data.formData.merchant_id = this.$props.merchant_id;
       }
     },
@@ -579,7 +596,7 @@
         let MSG = '意向客户创建成功';
         if (this.$props.type === 'modify') {
           API = 'intentionMerchantEdit';
-          MSG = '意向客户编辑成功'
+          MSG = '意向客户修改成功'
         }
         if (this.$props.type === 'audit') {
           API = 'intentionMerchantAudit';
