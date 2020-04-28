@@ -21,6 +21,14 @@ export default {
   mounted() {
     this.initChart();
   },
+  watch:{
+    echartData:{
+      deep:true,
+      handler: function (a, b) {
+        this.initChart();
+      }
+    }
+  },
   methods: {
     initChart() {
       let that = this;
@@ -47,7 +55,6 @@ export default {
         series: [
           
           {
-            
             name: "提报次数",
             type: "bar",
             data: yData
