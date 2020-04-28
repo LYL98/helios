@@ -199,12 +199,12 @@
       }
       //超过七小时
       &.grade7{
-        background: #ff5252;
+        background: #FF2828;
         color: #fff;
       }
       //超过两小时
       &.grade2{
-        background: #aa94c4;
+        background: #8D59F7;
         color: #fff;
       }
     }
