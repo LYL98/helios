@@ -3,7 +3,12 @@
     <el-dialog title="处理完成" :visible="isShow" :before-close="cancel" width="580px">
       <el-form label-position="right" label-width="100px" style="width: 500px;" :model="editData" :rules="rules" ref="ruleForm">
         <el-form-item label="退款金额" prop="handle_second_refund_amount">
-          <input-price v-model="editData.handle_second_refund_amount" :min="0.01" :max="returnPrice(detail.amount_real)" :unit="`最多可退款金额：${returnPrice(detail.amount_real)} 元`"/>
+          <input-price
+            v-model="editData.handle_second_refund_amount"
+            :min="0.01"
+            :max="returnPrice(detail.amount_real - detail.amount_refund)"
+            :unit="`最多可退款金额：${returnPrice(detail.amount_real - detail.amount_refund)} 元`"
+          />
         </el-form-item>
         <el-form-item label="处理描述" prop="handle_second_remark">
           <el-input v-model.trim="editData.handle_second_remark" type="textarea" :rows="3" resize="none"></el-input>
