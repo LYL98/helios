@@ -278,7 +278,7 @@
         <el-col :span="10">
           <el-form-item label="线上销售工具" prop="online_sale_tool">
             <el-select style="width: 100%" v-model="formData.online_sale_tool">
-              <el-option label="无" value="无"/>
+              <el-option label="未做线上销售" value=""/>
               <el-option label="朋友圈+微信群" value="wechat_group_friends"/>
               <el-option label="外卖平台" value="takeaway"/>
               <el-option label="社区团购" value="group_pur"/>
@@ -289,6 +289,26 @@
       </el-row>
 
       <el-row :gutter="32">
+        <el-col :span="10">
+          <el-form-item label="月营业额" prop="monthly_turnover">
+            <el-select style="width: 100%" v-model="formData.monthly_turnover">
+              <el-option label="<3万" value="<3万"/>
+              <el-option label="3-6万" value="3-6万"/>
+              <el-option label="6-9万" value="6-9万"/>
+              <el-option label="9-12万" value="9-12万"/>
+              <el-option label="12-15万" value="12-15万"/>
+              <el-option label="15-18万" value="15-18万"/>
+              <el-option label="18-21万" value="18-21万"/>
+              <el-option label="21-24万" value="21-24万"/>
+              <el-option label="24-27万" value="24-27万"/>
+              <el-option label="27-30万" value="27-30万"/>
+              <el-option label="30-40万" value="30-40万"/>
+              <el-option label="40-50万" value="40-50万"/>
+              <el-option label="50-60万" value="50-60万"/>
+              <el-option label=">60万" value=">60万"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
         <el-col :span="10">
           <el-form-item label="营业状态" prop="business_status">
             <el-select style="width: 100%" v-model="formData.business_status">
@@ -435,6 +455,7 @@
           business_years: '', // 经营年限
           is_pos: true, // 是否一体化POS机
           online_sale_tool: '', // 线上销售工具
+          monthly_turnover: '', // 月营业额
           business_status: '', // 经营状态
           business_category: [], // 经营品类
 
