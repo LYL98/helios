@@ -25,11 +25,14 @@
           :current-row-key="clickedRow[rowIdentifier]"
         >
           <el-table-column type="selection" :selectable="returnSelectStatus" width="42" disabled="false" v-if="auth.isAdmin || auth.OrderAfterSaleAllocate"></el-table-column>
-          <el-table-column type="index" width="88" label="序号">
+          <el-table-column type="index" width="88" label="序号" :index="indexMethod"/>
+          <el-table-column label="等级" min-width="80">
             <template slot-scope="scope">
-              <span>{{indexMethod(scope.$index)}}</span>
-              <span class="grade7" v-if="scope.row.flag_7"></span>
-              <span class="grade2" v-if="scope.row.flag_2"></span>
+              <div class="td-item add-dot2">
+                <span class="grade7" v-if="scope.row.flag_7"></span>
+                <span class="grade2" v-if="scope.row.flag_2"></span>
+                <span v-else>-</span>
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="售后单号" prop="code" min-width="120">
@@ -71,13 +74,13 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="处理类型" min-width="140">
+          <!--<el-table-column label="处理类型" min-width="140">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.opt_type === 'init' || !scope.row.opt_type ? '-' : afterSaleOptType[scope.row.opt_type] }}
               </div>
             </template>
-          </el-table-column>
+          </el-table-column>-->
           <el-table-column label="下单日期" min-width="100" prop="order_date">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
@@ -85,7 +88,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="120">
+          <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <div style="position: relative;">
                 <my-table-operate
@@ -349,16 +352,18 @@ export default {
     //超过七小时 超过两小时
     .grade7, .grade2{
       display: inline-block;
-      width: 6px;
-      height: 12px;
+      width: 14px;
+      height: 16px;
       margin-left: 5px;
       position: relative;
       top: 1px;
+      //超过七小时
       &.grade7{
-        background: #ff5252;
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAYAAAAmlE46AAAAAXNSR0IArs4c6QAAATtJREFUKBVjZICC/7q6ggx//kQx/P9vxcDIKAcUfgxkH2NgYVnNeOXKS7g6bW1Hhn//ehn/a2hsByq8CZRIBirkgSlAov8C2SeB+DlQnQFQjTKQ/sMCJH4COflICtGZzEABK7Dg//9wOSYgawqcRwKDEaQW6NzrQEqDaH1Ap4JsBIGpEIp4EqJRWHghUMtn4rUxMIA1Mh49+hkYSItI0Pgf7EeQhv86OprAeLwG1fwdaNBSIPsRMMQVgbQ6kK8OZAsD6YcMTEzFUHUQ6r+m5h4gfvRfWxuUADDAf0tLTgxBkABQUwAohP//R7gEq0KgICxUIfI6OpuBTuFk0NJyxqUBpzjQ1nIg3oBTAVQC1UaQIBfXXCDpAtQsD1WDlcLQyHj27Btg6C0BqvbGqgOf4P+GBqb/oaGgxI0TAADERlgLIYfinAAAAABJRU5ErkJggg==");
       }
+      //超过两小时
       &.grade2{
-        background: #aa94c4;
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAYAAAAmlE46AAAAAXNSR0IArs4c6QAAAVJJREFUKBWVkrFKA0EURe+bhMRIQMRSiIhFLK3TiXY22gSygk0KCwUVf8Af2KhgtFFBUYRYWthYC36BWBoLEewskpUk17djpljdyLrNY+6cM8u8eYL+d+hxNJDAI1kiUADxIiL3Zjh7vXksb47zvdYsKL7UKu1bCJ4UrBLMO8BVgXQ1f9BDXknMAJwCpJNWKdC/bDjwZ1UppVlJmciWEeAgkiRcqAf4XvsR5HRCRzHpmBBWu55c+iatODKUPYPIx39kK1ZPrXSeVBQB0w42Kan3OlwL1/oELQouDaSpvZwke0WFi9rYMd18JmXbebZqk+78Squ5v8JCZKO/qG0xF5djtxIshh3WN7PdjoX6ob2jA8aXMjc6Gbm95WDOZYNqRCyXpQuYI73X+iDB5RExDPPMnKg4f+BxwkFx9Ze4eiXvOocXnwwW4oQ/M+7QNBp2uAdyX+R1cejQ/GkLAAAAAElFTkSuQmCC");
       }
     }
 </style>
