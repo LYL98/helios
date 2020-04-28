@@ -1,6 +1,5 @@
 <template>
   <sub-menu>
-    <!-- <query-merchant-customer v-model="query" @change="changeQuery" :reset="resetQuery"/> -->
    <div class="container-query">
     <el-row :gutter="32">
       <el-col :span="7">
@@ -37,10 +36,12 @@
       <el-col :span="7">
         <my-query-item label="展示分类">
           <my-select-display-class
-            v-model="query.is_audited"
+            :disabled="query.province_code ? false : true"
+            v-model="query.display_class_id"
             @change="changeQuery"
             size="small"
             :clearable="true"
+            :provinceCode="query.province_code"
           />
         </my-query-item>
       </el-col>
@@ -68,9 +69,9 @@
       <div class="table-top">
         <div class="left">
         </div>
-        <div class="right" v-if="auth.isAdmin || auth.MerchantExport || auth.MerchantAdd">
-          <el-button v-if="auth.isAdmin || auth.MerchantAdd" @click="showDetailEchart" size="mini" type="primary">客户提报统计</el-button>
-          <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出客户提报</el-button>
+        <div class="right" v-if="auth.isAdmin || auth.AdvicedItemStatistical">
+          <el-button v-if="auth.isAdmin || auth.AdvicedItemQuery" @click="showDetailEchart" size="mini" type="primary">客户提报统计</el-button>
+          <!-- <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出客户提报</el-button> -->
         </div>
       </div>
       <!-- 头部end -->
@@ -88,15 +89,15 @@
       <!-- 表格宽度： 860 / 830（带全选） -->
       <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size <= 999950 ? 68 : 88" label="序号" :index="indexMethod">
       </el-table-column>
-      <el-table-column label="门店名称" min-width="150" prop="title">
+      <el-table-column label="门店名称" min-width="100" prop="store.title">
         <template slot-scope="scope">
-        <span v-if="auth.isAdmin || auth.MerchantAuditDetail">
+        <span v-if="auth.isAdmin || auth.AdvicedItemQuery">
           <a :class="`title ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="showDetail(scope.row)">
-            {{ scope.row.title }}
+            {{ scope.row.store.title }}
           </a>
         </span>
           <span v-else :class="isEllipsis(scope.row)">
-          {{ scope.row.title }}
+          {{ scope.row.store.title }}
         </span>
         </template>
       </el-table-column>
@@ -108,22 +109,20 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="展示分类" min-width="80">
+      <el-table-column label="展示分类" min-width="80" prop="display_class.title" >
         <template slot-scope="scope">
-          <el-tag disable-transitions :type="scope.row.merchant && scope.row.merchant.is_post_pay ? 'regular' : 'info'" size="small"
-          >{{scope.row.merchant && scope.row.merchant.is_post_pay ? '是' : '否'}}</el-tag>
+          {{scope.row.display_class.title}}
         </template>
       </el-table-column>
       
-      <el-table-column label="商户名称" min-width="120">
+      <el-table-column label="商品名称" min-width="120" prop="title" >
         <template slot-scope="scope">
-          <div>{{ scope.row.merchant.title}}</div>
+          <div>{{ scope.row.title}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="提报时间" min-width="80">
+      <el-table-column label="提报时间" min-width="80" prop="created">
         <template slot-scope="scope">
-          <el-tag disable-transitions :type="scope.row.is_audited ? 'regular' : 'info'" size="small"
-          >{{scope.row.is_audited ? '已审核' : '未审核'}}</el-tag>
+          {{scope.row.created}}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100">
@@ -134,7 +133,7 @@
             :list="[
               {
                 title: '详情',
-                isDisplay: (auth.isAdmin || auth.MerchantStoreApprove) && !scope.row.is_audited,
+                isDisplay: auth.isAdmin || auth.AdvicedItemQuery,
                 command: () => showDetail(scope.row)
               }
             ]"
@@ -169,7 +168,9 @@
       :before-close="handleCancel"
     >
         <detail-customer
+          v-if="detailDrawer.isShow"
           style="padding: 0 20px;"
+          :formData='detailDrawer.item'
         />
     </detail-layout>
     <!-- 提报统计 -->
@@ -180,6 +181,8 @@
       direction="ttb"
       :before-close="closeDetailEchart"
     >
+
+    <detail-echart  :echartData="detailEchart.item"/>
     </detail-layout>
   </sub-menu>
 </template>
@@ -188,6 +191,8 @@
   import {Row, Col, DatePicker, MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
   import QueryMerchantCustomer  from './QueryMerchantCustomer';
   import DetailCustomer from './DetailCustomer';
+  import DetailEchart from './DetailEchart';
+
 //   import AddEditMerchantList from './AddEditMerchantList';
 //   import DetailMerchantList from './DetailMerchantList';
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
@@ -224,7 +229,8 @@
       'my-select-display-class':SelectDisplayClass,
       'my-table-operate': TableOperate,
       'detail-layout': detailLayout,
-      'detail-customer':DetailCustomer
+      'detail-customer':DetailCustomer,
+      'detail-echart':DetailEchart
     },
     mixins: [mainMixin,queryMixin,tableMixin],
     created() {
@@ -232,11 +238,10 @@
       documentTitle('业务 - 客户提报');
       let p = that.province;
     //   if (p.code) {
-        console.log(231);
-        that.$data.query.province_code = p.code;
-        console.log(this.$province,this.$auth);
-        
-        that.storeQuery();
+        console.log(p);
+        that.$data.query.province_code = '',
+        // console.log(this.$auth);
+        that.customerQuery();
     //   }
     },
     data() {
@@ -248,13 +253,12 @@
         provinceList: [],//区域列表
         fixDateOptions: Constant.FIX_DATE_RANGE,
         query: {
-          is_audited: '',
-          is_freeze: '',
-          is_post_pay: '',
-          gb_included: '',
           province_code: '',
           city_id: '',
           condition: '',
+          display_class_id: '',
+          begin_date: '',
+          end_date:'',
           page: 1,
           page_size: Constant.PAGE_SIZE,
         },
@@ -275,7 +279,6 @@
     methods: {
       indexMethod(index) {
         let {query} = this;
-
         return (query.page - 1) * query.page_size + index + 1;
       },
       //刷新
@@ -284,14 +287,14 @@
         query.page = 1;
         query.is_audited = '';
         this.$data.query = query;
-        this.storeQuery();
+        this.customerQuery();
       },
 
       changePageSize(pageSize) {
         window.scrollTo(0, 0);
         this.query.page_size = pageSize;
         this.query.page = 1;
-        this.storeQuery();
+        this.customerQuery();
       },
 
       /**
@@ -302,7 +305,7 @@
       changePage(page) {
         window.scrollTo(0, 0);
         this.$data.query.page = page;
-        this.storeQuery();
+        this.customerQuery();
       },
 
       /**
@@ -322,7 +325,7 @@
         query.province_code = data.code;
         query.page = 1;
         this.$data.query = query;
-        this.storeQuery();
+        this.customerQuery();
         }
         
       },
@@ -331,7 +334,7 @@
           
         window.scrollTo(0, 0);
         this.query.page = 1;
-        this.storeQuery();
+        this.customerQuery();
       },
       /**
        * 清除筛选条件
@@ -339,17 +342,16 @@
       resetQuery(){
         let { page_size } = this.$data.query;
         this.$data.query = {
-          is_audited: '',
-          is_freeze: '',
-          is_post_pay: '',
-          gb_included: '',
           province_code: '',
           city_id: '',
           condition: '',
+          display_class_id: '',
+          begin_date: '',
+          end_date:'',
           page: 1,
-          page_size: page_size,
+          page_size: Constant.PAGE_SIZE,
         };
-        this.storeQuery();
+        this.customerQuery();
       },
 
       //搜索日期
@@ -364,7 +366,7 @@
         }
         query.page = 1;
         this.$data.query = query;
-        this.storeQuery();
+        this.customerQuery();
       },
       //商户列表导出
       async merchantListExport() {
@@ -407,24 +409,25 @@
        * 1、请求API
        * 2、将获取的data数据，赋值给组件的dataItem
        */
-      async storeQuery() {
+      async customerQuery() {
         let that = this;
         let {query} = that;
         // get merchant list data
-        let res = await Http.get(Config.api.storeQuery, query);
+        let res = await Http.get(Config.api.advicedItemQuery, query);
         // 如果返回结果正确，则将该数据 赋值给 dataItem；
         if (res.code === 0) {
           that.$data.dataItem = res.data;
+          
           window.scrollTo(0, 0);
         } else { // 如果返回值不正确，则提示弹窗
           Message.warning(res.message);
         }
       },
       //点击显示详情页面
-      showDetail(){
+      showDetail(data){
           this.detailDrawer = {
           isShow: true,
-          item: {}
+          item: data
         }
       },
       //关闭详情
@@ -433,19 +436,29 @@
           isShow: false,
           item: {}
         }
+
       },
       //客户提报统计
-      showDetailEchart(){
-          this.detailEchart={
-               isShow: true,
-               item: {}
-          }
+     async showDetailEchart(data){
+        let that = this;
+        let {query} = that;
+        let res = await Http.get(Config.api.advicedItemStatistical);
+         if (res.code === 0) {
+        
+          that.$data.detailEchart = {
+             isShow: true,
+            item: res.data
+          };
+          window.scrollTo(0, 0);
+        } else { // 如果返回值不正确，则提示弹窗
+          Message.warning(res.message);
+        }
       },
       //关闭客户提报统计
       closeDetailEchart(){
           this.detailEchart={
                 isShow: false,
-               item: {}
+               item: []
           }
       }
 

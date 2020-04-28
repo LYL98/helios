@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="frameCode" :size="size" filterable :clearable="clearable" placeholder="请选择展示分类" @change="changeDisplayClass" style="width: 100%;">
+  <el-select :disabled="disabled" v-model="frameCode" :size="size" filterable :clearable="clearable" placeholder="请选择展示分类" @change="changeDisplayClass" style="width: 100%;">
     <el-option v-if="hasAllSelection" label="全部" value=""></el-option>
     <el-option
       v-for="item in dataItem"
@@ -23,7 +23,17 @@ export default {
   created(){
     this.baseDisplayClassList();
   },
-  props: ['value', 'size', 'hasAllSelection', 'useName', 'clearable'],
+  props: {
+    useName: { type: String | Number, default: '' },
+    clearable: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
+    value: { type: Number | String, default: '' },
+    size: { type: String, default: '' },
+    hasAllSelection: { type: Boolean, default: false },
+    filterable: { type: Boolean, default: false },
+    placeholder: { type: String, default: '' },
+    provinceCode: { type: String, default: '' },
+  },
   model: {
     prop: 'value',
     event: 'ev'
@@ -31,9 +41,6 @@ export default {
   data() {
     return {
       frameCode: this.value || '',
-      query: {
-        province_code: this.$province.code
-      },
       dataItem: []
     };
   },
@@ -46,7 +53,9 @@ export default {
     //获取所有展示分类
     async baseDisplayClassList(){
       let that = this;
-      let res = await Http.get(Config.api.baseDisplayClassList, this.query);
+      let res = await Http.get(Config.api.baseDisplayClassList, {
+        province_code: this.provinceCode || this.$province.code
+      });
       if(res.code === 0){
         let rd = res.data;
         that.$data.dataItem = rd;
@@ -64,6 +73,12 @@ export default {
       deep: true,
       handler: function (a, b) {
         this.$data.frameCode = a || '';
+      }
+    },
+    provinceCode: {
+      deep: true,
+      handler: function (a, b) {
+        this.baseDisplayClassList();
       }
     }
   }
