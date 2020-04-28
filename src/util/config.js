@@ -475,6 +475,11 @@ const Config = (() => {
       basicdataMerchantOuterTagsEdit: apiM + '/basicdata/merchant_outer_tags/edit', //商户外标签修改
       basicdataMerchantOuterTagsDelete: apiM + '/basicdata/merchant_outer_tags/delete', //商户外标签删除
 
+      basicdataStoreTagList: apiM + '/basicdata/store_tag/list', //门店标签列表
+      basicdataStoreTagAdd: apiM + '/basicdata/store_tag/add', //添加门店标签基础数据
+      basicdataStoreTagEdit: apiM + '/basicdata/store_tag/edit', //修改门店标签基础数据
+      basicdataStoreTagDelete: apiM + '/basicdata/store_tag/delete', //删除门店标签基础数据
+
       basicdataGradeList: apiM + '/basicdata/grade/list', //商户等级列表
       basicdataGradeAdd: apiM + '/basicdata/grade/add', //商户级别添加
       basicdataGradeEdit: apiM + '/basicdata/grade/edit', //商户级别修改
