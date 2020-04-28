@@ -418,6 +418,7 @@ const Config = (() => {
       baseStorehouseList: apiM + '/common/storehouse/list', //获取仓列表（组件共用）
       baseWarehouseList: apiM + '/common/warehouse/list', //获取库列表（组件共用）
       baseWareTrayList: apiM + '/common/ware_tray/list', //获取托盘列表（组件共用）
+      baseStoreTagList: apiM + '/common/store_tag/list', //门店标签列表（组件共用）
 
       basicdataProvinceAdd: apiM + '/basicdata/province/add', //区域新增
       basicdataProvinceEdit: apiM + '/basicdata/province/edit', //区域修改
@@ -531,6 +532,7 @@ const Config = (() => {
       storeUnFreeze: apiM + '/store/unfreeze', //门店解冻
       storeDelete: apiM + '/store/delete', //删除门店
       storeApprove: apiM + '/store/approve',//门店审核
+      storeTagEdit: apiM + '/store/store_tag_relation/edit', //门店标签修改
 
       memberAdd: apiM + '/member/add', //新用户资料添加
       memberList: apiM + '/member/list', //用户列表
