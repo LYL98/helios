@@ -130,7 +130,7 @@
     </div>
     <add-edit-layout
       :is-show="dialog.visible"
-      :title="`${dialog.type === 'add' ? '新增' : '修改'}意向客户`"
+      :title="`${dialog.type === 'add' ? '新增' : dialog.type === 'modify' ? '修改' : '激活'}意向客户`"
       :before-close="handleCancelEdit"
     >
       <merchant-edit

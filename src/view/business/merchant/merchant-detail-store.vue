@@ -213,7 +213,6 @@
       },
       //翻页
       changePage(page) {
-        console.log('page', page);
         this.$data.query.page = page;
         this.storeList();
       },
@@ -262,11 +261,7 @@
       async editStore(item) {
         let res = await Http.get(Config.api.storeDetail, {id: item.id});
         if (res.code === 0) {
-          let rd = res.data;
-          if (!rd.geo || Object.keys(rd.geo).length < 5) {
-            rd.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
-          }
-          rd.csm_id = rd.csm_id || '';
+          let rd = res.data || {};
           this.$data.dialog = {
             visible: true,
             type: 'modify',

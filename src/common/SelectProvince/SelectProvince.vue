@@ -25,6 +25,7 @@
       size: {type: String, default: ''},
       nationwide: {type: Boolean, default: false}, //是否显示全国
       isAuth: {type: Boolean, default: false}, //是否要求权限
+      autoselect: { type: Boolean, default: false},  // 在只有一个省份的情况下，是否自动选择
     },
     model: {
       prop: 'value',
@@ -86,6 +87,9 @@
           this.$data.dataItem = rd;
           //如果只有一个区域，默认选择，页面不显示
           if (rd.length === 1) {
+            if (!this.$props.autoselect) {
+              return
+            }
             this.editValue = rd[0].code;
             // that.changeProvince(rd[0].code, true);
             return;
