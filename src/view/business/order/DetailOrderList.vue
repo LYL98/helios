@@ -135,6 +135,7 @@
                 <div v-if="scope.row.aftersale">
                   <!-- 有售后单的情况下，如果是已经完成，则直接显示已完成即可 -->
                   <span v-if="scope.row.aftersale.status === 'close'">{{afterSaleStatus['close']}}</span>
+                  <span v-else-if="scope.row.aftersale.status === 'handling'">{{afterSaleStatus['handling']}}</span>
                   <span v-else>{{afterSaleStatus['waiting_dispose']}}</span>
                   <a
                     class="operator"
@@ -142,7 +143,7 @@
                     @click="orderShowHideAfterSaleDetail(scope.row.aftersale)"
                     v-if="auth.isAdmin || auth.OrderAfterSaleDetail"
                   >
-                    {{scope.row.aftersale.status === 'waiting_dispose' ? '查看进度':'查看详情'}}
+                    {{scope.row.aftersale.status === 'waiting_dispose' || scope.row.aftersale.status === 'handling' ? '查看进度':'查看详情'}}
                   </a>
                 </div>
               </template>

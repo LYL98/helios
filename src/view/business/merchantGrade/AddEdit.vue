@@ -3,7 +3,7 @@
     <el-dialog :close-on-click-modal="false" :title="`${detail.id?'修改':'新增'}商户等级`" :visible="isShow" width="720px" :before-close="handleCancel">
       <el-form label-position="right" label-width="100px" style="width: 600px;" :model="detail" :rules="rules" ref="ruleForm" v-if="isShow">
         <el-form-item label="编号" prop="code">
-          <el-input v-model="detail.code" :disabled="detail.id" placeholder="请输入12位以内的字母和数字组合" :maxlength="12"></el-input>
+          <el-input v-model="detail.code" :disabled="!!detail.id" placeholder="请输入12位以内的字母和数字组合" :maxlength="12"></el-input>
         </el-form-item>
         <el-form-item label="名称" prop="title">
           <el-input v-model="detail.title" :maxlength="6" placeholder="请输入6位以内的字符"></el-input>
