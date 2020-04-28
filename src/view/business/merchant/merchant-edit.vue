@@ -162,7 +162,7 @@
             label="收货人"
             prop="linkman"
             :rules="[
-              {required: true, message: '收货人不能为空', trigger: 'change'},
+              {required: module === 'merchant' || module === 'store' || (module === 'intention' && type === 'audit'), message: '收货人不能为空', trigger: 'change'},
               {max: 10, message: '请输入10个以内的字符', trigger: 'blur'}
             ]"
           >
@@ -175,7 +175,7 @@
             label="联系方式"
             prop="store_phone"
             :rules="[
-              {required: true, message: '联系方式不能为空', trigger: 'change'},
+              {required: module === 'merchant' || module === 'store' || (module === 'intention' && type === 'audit'), message: '联系方式不能为空', trigger: 'change'},
               {pattern: Verification.testStrs.checkMobile, message: '请输入11位手机号码', trigger: 'blur'}
             ]"
           >
