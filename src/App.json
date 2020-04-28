@@ -177,6 +177,11 @@
               "title": "商户外标签",
               "upName": "MerchantPropertyMain",
               "name": "MerchantOuterTags"
+            },
+            {
+              "title": "门店标签",
+              "upName": "MerchantPropertyMain",
+              "name": "MerchantStoreTags"
             }
           ]
         },

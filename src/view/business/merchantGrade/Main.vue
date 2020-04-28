@@ -21,7 +21,7 @@
     },
     mixins: [mainMixin],
     created() {
-      documentTitle("业务 - 商户等级");
+      documentTitle("业务 - 商户属性 - 商户等级");
     },
   };
 </script>

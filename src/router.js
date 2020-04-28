@@ -137,6 +137,11 @@ const router = new Router({
       component: () => import('@/view/business/merchantOuterTags/Main')
     },
     {
+      path: '/business/merchant-store-tags',
+      name: 'MerchantStoreTags',
+      component: () => import('@/view/business/merchant-store-tags/main')
+    },
+    {
       path: '/business/order/list',
       name: 'OrderList',
       component: () => import('@/view/business/order/List')
