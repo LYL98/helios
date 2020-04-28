@@ -182,7 +182,7 @@
       :before-close="closeDetailEchart"
     >
 
-    <detail-echart  :echartData="detailEchart.item"/>
+    <detail-echart  :echartData="detailEchart.item" />
     </detail-layout>
   </sub-menu>
 </template>
@@ -351,6 +351,7 @@
           page: 1,
           page_size: Constant.PAGE_SIZE,
         };
+        this.pickerValue = null
         this.customerQuery();
       },
 
@@ -442,9 +443,10 @@
      async showDetailEchart(data){
         let that = this;
         let {query} = that;
-        let res = await Http.get(Config.api.advicedItemStatistical);
+        let res = await Http.get(Config.api.advicedItemStatistical,query);
          if (res.code === 0) {
-        
+           console.log(res.data);
+           
           that.$data.detailEchart = {
              isShow: true,
             item: res.data

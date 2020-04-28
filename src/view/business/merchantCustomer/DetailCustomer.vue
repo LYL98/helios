@@ -60,9 +60,11 @@
       <el-row :gutter="32">
         <el-col :span="10">
           <el-form-item >
-              <div style="display: flex">
+              <!-- <div style="display: flex"> -->
+                <image-preview>
                   <img class="myImg" v-for="(item,index) in formData.images" :src="tencentPath + item + '_min200x200'" alt="" :key="index">
-              </div>
+                </image-preview>
+              <!-- </div> -->
           </el-form-item>
         </el-col>
       </el-row>
@@ -87,6 +89,7 @@ import {
   Col
 } from "element-ui";
 import { Http, Config, DataHandle, Verification } from "@/util";
+import { ImagePreview } from '@/common';
 
 export default {
   name: "DetailCustomer",
@@ -94,7 +97,8 @@ export default {
     "el-form": Form,
     "el-form-item": FormItem,
     "el-row": Row,
-    "el-col": Col
+    "el-col": Col,
+    'image-preview': ImagePreview,
   },
   props:{
       formData:{
