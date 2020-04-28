@@ -226,7 +226,6 @@ export default {
         province_code: provinceCode,
         city_id: '',
         condition: '',
-        item: '',
         status: '',
         opt_type: '',
         begin_date: '',

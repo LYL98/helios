@@ -7,30 +7,18 @@
         </my-query-item>
       </el-col>
       <el-col :span="7">
-        <my-query-item label="搜索">
-          <el-input
-            size="small"
-            clearable
-            placeholder="售后单号/门店名称"
-            v-model="editQuery.condition"
-            @keyup.enter.native="changeQuery"
-            @clear="changeQuery"
-          />
-        </my-query-item>
-      </el-col>
-      <el-col :span="10">
-        <my-query-item label="搜索">
-          <query-search-input v-model="editQuery.item" placeholder="商品编号/名称" size="small" @search="changeQuery" @reset="resetQuery"/>
-        </my-query-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="32" style="margin-top: 16px;">
-      <el-col :span="7">
         <my-query-item label="县域">
           <select-city size="small" v-model="editQuery.city_id" placeholder="全部" clearable showAll :disabled="editQuery.province_code ? false : true"
                           :provinceCode="editQuery.province_code" @change="changeQuery"/>
         </my-query-item>
       </el-col>
+      <el-col :span="10">
+        <my-query-item label="搜索">
+          <query-search-input v-model="editQuery.condition" placeholder="售后单号/门店名称/商品编号/名称" size="small" @search="changeQuery" @reset="resetQuery"/>
+        </my-query-item>
+      </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="处理类型">
           <select-option
@@ -47,8 +35,6 @@
           <select-operator v-model="editQuery.operator_id" size="small" placeholder="请选择客服" showAll post="service" @change="changeQuery" clearable filterable/>
         </my-query-item>
       </el-col>
-    </el-row>
-    <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="下单时间">
           <el-date-picker
@@ -67,6 +53,8 @@
           />
         </my-query-item>
       </el-col>
+    </el-row>
+    <el-row :gutter="32" style="margin-top: 16px;">
       <el-col :span="7">
         <my-query-item label="处理时间">
           <el-date-picker

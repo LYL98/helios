@@ -144,8 +144,9 @@
               </div>
               <div style="margin-left: 50px; padding: 10px; background: #FAFAFB; border-radius: 2px">
                 <p class="content">
-                  <font v-if="detail.reason && index === 0">【{{detail.reason}}】</font>
+                  <font v-if="detail.reason && index === 0" style="margin-left: -8px;">【{{detail.reason}}】</font>
                   <font v-if="index === 0">【{{returnWeight(detail.weight_at_created)}}斤】</font>
+                  <br/>
                   {{item.content}}
                 </p>
                 <p class="images">
