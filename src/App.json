@@ -154,7 +154,7 @@
             {
               "title": "客户提报",
               "upName": "MerchantMain",
-              "name": "MerchantCustomerQuery"
+              "name": "AdvicedItemQuery"
             }
           ]
         },

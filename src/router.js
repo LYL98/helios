@@ -118,7 +118,7 @@ const router = new Router({
     },
     {
       path: '/business/merchant/customer/query',
-      name: 'MerchantCustomerQuery',
+      name: 'AdvicedItemQuery',
       component: () => import('@/view/business/merchantCustomer/Customer')
     },
     {

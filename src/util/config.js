@@ -534,6 +534,11 @@ const Config = (() => {
       storeApprove: apiM + '/store/approve',//门店审核
       storeTagEdit: apiM + '/store/store_tag_relation/edit', //门店标签修改
 
+      //业务-商户-客户提报
+      advicedItemQuery:apiM + "/adviced_item/query",//客户的提报列表
+      advicedItemStatistical:apiM + "/adviced_item/statistical",//提报商品统计
+
+
       memberAdd: apiM + '/member/add', //新用户资料添加
       memberList: apiM + '/member/list', //用户列表
       memberPasswordReset: apiM + '/member/password_reset', //重置密码
