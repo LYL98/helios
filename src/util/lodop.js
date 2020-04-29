@@ -80,6 +80,53 @@ export default {
     return LODOP;
   },
 
+  tempTruckSingle(list, delivery_date) {
+    let LODOP = GET_LODOP();
+    if (!LODOP) return;
+    let d = list[0];
+
+    let qrcontent = `{"type":"sort","out_stock_id":${d.id},"item_id":${d.item_id}}`;
+    d.items.forEach(item => {
+      LODOP.PRINT_INIT('打印装车批次');
+      LODOP.NewPage();
+      LODOP.SET_PRINT_PAGESIZE(1, 600, 400);
+      LODOP.SET_PRINT_STYLE('FontName', '微软雅黑');
+      LODOP.SET_PRINT_STYLE('FontSize', 18);
+      LODOP.SET_PRINT_STYLE('Bold', 1);
+      LODOP.SET_PRINT_STYLE('Alignment', 2);
+      LODOP.ADD_PRINT_TEXT(5, 0, 226, 60, `${prefixInteger(item.line_index, 2)}/${item.line_title}`);
+      LODOP.SET_PRINT_STYLE('FontSize', 20);
+      LODOP.ADD_PRINT_TEXT(75, 0, 226, 30, `${item.num}件`);
+      LODOP.ADD_PRINT_TEXT(105, 0, 226, 30, d.item_code);
+      item.stores.forEach(store => {
+        let nums = Array.from({length: store.num});
+        nums.forEach((n, i) => {
+          LODOP.NewPage();
+          LODOP.SET_PRINT_STYLE('FontName', '微软雅黑');
+          LODOP.SET_PRINT_STYLE('FontSize', 20);
+          LODOP.SET_PRINT_STYLE('Bold', 1);
+          LODOP.SET_PRINT_STYLE('Alignment', 2);
+          LODOP.ADD_PRINT_TEXT(5, 0, 226, 40, `${prefixInteger(item.line_index, 2)}-${prefixInteger(store.city_index, 2)}-${prefixInteger(store.store_index, 2)}`);
+          LODOP.SET_PRINT_STYLE('FontSize', 9);
+          LODOP.SET_PRINT_STYLE('Alignment', 1);
+          LODOP.ADD_PRINT_TEXT(45, 5, 130, 20, (store.store.title || '').slice(0, 10));
+          LODOP.SET_PRINT_STYLE('FontSize', 8);
+          LODOP.ADD_PRINT_TEXT(70, 5, 125, 50, `${d.item_code}/${d.item_title}`);
+          LODOP.ADD_PRINT_TEXT(125, 5, 125, 20, `${i+1} / ${store.num}`);
+          LODOP.SET_PRINT_STYLE('Alignment', 3);
+          LODOP.ADD_PRINT_TEXT(125, 5, 125, 20, `蒲公英${(delivery_date || '').slice(5, 10)}`);
+          LODOP.ADD_PRINT_BARCODE(45, 135, 95, 95, 'QRCode', qrcontent);
+          LODOP.SET_PRINT_STYLEA(0, 'QRCodeVersion');
+        });
+        LODOP.SET_PRINT_MODE("CUSTOM_TASK_NAME","打印装车批次"+item.line_index);
+        LODOP.PRINT();
+      });
+
+    });
+    // return LODOP;
+
+  },
+
   tempTruckBatch: function(list, delivery_date) {
     let LODOP = GET_LODOP();
     if (!LODOP) return;
