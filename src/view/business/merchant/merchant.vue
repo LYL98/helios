@@ -208,9 +208,17 @@
       </div>
     </div>
 
-    <el-dialog title="商户详情" width="1200px" :visible.sync="detail.visible" append-to-body>
+<!--    <el-dialog title="商户详情" width="1200px" :visible.sync="detail.visible" append-to-body>-->
+<!--      <merchant-detail :storeQuery="storeQuery" v-if="detail.visible" :merchant_id="detail.merchant_id" />-->
+<!--    </el-dialog>-->
+
+    <add-edit-layout
+      title="商户详情"
+      :is-show="detail.visible"
+      :before-close="handleCancel"
+    >
       <merchant-detail :storeQuery="storeQuery" v-if="detail.visible" :merchant_id="detail.merchant_id" />
-    </el-dialog>
+    </add-edit-layout>
 
     <add-edit-layout
       title="新增商户"
@@ -380,7 +388,11 @@
           visible: false,
           type: 'add',
           item: {}
-        }
+        };
+        this.$data.detail = {
+          visible: false,
+          merchant_id: 0
+        };
       },
 
       //商户列表导出
