@@ -26,15 +26,6 @@
         >
           <el-table-column type="selection" :selectable="returnSelectStatus" width="42" disabled="false" v-if="auth.isAdmin || auth.OrderAfterSaleAllocate"></el-table-column>
           <el-table-column type="index" width="88" label="序号" :index="indexMethod"/>
-          <el-table-column label="等级" min-width="80">
-            <template slot-scope="scope">
-              <div class="td-item add-dot2">
-                <span class="grade7" v-if="scope.row.flag_7"></span>
-                <span class="grade2" v-if="scope.row.flag_2"></span>
-                <span v-else>-</span>
-              </div>
-            </template>
-          </el-table-column>
           <el-table-column label="售后单号" prop="code" min-width="120">
             <template slot-scope="scope">
               <span v-if="auth.isAdmin || auth.OrderAfterSaleDetail || auth.OrderAfterSaleAppend || auth.OrderAfterSaleUpdate">
@@ -85,6 +76,15 @@
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.order_date }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="等级" min-width="80">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                <span class="grade7" v-if="scope.row.flag_7"></span>
+                <span class="grade2" v-if="scope.row.flag_2"></span>
+                <span v-else>-</span>
               </div>
             </template>
           </el-table-column>
