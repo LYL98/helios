@@ -10,7 +10,7 @@
         :row-key="returnTableKey"
         :current-row-key="clickedRow[returnTableKey]"
       >
-        <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
+        <el-table-column type="index" width="80" align="center" label="序号" :index="indexMethod"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
@@ -73,6 +73,7 @@
       async getData(){
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supAllocateDelaySortQuery, {
+          ...this.query,
           storehouse_id: this.storehouseId,
           delivery_date: this.deliveryDate
         });
