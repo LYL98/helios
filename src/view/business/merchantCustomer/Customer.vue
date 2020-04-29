@@ -236,13 +236,6 @@
     created() {
       let that = this;
       documentTitle('业务 - 客户提报');
-      let p = that.province;
-    //   if (p.code) {
-        console.log(p);
-        that.$data.query.province_code = '',
-        // console.log(this.$auth);
-        that.customerQuery();
-    //   }
     },
     data() {
       return {
@@ -285,7 +278,6 @@
       refresh() {
         let {query} = this;
         query.page = 1;
-        query.is_audited = '';
         this.$data.query = query;
         this.customerQuery();
       },
@@ -315,19 +307,14 @@
        * 3、重新加载商户列表
        */
       selectProvince(data,type) {
+        let that = this
         let {query} = this;
         // console.log(data,type);
         if(type === 'init'){
           query.province_code = data.code || '';
-          console.log(111);
           
-        }else{
-        query.province_code = data.code;
-        query.page = 1;
-        this.$data.query = query;
-        this.customerQuery();
         }
-        
+        that.changeQuery() 
       },
 
       changeQuery() {
