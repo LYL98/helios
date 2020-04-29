@@ -118,7 +118,7 @@ export default {
           LODOP.ADD_PRINT_BARCODE(45, 135, 95, 95, 'QRCode', qrcontent);
           LODOP.SET_PRINT_STYLEA(0, 'QRCodeVersion');
         });
-        LODOP.SET_PRINT_MODE("CUSTOM_TASK_NAME","打印装车批次"+item.line_index);
+        LODOP.SET_PRINT_MODE("CUSTOM_TASK_NAME","打印装车批次"+store.store.id);
         LODOP.PRINT();
       });
 
