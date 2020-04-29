@@ -212,9 +212,21 @@ const Constant = {
     update_amount: '手动改价'
   },
   //售后单状态
-  AFTER_SALE_STATUS: {
-    waiting_dispose: '待处理',
-    close: '已完成',
+  AFTER_SALE_STATUS: (type) => {
+    let data = [
+      { key: 'init', value: '待分配' },
+      { key: 'waiting_dispose', value: '待处理' },
+      { key: 'handling', value: '处理中' },
+      { key: 'close', value: '已完成' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //售后状态颜色
+  AFTER_SALE_STATUS_TYPE: {
+    init: 'primary',
+    waiting_dispose: 'warning',
+    handling: 'warning',
+    close: 'regular'
   },
   // 售后单处理类型
   AFTER_SALE_OPT_TYPE: (type) => {
@@ -228,7 +240,18 @@ const Constant = {
       { key: 'num_short', value: '缺货' },
       { key: 'num_error', value: '错货' },
       { key: 'big_order_bonus', value: '大单优惠' },
+      { key: 'betray_low_price', value: '违反低价承诺' },
       { key: 'other', value: '其他' }
+    ];
+    return handleKeyValue(type, data);
+  },
+
+  //售后处理进度
+  AFTER_SALE_HANDLE_LOADING: (type) => {
+    let data = [
+      { key: 'supplement_material', value: '素材补充' },
+      { key: 'verify_offline', value: '线下核实' },
+      { key: 'restoring', value: '退货中' }
     ];
     return handleKeyValue(type, data);
   },
@@ -271,17 +294,10 @@ const Constant = {
       { key: 'buyer', value: '商品' },
       { key: 'salesman', value: '业务' },
       { key: 'supply', value: '供应链' },
+      { key: 'service', value: '客服' },
       { key: 'other', value: '其他' },
     ];
     return handleKeyValue(type, data);
-  },
-  //运营人员职务 颜色
-  OPERATOR_POST_TYPE: {
-    salesman: 'info',
-    buyer: 'info',
-    deliver: 'info',
-    sorter: 'info',
-    local_distributor: 'info'
   },
   // 退筐记录的状态
   OPERATE_REFUND_FRAME_STATUS: {
@@ -376,10 +392,10 @@ const Constant = {
   PURCHASE_STATUS: (type)=>{
     let data = [
       { key: 'init', value: '待审核' },
-      { key: 'success', value: '待收货' },
-      { key: 'fail', value: '作废' },
+      { key: 'audit_success', value: '待收货' },
       { key: 'part_in', value: '部分收货' },
       { key: 'all_in', value: '已完成' },
+      { key: 'audit_fail', value: '作废' },
       { key: 'closed', value: '关闭' }
     ];
     return handleKeyValue(type, data);
@@ -387,11 +403,62 @@ const Constant = {
   //采购订单状态(颜色)
   PURCHASE_STATUS_TYPE: {
     init: 'primary',
-    success: 'success',
-    fail: 'info',
+    audit_success: 'success',
     part_in: 'warning',
     all_in: 'regular',
+    audit_fail: 'info',
     closed: 'info'
+  },
+  // 商品 - 调拨 - 调拨计划状态
+  DISTRIBUTE_PLAN_STATUS: (type) => {
+    let data = [
+      { key: 'init', value: '待审核' },
+      { key: 'audit_success', value: '已完成' },
+      { key: 'audit_fail', value: '作废' },
+      { key: 'closed', value: '关闭' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  // 调拨计划状态(颜色)
+  DISTRIBUTE_PLAN_STATUS_TYPE: {
+    init: 'primary',
+    audit_success: 'success',
+    audit_fail: 'info',
+    closed: 'info'
+  },
+  // 商品 - 调拨 - 调拨单状态
+  DISTRIBUTE_WAYBILL_STATUS: (type) => {
+    let data = [
+      { key: 'init', value: '待装车' },
+      { key: 'wait_delivery', value: '待发车' },
+      { key: 'deliveried', value: '待收货' },
+      { key: 'part_in', value: '部分收货' },
+      { key: 'all_in', value: '已完成' },
+      { key: 'closed', value: '关闭' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  // 调拨单状态(颜色)
+  DISTRIBUTE_WAYBILL_STATUS_TYPE: {
+    init: 'primary',
+    wait_delivery: 'warning',
+    deliveried: 'regular',
+    all_in: 'success',
+    part_in: 'info',
+    closed: 'info'
+  },
+  // 场地 - 品控收货 - 调拨
+  DISTRIBUTE_RECEIVE_STATUS: (type) => {
+    let data = [
+      { key: 'init', value: '待收货' },
+      { key: 'all_in', value: '已收货' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  // 场地 - 品控收货 - 调拨(颜色)
+  DISTRIBUTE_RECEIVE_STATUS_TYPE: {
+    init: 'primary',
+    all_in: 'regular'
   },
   //调拨单状态
   DISTRIBUTE_STATUS: (type)=>{
@@ -452,7 +519,7 @@ const Constant = {
   //品控单状态
   Q_C_STATUS: (type)=>{
     let data = [
-      { key: 'success', value: '待收货' },
+      { key: 'audit_success', value: '待收货' },
       { key: 'part_in', value: '部分收货' },
       { key: 'all_in', value: '已完成' },
       { key: 'closed', value: '关闭' }
@@ -461,7 +528,7 @@ const Constant = {
   },
   //品控单状态颜色
   Q_C_STATUS_TYPE: {
-    success: 'primary',
+    audit_success: 'primary',
     part_in: 'warning',
     all_in: 'regular',
     closed: 'info'
@@ -498,6 +565,17 @@ const Constant = {
     allocate: 'info',
     refund: 'info'
   },
+  SUP_STOCK_RECORD_TYPE: (type) => {
+    let data = [
+      { key: 'accept', value: '收货' },
+      { key: 'dt_ac_edit', value: '打货' },
+      { key: 'in_stock', value: '入库' },
+      { key: 'allocate', value: '分配' },
+      { key: 'distribute', value: '调拨' },
+      { key: 'out_stock', value: '出库' },
+    ];
+    return handleKeyValue(type, data);
+  },
   //变动类型
   SUP_OPT_TYPES: (type)=>{
     let data = [
@@ -505,6 +583,7 @@ const Constant = {
       { key: 'damage_sale', value: '报损销售' },
       { key: 'sale_offline', value: '线下销售' },
       { key: 'refund', value: '退货入库' },
+      { key: 'stocked_qa', value: '库内品控' },
       { key: 'refund_to_supplier', value: '退货给供应商' }
     ];
     return handleKeyValue(type, data);
@@ -515,13 +594,14 @@ const Constant = {
     damage_sale: 'info',
     sale_offline: 'info',
     refund: 'info',
+    stocked_qa: 'info',
     refund_to_supplier: 'info'
   },
   //发车状态
   DEPART_STATUS: (type)=>{
     let data = [
       { key: 'wait_confirm', value: '待确认' },
-      { key: 'wait_delivery', value: '待发车' },
+      // { key: 'wait_delivery', value: '待发车' },
       { key: 'delivering', value: '配送中' },
       { key: 'done', value: '已完成' }
     ];
@@ -530,7 +610,7 @@ const Constant = {
   //发车状态(颜色)
   DEPART_STATUS_TYPE: {
     wait_confirm: 'primary',
-    wait_delivery: 'primary',
+    // wait_delivery: 'primary',
     delivering: 'warning',
     done: 'refund'
   },
@@ -584,6 +664,19 @@ const Constant = {
     global: 'info',
     local: 'info'
   },
+  //库存销售状态
+  INVENTORY_SALE_STATUS: (type)=>{
+    let data = [
+      { key: 'wait_sale', value: '待销售' },
+      { key: 'saled', value: '已销售' }
+    ];
+    return handleKeyValue(type, data);
+  },
+  //库存销售状态(颜色)
+  INVENTORY_SALE_STATUS_TYPE: {
+    wait_sale: 'primary',
+    saled: 'regular'
+  }
 };
 
 //处理key value

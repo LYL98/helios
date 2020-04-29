@@ -101,7 +101,7 @@
         </el-table-column>
         <el-table-column
           prop="store_num_ord"
-          label="下单门店数"
+          label="平均日活"
           align="left"
           min-width="100">
           <template slot-scope="scope">

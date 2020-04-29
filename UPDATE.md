@@ -3,6 +3,99 @@
 #### 更新记录
 
 ### 版本 （最新 - 旧）
+### 3.6.0
+```
+更新注意事项
+修改sys_permission表
+修改：
+   code == ItemTags 修改项：title 【商品运营专区】
+   code == ItemGPurchaseAdd 修改项：urls 【商品 - 采购 - 预采】
+   code == OperateLineList 修改项：rank 【5】
+   code == Deliver 修改项：rank 【6】
+   code == OperateRefundFrame 修改项：rank 【7】
+   code == OperateTruckLoadMain 修改项：title 【配送专区】
+   code == WarehouseOutStorageAdd 修改项：title, url、upper_code
+   code == WarehouseInventoryVariation 修改项：url
+   code == FinanceSStatementDetail 修改项：url
+   code == MerchantAdd       修改项：url
+   code == MerchantStoreAdd  修改项：url
+   code == MerchantStoreEdit 修改项：url
+   code == MerchantRefundQuery 修改项：rank
+
+   code == OperateReceiving => OperateReceivingMain
+
+新增：
+
+   IntentionMerchantQuery
+   IntentionMerchantAdd
+   IntentionMerchantEdit
+   IntentionMerchantAudit
+   IntentionMerchantDetail
+   IntentionMerchantDelete
+
+   ItemQueryByItemTag
+   ItemTagAdd
+   ItemTagRankEdit
+   ItemTagDelete
+   ItemSupDistributePlan
+   ItemSupDistributePlanAdd
+   ItemSupDistributePlanModify
+   ItemSupDistributePlanAudit
+   ItemSupDistributePlanClose
+   ItemSupDistributeWaybillAdd
+   ItemSupDistributeWaybill
+   ItemSupDistributeWaybillModify
+   ItemSupDistributeWaybillClose
+
+   OperateItem
+   OperateItemSupAccept
+   OperateItemSupAcceptConfirm
+   OperateItemSupStock
+   OperateItemSupStockDistribute
+   OperateItemSupStockWarehousing
+   OperateItemSupStockAllocate
+   OperateItemSupStockRecord
+
+   OperateDisTruckLoadMain
+   OperateDisTruckLoad
+   OperateDisTruckLoadProgress
+   OperateDisTruckLoadDelay
+   OperateDisTruckLoadEditNum
+   OperateDisTruckLoadDetail
+   OperateDisTruckLoadAffirm
+
+   OutStoragePlanMain
+   DistributeOutStorage
+   DistributeOutStorageAdd
+
+   InventoryMarket
+   InventoryMarketExport
+   InventoryMarketAdd
+   InventoryMarketDetail
+
+   OperateReceivingPurchase
+   OperateReceivingDistribute
+
+   SystemRoleExport
+
+删除：
+   WarehouseInventoryDetailBuyDetail
+   WarehouseQualityControl
+   WarehouseQualityControlDetail
+   WarehouseQualityControlEditNum
+   WarehouseQualityControlAdd
+   WarehouseQualityControlClose
+   WarehouseQualityControlPrint
+```
+
+### 3.6.0
+```
+更新注意事项
+修改sys_permission表
+修改：
+   1、code == OperateTruckLoadMain  修改项: title【从dev数据库拷贝】
+
+```
 
 ### 3.5.0
 ```

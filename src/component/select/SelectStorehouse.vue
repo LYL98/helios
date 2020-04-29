@@ -1,5 +1,6 @@
 <template>
   <el-select
+    :class="borderless ? 'custom-borderless-select' : ''"
     v-model="selectId"
     :size="size"
     :filterable="filterable"
@@ -31,6 +32,7 @@
     name: "SelectStorehouse",
     mixins: [selectMixin],
     props: {
+      borderless: { type: Boolean, default: false },
       provinceCode: { type: String | Number, default: '' },
       placeholder: { type: String, default: '选择仓' },
       isAuth: { type: Boolean, default: false }, //是否要求权限
@@ -76,6 +78,9 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+  .custom-borderless-select .el-input__inner {
+    border-radius: 0;
+    border: none;
+  }
 </style>

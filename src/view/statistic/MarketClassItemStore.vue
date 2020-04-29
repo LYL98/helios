@@ -2,30 +2,36 @@
   <sub-menu>
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
-        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date } }">
+        <el-breadcrumb-item :to="{ name: 'StatisticMarket', query: { province_code: query.province_code, begin_date: query.begin_date, end_date: query.end_date, totalItemTotalPrice:query.totalItemTotalPrice,item_tag_id: query.item_tag_id} }">
           商品销售统计
         </el-breadcrumb-item>
         <el-breadcrumb-item :to="{ name: 'StatisticMarketClass2', query: {
+            totalItemTotalPrice:query.totalItemTotalPrice,
             province_code: query.province_code,
             begin_date: query.begin_date,
             end_date: query.end_date,
             system_class1: query.system_class1,
-            system_class_code1: query.system_class_code1
+            system_class_code1: query.system_class_code1,
+            item_tag_id: query.item_tag_id
+
         }}">
           {{ query.system_class1 === '' ? '全部分类' : query.system_class1 }}
         </el-breadcrumb-item>
         <el-breadcrumb-item :to="{ name: 'StatisticMarketClass3', query: {
+            totalItemTotalPrice:query.totalItemTotalPrice,
             province_code: query.province_code,
             begin_date: query.begin_date,
             end_date: query.end_date,
             system_class1: query.system_class1,
             system_class_code1: query.system_class_code1,
             system_class2: query.system_class2,
-            system_class_code2: query.system_class_code2
+            system_class_code2: query.system_class_code2,
+            item_tag_id: query.item_tag_id
         }}">
           {{ query.system_class2 === '' ? '全部分类' : query.system_class2 }}
         </el-breadcrumb-item>
         <el-breadcrumb-item :to="{ name: 'StatisticMarketClassItem', query: {
+            totalItemTotalPrice:query.totalItemTotalPrice,
             province_code: query.province_code,
             begin_date: query.begin_date,
             end_date: query.end_date,
@@ -34,7 +40,8 @@
             system_class2: query.system_class2,
             system_class_code2: query.system_class_code2,
             system_class3: query.system_class3,
-            system_class_code3: query.system_class_code3
+            system_class_code3: query.system_class_code3,
+            item_tag_id: query.item_tag_id
         }}">
           {{ query.system_class3 === '' ? '全部分类' : query.system_class3 }}
         </el-breadcrumb-item>
@@ -171,7 +178,9 @@
           num: 0,
           items: []
         },
-        currentRow: {}
+        currentRow: {},
+        totalItemTotalPrice: 0,
+
       }
     },
     created() {
@@ -216,6 +225,7 @@
         let q = this.$route.query;
         this.$data.pickerValue = [q.begin_date, q.end_date];
         this.$data.query = {
+          totalItemTotalPrice:q.totalItemTotalPrice,
           province_code: q.province_code,
           begin_date: q.begin_date,
           end_date: q.end_date,
@@ -232,8 +242,10 @@
           city_id: '',
           condition: '',
           page: 1,
-          page_size: Constant.PAGE_SIZE
+          page_size: Constant.PAGE_SIZE,
+          item_tag_id: q.item_tag_id
         };
+        // this.$data.totalItemTotalPrice = q.totalItemTotalPrice
       },
       // 改变查询日期
       changePicker(value) {

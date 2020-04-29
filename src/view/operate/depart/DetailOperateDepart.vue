@@ -45,7 +45,7 @@
           <template slot-scope="scope">{{scope.row.hand_over.realname}}</template>
         </el-table-column>
         <el-table-column label="接驳时间">
-          <template slot-scope="scope">{{scope.row.created}}</template>
+          <template slot-scope="scope">{{scope.row.hand_over_time}}</template>
         </el-table-column>
         <el-table-column label="操作" width="80">
           <template slot-scope="scope">
@@ -56,6 +56,7 @@
                   isDisplay: auth.isAdmin || auth.OperateDepartDetail,
                   command: () => handleShowDetail('DetailOperateDepartStore', {
                     ...scope.row,
+                    line_id: detail.line_id,
                     delivery_date: detail.delivery_date,
                     layoutTitle: layoutTitle + '/' + scope.row.city.title
                   })

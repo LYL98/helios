@@ -54,6 +54,13 @@
       }
     },
     watch: {
+      value: {
+        deep: true,
+        immediate: true,
+        handler: function (next, prev) {
+          this.handleSync();
+        }
+      },
       provinceCode: {
         deep: true,
         immediate: true,
@@ -89,6 +96,19 @@
       handleSelectItem(item) {
         this.$emit('select-item', item);
       },
+
+      handleSync() {
+        let value = this.$props.value;
+
+        if (!value) {
+          this.$emit('sync', {code: '', title: ''});
+          return;
+        }
+
+        let city = this.$data.dataItem.find(item => item.id === value);
+        city && this.$emit('sync', {code: city.id, title: city.title});
+      },
+
       //根据传进来的区域code 获取城市列表
       async baseCityList(){
         let res = await Http.get(Config.api.baseCityList, {
@@ -98,6 +118,7 @@
         if(res.code === 0){
           let rd = res.data;
           this.$data.dataItem = rd;
+          this.handleSync();
         }else{
           this.$messageBox.alert(res.message, '提示');
         }

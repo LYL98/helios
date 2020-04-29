@@ -1,8 +1,10 @@
 <template>
-  <form-layout title="出库" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog">
-    <el-form class="custom-form" size="mini" label-position="right" label-width="110px" :model="detail" ref="ruleForm" :rules="rules">
-      <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
+  <form-layout title="出库" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog" width="840px">
+    <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" ref="ruleForm" :rules="rules">
       <el-row>
+        <el-col :span="12">
+          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
+        </el-col>
         <el-col :span="12">
           <el-form-item label="批次">{{detail.batch_code}}</el-form-item>
         </el-col>
@@ -12,23 +14,22 @@
         <el-col :span="12">
           <el-form-item label="库存数量">{{detail.num}}件</el-form-item>
         </el-col>
-        <template v-if="fromPage === 'OutStorage'">
-          <el-col :span="12">
-            <el-form-item label="应出库">{{detail.o_num}}件</el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="已出库">{{detail.o_num_out}}件</el-form-item>
-          </el-col>
-        </template>
         <el-col :span="12">
-          <el-form-item label="出库">场地</el-form-item>
+          <el-form-item label="商品过期时间">{{detail.due_date || '-'}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="库存过期时间">{{detail.stock_due_date || '-'}}</el-form-item>
         </el-col>
       </el-row>
-      <el-form-item label="出库数量" prop="num_out">
-        <input-number size="medium" v-model="detail.num_out" unit="件" :min="1"/>
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="出库数量" prop="num_out">
+            <input-number size="medium" v-model="detail.num_out" unit="件" :min="1"/>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
-    <div style="margin-left: 110px; margin-top: 20px;">
+    <div style="margin-left: 140px; margin-top: 20px;">
       <el-button @click.native="handleCancel">取 消</el-button>
       <el-button type="primary" @click.native="handleFormSubmit">确 定</el-button>
     </div>
@@ -43,9 +44,6 @@ import { InputNumber } from '@/common';
 export default {
   name: "FormWarehouseInventoryOutStorage",
   mixins: [formMixin],
-  props: {
-    fromPage: { type: String, default: 'Inventory' }, //OutStorage 出库计划、Inventory 库存
-  },
   created() {
   },
   components: {
@@ -53,29 +51,20 @@ export default {
   },
   data(){
     let initDetail = {}
-    let numOut = [
-      { required: true, message: '请输入出库数量', trigger: 'change' }
-    ]
-
     //数量校验
     const validNum = (rules, value, callback)=>{
-      let { detail, fromPage } = this;
+      let { detail } = this;
       if(Number(value) > detail.num) {
         return callback(new Error('出库数量不能大于库存'));
       }
-      if(fromPage === 'OutStorage' && Number(value) > detail.o_num - detail.o_num_out) {
-        return callback(new Error('出库数量不能大于应出库数量'));
-      }
       callback();
-    }
-    if(this.fromPage === 'OutStorage'){
-      numOut.push(
-        { validator: validNum, trigger: 'blur' }
-      );
     }
     return{
       rules: {
-        num_out: numOut
+        num_out: [
+          { required: true, message: '请输入出库数量', trigger: 'change' },
+          { validator: validNum, trigger: 'blur' }
+        ]
       },
       initDetail: initDetail,
       detail: this.copyJson(initDetail),
@@ -100,7 +89,7 @@ export default {
         let pc = this.getPageComponents('DetailWarehouseInventory');
         if(pc){
           pc.$data.detail.o_num_out = pc.detail.o_num_out + detail.num_out;
-          pc.wareTrayItemQeruy();
+          pc.wareTrayItemQuery();
         }
 
         this.handleCancel(); //隐藏(先算num_out)
@@ -108,10 +97,7 @@ export default {
         //刷新库存列表
         pc = this.getPageComponents('TableWarehouseInventory');
         if(pc) pc.getData(pc.query);
-
-        //刷新仓库出库计划列表
-        pc = this.getPageComponents('TableWarehouseOutStorage');
-        if(pc) pc.getData(pc.query);
+        
       }else{
         this.$message({message: res.message, type: 'error'});
       }

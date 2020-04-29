@@ -12,8 +12,8 @@
     name: "FormArea",
     props: {
       label: { type: String, default: '' },
-      'label-width': { type: String, default: '' },
-      'label-position': { type: String, default: '' }
+      labelWidth: { type: String, default: '' },
+      labelPosition: { type: String, default: '' }
     },
     data() {
       return {
@@ -25,8 +25,8 @@
       if (!this.$parent.$vnode || this.$parent.$vnode.tag.indexOf('ElForm') == -1) {
         throw new Error('FormArea 组件必须做为el-form组件的直系子组件使用。')
       } else {
-        this.$data.width = this.$props['label-width'] || this.$parent.$props.labelWidth;
-        this.$data.position = this.$props['label-position'] || this.$parent.$props.labelPosition;
+        this.$data.width = this.$props['labelWidth'] || this.$parent.$props.labelWidth;
+        this.$data.position = this.$props['labelPosition'] || this.$parent.$props.labelPosition;
       }
     }
   }

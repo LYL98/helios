@@ -3,7 +3,7 @@
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date,total:breadcrumb.total } }"
         >
           客户订单统计
         </el-breadcrumb-item>
@@ -14,7 +14,8 @@
             province_code: breadcrumb.province_code,
             province_title: breadcrumb.province_title,
             begin_date: breadcrumb.begin_date,
-            end_date: breadcrumb.end_date } }"
+            end_date: breadcrumb.end_date,
+            total:breadcrumb.total } }"
         >
           {{ breadcrumb.province_code === '' ? '全部省份' : breadcrumb.province_title }}
         </el-breadcrumb-item>
@@ -28,7 +29,8 @@
             zone_id: breadcrumb.zone_id,
             zone_title: breadcrumb.zone_title,
             begin_date: breadcrumb.begin_date,
-            end_date: breadcrumb.end_date } }"
+            end_date: breadcrumb.end_date,
+            total:breadcrumb.total } }"
         >
           {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
@@ -44,7 +46,8 @@
               zone_id: breadcrumb.zone_id,
               zone_title: breadcrumb.zone_title,
               begin_date: breadcrumb.begin_date,
-              end_date: breadcrumb.end_date }
+              end_date: breadcrumb.end_date,
+              total:breadcrumb.total }
             }"
         >
           {{ breadcrumb.city_id === '' ? '全部县域' : breadcrumb.city_title }}
@@ -229,7 +232,9 @@
           province_code: this.$route.query.province_code,
           province_title: this.$route.query.province_title,
           begin_date: this.$route.query.begin_date,
-          end_date: this.$route.query.end_date
+          end_date: this.$route.query.end_date,
+          total: this.$route.query.total
+
         })
       },
       initQuery() {
@@ -254,7 +259,8 @@
           system_class: '',
           system_class_codes: [],
           page: 1,
-          page_size: Constant.PAGE_SIZE
+          page_size: Constant.PAGE_SIZE,
+          total:this.$route.query.total
         });
       },
       // 改变查询日期

@@ -1,14 +1,15 @@
 <template>
-  <sub-menu class="after-sale">
+  <sub-menu>
     <query-order-aftersale v-model="query" @change="changeQuery" :reset="resetQuery"/>
     <div class="container-table">
       <!-- 头部end -->
       <div class="table-top">
         <div class="left">
-          <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="{ '全部': '', '待处理': 'waiting_dispose', '已完成': 'close' }"/>
+          <query-tabs v-model="query.status" @change="changeQuery" :tab-panes="afterSaleStatusTab"/>
         </div>
         <div class="right" v-if="auth.isAdmin || auth.OrderAftersaleExport">
-          <el-button size="mini" type="primary" @click="afterSaleListExport" plain>导出售后单列表</el-button>
+          <el-button size="mini" type="primary" @click="handleExport('aftersaleListExport', query)" plain>导出售后汇总表</el-button>
+          <el-button size="mini" type="primary" @click="handleExport('aftersaleRespListExport', query)" plain>导出售后追责表</el-button>
         </div>
       </div>
       <!-- 表格start -->
@@ -20,49 +21,57 @@
           :highlight-current-row="true"
           style="width: 100%"
           :row-key="rowIdentifier"
+          @selection-change="handleSelectionChange"
           :current-row-key="clickedRow[rowIdentifier]"
         >
-          <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod">
-          </el-table-column>
+          <el-table-column type="selection" :selectable="returnSelectStatus" width="42" disabled="false" v-if="auth.isAdmin || auth.OrderAfterSaleAllocate"></el-table-column>
+          <el-table-column type="index" width="88" label="序号" :index="indexMethod"/>
           <el-table-column label="售后单号" prop="code" min-width="120">
             <template slot-scope="scope">
-            <span v-if="auth.isAdmin || auth.OrderAfterSaleDetail || auth.OrderAfterSaleAppend || auth.OrderAfterSaleUpdate">
-              <a class="order-no td-item add-dot2" href="javascript:void(0);"
-                @click="orderShowHideAfterSaleDetail(scope.row)">
-                {{scope.row.code}}
-              </a>
-            </span>
+              <span v-if="auth.isAdmin || auth.OrderAfterSaleDetail || auth.OrderAfterSaleAppend || auth.OrderAfterSaleUpdate">
+                <a class="order-no td-item add-dot2" href="javascript:void(0);"
+                  @click="orderShowHideAfterSaleDetail(scope.row)">
+                  {{scope.row.code}}
+                </a>
+              </span>
               <span v-else class="td-item add-dot2">{{scope.row.code}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="县域" prop="city_title" min-width="110">
+          <el-table-column label="县域" prop="city_title" min-width="80">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.city_title }}
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="门店名称" prop="store_title" min-width="150">
+          <el-table-column label="门店名称" prop="store_title" min-width="130">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.store_title }}
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="商品编号 / 名称" prop="item_title" min-width="220">
+          <el-table-column label="商品编号 / 名称" prop="item_title" min-width="200">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{scope.row.item_code}} / {{scope.row.item_title}}
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="处理类型" min-width="140">
+          <el-table-column label="处理进度" min-width="100">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
-                {{ afterSaleOptType[scope.row.opt_type] }}
+                {{ scope.row.handle_loading ? afterSaleHandleLoading[scope.row.handle_loading] : '-' }}
               </div>
             </template>
           </el-table-column>
+          <!--<el-table-column label="处理类型" min-width="140">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                {{ scope.row.opt_type === 'init' || !scope.row.opt_type ? '-' : afterSaleOptType[scope.row.opt_type] }}
+              </div>
+            </template>
+          </el-table-column>-->
           <el-table-column label="下单日期" min-width="100" prop="order_date">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
@@ -70,7 +79,16 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="120">
+          <el-table-column label="等级" min-width="80">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                <span class="grade7" v-if="scope.row.flag_7"></span>
+                <span class="grade2" v-if="scope.row.flag_2"></span>
+                <span v-else>-</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <div style="position: relative;">
                 <my-table-operate
@@ -78,9 +96,19 @@
                   @command-visible="handleCommandVisible"
                   :list="[
                     {
-                      title: scope.row.status === 'waiting_dispose' ? '待处理' : '详情',
-                      isDisplay: scope.row.status === 'waiting_dispose' && (auth.isAdmin || auth.OrderAfterSaleUpdate),
+                      title: '分配',
+                      isDisplay: scope.row.status === 'init' && (auth.isAdmin || auth.OrderAfterSaleAllocate),
+                      command: () => orderShowHideAllocateClose([scope.row.id])
+                    },
+                    {
+                      title: judgeOrs(scope.row.status, ['waiting_dispose', 'handling']) ? (scope.row.status === 'waiting_dispose' ? '待处理' : '处理') : '详情',
+                      isDisplay: judgeOrs(scope.row.status, ['waiting_dispose', 'handling']) && (auth.isAdmin || auth.OrderAfterSaleUpdate),
                       command: () => orderShowHideAfterSaleDetail(scope.row)
+                    },
+                    {
+                      title: '二次处理',
+                      isDisplay: scope.row.status === 'close' && retuHandleSecond(scope.row) && (auth.isAdmin || auth.OrderAfterSaleHandleSecond),
+                      command: () => orderShowHideHandleSecond(scope.row)
                     }
                   ]"
                 >
@@ -92,8 +120,17 @@
         </el-table>
       </div>
       <!-- 表格end -->
-      <div class="footer">
-        <div class="table-pagination">
+      <div class="table-bottom" v-if="dataItem.num > 0">
+        <div class="left">
+          <el-button
+            size="mini"
+            type="primary"
+            :disabled="multipleSelection.length <= 0"
+            v-if="auth.isAdmin || auth.OrderAfterSaleAllocate"
+            @click.native="orderShowHideAllocateClose(returnListKeyList('id',multipleSelection))"
+          >批量分配</el-button>
+        </div>
+        <div class="right">
           <el-pagination
             background
             layout="total, sizes, prev, pager, next, jumper"
@@ -112,6 +149,9 @@
     <!--商品详情-->
     <add-edit-item-detail :getPageComponents="viewGetPageComponents" ref="AddEditItemList" page="after-sale-detail"/>
     <form-order-after-sale-close :getPageComponents="viewGetPageComponents" ref="FormOrderAfterSaleClose" />
+    <allocate :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="Allocate" />
+    <handle-loading :getPageComponents="viewGetPageComponents" ref="HandleLoading"/>
+    <handle-second :callback="myCallBack" :getPageComponents="viewGetPageComponents" ref="HandleSecond"/>
   </sub-menu>
 </template>
 
@@ -123,6 +163,9 @@ import DetailOrderAfterSale from './DetailOrderAfterSale';
 import FormOrderAfterSaleClose from './FormOrderAfterSaleClose';
 import DetailOrderList from '@/view/business/order/DetailOrderList';
 import AddEditItemList from '@/view/item/list/AddEditItemList';
+import Allocate from './Allocate';
+import HandleLoading from './HandleLoading';
+import HandleSecond from './HandleSecond';
 import { Config, DataHandle, Constant, Http } from '@/util';
 import tableMixin from '@/share/mixin/table.mixin';
 import mainMixin from '@/share/mixin/main.mixin';
@@ -143,10 +186,13 @@ export default {
     'detail-order-list': DetailOrderList,
     'add-edit-item-detail': AddEditItemList,
     'form-order-after-sale-close': FormOrderAfterSaleClose,
+    'allocate': Allocate,
+    'handle-loading': HandleLoading,
+    'handle-second': HandleSecond,
     'my-table-operate': TableOperate,
     'query-tabs': queryTabs
   },
-  mixins: [tableMixin, mainMixin],
+  mixins: [mainMixin, tableMixin],
   created(){
     let that = this;
     documentTitle('订单 - 售后列表');
@@ -155,20 +201,26 @@ export default {
     //在Query组件初始化
     //this.orderAfterSaleQuery();
   },
+  computed: {
+    afterSaleStatusTab() {
+      let d = Constant.AFTER_SALE_STATUS('value_key');
+      return {'全部': '', ...d}
+    },
+  },
   data(){
     return {
       dataItem: {
         items: [],
         num: 0
       },
-      afterSaleStatus: Constant.AFTER_SALE_STATUS,
+      afterSaleStatus: Constant.AFTER_SALE_STATUS(),
       afterSaleOptType: Constant.AFTER_SALE_OPT_TYPE(),
+      afterSaleHandleLoading: Constant.AFTER_SALE_HANDLE_LOADING(),
       payStatus: Constant.PAY_STATUS,
       query: {},
     }
   },
   methods: {
-
     initQuery(resetData) {
       let provinceCode = '';
       if(resetData && resetData.province_code) provinceCode = resetData.province_code;
@@ -177,11 +229,15 @@ export default {
         province_code: provinceCode,
         city_id: '',
         condition: '',
-        item: '',
         status: '',
         opt_type: '',
         begin_date: '',
         end_date: '',
+        flag_7: null,
+        flag_2: null,
+        handle_begin_date: '',
+        handle_end_date: '',
+        operator_id: '',
         page: 1,
         page_size: Constant.PAGE_SIZE
       });
@@ -215,37 +271,6 @@ export default {
     myCallBack(res){
       this.orderAfterSaleQuery();
     },
-    //导出
-    async afterSaleListExport() {
-      let api = Config.api.afterSaleListExport;
-      let {city_id, status, opt_type, condition, item, begin_date, end_date} = this.query;
-      let query = {
-        city_id,
-        status,
-        opt_type,
-        condition,
-        item,
-        begin_date,
-        end_date
-      }
-
-      //判断是否可导出
-      this.$loading({ isShow: true,  isWhole: true });
-      let res = await Http.get(`${api}_check`, {
-        province_code: this.query.province_code,
-        ...query
-      });
-      if(res.code === 0){
-        let queryStr = `${api}?province_code=${this.query.province_code}`;
-        for (let item in query) {
-          queryStr += `&${item}=${query[item]}`
-        }
-        window.open(queryStr);
-      }else{
-        this.$message({ title: '提示', message: res.message, type: 'error' });
-      }
-      this.$loading({ isShow: false });
-    },
     //获取售后列表
     async orderAfterSaleQuery(){
       this.$loading({isShow: true, isWhole: true});
@@ -258,24 +283,44 @@ export default {
       }
     },
     //售后详情
-    orderShowHideAfterSaleDetail(data){
+    orderShowHideAfterSaleDetail(item){
       let pc = this.viewGetPageComponents('DetailOrderAfterSale');
-      pc.orderShowHideAfterSaleDetail(data);
+      pc.orderShowHideAfterSaleDetail(item);
+    },
+    //分配
+    orderShowHideAllocateClose(ids){
+      let pc = this.viewGetPageComponents('Allocate');
+      pc.orderShowHideAllocateClose(ids);
+    },
+    //二次处理
+    orderShowHideHandleSecond(item){
+      let pc = this.viewGetPageComponents('HandleSecond');
+      pc.orderShowHideHandleSecond(item);
+    },
+
+    //是否禁用选择
+    returnSelectStatus(item){
+      return item.status === 'init' ? true : false;
+    },
+
+    //返回是否二次退货
+    retuHandleSecond(item){
+      //如已二次处理
+      if(item.handle_second_time) return;
+
+      //完成小于72小时，可二次处理
+      let date = DataHandle.returnDateStr();
+      let hours = DataHandle.dateTimeCalc(item.done_time, date, 'hours');
+      if(hours < 72) return true;
+      return false;
     }
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="scss" scoped>
   @import '@/share/scss/table.scss';
-  .after-sale {
-    .form-search {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
     .order-no {
       color: inherit;
       padding: 5px 10px 5px 0;
@@ -284,15 +329,6 @@ export default {
     }
     .order-no:hover {
       font-weight: 600;
-    }
-    .attrs{
-      span{
-        border: 1px solid #999;
-        border-radius: 3px;
-        padding: 1px 3px;
-        font-size: 12px;
-        margin-right: 5px;
-      }
     }
 
     .new-message {
@@ -313,10 +349,23 @@ export default {
       left: 38px;
     }
 
-
-  }
-
-
+    //超过七小时 超过两小时
+    .grade7, .grade2{
+      display: inline-block;
+      width: 14px;
+      height: 16px;
+      margin-left: 5px;
+      position: relative;
+      top: 1px;
+      //超过七小时
+      &.grade7{
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAYAAAAmlE46AAAAAXNSR0IArs4c6QAAATtJREFUKBVjZICC/7q6ggx//kQx/P9vxcDIKAcUfgxkH2NgYVnNeOXKS7g6bW1Hhn//ehn/a2hsByq8CZRIBirkgSlAov8C2SeB+DlQnQFQjTKQ/sMCJH4COflICtGZzEABK7Dg//9wOSYgawqcRwKDEaQW6NzrQEqDaH1Ap4JsBIGpEIp4EqJRWHghUMtn4rUxMIA1Mh49+hkYSItI0Pgf7EeQhv86OprAeLwG1fwdaNBSIPsRMMQVgbQ6kK8OZAsD6YcMTEzFUHUQ6r+m5h4gfvRfWxuUADDAf0tLTgxBkABQUwAohP//R7gEq0KgICxUIfI6OpuBTuFk0NJyxqUBpzjQ1nIg3oBTAVQC1UaQIBfXXCDpAtQsD1WDlcLQyHj27Btg6C0BqvbGqgOf4P+GBqb/oaGgxI0TAADERlgLIYfinAAAAABJRU5ErkJggg==");
+      }
+      //超过两小时
+      &.grade2{
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAQCAYAAAAmlE46AAAAAXNSR0IArs4c6QAAAVJJREFUKBWVkrFKA0EURe+bhMRIQMRSiIhFLK3TiXY22gSygk0KCwUVf8Af2KhgtFFBUYRYWthYC36BWBoLEewskpUk17djpljdyLrNY+6cM8u8eYL+d+hxNJDAI1kiUADxIiL3Zjh7vXksb47zvdYsKL7UKu1bCJ4UrBLMO8BVgXQ1f9BDXknMAJwCpJNWKdC/bDjwZ1UppVlJmciWEeAgkiRcqAf4XvsR5HRCRzHpmBBWu55c+iatODKUPYPIx39kK1ZPrXSeVBQB0w42Kan3OlwL1/oELQouDaSpvZwke0WFi9rYMd18JmXbebZqk+78Squ5v8JCZKO/qG0xF5djtxIshh3WN7PdjoX6ob2jA8aXMjc6Gbm95WDOZYNqRCyXpQuYI73X+iDB5RExDPPMnKg4f+BxwkFx9Ze4eiXvOocXnwwW4oQ/M+7QNBp2uAdyX+R1cejQ/GkLAAAAAElFTkSuQmCC");
+      }
+    }
 </style>
 <style lang="scss">
   @import '@/share/scss/table.global.scss';

@@ -17,32 +17,37 @@
                 :row-key="rowIdentifier"
                 :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column width="20"/>
-        <el-table-column prop="title" label="名称" min-width="200">
+        <!-- <el-table-column width="20"/> -->
+        <el-table-column prop="title" label="名称" min-width="200" align="center">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="rank" label="排序" min-width="200">
+        <el-table-column prop="rank" label="排序" min-width="200" align="center">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">
               {{ scope.row.rank }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="created" label="创建时间" min-width="200">
+        <el-table-column prop="created" label="创建时间" min-width="200" align="center">
           <template slot-scope="scope">
             <div :class="isEllipsis(scope.row)">{{ scope.row.created }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100" align="center">
+        <el-table-column label="操作" width="160" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
               @command-visible="handleCommandVisible"
               :list="[
+              {
+                title: '查看商品',
+                isDisplay: auth.isAdmin || auth.ItemQueryByItemTag,
+                command: () => handleShowDetail('DetailItemTags', scope.row)
+              },
               {
                 title: '修改',
                 isDisplay: auth.isAdmin || auth.ItemTagsEdit,
@@ -79,6 +84,8 @@
     },
     created() {
       this.getData();
+      // console.log(this.auth);
+      
     },
     data() {
       return {
@@ -100,6 +107,20 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+
+      //重写删除数据提示
+      handleDelete(data){
+      this.$messageBox.confirm(`慎用：该专区内的运营商品会被全部删除`, '确定删除这项运营专区？', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center:true
+      }).then(() => {
+        this.deleteData(data);
+      }).catch(() => {
+        //console.log('取消');
+      });
+    },
       //删除数据
       async deleteData(data) {
         this.$loading({ isShow: true });

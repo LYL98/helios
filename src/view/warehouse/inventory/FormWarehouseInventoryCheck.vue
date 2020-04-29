@@ -1,9 +1,10 @@
 <template>
-  <form-layout title="盘点" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="drawer">
+  <form-layout title="盘点" :isShow="isShow" direction="ttb" :before-close="handleCancel" type="dialog" width="840px">
     <el-form class="custom-form" size="mini" label-position="right" label-width="140px" :model="detail" ref="ruleForm" :rules="rules">
-      <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
-      <h6 class="subtitle">盘点信息</h6>
       <el-row>
+        <el-col :span="12">
+          <el-form-item label="商品编号/名称">{{detail.item_code}}/{{detail.item_title}}</el-form-item>
+        </el-col>
         <el-col :span="12">
           <el-form-item label="批次">{{detail.batch_code}}</el-form-item>
         </el-col>
@@ -12,6 +13,12 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="库存数量">{{detail.num}}件</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="商品过期时间">{{detail.due_date || '-'}}</el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="库存过期时间">{{detail.stock_due_date || '-'}}</el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -53,7 +60,7 @@
         <el-row v-for="(item, index) in moveTrays" :key="index">
           <el-col :span="12">
             <el-form-item label="移入仓库" class="is-required">
-              <cascader-warehouse-tray v-if="isShow" size="medium" isShowTmpWarehouse :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
+              <cascader-warehouse-tray v-if="isShow" size="medium" :storehouseId="storehouseId" v-model="item.tray_ids" @change="(v)=>changeTray(v, index)"/>
               <div v-if="item.tray_ids_error" class="el-form-item__error">{{item.tray_ids_error}}</div>
             </el-form-item>
           </el-col>
@@ -157,7 +164,7 @@ export default {
         this.handleCancel(); //隐藏
         //刷新数据(列表)
         let pc = this.getPageComponents('DetailWarehouseInventory');
-        pc.wareTrayItemQeruy();
+        pc.wareTrayItemQuery();
       }else{
         this.$message({message: res.message, type: 'error'});
       }

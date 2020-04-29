@@ -1,11 +1,13 @@
 <template>
   <div class="label pre">
+    <!--  @click.native="clickTag(item.title)" -->
     <el-tag
       :type="judgeTag(item.title) ? 'danger' : 'info'"
       v-for="(item, index) in dataItem"
       :key="index"
-      style="margin-right: 5px; margin-bottom: 5px; cursor:pointer;"
-      @click.native="clickTag(item.title)">
+      style="margin-right: 5px; margin-bottom: 5px; "
+      :class="judgeTag(item.title)?'':'mytag'"
+     >
         {{item.title}}
     </el-tag>
   </div>
@@ -96,5 +98,7 @@ export default {
 </script>
 
 <style scoped>
-
+.mytag{
+  display: none;
+}
 </style>

@@ -11,10 +11,12 @@
           <my-select-city
             size="small"
             v-model="editQuery.city_id"
-            placeholder="县域"
+            placeholder="全部"
             clearable
             :provinceCode="editQuery.province_code"
             @change="changeQuery"
+            showAll
+            :disabled="editQuery.province_code ? false : true"
           />
         </my-query-item>
       </el-col>

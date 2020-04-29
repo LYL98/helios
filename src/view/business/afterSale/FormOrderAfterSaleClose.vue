@@ -10,18 +10,22 @@
         <el-form-item label="处理件数" prop="num">
           <input-number v-model="editData.num" style="width: 190px;" unit="件"/>
         </el-form-item>
-        <el-form-item label="是否退款" class="required">
-          <el-radio v-model="editData.isNeedRefund" :label="true" border size="small">是</el-radio>
-          <el-radio v-model="editData.isNeedRefund" :label="false" border size="small">否</el-radio>
+        <el-form-item label="是否退货" class="required">
+          <el-radio v-model="editData.if_restore" :label="true" border size="small">是</el-radio>
+          <el-radio v-model="editData.if_restore" :label="false" border size="small">否</el-radio>
         </el-form-item>
-        <el-form-item label="退款金额" prop="refund" v-if="editData.isNeedRefund">
+        <el-form-item label="是否退款" class="required">
+          <el-radio v-model="editData.if_refund" :label="true" border size="small">是</el-radio>
+          <el-radio v-model="editData.if_refund" :label="false" border size="small">否</el-radio>
+        </el-form-item>
+        <el-form-item label="退款金额" prop="refund" v-if="editData.if_refund">
           <input-price v-model="editData.refund" :min="0.01" :max="returnPrice(detail.amount_real)" :unit="`最多可退款金额：${returnPrice(detail.amount_real)} 元`"/>
         </el-form-item>
         <el-form-item label="处理描述" prop="opt_detail">
           <el-input v-model.trim="editData.opt_detail" type="textarea" :rows="3" resize="none"></el-input>
         </el-form-item>
         <el-form-item style="text-align: right;">
-          <el-button @click.native="cancel">关 闭</el-button>
+          <el-button @click.native="cancel">取 消</el-button>
           <el-button type="primary" @click.native="submit">确认提交</el-button>
         </el-form-item>
       </el-form>
@@ -43,8 +47,6 @@ export default {
   },
   created() {
     this.initEditDate();
-    this.$data.rules.num[1].max = this.detail.count_real;
-    this.$data.rules.num[1].message = `件数不能大于${this.detail.count_real}件`;
   },
   data(){
     
@@ -55,7 +57,7 @@ export default {
       priceChange: Constant.PRICE_CHANGE,
       afterSaleResult: Constant.AFTER_SALE_RESULT,
       editData: {
-        isNeedRefund: false,
+        if_refund: false,
         opt_detail: '',
         opt_type: '',
         refund: '',
@@ -93,7 +95,8 @@ export default {
 
     initEditDate() {
       this.editData = {
-        isNeedRefund: false,
+        if_restore: false,
+        if_refund: false,
         opt_detail: '',
         opt_type: '',
         num: '',
@@ -103,15 +106,13 @@ export default {
 
     //取消
     cancel(){
-      let that = this;
-      that.initEditDate();
-      that.$refs['ruleForm'].resetFields();
-      that.orderShowHideAfterSaleClose();
+      this.initEditDate();
+      this.$refs['ruleForm'].resetFields();
+      this.orderShowHideAfterSaleClose();
     },
     //提交结果
     submit(){
-      let that = this;
-      that.$refs['ruleForm'].validate((valid) => {
+      this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
           this.orderAfterSaleUpdate();
         }
@@ -125,7 +126,9 @@ export default {
         aftersale_id: detail.id,
         opt_detail: editData.opt_detail,
         opt_type: editData.opt_type,
-        refund: editData.isNeedRefund ? editData.refund : 0,
+        if_restore: editData.if_restore,
+        if_refund: editData.if_refund,
+        refund: editData.if_refund ? editData.refund : 0,
         num: editData.num,
       });
       this.$loading({isShow: false});
@@ -142,7 +145,10 @@ export default {
     //关闭显示
     orderShowHideAfterSaleClose(data){
       if(data){
+        this.$data.editData.refund = data.max_refund_amount;
         this.$data.detail = data;
+        this.$data.rules.num[1].max = data.count_real;
+        this.$data.rules.num[1].message = `件数不能大于${data.count_real}件`;
         this.$data.isShow = true;
       }else{
         this.$data.isShow = false;

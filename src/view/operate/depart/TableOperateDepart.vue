@@ -69,8 +69,11 @@
                   })
                 },{
                   title: '司机轨迹',
-                  isDisplay: (auth.isAdmin || auth.OperateDepartDriverTrack) && scope.row.assign_confirm_time,
-                  command: () => handleShowDetail('DetailOperateDepartDriverTrack', scope.row)
+                  //&& scope.row.assign_confirm_time
+                  isDisplay: (auth.isAdmin || auth.OperateDepartDriverTrack)&& scope.row.assign_confirm_time,
+                  //command: () => handleShowDetail('DetailOperateDepartDriverTrack', scope.row)
+                  command: () => handleLocationItem(scope.row.line)
+
                 },
                 /*暂时替换打印，权限共用*/
                 {
@@ -90,18 +93,42 @@
       </el-table>
     </div>
     <!-- 表格end -->
+      
+    <!--  width="800px"-->
+     <detail-layout
+      title="司机轨迹"
+      :isShow="location.visible"
+      type="drawer"
+      direction="ttb"
+      :before-close="handleCancel"
+    >
+        <!-- :center="location.item.storehouse.geo" -->
+        <!-- :marker="location.marker" -->
+      <el-location
+        v-if="location.visible"
+        :center="location.item.deliver.last_geo.geo"
+        :marker="location.marker"
+        style="height:100%;padding:0 15px"
+      />
+    </detail-layout>
   </div>
 </template>
 
 <script>
+  import { Dialog} from 'element-ui';
+  import { Location} from '@/common';
+
   import { Http, Config, Constant } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
   import queryTabs from '@/share/layout/QueryTabs';
+  import detailLayout from "@/share/layout/Layout";
 
   export default {
     name: 'TableOperateDepart',
     components: {
-      'query-tabs': queryTabs
+      'query-tabs': queryTabs,
+      'el-location': Location,
+      'detail-layout': detailLayout,
     },
     mixins: [tableMixin],
     created() {
@@ -125,7 +152,13 @@
           { label: '创建时间', key: 'created', width: '3', isShow: false },
           { label: '更新时间', key: 'updated', width: '3', isShow: false }
         ],
-        dataItem: []
+        dataItem: [],
+        location: {
+          visible: false,
+          item: {},
+          marker:[],//所有门店经纬度
+        },
+
       }
     },
     methods: {
@@ -144,6 +177,8 @@
           this.$data.status = '';
         }
         this.$data.query = query; //赋值，minxin用
+        // console.log(this.$data.query);
+        
         this.$loading({isShow: true, isWhole: true});
         let res = await Http.get(Config.api.supConfirmWait, {...query, status: this.$data.status});
         this.$loading({isShow: false});
@@ -159,6 +194,43 @@
         url += `&date=${this.query.delivery_date}`;
         url += `&line_id=${data.line.id}`;
         window.open(url, '_blank');
+      },
+      //获取司机轨迹
+      async handleLocationItem(item) {
+        // console.log(item);
+        
+        let delivery_date = this.$data.query.delivery_date
+        let line_id = item.id
+        // let line_id = 51
+
+        let res = await Http.get(Config.api.supDeliveryDeliverLocus, {delivery_date: delivery_date,line_id:line_id});
+        if (res.code === 0) {
+          console.log(res.data);
+
+          this.$data.location = {
+            visible: true,
+            item: res.data,
+          };
+          let temp = []
+          res.data.stores.map((v)=>{
+           return temp.push({
+              lng:v.geo.lng,
+              lat: v.geo.lat
+            })
+          })
+          this.$data.location.marker = temp
+          
+        } else {
+          this.$message({title: '提示', message: res.message, type: 'error'});
+        }
+      },
+      //关闭司机轨迹
+      handleCancel(){
+        let that = this
+        this.$data.location = {
+            visible: false,
+            item: [],
+          };
       }
     }
   };

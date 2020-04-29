@@ -55,6 +55,11 @@ const router = new Router({
       component: () => import('@/view/item/pricing/Main')
     },
     {
+      path: '/item/inventory/market',
+      name: 'InventoryMarket',
+      component: () => import('@/view/item/inventory-market/main')
+    },
+    {
       path: '/item/supplier',
       name: 'ItemSupplier',
       component: () => import('@/view/item/supplier/Main')
@@ -84,17 +89,37 @@ const router = new Router({
       name: 'ItemLocalPurchase',
       component: () => import('@/view/item/localPurchase/Main')
     },
+    {
+      path: '/item/sup-distribute-plan',
+      name: 'ItemSupDistributePlan',
+      component: () => import('@/view/item/distribute/distribute-plan')
+    },
+    {
+      path: '/item/sup-distribute-waybill',
+      name: 'ItemSupDistributeWaybill',
+      component: () => import('@/view/item/distribute/distribute-waybill')
+    },
 
     /*业务*/
     {
       path: '/business/merchant/store/query',
       name: 'MerchantStoreQuery',
-      component: () => import('@/view/business/merchant/List')
+      component: () => import('@/view/business/merchant/merchant')
+    },
+    {
+      path: '/business/merchant/intention/query',
+      name: 'IntentionMerchantQuery',
+      component: () => import('@/view/business/merchant/intention')
     },
     {
       path: '/business/merchant/refund/query',
       name: 'MerchantRefundQuery',
       component: () => import('@/view/business/merchantRefund/Refund')
+    },
+    {
+      path: '/business/merchant/customer/query',
+      name: 'AdvicedItemQuery',
+      component: () => import('@/view/business/merchantCustomer/Customer')
     },
     {
       path: '/business/merchant/grade',
@@ -110,6 +135,11 @@ const router = new Router({
       path: '/business/merchant/outer/tag',
       name: 'MerchantOuterTags',
       component: () => import('@/view/business/merchantOuterTags/Main')
+    },
+    {
+      path: '/business/merchant-store-tags',
+      name: 'MerchantStoreTags',
+      component: () => import('@/view/business/merchant-store-tags/main')
     },
     {
       path: '/business/order/list',
@@ -196,16 +226,6 @@ const router = new Router({
 
     /*仓库*/
     {
-      path: '/warehouse/quality/control',
-      name: 'WarehouseQualityControl',
-      component: () => import('@/view/warehouse/qualityControl/Main')
-    },
-    {
-      path: '/warehouse/stock/pending',
-      name: 'WarehouseStockPending',
-      component: () => import('@/view/warehouse/stockPending/Main')
-    },
-    {
       path: '/warehouse/inventory',
       name: 'WarehouseInventory',
       component: () => import('@/view/warehouse/inventory/Main')
@@ -216,14 +236,14 @@ const router = new Router({
       component: () => import('@/view/warehouse/inventoryMove/Main')
     },
     {
-      path: '/warehouse/out/storage',
+      path: '/warehouse/market/out/storage',
       name: 'WarehouseOutStorage',
-      component: () => import('@/view/warehouse/outStorage/Main')
+      component: () => import('@/view/warehouse/market-out-storage/main')
     },
     {
-      path: '/warehouse/distribute',
-      name: 'WarehouseDistribute',
-      component: () => import('@/view/warehouse/distribute/Main')
+      path: '/warehouse/distribute/out/storage',
+      name: 'DistributeOutStorage',
+      component: () => import('@/view/warehouse/distribute-out-storage/main')
     },
     {
       path: '/warehouse/list',
@@ -233,29 +253,64 @@ const router = new Router({
 
     /*场地*/
     {
-      path: '/operate/receiving',
-      name: 'OperateReceiving',
-      component: () => import('@/view/operate/receiving/Main')
+      path: '/operate/receiving-purchase',
+      name: 'OperateReceivingPurchase',
+      component: () => import('@/view/operate/receiving-purchase/main')
     },
     {
-      path: '/operate/sort',
-      name: 'OperateSort',
-      component: () => import('@/view/operate/sort/Main')
+      path: '/operate/receiving-distribute',
+      name: 'OperateReceivingDistribute',
+      component: () => import('@/view/operate/receiving-distribute/main')
+    },
+    {
+      path: '/operate/item-sup-accept',
+      name: 'OperateItemSupAccept',
+      component: () => import('@/view/operate/item/sup-accept')
+    },
+    {
+      path: '/operate/item-sup-stock',
+      name: 'OperateItemSupStock',
+      component: () => import('@/view/operate/item/sup-stock')
+    },
+    {
+      path: '/operate/print-order',
+      name: 'OperatePrintOrder',
+      component: () => import('@/view/operate/print-order/main')
     },
     {
       path: '/operate/truck/load',
       name: 'OperateTruckLoad',
-      component: () => import('@/view/operate/truckLoad/Main')
+      component: () => import('@/view/operate/truck-load/main')
+    },
+    {
+      path: '/operate/truck-load-progress',
+      name: 'OperateTruckLoadProgress',
+      component: () => import('@/view/operate/truck-load-progress/main')
     },
     {
       path: '/operate/truck/load/delay',
       name: 'OperateTruckLoadDelay',
-      component: () => import('@/view/operate/truckLoadDelay/Main')
+      component: () => import('@/view/operate/truck-load-delay/main')
     },
     {
       path: '/operate/depart',
       name: 'OperateDepart',
       component: () => import('@/view/operate/depart/Main')
+    },
+    {
+      path: '/operate/dis/truck/load',
+      name: 'OperateDisTruckLoad',
+      component: () => import('@/view/operate/dis-truck-load/main')
+    },
+    {
+      path: '/operate/dis/truck/load/progress',
+      name: 'OperateDisTruckLoadProgress',
+      component: () => import('@/view/operate/dis-truck-load-progress/main')
+    },
+    {
+      path: '/operate/dis/truck/load/delay',
+      name: 'OperateDisTruckLoadDelay',
+      component: () => import('@/view/operate/dis-truck-load-delay/main')
     },
     {
       path: '/operate/line/list',
@@ -428,11 +483,35 @@ const router = new Router({
 
 let myInfo = {}, nextPage = ()=>{}, auth = {}, page = '', pageName = '';
 
+export const resetLoginCache = () => {
+  myInfo && (myInfo._tokenExpirationDate = 0);
+};
+
 //判断是否已登录
 const getIsLogin = async ()=>{
+
+  // 判断内存中，登录态是否超时
+  if (myInfo.id && myInfo._tokenExpirationDate > new Date().getTime()) {
+
+    if (judgeAuth()) {
+      nextPage();
+    } else {
+      Notification.error({
+        title: '提示',
+        message: '您没有权限访问',
+        offset: 50
+      });
+    }
+
+    return;
+  }
+
+  myInfo = {}; // 如果内存中的登录态已经失效，则初始化登录信息。
+
   let res = await Http.get(Config.api.signIsLogin, {});
   if(res.code === 0){
     myInfo = res.data;
+    myInfo._tokenExpirationDate = new Date().getTime() + 12 * 3600 * 1000;
     getAuthorityList();//用户权限
   }else if(res.code !== 200){
     //不包括登录已失效
@@ -440,6 +519,7 @@ const getIsLogin = async ()=>{
       type: 'error'
     });
   }
+
 }
 
 //路由跳转时是否有权限
@@ -481,7 +561,10 @@ const getAuthorityList = ()=>{
     install(Vue){
       Vue.prototype.$auth = a; //放入全局
       Vue.prototype.$myInfo = myInfo; //放入全局
-      //全局区域
+
+      // $province 缓存 用户选中的区域
+      // 如果为空，则默认使用权限所在区域
+      // 如果为空，则该字段缓存的省code就为空
       let province = Method.getLocalStorage('globalProvince');
       Vue.prototype.$province = province.code ? province : {province_code: myInfo.province_code};
     }

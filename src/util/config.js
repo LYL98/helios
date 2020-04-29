@@ -38,14 +38,20 @@ const Config = (() => {
       orderCancel: apiM + '/order/cancel', //取消订单
 
       afterSaleQuery: apiM + '/aftersale/query', //获取负责处理的售后单
-      afterSaleListExport: apiM + '/aftersale/list/export', // 售后单列表导出
       afterSaleDetail: apiM + '/aftersale/detail', //获取售后单详情
-      afterSaleUpdate: apiM + '/aftersale/update', //售后处理
+      afterSaleUpdate: apiM + '/aftersale/handle_done', //售后处理
       aftersaleAppend: apiM + '/aftersale/append', //售后单回复
+      aftersaleAllocateToOperator: apiM + '/aftersale/allocate_to_operator', //批量将售后单分配给客服人员以待处理
+      aftersaleHandleLoading: apiM + '/aftersale/handle_loading', //更新售后单处理进度
+      aftersaleHandleSecondTime: apiM + '/aftersale/handle_second_time', //二次处理
+      aftersaleListExport: apiM +'/aftersale/list/export', //售后汇总表导出
+      aftersaleRespListExport: apiM +'/aftersale_resp/list/export', //售后追责表导出
+
 
       //导出相关接口
       supplierExport: apiM + '/supplier/export', //供应商导出 supplier/export.  supplier/export_check.
       supOutExport: apiM + '/sup_out/export', //出库记录 sup_out/export. sup_out/export_check
+      supInStockExport: apiM + '/sup_in_stock/export', //出库记录 sup_in_stock/export. sup_in_stock/export_check
       supModifyExport: apiM + '/sup_modify/export', //变动记录  sup_modify/export   sup_modify/export_check
       fromSupplierOrderExport: apiM + '/from_supplier/order/export', //采购单  from_supplier/order/export. from_supplier/order/export_check
       supBillExport: apiM + '/sup_bill/export', //对账单 sup_bill/export. sup_bill/export_check
@@ -77,6 +83,7 @@ const Config = (() => {
 
       //采购 预采 反采
       fromSupplierOrderQuery: apiM + '/from_supplier/order/query', //订单列表
+      fromSupplierOrderBatchAdd: apiM + '/from_supplier/order/batch_add', //批量采购
       fromSupplierOrderAdd: apiM + '/from_supplier/order/add', //订单新增
       fromSupplierOrderEdit: apiM + '/from_supplier/order/edit', //订单修改
       fromSupplierOrderAudit: apiM + '/from_supplier/order/audit', //预采采购单审核
@@ -101,6 +108,8 @@ const Config = (() => {
       itemEdit: apiM + '/item/edit', //商品编辑
       itemInnerTagEdit: apiM + '/item/inner_tag/edit', //商品加价标签修改
       itemQuery: apiM + '/item/query',//商品列表
+
+
       itemUnderGround: apiM + '/item/under_ground',//商品下架
       itemOnGround: apiM + '/item/on_ground', //商品上架（包括编辑）
       itemDetail: apiM + '/item/detail',//商品详情
@@ -111,6 +120,28 @@ const Config = (() => {
       itemPriceAudit: apiM + '/item/price/audit', //商品定价审核
       itemChgSupplier: apiM + '/item/chg_supplier', //修改反采商品的供应商
       itemPriceDetail: apiM + '/item/price/detail', //商品供应商报价列表
+
+      // 商品 - 调拨 - 调拨计划
+      itemSupDistributePlanQuery: apiM + '/sup_distribute_plan/query', // 查询
+      itemSupDistributePlanDetail: apiM + '/sup_distribute_plan/detail', // 详情
+      itemSupDistributePlanAdd: apiM + '/sup_distribute_plan/add', // 新增
+      itemSupDistributePlanModify: apiM + '/sup_distribute_plan/edit', // 修改
+      itemSupDistributePlanClose: apiM + '/sup_distribute_plan/close', // 关闭
+      itemSupDistributePlanAudit: apiM + '/sup_distribute_plan/audit', // 审核
+
+      itemSupDistributeWaybillAdd: apiM + '/sup_distribute/add', // 生成调拨单
+      itemSupDistributeGetDriver: apiM + '/sup_distribute/get_driver', // 获取当前可用司机
+
+      // 商品 - 调拨 - 调拨单
+      itemSupDistributeWaybillQuery: apiM + '/sup_distribute/query', // 查询
+      itemSupDistributeWaybillDetail: apiM + '/sup_distribute/detail', // 详情
+      itemSupDistributeWaybillModify: apiM + '/sup_distribute/edit', // 修改
+      itemSupDistributeWaybillClose: apiM + '/sup_distribute/close', // 关闭
+
+      // 商品 - 库存销售
+      supModifyStockSaleQuery: apiM + '/sup_modify_stock/sale_query', //库存销售查询
+      supModifyStockEditSaleAmount: apiM + '/sup_modify_stock/edit_sale_amount', //确认销售
+      supModifyStockSaleExport: apiM + '/sup_modify_stock/sale_export', //库存销售导出
 
       // 促销活动
       itemScopePromotionQuery: apiM + '/scope_promotion/query', // 促销活动查询
@@ -216,33 +247,17 @@ const Config = (() => {
 
       //仓库库存
       wareTrayQeruy: apiM + '/sup_stock/query', //查询库存
-      wareTrayItemQeruy: apiM + '/ware_tray_item/query', //查询具体托盘的库存
+      wareTrayItemQuery: apiM + '/ware_tray_item/query', //查询具体托盘的库存
 
       supOutAdd: apiM + '/sup_out/add', //出库
       supCheckAdd: apiM + '/sup_check/add', //盘点
       supMoveAdd: apiM + '/sup_move/add', //移库
       supModifyAdd: apiM + '/sup_modify/add', //变动
+      supModifyStockQa: apiM + '/sup_modify/stock_qa', //变动(库内品控)
       supDistributeAdd: apiM + '/sup_distribute/add', //调拨单
 
-      //品控待入库、调拨单
-      supPurchaseQuery: apiM + '/sup_purchase/query', //采购单查询，包括预采和反采订单
-      supDistributeQuery: apiM + '/sup_distribute/query', //调拨单查询
-      supInStockAdd: apiM + '/sup_in_stock/add', //入库单新增
-      supDistributeDetail: apiM + '/sup_distribute/detail', //调拨单详情
-      supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
-      supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //反采购入库单关闭
-      supInStockEditNum: apiM + '/sup_in_stock/edit_num', //修改品控入库数量
-
-      supAcceptAdd: apiM + '/sup_accept/add', //场地收货
-      supOutStockEditNum: apiM + '/sup_out_stock/edit_num', //场地修改品控数量
-
-
-      //仓管待入库
-      supInStockShMonitorQuery: apiM + '/sup_in_stock/sh_monitor_query', //待入库
-      supInStockShMonitorAdd: apiM + '/sup_in_stock/sh_monitor_add', //确认入库
-      supInStockDetail: apiM + '/sup_in_stock/detail', //品控单详情
-      supInStockExport: apiM + '/sup_in_stock/export', //入库单导出
-
+      //变动记录
+      supInStockQuery: apiM + '/sup_in_stock/query', //入库单查询(变动记录)
       supCheckQuery: apiM + '/sup_check/query', //盘点查询(变动记录)
       supModifyQuery: apiM + '/sup_modify/query', //变动查询(变动记录)
       supDistributeRecordQuery: apiM + '/sup_p_distribute/query', //调拨单查询(变动记录)
@@ -250,25 +265,63 @@ const Config = (() => {
       supOutQuery: apiM + '/sup_out/query', //出库单查询(变动记录)(场地)
       supOnGroundQuery: apiM + '/sup_on_ground/query', //上架记录(变动记录)
 
+      supInStockDetail: apiM + '/sup_in_stock/detail', //入库单查询(变动记录详情)
       supCheckDetail: apiM + '/sup_check/detail', //盘点查询(变动记录详情)
       supModifyDetail: apiM + '/sup_modify/detail', //变动查询(变动记录详情)
       supDistributeRecordDetail: apiM + '/sup_p_distribute/detail', //调拨单查询(变动记录详情)
       supMoveDetail: apiM + '/sup_move/detail', //移库查询(变动记录详情)
       supOutDetail: apiM + '/sup_out/detail', //出库单查询(变动记录详情)
 
+      //出库计划
       supOutPlanQuery: apiM + '/sup_out_plan/query', //出库计划查询
+      supDistributeOutPlanQuery: apiM + '/sup_distribute_out_plan/query', //调拨计划
+      wareTrayItemList: apiM + '/ware_tray_item/list', //查询具体托盘的库存list
+      supOutAddWithSalePlan: apiM + '/sup_out/add_with_sale_out_plan', //根据销售出库计划进行出库的操作
+      supOutAddWithDistPlan: apiM + '/sup_out/add_with_dist_plan', //根据出库计划出库
 
-      //场地收货
+      // 场地 - 场地商品 - 收货单
+      operateItemSupAcceptQuery: apiM + '/sup_accept/query', // 查询
+      operateItemSupAcceptDetail: apiM + '/sup_accept/detail', // 详情
+      operateItemSupAcceptConfirm: apiM + '/sup_accept/confirm', // 确认
+
+      // 场地 - 场地商品 - 场地库存
+      operateItemSupStockQuery: apiM + '/sup_accept/stock/query', // 查询
+      operateItemSupStockGetDistributes: apiM + '/sup_distribute_allocate/get_distributes', // 调拨时，获取该商品关联的调拨单信息
+      operateItemSupStockDistribute: apiM + '/sup_distribute/allocate_num', // 调拨
+      operateItemSupStockInStock: apiM + '/sup_accept/in_stock', // 入库
+      operateItemSupStockAllocate: apiM + '/sup_accept/allocate', // 分配
+      operateItemSupStockRecord: apiM + '/sup_accept/stock/record/query', // 变动记录
+
+
+      //场地品控收货(采购)
       supPurchaseQueryForAccept: apiM + '/sup_purchase/query_for_accept', //场地收货专用反采订单查询
+      supAcceptPurAdd: apiM + '/sup_accept/pur/add', //场地收货(采购)
+      supFromSupplierInClose: apiM + '/sup_from_supplier/in_close', //品控单关闭
+      supOutStockEditNum: apiM + '/sup_out_stock/edit_num', //场地修改品控数量
 
-      supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
-      supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情
+      //场地品控收货(调拨)
+      supDistributeQueryForAccept: apiM + '/sup_distribute/query_for_accept', //场地调拨列表
+      supAcceptDistributeAdd: apiM + '/sup_accept/distribute/add', //场地收货(调拨)
+      supAcceptDistDetail: apiM + '/sup_accept/dist_detail', //场地的调拨品控收货详情
+      supAcceptEditDistributeDetail: apiM + '/sup_accept/edit_distribute_detail', //场地的调拨品控收货修改
+
+
+      //场地品控收货(共用)
+      supPItemDetail: apiM + '/sup_p_item/detail', //商品信息，用于入库 时候查看其一级科学分类，库存期，保质期
+
 
       //分配
       supOutAllocateQuery: apiM + '/sup_out/allocate_query', //待分配记录查询
       supAllocateAdd: apiM + '/sup_allocate/add', //对出库单进行分配
 
+      //打单
+      supItemQueryForPrint: apiM + '/sup_item/query_for_print', //配送装车的打印功能-查询
+      supAllocateDetail: apiM + '/sup_allocate/detail', //某次分配的具体信息
+      supAllocateCityDetail: apiM + '/sup_allocate/city_detail', //某次分配到具体县域的详情
       supAllocateDetailPrint: apiM + '/sup_allocate/detail_print', //打印
+
+      //总览
+      supOutAllocateLoadingQuery: apiM + '/sup_out/allocate_loading_query', //场地总览查询
 
       //装车延时
       supAllocateDelaySortQuery: apiM + '/sup_allocate/delay_sort_query', //装车延时
@@ -288,6 +341,17 @@ const Config = (() => {
       supDeliveryLackHistoryItem: apiM + '/sup_delivery/lack_history/item', //商品缺货缺货历史记录
       supDeliveryLackHistoryStore: apiM + '/sup_delivery/lack_history/store', //确认分配之后用于查看缺货记录中某个商品在各个门店分配的详情
       lineOrderExport: apiM + '/line_order/export', //导出
+      supDeliveryDeliverLocus:apiM + '/sup_delivery/deliver/locus',//配送司机轨迹查询
+
+      //场地调拨装车
+      supDistributeDriverDetail: apiM + '/sup_distribute/driver_detail', //返回某个司机在某天需要调拨的商品汇总(也就是装车界面)
+      supDistributeAllocatedDrivers: apiM + '/sup_distribute/allocated_drivers', //装车页面的司机下拉列表
+      supDistributeDeliveryLackItem: apiM + '/sup_distribute_delivery/lack_item', //调拨发车前确认的缺货列表
+      supDistributeDelivery: apiM + '/sup_distribute/delivery', //发车前确认
+      supDistributeDriverItemDetail: apiM + '/sup_distribute/driver_item_detail', //返回某个司机在某天 某个商品的调拨装车详情
+      supDistributeAllocatedEditNum: apiM + '/sup_distribute_allocate/edit_num', //修改调拨分配的数量(也就是打货)
+      supDistributeAllocateLoading: apiM + '/sup_distribute_allocate/loading', //调拨总览
+      supDistributeAllocateDelaySortQuery: apiM + '/sup_distribute_allocate/delay_sort_query', //调拨装车延迟
 
       //线路
       operateLineAdd: apiM + '/basicdata/line/add', //线路新增
@@ -341,6 +405,7 @@ const Config = (() => {
       baseMerchantGradeList: apiM + '/common/grade/list', //商户级别列表（组件共用）
       baseMerchantInnerTagsList: apiM + '/common/merchant_inner_tags/list', //商户内标签列表（组件共用）
       baseMerchantOuterTagsList: apiM + '/common/merchant_outer_tags/list', //商户外标签列表（组件共用）
+      baseCommonOperatorList: apiM + '/common/operator/list', //运营人员列表（组件共用）
       baseCommonBuyerList: apiM + '/common/buyer/list', //采购员列表（组件共用）
       baseDistributorList: apiM + '/common/distributor/list', //配送人员列表（组件共用）
       baseItemList: apiM + '/common/item/list', //商品列表（组件共用）
@@ -353,6 +418,7 @@ const Config = (() => {
       baseStorehouseList: apiM + '/common/storehouse/list', //获取仓列表（组件共用）
       baseWarehouseList: apiM + '/common/warehouse/list', //获取库列表（组件共用）
       baseWareTrayList: apiM + '/common/ware_tray/list', //获取托盘列表（组件共用）
+      baseStoreTagList: apiM + '/common/store_tag/list', //门店标签列表（组件共用）
 
       basicdataProvinceAdd: apiM + '/basicdata/province/add', //区域新增
       basicdataProvinceEdit: apiM + '/basicdata/province/edit', //区域修改
@@ -390,6 +456,11 @@ const Config = (() => {
       basicdataItemTagsIcons: apiM + '/common/tag_images/list', //商品icon默认标签
       basicdataItemTagsDetail: apiM + '/basicdata/item_tags/detail', //icon标签详情
 
+      itemQueryByItemTag: apiM + '/item/query/by_item_tag',//商品运营专区内查看商品
+      itemTagRankEdit: apiM + '/item/tag/rank/edit',//商品在运营专区内排名修改
+      itemTagAdd: apiM + '/item/tag/add',//将商品添加至指定的运营专区内(批量)
+      itemTagDelete: apiM + '/item/tag/delete',//将运营专区内查看商品删除
+
       basicdataItemInnerTagsAdd: apiM + '/basicdata/item_inner_tags/add',//商品加价标签新增
       basicdataItemInnerTagsEdit: apiM + '/basicdata/item_inner_tags/edit',//商品加价标签修改
       basicdataItemInnerTagsList: apiM + '/basicdata/item_inner_tags/list',//商品加价标签列表
@@ -404,6 +475,11 @@ const Config = (() => {
       basicdataMerchantOuterTagsAdd: apiM + '/basicdata/merchant_outer_tags/add', //商户外标签新增
       basicdataMerchantOuterTagsEdit: apiM + '/basicdata/merchant_outer_tags/edit', //商户外标签修改
       basicdataMerchantOuterTagsDelete: apiM + '/basicdata/merchant_outer_tags/delete', //商户外标签删除
+
+      basicdataStoreTagList: apiM + '/basicdata/store_tag/list', //门店标签列表
+      basicdataStoreTagAdd: apiM + '/basicdata/store_tag/add', //添加门店标签基础数据
+      basicdataStoreTagEdit: apiM + '/basicdata/store_tag/edit', //修改门店标签基础数据
+      basicdataStoreTagDelete: apiM + '/basicdata/store_tag/delete', //删除门店标签基础数据
 
       basicdataGradeList: apiM + '/basicdata/grade/list', //商户等级列表
       basicdataGradeAdd: apiM + '/basicdata/grade/add', //商户级别添加
@@ -423,6 +499,14 @@ const Config = (() => {
       basicdataWarehouseTrayAdd: apiM + '/sup_ware_tray/add', //托盘新增
       basicdataWarehouseTrayEdit: apiM + '/sup_ware_tray/edit', //托盘新增
       basicdataWarehouseTrayDelete: apiM + '/sup_ware_tray/delete', //删除
+
+      // 意向客户
+      intentionMerchantQuery: apiM + '/intention_merchant/query', // 查询
+      intentionMerchantAdd: apiM + '/intention_merchant/add', // 新增
+      intentionMerchantEdit: apiM + '/intention_merchant/edit', // 修改
+      intentionMerchantDetail: apiM + '/intention_merchant/detail', // 详情
+      intentionMerchantAudit: apiM + '/intention_merchant/audit', // 激活 id: intention_merchant_id
+      intentionMerchantDelete: apiM + '/intention_merchant/delete', // 删除
 
       // 商户管理
       merchantList: apiM + '/merchant/list', //商户列表
@@ -448,6 +532,12 @@ const Config = (() => {
       storeUnFreeze: apiM + '/store/unfreeze', //门店解冻
       storeDelete: apiM + '/store/delete', //删除门店
       storeApprove: apiM + '/store/approve',//门店审核
+      storeTagEdit: apiM + '/store/store_tag_relation/edit', //门店标签修改
+
+      //业务-商户-客户提报
+      advicedItemQuery:apiM + "/adviced_item/query",//客户的提报列表
+      advicedItemStatistical:apiM + "/adviced_item/statistical",//提报商品统计
+
 
       memberAdd: apiM + '/member/add', //新用户资料添加
       memberList: apiM + '/member/list', //用户列表
@@ -463,6 +553,8 @@ const Config = (() => {
       roleDetail: apiM + '/system/role/detail',//角色详情
       roleList: apiM + '/system/role/list',//查询权限角色
       roleDelete: apiM + '/system/role/delete',//删除权限角色
+      roleExportCheck: apiM + '/system/role/export_check',//导出检查
+      roleExport: apiM + '/system/role/export',//导出
 
       //banner管理
       systemBannerList: apiM + '/system/banner/list',  // banner列表
@@ -472,7 +564,8 @@ const Config = (() => {
 
       //运营人员
       operatorAdd: apiM + '/operator/add', //运营人员新增
-      operatorList: apiM + '/operator/query', //运营人员列表
+      operatorQuery: apiM + '/operator/query', //运营人员列表，分页查询
+      operatorList: apiM + '/operator/list', // 运营人员列表，可以根据条件 过滤出对应的人员。post = salesman(业务员)
       operatorEdit: apiM + '/operator/edit', //运营人员修改
       operatorDetail: apiM + '/operator/detail', //运营人员详情
       operatorPwdReset: apiM + '/operator/password_reset', //运营人员重置密码
@@ -506,6 +599,8 @@ const Config = (() => {
 
       financeSupBillQuery: apiM + '/sup_bill/query', //对账单查询
       financeSupBillDetail: apiM + '/sup_bill/detail', //对账单详情
+      financeSupBillDetailExportCheck: apiM + '/sup_bill/detail/export_check', //对账单详情导出检查
+      financeSupBillDetailExport: apiM + '/sup_bill/detail/export', //对账单详情导出
       financeSupBillPay: apiM + '/sup_bill/pay', //批量结款
 
       financeSupBDetailQuery: apiM + '/sup_bdetail/query', //账单明细详情查询

@@ -8,7 +8,6 @@
   >
     <el-form-item
       label="职务"
-      required
       prop="post"
       :rules="[{ required: true, message: '请选择职务类型', trigger: 'change' }]"
     >
@@ -20,15 +19,16 @@
     </el-form-item>
     <el-form-item
       label="姓名"
-      required
       prop="realname"
-      :rules="[{ required: true, message: '姓名不能为空', trigger: 'change' }]"
+      :rules="[
+        { required: true, message: '姓名不能为空', trigger: 'change' },
+        { max: 10, message: '请输入10个以内的字符', trigger: 'blur' }
+      ]"
     >
       <el-input placeholder="请输入姓名" v-model="formData.realname"></el-input>
     </el-form-item>
     <el-form-item
       label="车型"
-      required
       prop="driver_car_type"
       v-if="formData.post === 'deliver'"
       :rules="[{ required: true, message: '车型不能为空', trigger: 'change' }]"
@@ -37,7 +37,6 @@
     </el-form-item>
     <el-form-item
       label="车牌"
-      required
       prop="driver_car_num"
       v-if="formData.post === 'deliver'"
       :rules="[{ required: true, message: '车牌不能为空', trigger: 'change' }]"
@@ -46,7 +45,6 @@
     </el-form-item>
     <el-form-item
       label="账号手机号"
-      required
       prop="phone"
       :rules="[
         { required: true, message: '账号手机号不能为空', trigger: 'change' },
@@ -58,7 +56,6 @@
     <el-form-item
       v-if="type === 'add'"
       label="密码"
-      required
       prop="password"
       :rules="[{ required: true, message: '密码不能为空', trigger: 'change' }]"
     >
@@ -72,9 +69,10 @@
 </template>
 
 <script>
-  import { Form, FormItem, RadioGroup, Radio, Input, Button } from 'element-ui';
-  import { Http, Config, Verification } from '@/util';
+  import {Form, FormItem, RadioGroup, Radio, Input, Button} from 'element-ui';
+  import {Http, Config, Verification} from '@/util';
   import md5 from 'md5';
+
   export default {
     name: 'deliver-edit',
     components: {
@@ -86,8 +84,8 @@
       'el-button': Button
     },
     props: {
-      type: { type: String, default: 'add' },
-      item: { type: Object, default: {} },
+      type: {type: String, default: 'add'},
+      item: {type: Object, default: {}},
     },
     data() {
       return {
@@ -143,6 +141,7 @@
   .display-flex {
     display: flex;
   }
+
   .justify-content-end {
     justify-content: flex-end;
   }

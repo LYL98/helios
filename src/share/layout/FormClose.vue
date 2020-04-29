@@ -57,15 +57,10 @@ export default {
           api: Config.api.fromSupplierOrderClose,
           table: 'TableItemLocalPurchase'
         },
-        //仓库品控
-        'WarehouseQualityControl': {
+        //场地品控(采购)
+        'ReceivingPurchase': {
           api: Config.api.supFromSupplierInClose,
-          table: 'TableWarehouseQualityControl'
-        },
-        //场地品控
-        'OperateReceiving': {
-          api: Config.api.supFromSupplierInClose,
-          table: 'TableWarehouseQualityControl'
+          table: 'Table'
         },
       }
     }

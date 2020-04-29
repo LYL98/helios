@@ -21,7 +21,11 @@
           <template slot-scope="scope">{{scope.row.deliver.realname}}</template>
         </el-table-column>
         <el-table-column label="收货人签名">
-          <template slot-scope="scope">{{scope.row.receive_img}}</template>
+          <template slot-scope="scope">
+            <image-preview>
+              <img style="width: 64px;" :src="scope.row.receive_img" alt=""/>
+            </image-preview>
+          </template>
         </el-table-column>
         <el-table-column label="收货时间">
           <template slot-scope="scope">{{scope.row.receive_time}}</template>
@@ -50,7 +54,7 @@
 </template>
 
 <script>
-  import { TableOperate } from '@/common';
+  import { TableOperate, ImagePreview } from '@/common';
   import detailMixin from '@/share/mixin/detail.mixin';
   import { Http, Config, Constant } from '@/util';
 
@@ -58,7 +62,8 @@
     name: "DetailOperateDepartStore",
     mixins: [detailMixin],
     components: {
-      'my-table-operate': TableOperate
+      'my-table-operate': TableOperate,
+      'image-preview': ImagePreview,
     },
     data() {
       let initDetail = {}
@@ -82,6 +87,7 @@
         let res = await Http.get(Config.api.supDeliveryStoreDetail, {
           delivery_date: data.delivery_date,
           city_id: data.city.id,
+          line_id: data.line_id
         });
         this.$loading({isShow: false});
         if(res.code === 0){

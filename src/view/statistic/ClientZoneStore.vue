@@ -3,7 +3,7 @@
     <div class="breadcrumb" style="margin-bottom: 16px;">
       <el-breadcrumb separator="/" class="custom-breadcrumb">
         <el-breadcrumb-item
-          :to="{ path: '/statistic/client', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date } }"
+          :to="{ path: '/statistic/client', query: { begin_date: breadcrumb.begin_date, end_date: breadcrumb.end_date,total:breadcrumb.total } }"
         >
           客户订单统计
         </el-breadcrumb-item>
@@ -15,7 +15,8 @@
             province_code: breadcrumb.province_code,
             province_title: breadcrumb.province_title,
             begin_date: breadcrumb.begin_date,
-            end_date: breadcrumb.end_date } }"
+            end_date: breadcrumb.end_date,
+            total:breadcrumb.total } }"
         >
           {{ breadcrumb.province_code === '' ? '全部省份' : breadcrumb.province_title }}
         </el-breadcrumb-item>
@@ -29,7 +30,8 @@
             zone_id: breadcrumb.zone_id,
             zone_title: breadcrumb.zone_title,
             begin_date: breadcrumb.begin_date,
-            end_date: breadcrumb.end_date } }"
+            end_date: breadcrumb.end_date,
+            total:breadcrumb.total } }"
         >
           {{ breadcrumb.zone_id === '' ? '全部片区' : breadcrumb.zone_title }}
         </el-breadcrumb-item>
@@ -138,7 +140,9 @@
         <el-table-column label="件数" sortable="custom" prop="piece_num"/>
         <el-table-column label="占比" prop="percent">
           <template slot-scope="scope">
-            {{returnPercentage(scope.row.gmv, total)}}%
+            <!-- {{returnPercentage(scope.row.gmv, total)}}% -->
+            {{ scope.row.ratio }}%
+
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100">
@@ -254,6 +258,7 @@
         // console.log('store_title', this.$route.query)
         let province_code = this.$route.query.province_code;
         let province_title = this.$route.query.province_title;
+        let total = this.$route.query.total
 
         this.$data.breadcrumb = Object.assign(this.$data.breadcrumb, {
           city_id: this.$route.query.city_id,
@@ -263,7 +268,9 @@
           begin_date: this.$route.query.begin_date,
           end_date: this.$route.query.end_date,
           province_code: province_code,
-          province_title: province_title
+          province_title: province_title,
+          total: total
+          
         })
       },
       initQuery() {
@@ -287,8 +294,12 @@
           province_code: province_code,
           province_title: province_title,
           page: 1,
-          page_size: Constant.PAGE_SIZE
+          page_size: Constant.PAGE_SIZE,
+          total:this.$route.query.total
+
         });
+        this.$data.total = this.$route.query.total
+
       },
       // 改变查询日期
       changePicker(value) {
@@ -356,10 +367,10 @@
         this.$loading({ isShow: true, isWhole: true });
         let res = await Http.get(Config.api.statisticalOrderMerchantSum, query);
         if(res.code === 0){
-          this.total = 0
-          res.data.items.map(item => {
-            this.total += item.gmv
-          })
+          // this.total = 0
+          // res.data.items.map(item => {
+          //   this.total += item.gmv
+          // })
 
           that.$data.orderItemSumData = res.data;
           typeof callback === 'function' && callback();
@@ -381,7 +392,9 @@
             province_code: this.$data.breadcrumb.province_code,
             province_title: this.$data.breadcrumb.province_title,
             begin_date: this.$data.query.begin_date,
-            end_date: this.$data.query.end_date
+            end_date: this.$data.query.end_date,
+            total:this.$data.query.total
+
           }
         });
       }
