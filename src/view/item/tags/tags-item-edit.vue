@@ -191,7 +191,7 @@ import { InputWeight ,InputNumber} from '@/common';
         this.$data.query = {
           province_code: this.$province.code,
           item_tag_id: this.$props.tag.id,
-          is_all: 1,
+          is_all: 0,
           is_gift: 0,
           // city_or_level: 1,
           display_class_id: '',
