@@ -151,6 +151,17 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+
+      changePage(page) {
+        this.$data.query.page = page;
+        this.supOutAllocateLoadingQuery();
+      },
+
+      changePageSize(page_size) {
+        this.$data.query.page = 1;
+        this.$data.query.page_size = page_size;
+        this.supOutAllocateLoadingQuery();
+      },
     }
   };
 </script>
