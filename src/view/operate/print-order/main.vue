@@ -68,7 +68,7 @@
                         {
                           title: '打印',
                           isDisplay: auth.isAdmin || auth.OperatePrintOrderPrint,
-                          command: () => handlePrint({delivery_date: query.delivery_date, ids: [item.id]})
+                          command: () => handlePrintSingle({delivery_date: query.delivery_date, ids: [item.id]})
                         },
                         {
                           title: '打印预览',
@@ -322,6 +322,22 @@
 
       handlePrint({delivery_date, ids}) {
         this.PrintAndPreview({delivery_date, ids, type: 'print'});
+      },
+
+      async handlePrintSingle({delivery_date, ids}) {
+        this.$loading({isWhole: true});
+        let res = await Http.get(Config.api.supAllocateDetailPrint, {
+          out_stock_ids: ids.join(),
+          print_type: 'print'
+        });
+        this.$loading({isWhole: false});
+        if(res.code === 0){
+          Lodop.tempTruckSingle(res.data, delivery_date);
+          this.supItemQueryForPrint();
+
+        }else{
+          this.$message({message: res.message, type: 'error'});
+        }
       },
 
       handlePrintPreview({delivery_date, ids}) {
