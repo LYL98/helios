@@ -431,9 +431,7 @@
         let that = this;
         let {query} = that;
         let res = await Http.get(Config.api.advicedItemStatistical,query);
-         if (res.code === 0) {
-           console.log(res.data);
-           
+         if (res.code === 0) {    
           that.$data.detailEchart = {
              isShow: true,
             item: res.data
