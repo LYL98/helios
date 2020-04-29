@@ -16,7 +16,7 @@
               <el-input v-model="c.title" size="medium" placeholder="请输入20位以内的字符" :maxlength="20"></el-input>
             </el-col>
             <el-col :span="2" class="t-r">
-              <a href="javascript:void(0);" @click="handleDeleteItem(i)" style="padding-top: 10px;">删除</a>
+              <a href="javascript:void(0);" @click="handleDeleteItem(i)" v-if="detail.child_tags.length > 1" style="padding-top: 10px;">删除</a>
             </el-col>
           </el-row>
         </el-form-item>
