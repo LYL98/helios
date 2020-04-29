@@ -67,7 +67,7 @@
           <div>{{returnTime(scope.row.updated)}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="80">
+      <el-table-column label="操作" width="120">
         <template>
           <my-table-operate
             :list="[
