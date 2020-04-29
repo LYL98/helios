@@ -38,10 +38,10 @@
         <el-form-item label="备注">{{detail.close_remark}}</el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="品控人">{{detail.closer.realname}}</el-form-item>
+            <el-form-item label="关闭人">{{detail.closer.realname}}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="品控时间">{{detail.closer.created}}</el-form-item>
+            <el-form-item label="关闭时间">{{detail.closer.created}}</el-form-item>
           </el-col>
         </el-row>
       </template>
