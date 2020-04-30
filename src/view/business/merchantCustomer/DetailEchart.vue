@@ -11,6 +11,7 @@ import "echarts/lib/component/tooltip";
 import "echarts/lib/component/title";
 import "echarts/lib/component/toolbox";
 import "echarts/lib/component/legend";
+import "echarts/lib/component/dataZoom";
 export default {
   name: "DetailEchart",
   props: {
@@ -21,10 +22,10 @@ export default {
   mounted() {
     this.initChart();
   },
-  watch:{
-    echartData:{
-      deep:true,
-      handler: function (a, b) {
+  watch: {
+    echartData: {
+      deep: true,
+      handler: function(a, b) {
         this.initChart();
       }
     }
@@ -53,27 +54,25 @@ export default {
         },
         yAxis: {},
         series: [
-          
           {
             name: "提报次数",
             type: "bar",
-            data: yData
+            data: yData,
+            barCategoryGap:'50%',
           }
         ],
-        // dataZoom: [
-        //   {
-        //     show: true,
-        //     realtime: true,
-        //     start: 0,
-        //     end: 50
-        //   },
-        //   {
-        //     type: "inside",
-        //     realtime: true,
-        //     start: 0,
-        //     end: 50
-        //   }
-        // ]
+        
+        dataZoom: [
+          // {
+          //   type: "slider",
+          //   show: true, //flase直接隐藏图形
+          //   xAxisIndex: [0],
+          //   left: "9%", //滚动条靠左侧的百分比
+          //   bottom: -5,
+          //   start: 0, //滚动条的起始位置
+          //   end: 100 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+          // }
+        ]
       };
       myChart.setOption(option);
     }

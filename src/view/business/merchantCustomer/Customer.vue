@@ -70,7 +70,7 @@
         <div class="left">
         </div>
         <div class="right" v-if="auth.isAdmin || auth.AdvicedItemStatistical">
-          <el-button v-if="auth.isAdmin || auth.AdvicedItemQuery" @click="showDetailEchart" size="mini" type="primary">客户提报统计</el-button>
+          <el-button v-if="auth.isAdmin || auth.AdvicedItemStatistical" @click="showDetailEchart" size="mini" type="primary">客户提报统计</el-button>
           <!-- <el-button v-if="auth.isAdmin || auth.MerchantExport" @click.native="() => {merchantListExport();}" size="mini" type="primary" plain >导出客户提报</el-button> -->
         </div>
       </div>
@@ -182,19 +182,16 @@
       :before-close="closeDetailEchart"
     >
 
-    <detail-echart  :echartData="detailEchart.item" />
+    <detail-echart  :echartData="detailEchart.item" v-if="detailEchart.item"/>
     </detail-layout>
   </sub-menu>
 </template>
 
 <script>
   import {Row, Col, DatePicker, MessageBox, Message, Form, FormItem, Button, Input, Select, Option, Dialog, Tag, Pagination } from 'element-ui';
-  import QueryMerchantCustomer  from './QueryMerchantCustomer';
+  
   import DetailCustomer from './DetailCustomer';
   import DetailEchart from './DetailEchart';
-
-//   import AddEditMerchantList from './AddEditMerchantList';
-//   import DetailMerchantList from './DetailMerchantList';
   import { Config, Constant, DataHandle, Method, Http } from '@/util';
   import {SelectOption, QueryItem, SelectProvince ,SelectDisplayClass,TableOperate} from '@/common';
   import { GlobalProvince, SelectCity } from '@/component';
@@ -215,10 +212,6 @@
       'el-dialog': Dialog,
       'el-tag': Tag,
       'el-pagination': Pagination,
-    //   'table-merchant-list': TableMerchantList,
-    //   'add-edit-merchant-list': AddEditMerchantList,
-    //   'detail-merchant-list': DetailMerchantList,
-      'query-merchant-customer': QueryMerchantCustomer,
       'el-row': Row,
       'el-col': Col,
       'el-date-picker': DatePicker,
