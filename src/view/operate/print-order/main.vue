@@ -129,8 +129,8 @@
         <div class="left">
           <el-button @click="handleBatchPrint({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
                    :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperatePrintOrderPrint">批量打印</el-button>
-          <el-button @click="handleBatchPreview({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
-                   :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperatePrintOrderPrint">打印预览</el-button>
+<!--          <el-button @click="handleBatchPreview({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"-->
+<!--                   :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperatePrintOrderPrint">打印预览</el-button>-->
         </div>
         <div class="right">
           <el-pagination

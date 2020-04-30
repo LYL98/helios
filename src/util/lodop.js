@@ -90,7 +90,7 @@ export default {
       list.forEach(batch => {
 
         // 批次层 -> 遍历 线路列表
-        batch.items.forEach(line => {
+        batch.lines.forEach(line => {
 
           // 线路层 -> 遍历 门店列表
           line.stores.forEach((store, index) => {
@@ -103,7 +103,7 @@ export default {
               taskList.push({
                 type: 'line',
                 line_index: prefixInteger(line.line_index, 2),
-                line_title: line.line_title,
+                line_title: line.title,
                 line_num: line.num,
                 item_code: batch.item_code,
               });
@@ -113,10 +113,10 @@ export default {
             let task = {
               type: 'item',
               line_index: prefixInteger(line.line_index, 2),
-              line_title: line.line_title,
+              line_title: line.title,
               city_index: prefixInteger(store.city_index, 2),
               store_index: prefixInteger(store.store_index, 2),
-              store_title: (store.store.title || '').slice(0, 10),
+              store_title: (store.title || '').slice(0, 10),
               item_code: batch.item_code,
               item_title: batch.item_title,
               nums: store.num,
@@ -201,14 +201,14 @@ export default {
 
       list.forEach(d => {
         let qrcontent = `{"type":"sort","out_stock_id":${d.id},"item_id":${d.item_id}}`;
-        d.items.forEach(item => {
+        d.lines.forEach(item => {
           LODOP.NewPage();
           LODOP.SET_PRINT_PAGESIZE(1, 600, 400);
           LODOP.SET_PRINT_STYLE('FontName', '微软雅黑');
           LODOP.SET_PRINT_STYLE('FontSize', 18);
           LODOP.SET_PRINT_STYLE('Bold', 1);
           LODOP.SET_PRINT_STYLE('Alignment', 2);
-          LODOP.ADD_PRINT_TEXT(5, 0, 226, 60, `${prefixInteger(item.line_index, 2)}/${item.line_title}`);
+          LODOP.ADD_PRINT_TEXT(5, 0, 226, 60, `${prefixInteger(item.line_index, 2)}/${item.title}`);
           LODOP.SET_PRINT_STYLE('FontSize', 20);
           LODOP.ADD_PRINT_TEXT(75, 0, 226, 30, `${item.num}件`);
           LODOP.ADD_PRINT_TEXT(105, 0, 226, 30, d.item_code);
@@ -223,7 +223,7 @@ export default {
               LODOP.ADD_PRINT_TEXT(5, 0, 226, 40, `${prefixInteger(item.line_index, 2)}-${prefixInteger(store.city_index, 2)}-${prefixInteger(store.store_index, 2)}`);
               LODOP.SET_PRINT_STYLE('FontSize', 9);
               LODOP.SET_PRINT_STYLE('Alignment', 1);
-              LODOP.ADD_PRINT_TEXT(45, 5, 130, 20, (store.store.title || '').slice(0, 10));
+              LODOP.ADD_PRINT_TEXT(45, 5, 130, 20, (store.title || '').slice(0, 10));
               LODOP.SET_PRINT_STYLE('FontSize', 8);
               LODOP.ADD_PRINT_TEXT(70, 5, 125, 50, `${d.item_code}/${d.item_title}`);
               LODOP.ADD_PRINT_TEXT(125, 5, 125, 20, `${i+1} / ${store.num}`);
