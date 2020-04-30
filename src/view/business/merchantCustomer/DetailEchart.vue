@@ -33,12 +33,17 @@ export default {
   methods: {
     initChart() {
       let that = this;
-      let xData = [];
-      let yData = [];
-      this.$props.echartData.map(item => {
-        xData.push(item.display_class);
-        yData.push(item.num);
+      var xData = [];
+      var yData = [];
+      that.$props.echartData.map(item => {
+        xData.push(item.display_class)
+        return item
       });
+      that.$props.echartData.map((item)=>{
+        yData.push(item.num)
+        return item
+      })
+      
       var myChart = echarts.init(document.getElementById("main"));
 
       var option = {
@@ -50,7 +55,10 @@ export default {
           data: ["提报次数"]
         },
         xAxis: {
-          data: xData
+          data: xData,
+          axisLabel:{
+                    interval:0 
+　　　　            }
         },
         yAxis: {},
         series: [
