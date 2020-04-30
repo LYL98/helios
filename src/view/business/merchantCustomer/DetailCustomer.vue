@@ -2,58 +2,57 @@
   <div class="detailCustomer" :model="formData" >
     <el-form label-position="right" label-width="120px" style="width: 780px;" >
       <el-row :gutter="32">
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="门店名称:">
-              {{formData.store.title}}
+              {{formData.store.title }}
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="县域:">
-              {{formData.city.title}}
+              {{formData.city.title || '-'}}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="展示分类:">
-              {{formData.display_class.title}}
+              {{formData.display_class.title || '-'}}
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="商品名称:">
-              {{formData.title}}
+              {{formData.title || '-'}}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="品牌:">
-              {{formData.brand}}
+              {{formData.brand || '-'}}
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="规格:">
-              {{formData.item_spec}}
+              {{formData.item_spec || '-'}}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="原进货渠道:">
-              {{formData.purchase_channel}}
+              {{formData.purchase_channel || '-'}}
           </el-form-item>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="12">
           <el-form-item label="提报时间:">
-              {{formData.created}}
-
+              {{formData.created || '-'}}
           </el-form-item>
         </el-col>
       </el-row>
       <el-row :gutter="32">
-        <el-col :span="10">
+        <el-col :span="32">
           <el-form-item label="描述:">
-              <div>{{formData.remark}}</div>
+              <div>{{formData.remark || '-'}}</div>
           </el-form-item>
         </el-col>
       </el-row>
