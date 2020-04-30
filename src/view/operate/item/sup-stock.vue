@@ -55,15 +55,15 @@
             @click="handleWarehousingItems(selectedList)"
           >批量入库
           </el-button>
-          <el-button
-            size="mini"
-            plain
-            type="primary"
-            :disabled="selectedList.length <= 0"
-            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"
-            @click="handleAllocateItems(selectedList)"
-          >批量分配
-          </el-button>
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            plain-->
+<!--            type="primary"-->
+<!--            :disabled="selectedList.length <= 0"-->
+<!--            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"-->
+<!--            @click="handleAllocateItems(selectedList)"-->
+<!--          >批量分配-->
+<!--          </el-button>-->
         </div>
         <div class="right">
           <el-button
@@ -166,15 +166,15 @@
             @click="handleWarehousingItems(selectedList)"
           >批量入库
           </el-button>
-          <el-button
-            size="mini"
-            plain
-            type="primary"
-            :disabled="selectedList.length <= 0"
-            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"
-            @click="handleAllocateItems(selectedList)"
-          >批量分配
-          </el-button>
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            plain-->
+<!--            type="primary"-->
+<!--            :disabled="selectedList.length <= 0"-->
+<!--            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"-->
+<!--            @click="handleAllocateItems(selectedList)"-->
+<!--          >批量分配-->
+<!--          </el-button>-->
         </div>
         <div class="table-pagination">
           <el-pagination
@@ -335,7 +335,9 @@
           storehouse_id: this.$data.query.storehouse_id,
           batch_codes: items.map(item => item.batch_code)
         };
+        this.$loading({isWhole: true});
         let res = await Http.post(Config.api.operateItemSupStockAllocate, formData);
+        this.$loading({isWhole: false});
         if (res.code === 0) {
           this.$message({message: '分配成功', type: 'success'});
           this.supStockQuery();
@@ -391,10 +393,12 @@
 
       async handleDistributeItem(item) {
 
+        this.$loading({isWhole: true});
         let res = await Http.get(Config.api.operateItemSupStockGetDistributes, {
           src_storehouse_id: this.$data.query.storehouse_id,
           item_code: item.p_item.code
         });
+        this.$loading({isWhole: false});
 
         if (res.code !== 0 || !Array.isArray(res.data)) {
           return;
