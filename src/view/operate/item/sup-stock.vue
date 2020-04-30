@@ -55,15 +55,15 @@
             @click="handleWarehousingItems(selectedList)"
           >批量入库
           </el-button>
-          <el-button
-            size="mini"
-            plain
-            type="primary"
-            :disabled="selectedList.length <= 0"
-            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"
-            @click="handleAllocateItems(selectedList)"
-          >批量分配
-          </el-button>
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            plain-->
+<!--            type="primary"-->
+<!--            :disabled="selectedList.length <= 0"-->
+<!--            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"-->
+<!--            @click="handleAllocateItems(selectedList)"-->
+<!--          >批量分配-->
+<!--          </el-button>-->
         </div>
         <div class="right">
           <el-button
@@ -166,15 +166,15 @@
             @click="handleWarehousingItems(selectedList)"
           >批量入库
           </el-button>
-          <el-button
-            size="mini"
-            plain
-            type="primary"
-            :disabled="selectedList.length <= 0"
-            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"
-            @click="handleAllocateItems(selectedList)"
-          >批量分配
-          </el-button>
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            plain-->
+<!--            type="primary"-->
+<!--            :disabled="selectedList.length <= 0"-->
+<!--            v-if="$auth.isAdmin || $auth.OperateItemSupStockAllocate"-->
+<!--            @click="handleAllocateItems(selectedList)"-->
+<!--          >批量分配-->
+<!--          </el-button>-->
         </div>
         <div class="table-pagination">
           <el-pagination
