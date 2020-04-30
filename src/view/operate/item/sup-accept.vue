@@ -242,9 +242,11 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
+          this.$loading({isWhole: true});
           let res = await Http.post(Config.api.operateItemSupAcceptConfirm, {
             id: item.id
           });
+          this.$loading({isWhole: false});
           if (res.code === 0) {
             this.$message({title: '提示', message: '确认收货单成功', type: 'success'});
             this.supAcceptQuery();
