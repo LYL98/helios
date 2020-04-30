@@ -68,12 +68,12 @@
                         {
                           title: '打印',
                           isDisplay: auth.isAdmin || auth.OperatePrintOrderPrint,
-                          command: () => handlePrintSingle({delivery_date: query.delivery_date, ids: [item.id]})
+                          command: () => handleBatchPrint({delivery_date: query.delivery_date, ids: [item.id]})
                         },
                         {
                           title: '打印预览',
                           isDisplay: auth.isAdmin || auth.OperatePrintOrderPrint,
-                          command: () => handlePrintPreview({delivery_date: query.delivery_date, ids: [item.id]})
+                          command: () => handleBatchPreview({delivery_date: query.delivery_date, ids: [item.id]})
                         },
                       ]"
                     />
@@ -127,9 +127,9 @@
 
       <div class="table-bottom" v-if="list.items.length > 0">
         <div class="left">
-          <el-button @click="handlePrint({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
+          <el-button @click="handleBatchPrint({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
                    :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperatePrintOrderPrint">批量打印</el-button>
-          <el-button @click="handlePrintPreview({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
+          <el-button @click="handleBatchPreview({delivery_date: query.delivery_date, ids: returnListKeyList('id', multipleSelection)})" size="mini" type="primary"
                    :disabled="multipleSelection.length === 0 ? true : false" plain  v-if="auth.isAdmin || auth.OperatePrintOrderPrint">打印预览</el-button>
         </div>
         <div class="right">
@@ -320,11 +320,7 @@
         this.$data.multipleSelection = this.copyJson(multipleSelection);
       },
 
-      handlePrint({delivery_date, ids}) {
-        this.PrintAndPreview({delivery_date, ids, type: 'print'});
-      },
-
-      async handlePrintSingle({delivery_date, ids}) {
+      async handleBatchPrint({delivery_date, ids}) {
         this.$loading({isWhole: true});
         let res = await Http.get(Config.api.supAllocateDetailPrint, {
           out_stock_ids: ids.join(),
@@ -332,7 +328,7 @@
         });
         this.$loading({isWhole: false});
         if(res.code === 0){
-          Lodop.tempTruckSingle(res.data, delivery_date);
+          Lodop.tempTruckBatchPrint(res.data, delivery_date);
           this.supItemQueryForPrint();
 
         }else{
@@ -340,22 +336,16 @@
         }
       },
 
-      handlePrintPreview({delivery_date, ids}) {
-        this.PrintAndPreview({delivery_date, ids, type: 'preview'});
-      },
-
-      async PrintAndPreview({delivery_date, ids, type}) {
+      async handleBatchPreview({delivery_date, ids}) {
         this.$loading({isWhole: true});
         let res = await Http.get(Config.api.supAllocateDetailPrint, {
           out_stock_ids: ids.join(),
-          print_type: type
+          print_type: 'preview'
         });
         this.$loading({isWhole: false});
         if(res.code === 0){
-          let temp = Lodop.tempTruckBatch(res.data, delivery_date);
-
-          temp && type === 'print' && temp.PRINT();
-          temp && type === 'preview' && temp.PREVIEW();
+          let temp = Lodop.tempTruckBatchPreview(res.data, delivery_date);
+          temp && temp.PREVIEW();
 
           this.supItemQueryForPrint();
 
