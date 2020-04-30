@@ -70,7 +70,7 @@
                 },{
                   title: '司机轨迹',
                   //&& scope.row.assign_confirm_time
-                  isDisplay: (auth.isAdmin || auth.OperateDepartDriverTrack)&& scope.row.assign_confirm_time,
+                  isDisplay: (auth.isAdmin || auth.OperateDepartDriverTrack)&& (scope.row.status === 'delivering'),
                   //command: () => handleShowDetail('DetailOperateDepartDriverTrack', scope.row)
                   command: () => handleLocationItem(scope.row.line)
 
