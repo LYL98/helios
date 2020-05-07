@@ -13,35 +13,35 @@
       >
         <el-table-column label="门店名称" prop="title">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="县域" width="100" prop="city.title">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.city && scope.row.city.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="收货人" width="100" prop="linkman">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.linkman }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="联系方式" width="120" prop="phone">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.phone }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="收货地址" width="160" prop="address">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.address }}
             </div>
           </template>

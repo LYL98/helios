@@ -15,25 +15,25 @@
         <template slot-scope="scope">
           <a href="javascript:void(0);"
              v-if="auth.isAdmin || auth.GroupBuyDetail"
-             :class="`title ${isEllipsis(scope.row)}`"
+             class="title"
              @click="handleShowItem(scope.row)">
             {{ scope.row.code }} / {{ scope.row.title }}
           </a>
-          <div v-else :class="`title-disable ${isEllipsis(scope.row)}`" >
+          <div v-else class="title-disable" >
             {{ scope.row.code }} / {{ scope.row.title }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="开始时间" prop="coupon_type" min-width="120">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.start_time }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="结束时间" prop="status" min-width="120">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">{{ scope.row.end_time }}</div>
+          <div>{{ scope.row.end_time }}</div>
         </template>
       </el-table-column>
       <el-table-column label="团购状态" prop="is_auto_dis" min-width="80">
@@ -60,7 +60,7 @@
       </el-table-column>
       <!--<el-table-column label="下单数" prop="is_auto_dis" min-width="80">-->
         <!--<template slot-scope="scope">-->
-          <!--<div :class="isEllipsis(scope.row)">{{ scope.row.order_num }}</div>-->
+          <!--<div>{{ scope.row.order_num }}</div>-->
         <!--</template>-->
       <!--</el-table-column>-->
       <!--未生效：生效、删除、编辑；   已生效：结束、编辑-->

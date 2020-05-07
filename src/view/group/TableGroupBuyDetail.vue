@@ -12,30 +12,30 @@
       <template slot-scope="scope">
         <a v-if="auth.isAdmin || auth.GroupBuyMerchantDetail"
            href="javascript:void(0);"
-           :class="`title ${isEllipsis(scope.row)}`"
+           class="title"
            @click="handleShowItem(scope.row)">
           {{scope.row.store.title}}
         </a>
-        <div v-else :class="`title-disable ${isEllipsis(scope.row)}`">
+        <div v-else class="title-disable ">
           {{scope.row.store.title}}
         </div>
       </template>
     </el-table-column>
     <el-table-column label="所在县域" prop="city_title" min-width="120">
       <template slot-scope="scope">
-        <div :class="isEllipsis(scope.row)">
+        <div>
           {{ scope.row.city_title }}
         </div>
       </template>
     </el-table-column>
     <el-table-column label="参团人数" prop="customer_num" min-width="100">
       <template slot-scope="scope">
-        <div :class="isEllipsis(scope.row)">{{ scope.row.customer_num }}</div>
+        <div>{{ scope.row.customer_num }}</div>
       </template>
     </el-table-column>
     <el-table-column label="总件数" prop="gb_num" min-width="100">
       <template slot-scope="scope">
-        <div :class="isEllipsis(scope.row)">{{ scope.row.sale_num }}</div>
+        <div>{{ scope.row.sale_num }}</div>
       </template>
     </el-table-column>
   </el-table>
@@ -87,9 +87,6 @@
         this.$data.currentRow = {};
       },
 
-      isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
-      },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

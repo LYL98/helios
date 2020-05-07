@@ -2,33 +2,33 @@
   <el-table @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" :data="storeDataItem" :row-class-name="highlightRowClassName" highlight-current-row="highlight-current-row">
     <el-table-column label="门店名称" min-width="100">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">{{ scope.row.title }}</div>
+          <div>{{ scope.row.title }}</div>
         </template>
       </el-table-column>
       <el-table-column label="门店地址" prop="store_address" min-width="120">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.address }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="联系方式" prop="phone" min-width="80">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.phone }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="县域" prop="city_title" min-width="80">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.city_title }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" prop="gb_included_time" min-width="100">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.gb_included_time }}
           </div>
         </template>

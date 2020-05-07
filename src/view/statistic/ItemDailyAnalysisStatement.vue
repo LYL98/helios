@@ -38,7 +38,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.price_buy)}}</span>
+            <span class="td-item">{{returnPrice(scope.row.price_buy)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -47,7 +47,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.price_sale)}}</span>
+            <span class="td-item">{{returnPrice(scope.row.price_sale)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -56,7 +56,7 @@
           align="left"
           min-width="110">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{formatValue(scope.row.count_real)}}</span>
+            <span class="td-item">{{formatValue(scope.row.count_real)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -65,7 +65,7 @@
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.amount_real)}}</span>
+            <span class="td-item">{{returnPrice(scope.row.amount_real)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -74,7 +74,7 @@
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.fram_total_price)}}</span>
+            <span class="td-item">{{returnPrice(scope.row.fram_total_price)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -83,7 +83,7 @@
           align="left"
           min-width="100">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{formatValue(scope.row.store_num_ord)}}</span>
+            <div class="td-item">{{formatValue(scope.row.store_num_ord)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -92,7 +92,7 @@
           align="left"
           min-width="100">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{formatRate(scope.row.lower_rate)}}</span>
+            <div class="td-item">{{formatRate(scope.row.lower_rate)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -101,7 +101,7 @@
           align="left"
           min-width="100">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{formatRate(scope.row.markup_rate)}}</span>
+            <div class="td-item">{{formatRate(scope.row.markup_rate)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -110,7 +110,7 @@
           align="left"
           min-width="100">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{formatRate(scope.row.return_rate)}}</span>
+            <div class="td-item">{{formatRate(scope.row.return_rate)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -119,7 +119,7 @@
           align="left"
           min-width="140">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{formatRate(scope.row.deviation_rate)}}</span>
+            <div class="td-item">{{formatRate(scope.row.deviation_rate)}}</div>
           </template>
         </el-table-column>
       </el-table>
@@ -193,10 +193,6 @@ export default {
 
     cellMouseLeave(row, column, cell, event) {
       this.$data.currentRow = {};
-    },
-
-    isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {

@@ -110,33 +110,33 @@
         <el-table-column label="订单编号" prop="code" min-width="130">
           <template slot-scope="scope">
             <span v-if="auth.isAdmin || auth.GroupOrderDetail">
-              <a :class="`order-no ${isEllipsis(scope.row)}`"
+              <a class="order-no"
                  href="javascript:void(0);"
                  @click.prevent="handleShowItemDetail(scope.row.id)"
               >
                 {{scope.row.code}}
               </a>
             </span>
-            <span v-else :class="isEllipsis(scope.row)">{{scope.row.code}}</span>
+            <span v-else>{{scope.row.code}}</span>
           </template>
         </el-table-column>
         <el-table-column label="收货人" prop="linkman" min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.linkman || '-' }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="商品数量" prop="price_at_created" min-width="90">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{scope.row.item_num}}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="实付金额" prop="pay_amount" min-width="90">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.pay_amount ? '￥' : '' }}{{ returnPrice(scope.row.pay_amount) }}
             </div>
           </template>
@@ -149,7 +149,7 @@
         </el-table-column>
         <el-table-column label="下单时间" prop="created" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.created || '-' }}
             </div>
           </template>

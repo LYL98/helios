@@ -13,14 +13,14 @@
       <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize <= 999950 ? 68 : 88" label="序号" :index="indexMethod"></el-table-column>
       <el-table-column label="编号/名称" prop="title" min-width="200">
         <template slot-scope="scope">
-          <a href="javascript:void(0);" :class="`title ${isEllipsis(scope.row)}`" @click="handleShowItem(scope.row.id)">
+          <a href="javascript:void(0);" :class="`title`" @click="handleShowItem(scope.row.id)">
             {{ scope.row.code }} / {{ scope.row.title }}
           </a>
         </template>
       </el-table-column>
       <el-table-column label="类型" prop="coupon_type" min-width="70">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ couponType[scope.row.coupon_type] }}
           </div>
         </template>
@@ -62,14 +62,14 @@
       </el-table-column>
       <el-table-column label="开始时间" prop="time_start" min-width="150">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.time_start }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="结束时间" prop="time_end" min-width="150">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.time_end }}
           </div>
         </template>

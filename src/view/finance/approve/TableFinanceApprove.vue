@@ -15,42 +15,42 @@
         <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize < 999950 ? 68 : 88" label="序号" :index="indexMethod" />
         <el-table-column label="商户名称" prop="merchant_title" min-width="140">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.merchant_title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="充值/扣款类型" prop="opt_type" min-width="140">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ opt_type[scope.row.opt_type] }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="金额" prop="amount" min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.amount > 0 ? '+' : '' }}{{ returnPrice(scope.row.amount) }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="提交人" prop="creator_name" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.creator_name }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="充值/扣款备注" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.remark || '-' }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="审核人" prop="checker_name" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.checker_name || '-' }}
             </div>
           </template>
@@ -63,7 +63,7 @@
         </el-table-column>
         <el-table-column label="提交时间" prop="created" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnDate(scope.row.created)}}</div>
+            <div>{{returnDate(scope.row.created)}}</div>
             <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnDateFormat(scope.row.created, 'HH:mm:ss')}}</div>
           </template>
         </el-table-column>

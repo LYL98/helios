@@ -30,47 +30,47 @@
         </el-table-column>
         <el-table-column prop="gmv" label="GMV" min-width="140" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.gmv) }}</span>
+            <span>{{ returnPrice(scope.row.gmv) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="real_price" label="订单应付金额" min-width="140" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.real_price) }}</span>
+            <span>{{ returnPrice(scope.row.real_price) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="fram_total_price" label="框金额" min-width="120" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.fram_total_price) }}</span>
+            <span>{{ returnPrice(scope.row.fram_total_price) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="bonus_promotion" label="优惠金额" min-width="120" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{ returnPrice(scope.row.bonus_promotion) }}</span>
+            <span>{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{ returnPrice(scope.row.bonus_promotion) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="buy_days" label="购买天数" min-width="130" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.buy_days) }}</span>
+            <span>{{ formatValue(scope.row.buy_days) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="repeat_rate" label="复购率" min-width="100" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatRate(scope.row.repeat_rate) }}</span>
+            <span>{{ formatRate(scope.row.repeat_rate) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="aftersale_rate" label="退赔率" min-width="100" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatRate(scope.row.aftersale_rate) }}</span>
+            <span>{{ formatRate(scope.row.aftersale_rate) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="cust_price" label="客单价" min-width="100" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ returnPrice(scope.row.cust_price) }}</span>
+            <span>{{ returnPrice(scope.row.cust_price) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="lost_days" label="流失天数" min-width="110" align="left" sortable="custom">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.lost_days) }}</span>
+            <span>{{ formatValue(scope.row.lost_days) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="订单商品金额" align="left">
@@ -81,17 +81,17 @@
             :key="index"
             :label="labelDate(d)">
             <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.items, d) }}</span>
+              <span>{{ cellValue(scope.row.items, d) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="平均值" min-width="100" align="left">
             <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ average(scope.row.items) }}</span>
+              <span>{{ average(scope.row.items) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="合计" min-width="120" align="left">
             <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ total(scope.row.items) }}</span>
+              <span>{{ total(scope.row.items) }}</span>
             </template>
           </el-table-column>
         </el-table-column>
@@ -166,10 +166,6 @@ export default {
 
     cellMouseLeave(row, column, cell, event) {
       this.$data.currentRow = {};
-    },
-
-    isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {

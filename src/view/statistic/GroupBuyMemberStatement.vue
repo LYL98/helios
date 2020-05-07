@@ -28,7 +28,7 @@
           prop="nickname"
           label="微信昵称">
           <template slot-scope="scope">
-            <span id="titleScope" :class="isEllipsis(scope.row)">{{ formatValue(scope.row.nickname) }}</span>
+            <div id="titleScope" class="td-item">{{ formatValue(scope.row.nickname) }}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -37,7 +37,7 @@
           align="left"
           min-width="160">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.linkman) }}</span>
+            <div class="td-item">{{ formatValue(scope.row.linkman) }}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -47,7 +47,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.sale_num) }}</span>
+            <div class="td-item">{{ formatValue(scope.row.sale_num) }}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -57,7 +57,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               <span>{{formatValue(scope.row.sale_num)}}</span>
             </div>
           </template>
@@ -69,7 +69,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               <span>{{formatValue(scope.row.order_num)}}</span>
             </div>
           </template>
@@ -81,7 +81,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.pay_amount)}}</span>
+            <div class="td-item">{{returnPrice(scope.row.pay_amount)}}</div>
           </template>
         </el-table-column>
       </el-table>
@@ -160,10 +160,6 @@ export default {
 
     cellMouseLeave(row, column, cell, event) {
       this.$data.currentRow = {};
-    },
-
-    isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {

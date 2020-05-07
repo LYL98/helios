@@ -114,11 +114,11 @@
           <el-table-column label="门店名称" min-width="150" prop="title">
             <template slot-scope="scope">
           <span v-if="auth.isAdmin || auth.MerchantAuditDetail">
-            <a :class="`title ${isEllipsis(scope.row)}`" href="javascript:void(0);" @click.prevent="showMerchantDetail(scope.row)">
+            <a class="title" href="javascript:void(0);" @click.prevent="showMerchantDetail(scope.row)">
               {{ scope.row.title }}
             </a>
           </span>
-              <span v-else :class="isEllipsis(scope.row)">
+              <span v-else>
             {{ scope.row.title }}
           </span>
             </template>
@@ -126,7 +126,7 @@
           <el-table-column label="商户名称" min-width="120">
 
             <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">
+              <span>
                 {{ scope.row.merchant && scope.row.merchant.title || '-' }}
               </span>
             </template>
@@ -140,7 +140,7 @@
           </el-table-column>
           <el-table-column label="县域" min-width="80" prop="city.title">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">
+              <div>
                 {{ scope.row.city && scope.row.city.title }}
               </div>
             </template>

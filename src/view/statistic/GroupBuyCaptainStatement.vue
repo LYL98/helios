@@ -28,7 +28,7 @@
           align="left"
           min-width="180">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.store_title)}}</span>
+            <span>{{ formatValue(scope.row.store_title)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -37,7 +37,7 @@
           align="left"
           min-width="150">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.city_title) }}</span>
+            <span>{{ formatValue(scope.row.city_title) }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -47,7 +47,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               <span>{{formatValue(scope.row.member_num)}}</span>
             </div>
           </template>
@@ -59,7 +59,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{formatValue(scope.row.sale_num)}}</span>
+            <span>{{formatValue(scope.row.sale_num)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -69,7 +69,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               <span>{{formatValue(scope.row.order_num)}}</span>
             </div>
           </template>
@@ -81,7 +81,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.pay_amount)}}</span>
+            <span>{{returnPrice(scope.row.pay_amount)}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -91,7 +91,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.profit)}}</span>
+            <span>{{returnPrice(scope.row.profit)}}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -179,10 +179,6 @@ export default {
 
     cellMouseLeave(row, column, cell, event) {
       this.$data.currentRow = {};
-    },
-
-    isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {

@@ -47,7 +47,7 @@
           min-width="200"
           label="门店">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{scope.row.store_title}}</span>
+            <div class="td-item">{{scope.row.store_title}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -57,7 +57,7 @@
           sortable="custom"
           min-width="180">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{scope.row.count_real}}件</span>
+            <div class="td-item">{{scope.row.count_real}}件</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -67,7 +67,7 @@
           sortable="custom"
           min-width="180">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)" style="font-size: 16px; color: #ff5252;">&yen;{{scope.row.amount_real}}</span>
+            <div class="td-item" style="font-size: 16px; color: #ff5252;">&yen;{{scope.row.amount_real}}</div>
           </template>
         </el-table-column>
       </el-table>
@@ -144,9 +144,6 @@ export default {
       this.$data.currentRow = {};
     },
 
-    isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
-    },
     highlightRowClassName({row, rowIndex}) {
       if (rowIndex % 2 === 0) {
         return 'stripe-row'

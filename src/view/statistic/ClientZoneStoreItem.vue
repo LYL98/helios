@@ -106,12 +106,12 @@
         <!-- 县域、订单金额、订单量、件数、占比、操作 -->
         <el-table-column label="编号/商品" prop="store_title">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{scope.row.item_code + '/' + scope.row.item_title}}</span>
+            <span>{{scope.row.item_code + '/' + scope.row.item_title}}</span>
           </template>
         </el-table-column>
         <el-table-column label="件数" sortable="custom" prop="count_real">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{scope.row.count_real}}件</span>
+            <span>{{scope.row.count_real}}件</span>
           </template>
         </el-table-column>
         <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
@@ -197,10 +197,7 @@
       cellMouseLeave(row, column, cell, event) {
         this.$data.currentRow = {};
       },
-
-      isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
-      },
+      
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

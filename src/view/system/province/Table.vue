@@ -21,28 +21,28 @@
         <el-table-column width="20"/>
         <el-table-column prop="code" label="编号" min-width="200">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.code }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="title" label="名称" min-width="200">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="rank" label="排序" min-width="200">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.rank }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="created" label="创建时间" min-width="200">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.created }}
             </div>
           </template>

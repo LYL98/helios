@@ -84,21 +84,21 @@
         </el-table-column>
         <el-table-column label="微信昵称" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.nickname || '-' }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="团员名" prop="realname" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.linkman || '-' }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="联系方式" prop="phone" min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.phone || '-' }}
             </div>
           </template>
