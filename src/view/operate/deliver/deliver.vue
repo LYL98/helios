@@ -73,7 +73,7 @@
           >
             <div
               slot-scope="scope"
-              :class="`td-item link-item ${isEllipsis(scope.row)}`"
+              :class="`td-item link-item`"
               @click.prevent="handleDetailItem(scope.row)"
             >{{scope.row.realname}}</div>
           </el-table-column>

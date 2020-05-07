@@ -21,49 +21,49 @@
         <el-table-column type="index" min-width="140" label="序号" :index="indexMethod"/>
         <el-table-column prop="title" label="县域名称" min-width="200">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="所属区域" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.province && scope.row.province.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="所属片区" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.zone && scope.row.zone.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="线路" min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.line && scope.row.line.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="rank" label="排序" min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.rank }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="store_num_pre" label="预估门店数" min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.store_num_pre }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="created" label="创建时间" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.created }}
             </div>
           </template>

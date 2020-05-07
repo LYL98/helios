@@ -13,14 +13,14 @@
       <el-table-column type="index" width="120" label="序号" :index="indexMethod" />
       <el-table-column label="商户名称" prop="title" min-width="200">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.title }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="账户余额" prop="balance" min-width="200">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.balance == 0 ? '' : '￥' }}{{ returnPrice(scope.row.balance) }}
           </div>
         </template>

@@ -73,35 +73,35 @@
         />
         <el-table-column label="操作时间" prop="start_time" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.created }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="团购商品" prop="title" min-width="280">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="团购时间" min-width="320">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.start_time }} ~ {{ scope.row.end_time }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="修改类型" prop="amount" min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ actionType[scope.row.action] }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="修改人" prop="pay_amount" min-width="140">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.realname || '系统' }}
             </div>
           </template>

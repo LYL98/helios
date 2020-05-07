@@ -77,35 +77,35 @@
         />
         <el-table-column label="门店名称" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               <a class="title" href="javascript:void(0);" @click="handleShowItemDetail(scope.row)">{{ scope.row.title }}</a>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="门店地址" prop="store_address" min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.address }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="联系方式" prop="phone" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.phone }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="县域" prop="city_title" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.city_title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="账户余额" prop="balance" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               &yen;{{ returnPrice(scope.row.balance) }}
             </div>
           </template>

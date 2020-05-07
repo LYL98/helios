@@ -62,21 +62,21 @@
     >
       <el-table-column label="提交时间" prop="created" width="180">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.created }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="充值/扣款" prop="amount" width="100">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.amount >= 0 ? '充值' : '扣款' }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="充值/扣款类型" prop="opt_type" width="180">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ opt_type[scope.row.opt_type] }}
           </div>
         </template>
@@ -84,28 +84,28 @@
       <el-table-column label="金额" prop="amount" width="140">
         <template slot-scope="scope">
           <div v-if="scope.row.amount == 0">0</div>
-          <div v-else :class="isEllipsis(scope.row) + (scope.row.amount > 0 ? ' red' : ' green')">
+          <div v-else :class="(scope.row.amount > 0 ? ' red' : ' green')">
             {{ scope.row.amount > 0 ? '+￥' : '-￥' }}{{returnPrice(Math.abs(scope.row.amount))}}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="提交人" prop="creator_name" width="120">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.creator_name }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="充值/扣款备注">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.remark || '-' }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="审核状态" width="100">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ status[scope.row.status] }}
           </div>
         </template>
@@ -223,9 +223,6 @@
         this.$data.currentRow = {};
       },
 
-      isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
-      },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

@@ -38,7 +38,7 @@
           sortable="custom"
           min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatRate(scope.row.cover_rate)}}</div>
+            <div>{{formatRate(scope.row.cover_rate)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -48,7 +48,7 @@
           sortable="custom"
           min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatRate(scope.row.convert_rate)}}</div>
+            <div>{{formatRate(scope.row.convert_rate)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -58,7 +58,7 @@
           sortable="custom"
           min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatRate(scope.row.repeat_rate)}}</div>
+            <div>{{formatRate(scope.row.repeat_rate)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -68,7 +68,7 @@
           sortable="custom"
           min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatRate(scope.row.aftersale_rate)}}</div>
+            <div>{{formatRate(scope.row.aftersale_rate)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -78,7 +78,7 @@
             sortable="custom"
             min-width="120">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.cust_price)}}</div>
+              <div>{{returnPrice(scope.row.cust_price)}}</div>
             </template>
         </el-table-column>
         <el-table-column
@@ -87,7 +87,7 @@
           align="left"
           min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatValue(scope.row.store_num_pre)}}</div>
+            <div>{{formatValue(scope.row.store_num_pre)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -96,7 +96,7 @@
           align="left"
           min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatValue(scope.row.store_num_reg)}}</div>
+            <div>{{formatValue(scope.row.store_num_reg)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -105,7 +105,7 @@
           align="left"
           min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatValue(scope.row.store_num_ord)}}</div>
+            <div>{{formatValue(scope.row.store_num_ord)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -114,7 +114,7 @@
           align="left"
           min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatValue(scope.row.new_store_num)}}</div>
+            <div>{{formatValue(scope.row.new_store_num)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -123,7 +123,7 @@
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatValue(scope.row.order_num_store)}}</div>
+            <div>{{formatValue(scope.row.order_num_store)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -132,7 +132,7 @@
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.gmv)}}</div>
+            <div>{{returnPrice(scope.row.gmv)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -141,7 +141,7 @@
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.real_price)}}</div>
+            <div>{{returnPrice(scope.row.real_price)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -150,7 +150,7 @@
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{returnPrice(scope.row.fram_total_price)}}</div>
+            <div>{{returnPrice(scope.row.fram_total_price)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -159,7 +159,7 @@
           align="left"
           min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{returnPrice(scope.row.bonus_promotion)}}</div>
+            <div>{{scope.row.bonus_promotion > 0 ? '-' : ''}}{{returnPrice(scope.row.bonus_promotion)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -168,7 +168,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatValue(scope.row.order_num_sum)}}</div>
+            <div>{{formatValue(scope.row.order_num_sum)}}</div>
           </template>
         </el-table-column>
       </el-table>
@@ -244,10 +244,6 @@ export default {
 
     cellMouseLeave(row, column, cell, event) {
       this.$data.currentRow = {};
-    },
-
-    isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {

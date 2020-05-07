@@ -54,14 +54,14 @@
     >
       <el-table-column label="时间" prop="created" width="180">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.created }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="原有金额" prop="old_balance" width="120">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.old_balance == 0 ? '' : '￥' }}{{ returnPrice(scope.row.old_balance) }}
           </div>
         </template>
@@ -69,42 +69,42 @@
       <el-table-column label="变动金额" prop="amount" width="120">
         <template slot-scope="scope">
           <div v-if="scope.row.amount == 0">0</div>
-          <div v-else :class="isEllipsis(scope.row) + (scope.row.amount > 0 ? ' red' : ' green')">
+          <div v-else :class="(scope.row.amount > 0 ? ' red' : ' green')">
             {{ scope.row.amount > 0 ? '+￥' : '-￥' }}{{ returnPrice(Math.abs(scope.row.amount)) }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="现有金额" prop="new_balance" width="120">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.new_balance == 0 ? '' : '￥' }}{{ returnPrice(scope.row.new_balance) }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="操作人" prop="operator_name" width="110">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.operator_name }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="操作人类型" prop="operator_class" width="110">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ operator[scope.row.operator_class] }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="变动原因" prop="opt_type" width="160">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ optType[scope.row.opt_type] }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="充值/扣款备注">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.remark || '-' }}
           </div>
         </template>
@@ -188,9 +188,6 @@
         this.$data.currentRow = {};
       },
 
-      isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
-      },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

@@ -33,17 +33,17 @@
           </el-table-column>
           <el-table-column min-width="100" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
             <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ cellValue(scope.row.items, d) }}</span>
+              <span>{{ cellValue(scope.row.items, d) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="平均值" min-width="100" align="left">
             <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ average(scope.row.items) }}</span>
+              <span>{{ average(scope.row.items) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="合计" min-width="120" align="left" v-if="selectType !== 'customer'">
             <template slot-scope="scope">
-              <span :class="isEllipsis(scope.row)">{{ total(scope.row.items) }}</span>
+              <span>{{ total(scope.row.items) }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -139,10 +139,6 @@ export default {
 
     cellMouseLeave(row, column, cell, event) {
       this.$data.currentRow = {};
-    },
-
-    isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {

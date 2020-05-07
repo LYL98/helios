@@ -22,28 +22,28 @@
         <el-table-column type="index" label="序号" min-width="150"></el-table-column>
         <el-table-column label="所属区域" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.province && scope.row.province.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="title" label="片区名称" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="rank" label="排序" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.rank }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="created" label="创建时间" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               {{ scope.row.created }}
             </div>
           </template>

@@ -22,42 +22,42 @@
         </el-table-column>
         <el-table-column label="门店名称" prop="title" min-width="220">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="县域" min-width="200" prop="city.title">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.city && scope.row.city.title }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="已退筐数" min-width="100" prop="frame_num_real">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.frame_num_real || '-' }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="剩余筐数" min-width="100" prop="frame_num">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.frame_num || '-' }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="已退金额" min-width="110" prop="frame_amount_real">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.frame_amount_real == 0 ? '' : '￥' }}{{ scope.row.frame_amount_real == 0 ? '-' : returnPrice(scope.row.frame_amount_real) }}
             </div>
           </template>
         </el-table-column>
         <el-table-column label="剩余金额" min-width="110" prop="frame_amount">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.frame_amount == 0 ? '' : '￥' }}{{ scope.row.frame_amount == 0 ? '-' : returnPrice(scope.row.frame_amount) }}
             </div>
           </template>

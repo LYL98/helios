@@ -27,7 +27,7 @@
           :min-width="maxLabelWidth < 200 ? 200 : maxLabelWidth"
           label="商品名称">
           <template slot-scope="scope">
-            <span id="titleScope" :class="isEllipsis(scope.row)">{{ formatValue(scope.row.item_code) + '/' + formatValue(scope.row.item_title) }}</span>
+            <div id="titleScope" class="td-item">{{ formatValue(scope.row.item_code) + '/' + formatValue(scope.row.item_title) }}</div>
           </template>
         </el-table-column>
 
@@ -35,7 +35,7 @@
           min-width="100"
           label="商品分类">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.item_category) }}</span>
+            <div class="td-item">{{ formatValue(scope.row.item_category) }}</div>
           </template>
         </el-table-column>
         
@@ -46,7 +46,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{ formatValue(scope.row.user_num) }}</span>
+            <div class="td-item">{{ formatValue(scope.row.user_num) }}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -56,7 +56,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               <span>{{formatValue(scope.row.item_sale_num)}}</span>
             </div>
           </template>
@@ -68,7 +68,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div class="td-item">
               <span>{{formatValue(scope.row.order_num)}}</span>
             </div>
           </template>
@@ -80,7 +80,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.total_price_sale)}}</span>
+            <div class="td-item">{{returnPrice(scope.row.total_price_sale)}}</div>
           </template>
         </el-table-column>
         <el-table-column
@@ -90,7 +90,7 @@
           align="left"
           min-width="80">
           <template slot-scope="scope">
-            <span :class="isEllipsis(scope.row)">{{returnPrice(scope.row.header_profit)}}</span>
+            <div class="td-item">{{returnPrice(scope.row.header_profit)}}</div>
           </template>
         </el-table-column>
       </el-table>
@@ -175,10 +175,6 @@ export default {
 
     cellMouseLeave(row, column, cell, event) {
       this.$data.currentRow = {};
-    },
-
-    isEllipsis(row) {
-      return row.id != this.$data.currentRow.id ? 'add-dot' : ''
     },
 
     highlightRowClassName({row, rowIndex}) {
