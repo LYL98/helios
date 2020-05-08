@@ -96,8 +96,8 @@
                   @command-visible="handleCommandVisible"
                   :list="[
                     {
-                      title: '分配',
-                      isDisplay: scope.row.status === 'init' && (auth.isAdmin || auth.OrderAfterSaleAllocate),
+                      title: scope.row.status === 'init' ? '分配' : '重新分配',
+                      isDisplay: scope.row.status !== 'close' && (auth.isAdmin || auth.OrderAfterSaleAllocate),
                       command: () => orderShowHideAllocateClose([scope.row.id])
                     },
                     {
@@ -300,7 +300,7 @@ export default {
 
     //是否禁用选择
     returnSelectStatus(item){
-      return item.status === 'init' ? true : false;
+      return item.status !== 'close' ? true : false;
     },
 
     //返回是否二次退货
