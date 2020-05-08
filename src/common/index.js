@@ -15,6 +15,7 @@ export { default as InputPercent } from './InputPercent';
 export { default as InputWeight } from './InputWeight';
 export { default as Label } from './Label';
 export { default as Location } from './Location';
+export { default as LocationDriving } from './LocationDriving';
 export { default as LocationPicker } from './LocationPicker';
 export { default as NumberKey } from './NumberKey';
 export { default as OmissionText } from './OmissionText';

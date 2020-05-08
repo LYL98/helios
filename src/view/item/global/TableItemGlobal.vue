@@ -37,8 +37,8 @@
               <div class="td-item add-dot2" v-else-if="item.key === 'parameter'">
                 <span>{{scope.row.origin_place}}</span>
                 <span v-if="scope.row.item_spec">、{{scope.row.item_spec}}</span>
-                <span v-if="!!scope.row.weight_s">、{{returnWeight(scope.row.weight_s)}}
-                  <span v-if="!!scope.row.weight_e"> - {{returnWeight(scope.row.weight_e)}}</span> 斤
+                <span v-if="!!scope.row.gross_weight">、{{returnWeight(scope.row.gross_weight)}}斤
+                  <!-- <span v-if="!!scope.row.weight_e"> - {{returnWeight(scope.row.weight_e)}}</span> 斤 -->
                 </span>
               </div>
               <!--筐-->

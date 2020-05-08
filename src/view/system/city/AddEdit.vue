@@ -11,6 +11,9 @@
         <el-form-item label="所属片区" prop="zone_id">
           <my-select-zone :provinceCode="detail.province_code" :value="detail.zone_id" @change="changeZone" :disabled="detail.id ? true: false"/>
         </el-form-item>
+        <el-form-item label="地理位置" prop="geo">
+          <my-location-picker  size="small" level="province" v-model="detail.geo" @change="changeGeo"></my-location-picker>
+        </el-form-item>
         <el-form-item label="排序" prop="rank">
           <el-input v-model="detail.rank" :maxlength="3" placeholder="0 - 999"></el-input>
         </el-form-item>
@@ -29,18 +32,31 @@
 <script>
 import addEditMixin from '@/share/mixin/add.edit.mixin';
 import { Http, Config, Verification } from '@/util';
-import { SelectProvince, SelectZone } from '@/common';
+import { SelectProvince, SelectZone,LocationPicker } from '@/common';
 
 export default {
   name: "AddEditCity",
   mixins: [addEditMixin],
   components: {
     'my-select-province': SelectProvince,
-    'my-select-zone': SelectZone
+    'my-select-zone': SelectZone,
+    'my-location-picker': LocationPicker,
+
   },
   data(){
+    let validLocation = function (rules, value, callback) {
+        if (!value.lng && !value.lat) {
+          return callback(new Error('地理位置不能为空'));
+        }
+        callback();
+      };
     return{
-      initDetail: {},
+      initDetail: {
+        geo: { lng: '', lat: '', province_title: '', city_title: '', poi: '' },
+      },
+      detail:{
+
+      },
       rules: {
         title: [
             { required: true, message: '名称不能为空', trigger: 'blur' }
@@ -57,17 +73,27 @@ export default {
         store_num_pre: [
           { pattern: Verification.testStrs.isNumber, message: '预估门店数必须为正整数数字', trigger: 'blur' },
         ],
+         geo: [
+            { required: true, validator: validLocation, trigger: 'change' },
+          ],
       }
     }
   },
   methods: {
 
+    syncProvince(province) {
+        this.$set(this.$data.detail.geo, 'province_title', province.title);
+      },
     // 切换区域时，所选区域，是否和当前区域一致！
     // 如果不一致，则清空city选择
     changeProvince(v) {
       if (v !== this.detail.province_code) { // 和当前的区域不同
         this.$set(this.detail, 'zone_id', '');
         this.$set(this.detail, 'province_code', v);
+        this.$data.detail.geo.lng = '';
+        this.$data.detail.geo.lat = '';
+        this.$data.detail.geo.poi = '';
+        this.$data.detail.geo.city_title = '';
       }
     },
 
@@ -80,6 +106,27 @@ export default {
       }
 
     },
+    changeGeo() {
+        this.$refs['ruleForm'].validateField('geo');
+      },
+      //显示新增修改(供外部也调用)
+      showAddEdit(data, type){
+        console.log(type);
+        if(data){
+        console.log(123);
+
+          let d = this.copyJson(data);
+          if (!d.geo || Object.keys(d.geo).length < 5) {
+            d.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
+          }
+          this.$data.detail = d;
+        }else{
+          this.$data.detail = this.copyJson(this.initDetail);
+        }
+        if(type) this.$data.pageType = type;
+        this.$data.isShow = true;
+        if(this.$refs['ruleForm']) this.$refs['ruleForm'].resetFields();
+      },
     //提交数据
     async addEditData(){
       let { detail } = this;
