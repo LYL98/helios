@@ -1,10 +1,10 @@
 <template>
   <div class="table-operate">
-    <div class="main" v-if="mainDisplayItem.length > 0">
+    <div class="main table-operate-main" v-if="mainDisplayItem.length > 0">
       <a href="javascript:void(0);" @click.prevent="handleCommand(mainDisplayItem[0].command)">{{ mainDisplayItem[0].title }}</a>
     </div>
-    <div class="sub table-operate-sub" v-if="subDisplayItem.length > 0">
-      <a href="javascript:void(0);" :style="`width: ${index === subDisplayItem.length - 1 ? width - 20 + 'px' : 'auto'}`"
+    <div class="sub table-operate-sub" :style="`right: ${width - 10}px`" v-if="subDisplayItem.length > 0">
+      <a href="javascript:void(0);"
         v-for="(item, index) in subDisplayItem"
         :key="index"
         @click.prevent="handleCommand(item.command)"
@@ -48,6 +48,14 @@
       }
     },
     methods: {
+      handleCommand(command) {
+        if (this.$props.list.length <= 1) {
+          this.$emit('command-click');
+        } else {
+          this.$data.clickedItem = true;
+        }
+        command && command();
+      },
     }
   }
 </script>
@@ -56,8 +64,12 @@
   .table-operate {
     position: relative;
     font-size: 12px;
+    height: 100%;
     >.main{
-      text-align: center;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       >a{
         display: block;
         &:hover{
@@ -67,19 +79,24 @@
     }
     >.sub{
       position: absolute;
-      right: 0px;
-      top: 28px;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      overflow: hidden;
       width: auto;
       white-space: nowrap;
+      background: #fff;
+      display: none;
+      align-items: center;
+      padding-left: 10px;
       >a{
-        margin-left: 10px;
+        margin: 0 10px;
         display: inline-block;
         &:hover{
           font-weight: bold;
         }
         &:last-child{
-          text-align: center;
-          margin: 0;
+          margin-right: 0;
         }
       }
     }
@@ -91,10 +108,14 @@
   }
   .el-table__row:hover {
     .table-operate-sub{
-      display: block;
+      display: flex;
+    }
+    .table-operate-main{
+      background: #fff;
     }
     td:last-child >.cell{
       overflow: visible;
+      background: #fff;
     }
   }
   
