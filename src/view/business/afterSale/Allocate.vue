@@ -88,6 +88,7 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         this.cancel();
+        this.$message({title: '提示', message: '分配成功', type: 'success'});
         this.$attrs.callback();//回调
         this.$refs['ruleForm'].resetFields();
       }else{

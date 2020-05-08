@@ -84,7 +84,7 @@
               <div class="td-item add-dot2">
                 <span class="grade7" v-if="scope.row.flag_7"></span>
                 <span class="grade2" v-if="scope.row.flag_2"></span>
-                <span v-else>-</span>
+                <span v-else-if="!scope.row.flag_7 && !scope.row.flag_2">-</span>
               </div>
             </template>
           </el-table-column>
@@ -96,14 +96,14 @@
                   @command-visible="handleCommandVisible"
                   :list="[
                     {
-                      title: scope.row.status === 'init' ? '分配' : '重新分配',
-                      isDisplay: scope.row.status !== 'close' && (auth.isAdmin || auth.OrderAfterSaleAllocate),
-                      command: () => orderShowHideAllocateClose([scope.row.id])
-                    },
-                    {
                       title: judgeOrs(scope.row.status, ['waiting_dispose', 'handling']) ? (scope.row.status === 'waiting_dispose' ? '待处理' : '处理') : '详情',
                       isDisplay: judgeOrs(scope.row.status, ['waiting_dispose', 'handling']) && (auth.isAdmin || auth.OrderAfterSaleUpdate),
                       command: () => orderShowHideAfterSaleDetail(scope.row)
+                    },
+                    {
+                      title: scope.row.status === 'init' ? '分配' : '重新分配',
+                      isDisplay: scope.row.status !== 'close' && (auth.isAdmin || auth.OrderAfterSaleAllocate),
+                      command: () => orderShowHideAllocateClose([scope.row.id])
                     },
                     {
                       title: '二次处理',
