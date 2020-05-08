@@ -472,7 +472,7 @@
   ],
   "gmenus": [
     {
-      "title": "团购活动",
+      "title": "零售活动",
       "name": "GroupActivity",
       "icon": "&#xe61d;"
     },
@@ -492,7 +492,7 @@
       "icon": "&#xe6a3;"
     },
     {
-      "title": "团购门店",
+      "title": "零售门店",
       "name": "GroupHeadQuery",
       "icon": "&#xe60a;"
     },
@@ -502,7 +502,7 @@
       "icon": "&#xe7e6;"
     },
     {
-      "title": "团购统计",
+      "title": "零售统计",
       "name": "GroupBuyStatement",
       "icon": "&#xe636;"
     },

@@ -51,7 +51,7 @@
               </template>
             </template>
 
-            <!--团购菜单-->
+            <!--零售菜单-->
             <template v-else-if="selectMenu === 'gbuy'">
               <template v-for="(item, index) in gmenus">
                 <el-menu-item :index="item.name" :key="index" v-if="auth.isAdmin || auth[item.name]" @click="(e) => clickMenu(e, item)">
@@ -64,7 +64,7 @@
           </el-menu>
         </div>
         <div id="go-g-buy" v-if="authList.length > 1">
-          <div v-if="selectMenu === 'operate'" class="btn" @click="changeMenuType('gbuy')">进入团购中心</div>
+          <div v-if="selectMenu === 'operate'" class="btn" @click="changeMenuType('gbuy')">进入零售中心</div>
           <div v-else-if="selectMenu === 'gbuy'" class="btn" @click="changeMenuType('operate')">进入运营中心</div>
         </div>
       </div>
