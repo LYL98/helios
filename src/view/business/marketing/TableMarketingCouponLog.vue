@@ -16,7 +16,7 @@
     >
       <el-table-column label="发放时间" prop="created" width="180">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.created }}
           </div>
         </template>
@@ -28,21 +28,21 @@
       <!--</el-table-column>-->
       <el-table-column label="发放方式" prop="dis_type" width="140">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ disType[scope.row.dis_type] }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="发放记录">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)" style="padding-right: 10px;">
+          <div style="padding-right: 10px;">
             {{ scope.row.dis_scope_str || '-' }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="操作人" prop="operator_name" width="130">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.operator_name }}
           </div>
         </template>
@@ -130,9 +130,6 @@
         this.$data.currentRow = {};
       },
 
-      isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
-      },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

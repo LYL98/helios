@@ -124,42 +124,42 @@
           </el-table-column>
           <el-table-column label="门店" prop="store_title" min-width="100">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">
+              <div>
                 {{ scope.row.store_title }}
               </div>
             </template>
           </el-table-column>
           <el-table-column label="退筐" prop="return_num" min-width="80">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">
+              <div>
                 {{ scope.row.return_num || '-' }}
               </div>
             </template>
           </el-table-column>
           <el-table-column label="退筐金额" prop="return_amount" min-width="80">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">
+              <div>
                 {{ scope.row.return_amount == 0 ? '' : '￥' }}{{ scope.row.return_amount == 0 ? '-' : returnPrice(scope.row.return_amount) }}
               </div>
             </template>
           </el-table-column>
           <el-table-column label="录入员" prop="opt_name" min-width="80">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">
+              <div>
                 {{ scope.row.opt_name }}
               </div>
             </template>
           </el-table-column>
           <el-table-column label="审核人" prop="auditor_name" min-width="80">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">
+              <div>
                 {{ scope.row.auditor_name }}
               </div>
             </template>
           </el-table-column>
           <el-table-column label="备注" prop="remark" min-width="120">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">
+              <div>
                 {{ scope.row.remark || '-' }}
               </div>
             </template>
@@ -173,13 +173,13 @@
           </el-table-column>
           <el-table-column label="录入时间" prop="created" min-width="100">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">{{returnDate(scope.row.created)}}</div>
+              <div>{{returnDate(scope.row.created)}}</div>
               <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnTime(scope.row.created)}}</div>
             </template>
           </el-table-column>
           <el-table-column label="审核时间" prop="done" min-width="100">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">{{returnDate(scope.row.done)}}</div>
+              <div>{{returnDate(scope.row.done)}}</div>
               <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnTime(scope.row.done)}}</div>
             </template>
           </el-table-column>

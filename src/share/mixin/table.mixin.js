@@ -117,13 +117,6 @@ export default {
       // this.$refs['singleTable'] && this.$refs['singleTable'].setCurrentRow(row);
     },
 
-    /**
-     * 判断单元格是否缩略显示文本
-     */
-    isEllipsis(row) {
-      return row[this.$data.rowIdentifier] != this.$data.currentRow[this.$data.rowIdentifier] ? 'add-dot' : ''
-    },
-
     //是否显示表头哪一项
     isShowTableTitle() {
       let { tableName, tableColumn, tableShowColumn } = this;

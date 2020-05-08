@@ -63,14 +63,14 @@
       >
         <el-table-column prop="created" label="时间" width="180">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.created }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="store_title" label="门店">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.store_title }}
             </div>
           </template>
@@ -78,7 +78,7 @@
         <el-table-column prop="frame_num" label="筐数变动" width="110">
           <template slot-scope="scope">
             <div v-if="scope.row.frame_num == scope.row.frame_num_old">-</div>
-            <div v-else :class="isEllipsis(scope.row) + (scope.row.frame_num > scope.row.frame_num_old ? ' red' : scope.row.frame_num < scope.row.frame_num_old ? ' green' : '')">
+            <div v-else :class="(scope.row.frame_num > scope.row.frame_num_old ? ' red' : scope.row.frame_num < scope.row.frame_num_old ? ' green' : '')">
               {{ scope.row.frame_num > scope.row.frame_num_old ? '+' : '-'}}{{ Math.abs(scope.row.frame_num - scope.row.frame_num_old) }}
             </div>
           </template>
@@ -86,28 +86,28 @@
         <el-table-column prop="frame_amount" label="金额变动" width="120">
           <template slot-scope="scope">
             <div v-if="scope.row.frame_amount == scope.row.frame_amount_old">-</div>
-            <div v-else :class="isEllipsis(scope.row) + (scope.row.frame_amount > scope.row.frame_amount_old ? ' red' : scope.row.frame_amount < scope.row.frame_amount_old ? ' green' : '')">
+            <div v-else :class="(scope.row.frame_amount > scope.row.frame_amount_old ? ' red' : scope.row.frame_amount < scope.row.frame_amount_old ? ' green' : '')">
               {{ scope.row.frame_amount > scope.row.frame_amount_old ? '+￥' : '-￥'}}{{ returnPrice(Math.abs(scope.row.frame_amount - scope.row.frame_amount_old)) }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="reason" label="修改类型" width="110">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ refundReason[scope.row.reason] }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="remark" label="备注" width="220">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.remark }}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="operator_name" label="修改人" width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ refundReason[scope.row.operator_name] }}
             </div>
           </template>
@@ -189,9 +189,6 @@
         this.$data.currentRow = {};
       },
 
-      isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
-      },
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

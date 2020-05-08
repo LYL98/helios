@@ -22,7 +22,7 @@
         <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="title" label="名称" min-width="150">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.title }}
             </div>
           </template>
@@ -34,19 +34,19 @@
         </el-table-column>
         <el-table-column label="筐价格" min-width="100">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">
+            <div>
               {{ scope.row.price == 0 ? '' : '￥' }}{{scope.row.price == 0 ? '-' : returnPrice(scope.row.price)}}
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="remark" label="备注" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{ scope.row.remark || '-' }}</div>
+            <div>{{ scope.row.remark || '-' }}</div>
           </template>
         </el-table-column>
         <el-table-column prop="created" label="创建时间" min-width="160">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{ scope.row.created }}</div>
+            <div>{{ scope.row.created }}</div>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100" align="center">

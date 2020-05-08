@@ -47,28 +47,28 @@
       ></el-table-column>
       <el-table-column label="发放日期" prop="created" width="180">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.created }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="编号/名称" prop="coupon_code">
         <template slot-scope="scope">
-          <a href="javascript:void(0);" :class="`title ${isEllipsis(scope.row)}`" @click="handleShowCoupon(scope.row.coupon_id)">
+          <a href="javascript:void(0);" class="title" @click="handleShowCoupon(scope.row.coupon_id)">
             {{ scope.row.coupon_code }} / {{ scope.row.coupon_title }}
           </a>
         </template>
       </el-table-column>
       <el-table-column label="发放人" prop="operator_name" width="100">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.operator_name }}
           </div>
         </template>
       </el-table-column>
       <el-table-column label="商户" prop="merchant_title" width="200">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.merchant_title }}
           </div>
         </template>
@@ -80,7 +80,7 @@
       </el-table-column>
       <el-table-column label="所用订单编号" prop="order_code" width="130">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.order_code }}
           </div>
         </template>
@@ -143,10 +143,7 @@
       cellMouseLeave(row, column, cell, event) {
         this.$data.currentRow = {};
       },
-
-      isEllipsis(row) {
-        return row.id != this.$data.currentRow.id ? 'add-dot' : ''
-      },
+      
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

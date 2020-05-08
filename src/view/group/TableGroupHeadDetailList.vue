@@ -2,12 +2,12 @@
   <el-table @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" :data="memberDataItem" :row-class-name="highlightRowClassName" highlight-current-row="highlight-current-row">
     <el-table-column label="团长名称" min-width="100">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">{{ scope.row.realname }}</div>
+          <div>{{ scope.row.realname }}</div>
         </template>
       </el-table-column>
       <el-table-column label="登录手机" prop="phone" min-width="100">
         <template slot-scope="scope">
-          <div :class="isEllipsis(scope.row)">
+          <div>
             {{ scope.row.phone }}
           </div>
         </template>

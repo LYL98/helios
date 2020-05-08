@@ -29,7 +29,7 @@
         <el-table-column label="姓名" prop="realname" min-width="130">
           <div
             slot-scope="scope"
-            :class="`td-item link-item ${isEllipsis(scope.row)}`"
+            class="td-item link-item td-item"
             @click.prevent="handleShowDetail('DetailSystemOperator', scope.row)"
           >{{scope.row.realname}}</div>
         </el-table-column>
@@ -41,7 +41,7 @@
         </el-table-column>
         <el-table-column prop="roles" label="角色" min-width="120">
           <template slot-scope="scope">
-            <div :class="isEllipsis(scope.row)">{{formatRoles(scope.row.roles)}}</div>
+            <div class="td-item">{{formatRoles(scope.row.roles)}}</div>
           </template>
         </el-table-column>
         <el-table-column label="状态" min-width="100">

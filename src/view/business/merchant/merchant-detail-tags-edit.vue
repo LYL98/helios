@@ -11,7 +11,7 @@
         <div style="height: 30px;">{{item.title}}</div>
         <div>
           <el-tag disable-transitions :type="judgeInnerTag(c) ? 'danger' : 'info'" v-for="(c, i) in item.child_tags" :key="i"
-            style="margin-right: 5px;cursor:pointer;" @click.native="selectInnerTags(c)">
+            style="margin-right: 5px;cursor:pointer;" @click.native="selectInnerTags(item, c)">
             {{c.title}}
           </el-tag>
         </div>
@@ -107,28 +107,28 @@ export default {
 
     //内标签
     judgeInnerTag(data) {
-      let d = this.gradeTagData.inner_tag_ids;
-      return d.some(item => item === data.id);
+      let tagIds = this.gradeTagData.inner_tag_ids;
+      return tagIds.some(item => item === data.id);
     },
 
     //内标签
-    selectInnerTags(data){
-      let d = this.gradeTagData.inner_tag_ids;
-      if (d.length === 0) {
-        d.push(data.id);
+    selectInnerTags(data, item){
+      let tagIds = this.gradeTagData.inner_tag_ids;
+      if (tagIds.length === 0) {
+        tagIds.push(item.id);
       } else {
-        for (let i = 0; i < d.length; i++) {
-          if (data.id === d[i]) {
-            d.remove(i);
+        for (let i = 0; i < tagIds.length; i++) {
+          if (item.id === tagIds[i]) {
+            tagIds.remove(i);
             break;
           }
-          if (i === d.length - 1) {
-            d.push(data.id);
+          if (i === tagIds.length - 1) {
+            tagIds.push(item.id);
             break;
           }
         }
       }
-      this.gradeTagData.inner_tag_ids = d;
+      this.gradeTagData.inner_tag_ids = tagIds;
       this.$data.gradeTagData = this.gradeTagData;
       this.$forceUpdate(); //强制渲染
     },

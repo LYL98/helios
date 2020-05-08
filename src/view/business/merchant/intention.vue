@@ -61,26 +61,26 @@
           <el-table-column label="门店名称" min-width="150" prop="title">
             <template slot-scope="scope">
               <span v-if="auth.isAdmin || auth.IntentionMerchantDetail">
-                <a :class="`title ${isEllipsis(scope.row)}`" href="javascript:void(0);"
+                <a class="title" href="javascript:void(0);"
                    @click.prevent="handleDetailItem(scope.row)">
                   {{ scope.row.store_title }}
                 </a>
               </span>
-              <span v-else :class="isEllipsis(scope.row)">
+              <span v-else>
                 {{ scope.row.store_title }}
               </span>
             </template>
           </el-table-column>
           <el-table-column label="县域" min-width="80" prop="city">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">
+              <div>
                 {{ scope.row.city && scope.row.city.title }}
               </div>
             </template>
           </el-table-column>
           <el-table-column label="门店地址" prop="address" min-width="300">
             <template slot-scope="scope">
-              <div :class="isEllipsis(scope.row)">
+              <div>
                 {{ scope.row.address }}
               </div>
             </template>
