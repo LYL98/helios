@@ -48,7 +48,7 @@
           <el-button @click.native="handleExport('supModifyStockSaleExport', query)" size="mini" type="primary" plain>导出销售记录</el-button>
         </div>
       </div>
-      <div @mousemove="handleTableMouseMove" class="table-conter">
+      <div class="table-conter">
         <el-table
           class="list-table my-table-float"
           :data="list.items"
@@ -85,7 +85,6 @@
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
-                @command-visible="handleCommandVisible"
                 :list="[
                   {
                     title: '确认销售',

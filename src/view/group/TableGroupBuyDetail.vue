@@ -1,7 +1,5 @@
 <template>
   <el-table
-    @cell-mouse-enter="cellMouseEnter"
-    @cell-mouse-leave="cellMouseLeave"
     :data="data"
     height="300px"
     :row-class-name="highlightRowClassName"
@@ -66,7 +64,6 @@
     data() {
       return {
         auth: this.$auth,
-        currentRow: {},
         statusTagType: {
           pre: 'warning',
           ing: '',
@@ -77,16 +74,6 @@
       }
     },
     methods: {
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
-      },
-
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

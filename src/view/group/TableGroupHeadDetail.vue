@@ -1,5 +1,5 @@
 <template>
-  <el-table @cell-mouse-enter="cellMouseEnter" @cell-mouse-leave="cellMouseLeave" :data="storeDataItem" :row-class-name="highlightRowClassName" highlight-current-row="highlight-current-row">
+  <el-table :data="storeDataItem" :row-class-name="highlightRowClassName" highlight-current-row="highlight-current-row">
     <el-table-column label="门店名称" min-width="100">
         <template slot-scope="scope">
           <div>{{ scope.row.title }}</div>
@@ -43,7 +43,6 @@
         <template slot-scope="scope">
           <my-table-operate
             @command-click="handleCommandClick(scope.row)"
-            @command-visible="handleCommandVisible"
             :list="[
               {
                 title: scope.row.is_freeze_header ? '解冻' : '冻结',

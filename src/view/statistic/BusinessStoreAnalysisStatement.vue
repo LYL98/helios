@@ -15,8 +15,6 @@
         :header-cell-style="{'backgroundColor': '#ffffff'}"
         @sort-change="onSort"
         :row-class-name="highlightRowClassName"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         style="width: 100%;">
         <el-table-column
           label="门店"
@@ -153,21 +151,10 @@ export default {
         begin_date: '',
         end_date: '',
         sort: ''
-      },
-      currentRow: {}
+      }
     }
   },
   methods: {
-    cellMouseEnter(row, column, cell, event) {
-      if(row.id !== this.$data.currentRow.id) {
-        this.$data.currentRow = row;
-      }
-    },
-
-    cellMouseLeave(row, column, cell, event) {
-      this.$data.currentRow = {};
-    },
-
     highlightRowClassName({row, rowIndex}) {
       if (rowIndex === 0 || rowIndex === 1) {
         //总计、平均值

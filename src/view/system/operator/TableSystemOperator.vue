@@ -8,15 +8,13 @@
       </div>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove" class="table-conter">
+    <div class="table-conter">
       <el-table
         :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         style="width: 100%"
         class="list-table my-table-float"
         :highlight-current-row="true"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
@@ -54,7 +52,6 @@
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
               :list="[
                     {
                       title: '冻结',

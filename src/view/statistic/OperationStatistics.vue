@@ -38,10 +38,7 @@
       </div>
       <!--表格-->
       <div class="statistics-table-list-container">
-        <el-table :data="dataItem"
-                  :row-class-name="highlightRowClassName"
-                  @cell-mouse-enter="cellMouseEnter"
-                  @cell-mouse-leave="cellMouseLeave">
+        <el-table :data="dataItem" :row-class-name="highlightRowClassName">
           <el-table-column
             label="指标"
             fixed="left"
@@ -159,8 +156,7 @@
          上月（以当前所在月的上一个月作为选择）
          本年
          上一年*/
-        fixDateOptions: Constant.FIX_DATE_RANGE,
-        currentRow: {}
+        fixDateOptions: Constant.FIX_DATE_RANGE
       }
     },
     watch: {
@@ -174,15 +170,6 @@
         this.loadOperationStatistics(() => {
           this.initChart()
         });
-      },
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
       },
 
       highlightRowClassName({row, rowIndex}) {

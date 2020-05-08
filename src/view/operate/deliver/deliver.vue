@@ -49,14 +49,12 @@
           <el-button class="right" type="primary" size="mini" @click.native="handleAddItem" v-if="$auth.isAdmin || $auth.DeliverAdd">新增</el-button>
         </div>
       </div>
-      <div class="table-conter" @mousemove="handleTableMouseMove">
+      <div class="table-conter">
         <el-table
           :data="list.items"
           :row-class-name="highlightRowClassName"
           class="list-table my-table-float"
           :highlight-current-row="true"
-          @cell-mouse-enter="cellMouseEnter"
-          @cell-mouse-leave="cellMouseLeave"
           :row-key="rowIdentifier"
           :current-row-key="clickedRow[rowIdentifier]"
         >
@@ -138,7 +136,6 @@
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
-                @command-visible="handleCommandVisible"
                 :list="[
                   {
                     title: '审核',

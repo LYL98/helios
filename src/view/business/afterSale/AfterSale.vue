@@ -13,7 +13,7 @@
         </div>
       </div>
       <!-- 表格start -->
-      <div @mousemove="handleTableMouseMove" class="table-conter">
+      <div class="table-conter">
         <el-table
           class="list-table my-table-float"
           :data="dataItem.items"
@@ -93,7 +93,6 @@
               <div style="position: relative;">
                 <my-table-operate
                   @command-click="handleCommandClick(scope.row)"
-                  @command-visible="handleCommandVisible"
                   :list="[
                     {
                       title: judgeOrs(scope.row.status, ['waiting_dispose', 'handling']) ? (scope.row.status === 'waiting_dispose' ? '待处理' : '处理') : '详情',

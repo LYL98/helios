@@ -35,8 +35,6 @@
     </div>
     <el-table
       :data="dataItem.items"
-      @cell-mouse-enter="cellMouseEnter"
-      @cell-mouse-leave="cellMouseLeave"
       :row-class-name="highlightRowClassName"
       :highlight-current-row="true"
     >
@@ -125,25 +123,14 @@
         dataItem: {
           items: [],
           num: 0
-        },
-        currentRow: {}
+        }
       }
     },
     created() {
       this.initQuery();
       this.queryLog();
     },
-    methods: {
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
-      },
-      
+    methods: {      
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';
