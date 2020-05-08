@@ -5,7 +5,7 @@
         <div style="height: 30px;">{{item.title}}</div>
         <div>
           <el-tag disable-transitions :type="judgeTag(c) ? 'danger' : 'info'" v-for="(c, i) in item.child_tags" :key="i"
-            style="margin-right: 5px;cursor:pointer;" @click.native="selectTags(c)">
+            style="margin-right: 5px;cursor:pointer;" @click.native="selectTags(item, c)">
             {{c.title}}
           </el-tag>
         </div>
@@ -71,23 +71,34 @@ export default {
       return d.some(item => item === data.id);
     },
 
-    selectTags(data){
-      let d = this.selectTagIds;
-      if (d.length === 0) {
-        d.push(data.id);
+    //标签(一个父标签只能选择一个)
+    selectTags(data, item){
+      let tagIds = this.selectTagIds;
+      if (tagIds.length === 0) {
+        tagIds.push(item.id);
       } else {
-        for (let i = 0; i < d.length; i++) {
-          if (data.id === d[i]) {
-            d.remove(i);
+        for (let i = 0; i < tagIds.length; i++) {
+          //如果点击没选择过的，删除这个父标签下目前已选择的
+          let con = data.child_tags.filter(ct => tagIds[i] === ct.id && tagIds[i] !== item.id);
+          if(con.length > 0){
+            tagIds.remove(i);
+            i = i - 1;
+          }
+
+          //如果当前已选择的，取消选择
+          if (item.id === tagIds[i]) {
+            tagIds.remove(i);
             break;
           }
-          if (i === d.length - 1) {
-            d.push(data.id);
+
+          //加入
+          if (i === tagIds.length - 1) {
+            tagIds.push(item.id);
             break;
           }
         }
       }
-      this.selectTagIds = d;
+      this.selectTagIds = tagIds;
       this.$forceUpdate(); //强制渲染
     },
 

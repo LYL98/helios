@@ -90,7 +90,7 @@
   import { Row, Col, Table, TableColumn, Pagination, Tag, Dialog } from 'element-ui';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import { QueryItem, QuerySearchInput } from '@/common';
-  import AddEdit from './add-edit';
+  import AddEdit from './addEdit';
   import mainMixin from '@/share/mixin/main.mixin';
   import tableMixin from '@/share/mixin/table.mixin';
 
