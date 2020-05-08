@@ -3,7 +3,7 @@
     <div class="table-top" v-if="auth.isAdmin || auth.CityAdd">
       <div class="left"></div>
       <div class="right">
-        <el-button @click="handleShowAddEdit('AddEdit')" size="mini" type="primary">新增</el-button>
+        <el-button @click="handleShowAddEdit('AddEdit',null, 'add')" size="mini" type="primary">新增</el-button>
       </div>
     </div>
     <!-- 表格start -->
@@ -75,9 +75,14 @@
               @command-visible="handleCommandVisible"
               :list="[
               {
+                title: '地图',
+                isDisplay: auth.isAdmin || auth.CityEdit,
+                command: () => handleShowLocationDrving( scope.row)
+              },
+              {
                 title: '修改',
                 isDisplay: auth.isAdmin || auth.CityEdit,
-                command: () => handleShowAddEdit('AddEdit', scope.row)
+                command: () => handleShowAddEdit('AddEdit', scope.row,'edit')
               },
               {
                 title: '删除',
@@ -97,18 +102,37 @@
       </div>
     </div>
     <!-- 表格end -->
+       <detail-layout
+      title="县域门店地图"
+      :isShow="location.visible"
+      type="drawer"
+      direction="ttb"
+      :before-close="handleCancel"
+    >
+        <!-- :center="location.item.storehouse.geo" -->
+        <!-- :marker="location.marker" -->
+      <location-driving
+        v-if="location.visible"
+        :center="location.item"
+        :marker="location.marker"
+        style="height:100%;padding:0 15px"
+      />
+    </detail-layout>
   </div>
 </template>
 
 <script>
   import { TableOperate } from '@/common';
+    import { LocationDriving } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
-
+  import detailLayout from "@/share/layout/Layout";
   export default {
     name: 'Table',
     components: {
-      'my-table-operate': TableOperate
+      'my-table-operate': TableOperate,
+      'detail-layout': detailLayout,
+      'location-driving':LocationDriving
     },
     mixins: [tableMixin],
     created() {
@@ -122,7 +146,12 @@
         dataItem: {
           items: [],
           num: 0
-        }
+        },
+        location: {
+          visible: false,
+          item: {},
+          marker:[],//所有门店经纬度
+        },
       }
     },
     computed: {
@@ -190,6 +219,21 @@
           num: dataList.length
         }
         this.$data.dataItem = d;
+      },
+      //获取地图
+      handleShowLocationDrving(){
+         this.$data.location = {
+            visible: true,
+            item: {},
+          };
+      },
+      //关闭地图
+      handleCancel(){
+        let that = this
+        this.$data.location = {
+            visible: false,
+            item: [],
+          };
       }
     }
   };

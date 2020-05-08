@@ -43,17 +43,17 @@
         </el-col>
         <el-col :span="12">
           <el-row>
-            <el-col :span="13">
-              <el-form-item label="重量" prop="weight_s">
-                <input-weight size="medium" v-model="detail.weight_s" placeholder="最小重量" unit="斤"/>
+            <el-col :span="12">
+              <el-form-item label="毛重" prop="gross_weight">
+                <input-weight size="medium" v-model="detail.gross_weight" placeholder="毛重" unit="斤"/>
               </el-form-item>
             </el-col>
-            <el-col :span="2">
-              <div style="text-align: center; padding-left: 10px; line-height: 30px;"> — </div>
-            </el-col>
-            <el-col :span="9">
-              <el-form-item label-width="10px" prop="weight_e">
-                <input-weight size="medium" v-model="detail.weight_e" placeholder="最大重量" unit="斤"/>
+            <!-- <el-col :span="2">
+              <div style="text-align: center; padding-left: 10px; line-height: 30px;"> 净重 </div>
+            </el-col> -->
+            <el-col :span="12">
+              <el-form-item  prop="net_weight" label="净重">
+                <input-weight size="medium" v-model="detail.net_weight" placeholder="净重" unit="斤"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -145,8 +145,8 @@ export default {
       package_spec: '', //包装规格
       item_spec: '', //商品规格
       origin_place: '', //产地
-      weight_e: '', //最大重量
-      weight_s: '', //最小重量
+      gross_weight: '', //毛重
+      net_weight: '', //净重
       system_class_code: '', //科学分类编号
       system_class_codes: [], //科学分类编号s
       supplier_ids: [], //供应商
@@ -178,12 +178,13 @@ export default {
         origin_place: [
           { required: true, message: '产地不能为空', trigger: 'change' },
         ],
-        weight_s: [
-          { required: true, message: '请输入净重', trigger: 'change' },
+        gross_weight: [
+          { required: true, message: '请输入毛重', trigger: 'change' },
           { validator: this.validWeightS, trigger: 'blur' },
         ],
-        weight_e : [
-          { validator: this.validWeightE, trigger: 'change' },
+        net_weight : [
+          { required: true, message: '请输入净重', trigger: 'blur' },
+          // { validator: this.validWeightE, trigger: 'change' },
         ],
         system_class_code: [
           { required: true, message: '请选择科学分类', trigger: 'blur' },

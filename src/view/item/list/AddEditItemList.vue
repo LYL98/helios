@@ -44,7 +44,7 @@
           </el-col>
           <el-col :span="12">
             <el-row>
-              <el-col :span="13">
+              <!-- <el-col :span="13">
                 <el-form-item label="重量" prop="weight_s">
                   <input-weight size="medium" v-model="detail.weight_s" disabled placeholder="最小重量" unit="斤"/>
                 </el-form-item>
@@ -56,7 +56,20 @@
                 <el-form-item label-width="10px" prop="weight_e">
                   <input-weight size="medium" v-model="detail.weight_e" disabled placeholder="最大重量" unit="斤"/>
                 </el-form-item>
-              </el-col>
+              </el-col> -->
+               <el-col :span="12">
+              <el-form-item label="毛重" prop="gross_weight">
+                <input-weight size="medium" v-model="detail.gross_weight" disabled placeholder="毛重" unit="斤"/>
+              </el-form-item>
+            </el-col>
+            <!-- <el-col :span="2">
+              <div style="text-align: center; padding-left: 10px; line-height: 30px;"> 净重 </div>
+            </el-col> -->
+            <el-col :span="12">
+              <el-form-item  prop="net_weight" label="净重">
+                <input-weight size="medium" v-model="detail.net_weight" disabled placeholder="净重" unit="斤"/>
+              </el-form-item>
+            </el-col>
             </el-row>
           </el-col>
           <el-col :span="12">
