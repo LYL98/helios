@@ -3,6 +3,16 @@
 #### 更新记录
 
 ### 版本 （最新 - 旧）
+
+### 3.6.2
+```
+更新注意事项
+修改sys_permission表
+修改：
+   1、code == AdvicedItemQuery  修改项: upper_code【从dev数据库拷贝】
+
+```
+
 ### 3.6.0
 ```
 更新注意事项

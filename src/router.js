@@ -99,6 +99,11 @@ const router = new Router({
       name: 'ItemSupDistributeWaybill',
       component: () => import('@/view/item/distribute/distribute-waybill')
     },
+    {
+      path: '/item/merchant/customer',
+      name: 'AdvicedItemQuery',
+      component: () => import('@/view/item/merchantCustomer/Customer')
+    },
 
     /*业务*/
     {
@@ -115,11 +120,6 @@ const router = new Router({
       path: '/business/merchant/refund/query',
       name: 'MerchantRefundQuery',
       component: () => import('@/view/business/merchantRefund/Refund')
-    },
-    {
-      path: '/business/merchant/customer/query',
-      name: 'AdvicedItemQuery',
-      component: () => import('@/view/business/merchantCustomer/Customer')
     },
     {
       path: '/business/merchant/grade',
