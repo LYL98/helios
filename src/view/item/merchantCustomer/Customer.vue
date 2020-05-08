@@ -228,7 +228,7 @@
     mixins: [mainMixin,queryMixin,tableMixin],
     created() {
       let that = this;
-      documentTitle('业务 - 客户提报');
+      documentTitle('商品 - 客户提报');
     },
     data() {
       return {
