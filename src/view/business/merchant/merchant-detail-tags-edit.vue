@@ -111,17 +111,27 @@ export default {
       return tagIds.some(item => item === data.id);
     },
 
-    //内标签
+    //内标签(一个父标签只能选择一个)
     selectInnerTags(data, item){
       let tagIds = this.gradeTagData.inner_tag_ids;
       if (tagIds.length === 0) {
         tagIds.push(item.id);
       } else {
         for (let i = 0; i < tagIds.length; i++) {
+          //如果点击没选择过的，删除这个父标签下目前已选择的
+          let con = data.child_tags.filter(ct => tagIds[i] === ct.id && tagIds[i] !== item.id);
+          if(con.length > 0){
+            tagIds.remove(i);
+            i = i - 1;
+          }
+
+          //如果当前已选择的，取消选择
           if (item.id === tagIds[i]) {
             tagIds.remove(i);
             break;
           }
+
+          //加入
           if (i === tagIds.length - 1) {
             tagIds.push(item.id);
             break;
