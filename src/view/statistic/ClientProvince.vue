@@ -46,8 +46,6 @@
     <div>
       <el-table
         class="list-table"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :data="listItem"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
@@ -145,7 +143,6 @@
         breadcrumb: {},
         query: { },
         listItem: [],
-        currentRow: {},
         total: 0,
       }
     },
@@ -156,16 +153,6 @@
       this.zoneOrderList();
     },
     methods: {
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
-      },
-
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

@@ -26,7 +26,7 @@
         </div>
       </div>
       <!-- 表格start -->
-      <div @mousemove="handleTableMouseMove" class="table-conter">
+      <div class="table-conter">
         <el-table
           class="list-table my-table-float"
           :data="dataItem.items"
@@ -107,15 +107,14 @@
           </el-table-column>
           <el-table-column label="下单时间" min-width="100" prop="created">
             <template slot-scope="scope">
-              <div class="td-item add-dot2">{{returnDate(scope.row.created)}}</div>
-              <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnTime(scope.row.created)}}</div>
+              <div>{{returnDate(scope.row.created)}}</div>
+              <div>{{returnTime(scope.row.created)}}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
-                @command-visible="handleCommandVisible"
                 :list="[
                   {
                     title: '取消订单',

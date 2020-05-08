@@ -68,8 +68,6 @@
       <el-table
         class="list-table"
         style="padding-bottom: 20px;"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :data="listItem"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
@@ -177,7 +175,6 @@ export default {
       totalFramPrice: 0,
       totalOrderModifyPrice: 0,
       totalCount: 0,
-      currentRow: {},
       chart: null,
       color: [
         "#E3D557", //1
@@ -227,15 +224,6 @@ export default {
       this.saleClassList(() => {
         this.initChart();
       });
-    },
-    cellMouseEnter(row, column, cell, event) {
-      if (row.id !== this.$data.currentRow.id) {
-        this.$data.currentRow = row;
-      }
-    },
-
-    cellMouseLeave(row, column, cell, event) {
-      this.$data.currentRow = {};
     },
 
     highlightRowClassName({ row, rowIndex }) {

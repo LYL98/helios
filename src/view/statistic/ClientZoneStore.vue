@@ -94,8 +94,6 @@
     <div>
       <el-table
         class="list-table"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :data="orderItemSumData.items"
         :row-class-name="highlightRowClassName"
         :height="viewWindowHeight - offsetHeight"
@@ -211,7 +209,6 @@
         orderItemSumData: {
           items: []
         },
-        currentRow: {},
         total: 0,
       }
     },
@@ -222,16 +219,6 @@
       this.statisticalOrderMerchantSum();
     },
     methods: {
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
-      },
-
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

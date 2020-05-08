@@ -57,8 +57,6 @@
 
     <div>
       <el-table
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"

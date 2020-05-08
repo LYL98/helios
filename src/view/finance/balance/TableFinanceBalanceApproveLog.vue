@@ -56,8 +56,6 @@
     <el-table
       :data="dataItem.items"
       :row-class-name="highlightRowClassName"
-      @cell-mouse-enter="cellMouseEnter"
-      @cell-mouse-leave="cellMouseLeave"
       :highlight-current-row="true"
     >
       <el-table-column label="提交时间" prop="created" width="180">
@@ -203,9 +201,7 @@
           detail: {  } // 审核详情
         },
 
-        fixDateOptions: Constant.FIX_DATE_RANGE,
-
-        currentRow: {}
+        fixDateOptions: Constant.FIX_DATE_RANGE
       }
     },
     created() {
@@ -213,15 +209,6 @@
       this.ApproveQuery();
     },
     methods: {
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
-      },
 
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {

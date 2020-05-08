@@ -39,8 +39,6 @@
         :data="merchantListData.items"
         :row-class-name="highlightRowClassName"
         @sort-change="onSort"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         style="width: 100%;">
         <el-table-column
           prop="store_title"
@@ -129,21 +127,10 @@ export default {
         zone_id: '',
         city_id: '',
         sort: ''
-      },
-      currentRow: {}
+      }
     }
   },
   methods: {
-    cellMouseEnter(row, column, cell, event) {
-      if(row.id !== this.$data.currentRow.id) {
-        this.$data.currentRow = row;
-      }
-    },
-
-    cellMouseLeave(row, column, cell, event) {
-      this.$data.currentRow = {};
-    },
-
     highlightRowClassName({row, rowIndex}) {
       if (rowIndex % 2 === 0) {
         return 'stripe-row'

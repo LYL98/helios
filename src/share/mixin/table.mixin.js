@@ -16,8 +16,6 @@ export default {
   data() {
     return {
       rowIdentifier: 'id',
-      currentRow: {},
-      currentRowLocked: false,
       clickedRow: {},
       tableShowColumn: [],
       multipleSelection: [],
@@ -71,50 +69,12 @@ export default {
       window.scrollTo(0, 0);
       this.handleSelectionChange([]); //清空选择
     },
-    /**
-     * 当鼠标在表格中移动时，解除当前行的锁定状态。 如果仅仅是在操作按钮上移动，则不做响应
-     */
-    handleTableMouseMove(e) {
-      if (e.target.alt === 'operate-icon') {
-        return;
-      }
-      if (this.$data.currentRowLocked) {
-        this.$data.currentRowLocked = false;
-      }
-    },
-
-    /**
-     * 当鼠标移动进入新的单元格时，并且当前行不是锁定状态。则设置新的当前行
-     */
-    cellMouseEnter(row, column, cell, event) {
-      if(row[this.$data.rowIdentifier] !== this.$data.currentRow[this.$data.rowIdentifier] && !this.$data.currentRowLocked) {
-        this.$data.currentRow = row;
-      }
-    },
-
-    /**
-     * 当鼠标离开单元格，并且当前行不是锁定状态，则清空当前行
-     */
-    cellMouseLeave(row, column, cell, event) {
-      if (!this.$data.currentRowLocked) {
-        this.$data.currentRow = {};
-      }
-    },
-
-    /**
-     * 展开操作弹层时，锁定当前行。
-     */
-    handleCommandVisible(visible) {
-      this.$data.currentRowLocked = visible;
-    },
 
     /**
      * 如果点击了操作选项，则锁定当前行。并且设置table的当前行
      */
     handleCommandClick(row) {
-      this.$data.currentRowLocked = true;
       this.$data.clickedRow = row;
-      // this.$refs['singleTable'] && this.$refs['singleTable'].setCurrentRow(row);
     },
 
     //是否显示表头哪一项

@@ -20,8 +20,6 @@
         @sort-change="onSort"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         style="width: 100%;">
         <el-table-column
           :min-width="maxLabelWidth"
@@ -231,21 +229,10 @@ export default {
         end_date: '',
         sort: ''
       },
-      currentRow: {}
     }
   },
 
   methods: {
-    cellMouseEnter(row, column, cell, event) {
-      if(row.id !== this.$data.currentRow.id) {
-        this.$data.currentRow = row;
-      }
-    },
-
-    cellMouseLeave(row, column, cell, event) {
-      this.$data.currentRow = {};
-    },
-
     highlightRowClassName({row, rowIndex}) {
       if (rowIndex === 0 || rowIndex === 1) {
         //总计、平均值

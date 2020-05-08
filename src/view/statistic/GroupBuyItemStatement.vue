@@ -17,8 +17,6 @@
       <el-table
         :data="dataItem.items"
         :row-class-name="highlightRowClassName"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         @sort-change="onSort"
         style="width: 100%; margin-top: 20px">
         <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod"/>
@@ -145,7 +143,6 @@ export default {
         begin_date: '',
         end_date: '',
       },
-      currentRow: {}
     }
   },
   components: {
@@ -164,17 +161,6 @@ export default {
   methods: {
     indexMethod(index) {
       return (this.query.page - 1) * this.query.page_size + index + 1;
-    },
-
-    cellMouseEnter(row, column, cell, event) {
-      // console.log('row: ', row);
-      if(row.id !== this.$data.currentRow.id) {
-        this.$data.currentRow = row;
-      }
-    },
-
-    cellMouseLeave(row, column, cell, event) {
-      this.$data.currentRow = {};
     },
 
     highlightRowClassName({row, rowIndex}) {

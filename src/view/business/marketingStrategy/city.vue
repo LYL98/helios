@@ -4,7 +4,7 @@
       <global-province @change="changeProvince" is-required/>
     </template>
     <div class="container-query">
-      <div v-for="(zone, index) in cityList" :class="`d-flex${index === cityList.length - 1 ? ' mb-16' : ''}`">
+      <div v-for="(zone, index) in cityList" :key="index" :class="`d-flex${index === cityList.length - 1 ? ' mb-16' : ''}`">
         <div class="zone-title">{{zone.zone_title}}</div>
         <div class="city-container">
           <template v-for="city in zone.list">
@@ -15,7 +15,7 @@
               type="primary"
               @click="changeCity(city)"
             >{{ city.title }}</el-button>
-            <span v-else class="city-label" @click="changeCity(city)">{{ city.title }}</span>
+            <span v-else class="city-label" @click="changeCity(city)" :key="city.id">{{ city.title }}</span>
           </template>
         </div>
       </div>
@@ -60,11 +60,9 @@
         </div>
       </div>
 
-      <div @mousemove="handleTableMouseMove" class="mt-16 table-conter">
+      <div class="mt-16 table-conter">
         <el-table
           class="list-table my-table-float"
-          @cell-mouse-enter="cellMouseEnter"
-          @cell-mouse-leave="cellMouseLeave"
           :data="list.items"
           :row-class-name="highlightRowClassName"
           highlight-current-row="highlight-current-row"
@@ -150,7 +148,6 @@
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
-                @command-visible="handleCommandVisible"
                 :list="[
                   {
                     title: '修改',

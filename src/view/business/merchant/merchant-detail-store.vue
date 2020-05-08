@@ -1,11 +1,9 @@
 <template>
   <div>
-    <div @mousemove="handleTableMouseMove">
+    <div>
       <el-table
         :data="dataItem"
         style="width: 100%;"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
         :row-key="rowIdentifier"
@@ -77,7 +75,6 @@
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
               :list="[
               {
                 title: '审核通过',
@@ -210,8 +207,6 @@
         store_id: '',
         isEditStore: false,
         editDialogVisible: false,
-
-        currentRow: {},
 
         dialog: {
           visible: false,

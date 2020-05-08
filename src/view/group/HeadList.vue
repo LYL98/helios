@@ -57,11 +57,9 @@
       <el-button size="mini" type="primary" @click="handleAddItem">新增</el-button>
     </div>
 
-    <div @mousemove="handleTableMouseMove">
+    <div>
       <el-table
         class="list-table my-table-float"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :data="listItem.items"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
@@ -120,7 +118,6 @@
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
               :list="[
                 {
                   title: scope.row.is_freeze_header ? '解冻' : '冻结',
@@ -235,7 +232,6 @@
       async headQuery() {
         let res = await Http.get(Config.api.groupHeadQuery, this.query);
         if (res.code === 0) {
-          //console.log("当前行", this.$data.currentRow[this.$data.rowIdentifier]);
           this.$data.listItem = Object.assign(this.$data.listItem, {
             num: res.data.num,
             items: res.data.items

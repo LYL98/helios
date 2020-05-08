@@ -8,7 +8,7 @@
       </div>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove" class="table-conter">
+    <div class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
@@ -19,40 +19,41 @@
       >
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
-        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-          <div slot-scope="scope" class="my-td-item">
-            <!--编号名称-->
-            <template v-if="item.key === 'tid_title'">
-              <div class="td-item add-dot2">
-                <div class="link-item" @click="handleShowDetail('DetailGroupActivity', scope.row)" v-if="auth.isAdmin || auth.GroupActivityDetail">
-                  {{scope.row.tid}}/{{scope.row.title}}
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
+            <div slot-scope="scope" class="my-td-item">
+              <!--编号名称-->
+              <template v-if="item.key === 'tid_title'">
+                <div class="td-item add-dot2">
+                  <div class="link-item" @click="handleShowDetail('DetailGroupActivity', scope.row)" v-if="auth.isAdmin || auth.GroupActivityDetail">
+                    {{scope.row.tid}}/{{scope.row.title}}
+                  </div>
+                  <div v-else>
+                    {{scope.row.tid}}/{{scope.row.title}}
+                  </div>
                 </div>
-                <div v-else>
-                  {{scope.row.tid}}/{{scope.row.title}}
-                </div>
+              </template>
+              <!--团购状态-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'progress_status'">
+                <el-tag size="small" :type="statusTagType[scope.row.progress_status]" disable-transitions>
+                  {{ progressStatus[scope.row.progress_status] }}
+                </el-tag>
               </div>
-            </template>
-            <!--团购状态-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'progress_status'">
-              <el-tag size="small" :type="statusTagType[scope.row.progress_status]" disable-transitions>
-                {{ progressStatus[scope.row.progress_status] }}
-              </el-tag>
+              <!--上架状态-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'status'">
+                <el-tag size="small" :type="scope.row.status === 'activated' ? 'regular' : 'info'" disable-transitions>
+                  {{ activityStatus[scope.row.status] }}
+                </el-tag>
+              </div>
+              <!--正常情况-->
+              <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
             </div>
-            <!--上架状态-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'status'">
-              <el-tag size="small" :type="scope.row.status === 'activated' ? 'regular' : 'info'" disable-transitions>
-                {{ activityStatus[scope.row.status] }}
-              </el-tag>
-            </div>
-            <!--正常情况-->
-            <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
-          </div>
-        </el-table-column>
+          </el-table-column>
+        </template>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
               :list="[
                 {
                   title: '修改',

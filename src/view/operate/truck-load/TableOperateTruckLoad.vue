@@ -1,7 +1,7 @@
 <template>
   <div class="container-table">
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove" class="table-conter">
+    <div class="table-conter">
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
         class="list-table my-table-float"
@@ -52,7 +52,6 @@
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
               :list="[{
                   title: '详情',
                   isDisplay: (auth.isAdmin || auth.OperateTruckLoadDetail) && !scope.row.allocated_time,

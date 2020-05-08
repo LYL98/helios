@@ -103,11 +103,9 @@
           </el-button>
         </div>
       </div>
-      <div @mousemove="handleTableMouseMove" class="table-conter">
+      <div class="table-conter">
         <el-table
           class="list-table my-table-float"
-          @cell-mouse-enter="cellMouseEnter"
-          @cell-mouse-leave="cellMouseLeave"
           :data="listItem.items"
           :row-class-name="highlightRowClassName"
           :highlight-current-row="true"
@@ -174,20 +172,19 @@
           <el-table-column label="录入时间" prop="created" min-width="100">
             <template slot-scope="scope">
               <div>{{returnDate(scope.row.created)}}</div>
-              <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnTime(scope.row.created)}}</div>
+              <div>{{returnTime(scope.row.created)}}</div>
             </template>
           </el-table-column>
           <el-table-column label="审核时间" prop="done" min-width="100">
             <template slot-scope="scope">
               <div>{{returnDate(scope.row.done)}}</div>
-              <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnTime(scope.row.done)}}</div>
+              <div>{{returnTime(scope.row.done)}}</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
-                @command-visible="handleCommandVisible"
                 :list="[
                   {
                     title: '审核通过',

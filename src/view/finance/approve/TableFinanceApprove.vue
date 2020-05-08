@@ -1,11 +1,9 @@
 <template>
   <div class="container-table">
     <slot name="query-tab"></slot>
-    <div @mousemove="handleTableMouseMove" class="table-conter">
+    <div class="table-conter">
       <el-table
         class="list-table my-table-float"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :data="data"
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
@@ -64,14 +62,13 @@
         <el-table-column label="提交时间" prop="created" min-width="100">
           <template slot-scope="scope">
             <div>{{returnDate(scope.row.created)}}</div>
-            <div v-if="scope.row[rowIdentifier] === currentRow[rowIdentifier]">{{returnDateFormat(scope.row.created, 'HH:mm:ss')}}</div>
+            <div>{{returnDateFormat(scope.row.created, 'HH:mm:ss')}}</div>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
               :list="[
                 {
                   title: '审核',

@@ -1,9 +1,7 @@
 <template>
-  <div @mousemove="handleTableMouseMove" class="table-conter">
+  <div class="table-conter">
     <el-table
       class="list-table my-table-float"
-      @cell-mouse-enter="cellMouseEnter"
-      @cell-mouse-leave="cellMouseLeave"
       :data="data"
       :row-class-name="highlightRowClassName"
       highlight-current-row="highlight-current-row"
@@ -78,7 +76,6 @@
         <template slot-scope="scope">
           <my-table-operate
             @command-click="handleCommandClick(scope.row)"
-            @command-visible="handleCommandVisible"
             :list="[
             {
               title: '手动发放',

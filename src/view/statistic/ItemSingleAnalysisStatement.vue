@@ -49,8 +49,6 @@
       <div class="statistics-table-list-container">
         <el-table :data="dataItem"
                   :row-class-name="highlightRowClassName"
-                  @cell-mouse-enter="cellMouseEnter"
-                  @cell-mouse-leave="cellMouseLeave"
                   style="width: 100%;">
           <el-table-column
             :label="(selectItemName ? selectItemName : '-') + '指标'"
@@ -190,8 +188,7 @@
          上月（以当前所在月的上一个月作为选择）
          本年
          上一年*/
-        fixDateOptions: Constant.FIX_DATE_RANGE,
-        currentRow: {}
+        fixDateOptions: Constant.FIX_DATE_RANGE
       }
     },
     watch: {
@@ -206,16 +203,6 @@
         this.loadItemSingleAnalysisList(() => {
           this.initChart();
         });
-      },
-      cellMouseEnter(row, column, cell, event) {
-        // console.log('row: ', row);
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
       },
 
       highlightRowClassName({row, rowIndex}) {
