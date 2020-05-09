@@ -218,7 +218,7 @@
         this.$data.dataItem = d;
       },
       //获取地图
-      handleShowLocationDrving(){
+      handleShowLocationDrving(data){
          this.$data.location = {
             visible: true,
             item: {},

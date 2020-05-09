@@ -43,16 +43,16 @@
         </el-col>
         <el-col :span="12">
           <el-row>
-            <el-col :span="12">
-              <el-form-item label="毛重" prop="gross_weight">
+            <el-col :span="14">
+              <el-form-item label="毛重" prop="gross_weight" >
                 <input-weight size="medium" v-model="detail.gross_weight" placeholder="毛重" unit="斤"/>
               </el-form-item>
             </el-col>
             <!-- <el-col :span="2">
               <div style="text-align: center; padding-left: 10px; line-height: 30px;"> 净重 </div>
             </el-col> -->
-            <el-col :span="12">
-              <el-form-item  prop="net_weight" label="净重">
+            <el-col :span="10">
+              <el-form-item  prop="net_weight" label="净重" label-width="60px">
                 <input-weight size="medium" v-model="detail.net_weight" placeholder="净重" unit="斤"/>
               </el-form-item>
             </el-col>
@@ -198,7 +198,7 @@ export default {
       if(value < 1) {
         callback('重量不能小于0.1斤');
       } else {
-        this.$data.detail.weight_e && this.$refs['ruleForm'].validateField('weight_e');
+        this.$data.detail.gross_weight && this.$refs['ruleForm'].validateField('gross_weight');
         callback();
       }
     },
@@ -243,8 +243,8 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
-        if (!rd.weight_e) {
-          rd.weight_e = '';
+        if (!rd.gross_weight) {
+          rd.gross_weight = '';
         }
         rd.system_class_codes = [];
         for(let i = 0; i < rd.system_classes.length; i++){

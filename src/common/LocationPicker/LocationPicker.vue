@@ -95,10 +95,11 @@
         // 如果外部设置了disabled 属性，则直接禁用
         if (this.$props.disabled) return true;
 
-        const { lng, lat, province_title, city_title  } = this.$props.location;
+        const { lng, lat, province_title, city_title } = this.$props.location;
         if (lng && lat) return false;
         if (this.$props.level === 'city' && province_title && city_title) return false;
         if (this.$props.level === 'province' && province_title) return false;
+        if (this.$props.level === 'base_city') return false;
         return true;
       }
     },

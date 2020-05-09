@@ -31,10 +31,10 @@
             {{ scope.row.code }}&nbsp;/&nbsp;{{ scope.row.title }}
           </template>
         </el-table-column>
-        <el-table-column prop="weight_s" label="重量">
+        <el-table-column prop="gross_weight" label="重量">
           <template slot-scope="scope">
-            {{returnWeight(scope.row.weight_s)}}
-            <span v-if="!!scope.row.weight_e"> - {{ returnWeight(scope.row.weight_e) }}</span>
+            {{returnWeight(scope.row.gross_weight)}}
+            <!-- <span v-if="!!scope.row.weight_e"> - {{ returnWeight(scope.row.weight_e) }}</span> -->
             斤
           </template>
         </el-table-column>
