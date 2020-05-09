@@ -58,7 +58,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="处理进度" min-width="100">
+          <el-table-column label="处理进度" min-width="90">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.handle_loading ? afterSaleHandleLoading[scope.row.handle_loading] : '-' }}
@@ -72,7 +72,7 @@
               </div>
             </template>
           </el-table-column>-->
-          <el-table-column label="下单日期" min-width="100" prop="order_date">
+          <el-table-column label="下单日期" min-width="100">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.order_date }}
@@ -88,7 +88,14 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="100">
+          <el-table-column label="客服" min-width="100">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                {{ scope.row.code }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
               <div style="position: relative;">
                 <my-table-operate

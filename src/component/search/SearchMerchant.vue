@@ -42,7 +42,7 @@
       </ul>
       <el-table :data="editList" height="400px" style="border: 1px solid #DCDFE6; border-radius: 2px;" :row-class-name="highlightRowClassName">
         <el-table-column label="已添加的商户列表" prop="title"></el-table-column>
-        <el-table-column label="操作" width="60">
+        <el-table-column label="操作" width="60" align="center">
           <template slot-scope="scope">
             <ul class="table-action">
               <li><a href="javascript:void(0);" @click="handleRemoveItem(scope.row)">移除</a></li>

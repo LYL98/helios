@@ -48,7 +48,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="90">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <!--如何日期不是今日-->
             <template v-if="query.opt_date > today">-</template>
@@ -59,9 +59,7 @@
                 2、预售的商品数量为0也可以报价
                 3、有可销售数量就可以报价
               -->
-              <my-table-operate
-                :width="120"
-                @command-click="handleCommandClick(scope.row)"
+              <my-table-operate @command-click="handleCommandClick(scope.row)"
                 :list="[
                   {
                     title: '报价',

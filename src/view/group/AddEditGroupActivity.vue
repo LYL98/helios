@@ -87,7 +87,7 @@
           <div class="error" v-if="scope.row.rank_error">{{scope.row.rank_error}}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="60">
+      <el-table-column label="操作" width="60" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.is_edit && detail.detail.id">
             <a href="javascript:void(0);" class="confirm" @click="confirmEditItem(scope.$index)">确定</a>

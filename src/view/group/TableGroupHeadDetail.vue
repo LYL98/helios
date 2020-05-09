@@ -39,7 +39,7 @@
           >{{ scope.row.is_freeze_header ? '已冻结' : '未冻结' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="60">
+      <el-table-column label="操作" width="60" align="center">
         <template slot-scope="scope">
           <my-table-operate
             @command-click="handleCommandClick(scope.row)"
