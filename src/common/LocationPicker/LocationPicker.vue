@@ -99,7 +99,6 @@
         if (lng && lat) return false;
         if (this.$props.level === 'city' && province_title && city_title) return false;
         if (this.$props.level === 'province' && province_title) return false;
-        if (this.$props.level === 'base_city') return false;
         return true;
       }
     },

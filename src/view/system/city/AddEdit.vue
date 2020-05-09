@@ -12,7 +12,7 @@
           <my-select-zone :provinceCode="detail.province_code" :value="detail.zone_id" @change="changeZone" :disabled="detail.id ? true: false"/>
         </el-form-item>
         <el-form-item label="地理位置" prop="geo">
-          <my-location-picker size="small" :disabled="detail.province_code?false:true" level="base_city" v-model="detail.geo" @change="changeGeo"></my-location-picker>
+          <my-location-picker size="small" :disabled="detail.province_code?false:true" :level="pageType == 'add'?'province':'city'" v-model="detail.geo" @change="changeGeo"></my-location-picker>
         </el-form-item>
         <el-form-item label="排序" prop="rank">
           <el-input v-model="detail.rank" :maxlength="3" placeholder="0 - 999"></el-input>
@@ -83,7 +83,6 @@ export default {
 
     syncProvince(province) {
       console.log(province);
-      
         this.$set(this.$data.detail.geo, 'province_title', province.title);
       },
     // 切换区域时，所选区域，是否和当前区域一致！
@@ -102,6 +101,8 @@ export default {
     },
 
     changeZone(v) {
+      console.log(v);
+      
       if (!v) {
         return;
       }
@@ -115,7 +116,6 @@ export default {
       },
       //显示新增修改(供外部也调用)
       showAddEdit(data, type){
-        console.log(type);
         if(data){
         console.log(123);
 
@@ -124,7 +124,9 @@ export default {
             d.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
           }
           this.$data.detail = d;
+          this.$set(this.$data.detail.geo, 'city_title', d.title);
         }else{
+          console.log(this.copyJson(this.initDetail));
           this.$data.detail = this.copyJson(this.initDetail);
         }
         if(type) this.$data.pageType = type;

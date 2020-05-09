@@ -8,17 +8,30 @@
 const MAP_STYLE = "amap://styles/light";
 const ICON_CENTER_POINT = require("./center.png");
 //线路起始点的点标记
-const ICON_MARKER_START = {
-  
-}
+const ICON_MARKER_START = [
+  require("./start_1.png"),
+  require("./start_2.png"),
+  require("./start_3.png"),
+  require("./start_4.png"),
+  require("./start_5.png"),
+  require("./start_6.png"),
+  require("./start_7.png"),
+  require("./start_8.png"),
+  require("./start_9.png"),
+  require("./start_10.png"),
+]
 //线路上的点标记
 const ICON_MARKER_POINT = [
-  require("./marker_blue.png"),
-  require("./marker_green.png"),
-  require("./marker_orange.png"),
-  require("./marker_purple.png"),
-  require("./marker_red.png"),
-  require("./marker_greyBlue.png")
+  require("./marker_1.png"),
+  require("./marker_2.png"),
+  require("./marker_3.png"),
+  require("./marker_4.png"),
+  require("./marker_5.png"),
+  require("./marker_6.png"),
+  require("./marker_7.png"),
+  require("./marker_8.png"),
+  require("./marker_9.png"),
+  require("./marker_10.png"),
 ];
 //线路颜色
 const COLOR_LINE = [
@@ -27,7 +40,11 @@ const COLOR_LINE = [
   '#fd994b',
   '#9f61d7',
   '#e67778',
-  '#62b1be'
+  '#62b1be',
+  '#acc34c',
+  '#5363b9',
+  '#d85f91',
+  '#d2b042',
 ]
 
 export default {
