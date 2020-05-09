@@ -70,7 +70,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="100">-</el-table-column>
+        <el-table-column label="操作" width="100" align="center">-</el-table-column>
       </el-table>
     </div>
     <div class="table-bottom">

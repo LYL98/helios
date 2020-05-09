@@ -16,7 +16,7 @@
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="index" width="100" label="序号"></el-table-column>
+        <el-table-column type="index" align="center" width="80" label="序号"></el-table-column>
         <!--table-column start-->
         <template v-for="(item, index, key) in tableColumn">
           <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">

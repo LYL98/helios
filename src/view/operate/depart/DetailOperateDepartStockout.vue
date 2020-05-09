@@ -34,7 +34,7 @@
             <span v-else>{{scope.row.count_real - scope.row.allocate_num}}件</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="80">
+        <el-table-column label="操作" width="80" align="center">
           <template slot-scope="scope">
             <my-table-operate
               :list="[

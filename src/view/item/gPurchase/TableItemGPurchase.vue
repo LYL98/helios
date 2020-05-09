@@ -59,7 +59,7 @@
             </div>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="80">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"

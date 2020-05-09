@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column label="商品过期时间" prop="due_date"/>
         <el-table-column label="库存过期时间" prop="stock_due_date"/>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
           <my-table-operate
             :list="[

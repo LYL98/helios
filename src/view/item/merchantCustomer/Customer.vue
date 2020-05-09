@@ -75,70 +75,70 @@
         </div>
       </div>
       <!-- 头部end -->
-<div class="table-conter">
-    <el-table
-      class="list-table my-table-float"
-      :data="dataItem.items"
-      :row-class-name="highlightRowClassName"
-      :highlight-current-row="true"
-      :row-key="rowIdentifier"
-      :current-row-key="clickedRow[rowIdentifier]"
-    >
-      <!-- 表格宽度： 860 / 830（带全选） -->
-      <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size <= 999950 ? 68 : 88" label="序号" :index="indexMethod">
-      </el-table-column>
-      <el-table-column label="门店名称" min-width="100" prop="store.title">
-        <template slot-scope="scope">
-        <span v-if="auth.isAdmin || auth.AdvicedItemQuery">
-          <a class="title" href="javascript:void(0);" @click.prevent="showDetail(scope.row)">
-            {{ scope.row.store.title }}
-          </a>
-        </span>
-          <span v-else>
-          {{ scope.row.store.title }}
-        </span>
-        </template>
-      </el-table-column>
-      <el-table-column label="县域" min-width="80" prop="city.title">
-        <template slot-scope="scope">
-          <div>
-            {{ scope.row.city && scope.row.city.title }}
-          </div>
-        </template>
-      </el-table-column>
+      <div class="table-conter">
+          <el-table
+            class="list-table my-table-float"
+            :data="dataItem.items"
+            :row-class-name="highlightRowClassName"
+            :highlight-current-row="true"
+            :row-key="rowIdentifier"
+            :current-row-key="clickedRow[rowIdentifier]"
+          >
+            <!-- 表格宽度： 860 / 830（带全选） -->
+            <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size <= 999950 ? 68 : 88" label="序号" :index="indexMethod">
+            </el-table-column>
+            <el-table-column label="门店名称" min-width="100" prop="store.title">
+              <template slot-scope="scope">
+              <span v-if="auth.isAdmin || auth.AdvicedItemQuery">
+                <a class="title" href="javascript:void(0);" @click.prevent="showDetail(scope.row)">
+                  {{ scope.row.store.title }}
+                </a>
+              </span>
+                <span v-else>
+                {{ scope.row.store.title }}
+              </span>
+              </template>
+            </el-table-column>
+            <el-table-column label="县域" min-width="80" prop="city.title">
+              <template slot-scope="scope">
+                <div>
+                  {{ scope.row.city && scope.row.city.title }}
+                </div>
+              </template>
+            </el-table-column>
 
-      <el-table-column label="展示分类" min-width="80" prop="display_class.title" >
-        <template slot-scope="scope">
-          {{scope.row.display_class.title}}
-        </template>
-      </el-table-column>
-      
-      <el-table-column label="商品名称" min-width="120" prop="title" >
-        <template slot-scope="scope">
-          <div>{{ scope.row.title}}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="提报时间" min-width="80" prop="created">
-        <template slot-scope="scope">
-          {{scope.row.created}}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="100">
-        <template slot-scope="scope">
-          <my-table-operate
-            @command-click="handleCommandClick(scope.row)"
-            :list="[
-              {
-                title: '详情',
-                isDisplay: auth.isAdmin || auth.AdvicedItemQuery,
-                command: () => showDetail(scope.row)
-              }
-            ]"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
-</div>
+            <el-table-column label="展示分类" min-width="80" prop="display_class.title" >
+              <template slot-scope="scope">
+                {{scope.row.display_class.title}}
+              </template>
+            </el-table-column>
+            
+            <el-table-column label="商品名称" min-width="120" prop="title" >
+              <template slot-scope="scope">
+                <div>{{ scope.row.title}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="提报时间" min-width="80" prop="created">
+              <template slot-scope="scope">
+                {{scope.row.created}}
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="100" align="center">
+              <template slot-scope="scope">
+                <my-table-operate
+                  @command-click="handleCommandClick(scope.row)"
+                  :list="[
+                    {
+                      title: '详情',
+                      isDisplay: auth.isAdmin || auth.AdvicedItemQuery,
+                      command: () => showDetail(scope.row)
+                    }
+                  ]"
+                />
+              </template>
+            </el-table-column>
+          </el-table>
+      </div>
 
       <!-- 分页标签 -->
       <div class="footer" v-if="dataItem.num > 0">

@@ -114,7 +114,7 @@
               </ul>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="120">
+          <el-table-column label="操作" width="120" align="center">
             <template slot-scope="scope">
               <a
                 class="operator"
