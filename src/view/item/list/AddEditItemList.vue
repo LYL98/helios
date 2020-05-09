@@ -488,8 +488,11 @@ export default {
       this.$loading({isShow: false});
       if(res.code === 0){
         let rd = res.data;
-        if (!rd.weight_e) {
-          rd.weight_e = '';
+        // if (!rd.weight_e) {
+        //   rd.weight_e = '';
+        // }
+        if (!rd.gross_weight) {
+          rd.gross_weight = '';
         }
         //如果是上架
         if(type === 'on_sale'){

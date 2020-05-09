@@ -101,8 +101,8 @@
               </el-col>
               <el-col :span="5">
                 <el-form-item label="重量" label-width="60px">
-                  <span v-if="!!itemData.weight_s">{{returnWeight(itemData.weight_s)}}
-                    <span v-if="!!itemData.weight_e"> - {{returnWeight(itemData.weight_e)}}</span> 斤
+                  <span v-if="!!itemData.gross_weight">{{returnWeight(itemData.gross_weight)}}斤
+                    <!-- <span v-if="!!itemData.weight_e"> - {{returnWeight(itemData.weight_e)}}</span> 斤 -->
                   </span>
                 </el-form-item>
               </el-col>

@@ -47,6 +47,11 @@
                 isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineUnDriver) && scope.row.deliver.id,
                 command: () => handleLineUnDriver(scope.row)
               },
+               {
+                title: '地图',
+                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineEdit) && scope.row.deliver.id,
+                command: () => handleShowMap(scope.row)
+              },
               {
                 title: '修改',
                 isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineEdit) && !scope.row.deliver.id,
@@ -80,18 +85,39 @@
         <pagination :pageComponent="this" />
       </div>
     </div>
+    <!-- 地图页面 -->
+   <detail-layout
+      title="县域门店地图"
+      :isShow="location.visible"
+      type="drawer"
+      direction="ttb"
+      :before-close="handleCancel"
+    >
+      <location-driving
+        v-if="location.visible"
+        :center="location.item"
+        :marker="location.marker"
+        style="height:100%;padding:0 15px"
+      />
+    </detail-layout>
+
   </div>
 </template>
 
 <script>
   import { TableOperate } from '@/common';
+  import { LocationDriving } from '@/common';
+
   import { Http, Config, Constant, DataHandle, Lodop } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
+  import detailLayout from "@/share/layout/Layout";
 
   export default {
     name: 'FrameList',
     components: {
-      'my-table-operate': TableOperate
+      'my-table-operate': TableOperate,
+      'detail-layout': detailLayout,
+      'location-driving':LocationDriving
     },
     mixins: [tableMixin],
     created() {
@@ -101,6 +127,11 @@
     },
     data() {
       return {
+        location: {
+          visible: false,
+          item: {},
+          marker:[],//所有门店经纬度
+        },
       }
     },
     methods: {
@@ -187,6 +218,21 @@
       handlePrintPreview(item) {
         let temp = Lodop.tempOperateLine(item);
         temp && temp.PREVIEW();
+      },
+      //获取地图
+      handleShowMap(data){
+         this.$data.location = {
+            visible: true,
+            item: {},
+          };
+      },
+      //关闭地图
+      handleCancel(){
+        let that = this
+        this.$data.location = {
+            visible: false,
+            item: [],
+          };
       }
     }
   };

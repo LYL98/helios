@@ -6,13 +6,13 @@
           <el-input v-model="detail.title" placeholder="请输入10位以内的字符" :maxlength="10"></el-input>
         </el-form-item>
         <el-form-item label="所属区域" prop="province_code">
-          <my-select-province isAuth :value="detail.province_code" @change="changeProvince" :disabled="detail.id ? true: false"/>
+          <my-select-province isAuth :value="detail.province_code" @change="changeProvince" :disabled="detail.id ? true: false" @sync="syncProvince"/>
         </el-form-item>
         <el-form-item label="所属片区" prop="zone_id">
           <my-select-zone :provinceCode="detail.province_code" :value="detail.zone_id" @change="changeZone" :disabled="detail.id ? true: false"/>
         </el-form-item>
         <el-form-item label="地理位置" prop="geo">
-          <my-location-picker  size="small" level="province" v-model="detail.geo" @change="changeGeo"></my-location-picker>
+          <my-location-picker size="small" :disabled="detail.province_code?false:true" level="base_city" v-model="detail.geo" @change="changeGeo"></my-location-picker>
         </el-form-item>
         <el-form-item label="排序" prop="rank">
           <el-input v-model="detail.rank" :maxlength="3" placeholder="0 - 999"></el-input>
@@ -50,13 +50,13 @@ export default {
         }
         callback();
       };
-    return{
-      initDetail: {
+    let initDetail = {
         geo: { lng: '', lat: '', province_title: '', city_title: '', poi: '' },
-      },
-      detail:{
-
-      },
+        
+      }
+    return{
+      initDetail: initDetail,
+      detail: this.copyJson(initDetail),
       rules: {
         title: [
             { required: true, message: '名称不能为空', trigger: 'blur' }
@@ -82,6 +82,8 @@ export default {
   methods: {
 
     syncProvince(province) {
+      console.log(province);
+      
         this.$set(this.$data.detail.geo, 'province_title', province.title);
       },
     // 切换区域时，所选区域，是否和当前区域一致！
@@ -90,6 +92,8 @@ export default {
       if (v !== this.detail.province_code) { // 和当前的区域不同
         this.$set(this.detail, 'zone_id', '');
         this.$set(this.detail, 'province_code', v);
+        // this.$set(this.detail, 'province_title', v);
+
         this.$data.detail.geo.lng = '';
         this.$data.detail.geo.lat = '';
         this.$data.detail.geo.poi = '';
@@ -125,6 +129,8 @@ export default {
         }
         if(type) this.$data.pageType = type;
         this.$data.isShow = true;
+        console.log(this.$data.detail);
+        
         if(this.$refs['ruleForm']) this.$refs['ruleForm'].resetFields();
       },
     //提交数据
