@@ -81,7 +81,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column type="index" width="80" label="序号"></el-table-column>
+          <el-table-column align="center" type="index" width="80" label="序号"></el-table-column>
           <el-table-column label="商品编号/名称" min-width="100">
             <div slot-scope="scope" class="my-td-item">
               <div class="td-item add-dot2">

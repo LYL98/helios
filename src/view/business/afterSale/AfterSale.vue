@@ -25,7 +25,7 @@
           :current-row-key="clickedRow[rowIdentifier]"
         >
           <el-table-column type="selection" :selectable="returnSelectStatus" width="42" disabled="false" v-if="auth.isAdmin || auth.OrderAfterSaleAllocate"></el-table-column>
-          <el-table-column type="index" width="88" label="序号" :index="indexMethod"/>
+          <el-table-column align="center" type="index" width="88" label="序号" :index="indexMethod"/>
           <el-table-column label="售后单号" prop="code" min-width="120">
             <template slot-scope="scope">
               <span v-if="auth.isAdmin || auth.OrderAfterSaleDetail || auth.OrderAfterSaleAppend || auth.OrderAfterSaleUpdate">

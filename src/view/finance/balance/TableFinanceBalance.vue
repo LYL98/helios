@@ -8,7 +8,7 @@
       :row-key="rowIdentifier"
       :current-row-key="clickedRow[rowIdentifier]"
     >
-      <el-table-column type="index" width="120" label="序号" :index="indexMethod" />
+      <el-table-column align="center" type="index" width="120" label="序号" :index="indexMethod" />
       <el-table-column label="商户名称" prop="title" min-width="200">
         <template slot-scope="scope">
           <div>

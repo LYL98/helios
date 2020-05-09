@@ -72,6 +72,7 @@
           :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
           label="序号"
           :index="indexMethod"
+          align="center"
         />
         <!-- 县域、订单金额、订单量、件数、占比、操作 -->
         <el-table-column label="县域" prop="city_title">

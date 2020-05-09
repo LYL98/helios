@@ -30,7 +30,7 @@
         </span>
       </div>
       <el-table :data="dataItem.items" width="100%" :height="460" :row-class-name="highlightRowClassName">
-        <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
+        <el-table-column type="index" :index="indexMethod" width="80" align="center" label="序号"></el-table-column>
         <el-table-column label="商品编号/名称">
           <template slot-scope="scope">{{scope.row.item.code}}/{{scope.row.item.title}}</template>
         </el-table-column>

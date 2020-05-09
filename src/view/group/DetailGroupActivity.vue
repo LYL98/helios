@@ -51,7 +51,7 @@
         </el-col>
       </el-row>
       <el-table :data="detail.items" width="100%" :height="460" style="border-top: 1px solid #eee;" :row-class-name="highlightRowClassName">
-        <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
+        <el-table-column type="index" :index="indexMethod" width="80" align="center" label="序号"></el-table-column>
         <el-table-column label="商品编号/名称">
           <template slot-scope="scope">
             <div class="link-item add-dot" @click="handleShowDetail('DetailGroupActivityItem', scope.row)" v-if="auth.isAdmin || auth.GroupActivityDetailItem">

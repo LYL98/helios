@@ -20,7 +20,7 @@
     <div class="" style="border-bottom: 8px solid #eee; margin: 0 16px 16px;"></div>
     <div style="padding: 0 16px;">
       <el-table :data="detail.bill_details" width="100%" :row-class-name="highlightRowClassName">
-        <el-table-column type="index" min-width="50" label="序号"></el-table-column>
+        <el-table-column type="index" min-width="50" align="center" label="序号"></el-table-column>
         <el-table-column label="流水类型" min-width="100">
           <template slot-scope="scope">{{billReason[scope.row.bill_reason]}}</template>
         </el-table-column>

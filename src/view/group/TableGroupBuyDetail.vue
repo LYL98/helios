@@ -5,7 +5,7 @@
     :row-class-name="highlightRowClassName"
     highlight-current-row="highlight-current-row"
   >
-    <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize <= 999950 ? 68 : 88" label="序号" :index="indexMethod"></el-table-column>
+    <el-table-column align="center" type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize <= 999950 ? 68 : 88" label="序号" :index="indexMethod"></el-table-column>
     <el-table-column label="门店名称" prop="city_title" min-width="200">
       <template slot-scope="scope">
         <a v-if="auth.isAdmin || auth.GroupBuyMerchantDetail"

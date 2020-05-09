@@ -57,6 +57,7 @@
           :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
           label="序号"
           :index="indexMethod"
+          align="center"
         />
         <el-table-column label="片区" prop="zone_title" min-width="120">
           <template slot-scope="scope">

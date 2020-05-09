@@ -74,6 +74,7 @@
           :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
           label="序号"
           :index="indexMethod"
+          align="center"
         />
         <el-table-column label="三级科学分类" prop="item_system_class">
           <template slot-scope="scope">
