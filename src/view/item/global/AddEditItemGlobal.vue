@@ -179,8 +179,8 @@ export default {
           { required: true, message: '产地不能为空', trigger: 'change' },
         ],
         gross_weight: [
-          { required: true, message: '请输入毛重', trigger: 'change' },
-          { validator: this.validWeightS, trigger: 'blur' },
+          { required: true, message: '请输入毛重', trigger: 'blur' },
+          { validator: this.validWeightS, trigger: 'change' },
         ],
         net_weight : [
           { required: true, message: '请输入净重', trigger: 'blur' },
@@ -198,7 +198,7 @@ export default {
       if(value < 1) {
         callback('重量不能小于0.1斤');
       } else {
-        this.$data.detail.gross_weight && this.$refs['ruleForm'].validateField('gross_weight');
+        // this.$data.detail.gross_weight && this.$refs['ruleForm'].validateField('gross_weight');
         callback();
       }
     },
