@@ -63,8 +63,6 @@
     <div>
       <el-table
         class="list-table"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :data="dataItem"
         :row-class-name="highlightRowClassName"
         :height="viewWindowHeight - offsetHeight"
@@ -155,7 +153,6 @@
         breadcrumb: {},
         query: {},
         dataItem: [],
-        currentRow: {},
         tagsOptions:[],//运营专区数据
 
       }
@@ -167,16 +164,6 @@
       this.statisticalOrderClassSum();
     },
     methods: {
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
-      },
-
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

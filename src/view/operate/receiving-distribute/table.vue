@@ -7,7 +7,7 @@
       <div class="right"></div>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove" class="table-conter">
+    <div class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
@@ -28,7 +28,6 @@
                 <div class="option">
                   <my-table-operate
                     @command-click="handleCommandClick(item)"
-                    @command-visible="handleCommandVisible"
                     :list="[
                       {
                         title: '品控',

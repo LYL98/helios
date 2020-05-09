@@ -12,7 +12,7 @@
       </div>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove" class="table-conter">
+    <div class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem.items"
         :row-class-name="highlightRowClassName"
@@ -26,32 +26,33 @@
         <el-table-column type="selection" width="42" v-if="auth.isAdmin || auth.GroupItemDelete || auth.GroupItemRecover"></el-table-column>
         <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <!--table-column start-->
-        <el-table-column v-for="(item, index, key) in tableColumn" :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
-          <div slot-scope="scope" class="my-td-item">
-            <!--编号名称-->
-            <template v-if="item.key === 'code_title'">
-              <div class="td-item add-dot2">
-                <div class="link-item" @click="handleShowDetail('DetailGroupItem', scope.row)" v-if="((auth.isAdmin || auth.GroupItemDetail) && page === 'item') || ((auth.isAdmin || auth.GroupItemRecoverDetail) && page === 'recover')">
-                  {{scope.row.code}}/{{scope.row.title}}
+        <template v-for="(item, index, key) in tableColumn">
+          <el-table-column :key="key" :label="item.label" :minWidth="item.width" v-if="item.isShow">
+            <div slot-scope="scope" class="my-td-item">
+              <!--编号名称-->
+              <template v-if="item.key === 'code_title'">
+                <div class="td-item add-dot2">
+                  <div class="link-item" @click="handleShowDetail('DetailGroupItem', scope.row)" v-if="((auth.isAdmin || auth.GroupItemDetail) && page === 'item') || ((auth.isAdmin || auth.GroupItemRecoverDetail) && page === 'recover')">
+                    {{scope.row.code}}/{{scope.row.title}}
+                  </div>
+                  <div v-else>
+                    {{scope.row.code}}/{{scope.row.title}}
+                  </div>
                 </div>
-                <div v-else>
-                  {{scope.row.code}}/{{scope.row.title}}
-                </div>
-              </div>
-            </template>
-            <!--商品分类-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'category'">{{scope.row.category.title || '-'}}</div>
-            <!--市场价、建议团长价、建议团购价-->
-            <div class="td-item add-dot2" v-else-if="item.key === 'price_origin' || item.key === 'advice_header_price' || item.key === 'advice_price_sale'">&yen;{{returnPrice(scope.row[item.key])}}</div>
-            <!--正常情况-->
-            <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
-          </div>
-        </el-table-column>
+              </template>
+              <!--商品分类-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'category'">{{scope.row.category.title || '-'}}</div>
+              <!--市场价、建议团长价、建议团购价-->
+              <div class="td-item add-dot2" v-else-if="item.key === 'price_origin' || item.key === 'advice_header_price' || item.key === 'advice_price_sale'">&yen;{{returnPrice(scope.row[item.key])}}</div>
+              <!--正常情况-->
+              <div class="td-item add-dot2" v-else>{{scope.row[item.key]}}</div>
+            </div>
+          </el-table-column>
+        </template>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
               :list="[
                 {
                   title: '修改',

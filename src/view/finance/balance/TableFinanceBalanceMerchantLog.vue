@@ -58,8 +58,6 @@
     <el-table
       :data="dataItem.items"
       :row-class-name="highlightRowClassName"
-      @cell-mouse-enter="cellMouseEnter"
-      @cell-mouse-leave="cellMouseLeave"
       :highlight-current-row="true"
     >
       <el-table-column label="时间" prop="created" width="170">
@@ -177,8 +175,7 @@
           checked: '审核通过',
           declined: '被驳回'
         },
-        fixDateOptions: Constant.FIX_DATE_RANGE,
-        currentRow: {}
+        fixDateOptions: Constant.FIX_DATE_RANGE
       }
     },
     created() {
@@ -186,16 +183,6 @@
       this.BalanceLogQuery();
     },
     methods: {
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
-      },
-
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

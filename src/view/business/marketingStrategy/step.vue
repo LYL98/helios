@@ -55,11 +55,9 @@
         </div>
       </div>
 
-      <div @mousemove="handleTableMouseMove" class="mt-16 table-conter">
+      <div class="mt-16 table-conter">
         <el-table
           class="list-table my-table-float"
-          @cell-mouse-enter="cellMouseEnter"
-          @cell-mouse-leave="cellMouseLeave"
           :data="list.items"
           :row-class-name="highlightRowClassName"
           highlight-current-row="highlight-current-row"
@@ -101,7 +99,7 @@
           <el-table-column label="阶梯优惠" min-width="200">
             <template slot-scope="scope">
               <div v-if="Array.isArray(scope.row.step_prices) && scope.row.step_prices.length >= 1" class="line-height-18">
-                <div v-for="item in scope.row.step_prices">满{{item.num}}件，￥{{DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * item.discount / 100))}}</div>
+                <div v-for="(item, index) in scope.row.step_prices" :key="index">满{{item.num}}件，￥{{DataHandle.returnPrice(DataHandle.returnDiscount(scope.row.price_sale * item.discount / 100))}}</div>
               </div>
               <div v-else>-</div>
             </template>
@@ -136,7 +134,6 @@
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
-                @command-visible="handleCommandVisible"
                 :list="[
                   {
                     title: '修改',

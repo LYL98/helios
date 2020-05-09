@@ -11,7 +11,7 @@
       </div>
     </template>
     <div class="container-table">
-      <div @mousemove="handleTableMouseMove" class="table-conter">
+      <div class="table-conter">
         <el-table
           class="list-table my-table-float"
           :data="list.items"

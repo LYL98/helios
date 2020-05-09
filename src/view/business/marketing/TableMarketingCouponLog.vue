@@ -10,8 +10,6 @@
       style="margin-top: -15px;"
       :data="dataItem.items"
       :row-class-name="highlightRowClassName"
-      @cell-mouse-enter="cellMouseEnter"
-      @cell-mouse-leave="cellMouseLeave"
       :highlight-current-row="true"
     >
       <el-table-column label="发放时间" prop="created" width="180">
@@ -90,8 +88,7 @@
           items: [],
           num: 0
         },
-        disType: Constant.ITEM_COUPON_DIS_TYPE,
-        currentRow: {}
+        disType: Constant.ITEM_COUPON_DIS_TYPE
       }
     },
     created() {
@@ -118,16 +115,6 @@
           this.$message({ title: '提示', message: res.message, type: 'error' });
         }
         this.$loading({ isShow: false });
-      },
-
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
       },
 
       highlightRowClassName({row, rowIndex}) {

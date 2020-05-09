@@ -57,8 +57,6 @@
       <el-table
         :data="dataItem.items"
         :row-class-name="highlightRowClassName"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :highlight-current-row="true"
       >
         <el-table-column prop="created" label="时间" width="180">
@@ -166,8 +164,7 @@
         initDataItem: initDataItem,
         dataItem: JSON.parse(JSON.stringify(initDataItem)),
         refundReason: Constant.MERCHANT_REFUND_REASON,
-        fixDateOptions: Constant.FIX_DATE_RANGE,
-        currentRow: {}
+        fixDateOptions: Constant.FIX_DATE_RANGE
       }
     },
     created() {
@@ -177,16 +174,6 @@
       showDetail(data){
         this.$data.query = Object.assign({}, this.initQuery);
         this.listQuery();
-      },
-
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
       },
 
       highlightRowClassName({row, rowIndex}) {

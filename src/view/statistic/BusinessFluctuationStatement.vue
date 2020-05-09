@@ -18,8 +18,6 @@
         <el-table :data="dataItem.items"
                   :height="viewWindowHeight - 255"
                   :row-class-name="highlightRowClassName"
-                  @cell-mouse-enter="cellMouseEnter"
-                  @cell-mouse-leave="cellMouseLeave"
                   style="width: 100%">
           <!--  :label="selectArea === 'zone' ? '区域' : '县域'"-->
           <el-table-column
@@ -121,8 +119,7 @@ export default {
         end_date: '',
         selectType: 'merchant'
       },
-      chartData: {},
-      currentRow: {}
+      chartData: {}
     }
   },
 
@@ -130,17 +127,6 @@ export default {
     // this.loadOrderTrendCityFirstPage()
   },
   methods: {
-    cellMouseEnter(row, column, cell, event) {
-      // console.log('row: ', row);
-      if(row.id !== this.$data.currentRow.id) {
-        this.$data.currentRow = row;
-      }
-    },
-
-    cellMouseLeave(row, column, cell, event) {
-      this.$data.currentRow = {};
-    },
-
     highlightRowClassName({row, rowIndex}) {
       if (rowIndex === 0 || rowIndex === 1) {
         //总计、平均值

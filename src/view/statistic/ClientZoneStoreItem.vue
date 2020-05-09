@@ -94,8 +94,6 @@
     <div>
       <el-table
         class="list-table"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :data="merchantListData.items"
         :row-class-name="highlightRowClassName"
         :height="viewWindowHeight - offsetHeight"
@@ -177,7 +175,6 @@
         merchantListData: {
           items: []
         },
-        currentRow: {},
         total: 0,
       }
     },
@@ -187,17 +184,7 @@
       this.initQuery();
       this.storeSaleItems();
     },
-    methods: {
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
-      },
-      
+    methods: {      
       highlightRowClassName({row, rowIndex}) {
         if (rowIndex % 2 == 0) {
           return 'stripe-row';

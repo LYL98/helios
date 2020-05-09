@@ -1,7 +1,7 @@
 <template>
   <div class="container-table">
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove" class="table-conter">
+    <div class="table-conter">
       <setting-column-title :columnList="tableColumn" :value="tableShowColumn" @change="changeTableColumn"/>
       <el-table :data="dataItem.items"
         row-class-name="stripe-row"

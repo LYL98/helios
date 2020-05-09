@@ -18,8 +18,6 @@
         :data="dataItem.items"
         :height="viewWindowHeight - 255"
         :row-class-name="highlightRowClassName"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         style="width: 100%; margin-top: 20px">
         <el-table-column
           :min-width="maxLabelWidth < 120 ? 120 : maxLabelWidth"
@@ -179,22 +177,10 @@ export default {
         system_class_codes: [],
         system_class_code: '',
         item_condition: '',
-      },
-      currentRow: {}
+      }
     }
   },
   methods: {
-    cellMouseEnter(row, column, cell, event) {
-      // console.log('row: ', row);
-      if(row.id !== this.$data.currentRow.id) {
-        this.$data.currentRow = row;
-      }
-    },
-
-    cellMouseLeave(row, column, cell, event) {
-      this.$data.currentRow = {};
-    },
-
     highlightRowClassName({row, rowIndex}) {
       if (rowIndex === 0 || rowIndex === 1) {
         //总计、平均值

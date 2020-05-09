@@ -34,7 +34,7 @@
         </div>
         <div class="right"></div>
       </div>
-      <div @mousemove="handleTableMouseMove" class="table-conter">
+      <div class="table-conter">
         <!--全选-->
         <div class="all-select">
           <el-checkbox @change="changeAllSelect" :value="judgeAllSelect"></el-checkbox>
@@ -63,7 +63,6 @@
                   <div class="option">
                     <my-table-operate
                       @command-click="handleCommandClick(item)"
-                      @command-visible="handleCommandVisible"
                       :list="[
                         {
                           title: '打印',
@@ -112,7 +111,6 @@
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
-                @command-visible="handleCommandVisible"
                 :list="[{
                     title: '详情',
                     isDisplay: auth.isAdmin || auth.OperatePrintOrderDetail,

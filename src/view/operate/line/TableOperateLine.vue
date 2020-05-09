@@ -11,7 +11,7 @@
       </div>
     </div>
     <!-- 表格start -->
-    <div @mousemove="handleTableMouseMove" class="table-conter">
+    <div class="table-conter">
       <el-table
         class="list-table my-table-float"
         :data="dataItem.items"
@@ -41,7 +41,6 @@
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
               :list="[
               {
                 title: '解绑司机',

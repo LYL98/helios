@@ -1,12 +1,10 @@
 <template>
   <div>
-    <div @mousemove="handleTableMouseMove">
+    <div>
       <el-table
         :data="dataItem"
         style="width: 100%;"
         :highlight-current-row="true"
-        @cell-mouse-enter="cellMouseEnter"
-        @cell-mouse-leave="cellMouseLeave"
         :row-class-name="highlightRowClassName"
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
@@ -38,7 +36,6 @@
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"
-              @command-visible="handleCommandVisible"
               :list="[
               {
                 title: '冻结',

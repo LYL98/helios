@@ -20,8 +20,6 @@
         <el-table :data="dataItem.items"
                   :height="viewWindowHeight - 255"
                   :row-class-name="highlightRowClassName"
-                  @cell-mouse-enter="cellMouseEnter"
-                  @cell-mouse-leave="cellMouseLeave"
                   style="width: 100%;margin-top: 5px">
           <el-table-column
             fixed="left"
@@ -159,25 +157,13 @@ export default {
         value: 8,
         label: '采购价格偏差'    //平均值无意义
       }],
-      chartData: {},
-      currentRow: {}
+      chartData: {}
     }
   },
   created() {
     this.loadItemTrendAnalysisListFirstPage()
   },
   methods: {
-    cellMouseEnter(row, column, cell, event) {
-      // console.log('row: ', row);
-      if(row.id !== this.$data.currentRow.id) {
-        this.$data.currentRow = row;
-      }
-    },
-
-    cellMouseLeave(row, column, cell, event) {
-      this.$data.currentRow = {};
-    },
-
     highlightRowClassName({row, rowIndex}) {
       if (row.m_title || row.m_title === '合计' || row.m_title === '平均值') {
         //平均值 、 合计值高亮

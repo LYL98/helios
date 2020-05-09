@@ -46,8 +46,6 @@
       <div>
         <el-table
           class="list-table"
-          @cell-mouse-enter="cellMouseEnter"
-          @cell-mouse-leave="cellMouseLeave"
           :data="listItem"
           :row-class-name="highlightRowClassName"
           :highlight-current-row="true"
@@ -153,7 +151,6 @@
         totalFramPrice: 0,
         totalOrderMerchantNum: 0,
         totalPiece: 0,
-        currentRow: {},
         chart: null,
         color: [
           '#E3D557',   //1
@@ -195,16 +192,6 @@
         this.provinceOrderList(() => {
           this.initChart();
         });
-      },
-
-      cellMouseEnter(row, column, cell, event) {
-        if(row.id !== this.$data.currentRow.id) {
-          this.$data.currentRow = row;
-        }
-      },
-
-      cellMouseLeave(row, column, cell, event) {
-        this.$data.currentRow = {};
       },
 
       highlightRowClassName({row, rowIndex}) {
