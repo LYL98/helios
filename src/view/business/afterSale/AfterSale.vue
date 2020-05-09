@@ -25,7 +25,7 @@
           :current-row-key="clickedRow[rowIdentifier]"
         >
           <el-table-column type="selection" :selectable="returnSelectStatus" width="42" disabled="false" v-if="auth.isAdmin || auth.OrderAfterSaleAllocate"></el-table-column>
-          <el-table-column type="index" width="88" label="序号" :index="indexMethod"/>
+          <el-table-column align="center" type="index" width="88" label="序号" :index="indexMethod"/>
           <el-table-column label="售后单号" prop="code" min-width="120">
             <template slot-scope="scope">
               <span v-if="auth.isAdmin || auth.OrderAfterSaleDetail || auth.OrderAfterSaleAppend || auth.OrderAfterSaleUpdate">
@@ -58,7 +58,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="处理进度" min-width="100">
+          <el-table-column label="处理进度" min-width="90">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.handle_loading ? afterSaleHandleLoading[scope.row.handle_loading] : '-' }}
@@ -72,7 +72,7 @@
               </div>
             </template>
           </el-table-column>-->
-          <el-table-column label="下单日期" min-width="100" prop="order_date">
+          <el-table-column label="下单日期" min-width="100">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.order_date }}
@@ -88,7 +88,14 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="100">
+          <el-table-column label="客服" min-width="100">
+            <template slot-scope="scope">
+              <div class="td-item add-dot2">
+                {{ scope.row.code }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
               <div style="position: relative;">
                 <my-table-operate

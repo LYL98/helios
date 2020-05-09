@@ -64,7 +64,7 @@
             </el-row>
 
             <el-table :data="detail.order_items" width="100%" style="margin-bottom: 20px;" :row-class-name="highlightRowClassName">
-              <el-table-column type="index" width="80" label="序号"></el-table-column>
+              <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
               <el-table-column label="商品编号/名称">
                 <template slot-scope="scope">{{scope.row.item_code}}/{{scope.row.item_title}}</template>
               </el-table-column>

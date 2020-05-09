@@ -8,7 +8,7 @@
       :row-key="rowIdentifier"
       :current-row-key="clickedRow[rowIdentifier]"
     >
-      <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize <= 999950 ? 68 : 88" label="序号" :index="indexMethod"></el-table-column>
+      <el-table-column align="center" type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize <= 999950 ? 68 : 88" label="序号" :index="indexMethod"></el-table-column>
       <el-table-column label="编号/名称" prop="title" min-width="200">
         <template slot-scope="scope">
           <a href="javascript:void(0);" :class="`title`" @click="handleShowItem(scope.row.id)">

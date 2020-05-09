@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="团长账户余额明细" :visible="isShow" width="1200px" :before-close="handleCancel">
     <el-table :data="balanceList.items" width="100%" :height="460" :row-class-name="highlightRowClassName">
-      <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
+      <el-table-column type="index" :index="indexMethod" width="80" align="center" label="序号"></el-table-column>
       <el-table-column label="时间" prop="created" width="260"/>
       <el-table-column label="原有余额" width="200">
         <template slot-scope="scope">&yen;{{returnPrice(scope.row.old_balance)}}</template>

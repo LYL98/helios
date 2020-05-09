@@ -17,7 +17,7 @@
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="index" label="序号" min-width="150"></el-table-column>
+        <el-table-column type="index" label="序号" min-width="150" align="center"></el-table-column>
         <el-table-column label="所属区域" min-width="160">
           <template slot-scope="scope">
             <div class="td-item">

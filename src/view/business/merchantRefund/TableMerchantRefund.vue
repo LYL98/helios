@@ -16,7 +16,7 @@
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod">
+        <el-table-column align="center" type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod">
         </el-table-column>
         <el-table-column label="门店名称" prop="title" min-width="220">
           <template slot-scope="scope">
@@ -60,7 +60,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"

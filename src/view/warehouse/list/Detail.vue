@@ -7,8 +7,8 @@
         <el-table-column prop="title" label="所属仓">
           <template slot-scope="scope">{{scope.row.storehouse.title}}</template>
         </el-table-column>
-        <el-table-column prop="created" label="创建时间"/>
-        <el-table-column label="操作" width="160">
+        <el-table-column prop="created" label="创建时间" width="260"/>
+        <el-table-column label="操作" width="220" align="center">
           <template slot-scope="scope">
             <a href="javascript: void(0);" @click="operate(scope.row, 'edit')" style="margin-right: 10px;" v-if="auth.isAdmin || auth.WarehouseListEdit">修改</a>
             <a href="javascript: void(0);" @click="operate(scope.row, 'delete')" v-if="auth.isAdmin || auth.WarehouseListDelete">删除</a>
@@ -30,10 +30,10 @@
       </div>
       <el-table :data="dataItem.items" :row-class-name="highlightRowClassName" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="42" v-if="auth.isAdmin || auth.WarehouseListTrayPrint"></el-table-column>
-        <el-table-column type="index" label="序号" :index="indexMethod"/>
+        <el-table-column type="index" label="序号" :index="indexMethod" align="center"/>
         <el-table-column prop="code" label="托盘编号"/>
-        <el-table-column prop="created" label="创建时间"/>
-        <el-table-column label="操作" width="260">
+        <el-table-column prop="created" label="创建时间" width="260"/>
+        <el-table-column label="操作" width="220" align="center">
           <template slot-scope="scope">
             <a href="javascript: void(0);" style="margin-right: 10px;" @click="operate(scope.row, 'edit_tray')" v-if="auth.isAdmin || auth.WarehouseListTrayEdit">修改</a>
             <a href="javascript: void(0);" style="margin-right: 10px;" @click="handlePrint([scope.row])" v-if="auth.isAdmin || auth.WarehouseListTrayPrint">打印</a>

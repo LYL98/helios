@@ -1,7 +1,7 @@
 <template>
   <el-dialog :title="`${detail.item_code}/${detail.item_title}`" :visible="isShow" width="1200px" top="5vh" append-to-body :before-close="handleCancel">
     <el-table :data="dataItem.items" width="100%" :height="460" :row-class-name="highlightRowClassName">
-      <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
+      <el-table-column type="index" :index="indexMethod" width="80" align="center" label="序号"></el-table-column>
       <el-table-column label="门店名称" prop="store_title"/>
       <el-table-column label="所在县域" width="120" prop="zone_title"/>
       <el-table-column label="参团人数" width="120" prop="user_num"/>

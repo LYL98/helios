@@ -20,7 +20,7 @@
         :row-key="rowIdentifier"
         :current-row-key="clickedRow[rowIdentifier]"
       >
-        <el-table-column type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod"/>
+        <el-table-column align="center" type="index" :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88" label="序号" :index="indexMethod"/>
         <el-table-column prop="title" label="线路编号 / 名称" min-width="200">
           <template slot-scope="scope">{{ scope.row.line_index }} / {{ scope.row.title }}</template>
         </el-table-column>

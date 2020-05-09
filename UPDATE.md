@@ -9,7 +9,7 @@
 更新注意事项
 修改sys_permission表
 修改：
-   1、code == AdvicedItemQuery  修改项: upper_code【从dev数据库拷贝】
+   1、code == AdvicedItemQuery  修改项:【从dev数据库拷贝】
 
 ```
 

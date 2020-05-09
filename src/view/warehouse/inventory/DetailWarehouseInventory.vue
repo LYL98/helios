@@ -6,7 +6,7 @@
     </el-row>
     <div style="margin: 0 20px;">
       <el-table :data="dataItem.items" width="100%">
-        <el-table-column type="index" :index="indexMethod" width="80" label="序号"></el-table-column>
+        <el-table-column type="index" :index="indexMethod" width="80" align="center" label="序号"></el-table-column>
         <el-table-column label="批次" prop="batch_code">
           <template slot-scope="scope">
             <span style="margin-right: 5px;">{{scope.row.batch_code}}</span>
@@ -25,7 +25,7 @@
         </el-table-column>
         <el-table-column label="商品过期时间" prop="due_date"/>
         <el-table-column label="库存过期时间" prop="stock_due_date"/>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
           <my-table-operate
             :list="[

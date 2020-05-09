@@ -84,6 +84,7 @@
             :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
             label="序号"
             :index="indexMethod"
+            align="center"
           ></el-table-column>
           <el-table-column label="调拨计划单" prop="creator_id" min-width="200">
             <template slot-scope="scope">
@@ -125,7 +126,7 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="100">
+          <el-table-column label="操作" width="100" align="center">
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"

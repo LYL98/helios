@@ -61,8 +61,7 @@
                   <div>分配时间：{{returnDateFormat(item.created, 'HH:mm:ss') || '-'}}</div>
                   <div>装车：{{returnUnit(item.sort_num, '件', '-')}}</div>
                   <div class="option">
-                    <my-table-operate
-                      @command-click="handleCommandClick(item)"
+                    <my-table-operate @command-click="handleCommandClick(item)"
                       :list="[
                         {
                           title: '打印',
@@ -82,7 +81,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column type="index" width="80" label="序号"></el-table-column>
+          <el-table-column align="center" type="index" width="80" label="序号"></el-table-column>
           <el-table-column label="商品编号/名称" min-width="100">
             <div slot-scope="scope" class="my-td-item">
               <div class="td-item add-dot2">
@@ -107,7 +106,7 @@
             </div>
           </el-table-column>
 
-          <el-table-column label="操作" width="96">
+          <el-table-column label="操作" width="100">
             <template slot-scope="scope">
               <my-table-operate
                 @command-click="handleCommandClick(scope.row)"
@@ -431,6 +430,7 @@
     >.option{
       flex: initial !important;
       position: relative;
+      text-align: center;
       >.print-sign{
         font-size: 12px;
         background: #00ADE7;
@@ -442,7 +442,7 @@
         text-align: center;
         position: absolute;
         right: -15px;
-        top: 1px;
+        top: 0;
       }
     }
   }

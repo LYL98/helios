@@ -100,7 +100,7 @@
         :highlight-current-row="true"
         @sort-change="onSort"
       >
-        <el-table-column type="index" width="120" label="序号" :index="indexMethod" />
+        <el-table-column type="index" width="120" label="序号" :index="indexMethod" align="center"/>
         <!-- 县域、订单金额、订单量、件数、占比、操作 -->
         <el-table-column label="编号/商品" prop="store_title">
           <template slot-scope="scope">

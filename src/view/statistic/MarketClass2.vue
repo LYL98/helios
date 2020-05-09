@@ -70,6 +70,7 @@
           :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
           label="序号"
           :index="indexMethod"
+          align="center"
         />
         <el-table-column label="二级科学分类" prop="item_system_class">
           <template slot-scope="scope">
@@ -97,7 +98,7 @@
             {{ scope.row.ratio }}%
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               :list="[

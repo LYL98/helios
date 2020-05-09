@@ -14,7 +14,7 @@
         <el-table-column label="签到时间">
           <template slot-scope="scope">{{scope.row.created}}</template>
         </el-table-column>
-        <el-table-column label="操作" width="80">
+        <el-table-column label="操作" width="80" align="center">
           <template slot-scope="scope">
             <a href="javascript:void(0);" v-if="auth.isAdmin || auth.OperateLineDriverDelete" @click="operateLineDriverDelete(scope.row)">删除</a>
           </template>

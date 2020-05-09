@@ -72,6 +72,7 @@
           :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
           label="序号"
           :index="indexMethod"
+          align="center"
         />
         <el-table-column label="门店名称" min-width="100">
           <template slot-scope="scope">
@@ -114,7 +115,7 @@
             >{{ scope.row.is_freeze_header ? '已冻结' : '未冻结' }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"

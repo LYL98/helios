@@ -15,7 +15,7 @@
                 :row-key="rowIdentifier"
                 :current-row-key="clickedRow[rowIdentifier]"
       >
-        <!-- <el-table-column width="20"/> -->
+        <el-table-column type="index" width="80" align="center" label="序号"></el-table-column>
         <el-table-column prop="title" label="名称" min-width="200" align="center">
           <template slot-scope="scope">
             <div>
@@ -35,7 +35,7 @@
             <div>{{ scope.row.created }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="160" align="center">
+        <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
             <my-table-operate
               @command-click="handleCommandClick(scope.row)"

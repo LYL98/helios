@@ -57,9 +57,7 @@
         </template>
         <el-table-column label="操作" width="100" align="center">
           <template slot-scope="scope">
-            <my-table-operate
-              width="100"
-              @command-click="handleCommandClick(scope.row)"
+            <my-table-operate  @command-click="handleCommandClick(scope.row)"
               :list="[
                 {
                   title: '修改',

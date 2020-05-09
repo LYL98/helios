@@ -8,7 +8,7 @@
       :row-key="rowIdentifier"
       :current-row-key="clickedRow[rowIdentifier]"
     >
-      <el-table-column type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize < 999950 ? 68 : 88" label="序号" :index="indexMethod"></el-table-column>
+      <el-table-column align="center" type="index" :width="(page - 1) * pageSize < 950 ? 48 : (page - 1) * pageSize < 999950 ? 68 : 88" label="序号" :index="indexMethod"></el-table-column>
       <el-table-column label="活动主题" prop="topic" min-width="240">
         <template slot-scope="scope">
           <a href="javascript:void(0);" class="title" @click="handleShowDetail(scope.row.id)">
@@ -59,7 +59,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="100">
+      <el-table-column label="操作" width="100" align="center">
         <template slot-scope="scope">
           <my-table-operate
             @command-click="handleCommandClick(scope.row)"
