@@ -73,7 +73,7 @@
               :list="[
               {
                 title: '地图',
-                isDisplay: auth.isAdmin || auth.CityEdit,
+                isDisplay: auth.isAdmin || auth.CityStoreInx,
                 command: () => handleShowLocationDrving( scope.row)
               },
               {
@@ -110,8 +110,7 @@
         <!-- :marker="location.marker" -->
       <location-driving
         v-if="location.visible"
-        :center="location.item"
-        :marker="location.marker"
+        :mapDatas="location.item"
         style="height:100%;padding:0 15px"
       />
     </detail-layout>
@@ -146,8 +145,9 @@
         },
         location: {
           visible: false,
-          item: {},
+          item: [],
           marker:[],//所有门店经纬度
+        startMarker:{}
         },
       }
     },
@@ -218,11 +218,25 @@
         this.$data.dataItem = d;
       },
       //获取地图
-      handleShowLocationDrving(data){
-         this.$data.location = {
+      async handleShowLocationDrving(data){
+        
+      this.$loading({ isShow: true });
+      //data.id
+      let res = await Http.get(Config.api.basicdataCityStoreInx, {
+          city_id: 147
+        });
+        this.$loading({ isShow: false });
+        if(res.code === 0){
+            console.log(res.data);
+            // let itemTemp = res.data.stores
+            //需要将返回的参数设置
+            let itemTemp = res.data
+            this.$data.location = {
             visible: true,
-            item: {},
+            item: itemTemp,
           };
+        }
+        
       },
       //关闭地图
       handleCancel(){

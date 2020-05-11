@@ -201,7 +201,7 @@ export default {
     },
     operatorPost(){
       let d = Constant.OPERATOR_POST();
-      if(this.detail.opt_type === 'local') delete d['service'];
+      // if(this.detail.opt_type === 'local') delete d['service'];
       return d;
     }
   },

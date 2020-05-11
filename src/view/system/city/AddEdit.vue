@@ -82,7 +82,6 @@ export default {
   methods: {
 
     syncProvince(province) {
-      console.log(province);
         this.$set(this.$data.detail.geo, 'province_title', province.title);
       },
     // 切换区域时，所选区域，是否和当前区域一致！
@@ -101,7 +100,6 @@ export default {
     },
 
     changeZone(v) {
-      console.log(v);
       
       if (!v) {
         return;
@@ -117,8 +115,6 @@ export default {
       //显示新增修改(供外部也调用)
       showAddEdit(data, type){
         if(data){
-        console.log(123);
-
           let d = this.copyJson(data);
           if (!d.geo || Object.keys(d.geo).length < 5) {
             d.geo = {lng: '', lat: '', province_title: '', city_title: '', poi: ''};
