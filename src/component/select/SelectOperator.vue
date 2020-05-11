@@ -40,7 +40,7 @@
     },
     computed: {
       getDataItem() {
-        return dataItem;
+        return this.dataItem;
 
         /*let { dataItem, optType, provinceCode } = this;
         if(optType === 'global'){

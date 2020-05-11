@@ -44,14 +44,14 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="门店名称" prop="store_title" min-width="130">
+          <el-table-column label="门店名称" prop="store_title" min-width="100">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.store_title }}
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="商品编号 / 名称" prop="item_title" min-width="200">
+          <el-table-column label="商品编号 / 名称" prop="item_title" min-width="180">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{scope.row.item_code}} / {{scope.row.item_title}}
@@ -88,7 +88,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="客服" min-width="100">
+          <el-table-column label="客服" min-width="80">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{ scope.row.allocated_or.realname || '-' }}
