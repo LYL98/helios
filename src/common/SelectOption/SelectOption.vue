@@ -22,7 +22,7 @@
     },
     props: {
       size: { type: String, default: '' },
-      value: [ String, Number, Boolean ],
+      value: { type: String | Number | Boolean, default: '' },
       options: { type: Object, default: {} },
       placeholder: { type: String, default: '' },
       clearable: { type: Boolean, default: false }
