@@ -91,7 +91,7 @@
           <el-table-column label="客服" min-width="100">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
-                {{ scope.row.code }}
+                {{ scope.row.allocated_or.realname || '-' }}
               </div>
             </template>
           </el-table-column>
@@ -233,12 +233,14 @@ export default {
 
       this.$data.query = Object.assign({}, this.$data.query, {
         province_code: provinceCode,
+        zone_id: '',
         city_id: '',
         condition: '',
         status: '',
         opt_type: '',
         begin_date: '',
         end_date: '',
+        handle_loading: '',
         flag_7: null,
         flag_2: null,
         handle_begin_date: '',
@@ -352,7 +354,7 @@ export default {
       font-style: italic;
       position: absolute;
       top: 0px;
-      left: 38px;
+      left: 60px;
     }
 
     //超过七小时 超过两小时
