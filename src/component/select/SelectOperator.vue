@@ -13,7 +13,7 @@
     <el-option v-if="showAll" key="" label="全部" value="">
     </el-option>
     <el-option
-      v-for="item in dataItem"
+      v-for="item in getDataItem"
       :key="item.id"
       :label="item.realname + ' ' + item.phone"
       :value="item.id"
@@ -36,7 +36,23 @@
       isFreeze: { type: String | Number, default: 0 }, //0:未冻结 1:已冻结
       optType: { type: String, default: '' },
       provinceCode: { type: String, default: '' },
-      needNum: { type: String | Number, default: 200 },
+      needNum: { type: String | Number, default: 200 }
+    },
+    computed: {
+      getDataItem() {
+        return dataItem;
+
+        /*let { dataItem, optType, provinceCode } = this;
+        if(optType === 'global'){
+          return dataItem;
+        }
+
+        if(provinceCode){
+          return dataItem.filter(item => item.province_code === provinceCode);
+        }
+
+        return dataItem;*/
+      },
     },
     methods: {
       //获取数据
@@ -49,8 +65,7 @@
           need_num: needNum
         });
         if(res.code === 0){
-          let rd = res.data;
-          this.$data.dataItem = rd;
+          this.$data.dataItem = res.data;
         }else{
           this.$messageBox.alert(res.message, '提示');
         }

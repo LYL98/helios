@@ -7,7 +7,16 @@
           <el-radio v-model="allocateType" label="my" :disabled="!judgeAuth" border size="mini">分配给自己</el-radio>
         </el-form-item>
         <el-form-item label="客服" prop="operator_id" v-if="allocateType === 'service'">
-          <select-operator v-model="editData.operator_id" size="medium" placeholder="请选择客服" post="service" clearable filterable/>
+          <select-operator
+            v-model="editData.operator_id"
+            size="medium"
+            placeholder="请选择客服"
+            post="service"
+            clearable
+            filterable
+            :provinceCode="$myInfo.opt_type === 'global' ? '' : $myInfo.province_code"
+            :optType="$myInfo.opt_type"
+          />
         </el-form-item>
         <el-form-item label="">
           <el-button @click.native="cancel">取 消</el-button>
@@ -51,7 +60,7 @@ export default {
   computed: {
     judgeAuth() {
       return this.$auth.isAdmin || this.$auth.OrderAfterSaleAllocateToService;
-    },
+    }
   },
   methods: {
     initEditDate() {
@@ -59,6 +68,17 @@ export default {
         ids: [],
         operator_id: ''
       }
+    },
+
+    serviceFilterable(dataItem){
+      let { $myInfo } = this;
+      if($myInfo.opt_type === 'global'){
+        return dataItem;
+      }
+      console.log(dataItem);
+      //:provinceCode="$myInfo.opt_type === 'global' ? '' : $myInfo.province_code"
+      //:optType="$myInfo.opt_type"
+      return dataItem;
     },
 
     //取消
