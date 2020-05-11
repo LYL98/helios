@@ -34,17 +34,19 @@ const ICON_MARKER_POINT = [
   require("./marker_10.png"),
 ];
 //线路颜色
+// #94DAF1  #AFE3C3  #FAD2AE  #D4BAEC   #F1C4C4  #BADBE1  #D9E3AF  #B5BBE0
+// #ECBACE  #E9DBAA
 const COLOR_LINE = [
-  '#1daee5',
-  '#49c377',
-  '#fd994b',
-  '#9f61d7',
-  '#e67778',
-  '#62b1be',
-  '#acc34c',
-  '#5363b9',
-  '#d85f91',
-  '#d2b042',
+  '#94DAF1',
+  '#AFE3C3',
+  '#FAD2AE',
+  '#D4BAEC',
+  '#F1C4C4',
+  '#BADBE1',
+  '#D9E3AF',
+  '#B5BBE0',
+  '#ECBACE',
+  '#E9DBAA',
 ]
 
 export default {
@@ -124,9 +126,12 @@ export default {
           // markerDatas.push(item.stores)
           needDatas.push(tempDatas)
       })
+      
       allMyData.map((item,index)=>{
+        
           markerDatas.push(item.stores)
       })
+    
       // this.initLine(needDatas)
       // allLocations.map((v,index) => {
       //   AMap.plugin("AMap.Driving", function() {
@@ -191,7 +196,7 @@ export default {
       };
       //设置起点图标
        var markerStart = (index) => {
-        return `<div class="custom-content-marker">
+        return `<div class="marker-start">
           <img src=${ICON_MARKER_START[index]}>
         <div class="close-btn"></div>
         </div>`;
@@ -216,7 +221,7 @@ export default {
         let marker = new AMap.Marker({
             position: [item.geo.lng, item.geo.lat],
             content: markerStart(index),
-            offset: new AMap.Pixel(-26, -52),
+            offset: new AMap.Pixel(0, 0),
             draggable: false,
             extData: item
           });
@@ -224,16 +229,6 @@ export default {
           marker.on('mouseout', showLabelOut);
           this.map.add(marker);
       })
-      // let marker = new AMap.Marker({
-      //       position: [start.geo.lng, start.geo.lat],
-      //       content: markerStart(0),
-      //       offset: new AMap.Pixel(-26, -52),
-      //       draggable: false,
-      //       extData: start
-      //     });
-      //     marker.on('mouseover', showLabel);
-      //     marker.on('mouseout', showLabelOut);
-      //     this.map.add(marker);
 
       //设置除了起点的图标
       markerDatas.map((item, indexAll) => {
@@ -256,7 +251,7 @@ export default {
         let that = this
       console.log(needDatas);
       
-      
+      //that.map 同步
         needDatas.map((item,indexColor) => {
         item.map((v, index) => {
           AMap.plugin("AMap.Driving", function() {
@@ -264,7 +259,10 @@ export default {
             var driving = new AMap.Driving({
               map: that.map,
               hideMarkers: true,
-              outlineColor: "#fff"
+              outlineColor: "#fff",
+              autoFitView:  true,
+              // showTraffic:false,//实时路况
+              policy: AMap.DrivingPolicy.LEAST_TIME //最快捷模式
             }); //驾车路线规划
             // driving.search(startLngLat, endLngLat, {
             //   waypoints: waypoints
@@ -341,5 +339,16 @@ export default {
   font-size: 14px;
   color: #fff;
   font-weight: 700;
+}
+/* marker-start */
+#amap >>> .marker-start {
+  position: relative !important;
+  width: 20px;
+  height: 20px;
+}
+#amap >>> .marker-start img {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 </style>
