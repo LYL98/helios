@@ -360,7 +360,9 @@ const Constant = {
     let data = [
       { key: 0, value: '现结' },
       { key: 7, value: '周结' },
-      { key: 14, value: '双周结' }
+      { key: 14, value: '双周结' },
+      { key: 30, value: '单月' },
+      { key: 60, value: '双月' }
     ];
     return handleKeyValue(type, data);
   },
@@ -369,7 +371,10 @@ const Constant = {
     let data = [
       { key: 0, value: '现结' },
       { key: 7, value: '账期' },
-      { key: 14, value: '账期' }
+      { key: 14, value: '账期' },
+      { key: 30, value: '账期' },
+      { key: 60, value: '账期' }
+
     ];
     return handleKeyValue(type, data);
   },

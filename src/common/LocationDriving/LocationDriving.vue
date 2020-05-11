@@ -109,10 +109,12 @@ export default {
       this.map = new AMap.Map("amap", config);
 
       let allMyData = this.$props.mapDatas
-      let tempDatas = []
+      // let tempDatas = []
       let needDatas = []
-      let markerDatas = []
+      console.log(allMyData);
+      
       allMyData.map((item,index)=>{
+        let tempDatas = []
           tempDatas.push([
             item.geo.lng,
             item.geo.lat
@@ -126,12 +128,16 @@ export default {
           // markerDatas.push(item.stores)
           needDatas.push(tempDatas)
       })
+      console.log(needDatas);
       
+      let markerDatas = []
+      //拿到点坐标
       allMyData.map((item,index)=>{
-        
+      
           markerDatas.push(item.stores)
       })
-    
+      console.log(markerDatas);
+      
       // this.initLine(needDatas)
       // allLocations.map((v,index) => {
       //   AMap.plugin("AMap.Driving", function() {
@@ -249,7 +255,7 @@ export default {
     //绘制线路
     initLine(needDatas){
         let that = this
-      console.log(needDatas);
+      // console.log(needDatas);
       
       //that.map 同步
         needDatas.map((item,indexColor) => {
@@ -292,6 +298,8 @@ export default {
                   return path;
                 }
                 //绘制轨迹
+                
+                
                 const polyline = new AMap.Polyline({
                   map: that.map,
                   path: path,
@@ -304,7 +312,6 @@ export default {
                   zIndex: 999
                 });
                 polyline.setMap(that.map);
-                
               }
             });
           });
