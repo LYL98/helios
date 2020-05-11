@@ -219,11 +219,12 @@
       },
       //获取地图
       async handleShowLocationDrving(data){
-        
+      console.log(data);
+      
       this.$loading({ isShow: true });
       //data.id
       let res = await Http.get(Config.api.basicdataCityStoreInx, {
-          city_id: 147
+          city_id: data.id
         });
         this.$loading({ isShow: false });
         if(res.code === 0){
