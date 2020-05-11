@@ -433,6 +433,7 @@ const Config = (() => {
       basicdataCityEdit: apiM + '/basicdata/city/edit', //县区修改
       basicdataCityList: apiM + '/basicdata/city/list', //县区列表
       basicdataCityDelete: apiM + '/basicdata/city/delete', //县区删除
+      basicdataCityStoreInx: apiM + '/basicdata/city/store_inx', //县域 门店的序号,可查询地图的信息
 
       basicdataFrameList: apiM + '/basicdata/frame/list', //筐列表
       basicdataFrameAdd: apiM + '/basicdata/frame/add', //商品筐信息添加

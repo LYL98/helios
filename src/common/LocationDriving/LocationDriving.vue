@@ -50,53 +50,12 @@ const COLOR_LINE = [
 export default {
   name: "LocationDriving",
   props: {
-    marker: { type: Array, default: () => [] },
-    center: { type: Object, default: () => ({ lng: "", lat: "" }) }
+    center: { type: Object, default: () => ({ lng: "", lat: "" }) },
+    mapDatas:{type: Object,default: () => {}}
   },
   data() {
     return {
       mapComplete: false,
-      allLocations:[
-        [116.379028, 39.865042],
-        [116.379028, 39.885042],
-        [116.379028, 34.885042],
-        [116.379028, 33.885042],
-        [116.379028, 32.88],
-        [116.379028, 32.86],
-        [116.379028, 32.85],
-        [116.379028, 32.84],
-        [116.379028, 32.83],
-        [116.379028, 32.82],
-        [116.379028, 32.81],
-        [116.379028, 32.8],
-        [116.379028, 32.79],
-        [116.379028, 32.78],
-        [116.379028, 32.77],
-        [116.379028, 32.76],
-        [116.379028, 32.75],
-        [116.379028, 31.74],
-        [116.427281, 31.603719]
-      ],
-      allLocations2:[
-        [115.379028, 39.885042],
-        [115.379028, 34.885042],
-        [115.379028, 33.885042],
-        [115.379028, 32.88],
-        [115.379028, 32.86],
-        [115.379028, 32.85],
-        [115.379028, 32.84],
-        [115.379028, 32.83],
-        [115.379028, 32.82],
-        [115.379028, 32.81],
-        [115.379028, 32.8],
-        [115.379028, 32.79],
-        [115.379028, 32.78],
-        [115.379028, 32.77],
-        [115.379028, 32.76],
-        [115.379028, 32.75],
-        [115.379028, 31.74]
-      ],
-      allData:[]
     };
   },
   watch: {
@@ -112,12 +71,13 @@ export default {
         }
       }
     },
-    marker: {
+    mapDatas: {
       deep: true,
       immediate: false,
       handler: function(next, pre) {
         if (this.map) {
-          this.$data.mapComplete && this.initMarkerPoint(next);
+          //next
+          this.$data.mapComplete && this.initMap();
         }
       }
     }
@@ -145,63 +105,29 @@ export default {
       }
 
       this.map = new AMap.Map("amap", config);
-      this.initLine()
-      let allData = [this.$data.allLocations, this.$data.allLocations2];
-      // allData.map((item,indexColor) => {
-      //   item.map((v, index) => {
-      //     AMap.plugin("AMap.Driving", function() {
-      //       //异步同时加载多个插件
-      //       var driving = new AMap.Driving({
-      //         map: that.map,
-      //         hideMarkers: true,
-      //         outlineColor: "#fff"
-      //       }); //驾车路线规划
-      //       // driving.search(startLngLat, endLngLat, {
-      //       //   waypoints: waypoints
-      //       // });
-      //       driving.search(item[index], item[index + 1], (status, result) => {
-      //         if (status === "complete") {
-      //           const { routes = [] } = result;
-      //           // const { steps = [] } = routes[0];
-      //           // const pathArr = [];
-      //           // steps.map(i => {
-      //           //   pathArr.push(i.path);
-      //           //   return pathArr;
-      //           // });
-      //           // const path = flatten(pathArr)
-      //           const path = parseRouteToPath(routes[0]);
-      //           //绘制轨迹线路
-      //           function parseRouteToPath(route) {
-      //             const path = [];
-      //             for (let i = 0, l = route.steps.length; i < l; i++) {
-      //               const step = route.steps[i];
-      //               for (let j = 0, n = step.path.length; j < n; j++) {
-      //                 path.push(step.path[j]);
-      //               }
-      //             }
-      //             return path;
-      //           }
-      //           //绘制轨迹
-      //           const polyline = new AMap.Polyline({
-      //             map: that.map,
-      //             path: path,
-      //             showDir: true,
-      //             strokeColor: COLOR_LINE[indexColor], // 线颜色
-      //             strokeOpacity: 1, // 线透明度
-      //             strokeWeight: 5, // 线宽
-      //             strokeStyle: "solid", // 线样式
-      //             lineJoin: "round", // 折线拐点的绘制样式
-      //             zIndex: 999
-      //           });
-      //           polyline.setMap(that.map);
-      //         }
-      //       });
 
-      //       // driving.search()
-      //     });
-      //     return v;
-      //   });
-      // });
+      let allMyData = [this.$props.mapDatas]
+      let tempDatas = []
+      let needDatas = []
+      let markerDatas = []
+      allMyData.map((item,index)=>{
+          tempDatas.push([
+            item.geo.lng,
+            item.geo.lat
+          ])
+          item.stores.map((v,idx)=>{
+              tempDatas.push([
+                v.geo.lng,
+                v.geo.lat
+              ])
+          })
+          // markerDatas.push(item.stores)
+          needDatas.push(tempDatas)
+      })
+      allMyData.map((item,index)=>{
+          markerDatas.push(item.stores)
+      })
+      // this.initLine(needDatas)
       // allLocations.map((v,index) => {
       //   AMap.plugin("AMap.Driving", function() {
       //     //异步同时加载多个插件
@@ -219,64 +145,20 @@ export default {
       //   });
       //   return v
       // });
-
-      // 点标记显示内容，HTML要素字符串
-      // var markerContent = (indexAll, index) => {
-      //   return `<div class="custom-content-marker">
-      //     <img src=${ICON_MARKER_POINT[indexAll]}>
-      //   <div class="close-btn">${index == 0 ? "起" : index}</div>
-      //   </div>`;
-      // };
-      //起点图标
-      // let circle = new AMap.Circle({
-      //     map:that.map,
-      //     center: new AMap.LngLat(startLngLat[0], startLngLat[1]),
-      //     fillColor: "#0f0", //填充色
-      //     radius: 15,
-      //   });
-
-      //图标
-      // allData.map((item, indexAll) => {
-      //   item.map((v, index) => {
-      //     let marker = new AMap.Marker({
-      //       position: new AMap.LngLat(v[0], v[1]),
-      //       content: markerContent(indexAll, index),
-      //       offset: new AMap.Pixel(-26, -52),
-      //       draggable: false,
-      //       title: "北京",
-      //       label: {
-      //         content: ""
-      //       }
-      //     });
-      //     this.map.add(marker);
-      //   });
-      // });
-      // allLocations.map((v, index) => {
-      //   let marker = new AMap.Marker({
-      //     position: new AMap.LngLat(v[0], v[1]),
-      //     content: markerContent(index),
-      //     offset: new AMap.Pixel(-26, -52),
-      //     draggable: false,
-      //     title: "北京",
-      //     label:{
-      //       content:'',
-      //     }
-      //   });
-      //   this.map.add(marker);
-      // });
+        that.initLine(needDatas)
 
       this.map.on("complete", () => {
         this.$data.mapComplete = true;
         if (center && center.lng && center.lat) {
           this.initCenterPoint(center.lng, center.lat);
         }
-        this.initMarkerPoint(allData);
+        that.initMarkerPoint(allMyData,markerDatas);//绘制图标
       });
     },
 
     //销毁地图
     destroyMap() {
-      this.centerPoint && this.map.remove(this.centerPoint);
+      // this.centerPoint && this.map.remove(this.centerPoint);
       this.map && this.map.destroy();
     },
 
@@ -298,18 +180,27 @@ export default {
       this.map.add(marker);
     },
     //添加点图标
-    initMarkerPoint(allData) {
+    initMarkerPoint(allMyData,markerDatas) {
       // 点标记显示内容，HTML要素字符串
+      //index == 0 ?ICON_MARKER_START[indexAll]:ICON_MARKER_POINT[indexAll]
       var markerContent = (indexAll, index) => {
         return `<div class="custom-content-marker">
           <img src=${ICON_MARKER_POINT[indexAll]}>
-        <div class="close-btn">${index == 0 ? "起" : index}</div>
+        <div class="close-btn">${index+1}</div>
+        </div>`;
+      };
+      //设置起点图标
+       var markerStart = (index) => {
+        return `<div class="custom-content-marker">
+          <img src=${ICON_MARKER_START[index]}>
+        <div class="close-btn"></div>
         </div>`;
       };
       //鼠标移入点图标事件
       function showLabel(e){
+        let data = e.target.getExtData()
         this.setLabel({
-          content: '上海',
+          content: data.title,
            direction: 'top'
         })
       }
@@ -320,13 +211,39 @@ export default {
         })
       }
       //图标
-      allData.map((item, indexAll) => {
+      //设置起点图标
+      allMyData.map((item,index)=>{
+        let marker = new AMap.Marker({
+            position: [item.geo.lng, item.geo.lat],
+            content: markerStart(index),
+            offset: new AMap.Pixel(-26, -52),
+            draggable: false,
+            extData: item
+          });
+          marker.on('mouseover', showLabel);
+          marker.on('mouseout', showLabelOut);
+          this.map.add(marker);
+      })
+      // let marker = new AMap.Marker({
+      //       position: [start.geo.lng, start.geo.lat],
+      //       content: markerStart(0),
+      //       offset: new AMap.Pixel(-26, -52),
+      //       draggable: false,
+      //       extData: start
+      //     });
+      //     marker.on('mouseover', showLabel);
+      //     marker.on('mouseout', showLabelOut);
+      //     this.map.add(marker);
+
+      //设置除了起点的图标
+      markerDatas.map((item, indexAll) => {
         item.map((v, index) => {
           let marker = new AMap.Marker({
-            position: [v[0], v[1]],
+            position: [v.geo.lng, v.geo.lat],
             content: markerContent(indexAll, index),
             offset: new AMap.Pixel(-26, -52),
             draggable: false,
+            extData: v
           });
           marker.on('mouseover', showLabel);
           marker.on('mouseout', showLabelOut);
@@ -335,10 +252,12 @@ export default {
       });
     },
     //绘制线路
-    initLine(){
+    initLine(needDatas){
         let that = this
-        let allData = [this.$data.allLocations, this.$data.allLocations2];
-        allData.map((item,indexColor) => {
+      console.log(needDatas);
+      
+      
+        needDatas.map((item,indexColor) => {
         item.map((v, index) => {
           AMap.plugin("AMap.Driving", function() {
             //异步同时加载多个插件
@@ -350,6 +269,8 @@ export default {
             // driving.search(startLngLat, endLngLat, {
             //   waypoints: waypoints
             // });
+            //item[index], item[index + 1]
+          // [item[index].geo.lng,item[index].geo.lat]
             driving.search(item[index], item[index + 1], (status, result) => {
               if (status === "complete") {
                 const { routes = [] } = result;
