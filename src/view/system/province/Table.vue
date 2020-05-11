@@ -51,6 +51,11 @@
               @command-click="handleCommandClick(scope.row)"
               :list="[
               {
+                title: '地图',
+                isDisplay: auth.isAdmin || auth.ProvinceEdit,
+                command: () => handleShowAddEdit('AddEdit', scope.row)
+              },
+              {
                 title: '修改',
                 isDisplay: auth.isAdmin || auth.ProvinceEdit,
                 command: () => handleShowAddEdit('AddEdit', scope.row)
@@ -62,6 +67,22 @@
       </el-table>
     </div>
     <!-- 表格end -->
+
+     <detail-layout
+      title="县域门店地图"
+      :isShow="location.visible"
+      type="drawer"
+      direction="ttb"
+      :before-close="handleCancel"
+    >
+        <!-- :center="location.item.storehouse.geo" -->
+        <!-- :marker="location.marker" -->
+      <!-- <location-driving
+        v-if="location.visible"
+        :mapDatas="location.item"
+        style="height:100%;padding:0 15px"
+      /> -->
+    </detail-layout>
   </div>
 </template>
 
@@ -69,11 +90,14 @@
   import { TableOperate } from '@/common';
   import { Http, Config, Constant, DataHandle } from '@/util';
   import tableMixin from '@/share/mixin/table.mixin';
+  import detailLayout from "@/share/layout/Layout";
 
   export default {
     name: 'Table',
     components: {
-      'my-table-operate': TableOperate
+      'my-table-operate': TableOperate,
+      'detail-layout': detailLayout,
+
     },
     mixins: [tableMixin],
     created() {
@@ -82,7 +106,11 @@
     data() {
       return {
         dataItem: [],
-        rowIdentifier: 'code'
+        rowIdentifier: 'code',
+        location:{
+          visible:false,
+
+        }
       }
     },
     methods: {
@@ -97,6 +125,16 @@
           this.$message({title: '提示', message: res.message, type: 'error'});
         }
       },
+
+      //显示地图
+      handleShowMap(data){
+
+      },
+
+      //关闭地图
+      handleCancel(){
+        
+      }
     }
   };
 </script>
