@@ -53,7 +53,7 @@ export default {
   name: "LocationDriving",
   props: {
     center: { type: Object, default: () => ({ lng: "", lat: "" }) },
-    mapDatas:{type: Object,default: () => {}}
+    mapDatas:{type: Array,default: () => []}
   },
   data() {
     return {
@@ -108,7 +108,7 @@ export default {
 
       this.map = new AMap.Map("amap", config);
 
-      let allMyData = [this.$props.mapDatas]
+      let allMyData = this.$props.mapDatas
       let tempDatas = []
       let needDatas = []
       let markerDatas = []

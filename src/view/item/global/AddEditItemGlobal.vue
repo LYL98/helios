@@ -179,8 +179,8 @@ export default {
           { required: true, message: '产地不能为空', trigger: 'change' },
         ],
         gross_weight: [
-          { required: true, message: '请输入毛重', trigger: 'blur' },
-          { validator: this.validWeightS, trigger: 'change' },
+          { required: true, message: '请输入毛重', trigger: 'change' },
+          { validator: this.validWeightS, trigger: 'blur' },
         ],
         net_weight : [
           { required: true, message: '请输入净重', trigger: 'blur' },

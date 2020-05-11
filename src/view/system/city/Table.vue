@@ -232,6 +232,7 @@
             // let itemTemp = res.data.stores
             //需要将返回的参数设置
             let itemTemp = res.data
+            itemTemp = [itemTemp]
             this.$data.location = {
             visible: true,
             item: itemTemp,
