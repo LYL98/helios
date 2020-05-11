@@ -49,8 +49,8 @@
               },
                {
                 title: '地图',
-                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineEdit) && scope.row.deliver.id,
-                command: () => handleShowMap(scope.row)
+                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineOrderedStoreInx)&& !scope.row.deliver.id,
+                command: () => handleShowMap(scope.row,query.delivery_date)
               },
               {
                 title: '修改',
@@ -95,8 +95,7 @@
     >
       <location-driving
         v-if="location.visible"
-        :center="location.item"
-        :marker="location.marker"
+        :mapDatas="location.item"
         style="height:100%;padding:0 15px"
       />
     </detail-layout>
@@ -220,11 +219,30 @@
         temp && temp.PREVIEW();
       },
       //获取地图
-      handleShowMap(data){
-         this.$data.location = {
+     async handleShowMap(data,delivery_date){
+        //  this.$data.location = {
+        //     visible: true,
+        //     item: {},
+        //   };
+        console.log(data,delivery_date);
+        
+          this.$loading({ isShow: true });
+      //data.id
+      let res = await Http.get(Config.api.operateLineOrderedStoreInx, {
+           line_id: data.line_id,
+           delivery_date:delivery_date
+        });
+        this.$loading({ isShow: false });
+        if(res.code === 0){
+            console.log(res.data);
+            // let itemTemp = res.data.stores
+            //需要将返回的数据进行处理
+            let itemTemp = res.data
+            this.$data.location = {
             visible: true,
-            item: {},
+            item: itemTemp,
           };
+        }
       },
       //关闭地图
       handleCancel(){

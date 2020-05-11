@@ -219,7 +219,7 @@ export default {
           this.handleChangePost(this.$data.detail.post);
           break;
       }
-      this.$data.detail.post = 'buyer';
+      // this.$data.detail.post = 'buyer';
     },
     //区域改变
     changeProvince() {

@@ -362,7 +362,8 @@ const Config = (() => {
       operateLineDriverList: apiM + '/sup_cap_pool/list', //签到司机列表
       operateLineDriverDelete: apiM + '/sup_lined/delete', //删除签到司机
       operateLineUnDriver: apiM + '/sup_ldeliver/un_confirm', //解绑司机
-
+      operateLineOrderedStoreInx: apiM + '/deliver/line/ordered_store_inx', //解绑司机
+      
       // 配送人员
       operateDeliverQuery: apiM + '/sup_member/query', //查询
       operateDeliverDetail: apiM + '/sup_member/detail', //详情

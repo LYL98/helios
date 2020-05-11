@@ -145,9 +145,7 @@
         },
         location: {
           visible: false,
-          item: [],
-          marker:[],//所有门店经纬度
-        startMarker:{}
+          item: [],//地图数据
         },
       }
     },
@@ -230,7 +228,7 @@
         if(res.code === 0){
             console.log(res.data);
             // let itemTemp = res.data.stores
-            //需要将返回的参数设置
+            //需要将返回的数据进行处理
             let itemTemp = res.data
             itemTemp = [itemTemp]
             this.$data.location = {
