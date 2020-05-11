@@ -23,7 +23,7 @@
         <el-table-column label="收货人签名">
           <template slot-scope="scope">
             <image-preview>
-              <img style="width: 64px;" :src="scope.row.receive_img" alt=""/>
+              <img style="width: 64px;" :src="tencentPath + scope.row.receive_img" alt=""/>
             </image-preview>
           </template>
         </el-table-column>
