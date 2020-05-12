@@ -6,13 +6,17 @@
 
 <script>
 
-  const MAP_STYLE = 'amap://styles/light';
+  const MAP_STYLE_LIGHT = 'amap://styles/light';
+  const MAP_STYLE_DARK = 'amap://styles/grey';
   const ICON_CENTER_POINT = require('./center.png');
   const ICON_MARKER_POINT = require('./marker.png');
+  const ICON_PIN_POINT = require('./pin.webp');
 
   export default {
     name: "Location",
     props: {
+      dark: { type: Boolean, default: true },
+      zoom: { type: Number | String, default: 8 },
       marker: { type: Array, default: () => [] },
       center: { type: Object, default: () => ({ lng: '', lat: '' }) }
     },
@@ -45,10 +49,6 @@
       },
     },
     mounted() {
-      console.log(this.$props.center);
-      console.log(this.$props.marker);
-      
-      
       this.initMap();
     },
     beforeDestroy() {
@@ -57,10 +57,10 @@
     methods: {
       initMap() {
         let config = {
-          zoom: 8,
+          zoom: Number(this.$props.zoom),
           isHotspot: false,
           scrollWheel: true,
-          mapStyle: MAP_STYLE
+          mapStyle: this.$props.dark ? MAP_STYLE_DARK: MAP_STYLE_LIGHT,
         };
 
         let center = this.$props.center;
@@ -102,11 +102,13 @@
       },
 
       initMarkerPoint(values) {
+        const ICON = this.$props.dark ? ICON_PIN_POINT : ICON_MARKER_POINT;
+        const OFFSET = this.$props.dark ? new AMap.Pixel(-10, -34) : new AMap.Pixel(-26, -52);
         values.forEach(v => {
           let marker = new AMap.Marker({
             position: new AMap.LngLat(v.lng, v.lat),
-            icon: ICON_MARKER_POINT,
-            offset: new AMap.Pixel(-26, -52),
+            icon: ICON,
+            offset: OFFSET,
             draggable: false
           });
           this.map.add(marker);
