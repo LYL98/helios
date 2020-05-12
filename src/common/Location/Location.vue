@@ -11,7 +11,7 @@
   const ICON_CENTER_POINT = require('./center.png');
   const ICON_MARKER_POINT = require('./marker.png');
   const ICON_PIN_POINT = require('./pin.webp');
-
+  const ICON_PERSON_POINT = require('./icon_person.png');
   export default {
     name: "Location",
     props: {
@@ -19,7 +19,8 @@
       zoom: { type: Number | String, default: 8 },
       showCenterIcon: { type: Boolean, default: true },
       marker: { type: Array, default: () => [] },
-      center: { type: Object, default: () => ({ lng: '', lat: '' }) }
+      center: { type: Object, default: () => ({ lng: '', lat: '' }) },
+      person:{type: Object, default: () => ({ lng: '', lat: '' })}
     },
     data() {
       return {
@@ -101,7 +102,7 @@
         this.centerPoint = marker;
         this.map.add(marker);
       },
-
+      //添加点图标
       initMarkerPoint(values) {
         const ICON = this.$props.dark ? ICON_PIN_POINT : ICON_MARKER_POINT;
         const OFFSET = this.$props.dark ? new AMap.Pixel(-10, -34) : new AMap.Pixel(-26, -52);
@@ -114,6 +115,16 @@
           });
           this.map.add(marker);
         });
+      },
+    //添加交接员图标
+      initMarkerPerson(v){
+        let marker = new AMap.Marker({
+            position: new AMap.LngLat(v.lng, v.lat),
+            icon: ICON_PERSON_POINT,
+            offset: new AMap.Pixel(-26, -52),
+            draggable: false
+          });
+          this.map.add(marker);
       }
 
     }
