@@ -27,7 +27,6 @@ const Config = (() => {
       orderItemExport: apiM + '/order/item/export', //订单商品导出
       orderShortListExport: apiM + '/item/short/list/export', //商品缺货列表
       orderAftersaleExport: apiM + '/aftersale/export', //售后单导出
-      orderLabelPrint: apiM + '/order/label/print', //打印商品标签(打印)
       orderBalanceExport: apiM + '/balance/export', //商户余额导出
       orderBalanceLogExport: apiM + '/balance/log/export', //商户余额流水
       orderRouteExport: apiM + '/order/line/export', //线路导出

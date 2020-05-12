@@ -28,86 +28,94 @@
       </el-row>
     </div>
 
-    <div :style="'height:' + (viewWindowHeight - offsetHeight) + 'px; overflow-y: auto;'">
-      <!-- 图表 -->
-      <div class="echart-container">
-        <div :style="{height: '420px', width: '100%'}" ref="myEchart"/>
-        <ul class="description">
-          <li>GMV: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
-          <li>订单商品金额: <span>{{ returnPrice(totalOrderItemPrice) }}</span> 元</li>
-          <li>筐总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
-          <li>优惠总金额: <span>-{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
-          <li>下单门店数: <span>{{ totalOrderMerchantNum }}</span> 个</li>
-          <li>销售总量: <span>{{ totalPiece }}</span> 件</li>
-        </ul>
+    <div class="container-table">
+      <div class="table-top">
+        <div class="left">
+          <query-tabs v-model="tabValue" :tab-panes="{'图表': 'chart', '表格': 'table'}"/>
+        </div>
+        <div class="right"></div>
       </div>
+    </div>
 
-      <!-- 列表 -->
-      <div>
-        <el-table
-          class="list-table"
-          :data="listItem"
-          :row-class-name="highlightRowClassName"
-          :highlight-current-row="true"
-          @sort-change="onSort"
-        >
-          <!-- 片区、订单金额、订单量、件数、占比、操作 -->
-          <el-table-column
-            type="index"
-            :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
-            label="序号"
-            :index="indexMethod"
-            align="center"
-          />
-          <el-table-column label="区域" prop="province_title" min-width="120">
-            <template slot-scope="scope">
-              <a href="javascript:void(0)"
-                class="title"
-                @click="handleShowZoneDetail(scope.row)"
-                v-if="!!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientProvince )"
-              >
-                {{ scope.row.province_title || '其它' }}
-              </a>
-              <div v-else>
-                {{ scope.row.province_title || '其它' }}
-              </div>
+    <!-- 图表 -->
+    <div class="echart-container" v-show="tabValue === 'chart'">
+      <div :style="{height: viewWindowHeight - 204 + 'px', width: '100%'}" ref="myEchart"/>
+      <ul class="description">
+        <li>GMV: <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元</li>
+        <li>订单商品金额: <span>{{ returnPrice(totalOrderItemPrice) }}</span> 元</li>
+        <li>筐总金额: <span>{{ returnPrice(totalFramPrice) }}</span> 元</li>
+        <li>优惠总金额: <span>-{{ returnPrice(totalBonusPromotion) }}</span> 元</li>
+        <li>下单门店数: <span>{{ totalOrderMerchantNum }}</span> 个</li>
+        <li>销售总量: <span>{{ totalPiece }}</span> 件</li>
+      </ul>
+    </div>
 
-              <!--{{ scope.row.zone_title || '其它' }}-->
-            </template>
-          </el-table-column>
-          <el-table-column label="GMV" sortable="custom" prop="gmv" min-width="130">
-            <template slot-scope="scope">
-              ￥{{ returnPrice(scope.row.gmv) }}
-            </template>
-          </el-table-column>
-          <el-table-column label="订单商品金额" sortable="custom" prop="amount_real" min-width="130">
-            <template slot-scope="scope">
-              ￥{{ returnPrice(scope.row.amount_real) }}
-            </template>
-          </el-table-column>
-          <el-table-column label="下单门店数" sortable="custom" prop="store_num"  min-width="100"/>
-          <el-table-column label="件数" sortable="custom" prop="piece_num" min-width="100"></el-table-column>
-          <el-table-column label="占比" prop="percent">
-            <template slot-scope="scope">
-              {{returnPercentage(scope.row.gmv, totalItemTotalPrice)}}%
-            <!-- {{ scope.row.ratio }}% -->
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" width="100" align="center">
-            <template slot-scope="scope">
-              <my-table-operate
-                :list="[
-                  {
-                    title: '查看',
-                    isDisplay: !!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientProvince ),
-                    command: () => handleShowZoneDetail(scope.row)
-                  }
-                ]"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+    <!-- 列表 -->
+    <div v-show="tabValue === 'table'">
+      <el-table
+        class="list-table"
+        :data="listItem"
+        :row-class-name="highlightRowClassName"
+        :highlight-current-row="true"
+        @sort-change="onSort"
+        :height="viewWindowHeight - 174"
+      >
+        <!-- 片区、订单金额、订单量、件数、占比、操作 -->
+        <el-table-column
+          type="index"
+          :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
+          label="序号"
+          :index="indexMethod"
+          align="center"
+        />
+        <el-table-column label="区域" prop="province_title" min-width="120">
+          <template slot-scope="scope">
+            <a href="javascript:void(0)"
+              class="title"
+              @click="handleShowZoneDetail(scope.row)"
+              v-if="!!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientProvince )"
+            >
+              {{ scope.row.province_title || '其它' }}
+            </a>
+            <div v-else>
+              {{ scope.row.province_title || '其它' }}
+            </div>
+
+            <!--{{ scope.row.zone_title || '其它' }}-->
+          </template>
+        </el-table-column>
+        <el-table-column label="GMV" sortable="custom" prop="gmv" min-width="130">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.gmv) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real" min-width="130">
+          <template slot-scope="scope">
+            ￥{{ returnPrice(scope.row.amount_real) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="下单门店数" sortable="custom" prop="store_num"  min-width="100"/>
+        <el-table-column label="件数" sortable="custom" prop="piece_num" min-width="100"></el-table-column>
+        <el-table-column label="占比" prop="percent">
+          <template slot-scope="scope">
+            {{returnPercentage(scope.row.gmv, totalItemTotalPrice)}}%
+          <!-- {{ scope.row.ratio }}% -->
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="100" align="center">
+          <template slot-scope="scope">
+            <my-table-operate
+              :list="[
+                {
+                  title: '查看',
+                  isDisplay: !!scope.row.province_title && ( auth.isAdmin || auth.StatisticClientProvince ),
+                  command: () => handleShowZoneDetail(scope.row)
+                }
+              ]"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
   </sub-menu>
 </template>
@@ -118,6 +126,7 @@
   import { GlobalProvince } from '@/component';
   import { Http, Config, DataHandle, Constant } from '@/util';
   import mainMixin from '@/share/mixin/main.mixin';
+  import queryTabs from '@/share/layout/QueryTabs';
 
   import echarts from "echarts/lib/echarts";
   import "echarts/lib/chart/pie";
@@ -136,11 +145,13 @@
       'my-query-item': QueryItem,
       'my-table-operate': TableOperate,
       'global-province': GlobalProvince,
+      'query-tabs': queryTabs
     },
     data() {
       return {
+        tabValue: 'chart',
         fixDateOptions: Constant.FIX_DATE_RANGE,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_QUERY_CLOSE,
+        offsetHeight: Constant.OFFSET_QUERY_CLOSE,
         pickerValue: [],
         query: { },
         areaType: 'province',
@@ -457,6 +468,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '@/share/scss/table.scss';
   .dot {
     width: 10px;
     height: 10px;
@@ -466,13 +478,15 @@
     border-radius: 5px;
   }
   .echart-container {
-    margin-bottom: 16px;
     background-color: #FFF;
     padding: 16px;
     display: flex;
 
     .description {
-      width: 260px;
+      width: 340px;
+      >li{
+        line-height: 32px;
+      }
     }
   }
   .title {
@@ -488,4 +502,7 @@
     color: inherit;
     padding: 5px 10px 5px 0;
   }
+</style>
+<style lang="scss">
+  @import '@/share/scss/table.global.scss';
 </style>
