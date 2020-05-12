@@ -49,8 +49,8 @@
       </el-breadcrumb>
     </div>
     <div class="query" style="margin-bottom: 20px;">
-      <el-row>
-        <el-col :xl="6" :lg="7" :span="7">
+      <el-row :gutter="32">
+        <el-col :span="7">
           <my-query-item label="片区">
             <my-select-zone
               v-model="query.zone_id"
@@ -58,12 +58,12 @@
               clearable
               size="small"
               @change="changeQuery"
-              class="query-item-select"
+              style="width: 100%;"
               :showAll="true"
             />
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
+        <el-col :span="7">
           <my-query-item label="县域">
             <my-select-city
               size="small"
@@ -73,26 +73,28 @@
               :provinceCode="query.province_code"
               :zoneId="query.zone_id"
               @change="changeQuery"
-              class="query-item-select"
+              style="width: 100%;"
               :showAll="true"
             />
           </my-query-item>
         </el-col>
-        <el-col :xl="6" :lg="7" :span="7">
-          <div style="display: flex">
-            <el-input
-              size="small"
-              class="query-item-input"
-              placeholder="请输入门店名称、电话"
-              v-model="query.condition"
-              clearable
-              @keyup.enter.native="changeQuery"
-              @clear="changeQuery"
-              ref="condition"
-            />
-            <el-button size="small" type="primary" @click="changeQuery" style="margin-left: 4px" icon="el-icon-search"></el-button>
-            <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
-          </div>
+        <el-col :span="10">
+          <my-query-item label="搜索">
+            <div style="display: flex">
+              <el-input
+                size="small"
+                style="width: 100%;"
+                placeholder="请输入门店名称、电话"
+                v-model="query.condition"
+                clearable
+                @keyup.enter.native="changeQuery"
+                @clear="changeQuery"
+                ref="condition"
+              />
+              <el-button size="small" type="primary" @click="changeQuery" style="margin-left: 4px" icon="el-icon-search"></el-button>
+              <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
+            </div>
+          </my-query-item>
         </el-col>
       </el-row>
     </div>
