@@ -65,7 +65,7 @@
               <div style="cursor: pointer; text-decoration: underline;" @click="showItemDetail(scope.row)">{{scope.row.item_code}} / {{scope.row.item_title}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="商品参数" width="200">
+          <el-table-column label="商品参数" min-width="160">
             <template slot-scope="scope">
               <ul class="item-attrs">
                 <li v-for="(item, index) in scope.row.item_attrs" :key="index">
@@ -74,7 +74,7 @@
               </ul>
             </template>
           </el-table-column>
-          <el-table-column label="单价" width="180">
+          <el-table-column label="单价" min-width="160">
             <template slot-scope="scope">
               <ul>
                 <li>
@@ -83,7 +83,7 @@
               </ul>
             </template>
           </el-table-column>
-          <el-table-column label="件数" width="200">
+          <el-table-column label="件数" min-width="160">
             <template slot-scope="scope">
               <ul class="count-weight">
                 <li>
@@ -100,7 +100,7 @@
               </ul>
             </template>
           </el-table-column>
-          <el-table-column label="小计" prop="amount_real" width="200">
+          <el-table-column label="小计" prop="amount_real" min-width="160">
             <!--<template slot-scope="scope">-->
               <!--&yen;{{ returnPrice(scope.row.amount_real) }}-->
             <!--</template>-->
@@ -114,7 +114,7 @@
               </ul>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="120" align="center">
+          <el-table-column label="操作" min-width="120" align="center">
             <template slot-scope="scope">
               <a
                 class="operator"
