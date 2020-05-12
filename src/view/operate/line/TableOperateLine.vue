@@ -49,7 +49,7 @@
               },
                {
                 title: '地图',
-                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineOrderedStoreInx)&& !scope.row.deliver.id,
+                isDisplay: query.delivery_date >= today && (auth.isAdmin || auth.OperateLineOrderedStoreInx),
                 command: () => handleShowMap(scope.row,query.delivery_date)
               },
               {
