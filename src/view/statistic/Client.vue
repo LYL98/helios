@@ -8,7 +8,7 @@
             <global-province type="select" @change="selectProvince" />
           </my-query-item>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="10">
           <my-query-item label="时间">
             <el-date-picker
               v-model="pickerValue"
@@ -18,7 +18,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               size="small"
-              class="query-item-date"
+              style="width: 100%;"
               :picker-options="fixDateOptions"
               :clearable="false"
               @change="changePicker">

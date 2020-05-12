@@ -33,8 +33,8 @@
       </el-breadcrumb>
     </div>
     <div class="query" style="margin-bottom: 20px;">
-      <el-row>
-        <el-col :span="6">
+      <el-row :gutter="32">
+        <el-col :span="7">
           <my-query-item label="时间">
             <el-date-picker
               size="small"
@@ -48,12 +48,12 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               @change="changePicker"
-              class="query-item-date"
+              style="width: 100%;"
               :clearable="false"
             />
           </my-query-item>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="7">
           <my-query-item label="三级分类">
             <select-system-class-list
               v-model="query.system_class_code"
@@ -64,9 +64,9 @@
             />
           </my-query-item>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="7">
           <my-query-item label="运营专区">
-            <el-select  v-model="query.item_tag_id"  @change="selectTagChange" placeholder="请选择" size="small" clearable>
+            <el-select  v-model="query.item_tag_id"  @change="selectTagChange" placeholder="请选择" size="small" clearable style="width: 100%;">
               <el-option
                 v-for="item in tagsOptions"
                 :key="item.id"
@@ -76,7 +76,7 @@
             </el-select>
           </my-query-item>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="3">
           <el-button size="small" class="query-item-reset" type="primary" plain @click="resetQuery">重置</el-button>
         </el-col>
       </el-row>

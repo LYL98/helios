@@ -33,7 +33,7 @@
           return price + this.isFinallyDot;
         },
         set(v) {
-          if(v === '0.00') return;
+          if(v === '0.00' || v.indexOf('..') >= 0) return;
 
           if(v.indexOf('.') === v.length - 1 && v.length > 0){
             this.$data.isFinallyDot = '.';

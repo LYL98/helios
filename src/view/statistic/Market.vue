@@ -3,9 +3,9 @@
     <!-- 查询 -->
     <div class="query" style="margin-bottom: 16px;">
       <el-row :gutter="32">
-        <el-col :span="6">
+        <el-col :span="7">
           <my-query-item label="区域">
-            <global-province type="select" @change="selectProvince" class="query-item-select" />
+            <global-province type="select" @change="selectProvince" />
           </my-query-item>
         </el-col>
         <el-col :span="7">
@@ -18,7 +18,7 @@
               start-placeholder="开始日期"
               end-placeholder="结束日期"
               size="small"
-              class="query-item-date"
+              style="width: 100%;"
               :picker-options="fixDateOptions"
               :clearable="false"
               @change="changePicker"
@@ -28,7 +28,7 @@
         <el-col :span="7">
           <my-query-item label="运营专区">
             <!-- v-module="selectValue" -->
-            <el-select :disabled="flag" v-model="selectValue"  @change="selectTagChange" placeholder="请选择" size="small" clearable>
+            <el-select :disabled="flag" v-model="selectValue"  @change="selectTagChange" placeholder="请选择" size="small" clearable style="width: 100%;">
               <el-option
                 v-for="item in tagsOptions"
                 :key="item.id"
