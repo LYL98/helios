@@ -129,7 +129,7 @@
         </el-table>
         <!-- 表格end -->
       </div>
-      <div class="footer">
+      <div class="footer" v-if="dataItem.num > 0">
         <div class="table-pagination">
           <el-pagination
             background

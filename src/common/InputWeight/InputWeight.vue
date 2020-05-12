@@ -27,7 +27,7 @@
           return p + this.isFinallyDot;
         },
         set(v) {
-          if(v === '0.0') return;
+          if(v === '0.0' || v.indexOf('..') >= 0) return;
 
           if(v.indexOf('.') === v.length - 1 && v.length > 0){
             this.$data.isFinallyDot = '.';
