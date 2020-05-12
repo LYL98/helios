@@ -1,7 +1,7 @@
 <!--运营统计-->
 <template>
   <sub-menu>
-    <div class="query">
+    <div class="query" style="margin-bottom: 20px">
       <el-row :gutter="32">
         <el-col :span="7">
           <my-query-item label="区域">
@@ -27,52 +27,45 @@
         </el-col>
       </el-row>
     </div>
-
-    <div class="container-table">
-      <div class="table-top">
-        <div class="left">
-          <query-tabs v-model="tabValue" :tab-panes="{'图表': 'chart', '表格': 'table'}"/>
-        </div>
-        <div class="right"></div>
+    <div :style="{ overflowY: 'auto', overflowX: 'auto', height: viewWindowHeight - offsetHeight + 'px'}">
+      <div style="background-color: white;">
+        <!--<P style="text-align: center; padding-top: 10px">-->
+          <!--<span style="color: blue; font-size: 20px">{{selectItemName ? selectItemName : '-'}}</span>-->
+          <!--<span style="font-size: 20px">指标分析</span>-->
+        <!--</P>-->
+        <!--图表-->
+        <div id="main" style="padding-top: 20px; height: 600px;" ref="myIndexChart"></div>
       </div>
-    </div>
-
-    <!--图表-->
-    <div style="background-color: white;" v-show="tabValue === 'chart'">
-      <!--<P style="text-align: center; padding-top: 10px">-->
-        <!--<span style="color: blue; font-size: 20px">{{selectItemName ? selectItemName : '-'}}</span>-->
-        <!--<span style="font-size: 20px">指标分析</span>-->
-      <!--</P>-->
-      <div id="main" :style="`padding-top: 20px; height: ${viewWindowHeight - 192}px;`" ref="myIndexChart"></div>
-    </div>
-    <!--表格-->
-    <div v-show="tabValue === 'table'">
-      <el-table :data="dataItem" :row-class-name="highlightRowClassName" :height="viewWindowHeight - 176">
-        <el-table-column
-          label="指标"
-          fixed="left"
-          width="140px"
-          prop="city_title">
-          <template slot-scope="scope">
-            <span>{{ scope.row.name }}</span>
-            <el-tooltip class="item" effect="dark" content="GMV = 订单商品金额 + 运费 + 筐 - 优惠金额" placement="right" v-if="scope.row.name === 'GMV'">
-              <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
+      <!--表格-->
+      <div class="statistics-table-list-container">
+        <el-table :data="dataItem" :row-class-name="highlightRowClassName">
+          <el-table-column
+            label="指标"
+            fixed="left"
+            width="140px"
+            prop="city_title">
+            <template slot-scope="scope">
+              <span>{{ scope.row.name }}</span>
+              <el-tooltip class="item" effect="dark" content="GMV = 订单商品金额 + 运费 + 筐 - 优惠金额" placement="right" v-if="scope.row.name === 'GMV'">
+                <span class="span-help-tooltip" style="margin-left: 5px; position: relative; top: -1px;">!</span>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="100px" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
+            <el-tooltip slot-scope="scope" effect="dark" :content="scope.row.hints[index]" placement="top" v-if="false">
+              <span>{{ cellValue(scope.row.cells, d) }}</span>
             </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column min-width="100px" align="left" v-for="(d, index) in dateRange()" :key="index" :label="labelDate(d)">
-          <el-tooltip slot-scope="scope" effect="dark" :content="scope.row.hints[index]" placement="top" v-if="false">
-            <span>{{ cellValue(scope.row.cells, d) }}</span>
-          </el-tooltip>
-          <template slot-scope="scope" v-else>{{ cellValue(scope.row.cells, d) }}</template>
-        </el-table-column>
-        <el-table-column label="平均值" min-width="100" align="left">
-          <template slot-scope="scope">{{ average(scope.row.cells, scope.$index) }}</template>
-        </el-table-column>
-        <el-table-column label="合计" min-width="110" align="left">
-          <template slot-scope="scope">{{ total(scope.row.cells, scope.$index) }}</template>
-        </el-table-column>
-      </el-table>
+            <template slot-scope="scope" v-else>{{ cellValue(scope.row.cells, d) }}</template>
+          </el-table-column>
+          <el-table-column label="平均值" min-width="100" align="left">
+            <template slot-scope="scope">{{ average(scope.row.cells, scope.$index) }}</template>
+          </el-table-column>
+          <el-table-column label="合计" min-width="110" align="left">
+            <template slot-scope="scope">{{ total(scope.row.cells, scope.$index) }}</template>
+          </el-table-column>
+        </el-table>
+      </div>
+
     </div>
   </sub-menu>
 </template>
@@ -83,7 +76,6 @@
   import { QueryItem } from '@/common';
   import { GlobalProvince } from '@/component';
   import mainMixin from '@/share/mixin/main.mixin';
-  import queryTabs from '@/share/layout/QueryTabs';
 
   import echarts from "echarts/lib/echarts";
   import 'echarts/lib/chart/line';
@@ -110,7 +102,6 @@
       'my-query-item': QueryItem,
       'el-tooltip': Tooltip,
       'global-province': GlobalProvince,
-      'query-tabs': queryTabs
     },
     created() {
       documentTitle("统计 - 运营统计");
@@ -123,7 +114,6 @@
     },
     data() {
       return {
-        tabValue: 'chart',
         offsetHeight: Constant.OFFSET_QUERY_CLOSE + 40,
         currentDateRange: [],
         beforeDateRange: [],
@@ -582,9 +572,5 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  @import '@/share/scss/table.scss';
-</style>
-<style lang="scss">
-  @import '@/share/scss/table.global.scss';
+<style scoped>
 </style>

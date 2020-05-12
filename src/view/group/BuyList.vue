@@ -24,7 +24,6 @@
       :data="dataItem.items"
       :page="query.page"
       :pageSize="query.page_size"
-      :offsetHeight="offsetHeight"
       :showItem="handleShowItem"
       :copyItem="handleCopyItem"
       :active="handleActive"
@@ -308,10 +307,6 @@
       documentTitle('团购 - 商品列表');
       this.initQuery();
       this.loadListDataFirstPage();
-
-      if (!this.auth.isAdmin && !this.auth.GroupBuyAdd && !this.auth.GroupBuyLogQuery) {
-        this.offsetHeight = Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE
-      }
     },
     data() {
       return {
@@ -324,7 +319,6 @@
         query: {},
         detailQuery: {},
         detailMerchantQuery: {},
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE + Constant.OFFSET_OPERATE,
         groupBuyItem: {},
         detailData: {},
         detailMerchantData: {},

@@ -1,7 +1,7 @@
 <template>
   <sub-menu>
     <query-finance-approve v-model="query" @change="changeQuery" :reset="resetQuery"/>
-    <table-finance-approve :data="dataItem.items" :windowHeight="viewWindowHeight" :page="query.page" :pageSize="query.page_size" :offset-height="offsetHeight" :itemEdit="handleItemEdit">
+    <table-finance-approve :data="dataItem.items" :windowHeight="viewWindowHeight" :page="query.page" :pageSize="query.page_size" :itemEdit="handleItemEdit">
       <template slot="query-tab">
         <div class="table-top">
           <div class="left">
@@ -76,7 +76,6 @@
           items: [],
           num: 0
         },
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_PAGINATION + Constant.OFFSET_QUERY_CLOSE,
         dialog: {
           isShowApproveEdit: false,
         },

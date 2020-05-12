@@ -27,14 +27,25 @@ export default {
     isShow: { type: Boolean, default: false }, //是否显示
     title: { type: String, default: '' }, //标题
     beforeClose: { type: Function }, //关闭前
-    appendToBody: {type: Boolean,default: false},//是否插入页面body
-    width:{type:String,default: ''}//宽度
+    appendToBody: { type: Boolean, default: false },//是否插入页面body
+    width: { type:String, default: '' }//宽度
   },
   data(){
     return {
 
     }
   },
+  watch: {
+    isShow(a, b){
+      //窗体隐藏时
+      if(!a){
+        let dom = document.getElementsByClassName('el-drawer__body');
+        if(dom.length > 0){
+          dom[0].scrollTo(0, 0);
+        }
+      }
+    }
+  }
 };
 </script>
 

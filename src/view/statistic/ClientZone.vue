@@ -154,7 +154,7 @@
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_BREADCRUMB + Constant.OFFSET_QUERY_CLOSE,
+        offsetHeight: Constant.OFFSET_BREADCRUMB + Constant.OFFSET_QUERY_CLOSE + 40,
         pickerValue: [],
         breadcrumb: {},
         query: { },
