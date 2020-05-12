@@ -17,6 +17,7 @@
     props: {
       dark: { type: Boolean, default: true },
       zoom: { type: Number | String, default: 8 },
+      showCenterIcon: { type: Boolean, default: true },
       marker: { type: Array, default: () => [] },
       center: { type: Object, default: () => ({ lng: '', lat: '' }) }
     },
@@ -33,7 +34,7 @@
           if (next && next.lng && next.lat) {
             if (this.map) {
               this.map.setCenter([next.lng, next.lat]);
-              this.$data.mapComplete && this.initCenterPoint(next.lng, next.lat);
+              this.$data.mapComplete && this.$props.showCenterIcon && this.initCenterPoint(next.lng, next.lat);
             }
           }
         }
@@ -73,7 +74,7 @@
         this.map.on('complete', () => {
           this.$data.mapComplete = true;
           if (center && center.lng && center.lat) {
-            this.initCenterPoint(center.lng, center.lat);
+            this.$props.showCenterIcon && this.initCenterPoint(center.lng, center.lat);
           }
           this.initMarkerPoint(this.$props.marker);
         });
