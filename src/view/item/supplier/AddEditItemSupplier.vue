@@ -38,7 +38,8 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="结款类型" prop="bill_term">
-              <el-select size="medium" v-model="detail.bill_term" :disabled="detail.supplier_type === 'global_pur' ? true : false" style="width: 100%;">
+              <!-- //:disabled="detail.supplier_type === 'global_pur' ? true : false" -->
+              <el-select size="medium" v-model="detail.bill_term"  style="width: 100%;">
                 <el-option v-for="(value, key) in supplierBillTerm" :value="Number(key)" :key="key" :label="value"></el-option>
               </el-select>
             </el-form-item>

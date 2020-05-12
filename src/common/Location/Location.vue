@@ -15,7 +15,7 @@
   export default {
     name: "Location",
     props: {
-      dark: { type: Boolean, default: true },
+      dark: { type: Boolean, default: false },
       zoom: { type: Number | String, default: 8 },
       showCenterIcon: { type: Boolean, default: true },
       marker: { type: Array, default: () => [] },

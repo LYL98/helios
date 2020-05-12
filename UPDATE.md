@@ -10,6 +10,15 @@
 修改sys_permission表
 修改：
    1、code == AdvicedItemQuery  修改项:【从dev数据库拷贝】
+新增:
+   1、code == CityStoreInx  修改项:【从dev数据库拷贝】
+   2、code == OperateLineOrderedStoreInx  修改项:【从dev数据库拷贝】
+   3、code == ProvinceStoreGeo  修改项:【从dev数据库拷贝】
+   
+   
+
+   
+   
 
 ```
 
