@@ -677,7 +677,14 @@ const Constant = {
   INVENTORY_SALE_STATUS_TYPE: {
     wait_sale: 'primary',
     saled: 'regular'
-  }
+  },
+  //设置-平台设置-地图的省份中心点经纬度
+  PROVINCE_CENTER:[
+    { key: { lng: 115.816587, lat: 28.637234 }, value: "江西省" },
+    { key: { lng: 112.982951, lat: 28.116007 }, value: "湖南省" },
+    { key: { lng: 104.076452, lat: 30.651696 }, value: "四川省" },
+    { key: { lng: 114.336969, lat: 30.548827 }, value: "湖北省" },
+  ]
 };
 
 //处理key value

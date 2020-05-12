@@ -20,7 +20,7 @@
       showCenterIcon: { type: Boolean, default: true },
       marker: { type: Array, default: () => [] },
       center: { type: Object, default: () => ({ lng: '', lat: '' }) },
-      person:{type: Object, default: () => ({ lng: '', lat: '' })}
+      person:{type: Array, default: () => []}
     },
     data() {
       return {
@@ -66,6 +66,7 @@
         };
 
         let center = this.$props.center;
+        let person = this.$props.person;
         if (center && center.lng && center.lat) {
           config.center = [center.lng, center.lat];
         }
@@ -76,6 +77,9 @@
           this.$data.mapComplete = true;
           if (center && center.lng && center.lat) {
             this.$props.showCenterIcon && this.initCenterPoint(center.lng, center.lat);
+          }
+          if(person && person.length > 0 ){
+            this.initMarkerPerson(this.$props.person)
           }
           this.initMarkerPoint(this.$props.marker);
         });
@@ -117,14 +121,17 @@
         });
       },
     //添加交接员图标
-      initMarkerPerson(v){
-        let marker = new AMap.Marker({
+      initMarkerPerson(values){
+        values.forEach(v=>{
+             let marker = new AMap.Marker({
             position: new AMap.LngLat(v.lng, v.lat),
             icon: ICON_PERSON_POINT,
-            offset: new AMap.Pixel(-26, -52),
+            offset: new AMap.Pixel(-10, -34),
             draggable: false
           });
           this.map.add(marker);
+        })
+       
       }
 
     }
