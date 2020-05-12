@@ -344,7 +344,7 @@
         if (res.code === 0) {
 
           const item = {
-            center: res.data && res.data.driver && res.data.driver.last_geo || {},
+            center: res.data && res.data.driver && res.data.driver.last_geo.geo || {},
             marker: [ res.data && res.data.tar_storehouse_geo || {} ]
           };
 
