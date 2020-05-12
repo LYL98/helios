@@ -216,6 +216,8 @@ export default {
           break;
         case 'local':
           this.$data.detail.role_ids = [];
+          this.$data.detail.data_level = '2', // 数据权限 1:总部 2:区域 3:片区 4:县域
+
           this.handleChangePost(this.$data.detail.post);
           break;
       }
@@ -241,6 +243,10 @@ export default {
           this.$data.detail.data_value = [this.$data.detail.province_code];
           break;
         case 'other':
+          this.$data.detail.data_level = '2';
+          this.$data.detail.data_value = [this.$data.detail.province_code];
+          break;
+        case 'service':
           this.$data.detail.data_level = '2';
           this.$data.detail.data_value = [this.$data.detail.province_code];
           break;

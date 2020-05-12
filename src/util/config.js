@@ -362,7 +362,7 @@ const Config = (() => {
       operateLineDriverList: apiM + '/sup_cap_pool/list', //签到司机列表
       operateLineDriverDelete: apiM + '/sup_lined/delete', //删除签到司机
       operateLineUnDriver: apiM + '/sup_ldeliver/un_confirm', //解绑司机
-      operateLineOrderedStoreInx: apiM + '/deliver/line/ordered_store_inx', //解绑司机
+      operateLineOrderedStoreInx: apiM + '/deliver/line/ordered_store_inx', //线路地图
       
       // 配送人员
       operateDeliverQuery: apiM + '/sup_member/query', //查询
@@ -424,6 +424,8 @@ const Config = (() => {
       basicdataProvinceAdd: apiM + '/basicdata/province/add', //区域新增
       basicdataProvinceEdit: apiM + '/basicdata/province/edit', //区域修改
       basicdataProvinceList: apiM + '/basicdata/province/list', //区域列表
+      basicdataProvinceStoreGeo: apiM + '/basicdata/province_store_geo', //区域地图
+
 
       basicdataZoneAdd: apiM + '/basicdata/zone/add', //片区新增
       basicdataZoneEdit: apiM + '/basicdata/zone/edit', //片区修改
