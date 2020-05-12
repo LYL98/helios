@@ -108,12 +108,6 @@ export default {
         marker: [],
         center: {}
       },
-      province_center: [
-        { key: { lng: 115.816587, lat: 28.637234 }, value: "江西省" },
-        { key: { lng: 112.982951, lat: 28.116007 }, value: "湖南省" },
-        { key: { lng: 104.076452, lat: 30.651696 }, value: "四川省" },
-        { key: { lng: 114.336969, lat: 30.548827 }, value: "湖北省" },
-      ]
     };
   },
   methods: {
@@ -134,7 +128,8 @@ export default {
       let that = this
       this.$loading({ isShow: true });
       let tempCenter = {}
-      this.province_center.map((item,index)=>{
+      //从常量表拿数据
+      Constant.PROVINCE_CENTER.map((item,index)=>{
           if(data.title == item.value){
             tempCenter = item.key
           }
