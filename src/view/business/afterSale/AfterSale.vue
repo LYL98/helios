@@ -51,7 +51,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="商品编号 / 名称" prop="item_title" min-width="180">
+          <el-table-column label="商品编号 / 名称" prop="item_title" min-width="160">
             <template slot-scope="scope">
               <div class="td-item add-dot2">
                 {{scope.row.item_code}} / {{scope.row.item_title}}
@@ -109,7 +109,7 @@
                     {
                       title: scope.row.status === 'init' ? '分配' : '重新分配',
                       isDisplay: scope.row.status !== 'close' && (auth.isAdmin || auth.OrderAfterSaleAllocate),
-                      command: () => orderShowHideAllocateClose([scope.row.id])
+                      command: () => orderShowHideAllocateClose([scope.row.id], [scope.row])
                     },
                     {
                       title: '二次处理',
@@ -133,7 +133,7 @@
             type="primary"
             :disabled="multipleSelection.length <= 0"
             v-if="auth.isAdmin || auth.OrderAfterSaleAllocate"
-            @click.native="orderShowHideAllocateClose(returnListKeyList('id',multipleSelection))"
+            @click.native="orderShowHideAllocateClose(returnListKeyList('id', multipleSelection), multipleSelection)"
           >批量分配</el-button>
         </div>
         <div class="right">
@@ -296,9 +296,9 @@ export default {
       pc.orderShowHideAfterSaleDetail(item);
     },
     //分配
-    orderShowHideAllocateClose(ids){
+    orderShowHideAllocateClose(ids, datas){
       let pc = this.viewGetPageComponents('Allocate');
-      pc.orderShowHideAllocateClose(ids);
+      pc.orderShowHideAllocateClose(ids, datas);
     },
     //二次处理
     orderShowHideHandleSecond(item){

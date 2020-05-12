@@ -14,8 +14,8 @@
             post="service"
             clearable
             filterable
-            :provinceCode="$myInfo.opt_type === 'global' ? '' : $myInfo.province_code"
-            :optType="$myInfo.opt_type"
+            :filterableData="filterableData"
+            :needNum="500"
           />
         </el-form-item>
         <el-form-item label="">
@@ -54,7 +54,8 @@ export default {
         operator_id: [
           { required: true, message: '请选择客服', trigger: 'change' }
         ]
-      }
+      },
+      provinceCodes: []
     }
   },
   computed: {
@@ -70,20 +71,22 @@ export default {
       }
     },
 
-    serviceFilterable(dataItem){
-      let { $myInfo } = this;
-      if($myInfo.opt_type === 'global'){
-        return dataItem;
+    filterableData(dataItem){
+      let datas = [];
+      let { provinceCodes, $myInfo } = this;
+      //如果选择了多个区域的单
+      if(provinceCodes.length > 1){
+        datas = dataItem.filter(item => item.opt_type === 'global');
+      }else{
+        datas = dataItem.filter(item => item.opt_type === 'global' || item.province_code === provinceCodes[0]);
       }
-      console.log(dataItem);
-      //:provinceCode="$myInfo.opt_type === 'global' ? '' : $myInfo.province_code"
-      //:optType="$myInfo.opt_type"
-      return dataItem;
+      return datas;
     },
 
     //取消
     cancel(){
       let that = this;
+      this.$data.provinceCodes = [];
       that.initEditDate();
       that.$refs['ruleForm'].resetFields();
       that.orderShowHideAllocateClose();
@@ -116,9 +119,17 @@ export default {
       }
     },
     //关闭显示
-    orderShowHideAllocateClose(ids){
+    orderShowHideAllocateClose(ids, datas){
       if(ids){
-        this.$data.allocateType = this.judgeAuth ? 'service' : 'my';
+        let { provinceCodes, judgeAuth } = this;
+        for(let i = 0; i < datas.length; i++){
+          let con = provinceCodes.filter(item => item === datas[i].province_code);
+          if(con.length === 0){
+            provinceCodes.push(datas[i].province_code);
+          }
+        }
+        this.$data.provinceCodes = provinceCodes;
+        this.$data.allocateType = judgeAuth ? 'service' : 'my';
         this.$data.editData.ids = ids;
         this.$data.isShow = true;
       }else{

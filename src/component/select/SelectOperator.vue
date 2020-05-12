@@ -36,33 +36,27 @@
       isFreeze: { type: String | Number, default: 0 }, //0:未冻结 1:已冻结
       optType: { type: String, default: '' },
       provinceCode: { type: String, default: '' },
-      needNum: { type: String | Number, default: 200 }
+      needNum: { type: String | Number, default: 200 },
+      filterableData: { type: Function | Object, default: null }, //特殊筛选数据
     },
     computed: {
-      getDataItem() {
-        return this.dataItem;
-
-        /*let { dataItem, optType, provinceCode } = this;
-        if(optType === 'global'){
-          return dataItem;
+      getDataItem(){
+        let { dataItem, filterableData } = this;
+        if(typeof filterableData === 'function'){
+          return filterableData(dataItem);
         }
-
-        if(provinceCode){
-          return dataItem.filter(item => item.province_code === provinceCode);
-        }
-
-        return dataItem;*/
-      },
+        return dataItem;
+      }
     },
     methods: {
       //获取数据
       async getData(){
-        let { query, post, isFreeze, needNum } = this;
+        let { query, post, isFreeze, needNum, optType, provinceCode } = this;
         let res = await Http.get(Config.api.baseCommonOperatorList, {
           ...query,
           post: post,
           is_freeze: isFreeze,
-          need_num: needNum
+          need_num: needNum,
         });
         if(res.code === 0){
           this.$data.dataItem = res.data;
@@ -71,6 +65,20 @@
         }
       },
     },
+    watch:{
+      provinceCode: {
+        deep: true,
+        handler: function (a, b) {
+          this.getData();
+        }
+      },
+      optType: {
+        deep: true,
+        handler: function (a, b) {
+          this.getData();
+        }
+      }
+    }
   }
 </script>
 
