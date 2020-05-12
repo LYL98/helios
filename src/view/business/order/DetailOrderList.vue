@@ -1,7 +1,7 @@
 <template>
   <div>
     <detail-layout title="订单详情" :isShow="isShow" direction="ttb" :before-close="cancel" type="drawer">
-      <div>
+      <div style="padding: 10px 20px;">
         <div class="detail-title">
           <span>下单时间：{{detail.created}}</span>
           <span style="margin-left: 120px;">订单编号：{{detail.code}}</span>

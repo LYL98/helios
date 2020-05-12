@@ -41,95 +41,87 @@
       </el-row>
     </div>
 
-    <div class="container-table">
-      <div class="table-top">
-        <div class="left">
-          <query-tabs v-model="tabValue" :tab-panes="{'图表': 'chart', '表格': 'table'}"/>
-        </div>
-        <div class="right"></div>
+    <div :style="'height:' + (viewWindowHeight - offsetHeight) + 'px; overflow-y: auto;'">
+      <!-- 图表 -->
+      <div class="echart-container">
+        <div :style="{height: '420px', width: '100%'}" ref="myEchart" />
+        <ul class="description">
+          <li>
+            订单商品总金额:
+            <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元
+          </li>
+          <li>
+            筐总金额:
+            <span>{{ returnPrice(totalFramPrice) }}</span> 元
+          </li>
+          <li>
+            改单商品总金额:
+            <span>{{ Math.abs(returnPrice(totalOrderModifyPrice)) }}</span> 元
+          </li>
+          <li>
+            销售总量:
+            <span>{{ totalCount }}</span> 件
+          </li>
+        </ul>
       </div>
-    </div>
+      <!-- 列表 -->
+      <el-table
+        class="list-table"
+        style="padding-bottom: 20px;"
+        :data="listItem"
+        :row-class-name="highlightRowClassName"
+        :highlight-current-row="true"
+        @sort-change="onSort"
+      >
+        <el-table-column
+          type="index"
+          :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
+          label="序号"
+          :index="indexMethod"
+          align="center"
+        />
+        <el-table-column label="一级科学分类" prop="item_system_class">
+          <template slot-scope="scope">
+            <a
+              href="javascript:void(0)"
+              class="title"
+              @click="handleShowClassDetail(scope.row)"
+              v-if="!!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass2 )"
+            >{{ scope.row.item_system_class || '其它' }}</a>
+            <div v-else>{{ scope.row.item_system_class || '其它' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
+          <template slot-scope="scope">￥{{ returnPrice(scope.row.amount_real) }}</template>
+        </el-table-column>
+        <!--<el-table-column label="框金额" sortable="custom" prop="fram_total_price">-->
+        <!--<template slot-scope="scope">-->
+        <!--￥{{ returnPrice(scope.row.fram_total_price) }}-->
+        <!--</template>-->
+        <!--</el-table-column>-->
+        <el-table-column label="件数" sortable="custom" prop="count_real" />
+        <el-table-column label="占比">
+          <template slot-scope="scope">
+            <!-- {{ returnPercentage(scope.row.amount_real, totalItemTotalPrice) }}% -->
+            {{ scope.row.ratio }}%
 
-    <!-- 图表 -->
-    <div class="echart-container" v-show="tabValue === 'chart'">
-      <div :style="{height: viewWindowHeight - 204 + 'px', width: '100%'}" ref="myEchart" />
-      <ul class="description">
-        <li>
-          订单商品总金额:
-          <span>{{ returnPrice(totalItemTotalPrice) }}</span> 元
-        </li>
-        <li>
-          筐总金额:
-          <span>{{ returnPrice(totalFramPrice) }}</span> 元
-        </li>
-        <li>
-          改单商品总金额:
-          <span>{{ Math.abs(returnPrice(totalOrderModifyPrice)) }}</span> 元
-        </li>
-        <li>
-          销售总量:
-          <span>{{ totalCount }}</span> 件
-        </li>
-      </ul>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="100" align="center">
+          <template slot-scope="scope">
+            <my-table-operate
+              :list="[
+                {
+                  title: '查看',
+                  isDisplay: !!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass2 ),
+                  command: () => handleShowClassDetail(scope.row)
+                }
+              ]"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
-    <!-- 列表 -->
-    <el-table
-      class="list-table"
-      style="padding-bottom: 20px;"
-      :data="listItem"
-      :row-class-name="highlightRowClassName"
-      :highlight-current-row="true"
-      @sort-change="onSort"
-      v-show="tabValue === 'table'"
-      :height="viewWindowHeight - 174"
-    >
-      <el-table-column
-        type="index"
-        :width="(query.page - 1) * query.page_size < 950 ? 48 : (query.page - 1) * query.page_size < 999950 ? 68 : 88"
-        label="序号"
-        :index="indexMethod"
-        align="center"
-      />
-      <el-table-column label="一级科学分类" prop="item_system_class">
-        <template slot-scope="scope">
-          <a
-            href="javascript:void(0)"
-            class="title"
-            @click="handleShowClassDetail(scope.row)"
-            v-if="!!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass2 )"
-          >{{ scope.row.item_system_class || '其它' }}</a>
-          <div v-else>{{ scope.row.item_system_class || '其它' }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="订单商品金额" sortable="custom" prop="amount_real">
-        <template slot-scope="scope">￥{{ returnPrice(scope.row.amount_real) }}</template>
-      </el-table-column>
-      <!--<el-table-column label="框金额" sortable="custom" prop="fram_total_price">-->
-      <!--<template slot-scope="scope">-->
-      <!--￥{{ returnPrice(scope.row.fram_total_price) }}-->
-      <!--</template>-->
-      <!--</el-table-column>-->
-      <el-table-column label="件数" sortable="custom" prop="count_real" />
-      <el-table-column label="占比">
-        <template slot-scope="scope">
-          <!-- {{ returnPercentage(scope.row.amount_real, totalItemTotalPrice) }}% -->
-          {{ scope.row.ratio }}%
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="100" align="center">
-        <template slot-scope="scope">
-          <my-table-operate
-            :list="[
-              {
-                title: '查看',
-                isDisplay: !!scope.row.item_system_class && ( auth.isAdmin || auth.StatisticMarketClass2 ),
-                command: () => handleShowClassDetail(scope.row)
-              }
-            ]"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
   </sub-menu>
 </template>
 
@@ -148,7 +140,6 @@ import { QueryItem, TableOperate } from "@/common";
 import { Http, Config, DataHandle, Constant } from "@/util";
 import mainMixin from "@/share/mixin/main.mixin";
 import { GlobalProvince } from "@/component";
-import queryTabs from '@/share/layout/QueryTabs';
 
 import echarts from "echarts/lib/echarts";
 import "echarts/lib/chart/pie";
@@ -168,14 +159,13 @@ export default {
     "el-option":Option,
     "my-query-item": QueryItem,
     "my-table-operate": TableOperate,
-    "global-province": GlobalProvince,
-    'query-tabs': queryTabs
+    "global-province": GlobalProvince
   },
   data() {
     return {
-      tabValue: 'chart',
-      flag: true, //运营专区默认不可选
+      flag:true, //运营专区默认不可选
       fixDateOptions: Constant.FIX_DATE_RANGE,
+      offsetHeight: Constant.OFFSET_QUERY_CLOSE,
       pickerValue: [],
       selectValue: "",
       tagsOptions:[],//运营专区数据
@@ -507,33 +497,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '@/share/scss/table.scss';
-  .echart-container {
-    background-color: #fff;
-    padding: 16px;
-    display: flex;
+.echart-container {
+  margin-bottom: 16px;
+  background-color: #fff;
+  padding: 16px;
+  display: flex;
 
-    .description {
-      width: 340px;
-      >li{
-        line-height: 32px;
-      }
-    }
+  .description {
+    width: 260px;
   }
-  .title {
-    color: inherit;
-    padding: 5px 10px 5px 0;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  .title:hover {
-    font-weight: 600;
-  }
-  .title-disable {
-    color: inherit;
-    padding: 5px 10px 5px 0;
-  }
-</style>
-<style lang="scss">
-  @import '@/share/scss/table.global.scss';
+}
+.title {
+  color: inherit;
+  padding: 5px 10px 5px 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.title:hover {
+  font-weight: 600;
+}
+.title-disable {
+  color: inherit;
+  padding: 5px 10px 5px 0;
+}
 </style>

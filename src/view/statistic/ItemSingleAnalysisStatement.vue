@@ -157,7 +157,7 @@
         resetItemId: '',
         resetItemName: '',
         dataItem: [],
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_TABS  + Constant.OFFSET_QUERY_CLOSE,
+        offsetHeight: Constant.OFFSET_TABS  + Constant.OFFSET_QUERY_CLOSE + 40,
         selectArea: 'zone',
         selectItemName: '',
         lineColors: [

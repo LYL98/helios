@@ -36,7 +36,6 @@
     },
     data() {
       return {
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + 82 + 83 + 40 + 16,
         item: {
           content: ''
         },

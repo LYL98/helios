@@ -50,6 +50,7 @@
         :row-class-name="highlightRowClassName"
         :highlight-current-row="true"
         @sort-change="onSort"
+        :height="viewWindowHeight - offsetHeight"
       >
         <!-- 片区、订单金额、订单量、件数、占比、操作 -->
         <el-table-column
@@ -139,7 +140,7 @@
     data() {
       return {
         fixDateOptions: Constant.FIX_DATE_RANGE,
-        offsetHeight: Constant.OFFSET_BASE_HEIGHT + Constant.OFFSET_BREADCRUMB + Constant.OFFSET_QUERY_CLOSE,
+        offsetHeight: Constant.OFFSET_BREADCRUMB + Constant.OFFSET_QUERY_CLOSE + 40,
         pickerValue: [],
         breadcrumb: {},
         query: { },
